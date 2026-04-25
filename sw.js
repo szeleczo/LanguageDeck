@@ -1,5 +1,5 @@
-/* LanguageDeck service worker — cache-first for the app shell so it works offline. */
-const CACHE_VERSION = "languagedeck-v1";
+/* LanguageDeck service worker — network-first so updates apply immediately when online. */
+const CACHE_VERSION = "languagedeck-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -30,19 +30,21 @@ self.addEventListener("fetch", event => {
   if (req.method !== "GET") return;
 
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return; // don't intercept cross-origin (CSV from external URL etc.)
+  if (url.origin !== self.location.origin) return; // ignore cross-origin
 
+  // Network-first: try the network, fall back to cache when offline.
+  // This means online users ALWAYS see the latest deployed code, while offline
+  // users still get the cached copy.
   event.respondWith(
-    caches.match(req).then(cached => {
-      if (cached) return cached;
-      return fetch(req).then(resp => {
-        // Cache successful responses for known shell + decks for offline use
-        if (resp.ok && (APP_SHELL.includes(url.pathname.split("/").pop()) || url.pathname.includes("/decks/"))) {
+    fetch(req).then(resp => {
+      if (resp.ok) {
+        const path = url.pathname.split("/").pop();
+        if (APP_SHELL.some(p => p.endsWith(path)) || url.pathname.includes("/decks/") || url.pathname.endsWith("/")) {
           const copy = resp.clone();
           caches.open(CACHE_VERSION).then(cache => cache.put(req, copy));
         }
-        return resp;
-      }).catch(() => cached);
-    })
+      }
+      return resp;
+    }).catch(() => caches.match(req))
   );
 });
