@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1f2937" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>LanguageDeck — Vocabulary trainer</title>
+  <style>
+    /* ---------- Reset & base ---------- */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg: #f3f4f6;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --border: #e5e7eb;
+      --text: #111827;
+      --text-muted: #4b5563;
+      --text-faint: #6b7280;
+
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-soft: #dbeafe;
+
+      --success: #16a34a;
+      --success-soft: #dcfce7;
+      --danger: #dc2626;
+      --danger-soft: #fee2e2;
+      --warning: #d97706;
+      --neutral-soft: #f1f5f9;
+
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.12);
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+
+      --tap: 44px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --surface-2: #111827;
+        --border: #334155;
+        --text: #f1f5f9;
+        --text-muted: #cbd5e1;
+        --text-faint: #94a3b8;
+        --primary-soft: #1e3a8a;
+        --neutral-soft: #1e293b;
+        --success-soft: #064e3b;
+        --danger-soft: #7f1d1d;
+      }
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: none;
+    }
+
+    body {
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      min-height: 100vh;
+    }
+
+    .wrapper {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 12px 14px 120px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 4px 0 14px;
+      text-align: left;
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ---------- Buttons & inputs ---------- */
+    button, .btn {
+      font: inherit;
+      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      min-height: var(--tap);
+      font-weight: 600;
+      transition: background-color 0.15s ease, transform 0.05s ease, opacity 0.15s ease;
+    }
+    button:hover:not(:disabled) { background: var(--primary-hover); }
+    button:active:not(:disabled) { transform: scale(0.98); }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    button.ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    button.ghost:hover:not(:disabled) { background: var(--neutral-soft); }
+
+    button.secondary {
+      background: var(--neutral-soft);
+      color: var(--text);
+    }
+    button.secondary:hover:not(:disabled) { background: var(--border); }
+
+    button.danger {
+      background: var(--danger);
+    }
+    button.danger:hover:not(:disabled) { background: #b91c1c; }
+
+    input[type="text"],
+    input[type="url"],
+    select {
+      font: inherit;
+      width: 100%;
+      padding: 10px 12px;
+      min-height: var(--tap);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    input[type="text"]:focus,
+    input[type="url"]:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    /* ---------- Panels ---------- */
+    .panel {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+    }
+
+    /* ---------- Header bar ---------- */
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .mode-summary {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 6px;
+      padding: 6px 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    .mode-summary-sep { color: var(--text-faint); }
+
+    .info, .status {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .status {
+      margin: 8px 0 4px;
+      font-weight: 500;
+      color: var(--text);
+      min-height: 1.4em;
+    }
+
+    .score {
+      display: inline-flex;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .score b { color: var(--text); font-weight: 600; }
+
+    .keyboard-hint {
+      font-size: 12px;
+      color: var(--text-faint);
+      margin-top: 6px;
+      display: none; /* hide on touch devices, show on desktop via @media */
+    }
+
+    .db-info {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ---------- Gate panel ---------- */
+    .gate-panel {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .gate-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+    .gate-row.controls > * { flex: 0 0 auto; }
+    .gate-row.controls button { padding: 8px 12px; min-height: 36px; }
+    .gate-row.controls select { width: auto; min-height: 36px; padding: 6px 10px; }
+
+    .gate-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      background: var(--neutral-soft);
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .gate-badge strong { color: var(--text); margin-right: 4px; }
+
+    .gate-progress-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--neutral-soft);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .gate-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width 0.4s ease;
+    }
+
+    .gate-meta {
+      font-size: 12px;
+      color: var(--text-faint);
+    }
+
+    /* ---------- Stats ---------- */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .stat-cell {
+      background: var(--surface-2);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      text-align: center;
+    }
+    .stat-cell .stat-value {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .stat-cell .stat-label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .hardest-block { margin-top: 10px; }
+    .hardest-list {
+      display: grid;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .hardest-item {
+      background: var(--surface-2);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 13px;
+      line-height: 1.4;
+      border: 1px solid var(--border);
+    }
+    .hardest-item .meta { color: var(--text-faint); font-size: 12px; }
+
+    /* ---------- Word match (cards) ---------- */
+    .game {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .column h2 {
+      text-align: center;
+    }
+
+    .card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 12px;
+      margin-bottom: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.08s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+      min-height: var(--tap);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      word-break: break-word;
+      box-shadow: var(--shadow-sm);
+    }
+    .card:active { transform: scale(0.98); }
+    .card.selected {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: 0 0 0 2px var(--primary-soft);
+    }
+    .card.correct {
+      background: var(--success-soft);
+      border-color: var(--success);
+      color: var(--success);
+      cursor: default;
+    }
+    .card.word-correct {
+      background: #fef9c3;
+      border-color: var(--warning);
+      color: #92400e;
+    }
+    .card.wrong {
+      background: var(--danger-soft);
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+    .card.disabled { pointer-events: none; opacity: 0.7; }
+
+    .shortcut-badge {
+      position: absolute;
+      top: 4px;
+      left: 6px;
+      font-size: 10px;
+      color: var(--text-faint);
+      font-weight: 600;
+    }
+
+    /* ---------- Typing panel ---------- */
+    .typing-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px 14px;
+      box-shadow: var(--shadow-sm);
+    }
+    .typing-word {
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      margin: 8px 0;
+      color: var(--text);
+    }
+    .typing-help {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .typing-form {
+      display: grid;
+      gap: 8px;
+    }
+    .typing-result {
+      margin-top: 10px;
+      font-size: 14px;
+      text-align: center;
+      min-height: 1.4em;
+      font-weight: 500;
+    }
+
+    /* ---------- Sentence panel ---------- */
+    .sentence-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 14px;
+      box-shadow: var(--shadow-sm);
+    }
+    .sentence-english {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .sentence-help {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .sentence-meta {
+      font-size: 12px;
+      color: var(--text-faint);
+      margin-bottom: 12px;
+    }
+    .sentence-target {
+      font-size: 17px;
+      line-height: 2.2;
+      margin-bottom: 12px;
+      word-break: break-word;
+    }
+    .sentence-token { white-space: pre-wrap; }
+
+    .blank-chip {
+      display: inline-block;
+      background: var(--neutral-soft);
+      border: 1px dashed var(--border);
+      color: var(--text);
+      padding: 4px 10px;
+      margin: 0 2px;
+      border-radius: 6px;
+      font-size: 16px;
+      min-height: 32px;
+      cursor: pointer;
+    }
+    .blank-chip.active {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      border-style: solid;
+    }
+
+    .blank-input {
+      display: inline-block;
+      width: auto;
+      min-width: 90px;
+      max-width: 180px;
+      padding: 4px 8px;
+      margin: 0 2px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      min-height: 36px;
+    }
+    .blank-input:focus { outline: none; border-color: var(--primary); }
+
+    .sentence-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .bank-word {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      min-height: 36px;
+    }
+    .bank-word.used { opacity: 0.4; }
+    .bank-word:hover:not(:disabled) { background: var(--neutral-soft); }
+
+    .sentence-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .sentence-actions button { flex: 1 1 auto; }
+
+    .sentence-result {
+      margin-top: 10px;
+      font-size: 14px;
+      min-height: 1.4em;
+      font-weight: 500;
+    }
+
+    /* ---------- Article modal ---------- */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(2px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+    .modal-backdrop.active { display: flex; }
+    .modal-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: var(--shadow-lg);
+    }
+    .modal-card.settings-modal {
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+    .modal-subtitle { font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 14px; }
+
+    .article-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    .article-btn {
+      background: var(--neutral-soft);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 16px 0;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .article-btn:hover:not(:disabled) {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+    }
+    .article-key {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-faint);
+      margin-top: 4px;
+    }
+
+    /* ---------- Settings ---------- */
+    .settings-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .settings-section {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+    .settings-section:first-child {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+    .settings-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .settings-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .settings-actions button { flex: 1 1 calc(50% - 4px); }
+    .settings-actions .close-btn { flex: 1 1 100%; }
+
+    .install-banner {
+      display: none;
+      background: var(--primary-soft);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      font-size: 13px;
+      align-items: center;
+      gap: 8px;
+      justify-content: space-between;
+    }
+    .install-banner.visible { display: flex; }
+    .install-banner button { padding: 6px 12px; min-height: 36px; }
+
+    /* ---------- Mobile-first; widen on tablets+ ---------- */
+    @media (min-width: 700px) {
+      .wrapper { padding: 20px 24px 80px; }
+      h1 { font-size: 28px; }
+      .keyboard-hint { display: block; }
+      .stats-row { gap: 10px; }
+      .card { padding: 16px; font-size: 17px; }
+      .typing-word { font-size: 36px; }
+      .sentence-english { font-size: 22px; }
+      .sentence-target { font-size: 19px; line-height: 2.4; }
+    }
+
+    @media (min-width: 1000px) {
+      .game { gap: 14px; }
+      .stats-row { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    }
+
+    .hidden { display: none !important; }
+
+    /* Responsive: cards smaller on very narrow screens */
+    @media (max-width: 360px) {
+      .card { padding: 10px 8px; font-size: 14px; }
+      .typing-word { font-size: 24px; }
+      .sentence-english { font-size: 16px; }
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 80px;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: var(--bg);
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      max-width: calc(100vw - 32px);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Floating settings button (mobile) */
+    .fab {
+      position: fixed;
+      right: 16px;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      box-shadow: var(--shadow-lg);
+      border: none;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .fab:hover:not(:disabled) { background: var(--primary-hover); }
+
+    @media (min-width: 700px) {
+      .fab { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>LanguageDeck <span style="font-weight:400;font-size:0.7em;color:var(--text-faint);">— vocabulary trainer</span></h1>
+
+    <div class="install-banner" id="installBanner">
+      <span>Install the app to your home screen for offline use.</span>
+      <button id="installBtn">Install</button>
+    </div>
+
+    <!-- Top status panel -->
+    <div class="panel">
+      <div class="topbar">
+        <div class="mode-summary" id="modeSummary"></div>
+        <div class="topbar-actions">
+          <button id="settingsBtnTop" class="ghost">Settings</button>
+        </div>
+      </div>
+
+      <div class="status" id="status">Loading…</div>
+      <div class="score" id="score"><b>Correct:</b> 0 &nbsp;·&nbsp; <b>Wrong:</b> 0</div>
+      <div class="keyboard-hint" id="keyboardHint"></div>
+      <div class="db-info" id="dbInfo">—</div>
+
+      <!-- Gate -->
+      <div class="gate-panel" id="gatePanel">
+        <div class="gate-row">
+          <span class="gate-badge" id="gateLabel">Gate: 0 / 0</span>
+          <span class="gate-badge" id="gateProgressText">Progress: 0%</span>
+          <span class="gate-badge" id="gateStatsText">Mastered: 0 / 0</span>
+        </div>
+        <div class="gate-row controls">
+          <button id="prevGateBtn" class="ghost">← Prev</button>
+          <button id="nextGateBtn" class="ghost">Next →</button>
+          <select id="gateSelect" aria-label="Jump to gate"></select>
+        </div>
+        <div class="gate-meta" id="gateMetaText">No data yet.</div>
+        <div class="gate-progress-bar"><div class="gate-progress-fill" id="gateProgressFill"></div></div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row" id="statsSummary">
+        <div class="stat-cell"><span class="stat-value" id="statTotal">0</span><span class="stat-label">Total</span></div>
+        <div class="stat-cell"><span class="stat-value" id="statNew">0</span><span class="stat-label">New</span></div>
+        <div class="stat-cell"><span class="stat-value" id="statDue">0</span><span class="stat-label">Due</span></div>
+        <div class="stat-cell"><span class="stat-value" id="statStable">0</span><span class="stat-label">Stable</span></div>
+      </div>
+
+      <div class="hardest-block">
+        <h2 id="hardestTitle">Most-missed items</h2>
+        <div class="hardest-list" id="hardestList">No data yet.</div>
+      </div>
+    </div>
+
+    <!-- Word match container -->
+    <div id="wordMatchContainer" class="panel">
+      <div class="game">
+        <div class="column">
+          <h2 id="leftColumnTitle">English</h2>
+          <div id="leftColumn"></div>
+        </div>
+        <div class="column">
+          <h2 id="rightColumnTitle">German</h2>
+          <div id="rightColumn"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Word typing container -->
+    <div id="wordTypingContainer" class="typing-panel hidden">
+      <div class="typing-word" id="typingPrompt">—</div>
+      <div class="typing-help" id="typingHelp">Type the target-language equivalent.</div>
+      <div class="typing-form">
+        <input type="text" id="typingInput" placeholder="Answer" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
+        <div style="display:flex;gap:8px;">
+          <button id="typingSubmitBtn" style="flex:1;">Check</button>
+          <button id="typingRevealBtn" class="secondary" style="flex:1;">Reveal</button>
+        </div>
+      </div>
+      <div class="typing-result" id="typingResult"></div>
+    </div>
+
+    <!-- Sentence container -->
+    <div id="sentenceContainer" class="sentence-panel hidden">
+      <div class="sentence-english" id="sentenceEnglish">—</div>
+      <div class="sentence-help" id="sentenceHelp">Fill in the missing words.</div>
+      <div class="sentence-meta" id="sentenceMeta">—</div>
+      <div class="sentence-target" id="sentenceTarget"></div>
+      <div class="sentence-bank" id="sentenceBank"></div>
+      <div class="sentence-actions">
+        <button id="sentenceCheckBtn">Check</button>
+        <button id="sentenceResetBtn" class="ghost">Clear</button>
+        <button id="sentenceRevealBtn" class="secondary">Reveal</button>
+      </div>
+      <div class="sentence-result" id="sentenceResult"></div>
+    </div>
+  </div>
+
+  <!-- Floating settings button (mobile) -->
+  <button class="fab" id="settingsFab" aria-label="Settings">⚙</button>
+
+  <!-- Article modal -->
+  <div id="articleModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-subtitle" id="articleWordText">Haus</div>
+      <div class="article-buttons">
+        <button data-article="der" class="article-btn"><div>der</div><div class="article-key">1</div></button>
+        <button data-article="die" class="article-btn"><div>die</div><div class="article-key">2</div></button>
+        <button data-article="das" class="article-btn"><div>das</div><div class="article-key">3</div></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings modal -->
+  <div id="settingsModal" class="modal-backdrop">
+    <div class="modal-card settings-modal">
+      <div class="modal-title">Settings</div>
+
+      <div class="settings-grid">
+        <div class="settings-section">
+          <div class="settings-section-title">Game</div>
+          <label for="gameSelect">Mode</label>
+          <select id="gameSelect">
+            <option value="words" selected>Word cards</option>
+            <option value="sentences">Sentence completion</option>
+          </select>
+          <label for="deckSelect" style="margin-top:8px;">Language</label>
+          <select id="deckSelect">
+            <option value="de" selected>English → German</option>
+            <option value="it">English → Italian</option>
+          </select>
+          <label for="setSelect" style="margin-top:8px;">Active deck</label>
+          <select id="setSelect"></select>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-title">Practice</div>
+          <label for="modeSelect">Word mode</label>
+          <select id="modeSelect">
+            <option value="match" selected>Matching</option>
+            <option value="typing">Typing</option>
+          </select>
+          <label for="sentenceModeSelect" style="margin-top:8px;">Sentence mode</label>
+          <select id="sentenceModeSelect">
+            <option value="choice" selected>Word bank</option>
+            <option value="typing">Typing</option>
+          </select>
+          <label for="scopeSelect" style="margin-top:8px;">Scope</label>
+          <select id="scopeSelect">
+            <option value="all" selected>All items</option>
+            <option value="wrong">Wrong only</option>
+          </select>
+          <label for="profileSelect" style="margin-top:8px;">Repetition pace</label>
+          <select id="profileSelect">
+            <option value="easy">Relaxed</option>
+            <option value="normal" selected>Normal</option>
+            <option value="hard">Intense</option>
+          </select>
+          <label for="newRatioSelect" style="margin-top:8px;">New items ratio</label>
+          <select id="newRatioSelect">
+            <option value="0.2">20%</option>
+            <option value="0.4" selected>40%</option>
+            <option value="0.6">60%</option>
+            <option value="0.8">80%</option>
+          </select>
+          <label for="visibleCountSelect" style="margin-top:8px;">Pairs per round</label>
+          <select id="visibleCountSelect">
+            <option value="2">2</option>
+            <option value="4" selected>4</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-title">Gates</div>
+          <label for="gateEnabledCheckbox">Gate mode</label>
+          <select id="gateEnabledCheckbox">
+            <option value="true" selected>On</option>
+            <option value="false">Off</option>
+          </select>
+          <label for="gateSizeSelect" style="margin-top:8px;">Gate size</label>
+          <select id="gateSizeSelect">
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+          </select>
+          <label for="strictGateCheckbox" style="margin-top:8px;">Strict gate</label>
+          <select id="strictGateCheckbox">
+            <option value="true" selected>On</option>
+            <option value="false">Off</option>
+          </select>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-title">Import</div>
+          <label for="importTypeSelect">Import type</label>
+          <select id="importTypeSelect">
+            <option value="words" selected>Words</option>
+            <option value="sentences">Sentences</option>
+          </select>
+          <label for="newSetNameInput" style="margin-top:8px;">Deck name</label>
+          <input type="text" id="newSetNameInput" placeholder="e.g. basic_500 or book_1" />
+
+          <label for="fileInput" style="margin-top:8px;">From file (CSV)</label>
+          <input type="file" id="fileInput" accept=".csv" />
+          <button id="uploadBtn" style="margin-top:8px;width:100%;">Import file</button>
+
+          <label for="urlInput" style="margin-top:14px;">From URL (CSV)</label>
+          <input type="url" id="urlInput" placeholder="https://username.github.io/your-repo/decks/german_3000.csv" />
+          <button id="urlImportBtn" class="secondary" style="margin-top:8px;width:100%;">Import from URL</button>
+
+          <button id="browseBuiltinBtn" class="ghost" style="margin-top:8px;width:100%;">Browse built-in decks</button>
+        </div>
+      </div>
+
+      <div class="settings-actions">
+        <button id="restartBtn" class="ghost">Restart session</button>
+        <button id="clearBtn" class="danger">Clear deck</button>
+        <button id="closeSettingsBtn" class="secondary close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Built-in deck picker modal -->
+  <div id="builtinModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-title">Built-in decks</div>
+      <div id="builtinList" style="display:grid;gap:8px;">Loading…</div>
+      <div style="margin-top:16px;">
+        <button id="closeBuiltinBtn" class="ghost" style="width:100%;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /* ============================================================
+       LanguageDeck PWA — single-file vocabulary trainer
+       Storage: IndexedDB
+       ============================================================ */
+
+    /* ---------- DECK CONFIG ---------- */
+    const DECK_CONFIG = {
+      de: {
+        label: "English → German",
+        leftTitle: "English",
+        rightTitle: "German",
+        targetName: "German",
+        useArticles: true,
+        typingPlaceholder: "e.g. das Haus",
+        typingHelp: "Type the German equivalent. Include the article if applicable."
+      },
+      it: {
+        label: "English → Italian",
+        leftTitle: "English",
+        rightTitle: "Italian",
+        targetName: "Italian",
+        useArticles: false,
+        typingPlaceholder: "e.g. casa",
+        typingHelp: "Type the Italian equivalent."
+      }
+    };
+
+    const SUPPORTED_DECKS = new Set(["de", "it"]);
+    const GATE_MASTERY_STREAK = 2;
+    const GATE_UNLOCK_RATIO = 0.85;
+
+    /* ---------- DB layer (IndexedDB) ---------- */
+    const DB = (() => {
+      const DB_NAME = "languagedeck";
+      const DB_VERSION = 1;
+      let dbPromise = null;
+
+      function open() {
+        if (dbPromise) return dbPromise;
+        dbPromise = new Promise((resolve, reject) => {
+          const req = indexedDB.open(DB_NAME, DB_VERSION);
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains("word_pairs")) {
+              const store = db.createObjectStore("word_pairs", { keyPath: "id", autoIncrement: true });
+              store.createIndex("by_deck", "deck", { unique: false });
+              store.createIndex("by_deck_set", ["deck", "set_name"], { unique: false });
+            }
+            if (!db.objectStoreNames.contains("sentence_pairs")) {
+              const store = db.createObjectStore("sentence_pairs", { keyPath: "id", autoIncrement: true });
+              store.createIndex("by_deck", "deck", { unique: false });
+              store.createIndex("by_deck_set", ["deck", "set_name"], { unique: false });
+            }
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error);
+        });
+        return dbPromise;
+      }
+
+      function tx(stores, mode = "readonly") {
+        return open().then(db => db.transaction(stores, mode));
+      }
+
+      function getAll(table, deck, setName) {
+        return tx([table]).then(t => {
+          const store = t.objectStore(table);
+          return new Promise((resolve, reject) => {
+            const out = [];
+            const req = store.openCursor();
+            req.onsuccess = (e) => {
+              const cursor = e.target.result;
+              if (cursor) {
+                const row = cursor.value;
+                if (row.deck === deck && (setName === "__all__" || row.set_name === setName)) {
+                  out.push(row);
+                }
+                cursor.continue();
+              } else {
+                out.sort((a, b) => a.id - b.id);
+                resolve(out);
+              }
+            };
+            req.onerror = () => reject(req.error);
+          });
+        });
+      }
+
+      function bulkInsert(table, rows) {
+        return tx([table], "readwrite").then(t => {
+          const store = t.objectStore(table);
+          return new Promise((resolve, reject) => {
+            let n = 0;
+            t.oncomplete = () => resolve(n);
+            t.onerror = () => reject(t.error);
+            t.onabort = () => reject(t.error);
+            for (const row of rows) {
+              store.add(row);
+              n++;
+            }
+          });
+        });
+      }
+
+      function update(table, row) {
+        return tx([table], "readwrite").then(t => {
+          const store = t.objectStore(table);
+          return new Promise((resolve, reject) => {
+            const r = store.put(row);
+            r.onsuccess = () => resolve(true);
+            r.onerror = () => reject(r.error);
+          });
+        });
+      }
+
+      function getById(table, id) {
+        return tx([table]).then(t => {
+          return new Promise((resolve, reject) => {
+            const r = t.objectStore(table).get(id);
+            r.onsuccess = () => resolve(r.result);
+            r.onerror = () => reject(r.error);
+          });
+        });
+      }
+
+      function clear(table, deck, setName) {
+        return tx([table], "readwrite").then(t => {
+          const store = t.objectStore(table);
+          return new Promise((resolve, reject) => {
+            const req = store.openCursor();
+            let n = 0;
+            req.onsuccess = (e) => {
+              const cursor = e.target.result;
+              if (cursor) {
+                const row = cursor.value;
+                const matches = row.deck === deck && (setName === "__all__" || row.set_name === setName);
+                if (matches) { cursor.delete(); n++; }
+                cursor.continue();
+              } else {
+                resolve(n);
+              }
+            };
+            req.onerror = () => reject(req.error);
+          });
+        });
+      }
+
+      function getSets(table, deck) {
+        return getAll(table, deck, "__all__").then(rows => {
+          const counts = new Map();
+          for (const r of rows) {
+            counts.set(r.set_name, (counts.get(r.set_name) || 0) + 1);
+          }
+          const arr = [...counts.entries()].map(([set_name, item_count]) => ({ set_name, item_count }));
+          arr.sort((a, b) => a.set_name.localeCompare(b.set_name));
+          return arr;
+        });
+      }
+
+      return { open, getAll, bulkInsert, update, getById, clear, getSets };
+    })();
+
+    /* ---------- Helpers ---------- */
+    const nowIso = () => new Date().toISOString();
+
+    function normalizeDeck(deck) {
+      const d = (deck || "de").toString().trim().toLowerCase();
+      return SUPPORTED_DECKS.has(d) ? d : "de";
+    }
+
+    function normalizeSetName(name) {
+      const v = (name || "default").toString().trim();
+      return v || "default";
+    }
+
+    function getIntervalMinutes(streak, profile = "normal") {
+      const profiles = {
+        easy:   [10, 1440, 4320, 10080, 20160, 43200],
+        normal: [5,  720,  2880, 10080, 20160, 43200],
+        hard:   [2,  120,  1440, 4320,  10080, 20160]
+      };
+      const steps = profiles[profile] || profiles.normal;
+      if (streak <= 0) return 5;
+      const idx = Math.min(streak - 1, steps.length - 1);
+      return steps[idx];
+    }
+
+    function calcNextDue(streak, difficulty = 1.0, profile = "normal") {
+      const minutes = getIntervalMinutes(streak, profile);
+      const adjusted = Math.max(1, Math.round(minutes * difficulty));
+      const d = new Date();
+      d.setMinutes(d.getMinutes() + adjusted);
+      return d.toISOString();
+    }
+
+    function calcWrongDue(profile = "normal") {
+      const minutes = profile === "easy" ? 10 : profile === "hard" ? 2 : 5;
+      const d = new Date();
+      d.setMinutes(d.getMinutes() + minutes);
+      return d.toISOString();
+    }
+
+    function normTxt(v) {
+      return String(v || "").trim().toLowerCase().replace(/\s+/g, " ");
+    }
+
+    function splitArticleFromTarget(targetValue, articleValue) {
+      const article = normTxt(articleValue);
+      const target = String(targetValue || "").trim();
+      if (article === "der" || article === "die" || article === "das") return [article, target];
+      const lower = target.toLowerCase();
+      for (const candidate of ["der ", "die ", "das "]) {
+        if (lower.startsWith(candidate)) {
+          return [candidate.trim(), target.slice(candidate.length).trim()];
+        }
+      }
+      return [null, target];
+    }
+
+    function shuffleArr(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function derangeOrBest(ids) {
+      if (ids.length <= 1) return [...ids];
+      const original = [...ids];
+      for (let attempt = 0; attempt < 30; attempt++) {
+        const s = shuffleArr(ids);
+        let same = false;
+        for (let i = 0; i < original.length; i++) if (s[i] === original[i]) { same = true; break; }
+        if (!same) return s;
+      }
+      const r = [...ids]; r.push(r.shift()); return r;
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+    }
+
+    /* ---------- CSV parsing ---------- */
+    /* Minimal RFC-4180-ish parser supporting quoted fields, commas, newlines, escaped quotes. */
+    function parseCSV(text) {
+      // Strip BOM
+      if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+      const rows = [];
+      let row = [];
+      let field = "";
+      let i = 0, inQuotes = false;
+      const n = text.length;
+      while (i < n) {
+        const c = text[i];
+        if (inQuotes) {
+          if (c === '"') {
+            if (text[i + 1] === '"') { field += '"'; i += 2; continue; }
+            inQuotes = false; i++; continue;
+          }
+          field += c; i++; continue;
+        } else {
+          if (c === '"') { inQuotes = true; i++; continue; }
+          if (c === ',') { row.push(field); field = ""; i++; continue; }
+          if (c === '\r') { i++; continue; }
+          if (c === '\n') { row.push(field); rows.push(row); row = []; field = ""; i++; continue; }
+          field += c; i++;
+        }
+      }
+      // last field
+      if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
+      // remove empty trailing rows
+      while (rows.length && rows[rows.length - 1].every(v => v === "")) rows.pop();
+      return rows;
+    }
+
+    function csvToObjects(text) {
+      const rows = parseCSV(text);
+      if (rows.length === 0) return { headers: [], items: [] };
+      const headers = rows[0].map(h => (h || "").trim());
+      const items = [];
+      for (let i = 1; i < rows.length; i++) {
+        const obj = {};
+        for (let j = 0; j < headers.length; j++) obj[headers[j]] = rows[i][j] ?? "";
+        items.push(obj);
+      }
+      return { headers, items };
+    }
+
+    /* ---------- Import logic ---------- */
+    async function importWordsFromCsv(text, deck, setName) {
+      deck = normalizeDeck(deck);
+      setName = normalizeSetName(setName);
+      const { headers, items } = csvToObjects(text);
+      const lower = headers.map(h => h.trim().toLowerCase());
+      if (!lower.includes("english") || !lower.includes("target")) {
+        throw new Error("CSV must have 'english' and 'target' columns.");
+      }
+      const englishKey = headers[lower.indexOf("english")];
+      const targetKey = headers[lower.indexOf("target")];
+      const articleKey = lower.includes("article") ? headers[lower.indexOf("article")] : null;
+
+      const rows = [];
+      for (const it of items) {
+        const english = String(it[englishKey] || "").trim();
+        const targetRaw = String(it[targetKey] || "").trim();
+        const articleRaw = articleKey ? String(it[articleKey] || "").trim() : "";
+        if (!english || !targetRaw) continue;
+
+        let article = null;
+        let target = targetRaw;
+        if (deck === "de") {
+          [article, target] = splitArticleFromTarget(targetRaw, articleRaw);
+        }
+
+        rows.push({
+          deck, set_name: setName, english, target, article: article || null,
+          times_seen: 0, times_correct: 0, times_wrong: 0, streak: 0,
+          last_seen: null, next_due: null, difficulty: 1.0
+        });
+      }
+      if (rows.length === 0) throw new Error("No valid word pairs found in the file.");
+      await DB.bulkInsert("word_pairs", rows);
+      return rows.length;
+    }
+
+    async function importSentencesFromCsv(text, deck, setName) {
+      deck = normalizeDeck(deck);
+      setName = normalizeSetName(setName);
+      const { headers, items } = csvToObjects(text);
+      const lower = headers.map(h => h.trim().toLowerCase());
+      if (!lower.includes("english") || !lower.includes("target")) {
+        throw new Error("CSV must have 'english' and 'target' columns.");
+      }
+      const englishKey = headers[lower.indexOf("english")];
+      const targetKey = headers[lower.indexOf("target")];
+
+      const rows = [];
+      for (const it of items) {
+        const english = String(it[englishKey] || "").trim();
+        const target = String(it[targetKey] || "").trim();
+        if (!english || !target) continue;
+        rows.push({
+          deck, set_name: setName, english, target,
+          times_seen: 0, times_correct: 0, times_wrong: 0, streak: 0,
+          last_seen: null, next_due: null, difficulty: 1.0
+        });
+      }
+      if (rows.length === 0) throw new Error("No valid sentence pairs found in the file.");
+      await DB.bulkInsert("sentence_pairs", rows);
+      return rows.length;
+    }
+
+    /* ---------- Selection logic ---------- */
+    function gateBounds(gateIndex, gateSize) {
+      return [gateIndex * gateSize, gateSize];
+    }
+
+    function fetchGateRows(rows, gateIndex, gateSize) {
+      const [start, limit] = gateBounds(gateIndex, gateSize);
+      return rows.slice(start, start + limit);
+    }
+
+    function getRowsForScope(rows, gateEnabled, gateIndex, gateSize) {
+      if (gateEnabled) return fetchGateRows(rows, gateIndex, gateSize);
+      return rows;
+    }
+
+    function computeProgress(rows) {
+      const total = rows.length;
+      if (total === 0) return { total: 0, mastered: 0, new: 0, due: 0, percent: 0, is_complete: false };
+      const now = nowIso();
+      let mastered = 0, n = 0, due = 0;
+      for (const r of rows) {
+        if ((r.streak | 0) >= GATE_MASTERY_STREAK) mastered++;
+        if (r.next_due == null) n++;
+        else if (r.next_due <= now) due++;
+      }
+      return {
+        total, mastered, new: n, due,
+        percent: Math.round((mastered / total) * 100),
+        is_complete: (mastered / total) >= GATE_UNLOCK_RATIO
+      };
+    }
+
+    function selectStudyItems(rows, limit, newRatio, practiceScope) {
+      let pool = rows;
+      if (practiceScope === "wrong") pool = pool.filter(r => (r.times_wrong | 0) > 0);
+
+      const now = nowIso();
+      const due = []; const fresh = []; const future = [];
+      for (const r of pool) {
+        if (r.next_due == null) fresh.push(r);
+        else if (r.next_due <= now) due.push(r);
+        else future.push(r);
+      }
+      due.sort((a, b) => -((a.times_wrong | 0) - (b.times_wrong | 0)) || (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
+      future.sort((a, b) => (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
+      const newItems = shuffleArr(fresh);
+
+      if (practiceScope === "wrong") {
+        let selected = due.slice(0, limit);
+        if (selected.length < limit) {
+          const seen = new Set(selected.map(x => x.id));
+          for (const it of future) {
+            if (!seen.has(it.id)) { selected.push(it); seen.add(it.id); }
+            if (selected.length >= limit) break;
+          }
+        }
+        return selected.slice(0, limit);
+      }
+
+      const dueTarget = Math.floor(limit * (1 - newRatio));
+      const newTarget = limit - dueTarget;
+      let selected = due.slice(0, dueTarget);
+      const remDue = due.slice(dueTarget);
+      selected = selected.concat(newItems.slice(0, newTarget));
+      const remNew = newItems.slice(newTarget);
+
+      if (selected.length < limit) {
+        const seen = new Set(selected.map(x => x.id));
+        for (const it of [...remDue, ...remNew, ...future]) {
+          if (!seen.has(it.id)) { selected.push(it); seen.add(it.id); }
+          if (selected.length >= limit) break;
+        }
+      }
+      return shuffleArr(selected).slice(0, limit);
+    }
+
+    async function recordAnswer(table, itemId, correct, profile) {
+      const row = await DB.getById(table, itemId);
+      if (!row) return null;
+      row.times_seen = (row.times_seen | 0) + 1;
+      if (correct) {
+        row.times_correct = (row.times_correct | 0) + 1;
+        row.streak = (row.streak | 0) + 1;
+        if ((row.times_wrong | 0) > 0) row.times_wrong = (row.times_wrong | 0) - 1;
+        row.next_due = calcNextDue(row.streak, row.difficulty || 1.0, profile);
+      } else {
+        row.times_wrong = (row.times_wrong | 0) + 1;
+        row.streak = 0;
+        row.next_due = calcWrongDue(profile);
+      }
+      row.last_seen = nowIso();
+      await DB.update(table, row);
+      return row;
+    }
+
+    /* ============================================================
+       UI STATE
+       ============================================================ */
+    let currentGame = "words";
+    let currentDeck = "de";
+    let currentSetName = "__all__";
+    let importType = "words";
+
+    let wordMode = "match";
+    let sentenceMode = "choice";
+    let practiceScope = "all";
+    let repetitionProfile = "normal";
+    let newRatio = 0.4;
+    let visibleCount = 4;
+
+    let gateEnabled = true;
+    let gateSize = 50;
+    let currentGateIndex = 0;
+    let totalGates = 0;
+    let strictGate = true;
+
+    let selectedLeft = null;
+    let selectedRight = null;
+    let matchedIds = new Set();
+    let locked = false;
+    let pendingArticlePairId = null;
+
+    let correctCount = 0;
+    let wrongCount = 0;
+
+    let sessionLoadedIds = new Set();
+
+    let wordQueue = [];
+    let currentWordRoundPairs = [];
+    let rightOrder = [];
+    let currentTypingWord = null;
+
+    let sentenceQueue = [];
+    let sentencePool = [];
+    let currentSentence = null;
+    let currentSentenceData = null;
+    let activeBlankIndex = 0;
+
+    let fetchingMore = false;
+
+    /* ---------- DOM refs ---------- */
+    const $ = id => document.getElementById(id);
+
+    const settingsBtnTop = $("settingsBtnTop");
+    const settingsFab = $("settingsFab");
+    const settingsModal = $("settingsModal");
+    const closeSettingsBtn = $("closeSettingsBtn");
+    const modeSummary = $("modeSummary");
+
+    const gameSelect = $("gameSelect");
+    const deckSelect = $("deckSelect");
+    const setSelect = $("setSelect");
+    const newSetNameInput = $("newSetNameInput");
+    const importTypeSelect = $("importTypeSelect");
+
+    const leftColumnTitle = $("leftColumnTitle");
+    const rightColumnTitle = $("rightColumnTitle");
+
+    const fileInput = $("fileInput");
+    const uploadBtn = $("uploadBtn");
+    const urlInput = $("urlInput");
+    const urlImportBtn = $("urlImportBtn");
+    const browseBuiltinBtn = $("browseBuiltinBtn");
+    const builtinModal = $("builtinModal");
+    const builtinList = $("builtinList");
+    const closeBuiltinBtn = $("closeBuiltinBtn");
+
+    const restartBtn = $("restartBtn");
+    const clearBtn = $("clearBtn");
+
+    const modeSelect = $("modeSelect");
+    const sentenceModeSelect = $("sentenceModeSelect");
+    const scopeSelect = $("scopeSelect");
+    const profileSelect = $("profileSelect");
+    const newRatioSelect = $("newRatioSelect");
+    const visibleCountSelect = $("visibleCountSelect");
+
+    const gateEnabledCheckbox = $("gateEnabledCheckbox");
+    const gateSizeSelect = $("gateSizeSelect");
+    const strictGateCheckbox = $("strictGateCheckbox");
+
+    const prevGateBtn = $("prevGateBtn");
+    const nextGateBtn = $("nextGateBtn");
+    const gateSelect = $("gateSelect");
+    const gateLabel = $("gateLabel");
+    const gateProgressText = $("gateProgressText");
+    const gateStatsText = $("gateStatsText");
+    const gateMetaText = $("gateMetaText");
+    const gateProgressFill = $("gateProgressFill");
+    const gatePanel = $("gatePanel");
+
+    const dbInfo = $("dbInfo");
+    const statusEl = $("status");
+    const scoreEl = $("score");
+    const statTotal = $("statTotal");
+    const statNew = $("statNew");
+    const statDue = $("statDue");
+    const statStable = $("statStable");
+    const hardestTitle = $("hardestTitle");
+    const hardestList = $("hardestList");
+    const keyboardHint = $("keyboardHint");
+
+    const wordMatchContainer = $("wordMatchContainer");
+    const wordTypingContainer = $("wordTypingContainer");
+    const sentenceContainer = $("sentenceContainer");
+
+    const leftColumn = $("leftColumn");
+    const rightColumn = $("rightColumn");
+
+    const articleModal = $("articleModal");
+    const articleWordText = $("articleWordText");
+    const articleButtons = document.querySelectorAll(".article-btn");
+
+    const typingPrompt = $("typingPrompt");
+    const typingHelp = $("typingHelp");
+    const typingInput = $("typingInput");
+    const typingSubmitBtn = $("typingSubmitBtn");
+    const typingRevealBtn = $("typingRevealBtn");
+    const typingResult = $("typingResult");
+
+    const sentenceEnglish = $("sentenceEnglish");
+    const sentenceHelp = $("sentenceHelp");
+    const sentenceMeta = $("sentenceMeta");
+    const sentenceTarget = $("sentenceTarget");
+    const sentenceBank = $("sentenceBank");
+    const sentenceCheckBtn = $("sentenceCheckBtn");
+    const sentenceResetBtn = $("sentenceResetBtn");
+    const sentenceRevealBtn = $("sentenceRevealBtn");
+    const sentenceResult = $("sentenceResult");
+
+    const toastEl = $("toast");
+    const installBanner = $("installBanner");
+    const installBtn = $("installBtn");
+
+    /* ---------- Settings persistence ---------- */
+    const SETTINGS_KEY = "languagedeck_settings_v1";
+    function saveSettings() {
+      const s = {
+        currentGame, currentDeck, currentSetName, importType,
+        wordMode, sentenceMode, practiceScope, repetitionProfile,
+        newRatio, visibleCount,
+        gateEnabled, gateSize, currentGateIndex, strictGate
+      };
+      try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch (_) {}
+    }
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem(SETTINGS_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (_) { return null; }
+    }
+
+    /* ---------- UI helpers ---------- */
+    function deckCfg() { return DECK_CONFIG[currentDeck] || DECK_CONFIG.de; }
+    function boolFromSelect(el) { return el.value === "true"; }
+
+    function showToast(msg, ms = 2400) {
+      toastEl.textContent = msg;
+      toastEl.classList.add("visible");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toastEl.classList.remove("visible"), ms);
+    }
+
+    function updateModeSummary() {
+      const gameText = currentGame === "words" ? "Word cards" : "Sentences";
+      const deckText = deckCfg().label;
+      const modeText = currentGame === "words"
+        ? (wordMode === "match" ? "Match" : "Type")
+        : (sentenceMode === "choice" ? "Bank" : "Type");
+      const gateText = gateEnabled ? "Gate on" : "Gate off";
+      const setText = currentSetName === "__all__" ? "All decks" : currentSetName;
+
+      modeSummary.innerHTML = `
+        <span>${gameText}</span><span class="mode-summary-sep">·</span>
+        <span>${deckText}</span><span class="mode-summary-sep">·</span>
+        <span>${escapeHtml(setText)}</span><span class="mode-summary-sep">·</span>
+        <span>${modeText}</span><span class="mode-summary-sep">·</span>
+        <span>${gateText}</span>
+      `;
+    }
+
+    function openSettings() { settingsModal.classList.add("active"); }
+    function closeSettings() { settingsModal.classList.remove("active"); saveSettings(); }
+
+    async function refreshSetOptions() {
+      const sets = await DB.getSets(currentGame === "words" ? "word_pairs" : "sentence_pairs", currentDeck);
+      setSelect.innerHTML = "";
+      const allOpt = document.createElement("option");
+      allOpt.value = "__all__"; allOpt.textContent = "All decks";
+      setSelect.appendChild(allOpt);
+      for (const s of sets) {
+        const o = document.createElement("option");
+        o.value = s.set_name;
+        o.textContent = `${s.set_name} (${s.item_count})`;
+        setSelect.appendChild(o);
+      }
+      const exists = [...setSelect.options].some(opt => opt.value === currentSetName);
+      if (!exists) currentSetName = "__all__";
+      setSelect.value = currentSetName;
+      updateModeSummary();
+    }
+
+    function targetDisplay(pair) {
+      const article = String(pair.article || "").trim();
+      const target = String(pair.target || "").trim();
+      if (deckCfg().useArticles && article) return `${article} ${target}`;
+      return target;
+    }
+    function targetWordOnly(pair) { return String(pair.target || "").trim(); }
+    function articleOf(pair) { return String(pair.article || "").trim().toLowerCase(); }
+    function hasArticle(pair) { return deckCfg().useArticles && articleOf(pair) !== ""; }
+
+    function applyDeckUI() {
+      leftColumnTitle.textContent = deckCfg().leftTitle;
+      rightColumnTitle.textContent = deckCfg().rightTitle;
+      typingHelp.textContent = deckCfg().typingHelp;
+      typingInput.placeholder = deckCfg().typingPlaceholder;
+      if (!deckCfg().useArticles) hideArticleModal();
+      updateModeSummary();
+    }
+
+    function updateGameUI() {
+      const isWords = currentGame === "words";
+      const isWordMatch = isWords && wordMode === "match";
+      const isWordTyping = isWords && wordMode === "typing";
+      wordMatchContainer.classList.toggle("hidden", !isWordMatch);
+      wordTypingContainer.classList.toggle("hidden", !isWordTyping);
+      sentenceContainer.classList.toggle("hidden", isWords);
+      visibleCountSelect.disabled = !isWordMatch;
+      sentenceModeSelect.disabled = isWords;
+      modeSelect.disabled = !isWords;
+      updateGateUI();
+      updateKeyboardHint();
+      updateModeSummary();
+    }
+    function updateGateUI() {
+      gatePanel.style.display = gateEnabled ? "grid" : "none";
+      updateModeSummary();
+    }
+
+    function getSelectionPhase() {
+      if (currentGame === "sentences") return "sentence";
+      if (pendingArticlePairId !== null) return "article";
+      if (wordMode === "typing") return "typing";
+      if (selectedLeft === null) return "left";
+      return "right";
+    }
+
+    function updateKeyboardHint() {
+      const phase = getSelectionPhase();
+      let txt = "";
+      if (phase === "article") txt = "Article picker — keys: 1=der, 2=die, 3=das.";
+      else if (phase === "typing") txt = "Typing mode — Enter to check.";
+      else if (phase === "sentence") txt = sentenceMode === "choice"
+        ? "Sentence — tap a blank, then pick from the bank."
+        : "Sentence — type into the blanks, then Check.";
+      else if (phase === "left") txt = "Match — left column active. Keys 1–9 / 0.";
+      else txt = "Match — right column active. Keys 1–9 / 0. Esc clears.";
+      keyboardHint.textContent = txt;
+    }
+
+    async function refreshDbInfo() {
+      const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
+      const all = await DB.getAll(table, currentDeck, currentSetName);
+      const setText = currentSetName === "__all__" ? "all decks" : currentSetName;
+      const what = currentGame === "words" ? "words" : "sentences";
+      dbInfo.textContent = `${deckCfg().label} · ${setText} · ${what}: ${all.length}`;
+    }
+
+    async function refreshStats() {
+      const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
+      const all = await DB.getAll(table, currentDeck, currentSetName);
+      const now = nowIso();
+      const total = all.length;
+      const newCount = all.filter(r => r.next_due == null).length;
+      const due = all.filter(r => r.next_due != null && r.next_due <= now).length;
+      const stable = all.filter(r => (r.streak | 0) >= 3).length;
+      statTotal.textContent = total;
+      statNew.textContent = newCount;
+      statDue.textContent = due;
+      statStable.textContent = stable;
+
+      const hardest = all.filter(r => (r.times_wrong | 0) > 0)
+        .sort((a, b) => (b.times_wrong - a.times_wrong) || (a.times_correct - b.times_correct) || (a.id - b.id))
+        .slice(0, 5);
+
+      hardestTitle.textContent = currentGame === "words" ? "Most-missed words" : "Most-missed sentences";
+
+      if (hardest.length === 0) { hardestList.textContent = "No data yet."; return; }
+      if (currentGame === "words") {
+        hardestList.innerHTML = hardest.map(item => `
+          <div class="hardest-item">
+            <strong>${escapeHtml(item.english)}</strong> — ${escapeHtml(deckCfg().useArticles && item.article ? item.article + " " + item.target : item.target)}
+            <div class="meta">deck: ${escapeHtml(item.set_name || "default")} · wrong: ${item.times_wrong} · right: ${item.times_correct} · streak: ${item.streak}</div>
+          </div>
+        `).join("");
+      } else {
+        hardestList.innerHTML = hardest.map(item => `
+          <div class="hardest-item">
+            <div><strong>EN:</strong> ${escapeHtml(item.english)}</div>
+            <div><strong>${escapeHtml(deckCfg().targetName)}:</strong> ${escapeHtml(item.target)}</div>
+            <div class="meta">deck: ${escapeHtml(item.set_name || "default")} · wrong: ${item.times_wrong} · right: ${item.times_correct} · streak: ${item.streak}</div>
+          </div>
+        `).join("");
+      }
+    }
+
+    function rebuildGateSelect() {
+      gateSelect.innerHTML = "";
+      if (!gateEnabled) {
+        const o = document.createElement("option"); o.value = "0"; o.textContent = "All items";
+        gateSelect.appendChild(o); gateSelect.disabled = true; return;
+      }
+      if (totalGates === 0) {
+        const o = document.createElement("option"); o.value = "0"; o.textContent = "No gate";
+        gateSelect.appendChild(o); gateSelect.disabled = true; return;
+      }
+      gateSelect.disabled = false;
+      for (let i = 0; i < totalGates; i++) {
+        const o = document.createElement("option");
+        o.value = String(i);
+        o.textContent = `Gate ${i + 1}`;
+        if (i === currentGateIndex) o.selected = true;
+        gateSelect.appendChild(o);
+      }
+    }
+
+    async function refreshGateInfo() {
+      const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
+      const all = await DB.getAll(table, currentDeck, currentSetName);
+      const useGateSize = currentGame === "words" ? gateSize : Math.min(gateSize, 50);
+
+      let total_gates = 0;
+      if (gateEnabled && all.length > 0) total_gates = Math.ceil(all.length / useGateSize);
+      else if (!gateEnabled && all.length > 0) total_gates = 1;
+      totalGates = total_gates;
+      if (totalGates > 0) currentGateIndex = Math.min(currentGateIndex, totalGates - 1);
+      else currentGateIndex = 0;
+
+      const rowsForProgress = gateEnabled ? fetchGateRows(all, currentGateIndex, useGateSize) : all;
+      const progress = computeProgress(rowsForProgress);
+
+      gateLabel.textContent = gateEnabled
+        ? `Gate: ${totalGates === 0 ? 0 : currentGateIndex + 1} / ${totalGates}`
+        : "Source: all items";
+      gateProgressText.textContent = `Progress: ${progress.percent}%`;
+      gateStatsText.textContent = `Mastered: ${progress.mastered} / ${progress.total}`;
+      gateMetaText.textContent = `New: ${progress.new} · Due: ${progress.due} · Unlock at 85% · Streak threshold: 2`;
+      gateProgressFill.style.width = `${progress.percent}%`;
+
+      prevGateBtn.disabled = !gateEnabled || currentGateIndex <= 0;
+      nextGateBtn.disabled = !gateEnabled || totalGates === 0 || currentGateIndex >= totalGates - 1;
+
+      rebuildGateSelect();
+      updateGateUI();
+      saveSettings();
+      return { progress, total_gates, gate_index: currentGateIndex };
+    }
+
+    function canMoveToNextGate(gateInfo) {
+      if (!strictGate) return true;
+      return Boolean(gateInfo?.progress?.is_complete);
+    }
+
+    async function tryMoveGate(delta) {
+      if (!gateEnabled) return;
+      const info = await refreshGateInfo();
+      if (totalGates === 0) return;
+      const target = currentGateIndex + delta;
+      if (target < 0 || target >= totalGates) return;
+      if (delta > 0 && !canMoveToNextGate(info)) {
+        showToast("Next gate is locked. Practice the current gate more first.");
+        return;
+      }
+      currentGateIndex = target;
+      saveSettings();
+      await loadCurrentGame(true);
+    }
+
+    async function tryJumpToGate(target) {
+      if (!gateEnabled) return;
+      const info = await refreshGateInfo();
+      if (totalGates === 0) return;
+      target = Math.max(0, Math.min(target, totalGates - 1));
+      if (target === currentGateIndex) return;
+      if (target > currentGateIndex && !canMoveToNextGate(info)) {
+        showToast("Next gate is locked.");
+        rebuildGateSelect();
+        return;
+      }
+      currentGateIndex = target;
+      saveSettings();
+      await loadCurrentGame(true);
+    }
+
+    /* ---------- Fetching items ---------- */
+    async function fetchWordItems(forceResetIfEmpty = true) {
+      if (fetchingMore) return [];
+      fetchingMore = true;
+      try {
+        const table = "word_pairs";
+        const all = await DB.getAll(table, currentDeck, currentSetName);
+        const useGateSize = gateSize;
+        const batchSize = gateEnabled ? Math.max(useGateSize, visibleCount * 20) : Math.max(100, visibleCount * 20);
+
+        let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
+        let filtered = pool.filter(r => !sessionLoadedIds.has(r.id));
+        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope);
+
+        if (forceResetIfEmpty && data.length === 0 && sessionLoadedIds.size > 0) {
+          sessionLoadedIds = new Set();
+          data = selectStudyItems(pool, batchSize, newRatio, practiceScope);
+        }
+        for (const it of data) sessionLoadedIds.add(it.id);
+        return data;
+      } finally { fetchingMore = false; }
+    }
+
+    async function fetchSentenceItems(forceResetIfEmpty = true) {
+      if (fetchingMore) return [];
+      fetchingMore = true;
+      try {
+        const table = "sentence_pairs";
+        const all = await DB.getAll(table, currentDeck, currentSetName);
+        const useGateSize = Math.min(gateSize, 50);
+        const batchSize = gateEnabled ? Math.max(useGateSize, 30) : 50;
+
+        let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
+        let filtered = pool.filter(r => !sessionLoadedIds.has(r.id));
+        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope);
+
+        if (forceResetIfEmpty && data.length === 0 && sessionLoadedIds.size > 0) {
+          sessionLoadedIds = new Set();
+          data = selectStudyItems(pool, batchSize, newRatio, practiceScope);
+        }
+        for (const it of data) sessionLoadedIds.add(it.id);
+        return data;
+      } finally { fetchingMore = false; }
+    }
+
+    async function loadCurrentGame(reset = true) {
+      if (reset) sessionLoadedIds = new Set();
+      await refreshGateInfo();
+      if (currentGame === "words") await loadWords(reset);
+      else await loadSentences(reset);
+    }
+
+    /* ---------- Word match game ---------- */
+    async function loadWords(reset = true) {
+      if (reset) sessionLoadedIds = new Set();
+      selectedLeft = null; selectedRight = null;
+      matchedIds = new Set();
+      pendingArticlePairId = null; hideArticleModal();
+      wordQueue = []; currentWordRoundPairs = []; rightOrder = [];
+      currentTypingWord = null;
+
+      const fresh = await fetchWordItems(false);
+      wordQueue = shuffleArr([...fresh]);
+
+      if (wordQueue.length === 0) {
+        renderWordEmptyState();
+        statusEl.textContent = practiceScope === "wrong"
+          ? (gateEnabled ? "No wrong words in this gate yet." : "No wrong words in this deck yet.")
+          : (gateEnabled ? "No items available in this gate." : "No items available in this deck.");
+        return;
+      }
+      correctCount = 0; wrongCount = 0; updateScore();
+      if (wordMode === "match") {
+        await loadNextWordRound();
+        renderWordMatch();
+      } else {
+        typingResult.textContent = "";
+        typingInput.value = "";
+        await loadNextTypingWord();
+      }
+    }
+
+    function renderWordEmptyState() {
+      leftColumn.innerHTML = ""; rightColumn.innerHTML = "";
+      typingPrompt.textContent = "—";
+      typingResult.textContent = "";
+      typingInput.value = "";
+    }
+
+    async function ensureWordQueue(min) {
+      if (wordQueue.length >= min) return;
+      const fresh = await fetchWordItems(true);
+      if (fresh.length > 0) wordQueue.push(...fresh);
+    }
+
+    async function loadNextWordRound() {
+      matchedIds = new Set();
+      selectedLeft = null; selectedRight = null;
+      pendingArticlePairId = null; hideArticleModal();
+      currentWordRoundPairs = [];
+
+      await ensureWordQueue(visibleCount);
+
+      const usedIds = new Set();
+      while (currentWordRoundPairs.length < visibleCount && wordQueue.length > 0) {
+        const pair = wordQueue.shift();
+        if (!usedIds.has(pair.id)) {
+          currentWordRoundPairs.push(pair);
+          usedIds.add(pair.id);
+        }
+      }
+
+      rightOrder = derangeOrBest(currentWordRoundPairs.map(p => p.id));
+      statusEl.textContent = currentWordRoundPairs.length > 0
+        ? "Pick one item from each column."
+        : (gateEnabled ? "Done. No more items in this gate." : "Done. No more items in this deck.");
+      updateKeyboardHint();
+    }
+
+    function getCurrentWordPairById(id) { return currentWordRoundPairs.find(p => p.id === id); }
+
+    function renderWordMatch() {
+      leftColumn.innerHTML = "";
+      rightColumn.innerHTML = "";
+      currentWordRoundPairs.forEach((pair, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.dataset.id = pair.id;
+        const badge = document.createElement("span");
+        badge.className = "shortcut-badge";
+        badge.textContent = (index === 9 ? "0" : String(index + 1));
+        card.appendChild(badge);
+        if (selectedLeft === pair.id) card.classList.add("selected");
+        if (matchedIds.has(pair.id)) card.classList.add("correct");
+        if (pendingArticlePairId === pair.id) card.classList.add("word-correct");
+        if (locked) card.classList.add("disabled");
+        card.appendChild(document.createTextNode(pair.english));
+        card.addEventListener("click", () => {
+          if (locked || matchedIds.has(pair.id) || pendingArticlePairId !== null) return;
+          selectedLeft = selectedLeft === pair.id ? null : pair.id;
+          renderWordMatch(); checkWordMatch(); updateKeyboardHint();
+        });
+        leftColumn.appendChild(card);
+      });
+
+      rightOrder.forEach((id, index) => {
+        const pair = getCurrentWordPairById(id);
+        if (!pair) return;
+        const card = document.createElement("div");
+        card.className = "card";
+        card.dataset.id = pair.id;
+        const badge = document.createElement("span");
+        badge.className = "shortcut-badge";
+        badge.textContent = (index === 9 ? "0" : String(index + 1));
+        card.appendChild(badge);
+        if (selectedRight === pair.id) card.classList.add("selected");
+        if (matchedIds.has(pair.id)) card.classList.add("correct");
+        if (pendingArticlePairId === pair.id) card.classList.add("word-correct");
+        if (locked) card.classList.add("disabled");
+        card.appendChild(document.createTextNode(targetWordOnly(pair)));
+        card.addEventListener("click", () => {
+          if (locked || matchedIds.has(pair.id) || pendingArticlePairId !== null) return;
+          selectedRight = selectedRight === pair.id ? null : pair.id;
+          renderWordMatch(); checkWordMatch(); updateKeyboardHint();
+        });
+        rightColumn.appendChild(card);
+      });
+    }
+
+    function markWordWrongTemporarily() {
+      const left = leftColumn.querySelectorAll(".card");
+      const right = rightColumn.querySelectorAll(".card");
+      left.forEach(c => { if (Number(c.dataset.id) === selectedLeft) { c.classList.remove("selected"); c.classList.add("wrong"); } });
+      right.forEach(c => { if (Number(c.dataset.id) === selectedRight) { c.classList.remove("selected"); c.classList.add("wrong"); } });
+    }
+
+    function allCurrentRoundMatched() {
+      return currentWordRoundPairs.length > 0 && currentWordRoundPairs.every(p => matchedIds.has(p.id));
+    }
+
+    function updateScore() {
+      scoreEl.innerHTML = `<b>Correct:</b> ${correctCount} &nbsp;·&nbsp; <b>Wrong:</b> ${wrongCount}`;
+    }
+
+    async function saveWordAnswer(wordId, isCorrect) {
+      await recordAnswer("word_pairs", wordId, isCorrect, repetitionProfile);
+    }
+
+    async function finalizeCorrectWordPair(pairId) {
+      matchedIds.add(pairId);
+      correctCount++; updateScore();
+      await saveWordAnswer(pairId, true);
+      setTimeout(async () => {
+        locked = false; renderWordMatch();
+        if (allCurrentRoundMatched()) {
+          statusEl.textContent = "Round complete — next coming up.";
+          setTimeout(async () => {
+            await loadNextWordRound(); renderWordMatch();
+            await refreshStats(); await refreshGateInfo();
+          }, 450);
+        } else { await refreshStats(); await refreshGateInfo(); }
+      }, 250);
+    }
+
+    async function checkWordMatch() {
+      if (selectedLeft === null || selectedRight === null) return;
+      locked = true;
+      if (selectedLeft === selectedRight) {
+        const id = selectedLeft;
+        const pair = getCurrentWordPairById(id);
+        selectedLeft = null; selectedRight = null;
+        if (pair && hasArticle(pair)) {
+          statusEl.textContent = "Word matched. Now pick the correct article.";
+          locked = false;
+          showArticleModal(id);
+          renderWordMatch();
+        } else {
+          statusEl.textContent = "Correct match.";
+          await finalizeCorrectWordPair(id);
+        }
+      } else {
+        wrongCount++; updateScore();
+        statusEl.textContent = "Wrong match.";
+        const wrongId = selectedLeft;
+        markWordWrongTemporarily();
+        await saveWordAnswer(wrongId, false);
+        setTimeout(async () => {
+          selectedLeft = null; selectedRight = null;
+          locked = false; renderWordMatch();
+          await refreshStats(); await refreshGateInfo();
+        }, 700);
+      }
+    }
+
+    function showArticleModal(pairId) {
+      if (!deckCfg().useArticles) return;
+      pendingArticlePairId = pairId;
+      const pair = getCurrentWordPairById(pairId);
+      if (!pair) return;
+      articleWordText.textContent = targetWordOnly(pair);
+      articleModal.classList.add("active");
+      updateKeyboardHint();
+    }
+    function hideArticleModal() {
+      pendingArticlePairId = null;
+      articleModal.classList.remove("active");
+      updateKeyboardHint();
+    }
+
+    async function handleArticleChoice(chosen) {
+      if (pendingArticlePairId === null || locked) return;
+      locked = true;
+      const pair = getCurrentWordPairById(pendingArticlePairId);
+      if (!pair) { locked = false; hideArticleModal(); return; }
+      const expected = articleOf(pair);
+      const choice = normTxt(chosen);
+      if (choice === expected) {
+        statusEl.textContent = "Correct word and correct article.";
+        hideArticleModal();
+        await finalizeCorrectWordPair(pair.id);
+      } else {
+        wrongCount++; updateScore();
+        statusEl.textContent = `Wrong article. Correct: ${expected}`;
+        await saveWordAnswer(pair.id, false);
+        hideArticleModal();
+        setTimeout(async () => { locked = false; renderWordMatch(); await refreshStats(); await refreshGateInfo(); }, 800);
+      }
+    }
+
+    /* ---------- Word typing ---------- */
+    async function loadNextTypingWord() {
+      await ensureWordQueue(1);
+      if (wordQueue.length === 0) {
+        currentTypingWord = null;
+        typingPrompt.textContent = "Done";
+        typingHelp.textContent = gateEnabled ? "No more words in this gate." : "No more words in this deck.";
+        typingResult.textContent = "";
+        return;
+      }
+      currentTypingWord = wordQueue.shift();
+      typingPrompt.textContent = currentTypingWord.english;
+      typingHelp.textContent = deckCfg().typingHelp;
+      typingInput.placeholder = deckCfg().typingPlaceholder;
+      typingInput.value = "";
+      typingResult.textContent = "";
+      typingInput.focus();
+      statusEl.textContent = `Type the correct ${deckCfg().targetName} equivalent.`;
+    }
+
+    function isTypingAnswerCorrect(pair, ans) {
+      return normTxt(ans) === normTxt(targetDisplay(pair));
+    }
+
+    async function submitTypingWordAnswer(showSolutionOnly = false) {
+      if (!currentTypingWord || locked) return;
+      locked = true;
+
+      if (showSolutionOnly) {
+        wrongCount++; updateScore();
+        typingResult.textContent = `Solution: ${targetDisplay(currentTypingWord)}`;
+        statusEl.textContent = "Marked as wrong.";
+        await saveWordAnswer(currentTypingWord.id, false);
+        wordQueue.push(currentTypingWord);
+        setTimeout(async () => { locked = false; await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 1000);
+        return;
+      }
+
+      const correct = isTypingAnswerCorrect(currentTypingWord, typingInput.value);
+      if (correct) {
+        correctCount++; updateScore();
+        typingResult.textContent = "Correct.";
+        statusEl.textContent = "Correct answer.";
+        await saveWordAnswer(currentTypingWord.id, true);
+        setTimeout(async () => { locked = false; await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 450);
+      } else {
+        wrongCount++; updateScore();
+        typingResult.textContent = `Wrong. Correct: ${targetDisplay(currentTypingWord)}`;
+        statusEl.textContent = "Wrong answer.";
+        await saveWordAnswer(currentTypingWord.id, false);
+        wordQueue.push(currentTypingWord);
+        setTimeout(async () => { locked = false; await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 1000);
+      }
+    }
+
+    /* ---------- Sentences ---------- */
+    async function loadSentences(reset = true) {
+      if (reset) sessionLoadedIds = new Set();
+      sentenceQueue = []; sentencePool = [];
+      currentSentence = null; currentSentenceData = null; activeBlankIndex = 0;
+      sentenceResult.textContent = ""; sentenceEnglish.textContent = "—";
+      sentenceTarget.innerHTML = ""; sentenceBank.innerHTML = "";
+
+      const fresh = await fetchSentenceItems(false);
+      sentenceQueue = shuffleArr([...fresh]);
+      sentencePool = [...fresh];
+      correctCount = 0; wrongCount = 0; updateScore();
+
+      if (sentenceQueue.length === 0) {
+        statusEl.textContent = practiceScope === "wrong"
+          ? (gateEnabled ? "No wrong sentences in this gate." : "No wrong sentences in this deck.")
+          : (gateEnabled ? "No sentences in this gate yet." : "No sentences in this deck yet.");
+        sentenceHelp.textContent = "Import sentences to start.";
+        sentenceMeta.textContent = "";
+        return;
+      }
+      await loadNextSentence();
+    }
+
+    async function ensureSentenceQueue(min) {
+      if (sentenceQueue.length >= min) return;
+      const fresh = await fetchSentenceItems(true);
+      if (fresh.length > 0) { sentenceQueue.push(...fresh); sentencePool.push(...fresh); }
+    }
+
+    function tokenizeSentence(text) {
+      const tokens = [];
+      const regex = /(\s+|[^\s]+)/gu;
+      const parts = text.match(regex) || [];
+      for (const part of parts) {
+        tokens.push({
+          raw: part,
+          isSpace: /^\s+$/u.test(part),
+          isWord: /^[\p{L}\p{M}][\p{L}\p{M}'’-]*$/u.test(part)
+        });
+      }
+      return tokens;
+    }
+
+    function pickBlankIndices(tokens, streak) {
+      const candidates = [];
+      tokens.forEach((t, idx) => {
+        if (t.isWord) {
+          const clean = t.raw.replace(/[^\p{L}\p{M}'’-]/gu, "");
+          if (clean.length >= 3) candidates.push(idx);
+        }
+      });
+      const shuffled = shuffleArr(candidates);
+      const desired = Math.max(1, Math.min(4, 1 + Math.floor((streak || 0) / 2)));
+      return shuffled.slice(0, Math.min(desired, shuffled.length)).sort((a, b) => a - b);
+    }
+
+    function buildWordBank(correctWords) {
+      const pool = [];
+      for (const row of sentencePool) {
+        const tokens = tokenizeSentence(row.target);
+        for (const t of tokens) if (t.isWord) pool.push(t.raw);
+      }
+      const uniquePool = [...new Set(pool.map(w => normTxt(w)))];
+      const correctNorm = correctWords.map(w => normTxt(w));
+      const distractors = uniquePool.filter(w => !correctNorm.includes(w) && w.length >= 3);
+      const chosen = shuffleArr(distractors).slice(0, Math.max(correctWords.length * 2, 4));
+      const bank = [...correctWords, ...chosen];
+      return shuffleArr([...new Set(bank.map(w => normTxt(w)))]);
+    }
+
+    function prepareSentenceData(s) {
+      const tokens = tokenizeSentence(s.target);
+      const blankIndices = pickBlankIndices(tokens, s.streak || 0);
+      const blankAnswers = blankIndices.map(i => tokens[i].raw);
+      return {
+        tokens, blankIndices, blankAnswers,
+        choiceAnswers: new Array(blankIndices.length).fill(""),
+        typingAnswers: new Array(blankIndices.length).fill(""),
+        bankWords: buildWordBank(blankAnswers)
+      };
+    }
+
+    function renderSentence() {
+      if (!currentSentence || !currentSentenceData) return;
+      sentenceEnglish.textContent = currentSentence.english;
+      sentenceHelp.textContent = sentenceMode === "choice"
+        ? `Fill in the missing ${deckCfg().targetName} words from the bank.`
+        : `Type the missing ${deckCfg().targetName} words.`;
+      sentenceMeta.textContent = `Blanks: ${currentSentenceData.blankIndices.length} · Streak: ${currentSentence.streak || 0}`;
+      sentenceResult.textContent = "";
+
+      const blankMap = new Map();
+      currentSentenceData.blankIndices.forEach((tokenIdx, blankIdx) => blankMap.set(tokenIdx, blankIdx));
+      sentenceTarget.innerHTML = "";
+
+      currentSentenceData.tokens.forEach((token, idx) => {
+        if (token.isSpace) {
+          const span = document.createElement("span");
+          span.className = "sentence-token"; span.textContent = token.raw;
+          sentenceTarget.appendChild(span); return;
+        }
+        if (blankMap.has(idx)) {
+          const blankIdx = blankMap.get(idx);
+          if (sentenceMode === "choice") {
+            const btn = document.createElement("button");
+            btn.className = "blank-chip";
+            if (activeBlankIndex === blankIdx) btn.classList.add("active");
+            const v = currentSentenceData.choiceAnswers[blankIdx];
+            btn.textContent = v || "_____";
+            btn.addEventListener("click", () => { activeBlankIndex = blankIdx; renderSentence(); });
+            sentenceTarget.appendChild(btn);
+          } else {
+            const inp = document.createElement("input");
+            inp.className = "blank-input";
+            inp.value = currentSentenceData.typingAnswers[blankIdx] || "";
+            inp.dataset.blankIndex = blankIdx;
+            inp.addEventListener("input", e => { currentSentenceData.typingAnswers[blankIdx] = e.target.value; });
+            sentenceTarget.appendChild(inp);
+          }
+        } else {
+          const span = document.createElement("span");
+          span.className = "sentence-token"; span.textContent = token.raw;
+          sentenceTarget.appendChild(span);
+        }
+      });
+
+      sentenceBank.innerHTML = "";
+      if (sentenceMode === "choice") {
+        currentSentenceData.bankWords.forEach(word => {
+          const btn = document.createElement("button");
+          btn.className = "bank-word";
+          const used = currentSentenceData.choiceAnswers.filter(a => normTxt(a) === normTxt(word)).length;
+          const need = currentSentenceData.blankAnswers.filter(a => normTxt(a) === normTxt(word)).length;
+          if (used >= Math.max(1, need)) btn.classList.add("used");
+          btn.textContent = word;
+          btn.addEventListener("click", () => {
+            currentSentenceData.choiceAnswers[activeBlankIndex] = word;
+            const next = currentSentenceData.choiceAnswers.findIndex(a => !a);
+            if (next >= 0) activeBlankIndex = next;
+            renderSentence();
+          });
+          sentenceBank.appendChild(btn);
+        });
+      }
+    }
+
+    async function loadNextSentence() {
+      await ensureSentenceQueue(1);
+      if (sentenceQueue.length === 0) {
+        currentSentence = null; currentSentenceData = null;
+        sentenceEnglish.textContent = "Done";
+        sentenceHelp.textContent = gateEnabled ? "No more sentences in this gate." : "No more sentences in this deck.";
+        sentenceMeta.textContent = ""; sentenceTarget.innerHTML = ""; sentenceBank.innerHTML = "";
+        sentenceResult.textContent = "";
+        return;
+      }
+      currentSentence = sentenceQueue.shift();
+      currentSentenceData = prepareSentenceData(currentSentence);
+      activeBlankIndex = 0;
+      renderSentence();
+      statusEl.textContent = "Fill in the missing words.";
+    }
+
+    function isCurrentSentenceCorrect() {
+      if (!currentSentenceData) return false;
+      if (sentenceMode === "choice") {
+        return currentSentenceData.blankAnswers.every((a, i) =>
+          normTxt(a) === normTxt(currentSentenceData.choiceAnswers[i] || ""));
+      }
+      return currentSentenceData.blankAnswers.every((a, i) =>
+        normTxt(a) === normTxt(currentSentenceData.typingAnswers[i] || ""));
+    }
+
+    async function saveSentenceAnswer(id, isCorrect) {
+      await recordAnswer("sentence_pairs", id, isCorrect, repetitionProfile);
+    }
+
+    async function submitSentenceAnswer(showSolutionOnly = false) {
+      if (!currentSentence || !currentSentenceData || locked) return;
+      locked = true;
+      if (showSolutionOnly) {
+        wrongCount++; updateScore();
+        sentenceResult.textContent = `Solution: ${currentSentence.target}`;
+        statusEl.textContent = "Marked as wrong.";
+        await saveSentenceAnswer(currentSentence.id, false);
+        sentenceQueue.push(currentSentence);
+        setTimeout(async () => { locked = false; await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 1200);
+        return;
+      }
+      const correct = isCurrentSentenceCorrect();
+      if (correct) {
+        correctCount++; updateScore();
+        sentenceResult.textContent = "Correct.";
+        statusEl.textContent = "Sentence completed correctly.";
+        await saveSentenceAnswer(currentSentence.id, true);
+        setTimeout(async () => { locked = false; await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 650);
+      } else {
+        wrongCount++; updateScore();
+        sentenceResult.textContent = `Wrong. Correct: ${currentSentence.target}`;
+        statusEl.textContent = "Sentence not correct.";
+        await saveSentenceAnswer(currentSentence.id, false);
+        sentenceQueue.push(currentSentence);
+        setTimeout(async () => { locked = false; await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 1400);
+      }
+    }
+
+    function resetSentenceInputs() {
+      if (!currentSentenceData) return;
+      currentSentenceData.choiceAnswers = new Array(currentSentenceData.blankIndices.length).fill("");
+      currentSentenceData.typingAnswers = new Array(currentSentenceData.blankIndices.length).fill("");
+      activeBlankIndex = 0;
+      renderSentence();
+    }
+
+    /* ---------- Keyboard ---------- */
+    function keyToIndex(key) {
+      if (key >= "1" && key <= "9") return parseInt(key, 10) - 1;
+      if (key === "0") return 9;
+      return null;
+    }
+    function clearSelections() {
+      if (pendingArticlePairId !== null) return;
+      selectedLeft = null; selectedRight = null;
+      renderWordMatch(); updateKeyboardHint();
+    }
+    function selectLeftByIndex(i) {
+      if (i === null || i >= currentWordRoundPairs.length) return;
+      const pair = currentWordRoundPairs[i];
+      if (!pair || matchedIds.has(pair.id) || locked || pendingArticlePairId !== null) return;
+      selectedLeft = selectedLeft === pair.id ? null : pair.id;
+      renderWordMatch(); checkWordMatch(); updateKeyboardHint();
+    }
+    function selectRightByIndex(i) {
+      if (i === null || i >= rightOrder.length) return;
+      const pair = getCurrentWordPairById(rightOrder[i]);
+      if (!pair || matchedIds.has(pair.id) || locked || pendingArticlePairId !== null) return;
+      selectedRight = selectedRight === pair.id ? null : pair.id;
+      renderWordMatch(); checkWordMatch(); updateKeyboardHint();
+    }
+    function handleChoiceSentenceKeyboard(i) {
+      if (!currentSentenceData || sentenceMode !== "choice") return;
+      if (i >= currentSentenceData.bankWords.length) return;
+      const chosen = currentSentenceData.bankWords[i];
+      currentSentenceData.choiceAnswers[activeBlankIndex] = chosen;
+      const next = currentSentenceData.choiceAnswers.findIndex(a => !a);
+      if (next >= 0) activeBlankIndex = next;
+      renderSentence();
+    }
+
+    document.addEventListener("keydown", async (event) => {
+      if (event.key === "Escape") {
+        if (settingsModal.classList.contains("active")) { closeSettings(); return; }
+        if (builtinModal.classList.contains("active")) { builtinModal.classList.remove("active"); return; }
+      }
+      if (event.target === typingInput) return;
+      if (event.target === urlInput || event.target === newSetNameInput) return;
+      if (currentGame === "sentences" && event.target.classList && event.target.classList.contains("blank-input")) return;
+
+      if (currentGame === "words") {
+        if (pendingArticlePairId !== null) {
+          if (event.key === "1") { event.preventDefault(); await handleArticleChoice("der"); }
+          else if (event.key === "2") { event.preventDefault(); await handleArticleChoice("die"); }
+          else if (event.key === "3") { event.preventDefault(); await handleArticleChoice("das"); }
+          return;
+        }
+        if (wordMode !== "match") return;
+        if (event.key === "Escape") { event.preventDefault(); clearSelections(); return; }
+        const i = keyToIndex(event.key);
+        if (i === null) return;
+        event.preventDefault();
+        if (selectedLeft === null) selectLeftByIndex(i); else selectRightByIndex(i);
+        return;
+      }
+      if (currentGame === "sentences" && sentenceMode === "choice") {
+        const i = keyToIndex(event.key);
+        if (i !== null) { event.preventDefault(); handleChoiceSentenceKeyboard(i); }
+      }
+    });
+
+    /* ---------- Built-in deck list ---------- */
+    async function loadBuiltinList() {
+      builtinList.innerHTML = "Loading…";
+      try {
+        const res = await fetch("decks/index.json", { cache: "no-cache" });
+        if (!res.ok) throw new Error("not found");
+        const data = await res.json();
+        const decks = Array.isArray(data) ? data : (data.decks || []);
+        if (decks.length === 0) { builtinList.innerHTML = "<em>No built-in decks listed in decks/index.json</em>"; return; }
+        builtinList.innerHTML = "";
+        decks.forEach(d => {
+          const wrap = document.createElement("div");
+          wrap.style.cssText = "display:flex;flex-direction:column;gap:4px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);";
+          const title = document.createElement("div");
+          title.innerHTML = `<strong>${escapeHtml(d.name || d.file)}</strong>`;
+          const meta = document.createElement("div");
+          meta.style.cssText = "font-size:12px;color:var(--text-faint);";
+          meta.textContent = `${d.type || "words"} · ${d.deck || "de"} · ${d.file}`;
+          const btn = document.createElement("button");
+          btn.textContent = "Import";
+          btn.style.marginTop = "6px";
+          btn.addEventListener("click", async () => {
+            try {
+              const url = `decks/${d.file}`;
+              const r = await fetch(url, { cache: "no-cache" });
+              if (!r.ok) throw new Error(`Could not download ${d.file}`);
+              const text = await r.text();
+              const setName = (d.name || d.file.replace(/\.csv$/i, ""));
+              if ((d.type || "words") === "sentences") {
+                const n = await importSentencesFromCsv(text, d.deck || currentDeck, setName);
+                showToast(`Imported ${n} sentences into "${setName}".`);
+                importType = "sentences"; importTypeSelect.value = "sentences";
+              } else {
+                const n = await importWordsFromCsv(text, d.deck || currentDeck, setName);
+                showToast(`Imported ${n} words into "${setName}".`);
+                importType = "words"; importTypeSelect.value = "words";
+              }
+              currentSetName = setName; currentGateIndex = 0;
+              await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
+              await loadCurrentGame(true);
+              builtinModal.classList.remove("active");
+              closeSettings();
+            } catch (err) { showToast("Error: " + err.message); }
+          });
+          wrap.appendChild(title); wrap.appendChild(meta); wrap.appendChild(btn);
+          builtinList.appendChild(wrap);
+        });
+      } catch (err) {
+        builtinList.innerHTML = `
+          <em>No <code>decks/index.json</code> found yet.</em>
+          <p style="font-size:13px;color:var(--text-faint);margin-top:6px;">
+            Create a <code>decks/</code> folder next to this app, drop your CSV files in,
+            and add an <code>index.json</code> like this:
+          </p>
+          <pre style="background:var(--surface-2);padding:10px;border-radius:8px;font-size:12px;overflow:auto;border:1px solid var(--border);">[
+  { "name": "german_3000", "file": "german_3000.csv", "deck": "de", "type": "words" },
+  { "name": "italian_3000", "file": "italian_3000.csv", "deck": "it", "type": "words" }
+]</pre>`;
+      }
+    }
+
+    /* ---------- Event handlers ---------- */
+    settingsBtnTop.addEventListener("click", openSettings);
+    settingsFab.addEventListener("click", openSettings);
+    closeSettingsBtn.addEventListener("click", closeSettings);
+    settingsModal.addEventListener("click", e => { if (e.target === settingsModal) closeSettings(); });
+
+    closeBuiltinBtn.addEventListener("click", () => builtinModal.classList.remove("active"));
+    builtinModal.addEventListener("click", e => { if (e.target === builtinModal) builtinModal.classList.remove("active"); });
+    browseBuiltinBtn.addEventListener("click", () => { builtinModal.classList.add("active"); loadBuiltinList(); });
+
+    uploadBtn.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+      if (!file) { showToast("Pick a CSV file first."); return; }
+      const setName = (newSetNameInput.value || "").trim() || "default";
+      try {
+        const text = await file.text();
+        const n = importType === "words"
+          ? await importWordsFromCsv(text, currentDeck, setName)
+          : await importSentencesFromCsv(text, currentDeck, setName);
+        showToast(`Imported ${n} ${importType === "words" ? "words" : "sentences"} into "${setName}".`);
+        fileInput.value = "";
+        currentSetName = setName; currentGateIndex = 0;
+        await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
+        await loadCurrentGame(true);
+        closeSettings();
+      } catch (err) { showToast("Error: " + err.message); }
+    });
+
+    urlImportBtn.addEventListener("click", async () => {
+      const url = (urlInput.value || "").trim();
+      if (!url) { showToast("Paste a CSV URL first."); return; }
+      const setName = (newSetNameInput.value || "").trim() || "default";
+      try {
+        const r = await fetch(url, { cache: "no-cache" });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const text = await r.text();
+        const n = importType === "words"
+          ? await importWordsFromCsv(text, currentDeck, setName)
+          : await importSentencesFromCsv(text, currentDeck, setName);
+        showToast(`Imported ${n} ${importType === "words" ? "words" : "sentences"} into "${setName}".`);
+        urlInput.value = "";
+        currentSetName = setName; currentGateIndex = 0;
+        await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
+        await loadCurrentGame(true);
+        closeSettings();
+      } catch (err) { showToast("Error: " + err.message); }
+    });
+
+    restartBtn.addEventListener("click", async () => { await loadCurrentGame(true); closeSettings(); });
+
+    clearBtn.addEventListener("click", async () => {
+      const tt = importType;
+      const ok = confirm(`Really clear ${currentSetName === "__all__" ? "ALL " + currentDeck.toUpperCase() : "deck \"" + currentSetName + "\""} ${tt === "words" ? "words" : "sentences"}? This cannot be undone.`);
+      if (!ok) return;
+      const table = tt === "words" ? "word_pairs" : "sentence_pairs";
+      const n = await DB.clear(table, currentDeck, currentSetName);
+      showToast(`Cleared ${n} items.`);
+      sessionLoadedIds = new Set();
+      wordQueue = []; sentenceQueue = []; sentencePool = [];
+      currentGateIndex = 0; totalGates = 0;
+      await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
+      await refreshGateInfo(); await loadCurrentGame(true);
+      closeSettings();
+    });
+
+    gameSelect.addEventListener("change", async () => {
+      currentGame = gameSelect.value; currentGateIndex = 0; sessionLoadedIds = new Set();
+      saveSettings();
+      await refreshSetOptions(); updateGameUI();
+      await refreshDbInfo(); await refreshStats(); await refreshGateInfo();
+      await loadCurrentGame(true);
+    });
+
+    deckSelect.addEventListener("change", async () => {
+      currentDeck = deckSelect.value; currentGateIndex = 0; sessionLoadedIds = new Set();
+      saveSettings();
+      await refreshSetOptions(); applyDeckUI(); updateGameUI();
+      await refreshDbInfo(); await refreshStats(); await refreshGateInfo();
+      await loadCurrentGame(true);
+    });
+
+    setSelect.addEventListener("change", async () => {
+      currentSetName = setSelect.value; currentGateIndex = 0; sessionLoadedIds = new Set();
+      saveSettings();
+      updateModeSummary();
+      await refreshDbInfo(); await refreshStats(); await refreshGateInfo();
+      await loadCurrentGame(true);
+    });
+
+    importTypeSelect.addEventListener("change", () => {
+      importType = importTypeSelect.value; saveSettings(); updateModeSummary();
+    });
+
+    modeSelect.addEventListener("change", async () => {
+      wordMode = modeSelect.value; saveSettings(); updateGameUI();
+      if (currentGame === "words") await loadCurrentGame(true);
+    });
+    sentenceModeSelect.addEventListener("change", async () => {
+      sentenceMode = sentenceModeSelect.value; saveSettings(); updateGameUI();
+      if (currentGame === "sentences") await loadCurrentGame(true);
+    });
+    scopeSelect.addEventListener("change", async () => {
+      practiceScope = scopeSelect.value; saveSettings(); await loadCurrentGame(true);
+    });
+    profileSelect.addEventListener("change", async () => {
+      repetitionProfile = profileSelect.value; saveSettings(); await loadCurrentGame(true);
+    });
+    newRatioSelect.addEventListener("change", async () => {
+      newRatio = parseFloat(newRatioSelect.value); saveSettings(); await loadCurrentGame(true);
+    });
+    visibleCountSelect.addEventListener("change", async () => {
+      visibleCount = parseInt(visibleCountSelect.value, 10); saveSettings();
+      if (currentGame === "words" && wordMode === "match") await loadCurrentGame(true);
+    });
+    gateEnabledCheckbox.addEventListener("change", async () => {
+      gateEnabled = boolFromSelect(gateEnabledCheckbox);
+      currentGateIndex = 0; sessionLoadedIds = new Set();
+      saveSettings(); updateGateUI(); await loadCurrentGame(true);
+    });
+    gateSizeSelect.addEventListener("change", async () => {
+      gateSize = parseInt(gateSizeSelect.value, 10); currentGateIndex = 0;
+      saveSettings(); await loadCurrentGame(true);
+    });
+    strictGateCheckbox.addEventListener("change", async () => {
+      strictGate = boolFromSelect(strictGateCheckbox); saveSettings();
+      updateModeSummary(); await refreshGateInfo();
+    });
+
+    prevGateBtn.addEventListener("click", () => tryMoveGate(-1));
+    nextGateBtn.addEventListener("click", () => tryMoveGate(1));
+    gateSelect.addEventListener("change", async () => {
+      const t = parseInt(gateSelect.value, 10);
+      if (!Number.isNaN(t)) await tryJumpToGate(t);
+    });
+
+    articleButtons.forEach(b => {
+      b.addEventListener("click", async () => { await handleArticleChoice(b.dataset.article || ""); });
+    });
+
+    typingSubmitBtn.addEventListener("click", () => submitTypingWordAnswer(false));
+    typingRevealBtn.addEventListener("click", () => submitTypingWordAnswer(true));
+    typingInput.addEventListener("keydown", async e => {
+      if (e.key === "Enter") { e.preventDefault(); await submitTypingWordAnswer(false); }
+    });
+
+    sentenceCheckBtn.addEventListener("click", () => submitSentenceAnswer(false));
+    sentenceResetBtn.addEventListener("click", resetSentenceInputs);
+    sentenceRevealBtn.addEventListener("click", () => submitSentenceAnswer(true));
+
+    /* ---------- PWA install ---------- */
+    let deferredPrompt = null;
+    window.addEventListener("beforeinstallprompt", e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBanner.classList.add("visible");
+    });
+    installBtn.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      installBanner.classList.remove("visible");
+      deferredPrompt.prompt();
+      try { await deferredPrompt.userChoice; } catch (_) {}
+      deferredPrompt = null;
+    });
+    window.addEventListener("appinstalled", () => { installBanner.classList.remove("visible"); });
+
+    /* ---------- Service worker ---------- */
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(err => {
+          console.log("SW registration skipped:", err.message);
+        });
+      });
+    }
+
+    /* ---------- Init ---------- */
+    function applySettingsToUI() {
+      gameSelect.value = currentGame;
+      deckSelect.value = currentDeck;
+      // setSelect value applied later in refreshSetOptions
+      modeSelect.value = wordMode;
+      sentenceModeSelect.value = sentenceMode;
+      scopeSelect.value = practiceScope;
+      profileSelect.value = repetitionProfile;
+      newRatioSelect.value = String(newRatio);
+      visibleCountSelect.value = String(visibleCount);
+      gateEnabledCheckbox.value = gateEnabled ? "true" : "false";
+      gateSizeSelect.value = String(gateSize);
+      strictGateCheckbox.value = strictGate ? "true" : "false";
+      importTypeSelect.value = importType;
+    }
+
+    async function init() {
+      const saved = loadSettings();
+      if (saved) {
+        currentGame = saved.currentGame ?? currentGame;
+        currentDeck = saved.currentDeck ?? currentDeck;
+        currentSetName = saved.currentSetName ?? currentSetName;
+        importType = saved.importType ?? importType;
+        wordMode = saved.wordMode ?? wordMode;
+        sentenceMode = saved.sentenceMode ?? sentenceMode;
+        practiceScope = saved.practiceScope ?? practiceScope;
+        repetitionProfile = saved.repetitionProfile ?? repetitionProfile;
+        newRatio = saved.newRatio ?? newRatio;
+        visibleCount = saved.visibleCount ?? visibleCount;
+        gateEnabled = saved.gateEnabled ?? gateEnabled;
+        gateSize = saved.gateSize ?? gateSize;
+        currentGateIndex = saved.currentGateIndex ?? 0;
+        strictGate = saved.strictGate ?? strictGate;
+      }
+
+      applySettingsToUI();
+
+      try {
+        await DB.open();
+      } catch (err) {
+        statusEl.textContent = "Database error: " + err.message;
+        return;
+      }
+
+      await refreshSetOptions();
+      applyDeckUI();
+      updateGameUI();
+      updateScore();
+      updateModeSummary();
+      await refreshDbInfo();
+      await refreshStats();
+      await refreshGateInfo();
+      await loadCurrentGame(true);
+      updateKeyboardHint();
+
+      // First run: prompt to import
+      const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
+      const all = await DB.getAll(table, currentDeck, "__all__");
+      if (all.length === 0) {
+        statusEl.textContent = "No data yet. Open Settings → Import to load a deck.";
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
