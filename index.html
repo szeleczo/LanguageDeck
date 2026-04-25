@@ -12,53 +12,61 @@
   <link rel="apple-touch-icon" href="icon-192.png" />
   <title>LanguageDeck — Vocabulary trainer</title>
   <style>
-    /* ---------- Reset & base ---------- */
+    /* ---------- Reset ---------- */
     *, *::before, *::after { box-sizing: border-box; }
 
     :root {
-      --bg: #f3f4f6;
+      --bg: #f8fafc;
       --surface: #ffffff;
-      --surface-2: #f8fafc;
-      --border: #e5e7eb;
-      --text: #111827;
-      --text-muted: #4b5563;
-      --text-faint: #6b7280;
+      --surface-2: #f1f5f9;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
 
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --text-faint: #94a3b8;
+
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
       --primary-soft: #dbeafe;
+      --primary-deep: #1e3a8a;
 
-      --success: #16a34a;
+      --success: #15803d;
       --success-soft: #dcfce7;
-      --danger: #dc2626;
+      --danger: #b91c1c;
       --danger-soft: #fee2e2;
-      --warning: #d97706;
-      --neutral-soft: #f1f5f9;
+      --warning: #b45309;
+      --warning-soft: #fef3c7;
 
-      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
-      --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.12);
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
 
       --radius-sm: 8px;
       --radius-md: 12px;
-      --radius-lg: 16px;
+      --radius-lg: 18px;
 
       --tap: 44px;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Georgia Pro", Georgia, serif;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #0f172a;
-        --surface: #1e293b;
-        --surface-2: #111827;
-        --border: #334155;
+        --bg: #0b1120;
+        --surface: #111827;
+        --surface-2: #0f172a;
+        --border: #1e293b;
+        --border-strong: #334155;
         --text: #f1f5f9;
         --text-muted: #cbd5e1;
         --text-faint: #94a3b8;
         --primary-soft: #1e3a8a;
-        --neutral-soft: #1e293b;
-        --success-soft: #064e3b;
-        --danger-soft: #7f1d1d;
+        --primary-deep: #1e40af;
+        --success-soft: rgba(34, 197, 94, 0.15);
+        --danger-soft: rgba(239, 68, 68, 0.15);
+        --warning-soft: rgba(245, 158, 11, 0.15);
       }
     }
 
@@ -67,7 +75,7 @@
       padding: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: var(--font-sans);
       font-size: 16px;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
@@ -80,31 +88,67 @@
       min-height: 100vh;
     }
 
-    .wrapper {
+    /* ---------- Sticky app bar ---------- */
+    .appbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(248, 250, 252, 0.85);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    @media (prefers-color-scheme: dark) {
+      .appbar { background: rgba(11, 17, 32, 0.85); }
+    }
+    .appbar-inner {
       max-width: 1280px;
       margin: 0 auto;
-      padding: 12px 14px 120px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
-
-    h1 {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin: 4px 0 14px;
-      text-align: left;
-    }
-
-    h2 {
-      font-size: 14px;
+    .brand {
+      font-family: var(--font-serif);
+      font-size: 20px;
       font-weight: 600;
-      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+    .appbar-actions { display: flex; gap: 4px; }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      min-height: 40px;
+      padding: 0;
+      border: 1px solid transparent;
+      background: transparent;
       color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+    .icon-btn:hover:not(:disabled) {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+    .icon-btn:active:not(:disabled) { transform: scale(0.96); }
+    .icon-btn svg { width: 20px; height: 20px; }
+
+    .main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 16px 16px 120px;
     }
 
-    /* ---------- Buttons & inputs ---------- */
-    button, .btn {
+    /* ---------- Buttons ---------- */
+    button:not(.icon-btn) {
       font: inherit;
       cursor: pointer;
       background: var(--primary);
@@ -114,30 +158,30 @@
       padding: 10px 16px;
       min-height: var(--tap);
       font-weight: 600;
+      letter-spacing: 0.01em;
       transition: background-color 0.15s ease, transform 0.05s ease, opacity 0.15s ease;
     }
-    button:hover:not(:disabled) { background: var(--primary-hover); }
-    button:active:not(:disabled) { transform: scale(0.98); }
-    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    button:not(.icon-btn):hover:not(:disabled) { background: var(--primary-hover); }
+    button:not(.icon-btn):active:not(:disabled) { transform: scale(0.98); }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
 
     button.ghost {
       background: transparent;
       color: var(--text);
       border: 1px solid var(--border);
     }
-    button.ghost:hover:not(:disabled) { background: var(--neutral-soft); }
+    button.ghost:hover:not(:disabled) { background: var(--surface-2); }
 
     button.secondary {
-      background: var(--neutral-soft);
+      background: var(--surface-2);
       color: var(--text);
     }
     button.secondary:hover:not(:disabled) { background: var(--border); }
 
-    button.danger {
-      background: var(--danger);
-    }
-    button.danger:hover:not(:disabled) { background: #b91c1c; }
+    button.danger { background: var(--danger); }
+    button.danger:hover:not(:disabled) { background: #991b1b; }
 
+    /* ---------- Inputs ---------- */
     input[type="text"],
     input[type="url"],
     select {
@@ -158,11 +202,10 @@
       border-color: var(--primary);
       box-shadow: 0 0 0 3px var(--primary-soft);
     }
-
     input[type="file"] {
       width: 100%;
-      padding: 8px;
-      border: 1px dashed var(--border);
+      padding: 10px;
+      border: 1px dashed var(--border-strong);
       border-radius: var(--radius-sm);
       background: var(--surface-2);
       color: var(--text);
@@ -176,177 +219,153 @@
       margin-bottom: 4px;
     }
 
-    /* ---------- Panels ---------- */
-    .panel {
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      padding: 14px;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border);
-    }
-
-    /* ---------- Header bar ---------- */
-    .topbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    /* ---------- Install banner ---------- */
+    .install-banner {
+      display: none;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 10px 14px;
+      background: var(--primary-soft);
+      color: var(--text);
+      border-radius: var(--radius-md);
+      margin-top: 12px;
+      margin-left: 16px;
+      margin-right: 16px;
+      font-size: 13px;
       align-items: center;
+      gap: 8px;
       justify-content: space-between;
-      margin-bottom: 8px;
     }
+    .install-banner.visible { display: flex; }
+    .install-banner button { padding: 6px 12px; min-height: 36px; }
 
-    .topbar-actions {
+    /* ---------- Context strip ---------- */
+    .context-strip {
       display: flex;
-      gap: 8px;
-    }
-
-    .mode-summary {
-      display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      gap: 4px 6px;
-      padding: 6px 10px;
-      background: var(--surface-2);
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .context-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 999px;
+      font-size: 13px;
       color: var(--text-muted);
-      font-size: 12px;
+      box-shadow: var(--shadow-sm);
     }
-    .mode-summary-sep { color: var(--text-faint); }
+    .context-chip strong { color: var(--text); font-weight: 600; }
+    .context-chip .chip-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--primary);
+    }
 
-    .info, .status {
+    /* ---------- Status & score ---------- */
+    .play-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 4px;
+      margin-bottom: 12px;
+      min-height: 28px;
+    }
+    .status-text {
       font-size: 14px;
       color: var(--text-muted);
+      flex: 1;
+      min-width: 0;
     }
+    .score-display {
+      font-variant-numeric: tabular-nums;
+      font-size: 13px;
+      color: var(--text-faint);
+      white-space: nowrap;
+    }
+    .score-display .ok { color: var(--success); font-weight: 600; }
+    .score-display .ko { color: var(--danger); font-weight: 600; }
 
-    .status {
-      margin: 8px 0 4px;
+    /* ---------- Gate strip (compact, tap to expand) ---------- */
+    .gate-strip {
+      display: flex;
+      align-items: stretch;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .gate-strip[hidden] { display: none; }
+    .gate-nav {
+      flex: 0 0 auto;
+      width: 36px;
+      min-height: 52px;
+      padding: 0;
+      background: var(--surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 22px;
       font-weight: 500;
-      color: var(--text);
-      min-height: 1.4em;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: background 0.15s ease, color 0.15s ease;
     }
-
-    .score {
-      display: inline-flex;
+    .gate-nav:hover:not(:disabled) { background: var(--surface-2); color: var(--text); }
+    .gate-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+    .gate-summary {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      text-align: left;
+      min-height: 52px;
+      color: var(--text);
+      font-weight: 400;
+    }
+    .gate-summary:hover:not(:disabled) { background: var(--surface-2); }
+    .gate-summary-text {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 12px;
       font-size: 13px;
       color: var(--text-muted);
     }
-    .score b { color: var(--text); font-weight: 600; }
-
-    .keyboard-hint {
-      font-size: 12px;
-      color: var(--text-faint);
-      margin-top: 6px;
-      display: none; /* hide on touch devices, show on desktop via @media */
+    .gate-summary-text strong { color: var(--text); }
+    .gate-pct {
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+      color: var(--primary);
     }
-
-    .db-info {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-
-    /* ---------- Gate panel ---------- */
-    .gate-panel {
-      display: grid;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .gate-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-    }
-    .gate-row.controls > * { flex: 0 0 auto; }
-    .gate-row.controls button { padding: 8px 12px; min-height: 36px; }
-    .gate-row.controls select { width: auto; min-height: 36px; padding: 6px 10px; }
-
-    .gate-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 4px 10px;
-      background: var(--neutral-soft);
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-    .gate-badge strong { color: var(--text); margin-right: 4px; }
-
     .gate-progress-bar {
-      width: 100%;
-      height: 6px;
-      background: var(--neutral-soft);
-      border-radius: 3px;
+      height: 4px;
+      background: var(--surface-2);
+      border-radius: 2px;
       overflow: hidden;
     }
     .gate-progress-fill {
       height: 100%;
       width: 0%;
       background: linear-gradient(90deg, var(--primary), #60a5fa);
-      transition: width 0.4s ease;
+      transition: width 0.5s ease;
     }
 
-    .gate-meta {
-      font-size: 12px;
-      color: var(--text-faint);
-    }
-
-    /* ---------- Stats ---------- */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin-top: 8px;
-    }
-    .stat-cell {
-      background: var(--surface-2);
-      border-radius: var(--radius-sm);
-      padding: 8px;
-      text-align: center;
-    }
-    .stat-cell .stat-value {
-      display: block;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .stat-cell .stat-label {
-      display: block;
-      font-size: 11px;
-      color: var(--text-faint);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .hardest-block { margin-top: 10px; }
-    .hardest-list {
-      display: grid;
-      gap: 6px;
-      margin-top: 6px;
-    }
-    .hardest-item {
-      background: var(--surface-2);
-      border-radius: var(--radius-sm);
-      padding: 8px 10px;
-      font-size: 13px;
-      line-height: 1.4;
-      border: 1px solid var(--border);
-    }
-    .hardest-item .meta { color: var(--text-faint); font-size: 12px; }
-
-    /* ---------- Word match (cards) ---------- */
+    /* ---------- Game area: word match ---------- */
     .game {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .column h2 {
-      text-align: center;
+      gap: 10px;
     }
 
     .card {
@@ -354,8 +373,8 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 14px 12px;
-      margin-bottom: 6px;
+      padding: 16px 14px;
+      margin-bottom: 8px;
       font-size: 16px;
       cursor: pointer;
       user-select: none;
@@ -367,12 +386,14 @@
       text-align: center;
       word-break: break-word;
       box-shadow: var(--shadow-sm);
+      color: var(--text);
     }
-    .card:active { transform: scale(0.98); }
+    .card:hover:not(.correct):not(.disabled) { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+    .card:active:not(.disabled) { transform: scale(0.98); }
     .card.selected {
       border-color: var(--primary);
       background: var(--primary-soft);
-      box-shadow: 0 0 0 2px var(--primary-soft);
+      box-shadow: 0 0 0 2px var(--primary-soft), var(--shadow-md);
     }
     .card.correct {
       background: var(--success-soft);
@@ -381,9 +402,9 @@
       cursor: default;
     }
     .card.word-correct {
-      background: #fef9c3;
+      background: var(--warning-soft);
       border-color: var(--warning);
-      color: #92400e;
+      color: var(--warning);
     }
     .card.wrong {
       background: var(--danger-soft);
@@ -394,59 +415,62 @@
 
     .shortcut-badge {
       position: absolute;
-      top: 4px;
-      left: 6px;
+      top: 6px;
+      left: 8px;
       font-size: 10px;
       color: var(--text-faint);
       font-weight: 600;
+      font-variant-numeric: tabular-nums;
     }
 
-    /* ---------- Typing panel ---------- */
+    /* ---------- Game area: typing ---------- */
     .typing-panel {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 18px 14px;
+      padding: 28px 18px 22px;
       box-shadow: var(--shadow-sm);
     }
     .typing-word {
-      font-size: 28px;
-      font-weight: 700;
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       text-align: center;
-      margin: 8px 0;
+      margin: 8px 0 6px;
       color: var(--text);
+      line-height: 1.2;
     }
     .typing-help {
       text-align: center;
       font-size: 13px;
       color: var(--text-muted);
-      margin-bottom: 12px;
+      margin-bottom: 18px;
     }
-    .typing-form {
-      display: grid;
-      gap: 8px;
-    }
+    .typing-form { display: grid; gap: 10px; }
     .typing-result {
-      margin-top: 10px;
+      margin-top: 14px;
       font-size: 14px;
       text-align: center;
       min-height: 1.4em;
       font-weight: 500;
     }
 
-    /* ---------- Sentence panel ---------- */
+    /* ---------- Game area: sentences ---------- */
     .sentence-panel {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 16px 14px;
+      padding: 22px 18px;
       box-shadow: var(--shadow-sm);
     }
     .sentence-english {
-      font-size: 18px;
+      font-family: var(--font-serif);
+      font-size: 20px;
       font-weight: 600;
       margin-bottom: 6px;
       line-height: 1.4;
+      letter-spacing: -0.005em;
     }
     .sentence-help {
       font-size: 13px;
@@ -456,22 +480,21 @@
     .sentence-meta {
       font-size: 12px;
       color: var(--text-faint);
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
     .sentence-target {
       font-size: 17px;
       line-height: 2.2;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       word-break: break-word;
     }
     .sentence-token { white-space: pre-wrap; }
-
     .blank-chip {
       display: inline-block;
-      background: var(--neutral-soft);
-      border: 1px dashed var(--border);
+      background: var(--surface-2);
+      border: 1px dashed var(--border-strong);
       color: var(--text);
-      padding: 4px 10px;
+      padding: 4px 12px;
       margin: 0 2px;
       border-radius: 6px;
       font-size: 16px;
@@ -483,7 +506,6 @@
       border-color: var(--primary);
       border-style: solid;
     }
-
     .blank-input {
       display: inline-block;
       width: auto;
@@ -494,50 +516,72 @@
       font-size: 16px;
       border-radius: 6px;
       border: 1px solid var(--border);
-      background: var(--surface-2);
+      background: var(--surface);
       color: var(--text);
       min-height: 36px;
     }
     .blank-input:focus { outline: none; border-color: var(--primary); }
-
     .sentence-bank {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
     .bank-word {
       background: var(--surface-2);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 8px 12px;
+      padding: 8px 14px;
       border-radius: 999px;
       font-size: 14px;
       min-height: 36px;
     }
     .bank-word.used { opacity: 0.4; }
-    .bank-word:hover:not(:disabled) { background: var(--neutral-soft); }
-
+    .bank-word:hover:not(:disabled) { background: var(--border); }
     .sentence-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
     .sentence-actions button { flex: 1 1 auto; }
-
     .sentence-result {
-      margin-top: 10px;
+      margin-top: 12px;
       font-size: 14px;
       min-height: 1.4em;
       font-weight: 500;
     }
 
-    /* ---------- Article modal ---------- */
+    /* ---------- Empty state ---------- */
+    .empty-state {
+      text-align: center;
+      padding: 56px 20px;
+      background: var(--surface);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-lg);
+    }
+    .empty-state h2 {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      color: var(--text);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .empty-state p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 0 0 20px;
+    }
+    .empty-state button { min-width: 200px; }
+
+    /* ---------- Modals ---------- */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.5);
-      backdrop-filter: blur(2px);
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -548,29 +592,49 @@
     .modal-card {
       background: var(--surface);
       border-radius: var(--radius-lg);
-      padding: 20px;
+      padding: 22px;
       width: 100%;
-      max-width: 360px;
-      box-shadow: var(--shadow-lg);
-    }
-    .modal-card.settings-modal {
-      max-width: 520px;
-      max-height: 90vh;
+      max-width: 380px;
+      max-height: 88vh;
       overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
     }
-    .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
-    .modal-subtitle { font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 14px; }
+    .modal-card.wide { max-width: 540px; }
+    .modal-title {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0 0 14px;
+      letter-spacing: -0.005em;
+    }
+    .modal-subtitle {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 600;
+      text-align: center;
+      margin: 0 0 16px;
+    }
+    .modal-section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin: 16px 0 8px;
+    }
 
+    /* Article modal */
     .article-buttons {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
+      gap: 10px;
     }
     .article-btn {
-      background: var(--neutral-soft);
+      background: var(--surface-2);
       color: var(--text);
       border: 1px solid var(--border);
-      padding: 16px 0;
+      padding: 18px 0;
       font-size: 18px;
       font-weight: 600;
       text-align: center;
@@ -578,6 +642,7 @@
     .article-btn:hover:not(:disabled) {
       background: var(--primary-soft);
       border-color: var(--primary);
+      color: var(--primary);
     }
     .article-key {
       font-size: 11px;
@@ -586,82 +651,128 @@
       margin-top: 4px;
     }
 
-    /* ---------- Settings ---------- */
-    .settings-grid {
-      display: grid;
-      gap: 12px;
-    }
+    /* Settings modal */
     .settings-section {
-      border-top: 1px solid var(--border);
-      padding-top: 12px;
-      margin-top: 4px;
-    }
-    .settings-section:first-child {
-      border-top: none;
-      padding-top: 0;
-      margin-top: 0;
-    }
-    .settings-section-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-faint);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
       margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .settings-section[open] { background: var(--surface); }
+    .settings-section > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 14px;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+    .settings-section > summary::-webkit-details-marker { display: none; }
+    .settings-section > summary::after {
+      content: "▾";
+      color: var(--text-faint);
+      font-size: 12px;
+      transition: transform 0.2s ease;
+    }
+    .settings-section[open] > summary::after { transform: rotate(180deg); }
+    .settings-section-body {
+      padding: 4px 14px 14px;
+      display: grid;
+      gap: 10px;
     }
     .settings-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 16px;
+      margin-top: 14px;
       padding-top: 14px;
       border-top: 1px solid var(--border);
     }
     .settings-actions button { flex: 1 1 calc(50% - 4px); }
     .settings-actions .close-btn { flex: 1 1 100%; }
 
-    .install-banner {
-      display: none;
-      background: var(--primary-soft);
-      color: var(--text);
-      padding: 10px 14px;
+    /* Stats modal */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .stat-cell {
+      background: var(--surface-2);
       border-radius: var(--radius-md);
-      margin-bottom: 12px;
-      font-size: 13px;
-      align-items: center;
+      padding: 14px 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .stat-cell .stat-value {
+      display: block;
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
+    .stat-cell .stat-label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 4px;
+    }
+    .hardest-list {
+      display: grid;
       gap: 8px;
+    }
+    .hardest-item {
+      background: var(--surface-2);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.4;
+      border: 1px solid var(--border);
+    }
+    .hardest-item .meta { color: var(--text-faint); font-size: 12px; margin-top: 4px; }
+
+    /* Gate detail modal */
+    .gate-detail-row {
+      display: flex;
       justify-content: space-between;
+      padding: 8px 0;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
     }
-    .install-banner.visible { display: flex; }
-    .install-banner button { padding: 6px 12px; min-height: 36px; }
-
-    /* ---------- Mobile-first; widen on tablets+ ---------- */
-    @media (min-width: 700px) {
-      .wrapper { padding: 20px 24px 80px; }
-      h1 { font-size: 28px; }
-      .keyboard-hint { display: block; }
-      .stats-row { gap: 10px; }
-      .card { padding: 16px; font-size: 17px; }
-      .typing-word { font-size: 36px; }
-      .sentence-english { font-size: 22px; }
-      .sentence-target { font-size: 19px; line-height: 2.4; }
+    .gate-detail-row:last-child { border-bottom: none; }
+    .gate-detail-row .label { color: var(--text-muted); }
+    .gate-detail-row .value {
+      color: var(--text);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
     }
 
-    @media (min-width: 1000px) {
-      .game { gap: 14px; }
-      .stats-row { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    /* Built-in deck list */
+    .builtin-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface-2);
+    }
+    .builtin-item-meta {
+      font-size: 12px;
+      color: var(--text-faint);
     }
 
-    .hidden { display: none !important; }
-
-    /* Responsive: cards smaller on very narrow screens */
-    @media (max-width: 360px) {
-      .card { padding: 10px 8px; font-size: 14px; }
-      .typing-word { font-size: 24px; }
-      .sentence-english { font-size: 16px; }
-    }
-
-    /* Toast */
+    /* ---------- Toast ---------- */
     .toast {
       position: fixed;
       left: 50%;
@@ -669,18 +780,19 @@
       transform: translateX(-50%);
       background: var(--text);
       color: var(--bg);
-      padding: 10px 16px;
+      padding: 10px 18px;
       border-radius: var(--radius-md);
       font-size: 14px;
       max-width: calc(100vw - 32px);
       z-index: 200;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease;
+      transition: opacity 0.25s ease;
+      box-shadow: var(--shadow-lg);
     }
-    .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.visible { opacity: 1; }
 
-    /* Floating settings button (mobile) */
+    /* ---------- Floating settings button (mobile only) ---------- */
     .fab {
       position: fixed;
       right: 16px;
@@ -697,82 +809,95 @@
       align-items: center;
       justify-content: center;
       z-index: 50;
+      cursor: pointer;
     }
     .fab:hover:not(:disabled) { background: var(--primary-hover); }
+    @media (min-width: 700px) { .fab { display: none; } }
 
+    /* ---------- Helpers ---------- */
+    .hidden { display: none !important; }
+
+    /* ---------- Responsive ---------- */
     @media (min-width: 700px) {
-      .fab { display: none; }
+      .main { padding: 24px 28px 80px; }
+      .brand { font-size: 22px; }
+      .game { gap: 14px; }
+      .card { padding: 18px; font-size: 17px; }
+      .typing-word { font-size: 40px; }
+      .sentence-english { font-size: 24px; }
+      .sentence-target { font-size: 19px; line-height: 2.4; }
+      .stats-grid { grid-template-columns: repeat(4, 1fr); }
+      .modal-card { padding: 28px; }
     }
+
+    @media (max-width: 360px) {
+      .card { padding: 12px 8px; font-size: 14px; }
+      .typing-word { font-size: 26px; }
+      .sentence-english { font-size: 17px; }
+    }
+
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <h1>LanguageDeck <span style="font-weight:400;font-size:0.7em;color:var(--text-faint);">— vocabulary trainer</span></h1>
+  <!-- ---------- Sticky app bar ---------- -->
+  <header class="appbar">
+    <div class="appbar-inner">
+      <div class="brand">LanguageDeck</div>
+      <div class="appbar-actions">
+        <button id="statsBtn" class="icon-btn" aria-label="Statistics" title="Statistics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>
+        </button>
+        <button id="settingsBtnTop" class="icon-btn" aria-label="Settings" title="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
 
-    <div class="install-banner" id="installBanner">
-      <span>Install the app to your home screen for offline use.</span>
-      <button id="installBtn">Install</button>
+  <div class="install-banner" id="installBanner">
+    <span>Install the app to your home screen for offline use.</span>
+    <button id="installBtn">Install</button>
+  </div>
+
+  <main class="main">
+    <!-- Context chip -->
+    <div class="context-strip">
+      <div class="context-chip" id="modeSummary">
+        <span class="chip-dot"></span>
+        <span>Loading…</span>
+      </div>
     </div>
 
-    <!-- Top status panel -->
-    <div class="panel">
-      <div class="topbar">
-        <div class="mode-summary" id="modeSummary"></div>
-        <div class="topbar-actions">
-          <button id="settingsBtnTop" class="ghost">Settings</button>
-        </div>
-      </div>
+    <!-- Status + score -->
+    <div class="play-meta">
+      <span class="status-text" id="status">Loading…</span>
+      <span class="score-display" id="score">
+        <span class="ok">0</span> ✓ &nbsp; <span class="ko">0</span> ✗
+      </span>
+    </div>
 
-      <div class="status" id="status">Loading…</div>
-      <div class="score" id="score"><b>Correct:</b> 0 &nbsp;·&nbsp; <b>Wrong:</b> 0</div>
-      <div class="keyboard-hint" id="keyboardHint"></div>
-      <div class="db-info" id="dbInfo">—</div>
-
-      <!-- Gate -->
-      <div class="gate-panel" id="gatePanel">
-        <div class="gate-row">
-          <span class="gate-badge" id="gateLabel">Gate: 0 / 0</span>
-          <span class="gate-badge" id="gateProgressText">Progress: 0%</span>
-          <span class="gate-badge" id="gateStatsText">Mastered: 0 / 0</span>
+    <!-- Compact gate strip -->
+    <div class="gate-strip" id="gatePanel">
+      <button class="gate-nav" id="prevGateBtn" aria-label="Previous gate">‹</button>
+      <button class="gate-summary" id="gateExpandBtn" type="button" aria-label="Show gate details">
+        <div class="gate-summary-text">
+          <span><strong id="gateLabel">Gate —</strong></span>
+          <span class="gate-pct" id="gateProgressText">—</span>
         </div>
-        <div class="gate-row controls">
-          <button id="prevGateBtn" class="ghost">← Prev</button>
-          <button id="nextGateBtn" class="ghost">Next →</button>
-          <select id="gateSelect" aria-label="Jump to gate"></select>
-        </div>
-        <div class="gate-meta" id="gateMetaText">No data yet.</div>
         <div class="gate-progress-bar"><div class="gate-progress-fill" id="gateProgressFill"></div></div>
-      </div>
-
-      <!-- Stats -->
-      <div class="stats-row" id="statsSummary">
-        <div class="stat-cell"><span class="stat-value" id="statTotal">0</span><span class="stat-label">Total</span></div>
-        <div class="stat-cell"><span class="stat-value" id="statNew">0</span><span class="stat-label">New</span></div>
-        <div class="stat-cell"><span class="stat-value" id="statDue">0</span><span class="stat-label">Due</span></div>
-        <div class="stat-cell"><span class="stat-value" id="statStable">0</span><span class="stat-label">Stable</span></div>
-      </div>
-
-      <div class="hardest-block">
-        <h2 id="hardestTitle">Most-missed items</h2>
-        <div class="hardest-list" id="hardestList">No data yet.</div>
-      </div>
+      </button>
+      <button class="gate-nav" id="nextGateBtn" aria-label="Next gate">›</button>
     </div>
 
-    <!-- Word match container -->
-    <div id="wordMatchContainer" class="panel">
+    <!-- Word match -->
+    <div id="wordMatchContainer">
       <div class="game">
-        <div class="column">
-          <h2 id="leftColumnTitle">English</h2>
-          <div id="leftColumn"></div>
-        </div>
-        <div class="column">
-          <h2 id="rightColumnTitle">German</h2>
-          <div id="rightColumn"></div>
-        </div>
+        <div class="column"><div id="leftColumn"></div></div>
+        <div class="column"><div id="rightColumn"></div></div>
       </div>
     </div>
 
-    <!-- Word typing container -->
+    <!-- Word typing -->
     <div id="wordTypingContainer" class="typing-panel hidden">
       <div class="typing-word" id="typingPrompt">—</div>
       <div class="typing-help" id="typingHelp">Type the target-language equivalent.</div>
@@ -786,7 +911,7 @@
       <div class="typing-result" id="typingResult"></div>
     </div>
 
-    <!-- Sentence container -->
+    <!-- Sentence -->
     <div id="sentenceContainer" class="sentence-panel hidden">
       <div class="sentence-english" id="sentenceEnglish">—</div>
       <div class="sentence-help" id="sentenceHelp">Fill in the missing words.</div>
@@ -800,7 +925,14 @@
       </div>
       <div class="sentence-result" id="sentenceResult"></div>
     </div>
-  </div>
+
+    <!-- Empty state -->
+    <div id="emptyState" class="empty-state hidden">
+      <h2>No deck loaded yet</h2>
+      <p>Pick a deck of words to start studying.</p>
+      <button id="emptyStateBrowseBtn">Browse built-in decks</button>
+    </div>
+  </main>
 
   <!-- Floating settings button (mobile) -->
   <button class="fab" id="settingsFab" aria-label="Settings">⚙</button>
@@ -817,110 +949,183 @@
     </div>
   </div>
 
+  <!-- Stats modal -->
+  <div id="statsModal" class="modal-backdrop">
+    <div class="modal-card wide">
+      <div class="modal-title">Statistics</div>
+      <div class="stats-grid">
+        <div class="stat-cell"><span class="stat-value" id="statTotal">0</span><span class="stat-label">Total</span></div>
+        <div class="stat-cell"><span class="stat-value" id="statNew">0</span><span class="stat-label">New</span></div>
+        <div class="stat-cell"><span class="stat-value" id="statDue">0</span><span class="stat-label">Due</span></div>
+        <div class="stat-cell"><span class="stat-value" id="statStable">0</span><span class="stat-label">Stable</span></div>
+      </div>
+      <div class="modal-section-title" id="hardestTitle">Most-missed items</div>
+      <div class="hardest-list" id="hardestList">No data yet.</div>
+      <div class="settings-actions">
+        <button id="closeStatsBtn" class="secondary close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gate detail modal -->
+  <div id="gateDetailModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-title" id="gateDetailTitle">Gate details</div>
+      <div class="gate-detail-row"><span class="label">Progress</span><span class="value" id="gdProgress">—</span></div>
+      <div class="gate-detail-row"><span class="label">Mastered</span><span class="value" id="gdMastered">—</span></div>
+      <div class="gate-detail-row"><span class="label">New</span><span class="value" id="gdNew">—</span></div>
+      <div class="gate-detail-row"><span class="label">Due</span><span class="value" id="gdDue">—</span></div>
+      <div class="gate-detail-row"><span class="label">Unlock at</span><span class="value">85%</span></div>
+      <div class="modal-section-title">Jump to gate</div>
+      <select id="gateSelect"></select>
+      <!-- Hidden legacy elements kept so existing JS code paths still work without errors -->
+      <span id="gateStatsText" class="hidden"></span>
+      <span id="gateMetaText" class="hidden"></span>
+      <div class="settings-actions">
+        <button id="closeGateDetailBtn" class="secondary close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Settings modal -->
   <div id="settingsModal" class="modal-backdrop">
-    <div class="modal-card settings-modal">
+    <div class="modal-card wide">
       <div class="modal-title">Settings</div>
 
-      <div class="settings-grid">
-        <div class="settings-section">
-          <div class="settings-section-title">Game</div>
-          <label for="gameSelect">Mode</label>
-          <select id="gameSelect">
-            <option value="words" selected>Word cards</option>
-            <option value="sentences">Sentence completion</option>
-          </select>
-          <label for="deckSelect" style="margin-top:8px;">Language</label>
-          <select id="deckSelect">
-            <option value="de" selected>English → German</option>
-            <option value="it">English → Italian</option>
-          </select>
-          <label for="setSelect" style="margin-top:8px;">Active deck</label>
-          <select id="setSelect"></select>
+      <details class="settings-section" open>
+        <summary>Game</summary>
+        <div class="settings-section-body">
+          <div>
+            <label for="gameSelect">Mode</label>
+            <select id="gameSelect">
+              <option value="words" selected>Word cards</option>
+              <option value="sentences">Sentence completion</option>
+            </select>
+          </div>
+          <div>
+            <label for="deckSelect">Language</label>
+            <select id="deckSelect">
+              <option value="de" selected>English → German</option>
+              <option value="it">English → Italian</option>
+            </select>
+          </div>
+          <div>
+            <label for="setSelect">Active deck</label>
+            <select id="setSelect"></select>
+          </div>
         </div>
+      </details>
 
-        <div class="settings-section">
-          <div class="settings-section-title">Practice</div>
-          <label for="modeSelect">Word mode</label>
-          <select id="modeSelect">
-            <option value="match" selected>Matching</option>
-            <option value="typing">Typing</option>
-          </select>
-          <label for="sentenceModeSelect" style="margin-top:8px;">Sentence mode</label>
-          <select id="sentenceModeSelect">
-            <option value="choice" selected>Word bank</option>
-            <option value="typing">Typing</option>
-          </select>
-          <label for="scopeSelect" style="margin-top:8px;">Scope</label>
-          <select id="scopeSelect">
-            <option value="all" selected>All items</option>
-            <option value="wrong">Wrong only</option>
-          </select>
-          <label for="profileSelect" style="margin-top:8px;">Repetition pace</label>
-          <select id="profileSelect">
-            <option value="easy">Relaxed</option>
-            <option value="normal" selected>Normal</option>
-            <option value="hard">Intense</option>
-          </select>
-          <label for="newRatioSelect" style="margin-top:8px;">New items ratio</label>
-          <select id="newRatioSelect">
-            <option value="0.2">20%</option>
-            <option value="0.4" selected>40%</option>
-            <option value="0.6">60%</option>
-            <option value="0.8">80%</option>
-          </select>
-          <label for="visibleCountSelect" style="margin-top:8px;">Pairs per round</label>
-          <select id="visibleCountSelect">
-            <option value="2">2</option>
-            <option value="4" selected>4</option>
-            <option value="6">6</option>
-            <option value="8">8</option>
-            <option value="10">10</option>
-          </select>
+      <details class="settings-section">
+        <summary>Practice</summary>
+        <div class="settings-section-body">
+          <div>
+            <label for="modeSelect">Word mode</label>
+            <select id="modeSelect">
+              <option value="match" selected>Matching</option>
+              <option value="typing">Typing</option>
+            </select>
+          </div>
+          <div>
+            <label for="sentenceModeSelect">Sentence mode</label>
+            <select id="sentenceModeSelect">
+              <option value="choice" selected>Word bank</option>
+              <option value="typing">Typing</option>
+            </select>
+          </div>
+          <div>
+            <label for="scopeSelect">Scope</label>
+            <select id="scopeSelect">
+              <option value="all" selected>All items</option>
+              <option value="wrong">Wrong only</option>
+            </select>
+          </div>
+          <div>
+            <label for="profileSelect">Repetition pace</label>
+            <select id="profileSelect">
+              <option value="easy">Relaxed</option>
+              <option value="normal" selected>Normal</option>
+              <option value="hard">Intense</option>
+            </select>
+          </div>
+          <div>
+            <label for="newRatioSelect">New items ratio</label>
+            <select id="newRatioSelect">
+              <option value="0.2">20%</option>
+              <option value="0.4" selected>40%</option>
+              <option value="0.6">60%</option>
+              <option value="0.8">80%</option>
+            </select>
+          </div>
+          <div>
+            <label for="visibleCountSelect">Pairs per round</label>
+            <select id="visibleCountSelect">
+              <option value="2">2</option>
+              <option value="4" selected>4</option>
+              <option value="6">6</option>
+              <option value="8">8</option>
+              <option value="10">10</option>
+            </select>
+          </div>
         </div>
+      </details>
 
-        <div class="settings-section">
-          <div class="settings-section-title">Gates</div>
-          <label for="gateEnabledCheckbox">Gate mode</label>
-          <select id="gateEnabledCheckbox">
-            <option value="true" selected>On</option>
-            <option value="false">Off</option>
-          </select>
-          <label for="gateSizeSelect" style="margin-top:8px;">Gate size</label>
-          <select id="gateSizeSelect">
-            <option value="20">20</option>
-            <option value="25">25</option>
-            <option value="50" selected>50</option>
-            <option value="100">100</option>
-          </select>
-          <label for="strictGateCheckbox" style="margin-top:8px;">Strict gate</label>
-          <select id="strictGateCheckbox">
-            <option value="true" selected>On</option>
-            <option value="false">Off</option>
-          </select>
+      <details class="settings-section">
+        <summary>Gates (advanced)</summary>
+        <div class="settings-section-body">
+          <div>
+            <label for="gateEnabledCheckbox">Gate mode</label>
+            <select id="gateEnabledCheckbox">
+              <option value="true" selected>On</option>
+              <option value="false">Off</option>
+            </select>
+          </div>
+          <div>
+            <label for="gateSizeSelect">Gate size</label>
+            <select id="gateSizeSelect">
+              <option value="20">20</option>
+              <option value="25">25</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+          <div>
+            <label for="strictGateCheckbox">Strict gate</label>
+            <select id="strictGateCheckbox">
+              <option value="true" selected>On</option>
+              <option value="false">Off</option>
+            </select>
+          </div>
         </div>
+      </details>
 
-        <div class="settings-section">
-          <div class="settings-section-title">Import</div>
-          <label for="importTypeSelect">Import type</label>
-          <select id="importTypeSelect">
-            <option value="words" selected>Words</option>
-            <option value="sentences">Sentences</option>
-          </select>
-          <label for="newSetNameInput" style="margin-top:8px;">Deck name</label>
-          <input type="text" id="newSetNameInput" placeholder="e.g. basic_500 or book_1" />
-
-          <label for="fileInput" style="margin-top:8px;">From file (CSV)</label>
-          <input type="file" id="fileInput" accept=".csv" />
-          <button id="uploadBtn" style="margin-top:8px;width:100%;">Import file</button>
-
-          <label for="urlInput" style="margin-top:14px;">From URL (CSV)</label>
-          <input type="url" id="urlInput" placeholder="https://username.github.io/your-repo/decks/german_3000.csv" />
-          <button id="urlImportBtn" class="secondary" style="margin-top:8px;width:100%;">Import from URL</button>
-
-          <button id="browseBuiltinBtn" class="ghost" style="margin-top:8px;width:100%;">Browse built-in decks</button>
+      <details class="settings-section">
+        <summary>Import deck</summary>
+        <div class="settings-section-body">
+          <div>
+            <label for="importTypeSelect">Import type</label>
+            <select id="importTypeSelect">
+              <option value="words" selected>Words</option>
+              <option value="sentences">Sentences</option>
+            </select>
+          </div>
+          <div>
+            <label for="newSetNameInput">Deck name</label>
+            <input type="text" id="newSetNameInput" placeholder="e.g. basic_500 or book_1" />
+          </div>
+          <div>
+            <label for="fileInput">From file (CSV)</label>
+            <input type="file" id="fileInput" accept=".csv" />
+            <button id="uploadBtn" style="margin-top:8px;width:100%;">Import file</button>
+          </div>
+          <div>
+            <label for="urlInput">From URL (CSV)</label>
+            <input type="url" id="urlInput" placeholder="https://username.github.io/..." />
+            <button id="urlImportBtn" class="secondary" style="margin-top:8px;width:100%;">Import from URL</button>
+          </div>
+          <button id="browseBuiltinBtn" class="ghost" style="width:100%;">Browse built-in decks</button>
         </div>
-      </div>
+      </details>
 
       <div class="settings-actions">
         <button id="restartBtn" class="ghost">Restart session</button>
@@ -935,13 +1140,14 @@
     <div class="modal-card">
       <div class="modal-title">Built-in decks</div>
       <div id="builtinList" style="display:grid;gap:8px;">Loading…</div>
-      <div style="margin-top:16px;">
-        <button id="closeBuiltinBtn" class="ghost" style="width:100%;">Cancel</button>
+      <div class="settings-actions">
+        <button id="closeBuiltinBtn" class="secondary close-btn">Cancel</button>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
+
 
   <script>
     /* ============================================================
@@ -1490,8 +1696,15 @@
     const gateMetaText = $("gateMetaText");
     const gateProgressFill = $("gateProgressFill");
     const gatePanel = $("gatePanel");
+    const gateExpandBtn = $("gateExpandBtn");
+    const gateDetailModal = $("gateDetailModal");
+    const closeGateDetailBtn = $("closeGateDetailBtn");
+    const gateDetailTitle = $("gateDetailTitle");
+    const gdProgress = $("gdProgress");
+    const gdMastered = $("gdMastered");
+    const gdNew = $("gdNew");
+    const gdDue = $("gdDue");
 
-    const dbInfo = $("dbInfo");
     const statusEl = $("status");
     const scoreEl = $("score");
     const statTotal = $("statTotal");
@@ -1500,7 +1713,13 @@
     const statStable = $("statStable");
     const hardestTitle = $("hardestTitle");
     const hardestList = $("hardestList");
-    const keyboardHint = $("keyboardHint");
+
+    const statsBtn = $("statsBtn");
+    const statsModal = $("statsModal");
+    const closeStatsBtn = $("closeStatsBtn");
+
+    const emptyState = $("emptyState");
+    const emptyStateBrowseBtn = $("emptyStateBrowseBtn");
 
     const wordMatchContainer = $("wordMatchContainer");
     const wordTypingContainer = $("wordTypingContainer");
@@ -1565,22 +1784,24 @@
     }
 
     function updateModeSummary() {
-      const gameText = currentGame === "words" ? "Word cards" : "Sentences";
-      const deckText = deckCfg().label;
-      const modeText = currentGame === "words"
-        ? (wordMode === "match" ? "Match" : "Type")
-        : (sentenceMode === "choice" ? "Bank" : "Type");
-      const gateText = gateEnabled ? "Gate on" : "Gate off";
+      // Compact context chip: language · active deck
+      // The current mode (words/sentences, match/typing) is visible from the UI below,
+      // so we don't repeat it here.
+      const langText = deckCfg().label;
       const setText = currentSetName === "__all__" ? "All decks" : currentSetName;
-
       modeSummary.innerHTML = `
-        <span>${gameText}</span><span class="mode-summary-sep">·</span>
-        <span>${deckText}</span><span class="mode-summary-sep">·</span>
-        <span>${escapeHtml(setText)}</span><span class="mode-summary-sep">·</span>
-        <span>${modeText}</span><span class="mode-summary-sep">·</span>
-        <span>${gateText}</span>
+        <span class="chip-dot"></span>
+        <span><strong>${escapeHtml(langText)}</strong> · ${escapeHtml(setText)}</span>
       `;
     }
+
+    function openStats() { statsModal.classList.add("active"); }
+    function closeStats() { statsModal.classList.remove("active"); }
+    function openGateDetail() {
+      if (!gateEnabled) return;
+      gateDetailModal.classList.add("active");
+    }
+    function closeGateDetail() { gateDetailModal.classList.remove("active"); }
 
     function openSettings() { settingsModal.classList.add("active"); }
     function closeSettings() { settingsModal.classList.remove("active"); saveSettings(); }
@@ -1614,8 +1835,8 @@
     function hasArticle(pair) { return deckCfg().useArticles && articleOf(pair) !== ""; }
 
     function applyDeckUI() {
-      leftColumnTitle.textContent = deckCfg().leftTitle;
-      rightColumnTitle.textContent = deckCfg().rightTitle;
+      if (leftColumnTitle) leftColumnTitle.textContent = deckCfg().leftTitle;
+      if (rightColumnTitle) rightColumnTitle.textContent = deckCfg().rightTitle;
       typingHelp.textContent = deckCfg().typingHelp;
       typingInput.placeholder = deckCfg().typingPlaceholder;
       if (!deckCfg().useArticles) hideArticleModal();
@@ -1633,13 +1854,20 @@
       sentenceModeSelect.disabled = isWords;
       modeSelect.disabled = !isWords;
       updateGateUI();
-      updateKeyboardHint();
       updateModeSummary();
     }
     function updateGateUI() {
-      gatePanel.style.display = gateEnabled ? "grid" : "none";
+      // gate-strip uses display: flex when visible (or we hide via 'hidden' class)
+      gatePanel.style.display = gateEnabled ? "flex" : "none";
       updateModeSummary();
     }
+
+    // Kept as a no-op so existing call-sites don't break;
+    // the keyboard hint UI was removed in favor of a cleaner main area.
+    function updateKeyboardHint() {}
+
+    // Kept as a no-op so call-sites still work; deck-and-count info now lives in the chip.
+    async function refreshDbInfo() {}
 
     function getSelectionPhase() {
       if (currentGame === "sentences") return "sentence";
@@ -1647,27 +1875,6 @@
       if (wordMode === "typing") return "typing";
       if (selectedLeft === null) return "left";
       return "right";
-    }
-
-    function updateKeyboardHint() {
-      const phase = getSelectionPhase();
-      let txt = "";
-      if (phase === "article") txt = "Article picker — keys: 1=der, 2=die, 3=das.";
-      else if (phase === "typing") txt = "Typing mode — Enter to check.";
-      else if (phase === "sentence") txt = sentenceMode === "choice"
-        ? "Sentence — tap a blank, then pick from the bank."
-        : "Sentence — type into the blanks, then Check.";
-      else if (phase === "left") txt = "Match — left column active. Keys 1–9 / 0.";
-      else txt = "Match — right column active. Keys 1–9 / 0. Esc clears.";
-      keyboardHint.textContent = txt;
-    }
-
-    async function refreshDbInfo() {
-      const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
-      const all = await DB.getAll(table, currentDeck, currentSetName);
-      const setText = currentSetName === "__all__" ? "all decks" : currentSetName;
-      const what = currentGame === "words" ? "words" : "sentences";
-      dbInfo.textContent = `${deckCfg().label} · ${setText} · ${what}: ${all.length}`;
     }
 
     async function refreshStats() {
@@ -1744,12 +1951,21 @@
       const progress = computeProgress(rowsForProgress);
 
       gateLabel.textContent = gateEnabled
-        ? `Gate: ${totalGates === 0 ? 0 : currentGateIndex + 1} / ${totalGates}`
-        : "Source: all items";
-      gateProgressText.textContent = `Progress: ${progress.percent}%`;
+        ? `Gate ${totalGates === 0 ? 0 : currentGateIndex + 1} / ${totalGates}`
+        : "All items";
+      gateProgressText.textContent = `${progress.percent}%`;
       gateStatsText.textContent = `Mastered: ${progress.mastered} / ${progress.total}`;
       gateMetaText.textContent = `New: ${progress.new} · Due: ${progress.due} · Unlock at 85% · Streak threshold: 2`;
       gateProgressFill.style.width = `${progress.percent}%`;
+
+      // Mirror into gate detail modal
+      gateDetailTitle.textContent = gateEnabled
+        ? `Gate ${totalGates === 0 ? 0 : currentGateIndex + 1} of ${totalGates}`
+        : "All items";
+      gdProgress.textContent = `${progress.percent}%`;
+      gdMastered.textContent = `${progress.mastered} / ${progress.total}`;
+      gdNew.textContent = `${progress.new}`;
+      gdDue.textContent = `${progress.due}`;
 
       prevGateBtn.disabled = !gateEnabled || currentGateIndex <= 0;
       nextGateBtn.disabled = !gateEnabled || totalGates === 0 || currentGateIndex >= totalGates - 1;
@@ -1846,6 +2062,8 @@
       await refreshGateInfo();
       if (currentGame === "words") await loadWords(reset);
       else await loadSentences(reset);
+      // Show/hide the empty-state hero whenever data state changes
+      if (typeof checkEmptyState === "function") await checkEmptyState();
     }
 
     /* ---------- Word match game ---------- */
@@ -1899,14 +2117,30 @@
 
       await ensureWordQueue(visibleCount);
 
+      // Avoid putting two pairs with the SAME target word into one round.
+      // Otherwise the right column shows two identical-looking cards (e.g. "sie")
+      // and the user can't tell which one matches which English meaning.
+      // The article (der/die/das) is intentionally NOT included in the de-dup key —
+      // we use the word-only form, so "der See" and "die See" would still both be
+      // skippable, but for de this is fine because article-prompted words are rarer.
       const usedIds = new Set();
+      const usedTargets = new Set();
+      const skipped = [];
       while (currentWordRoundPairs.length < visibleCount && wordQueue.length > 0) {
         const pair = wordQueue.shift();
-        if (!usedIds.has(pair.id)) {
-          currentWordRoundPairs.push(pair);
-          usedIds.add(pair.id);
+        if (usedIds.has(pair.id)) continue;
+        const targetKey = normTxt(targetWordOnly(pair));
+        if (usedTargets.has(targetKey)) {
+          // Defer this pair to a later round instead of dropping it
+          skipped.push(pair);
+          continue;
         }
+        currentWordRoundPairs.push(pair);
+        usedIds.add(pair.id);
+        usedTargets.add(targetKey);
       }
+      // Restore deferred duplicates so they get a chance in upcoming rounds
+      if (skipped.length) wordQueue.push(...skipped);
 
       rightOrder = derangeOrBest(currentWordRoundPairs.map(p => p.id));
       statusEl.textContent = currentWordRoundPairs.length > 0
@@ -1977,7 +2211,7 @@
     }
 
     function updateScore() {
-      scoreEl.innerHTML = `<b>Correct:</b> ${correctCount} &nbsp;·&nbsp; <b>Wrong:</b> ${wrongCount}`;
+      scoreEl.innerHTML = `<span class="ok">${correctCount}</span> ✓ &nbsp; <span class="ko">${wrongCount}</span> ✗`;
     }
 
     async function saveWordAnswer(wordId, isCorrect) {
@@ -2373,6 +2607,8 @@
     document.addEventListener("keydown", async (event) => {
       if (event.key === "Escape") {
         if (settingsModal.classList.contains("active")) { closeSettings(); return; }
+        if (statsModal.classList.contains("active")) { closeStats(); return; }
+        if (gateDetailModal.classList.contains("active")) { closeGateDetail(); return; }
         if (builtinModal.classList.contains("active")) { builtinModal.classList.remove("active"); return; }
       }
       if (event.target === typingInput) return;
@@ -2466,6 +2702,16 @@
     settingsFab.addEventListener("click", openSettings);
     closeSettingsBtn.addEventListener("click", closeSettings);
     settingsModal.addEventListener("click", e => { if (e.target === settingsModal) closeSettings(); });
+
+    statsBtn.addEventListener("click", openStats);
+    closeStatsBtn.addEventListener("click", closeStats);
+    statsModal.addEventListener("click", e => { if (e.target === statsModal) closeStats(); });
+
+    gateExpandBtn.addEventListener("click", openGateDetail);
+    closeGateDetailBtn.addEventListener("click", closeGateDetail);
+    gateDetailModal.addEventListener("click", e => { if (e.target === gateDetailModal) closeGateDetail(); });
+
+    emptyStateBrowseBtn.addEventListener("click", () => { builtinModal.classList.add("active"); loadBuiltinList(); });
 
     closeBuiltinBtn.addEventListener("click", () => builtinModal.classList.remove("active"));
     builtinModal.addEventListener("click", e => { if (e.target === builtinModal) builtinModal.classList.remove("active"); });
@@ -2627,9 +2873,26 @@
     window.addEventListener("appinstalled", () => { installBanner.classList.remove("visible"); });
 
     /* ---------- Service worker ---------- */
+    /* When a new SW version is detected, show an unobtrusive toast.
+       The new SW takes over automatically thanks to skipWaiting + clients.claim
+       in sw.js, so a simple page reload activates it. */
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register("sw.js").catch(err => {
+        navigator.serviceWorker.register("sw.js").then(reg => {
+          // Force a check for an updated sw.js on every page load
+          reg.update().catch(() => {});
+
+          reg.addEventListener("updatefound", () => {
+            const newWorker = reg.installing;
+            if (!newWorker) return;
+            newWorker.addEventListener("statechange", () => {
+              // Only notify if this is genuinely an update of an already-controlled page
+              if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+                showToast("New version ready — close and reopen the app.", 5000);
+              }
+            });
+          });
+        }).catch(err => {
           console.log("SW registration skipped:", err.message);
         });
       });
@@ -2689,13 +2952,30 @@
       await refreshStats();
       await refreshGateInfo();
       await loadCurrentGame(true);
-      updateKeyboardHint();
+      await checkEmptyState();
+    }
 
-      // First run: prompt to import
+    /**
+     * Show the prominent empty state when there's no data, hide game areas.
+     * Called from init and after each import/clear.
+     */
+    async function checkEmptyState() {
       const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
       const all = await DB.getAll(table, currentDeck, "__all__");
-      if (all.length === 0) {
-        statusEl.textContent = "No data yet. Open Settings → Import to load a deck.";
+      const isEmpty = all.length === 0;
+
+      emptyState.classList.toggle("hidden", !isEmpty);
+
+      if (isEmpty) {
+        // Hide all game containers and the gate strip
+        wordMatchContainer.classList.add("hidden");
+        wordTypingContainer.classList.add("hidden");
+        sentenceContainer.classList.add("hidden");
+        gatePanel.style.display = "none";
+        statusEl.textContent = "Welcome! Import a deck to start.";
+      } else {
+        // Restore correct game container visibility
+        updateGameUI();
       }
     }
 
