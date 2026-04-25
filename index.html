@@ -836,7 +836,56 @@
       .sentence-english { font-size: 17px; }
     }
 
-  </style>
+  
+@media (hover: none) and (pointer: coarse) {
+  button,
+  select,
+  input[type="file"],
+  input[type="text"] {
+    min-height: 48px;
+  }
+
+  .card {
+    min-height: 56px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .article-buttons button {
+    min-height: 64px;
+  }
+
+  .typing-form {
+    gap: 12px;
+  }
+
+  .controls {
+    gap: 12px;
+  }
+
+  .gate-row {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 700px) {
+  .panel,
+  .column,
+  .typing-panel {
+    padding: 18px;
+  }
+
+  .card {
+    font-size: 17px;
+    line-height: 1.4;
+  }
+
+  .shortcut-badge {
+    left: 10px;
+  }
+}
+
+</style>
 </head>
 <body>
   <!-- ---------- Sticky app bar ---------- -->
