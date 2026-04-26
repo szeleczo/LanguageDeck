@@ -459,71 +459,171 @@
       display: contents;
     }
     /* ---------- Landscape layout ----------
-       In landscape (a phone held horizontally), the design goal flips:
-       instead of "leave breathing room and push cards to thumb-zone",
-       we want everything to fit on screen at once, with the two columns
-       on the left and right edges. The progress/context info shrinks
-       and centers between them.
+       Held-sideways phone: two card columns hug the LEFT and RIGHT edges
+       of the screen, with progress / status info centred between them.
+       Everything fits on screen — no scrolling. The page becomes a
+       3-column grid: [left cards][centre info][right cards].
     */
     @media (orientation: landscape) and (max-height: 540px) {
+      /* Compact app bar */
+      .appbar-inner { padding: 4px 12px; }
+      .icon-btn { width: 36px; height: 36px; min-height: 36px; }
+      .brand { font-size: 18px; }
+
+      /* The page becomes a flex container that fills the viewport */
+      body { min-height: 100dvh; }
       .main {
-        padding: 8px 12px 12px;
+        padding: 6px 10px 10px;
+        flex: 1;
+        min-height: 0;
+        /* Position: the children below need to fill remaining space */
+        display: flex;
+        flex-direction: column;
       }
-      /* Hide the spacer so we use all available vertical space */
+
+      /* Hide the portrait-only spacer */
       .game-area-spacer { display: none; }
 
-      /* Compact context chip + score: keep them on a single row, centred */
-      .context-strip {
-        margin-bottom: 6px;
-        justify-content: center;
-      }
-      .context-chip { padding: 4px 12px; font-size: 12px; }
-      .play-meta { margin-bottom: 6px; min-height: 0; }
-      .status-text { font-size: 12px; }
-      .score-display { font-size: 13px; }
+      /* The empty state should still take the whole space */
+      .empty-state { padding: 24px 16px; }
 
-      /* Slim gate strip */
-      .gate-strip { margin-bottom: 8px; }
-      .gate-nav { width: 36px; min-height: 40px; font-size: 18px; }
-      .gate-summary {
-        min-height: 40px;
-        padding: 4px 14px;
-      }
-      .gate-summary-text { font-size: 12px; }
+      /* In landscape we hide the standalone status/score/context strip
+         and gate-strip — their info is shown in the centre of the
+         3-column game grid below. This is what the user asked for:
+         "progress doesn't need to be ABOVE the columns; can be in the middle". */
+      .context-strip,
+      .play-meta,
+      .gate-strip { display: none; }
 
-      /* The two card columns at left/right edges; cards auto-fit vertically */
-      .game {
-        gap: 8px 28px;
-        max-width: 100%;
-        /* Use grid to fill remaining vertical space evenly */
+      /* The matching game becomes a 3-column layout filling vertical space */
+      #wordMatchContainer {
         flex: 1;
-      }
-      .card {
         min-height: 0;
-        padding: 6px 14px;
-        font-size: 15px;
+        display: flex;
+      }
+      #wordMatchContainer .game {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        /* left cards | centre info | right cards */
+        grid-template-columns: 1fr minmax(140px, 22%) 1fr;
+        grid-template-rows: 1fr;
+        gap: 6px 14px;
+        align-items: stretch;
+      }
+      /* The two flow wrappers (display: contents) need to be replaced with
+         actual flex columns in landscape, so cards can stack vertically. */
+      #wordMatchContainer .column-flow {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        height: 100%;
+        min-height: 0;
+      }
+      #wordMatchContainer #leftColumn { grid-column: 1; grid-row: 1; }
+      #wordMatchContainer #rightColumn { grid-column: 3; grid-row: 1; }
+
+      /* Each card gets equal share of column height, no max */
+      .card {
+        flex: 1 1 0;
+        min-height: 0;
+        padding: 4px 12px;
+        font-size: 14px;
         margin-bottom: 0;
-        /* Thinner 3D border to save vertical space */
         border-bottom-width: 3px;
+        line-height: 1.15;
+        /* Override the explicit grid-row/grid-column from JS — they apply
+           only in portrait mode now. In landscape, cards live inside the
+           flex columns instead of being grid-positioned siblings. */
+        grid-row: auto !important;
+        grid-column: auto !important;
       }
       .card:active:not(.disabled):not(.correct) {
         transform: translateY(1.5px);
         margin-bottom: 1.5px;
       }
-      /* Cards stretch to fill their grid cell vertically */
-      .game .card { height: 100%; }
-      /* Make grid rows share remaining height equally */
-      #wordMatchContainer { display: flex; flex: 1; min-height: 0; }
-      #wordMatchContainer .game {
-        width: 100%;
-        grid-auto-rows: 1fr;
-        height: 100%;
-      }
 
-      /* App bar a touch shorter */
-      .appbar-inner { padding: 6px 16px; }
-      .icon-btn { width: 36px; height: 36px; min-height: 36px; }
-      .brand { font-size: 19px; }
+      /* Centre info column: gate progress + score + status, vertically stacked */
+      .landscape-info {
+        grid-column: 2;
+        grid-row: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 4px 6px;
+        text-align: center;
+        min-width: 0;
+      }
+      .landscape-info .li-gate-pct {
+        font-family: var(--font-display);
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--primary);
+        line-height: 1;
+      }
+      .landscape-info .li-gate-label {
+        font-size: 11px;
+        color: var(--text-muted);
+        font-weight: 600;
+        line-height: 1.2;
+      }
+      .landscape-info .li-progress-bar {
+        width: 100%;
+        max-width: 120px;
+        height: 4px;
+        background: var(--surface-2);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .landscape-info .li-progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--primary), #60a5fa);
+        transition: width 0.5s ease;
+      }
+      .landscape-info .li-score {
+        font-family: var(--font-display);
+        font-variant-numeric: tabular-nums;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+      .landscape-info .li-score .ok { color: var(--success); font-weight: 800; }
+      .landscape-info .li-score .ko { color: var(--danger); font-weight: 800; }
+      .landscape-info .li-status {
+        font-size: 11px;
+        color: var(--text-faint);
+        line-height: 1.3;
+      }
+      .landscape-info .li-gate-arrows {
+        display: flex;
+        gap: 4px;
+        margin-top: 2px;
+      }
+      .landscape-info .li-arrow {
+        width: 28px;
+        height: 28px;
+        min-height: 28px;
+        padding: 0;
+        font-size: 14px;
+        background: var(--surface) !important;
+        color: var(--text-muted) !important;
+        border: 2px solid var(--border) !important;
+        border-bottom-width: 3px !important;
+        border-radius: 8px;
+        font-weight: 800;
+      }
+      .landscape-info .li-arrow:disabled { opacity: 0.3; }
+    }
+    /* In portrait, hide the landscape-only info column */
+    @media not all and (orientation: landscape) and (max-height: 540px) {
+      .landscape-info { display: none; }
+    }
+    /* When portrait but on regular tall phones, keep the landscape-info hidden */
+    .landscape-info { display: none; }
+    @media (orientation: landscape) and (max-height: 540px) {
+      .landscape-info { display: flex; }
     }
 
     .card {
@@ -777,6 +877,22 @@
       padding: 16px;
     }
     .modal-backdrop.active { display: flex; }
+
+    /* "Bottom sheet" variant: anchor the modal card to the bottom of the
+       screen on portrait phones, so action buttons (like der/die/das) sit
+       in the thumb-reach zone. On wider screens (tablets, landscape) the
+       modal stays centered as normal. */
+    @media (orientation: portrait) and (max-width: 700px) {
+      .modal-backdrop.bottom-sheet {
+        align-items: flex-end;
+        padding: 16px 12px calc(20px + env(safe-area-inset-bottom));
+      }
+      .modal-backdrop.bottom-sheet .modal-card {
+        max-width: 100%;
+        border-radius: 24px 24px var(--radius-lg) var(--radius-lg);
+      }
+    }
+
     .modal-card {
       background: var(--surface);
       border-radius: var(--radius-lg);
@@ -1071,6 +1187,26 @@
     <div id="wordMatchContainer">
       <div class="game">
         <div id="leftColumn" class="column-flow"></div>
+
+        <!-- Centre info column — only visible in landscape mode.
+             Shows compact gate progress, score, and gate navigation arrows
+             between the two card columns, so the user doesn't lose context. -->
+        <div class="landscape-info" aria-hidden="true">
+          <div>
+            <div class="li-gate-pct" id="liGatePct">—</div>
+            <div class="li-gate-label" id="liGateLabel">—</div>
+          </div>
+          <div class="li-progress-bar"><div class="li-progress-fill" id="liProgressFill"></div></div>
+          <div class="li-score" id="liScore">
+            <span class="ok">0</span> ✓ <span class="ko">0</span> ✗
+          </div>
+          <div class="li-status" id="liStatus"></div>
+          <div class="li-gate-arrows" id="liGateArrows">
+            <button class="li-arrow" id="liPrevGateBtn" aria-label="Previous gate">‹</button>
+            <button class="li-arrow" id="liNextGateBtn" aria-label="Next gate">›</button>
+          </div>
+        </div>
+
         <div id="rightColumn" class="column-flow"></div>
       </div>
     </div>
@@ -1115,8 +1251,9 @@
   <!-- (The floating settings button was removed — the gear icon in the top-right
        app bar is the single source of truth for opening settings.) -->
 
-  <!-- Article modal -->
-  <div id="articleModal" class="modal-backdrop">
+  <!-- Article modal — uses bottom-sheet styling on phones so the der/die/das
+       buttons sit in the natural thumb-reach zone instead of the screen middle. -->
+  <div id="articleModal" class="modal-backdrop bottom-sheet">
     <div class="modal-card">
       <div class="modal-subtitle" id="articleWordText">Haus</div>
       <div class="article-buttons">
@@ -2207,6 +2344,22 @@
       prevGateBtn.disabled = !gateEnabled || currentGateIndex <= 0;
       nextGateBtn.disabled = !gateEnabled || totalGates === 0 || currentGateIndex >= totalGates - 1;
 
+      // Landscape-info column mirror
+      const liPct = document.getElementById("liGatePct");
+      const liLbl = document.getElementById("liGateLabel");
+      const liFill = document.getElementById("liProgressFill");
+      const liPrev = document.getElementById("liPrevGateBtn");
+      const liNext = document.getElementById("liNextGateBtn");
+      const liArrows = document.getElementById("liGateArrows");
+      if (liPct) liPct.textContent = `${progress.percent}%`;
+      if (liLbl) liLbl.textContent = gateEnabled
+        ? `Gate ${totalGates === 0 ? 0 : currentGateIndex + 1} / ${totalGates}`
+        : "All items";
+      if (liFill) liFill.style.width = `${progress.percent}%`;
+      if (liArrows) liArrows.style.display = gateEnabled ? "flex" : "none";
+      if (liPrev) liPrev.disabled = !gateEnabled || currentGateIndex <= 0;
+      if (liNext) liNext.disabled = !gateEnabled || totalGates === 0 || currentGateIndex >= totalGates - 1;
+
       rebuildGateSelect();
       updateGateUI();
       saveSettings();
@@ -2454,8 +2607,29 @@
     }
 
     function updateScore() {
-      scoreEl.innerHTML = `<span class="ok">${correctCount}</span> ✓ &nbsp; <span class="ko">${wrongCount}</span> ✗`;
+      const html = `<span class="ok">${correctCount}</span> ✓ &nbsp; <span class="ko">${wrongCount}</span> ✗`;
+      scoreEl.innerHTML = html;
+      // Mirror to landscape-info column (a compact variant)
+      const liScore = document.getElementById("liScore");
+      if (liScore) liScore.innerHTML = `<span class="ok">${correctCount}</span> ✓ <span class="ko">${wrongCount}</span> ✗`;
     }
+
+    /* Mirror the status text to the landscape-info column too. We wrap
+       statusEl assignments via a setter so existing call-sites stay simple. */
+    Object.defineProperty(statusEl, "textContent", (function() {
+      const proto = Object.getPrototypeOf(statusEl);
+      const desc = Object.getOwnPropertyDescriptor(proto, "textContent") ||
+                   Object.getOwnPropertyDescriptor(Node.prototype, "textContent");
+      return {
+        configurable: true,
+        get() { return desc.get.call(this); },
+        set(v) {
+          desc.set.call(this, v);
+          const li = document.getElementById("liStatus");
+          if (li) li.textContent = v || "";
+        }
+      };
+    })());
 
     async function saveWordAnswer(wordId, isCorrect) {
       await recordAnswer("word_pairs", wordId, isCorrect, repetitionProfile);
@@ -3089,6 +3263,10 @@
 
     prevGateBtn.addEventListener("click", () => tryMoveGate(-1));
     nextGateBtn.addEventListener("click", () => tryMoveGate(1));
+    const liPrevBtn = document.getElementById("liPrevGateBtn");
+    const liNextBtn = document.getElementById("liNextGateBtn");
+    if (liPrevBtn) liPrevBtn.addEventListener("click", () => tryMoveGate(-1));
+    if (liNextBtn) liNextBtn.addEventListener("click", () => tryMoveGate(1));
     gateSelect.addEventListener("change", async () => {
       const t = parseInt(gateSelect.value, 10);
       if (!Number.isNaN(t)) await tryJumpToGate(t);
