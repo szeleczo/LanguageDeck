@@ -109,7 +109,7 @@
 
     body {
       padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-      min-height: 100vh;
+      min-height: var(--vh, 100vh);
       display: flex;
       flex-direction: column;
     }
@@ -491,14 +491,14 @@
       .brand { font-size: 18px; }
 
       /* HARD-LOCK the viewport height so nothing can scroll.
-         - `html` and `body` get a fixed dvh-based height.
-         - `body` is overflow-hidden, so even if a child miscalculates and
-           tries to spill, it gets clipped instead of triggering scroll.
-         - `min-height: 0` everywhere down the flex chain so flex children
-           are allowed to shrink below their natural content size. */
+         We use --vh (set by JS to window.innerHeight) instead of 100dvh
+         because Chrome PWA on Android sometimes reports dvh values larger
+         than the actual visible area, causing the bottom of the page to be
+         clipped under the navigation bar. Setting --vh in JS guarantees
+         pixel-perfect alignment with the rendered viewport. */
       html, body {
-        height: 100dvh;
-        max-height: 100dvh;
+        height: var(--vh, 100dvh);
+        max-height: var(--vh, 100dvh);
         overflow: hidden;
       }
       body {
@@ -3407,6 +3407,27 @@
     }
     unlockOrientation();
     window.addEventListener("load", unlockOrientation);
+
+    /* ---------- Viewport height tracker ----------
+       Keeps a CSS variable --vh in sync with the actual visible viewport.
+       Needed because Chrome PWA on Android sometimes reports dvh values that
+       leave the bottom navigation bar overlapping the content. Using JS-
+       measured `window.innerHeight` is the only reliable way to fill exactly
+       the rendered area on every device. */
+    function updateVh() {
+      const h = window.innerHeight;
+      document.documentElement.style.setProperty("--vh", h + "px");
+    }
+    updateVh();
+    window.addEventListener("resize", updateVh);
+    window.addEventListener("orientationchange", () => {
+      // Orientation change fires before innerHeight settles; sample twice
+      updateVh();
+      setTimeout(updateVh, 100);
+      setTimeout(updateVh, 400);
+    });
+    // Also update once the page is fully laid out
+    window.addEventListener("load", updateVh);
 
     /* ---------- Service worker ---------- */
     /* When a new SW version is detected, show an unobtrusive toast.
