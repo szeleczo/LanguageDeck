@@ -49,7 +49,12 @@
       --tap: 44px;
 
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Georgia Pro", Georgia, serif;
+      /* Display font: rounded, bold, friendly — Duolingo-like.
+         Stack prefers system rounded/full-width fonts where available
+         and falls back to the same sans for visual consistency. */
+      --font-display: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN",
+                      "Quicksand", "Comfortaa", -apple-system, BlinkMacSystemFont,
+                      "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -111,11 +116,11 @@
       gap: 12px;
     }
     .brand {
-      font-family: var(--font-serif);
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      color: var(--primary);
     }
     .appbar-actions { display: flex; gap: 4px; }
 
@@ -148,37 +153,54 @@
     }
 
     /* ---------- Buttons ---------- */
+    /* Duolingo-style "physical button" feel: thick bottom border that
+       collapses on press, mimicking a tactile button. Same trick as cards. */
     button:not(.icon-btn) {
       font: inherit;
       cursor: pointer;
       background: var(--primary);
       color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
+      border: 2px solid transparent;
+      border-bottom: 4px solid var(--primary-deep);
+      border-radius: 12px;
       padding: 10px 16px;
       min-height: var(--tap);
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.01em;
-      transition: background-color 0.15s ease, transform 0.05s ease, opacity 0.15s ease;
+      transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.06s ease, opacity 0.15s ease;
     }
     button:not(.icon-btn):hover:not(:disabled) { background: var(--primary-hover); }
-    button:not(.icon-btn):active:not(:disabled) { transform: scale(0.98); }
+    button:not(.icon-btn):active:not(:disabled) {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+      margin-bottom: 2px;
+    }
     button:disabled { opacity: 0.4; cursor: not-allowed; }
 
     button.ghost {
       background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border: 2px solid var(--border);
+      border-bottom: 4px solid var(--border);
     }
-    button.ghost:hover:not(:disabled) { background: var(--surface-2); }
+    button.ghost:hover:not(:disabled) {
+      background: var(--surface-2);
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
 
     button.secondary {
       background: var(--surface-2);
       color: var(--text);
+      border: 2px solid var(--border);
+      border-bottom: 4px solid var(--border-strong);
     }
     button.secondary:hover:not(:disabled) { background: var(--border); }
 
-    button.danger { background: var(--danger); }
+    button.danger {
+      background: var(--danger);
+      border-bottom: 4px solid #7f1d1d;
+    }
     button.danger:hover:not(:disabled) { background: #991b1b; }
 
     /* ---------- Inputs ---------- */
@@ -251,17 +273,21 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 12px;
+      padding: 8px 14px;
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: 999px;
       font-size: 13px;
+      font-weight: 500;
       color: var(--text-muted);
-      box-shadow: var(--shadow-sm);
     }
-    .context-chip strong { color: var(--text); font-weight: 600; }
+    .context-chip strong {
+      color: var(--text);
+      font-family: var(--font-display);
+      font-weight: 800;
+    }
     .context-chip .chip-dot {
-      width: 6px; height: 6px; border-radius: 50%;
+      width: 8px; height: 8px; border-radius: 50%;
       background: var(--primary);
     }
 
@@ -282,15 +308,18 @@
       min-width: 0;
     }
     .score-display {
+      font-family: var(--font-display);
       font-variant-numeric: tabular-nums;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-faint);
       white-space: nowrap;
     }
-    .score-display .ok { color: var(--success); font-weight: 600; }
-    .score-display .ko { color: var(--danger); font-weight: 600; }
+    .score-display .ok { color: var(--success); font-weight: 800; }
+    .score-display .ko { color: var(--danger); font-weight: 800; }
 
     /* ---------- Gate strip (compact, tap to expand) ---------- */
+    /* These are <button> elements but visually plain "chip" surfaces, so we
+       neutralise the Duolingo button styling that the global rule applies. */
     .gate-strip {
       display: flex;
       align-items: stretch;
@@ -300,21 +329,26 @@
     .gate-strip[hidden] { display: none; }
     .gate-nav {
       flex: 0 0 auto;
-      width: 36px;
-      min-height: 52px;
+      width: 40px;
+      min-height: 56px;
       padding: 0;
-      background: var(--surface);
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      background: var(--surface) !important;
+      color: var(--text-muted) !important;
+      border: 2px solid var(--border) !important;
+      border-bottom-width: 4px !important;
+      border-radius: 14px;
       font-size: 22px;
-      font-weight: 500;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      transition: background 0.15s ease, color 0.15s ease;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     }
-    .gate-nav:hover:not(:disabled) { background: var(--surface-2); color: var(--text); }
+    .gate-nav:hover:not(:disabled) { background: var(--surface-2) !important; color: var(--text) !important; }
     .gate-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+    .gate-nav:active:not(:disabled) {
+      transform: translateY(2px);
+      border-bottom-width: 2px !important;
+      margin-bottom: 2px;
+    }
     .gate-summary {
       flex: 1 1 auto;
       display: flex;
@@ -323,17 +357,22 @@
       justify-content: center;
       gap: 8px;
       padding: 10px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      background: var(--surface) !important;
+      border: 2px solid var(--border) !important;
+      border-bottom-width: 4px !important;
+      border-radius: 14px;
       cursor: pointer;
-      box-shadow: var(--shadow-sm);
       text-align: left;
-      min-height: 52px;
-      color: var(--text);
-      font-weight: 400;
+      min-height: 56px;
+      color: var(--text) !important;
+      font-weight: 500;
     }
-    .gate-summary:hover:not(:disabled) { background: var(--surface-2); }
+    .gate-summary:hover:not(:disabled) { background: var(--surface-2) !important; }
+    .gate-summary:active:not(:disabled) {
+      transform: translateY(2px);
+      border-bottom-width: 2px !important;
+      margin-bottom: 2px;
+    }
     .gate-summary-text {
       display: flex;
       align-items: center;
@@ -342,10 +381,15 @@
       font-size: 13px;
       color: var(--text-muted);
     }
-    .gate-summary-text strong { color: var(--text); }
+    .gate-summary-text strong {
+      color: var(--text);
+      font-family: var(--font-display);
+      font-weight: 800;
+    }
     .gate-pct {
+      font-family: var(--font-display);
       font-variant-numeric: tabular-nums;
-      font-weight: 600;
+      font-weight: 800;
       color: var(--primary);
     }
     .gate-progress-bar {
@@ -475,10 +519,10 @@
       box-shadow: var(--shadow-sm);
     }
     .typing-word {
-      font-family: var(--font-serif);
+      font-family: var(--font-display);
       font-size: 32px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
+      font-weight: 800;
+      letter-spacing: -0.015em;
       text-align: center;
       margin: 8px 0 6px;
       color: var(--text);
@@ -508,12 +552,12 @@
       box-shadow: var(--shadow-sm);
     }
     .sentence-english {
-      font-family: var(--font-serif);
+      font-family: var(--font-display);
       font-size: 20px;
-      font-weight: 600;
+      font-weight: 800;
       margin-bottom: 6px;
       line-height: 1.4;
-      letter-spacing: -0.005em;
+      letter-spacing: -0.01em;
     }
     .sentence-help {
       font-size: 13px;
@@ -571,16 +615,24 @@
       margin-bottom: 16px;
     }
     .bank-word {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 14px;
-      min-height: 36px;
+      background: var(--surface) !important;
+      border: 2px solid var(--border) !important;
+      border-bottom: 4px solid var(--border-strong) !important;
+      color: var(--text) !important;
+      padding: 8px 16px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      min-height: 42px;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.06s ease;
     }
-    .bank-word.used { opacity: 0.4; }
-    .bank-word:hover:not(:disabled) { background: var(--border); }
+    .bank-word.used { opacity: 0.35; }
+    .bank-word:hover:not(:disabled):not(.used) { background: var(--surface-2) !important; }
+    .bank-word:active:not(:disabled):not(.used) {
+      transform: translateY(2px);
+      border-bottom-width: 2px !important;
+      margin-bottom: 2px;
+    }
     .sentence-actions {
       display: flex;
       flex-wrap: wrap;
@@ -603,13 +655,13 @@
       border-radius: var(--radius-lg);
     }
     .empty-state h2 {
-      font-family: var(--font-serif);
+      font-family: var(--font-display);
       font-size: 22px;
-      font-weight: 600;
+      font-weight: 800;
       margin: 0 0 8px;
       color: var(--text);
       text-transform: none;
-      letter-spacing: 0;
+      letter-spacing: -0.005em;
     }
     .empty-state p {
       font-size: 14px;
@@ -645,18 +697,19 @@
     }
     .modal-card.wide { max-width: 540px; }
     .modal-title {
-      font-family: var(--font-serif);
+      font-family: var(--font-display);
       font-size: 20px;
-      font-weight: 600;
+      font-weight: 800;
       margin: 0 0 14px;
-      letter-spacing: -0.005em;
+      letter-spacing: -0.01em;
     }
     .modal-subtitle {
-      font-family: var(--font-serif);
+      font-family: var(--font-display);
       font-size: 26px;
-      font-weight: 600;
+      font-weight: 800;
       text-align: center;
       margin: 0 0 16px;
+      letter-spacing: -0.01em;
     }
     .modal-section-title {
       font-size: 13px;
@@ -755,11 +808,11 @@
     }
     .stat-cell .stat-value {
       display: block;
-      font-family: var(--font-serif);
-      font-size: 26px;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -0.01em;
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.015em;
       line-height: 1.1;
     }
     .stat-cell .stat-label {
@@ -2904,6 +2957,21 @@
       deferredPrompt = null;
     });
     window.addEventListener("appinstalled", () => { installBanner.classList.remove("visible"); });
+
+    /* ---------- Orientation unlock ---------- */
+    /* Some PWAs (Chrome on Android in particular) cache the manifest's
+       orientation lock from when the app was first installed, even after
+       the manifest is later changed. So we explicitly request "any" at
+       runtime in case orientation got locked to portrait. */
+    function unlockOrientation() {
+      try {
+        if (screen && screen.orientation && typeof screen.orientation.unlock === "function") {
+          screen.orientation.unlock();
+        }
+      } catch (_) { /* ignore — best-effort only */ }
+    }
+    unlockOrientation();
+    window.addEventListener("load", unlockOrientation);
 
     /* ---------- Service worker ---------- */
     /* When a new SW version is detected, show an unobtrusive toast.
