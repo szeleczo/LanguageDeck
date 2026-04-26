@@ -362,7 +362,7 @@
       gap: 6px;
       margin-bottom: 16px;
     }
-    .gate-strip[hidden],
+    .gate-strip[hidden] { display: none; }
     .gate-strip.gate-disabled { display: none; }
     .gate-nav {
       flex: 0 0 auto;
@@ -481,7 +481,7 @@
        Everything fits on screen — no scrolling. The page becomes a
        3-column grid: [left cards][centre info][right cards].
     */
-    @media (orientation: landscape) {
+    @media (min-aspect-ratio: 13/10) {
       /* Compact app bar */
       .appbar {
         position: static;
@@ -677,12 +677,12 @@
       .landscape-info .li-arrow:disabled { opacity: 0.3; }
     }
     /* In portrait, hide the landscape-only info column */
-    @media not all and (orientation: landscape) {
+    @media not all and (min-aspect-ratio: 13/10) {
       .landscape-info { display: none; }
     }
     /* When portrait but on regular tall phones, keep the landscape-info hidden */
     .landscape-info { display: none; }
-    @media (orientation: landscape) {
+    @media (min-aspect-ratio: 13/10) {
       .landscape-info { display: flex; }
     }
 
@@ -3541,7 +3541,7 @@
         wordMatchContainer.classList.add("hidden");
         wordTypingContainer.classList.add("hidden");
         sentenceContainer.classList.add("hidden");
-        gatePanel.style.display = "none";
+        gatePanel.classList.add("gate-disabled");
         statusEl.textContent = "Welcome! Import a deck to start.";
       } else {
         // Restore correct game container visibility
