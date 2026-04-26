@@ -362,7 +362,8 @@
       gap: 6px;
       margin-bottom: 16px;
     }
-    .gate-strip[hidden] { display: none; }
+    .gate-strip[hidden],
+    .gate-strip.gate-disabled { display: none; }
     .gate-nav {
       flex: 0 0 auto;
       width: 40px;
@@ -480,7 +481,7 @@
        Everything fits on screen — no scrolling. The page becomes a
        3-column grid: [left cards][centre info][right cards].
     */
-    @media (orientation: landscape) and (max-height: 700px) {
+    @media (orientation: landscape) {
       /* Compact app bar */
       .appbar {
         position: static;
@@ -533,10 +534,11 @@
 
       /* In landscape we hide the standalone status/score/context strip
          and gate-strip — their info is shown in the centre of the
-         3-column game grid below. */
+         3-column game grid below. !important needed to defeat any inline
+         display style or specificity issues. */
       .context-strip,
       .play-meta,
-      .gate-strip { display: none; }
+      .gate-strip { display: none !important; }
 
       /* The matching game becomes a 3-column layout filling vertical space */
       #wordMatchContainer {
@@ -675,12 +677,12 @@
       .landscape-info .li-arrow:disabled { opacity: 0.3; }
     }
     /* In portrait, hide the landscape-only info column */
-    @media not all and (orientation: landscape) and (max-height: 700px) {
+    @media not all and (orientation: landscape) {
       .landscape-info { display: none; }
     }
     /* When portrait but on regular tall phones, keep the landscape-info hidden */
     .landscape-info { display: none; }
-    @media (orientation: landscape) and (max-height: 700px) {
+    @media (orientation: landscape) {
       .landscape-info { display: flex; }
     }
 
@@ -2313,8 +2315,11 @@
       updateModeSummary();
     }
     function updateGateUI() {
-      // gate-strip uses display: flex when visible (or we hide via 'hidden' class)
-      gatePanel.style.display = gateEnabled ? "flex" : "none";
+      // Toggle a class instead of inline style, so @media rules can still
+      // override (inline style has higher specificity than @media rules).
+      gatePanel.classList.toggle("gate-disabled", !gateEnabled);
+      // Clear any leftover inline style from previous versions
+      gatePanel.style.display = "";
       updateModeSummary();
     }
 
