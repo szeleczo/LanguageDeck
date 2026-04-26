@@ -362,10 +362,36 @@
     }
 
     /* ---------- Game area: word match ---------- */
+    /* The match game uses a single 2-column grid: left and right "columns"
+       are wrappers with `display: contents` so cards become direct grid
+       items. We then place each card explicitly in column 1 or 2 with
+       grid-column, and the corresponding row index with grid-row.
+       This guarantees that the two cards in the same logical "row" share
+       the same height — even if one side has a long string — so the layout
+       never gets visually offset. */
     .game {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      grid-auto-rows: minmax(64px, auto);
       gap: 10px;
+    }
+    .column-flow {
+      display: contents;
+    }
+    /* In landscape (wide-and-short viewports, typical for held-sideways phones)
+       give the columns a bit more breathing room and centre them so they
+       sit comfortably under both thumbs. */
+    @media (orientation: landscape) and (max-height: 540px) {
+      .game {
+        gap: 14px;
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      .card {
+        min-height: 52px;
+        padding: 12px 14px;
+        font-size: 16px;
+      }
     }
 
     .card {
@@ -373,20 +399,21 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 16px 14px;
-      margin-bottom: 8px;
-      font-size: 16px;
+      padding: 18px 16px;
+      font-size: 17px;
       cursor: pointer;
       user-select: none;
       transition: transform 0.08s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-      min-height: var(--tap);
+      min-height: 64px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
       word-break: break-word;
+      hyphens: auto;
       box-shadow: var(--shadow-sm);
       color: var(--text);
+      line-height: 1.3;
     }
     .card:hover:not(.correct):not(.disabled) { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
     .card:active:not(.disabled) { transform: scale(0.98); }
@@ -402,9 +429,12 @@
       cursor: default;
     }
     .card.word-correct {
-      background: var(--warning-soft);
-      border-color: var(--warning);
-      color: var(--warning);
+      /* "Word matched, waiting for article" — must look clearly positive,
+         not like an error. We use a calm blue rather than amber to avoid
+         giving the impression of a wrong answer. */
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary);
     }
     .card.wrong {
       background: var(--danger-soft);
@@ -822,7 +852,7 @@
       .main { padding: 24px 28px 80px; }
       .brand { font-size: 22px; }
       .game { gap: 14px; }
-      .card { padding: 18px; font-size: 17px; }
+      .card { min-height: 72px; padding: 20px 18px; font-size: 18px; }
       .typing-word { font-size: 40px; }
       .sentence-english { font-size: 24px; }
       .sentence-target { font-size: 19px; line-height: 2.4; }
@@ -831,61 +861,12 @@
     }
 
     @media (max-width: 360px) {
-      .card { padding: 12px 8px; font-size: 14px; }
+      .card { min-height: 58px; padding: 14px 10px; font-size: 15px; }
       .typing-word { font-size: 26px; }
       .sentence-english { font-size: 17px; }
     }
 
-  
-@media (hover: none) and (pointer: coarse) {
-  button,
-  select,
-  input[type="file"],
-  input[type="text"] {
-    min-height: 48px;
-  }
-
-  .card {
-    min-height: 56px;
-    padding-top: 16px;
-    padding-bottom: 16px;
-  }
-
-  .article-buttons button {
-    min-height: 64px;
-  }
-
-  .typing-form {
-    gap: 12px;
-  }
-
-  .controls {
-    gap: 12px;
-  }
-
-  .gate-row {
-    gap: 14px;
-  }
-}
-
-@media (max-width: 700px) {
-  .panel,
-  .column,
-  .typing-panel {
-    padding: 18px;
-  }
-
-  .card {
-    font-size: 17px;
-    line-height: 1.4;
-  }
-
-  .shortcut-badge {
-    left: 10px;
-  }
-}
-
-</style>
+  </style>
 </head>
 <body>
   <!-- ---------- Sticky app bar ---------- -->
@@ -939,10 +920,16 @@
     </div>
 
     <!-- Word match -->
+    <!-- The two visually-separate columns are actually a single CSS grid:
+         this guarantees that the left and right card in the same logical
+         "row" stay the same height even when one side has a longer word.
+         The JS still appends children to leftColumn/rightColumn — they're
+         both `display: contents` so the cards inside are direct grid items
+         of `.game`. -->
     <div id="wordMatchContainer">
       <div class="game">
-        <div class="column"><div id="leftColumn"></div></div>
-        <div class="column"><div id="rightColumn"></div></div>
+        <div id="leftColumn" class="column-flow"></div>
+        <div id="rightColumn" class="column-flow"></div>
       </div>
     </div>
 
@@ -2207,6 +2194,9 @@
         const card = document.createElement("div");
         card.className = "card";
         card.dataset.id = pair.id;
+        // Pin to left column, row = index + 1 (1-indexed)
+        card.style.gridColumn = "1";
+        card.style.gridRow = String(index + 1);
         const badge = document.createElement("span");
         badge.className = "shortcut-badge";
         badge.textContent = (index === 9 ? "0" : String(index + 1));
@@ -2230,6 +2220,9 @@
         const card = document.createElement("div");
         card.className = "card";
         card.dataset.id = pair.id;
+        // Pin to right column, row = index + 1 (1-indexed)
+        card.style.gridColumn = "2";
+        card.style.gridRow = String(index + 1);
         const badge = document.createElement("span");
         badge.className = "shortcut-badge";
         badge.textContent = (index === 9 ? "0" : String(index + 1));
