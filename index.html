@@ -480,7 +480,7 @@
        Everything fits on screen — no scrolling. The page becomes a
        3-column grid: [left cards][centre info][right cards].
     */
-    @media (orientation: landscape) and (max-height: 540px) {
+    @media (orientation: landscape) and (max-height: 700px) {
       /* Compact app bar */
       .appbar {
         position: static;
@@ -675,12 +675,12 @@
       .landscape-info .li-arrow:disabled { opacity: 0.3; }
     }
     /* In portrait, hide the landscape-only info column */
-    @media not all and (orientation: landscape) and (max-height: 540px) {
+    @media not all and (orientation: landscape) and (max-height: 700px) {
       .landscape-info { display: none; }
     }
     /* When portrait but on regular tall phones, keep the landscape-info hidden */
     .landscape-info { display: none; }
-    @media (orientation: landscape) and (max-height: 540px) {
+    @media (orientation: landscape) and (max-height: 700px) {
       .landscape-info { display: flex; }
     }
 
