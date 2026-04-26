@@ -458,6 +458,22 @@
     .column-flow {
       display: contents;
     }
+
+    /* ---------- Column ordering ----------
+       Cards have data-side="english" or "target". The HTML root carries
+       data-col-order which decides which side is on the left.
+       Default (data-col-order is missing or "english_first"): English left.
+       "target_first": target language on the left. */
+
+    /* PORTRAIT: cards go directly into the .game grid via display:contents,
+       so we just set grid-column based on the side. */
+    html:not([data-col-order="target_first"]) .card[data-side="english"] { grid-column: 1; }
+    html:not([data-col-order="target_first"]) .card[data-side="target"]  { grid-column: 2; }
+    html[data-col-order="target_first"]      .card[data-side="english"] { grid-column: 2; }
+    html[data-col-order="target_first"]      .card[data-side="target"]  { grid-column: 1; }
+
+    /* LANDSCAPE: the column swap is handled below via grid-column overrides
+       inside the landscape @media query (search for data-col-order there). */
     /* ---------- Landscape layout ----------
        Held-sideways phone: two card columns hug the LEFT and RIGHT edges
        of the screen, with progress / status info centred between them.
@@ -557,16 +573,23 @@
       }
       #wordMatchContainer #leftColumn { grid-column: 1; grid-row: 1; }
       #wordMatchContainer #rightColumn { grid-column: 3; grid-row: 1; }
+      /* Swap when target language should be on the left */
+      html[data-col-order="target_first"] #wordMatchContainer #leftColumn { grid-column: 3; }
+      html[data-col-order="target_first"] #wordMatchContainer #rightColumn { grid-column: 1; }
 
-      /* Each card gets equal share of column height, no max */
+      /* Each card gets equal share of column height. We use !important on
+         the size-related properties because the base `.card` rule appears
+         later in the source order than this @media block, and would
+         otherwise override these values. */
       .card {
-        flex: 1 1 0;
-        min-height: 0;
-        padding: 4px 12px;
-        font-size: 14px;
-        margin-bottom: 0;
-        border-bottom-width: 3px;
-        line-height: 1.15;
+        flex: 1 1 0 !important;
+        min-height: 0 !important;
+        height: 0 !important;
+        padding: 4px 12px !important;
+        font-size: 14px !important;
+        margin-bottom: 0 !important;
+        border-bottom-width: 3px !important;
+        line-height: 1.15 !important;
         /* Override the explicit grid-row/grid-column from JS — they apply
            only in portrait mode now. In landscape, cards live inside the
            flex columns instead of being grid-positioned siblings. */
@@ -575,7 +598,7 @@
       }
       .card:active:not(.disabled):not(.correct) {
         transform: translateY(1.5px);
-        margin-bottom: 1.5px;
+        margin-bottom: 1.5px !important;
       }
 
       /* Centre info column: gate progress + score + status, vertically stacked */
@@ -917,14 +940,20 @@
        screen on portrait phones, so action buttons (like der/die/das) sit
        in the thumb-reach zone. On wider screens (tablets, landscape) the
        modal stays centered as normal. */
+    /* Article modal sits in the natural thumb-reach zone — around the lower
+       third of the screen, where the user's eyes are also focused (the cards
+       they just matched). We anchor it with padding-top: 55vh so the card
+       starts roughly at vertical 55% of the viewport, leaving the actual
+       der/die/das buttons centered around 65–75% — comfortable for thumbs.
+       On tablets/landscape, the modal stays vertically centred. */
     @media (orientation: portrait) and (max-width: 700px) {
       .modal-backdrop.bottom-sheet {
-        align-items: flex-end;
-        padding: 16px 12px calc(20px + env(safe-area-inset-bottom));
+        align-items: flex-start;
+        padding: 55vh 12px calc(20px + env(safe-area-inset-bottom));
       }
       .modal-backdrop.bottom-sheet .modal-card {
         max-width: 100%;
-        border-radius: 24px 24px var(--radius-lg) var(--radius-lg);
+        border-radius: 20px;
       }
     }
 
@@ -1375,6 +1404,13 @@
               <option value="system" selected>Match device (auto)</option>
               <option value="light">Light</option>
               <option value="dark">Dark</option>
+            </select>
+          </div>
+          <div>
+            <label for="columnOrderSelect">Column order</label>
+            <select id="columnOrderSelect">
+              <option value="english_first" selected>English on the left</option>
+              <option value="target_first">Target language on the left</option>
             </select>
           </div>
         </div>
@@ -2004,6 +2040,7 @@
     let strictGate = true;
 
     let theme = "system"; // "system" | "light" | "dark"
+    let columnOrder = "english_first"; // "english_first" | "target_first"
 
     let selectedLeft = null;
     let selectedRight = null;
@@ -2144,7 +2181,7 @@
         wordMode, sentenceMode, practiceScope, repetitionProfile,
         newRatio, visibleCount,
         gateEnabled, gateSize, currentGateIndex, strictGate,
-        theme
+        theme, columnOrder
       };
       try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch (_) {}
     }
@@ -2180,6 +2217,16 @@
         if (theme === "system") applyTheme();
       });
     } catch (_) { /* old browsers */ }
+
+    /* ---------- Column order ----------
+       The two card columns can be swapped: which side English appears on
+       (left / right) is up to the user. The DOM order stays the same
+       (#leftColumn always holds English cards, #rightColumn always holds
+       target-language cards), but their on-screen position is controlled
+       by CSS `order` plus an attribute on a wrapper. */
+    function applyColumnOrder() {
+      document.documentElement.setAttribute("data-col-order", columnOrder);
+    }
 
     /* ---------- UI helpers ---------- */
     function deckCfg() { return DECK_CONFIG[currentDeck] || DECK_CONFIG.de; }
@@ -2583,8 +2630,8 @@
         const card = document.createElement("div");
         card.className = "card";
         card.dataset.id = pair.id;
-        // Pin to left column, row = index + 1 (1-indexed)
-        card.style.gridColumn = "1";
+        card.dataset.side = "english";
+        // Row is fixed by index; column is decided by CSS based on data-col-order.
         card.style.gridRow = String(index + 1);
         const badge = document.createElement("span");
         badge.className = "shortcut-badge";
@@ -2609,8 +2656,8 @@
         const card = document.createElement("div");
         card.className = "card";
         card.dataset.id = pair.id;
-        // Pin to right column, row = index + 1 (1-indexed)
-        card.style.gridColumn = "2";
+        card.dataset.side = "target";
+        // Row is fixed by index; column is decided by CSS based on data-col-order.
         card.style.gridRow = String(index + 1);
         const badge = document.createElement("span");
         badge.className = "shortcut-badge";
@@ -3296,6 +3343,15 @@
       });
     }
 
+    const columnOrderSelectEl = document.getElementById("columnOrderSelect");
+    if (columnOrderSelectEl) {
+      columnOrderSelectEl.addEventListener("change", () => {
+        columnOrder = columnOrderSelectEl.value;
+        applyColumnOrder();
+        saveSettings();
+      });
+    }
+
     prevGateBtn.addEventListener("click", () => tryMoveGate(-1));
     nextGateBtn.addEventListener("click", () => tryMoveGate(1));
     const liPrevBtn = document.getElementById("liPrevGateBtn");
@@ -3395,6 +3451,8 @@
       importTypeSelect.value = importType;
       const themeSel = document.getElementById("themeSelect");
       if (themeSel) themeSel.value = theme;
+      const colOrderSel = document.getElementById("columnOrderSelect");
+      if (colOrderSel) colOrderSel.value = columnOrder;
     }
 
     async function init() {
@@ -3415,9 +3473,11 @@
         currentGateIndex = saved.currentGateIndex ?? 0;
         strictGate = saved.strictGate ?? strictGate;
         theme = saved.theme ?? theme;
+        columnOrder = saved.columnOrder ?? columnOrder;
       }
 
       applyTheme();
+      applyColumnOrder();
       applySettingsToUI();
 
       try {
