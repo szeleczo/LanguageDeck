@@ -57,8 +57,12 @@
                       "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
+    /* Dark theme is applied either:
+       - automatically when the OS asks for it AND user hasn't overridden, or
+       - explicitly when the user picks "Dark" in Settings.
+       We use [data-theme="..."] on <html> as the override mechanism. */
     @media (prefers-color-scheme: dark) {
-      :root {
+      html:not([data-theme="light"]) {
         --bg: #0b1120;
         --surface: #111827;
         --surface-2: #0f172a;
@@ -73,6 +77,21 @@
         --danger-soft: rgba(239, 68, 68, 0.15);
         --warning-soft: rgba(245, 158, 11, 0.15);
       }
+    }
+    html[data-theme="dark"] {
+      --bg: #0b1120;
+      --surface: #111827;
+      --surface-2: #0f172a;
+      --border: #1e293b;
+      --border-strong: #334155;
+      --text: #f1f5f9;
+      --text-muted: #cbd5e1;
+      --text-faint: #94a3b8;
+      --primary-soft: #1e3a8a;
+      --primary-deep: #1e40af;
+      --success-soft: rgba(34, 197, 94, 0.15);
+      --danger-soft: rgba(239, 68, 68, 0.15);
+      --warning-soft: rgba(245, 158, 11, 0.15);
     }
 
     html, body {
@@ -91,6 +110,8 @@
     body {
       padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     /* ---------- Sticky app bar ---------- */
@@ -104,8 +125,9 @@
       border-bottom: 1px solid var(--border);
     }
     @media (prefers-color-scheme: dark) {
-      .appbar { background: rgba(11, 17, 32, 0.85); }
+      html:not([data-theme="light"]) .appbar { background: rgba(11, 17, 32, 0.85); }
     }
+    html[data-theme="dark"] .appbar { background: rgba(11, 17, 32, 0.85); }
     .appbar-inner {
       max-width: 1280px;
       margin: 0 auto;
@@ -146,10 +168,24 @@
     .icon-btn:active:not(:disabled) { transform: scale(0.96); }
     .icon-btn svg { width: 20px; height: 20px; }
 
+    /* Make the page a vertical flex container so the game-card area can be
+       pushed toward the bottom of the screen, where thumbs naturally reach. */
     .main {
       max-width: 1280px;
+      width: 100%;
       margin: 0 auto;
-      padding: 16px 16px 120px;
+      padding: 16px 16px 100px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    /* Push everything below the gate strip toward the bottom of the viewport
+       on tall phone screens, so the cards land in the lower half where the
+       thumb can reach them comfortably. */
+    .game-area-spacer {
+      flex: 1 1 0;
+      min-height: 8px;
+      max-height: 200px;
     }
 
     /* ---------- Buttons ---------- */
@@ -422,20 +458,72 @@
     .column-flow {
       display: contents;
     }
-    /* In landscape (wide-and-short viewports, typical for held-sideways phones)
-       give the columns a bit more breathing room and centre them so they
-       sit comfortably under both thumbs. */
+    /* ---------- Landscape layout ----------
+       In landscape (a phone held horizontally), the design goal flips:
+       instead of "leave breathing room and push cards to thumb-zone",
+       we want everything to fit on screen at once, with the two columns
+       on the left and right edges. The progress/context info shrinks
+       and centers between them.
+    */
     @media (orientation: landscape) and (max-height: 540px) {
+      .main {
+        padding: 8px 12px 12px;
+      }
+      /* Hide the spacer so we use all available vertical space */
+      .game-area-spacer { display: none; }
+
+      /* Compact context chip + score: keep them on a single row, centred */
+      .context-strip {
+        margin-bottom: 6px;
+        justify-content: center;
+      }
+      .context-chip { padding: 4px 12px; font-size: 12px; }
+      .play-meta { margin-bottom: 6px; min-height: 0; }
+      .status-text { font-size: 12px; }
+      .score-display { font-size: 13px; }
+
+      /* Slim gate strip */
+      .gate-strip { margin-bottom: 8px; }
+      .gate-nav { width: 36px; min-height: 40px; font-size: 18px; }
+      .gate-summary {
+        min-height: 40px;
+        padding: 4px 14px;
+      }
+      .gate-summary-text { font-size: 12px; }
+
+      /* The two card columns at left/right edges; cards auto-fit vertically */
       .game {
-        gap: 12px;
-        max-width: 760px;
-        margin: 0 auto;
+        gap: 8px 28px;
+        max-width: 100%;
+        /* Use grid to fill remaining vertical space evenly */
+        flex: 1;
       }
       .card {
-        min-height: 64px;
-        padding: 10px 16px;
-        font-size: 17px;
+        min-height: 0;
+        padding: 6px 14px;
+        font-size: 15px;
+        margin-bottom: 0;
+        /* Thinner 3D border to save vertical space */
+        border-bottom-width: 3px;
       }
+      .card:active:not(.disabled):not(.correct) {
+        transform: translateY(1.5px);
+        margin-bottom: 1.5px;
+      }
+      /* Cards stretch to fill their grid cell vertically */
+      .game .card { height: 100%; }
+      /* Make grid rows share remaining height equally */
+      #wordMatchContainer { display: flex; flex: 1; min-height: 0; }
+      #wordMatchContainer .game {
+        width: 100%;
+        grid-auto-rows: 1fr;
+        height: 100%;
+      }
+
+      /* App bar a touch shorter */
+      .appbar-inner { padding: 6px 16px; }
+      .icon-btn { width: 36px; height: 36px; min-height: 36px; }
+      .brand { font-size: 19px; }
     }
 
     .card {
@@ -460,7 +548,12 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      word-break: break-word;
+      /* Wrap rules: prefer breaking at spaces, but if a single word is wider
+         than the card, allow breaking inside it (as a last resort). The old
+         `word-break: break-word` was too aggressive and split short words
+         like "Haus" into "Hau-s". */
+      overflow-wrap: break-word;
+      word-break: normal;
       hyphens: auto;
       color: var(--text);
       line-height: 1.25;
@@ -963,6 +1056,11 @@
       <button class="gate-nav" id="nextGateBtn" aria-label="Next gate">›</button>
     </div>
 
+    <!-- Flexible spacer that pushes the game cards down toward the lower
+         half of the screen, into the natural thumb-reach zone on tall phones.
+         Capped at ~200px in CSS so it doesn't add absurd amounts on tall pages. -->
+    <div class="game-area-spacer" aria-hidden="true"></div>
+
     <!-- Word match -->
     <!-- The two visually-separate columns are actually a single CSS grid:
          this guarantees that the left and right card in the same logical
@@ -1092,6 +1190,20 @@
           <div>
             <label for="setSelect">Active deck</label>
             <select id="setSelect"></select>
+          </div>
+        </div>
+      </details>
+
+      <details class="settings-section">
+        <summary>Appearance</summary>
+        <div class="settings-section-body">
+          <div>
+            <label for="themeSelect">Theme</label>
+            <select id="themeSelect">
+              <option value="system" selected>Match device (auto)</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
           </div>
         </div>
       </details>
@@ -1662,6 +1774,11 @@
       return shuffleArr(selected).slice(0, limit);
     }
 
+    /* Number of consecutive correct answers required to clear ONE wrong-strike.
+       Higher value = harder to "rehabilitate" a previously wrong word.
+       Was effectively 1 (each correct decremented times_wrong); now 3. */
+    const WRONG_RECOVERY_STREAK = 3;
+
     async function recordAnswer(table, itemId, correct, profile) {
       const row = await DB.getById(table, itemId);
       if (!row) return null;
@@ -1669,11 +1786,23 @@
       if (correct) {
         row.times_correct = (row.times_correct | 0) + 1;
         row.streak = (row.streak | 0) + 1;
-        if ((row.times_wrong | 0) > 0) row.times_wrong = (row.times_wrong | 0) - 1;
+        // Only decrement wrong-count after enough consecutive correct answers
+        // since the last mistake. This prevents a single lucky match from
+        // wiping out a wrong-strike — the user must demonstrate real recall.
+        if ((row.times_wrong | 0) > 0) {
+          row.recovery_progress = (row.recovery_progress | 0) + 1;
+          if (row.recovery_progress >= WRONG_RECOVERY_STREAK) {
+            row.times_wrong = (row.times_wrong | 0) - 1;
+            row.recovery_progress = 0;
+          }
+        } else {
+          row.recovery_progress = 0;
+        }
         row.next_due = calcNextDue(row.streak, row.difficulty || 1.0, profile);
       } else {
         row.times_wrong = (row.times_wrong | 0) + 1;
         row.streak = 0;
+        row.recovery_progress = 0; // mistake resets recovery progress
         row.next_due = calcWrongDue(profile);
       }
       row.last_seen = nowIso();
@@ -1701,6 +1830,8 @@
     let currentGateIndex = 0;
     let totalGates = 0;
     let strictGate = true;
+
+    let theme = "system"; // "system" | "light" | "dark"
 
     let selectedLeft = null;
     let selectedRight = null;
@@ -1840,7 +1971,8 @@
         currentGame, currentDeck, currentSetName, importType,
         wordMode, sentenceMode, practiceScope, repetitionProfile,
         newRatio, visibleCount,
-        gateEnabled, gateSize, currentGateIndex, strictGate
+        gateEnabled, gateSize, currentGateIndex, strictGate,
+        theme
       };
       try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch (_) {}
     }
@@ -1851,6 +1983,31 @@
         return JSON.parse(raw);
       } catch (_) { return null; }
     }
+
+    /* ---------- Theme ---------- */
+    /* Applies the chosen theme by setting (or removing) data-theme on <html>.
+       For "system" we remove the attribute so the OS preference takes over via
+       the @media (prefers-color-scheme: dark) rules. */
+    function applyTheme() {
+      const html = document.documentElement;
+      if (theme === "light") html.setAttribute("data-theme", "light");
+      else if (theme === "dark") html.setAttribute("data-theme", "dark");
+      else html.removeAttribute("data-theme");
+
+      // Keep the browser theme-color meta in sync, so the Android status bar
+      // and PWA chrome match the actual rendered background.
+      const dark =
+        theme === "dark" ||
+        (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+      if (themeColorMeta) themeColorMeta.setAttribute("content", dark ? "#0b1120" : "#f8fafc");
+    }
+    // Re-apply when system theme changes (only matters if user picked "system")
+    try {
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+        if (theme === "system") applyTheme();
+      });
+    } catch (_) { /* old browsers */ }
 
     /* ---------- UI helpers ---------- */
     function deckCfg() { return DECK_CONFIG[currentDeck] || DECK_CONFIG.de; }
@@ -2921,6 +3078,15 @@
       updateModeSummary(); await refreshGateInfo();
     });
 
+    const themeSelectEl = document.getElementById("themeSelect");
+    if (themeSelectEl) {
+      themeSelectEl.addEventListener("change", () => {
+        theme = themeSelectEl.value;
+        applyTheme();
+        saveSettings();
+      });
+    }
+
     prevGateBtn.addEventListener("click", () => tryMoveGate(-1));
     nextGateBtn.addEventListener("click", () => tryMoveGate(1));
     gateSelect.addEventListener("change", async () => {
@@ -3014,6 +3180,8 @@
       gateSizeSelect.value = String(gateSize);
       strictGateCheckbox.value = strictGate ? "true" : "false";
       importTypeSelect.value = importType;
+      const themeSel = document.getElementById("themeSelect");
+      if (themeSel) themeSel.value = theme;
     }
 
     async function init() {
@@ -3033,8 +3201,10 @@
         gateSize = saved.gateSize ?? gateSize;
         currentGateIndex = saved.currentGateIndex ?? 0;
         strictGate = saved.strictGate ?? strictGate;
+        theme = saved.theme ?? theme;
       }
 
+      applyTheme();
       applySettingsToUI();
 
       try {
