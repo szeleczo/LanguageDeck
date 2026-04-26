@@ -466,44 +466,75 @@
     */
     @media (orientation: landscape) and (max-height: 540px) {
       /* Compact app bar */
+      .appbar {
+        position: static;
+        flex: 0 0 auto;
+      }
       .appbar-inner { padding: 4px 12px; }
       .icon-btn { width: 36px; height: 36px; min-height: 36px; }
       .brand { font-size: 18px; }
 
-      /* The page becomes a flex container that fills the viewport */
-      body { min-height: 100dvh; }
-      .main {
-        padding: 6px 10px 10px;
-        flex: 1;
+      /* HARD-LOCK the viewport height so nothing can scroll.
+         - `html` and `body` get a fixed dvh-based height.
+         - `body` is overflow-hidden, so even if a child miscalculates and
+           tries to spill, it gets clipped instead of triggering scroll.
+         - `min-height: 0` everywhere down the flex chain so flex children
+           are allowed to shrink below their natural content size. */
+      html, body {
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+      }
+      body {
         min-height: 0;
-        /* Position: the children below need to fill remaining space */
         display: flex;
         flex-direction: column;
+      }
+      .appbar { flex: 0 0 auto; }
+      .main {
+        padding: 6px 10px 10px;
+        flex: 1 1 0;
+        min-height: 0;
+        max-height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
       }
 
       /* Hide the portrait-only spacer */
       .game-area-spacer { display: none; }
 
       /* The empty state should still take the whole space */
-      .empty-state { padding: 24px 16px; }
+      .empty-state {
+        padding: 16px 16px;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
 
       /* In landscape we hide the standalone status/score/context strip
          and gate-strip — their info is shown in the centre of the
-         3-column game grid below. This is what the user asked for:
-         "progress doesn't need to be ABOVE the columns; can be in the middle". */
+         3-column game grid below. */
       .context-strip,
       .play-meta,
       .gate-strip { display: none; }
 
       /* The matching game becomes a 3-column layout filling vertical space */
       #wordMatchContainer {
-        flex: 1;
+        flex: 1 1 0;
         min-height: 0;
+        max-height: 100%;
         display: flex;
+        overflow: hidden;
       }
       #wordMatchContainer .game {
         width: 100%;
         height: 100%;
+        max-height: 100%;
+        min-height: 0;
         display: grid;
         /* left cards | centre info | right cards */
         grid-template-columns: 1fr minmax(140px, 22%) 1fr;
@@ -512,13 +543,17 @@
         align-items: stretch;
       }
       /* The two flow wrappers (display: contents) need to be replaced with
-         actual flex columns in landscape, so cards can stack vertically. */
+         actual flex columns in landscape, so cards can stack vertically.
+         overflow: hidden + min-height: 0 prevents any single card from
+         pushing the column past the grid track height. */
       #wordMatchContainer .column-flow {
         display: flex;
         flex-direction: column;
         gap: 6px;
         height: 100%;
+        max-height: 100%;
         min-height: 0;
+        overflow: hidden;
       }
       #wordMatchContainer #leftColumn { grid-column: 1; grid-row: 1; }
       #wordMatchContainer #rightColumn { grid-column: 3; grid-row: 1; }
