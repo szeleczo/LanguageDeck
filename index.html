@@ -10,6 +10,10 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
+  <link rel="apple-touch-icon" sizes="167x167" href="icon-192.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="icon-192.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="icon-192.png" />
   <title>LanguageDeck — Vocabulary trainer</title>
   <style>
     /* ---------- Reset ---------- */
@@ -1203,9 +1207,18 @@
     </div>
   </header>
 
+  <!-- Android / Chromium "Install" banner — fires on `beforeinstallprompt` -->
   <div class="install-banner" id="installBanner">
     <span>Install the app to your home screen for offline use.</span>
     <button id="installBtn">Install</button>
+  </div>
+
+  <!-- iOS Safari "Add to Home Screen" hint — Safari does not fire
+       beforeinstallprompt, so we show a small banner with manual instructions
+       only when we detect iOS Safari and we're not already running standalone. -->
+  <div class="install-banner" id="iosInstallBanner">
+    <span style="line-height:1.4;">Install on iPhone: tap <strong>Share</strong> <span aria-hidden="true">⬆️</span> below, then <strong>Add to Home Screen</strong>.</span>
+    <button id="iosInstallDismissBtn" class="ghost" style="padding:4px 10px;min-height:32px;">Got it</button>
   </div>
 
   <main class="main">
@@ -3141,64 +3154,176 @@
     });
 
     /* ---------- Built-in deck list ---------- */
-    async function loadBuiltinList() {
-      builtinList.innerHTML = "Loading…";
+    /* ---------- Built-in deck discovery ----------
+       Two paths to find deck CSVs:
+       1) PRIMARY: query the GitHub Contents API for the `decks/` folder of the
+          repo we're hosted on. This automatically picks up any CSV file
+          dropped into a language subfolder (e.g. `decks/de/foo.csv`), so the
+          user can add new decks just by committing files — no JSON edits.
+       2) FALLBACK: read decks/index.json (committed manually). Used when:
+          - we're not on github.io (running locally or on a different host)
+          - the GitHub API call fails (rate-limited, offline, etc.)
+
+       Convention for auto-discovered decks:
+       - File path is `decks/<lang>/<name>.csv`
+       - <lang> becomes the deck code (de, it, fr, es, …)
+       - <name> (without .csv) becomes the displayed deck name
+       - All discovered decks default to type "words". For sentence-type
+         decks, list them explicitly in index.json. */
+
+    function detectGitHubRepo() {
+      // Parse `username.github.io/repo/...` style URLs
+      const host = location.hostname; // e.g. szeleczo.github.io
+      const m = host.match(/^([^.]+)\.github\.io$/i);
+      if (!m) return null;
+      const owner = m[1];
+      // Path looks like /LanguageDeck/ — first segment is the repo (or empty
+      // if it's the user's root site)
+      const segments = location.pathname.split("/").filter(Boolean);
+      const repo = segments[0] || owner + ".github.io";
+      return { owner, repo };
+    }
+
+    async function fetchDecksFromGitHubAPI() {
+      const r = detectGitHubRepo();
+      if (!r) return null;
+      const baseUrl = `https://api.github.com/repos/${r.owner}/${r.repo}/contents/decks`;
+      try {
+        // 1) List `decks/` — find language subfolders
+        const rootRes = await fetch(baseUrl, { cache: "no-cache" });
+        if (!rootRes.ok) return null;
+        const rootEntries = await rootRes.json();
+        if (!Array.isArray(rootEntries)) return null;
+
+        const decks = [];
+        // 2) For each subfolder, list its CSV files
+        for (const entry of rootEntries) {
+          if (entry.type !== "dir") continue;
+          const lang = entry.name.toLowerCase();
+          // Only consider 2-letter language codes (de, it, fr, es...)
+          if (!/^[a-z]{2,3}$/.test(lang)) continue;
+          const subRes = await fetch(`${baseUrl}/${encodeURIComponent(entry.name)}`, { cache: "no-cache" });
+          if (!subRes.ok) continue;
+          const subEntries = await subRes.json();
+          if (!Array.isArray(subEntries)) continue;
+          for (const f of subEntries) {
+            if (f.type !== "file") continue;
+            if (!/\.csv$/i.test(f.name)) continue;
+            const baseName = f.name.replace(/\.csv$/i, "");
+            decks.push({
+              name: baseName,
+              file: `${lang}/${f.name}`,
+              deck: lang,
+              type: "words", // GitHub-API-discovered default
+              source: "api"
+            });
+          }
+        }
+        return decks;
+      } catch (err) {
+        return null;
+      }
+    }
+
+    async function fetchDecksFromIndexJson() {
       try {
         const res = await fetch("decks/index.json", { cache: "no-cache" });
-        if (!res.ok) throw new Error("not found");
+        if (!res.ok) return null;
         const data = await res.json();
         const decks = Array.isArray(data) ? data : (data.decks || []);
-        if (decks.length === 0) { builtinList.innerHTML = "<em>No built-in decks listed in decks/index.json</em>"; return; }
-        builtinList.innerHTML = "";
-        decks.forEach(d => {
-          const wrap = document.createElement("div");
-          wrap.style.cssText = "display:flex;flex-direction:column;gap:4px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);";
-          const title = document.createElement("div");
-          title.innerHTML = `<strong>${escapeHtml(d.name || d.file)}</strong>`;
-          const meta = document.createElement("div");
-          meta.style.cssText = "font-size:12px;color:var(--text-faint);";
-          meta.textContent = `${d.type || "words"} · ${d.deck || "de"} · ${d.file}`;
-          const btn = document.createElement("button");
-          btn.textContent = "Import";
-          btn.style.marginTop = "6px";
-          btn.addEventListener("click", async () => {
-            try {
-              const url = `decks/${d.file}`;
-              const r = await fetch(url, { cache: "no-cache" });
-              if (!r.ok) throw new Error(`Could not download ${d.file}`);
-              const text = await r.text();
-              const setName = (d.name || d.file.replace(/\.csv$/i, ""));
-              if ((d.type || "words") === "sentences") {
-                const n = await importSentencesFromCsv(text, d.deck || currentDeck, setName);
-                showToast(`Imported ${n} sentences into "${setName}".`);
-                importType = "sentences"; importTypeSelect.value = "sentences";
-              } else {
-                const n = await importWordsFromCsv(text, d.deck || currentDeck, setName);
-                showToast(`Imported ${n} words into "${setName}".`);
-                importType = "words"; importTypeSelect.value = "words";
-              }
-              currentSetName = setName; currentGateIndex = 0;
-              await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
-              await loadCurrentGame(true);
-              builtinModal.classList.remove("active");
-              closeSettings();
-            } catch (err) { showToast("Error: " + err.message); }
-          });
-          wrap.appendChild(title); wrap.appendChild(meta); wrap.appendChild(btn);
-          builtinList.appendChild(wrap);
-        });
+        return decks.map(d => ({ ...d, source: d.source || "json" }));
       } catch (err) {
-        builtinList.innerHTML = `
-          <em>No <code>decks/index.json</code> found yet.</em>
-          <p style="font-size:13px;color:var(--text-faint);margin-top:6px;">
-            Create a <code>decks/</code> folder next to this app, drop your CSV files in,
-            and add an <code>index.json</code> like this:
-          </p>
-          <pre style="background:var(--surface-2);padding:10px;border-radius:8px;font-size:12px;overflow:auto;border:1px solid var(--border);">[
-  { "name": "german_3000", "file": "german_3000.csv", "deck": "de", "type": "words" },
-  { "name": "italian_3000", "file": "italian_3000.csv", "deck": "it", "type": "words" }
-]</pre>`;
+        return null;
       }
+    }
+
+    async function loadBuiltinList() {
+      builtinList.innerHTML = "Loading…";
+
+      // Try GitHub API first, then index.json. We always also try index.json
+      // and merge — entries with the same `file` path are deduplicated, with
+      // index.json winning (so a maintainer can override defaults).
+      const [apiDecks, jsonDecks] = await Promise.all([
+        fetchDecksFromGitHubAPI(),
+        fetchDecksFromIndexJson()
+      ]);
+
+      const merged = new Map();
+      for (const d of (apiDecks || [])) merged.set(d.file, d);
+      for (const d of (jsonDecks || [])) merged.set(d.file, d); // json overrides api
+
+      const decks = Array.from(merged.values()).sort((a, b) => {
+        // Group by language, then alphabetical by name
+        if (a.deck !== b.deck) return (a.deck || "").localeCompare(b.deck || "");
+        return (a.name || "").localeCompare(b.name || "");
+      });
+
+      if (decks.length === 0) {
+        builtinList.innerHTML = `
+          <em>No built-in decks found.</em>
+          <p style="font-size:13px;color:var(--text-faint);margin-top:6px;">
+            Drop CSV files into <code>decks/&lt;lang&gt;/</code> in your repo,
+            or list them in <code>decks/index.json</code>.
+          </p>`;
+        return;
+      }
+
+      builtinList.innerHTML = "";
+
+      // Group by language for cleaner display
+      let lastLang = null;
+      decks.forEach(d => {
+        if (d.deck !== lastLang) {
+          const header = document.createElement("div");
+          header.style.cssText = "font-size:11px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin:8px 0 4px;";
+          header.textContent = (d.deck || "??").toUpperCase();
+          builtinList.appendChild(header);
+          lastLang = d.deck;
+        }
+
+        const wrap = document.createElement("div");
+        wrap.className = "builtin-item";
+        const title = document.createElement("div");
+        title.innerHTML = `<strong>${escapeHtml(d.name || d.file)}</strong>`;
+        const meta = document.createElement("div");
+        meta.className = "builtin-item-meta";
+        meta.textContent = `${d.type || "words"} · ${d.file}`;
+        const btn = document.createElement("button");
+        btn.textContent = "Import";
+        btn.style.marginTop = "6px";
+        btn.addEventListener("click", async () => {
+          try {
+            const url = `decks/${d.file}`;
+            const r = await fetch(url, { cache: "no-cache" });
+            if (!r.ok) throw new Error(`Could not download ${d.file}`);
+            const text = await r.text();
+            const setName = (d.name || d.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, ""));
+            if ((d.type || "words") === "sentences") {
+              const n = await importSentencesFromCsv(text, d.deck || currentDeck, setName);
+              showToast(`Imported ${n} sentences into "${setName}".`);
+              importType = "sentences"; importTypeSelect.value = "sentences";
+            } else {
+              const n = await importWordsFromCsv(text, d.deck || currentDeck, setName);
+              showToast(`Imported ${n} words into "${setName}".`);
+              importType = "words"; importTypeSelect.value = "words";
+            }
+            // Switch active deck to the language we just imported into,
+            // so the user sees their new content immediately.
+            if (d.deck) {
+              currentDeck = d.deck;
+              deckSelect.value = currentDeck;
+              applyDeckUI();
+            }
+            currentSetName = setName; currentGateIndex = 0;
+            await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
+            await loadCurrentGame(true);
+            builtinModal.classList.remove("active");
+            closeSettings();
+          } catch (err) { showToast("Error: " + err.message); }
+        });
+        wrap.appendChild(title); wrap.appendChild(meta); wrap.appendChild(btn);
+        builtinList.appendChild(wrap);
+      });
     }
 
     /* ---------- Event handlers ---------- */
@@ -3397,6 +3522,31 @@
       deferredPrompt = null;
     });
     window.addEventListener("appinstalled", () => { installBanner.classList.remove("visible"); });
+
+    /* iOS Safari has no `beforeinstallprompt` — show a manual hint when:
+       - the device looks like iOS, AND
+       - we're not already running standalone (i.e. not yet installed), AND
+       - the user hasn't dismissed the hint before. */
+    (function setupIosInstallHint() {
+      const iosBanner = document.getElementById("iosInstallBanner");
+      const dismissBtn = document.getElementById("iosInstallDismissBtn");
+      if (!iosBanner || !dismissBtn) return;
+
+      const ua = window.navigator.userAgent || "";
+      const isIos = /iPad|iPhone|iPod/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+      const isStandalone = window.navigator.standalone === true ||
+                           window.matchMedia("(display-mode: standalone)").matches;
+      const dismissedKey = "languagedeck_ios_install_dismissed";
+      const wasDismissed = localStorage.getItem(dismissedKey) === "1";
+
+      if (isIos && !isStandalone && !wasDismissed) {
+        iosBanner.classList.add("visible");
+      }
+      dismissBtn.addEventListener("click", () => {
+        iosBanner.classList.remove("visible");
+        try { localStorage.setItem(dismissedKey, "1"); } catch (_) {}
+      });
+    })();
 
     /* ---------- Orientation unlock ---------- */
     /* Some PWAs (Chrome on Android in particular) cache the manifest's

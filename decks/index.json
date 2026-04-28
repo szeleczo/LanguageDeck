@@ -1,0 +1,4 @@
+[
+  { "name": "german_3000",  "file": "de/german_3000.csv",  "deck": "de", "type": "words" },
+  { "name": "italian_3000", "file": "it/italian_3000.csv", "deck": "it", "type": "words" }
+]

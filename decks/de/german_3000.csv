@@ -1,0 +1,3001 @@
+﻿english,target,article
+I,ich,
+you (singular informal),du,
+he,er,
+she,sie,
+it,es,
+we,wir,
+you (plural informal),ihr,
+they,sie,
+you (formal),Sie,
+me (accusative),mich,
+"you (accusative, sg.)",dich,
+him (accusative),ihn,
+her (accusative),sie,
+us (accusative),uns,
+"you (accusative, pl.)",euch,
+them (accusative),sie,
+to me (dative),mir,
+"to you (dative, sg.)",dir,
+to him (dative),ihm,
+to her (dative),ihr,
+to us (dative),uns,
+"to you (dative, pl.)",euch,
+to them (dative),ihnen,
+myself,mich selbst,
+yourself,dich selbst,
+himself / herself / itself,sich selbst,
+ourselves,uns selbst,
+yourselves,euch selbst,
+themselves,sich selbst,
+someone,jemand,
+nobody,niemand,
+something,etwas,
+nothing,nichts,
+everyone,jeder / alle,
+everything,alles,
+both,beide,
+each other,einander,
+zero,null,
+one,eins,
+two,zwei,
+three,drei,
+four,vier,
+five,fünf,
+six,sechs,
+seven,sieben,
+eight,acht,
+nine,neun,
+ten,zehn,
+eleven,elf,
+twelve,zwölf,
+thirteen,dreizehn,
+fourteen,vierzehn,
+fifteen,fünfzehn,
+twenty,zwanzig,
+thirty,dreißig,
+forty,vierzig,
+fifty,fünfzig,
+sixty,sechzig,
+seventy,siebzig,
+eighty,achtzig,
+ninety,neunzig,
+hundred,hundert,
+thousand,tausend,
+million,eine Million,
+first,erst-,
+second,zweit-,
+third,dritt-,
+fourth,viert-,
+fifth,fünft-,
+once,einmal,
+twice,zweimal,
+half,halb,
+a quarter,ein Viertel,
+a third,ein Drittel,
+man,Mann,der
+woman,Frau,die
+child,Kind,das
+boy,Junge,der
+girl,Mädchen,das
+baby,Baby,das
+person,Person,die
+adult,Erwachsene,der/die
+teenager,Teenager,der
+father,Vater,der
+mother,Mutter,die
+son,Sohn,der
+daughter,Tochter,die
+brother,Bruder,der
+sister,Schwester,die
+husband,Ehemann,der
+wife,Ehefrau,die
+grandfather,Großvater,der
+grandmother,Großmutter,die
+grandson,Enkel,der
+granddaughter,Enkelin,die
+uncle,Onkel,der
+aunt,Tante,die
+cousin (m),Cousin,der
+cousin (f),Cousine,die
+nephew,Neffe,der
+niece,Nichte,die
+friend (m),Freund,der
+friend (f),Freundin,die
+neighbor (m),Nachbar,der
+neighbor (f),Nachbarin,die
+colleague (m),Kollege,der
+colleague (f),Kollegin,die
+partner,Partner,der
+guest,Gast,der
+stranger,Fremde,der/die
+parents,Eltern,die
+twins,Zwillinge,die
+stepfather,Stiefvater,der
+stepmother,Stiefmutter,die
+doctor (m),Arzt,der
+doctor (f),Ärztin,die
+nurse (m),Krankenpfleger,der
+nurse (f),Krankenschwester,die
+teacher (m),Lehrer,der
+teacher (f),Lehrerin,die
+student (m),Student,der
+student (f),Studentin,die
+pupil,Schüler,der
+professor,Professor,der
+lawyer (m),Anwalt,der
+lawyer (f),Anwältin,die
+judge,Richter,der
+engineer,Ingenieur,der
+architect,Architekt,der
+scientist,Wissenschaftler,der
+programmer,Programmierer,der
+designer,Designer,der
+artist,Künstler,der
+writer,Schriftsteller,der
+journalist,Journalist,der
+photographer,Fotograf,der
+musician,Musiker,der
+singer,Sänger,der
+actor,Schauspieler,der
+director,Regisseur,der
+painter,Maler,der
+chef,Küchenchef,der
+cook,Koch,der
+waiter (m),Kellner,der
+waiter (f),Kellnerin,die
+baker,Bäcker,der
+butcher,Metzger,der
+farmer,Bauer,der
+driver,Fahrer,der
+pilot,Pilot,der
+soldier,Soldat,der
+police officer,Polizist,der
+firefighter,Feuerwehrmann,der
+electrician,Elektriker,der
+mechanic,Mechaniker,der
+accountant,Buchhalter,der
+manager,Manager,der
+boss,Chef,der
+employee,Angestellte,der/die
+dentist,Zahnarzt,der
+pharmacist,Apotheker,der
+psychologist,Psychologe,der
+politician,Politiker,der
+priest,Priester,der
+veterinarian,Tierarzt,der
+head,Kopf,der
+face,Gesicht,das
+eye,Auge,das
+ear,Ohr,das
+nose,Nase,die
+mouth,Mund,der
+tooth,Zahn,der
+tongue,Zunge,die
+lip,Lippe,die
+chin,Kinn,das
+cheek,Wange,die
+forehead,Stirn,die
+hair,Haar,das
+neck,Hals,der
+shoulder,Schulter,die
+arm,Arm,der
+elbow,Ellbogen,der
+wrist,Handgelenk,das
+hand,Hand,die
+finger,Finger,der
+thumb,Daumen,der
+nail,Nagel,der
+chest,Brust,die
+back,Rücken,der
+stomach,Bauch,der
+hip,Hüfte,die
+leg,Bein,das
+knee,Knie,das
+ankle,Knöchel,der
+foot,Fuß,der
+toe,Zeh,der
+heart,Herz,das
+lung,Lunge,die
+liver,Leber,die
+kidney,Niere,die
+brain,Gehirn,das
+bone,Knochen,der
+muscle,Muskel,der
+skin,Haut,die
+blood,Blut,das
+bread,Brot,das
+roll,Brötchen,das
+butter,Butter,die
+milk,Milch,die
+egg,Ei,das
+cheese,Käse,der
+meat,Fleisch,das
+chicken,Hähnchen,das
+beef,Rindfleisch,das
+pork,Schweinefleisch,das
+fish,Fisch,der
+sausage,Wurst,die
+ham,Schinken,der
+soup,Suppe,die
+salad,Salat,der
+pasta,Nudeln,die
+rice,Reis,der
+potato,Kartoffel,die
+tomato,Tomate,die
+cucumber,Gurke,die
+carrot,Karotte,die
+onion,Zwiebel,die
+garlic,Knoblauch,der
+pepper (spice),Pfeffer,der
+salt,Salz,das
+sugar,Zucker,der
+oil,Öl,das
+vinegar,Essig,der
+mustard,Senf,der
+apple,Apfel,der
+pear,Birne,die
+banana,Banane,die
+orange,Orange,die
+strawberry,Erdbeere,die
+cherry,Kirsche,die
+grape,Traube,die
+lemon,Zitrone,die
+peach,Pfirsich,der
+plum,Pflaume,die
+watermelon,Wassermelone,die
+water,Wasser,das
+juice,Saft,der
+coffee,Kaffee,der
+tea,Tee,der
+beer,Bier,das
+wine,Wein,der
+lemonade,Limonade,die
+cake,Kuchen,der
+cookie,Keks,der
+chocolate,Schokolade,die
+ice cream,Eis,das
+jam,Marmelade,die
+honey,Honig,der
+flour,Mehl,das
+breakfast,Frühstück,das
+lunch,Mittagessen,das
+dinner,Abendessen,das
+snack,Snack,der
+dessert,Dessert,das
+recipe,Rezept,das
+meal,Mahlzeit,die
+menu,Speisekarte,die
+dish,Gericht,das
+ingredient,Zutat,die
+mushroom,Pilz,der
+lettuce,Salat,der
+spinach,Spinat,der
+broccoli,Brokkoli,der
+corn,Mais,der
+pea,Erbse,die
+bean,Bohne,die
+house,Haus,das
+apartment,Wohnung,die
+building,Gebäude,das
+room,Zimmer,das
+kitchen,Küche,die
+bathroom,Badezimmer,das
+bedroom,Schlafzimmer,das
+living room,Wohnzimmer,das
+dining room,Esszimmer,das
+hallway,Flur,der
+cellar,Keller,der
+attic,Dachboden,der
+garage,Garage,die
+garden,Garten,der
+balcony,Balkon,der
+terrace,Terrasse,die
+stairs,Treppe,die
+elevator,Aufzug,der
+door,Tür,die
+window,Fenster,das
+wall,Wand,die
+floor,Boden,der
+ceiling,Decke,die
+roof,Dach,das
+bed,Bett,das
+sofa,Sofa,das
+armchair,Sessel,der
+table,Tisch,der
+chair,Stuhl,der
+desk,Schreibtisch,der
+shelf,Regal,das
+wardrobe,Kleiderschrank,der
+drawer,Schublade,die
+mirror,Spiegel,der
+lamp,Lampe,die
+carpet,Teppich,der
+curtain,Vorhang,der
+pillow,Kissen,das
+blanket,Decke,die
+towel,Handtuch,das
+key,Schlüssel,der
+lock,Schloss,das
+bell,Klingel,die
+washing machine,Waschmaschine,die
+dishwasher,Spülmaschine,die
+refrigerator,Kühlschrank,der
+microwave,Mikrowelle,die
+vacuum cleaner,Staubsauger,der
+coffee machine,Kaffeemaschine,die
+tap / faucet,Wasserhahn,der
+light switch,Lichtschalter,der
+power outlet,Steckdose,die
+trash can,Mülleimer,der
+street,Straße,die
+road,Straße,die
+path,Weg,der
+bridge,Brücke,die
+square,Platz,der
+park,Park,der
+city,Stadt,die
+village,Dorf,das
+district,Viertel,das
+neighborhood,Nachbarschaft,die
+city center,Stadtzentrum,das
+suburb,Vorort,der
+country,Land,das
+region,Region,die
+border,Grenze,die
+airport,Flughafen,der
+train station,Bahnhof,der
+bus stop,Bushaltestelle,die
+subway,U-Bahn,die
+tram,Straßenbahn,die
+taxi,Taxi,das
+car,Auto,das
+bus,Bus,der
+train,Zug,der
+plane,Flugzeug,das
+ship,Schiff,das
+bicycle,Fahrrad,das
+motorcycle,Motorrad,das
+traffic,Verkehr,der
+traffic light,Ampel,die
+parking lot,Parkplatz,der
+highway,Autobahn,die
+ticket,Fahrkarte,die
+map,Karte,die
+traffic jam,Stau,der
+driving license,Führerschein,der
+fuel station,Tankstelle,die
+pedestrian crossing,Fußgängerüberweg,der
+roundabout,Kreisverkehr,der
+bicycle lane,Fahrradweg,der
+one-way street,Einbahnstraße,die
+shop,Laden,der
+store,Geschäft,das
+supermarket,Supermarkt,der
+bakery,Bäckerei,die
+butcher shop,Metzgerei,die
+pharmacy,Apotheke,die
+hospital,Krankenhaus,das
+clinic,Klinik,die
+school,Schule,die
+university,Universität,die
+library,Bibliothek,die
+museum,Museum,das
+theater,Theater,das
+cinema,Kino,das
+church,Kirche,die
+mosque,Moschee,die
+bank,Bank,die
+post office,Postamt,das
+hotel,Hotel,das
+restaurant,Restaurant,das
+café,Café,das
+bar,Bar,die
+office,Büro,das
+factory,Fabrik,die
+farm,Bauernhof,der
+market,Markt,der
+bookstore,Buchhandlung,die
+gym,Fitnessstudio,das
+swimming pool,Schwimmbad,das
+stadium,Stadion,das
+police station,Polizeiwache,die
+fire station,Feuerwache,die
+courthouse,Gericht,das
+embassy,Botschaft,die
+town hall,Rathaus,das
+nature,Natur,die
+forest,Wald,der
+tree,Baum,der
+flower,Blume,die
+grass,Gras,das
+leaf,Blatt,das
+root,Wurzel,die
+branch,Ast,der
+bush,Busch,der
+mountain,Berg,der
+hill,Hügel,der
+valley,Tal,das
+river,Fluss,der
+lake,See,der
+sea,Meer,das
+ocean,Ozean,der
+beach,Strand,der
+island,Insel,die
+desert,Wüste,die
+jungle,Dschungel,der
+field,Feld,das
+meadow,Wiese,die
+cave,Höhle,die
+waterfall,Wasserfall,der
+volcano,Vulkan,der
+glacier,Gletscher,der
+sky,Himmel,der
+sun,Sonne,die
+moon,Mond,der
+star,Stern,der
+cloud,Wolke,die
+rain,Regen,der
+snow,Schnee,der
+wind,Wind,der
+storm,Sturm,der
+thunder,Donner,der
+lightning,Blitz,der
+rainbow,Regenbogen,der
+fog,Nebel,der
+ice,Eis,das
+frost,Frost,der
+earth / soil,Erde,die
+stone,Stein,der
+sand,Sand,der
+fire,Feuer,das
+smoke,Rauch,der
+air,Luft,die
+wave,Welle,die
+coast,Küste,die
+cliff,Klippe,die
+dog,Hund,der
+cat,Katze,die
+horse,Pferd,das
+cow,Kuh,die
+pig,Schwein,das
+sheep,Schaf,das
+goat,Ziege,die
+chicken,Huhn,das
+duck,Ente,die
+rabbit,Kaninchen,das
+mouse,Maus,die
+rat,Ratte,die
+bird,Vogel,der
+eagle,Adler,der
+owl,Eule,die
+parrot,Papagei,der
+pigeon,Taube,die
+crow,Krähe,die
+fish,Fisch,der
+shark,Hai,der
+whale,Wal,der
+dolphin,Delfin,der
+frog,Frosch,der
+snake,Schlange,die
+turtle,Schildkröte,die
+crocodile,Krokodil,das
+lizard,Eidechse,die
+lion,Löwe,der
+tiger,Tiger,der
+bear,Bär,der
+wolf,Wolf,der
+fox,Fuchs,der
+deer,Reh,das
+elephant,Elefant,der
+giraffe,Giraffe,die
+zebra,Zebra,das
+monkey,Affe,der
+gorilla,Gorilla,der
+camel,Kamel,das
+kangaroo,Känguru,das
+penguin,Pinguin,der
+butterfly,Schmetterling,der
+bee,Biene,die
+ant,Ameise,die
+spider,Spinne,die
+fly,Fliege,die
+mosquito,Mücke,die
+time,Zeit,die
+hour,Stunde,die
+minute,Minute,die
+second,Sekunde,die
+day,Tag,der
+week,Woche,die
+month,Monat,der
+year,Jahr,das
+decade,Jahrzehnt,das
+century,Jahrhundert,das
+morning,Morgen,der
+afternoon,Nachmittag,der
+evening,Abend,der
+night,Nacht,die
+noon,Mittag,der
+midnight,Mitternacht,die
+dawn,Morgendämmerung,die
+Monday,Montag,der
+Tuesday,Dienstag,der
+Wednesday,Mittwoch,der
+Thursday,Donnerstag,der
+Friday,Freitag,der
+Saturday,Samstag,der
+Sunday,Sonntag,der
+January,Januar,der
+February,Februar,der
+March,März,der
+April,April,der
+May,Mai,der
+June,Juni,der
+July,Juli,der
+August,August,der
+September,September,der
+October,Oktober,der
+November,November,der
+December,Dezember,der
+spring,Frühling,der
+summer,Sommer,der
+autumn,Herbst,der
+winter,Winter,der
+holiday,Urlaub,der
+vacation,Ferien,die
+birthday,Geburtstag,der
+anniversary,Jahrestag,der
+wedding,Hochzeit,die
+past,Vergangenheit,die
+present,Gegenwart,die
+future,Zukunft,die
+weekend,Wochenende,das
+deadline,Frist,die
+class,Klasse,die
+lesson,Stunde,die
+subject,Fach,das
+homework,Hausaufgabe,die
+exam,Prüfung,die
+grade,Note,die
+diploma,Diplom,das
+degree,Abschluss,der
+knowledge,Wissen,das
+skill,Fähigkeit,die
+language,Sprache,die
+word,Wort,das
+sentence,Satz,der
+grammar,Grammatik,die
+vocabulary,Wortschatz,der
+pronunciation,Aussprache,die
+translation,Übersetzung,die
+dictionary,Wörterbuch,das
+book,Buch,das
+notebook,Notizbuch,das
+pen,Stift,der
+pencil,Bleistift,der
+paper,Papier,das
+page,Seite,die
+chapter,Kapitel,das
+paragraph,Absatz,der
+text,Text,der
+question,Frage,die
+answer,Antwort,die
+exercise,Übung,die
+math,Mathematik,die
+physics,Physik,die
+chemistry,Chemie,die
+biology,Biologie,die
+history,Geschichte,die
+geography,Geografie,die
+art,Kunst,die
+music,Musik,die
+sport,Sport,der
+lecture,Vorlesung,die
+seminar,Seminar,das
+thesis,Abschlussarbeit,die
+scholarship,Stipendium,das
+campus,Campus,der
+classroom,Klassenzimmer,das
+blackboard,Tafel,die
+work,Arbeit,die
+job,Job,der
+career,Karriere,die
+salary,Gehalt,das
+wage,Lohn,der
+income,Einkommen,das
+money,Geld,das
+price,Preis,der
+cost,Kosten,die
+budget,Budget,das
+profit,Gewinn,der
+loss,Verlust,der
+tax,Steuer,die
+bill,Rechnung,die
+receipt,Quittung,die
+contract,Vertrag,der
+meeting,Meeting,das
+project,Projekt,das
+report,Bericht,der
+email,E-Mail,die
+company,Firma,die
+team,Team,das
+interview,Vorstellungsgespräch,das
+application,Bewerbung,die
+resume,Lebenslauf,der
+investment,Investition,die
+loan,Darlehen,das
+debt,Schulden,die
+savings,Ersparnisse,die
+insurance,Versicherung,die
+pension,Rente,die
+trade union,Gewerkschaft,die
+stock market,Börse,die
+crisis,Krise,die
+economy,Wirtschaft,die
+industry,Industrie,die
+product,Produkt,das
+brand,Marke,die
+quality,Qualität,die
+offer,Angebot,das
+sale,Verkauf,der
+discount,Rabatt,der
+computer,Computer,der
+laptop,Laptop,der
+phone,Telefon,das
+smartphone,Smartphone,das
+tablet,Tablet,das
+screen,Bildschirm,der
+keyboard,Tastatur,die
+mouse,Maus,die
+cable,Kabel,das
+internet,Internet,das
+website,Webseite,die
+app,App,die
+software,Software,die
+program,Programm,das
+file,Datei,die
+folder,Ordner,der
+password,Passwort,das
+account,Konto,das
+message,Nachricht,die
+photo,Foto,das
+video,Video,das
+camera,Kamera,die
+television,Fernseher,der
+radio,Radio,das
+battery,Batterie,die
+charger,Ladegerät,das
+printer,Drucker,der
+network,Netzwerk,das
+data,Daten,die
+cloud,Cloud,die
+username,Benutzername,der
+notification,Benachrichtigung,die
+algorithm,Algorithmus,der
+database,Datenbank,die
+operating system,Betriebssystem,das
+programming language,Programmiersprache,die
+bug,Fehler,der
+update,Aktualisierung,die
+download,Download,der
+upload,Upload,der
+health,Gesundheit,die
+illness,Krankheit,die
+pain,Schmerz,der
+fever,Fieber,das
+cold,Erkältung,die
+flu,Grippe,die
+allergy,Allergie,die
+medicine,Medikament,das
+pill,Tablette,die
+injection,Spritze,die
+bandage,Verband,der
+operation,Operation,die
+appointment,Termin,der
+diet,Diät,die
+sleep,Schlaf,der
+stress,Stress,der
+weight,Gewicht,das
+headache,Kopfschmerzen,die
+stomachache,Bauchschmerzen,die
+prescription,Rezept,das
+symptom,Symptom,das
+diagnosis,Diagnose,die
+treatment,Behandlung,die
+vaccine,Impfstoff,der
+virus,Virus,das
+bacteria,Bakterien,die
+blood pressure,Blutdruck,der
+heart rate,Herzfrequenz,die
+first aid,Erste Hilfe,die
+emergency,Notfall,der
+waiting room,Wartezimmer,das
+doctor's office,Arztpraxis,die
+clothes,Kleidung,die
+shirt,Hemd,das
+t-shirt,T-Shirt,das
+pants,Hose,die
+jeans,Jeans,die
+dress,Kleid,das
+skirt,Rock,der
+jacket,Jacke,die
+coat,Mantel,der
+sweater,Pullover,der
+suit,Anzug,der
+tie,Krawatte,die
+shoes,Schuhe,die
+boots,Stiefel,die
+socks,Socken,die
+hat,Mütze,die
+scarf,Schal,der
+gloves,Handschuhe,die
+glasses,Brille,die
+bag,Tasche,die
+ring,Ring,der
+watch,Uhr,die
+necklace,Halskette,die
+earring,Ohrring,der
+umbrella,Regenschirm,der
+belt,Gürtel,der
+pocket,Tasche,die
+button,Knopf,der
+zipper,Reißverschluss,der
+underwear,Unterwäsche,die
+pajamas,Schlafanzug,der
+swimsuit,Badeanzug,der
+sportswear,Sportkleidung,die
+idea,Idee,die
+thought,Gedanke,der
+opinion,Meinung,die
+feeling,Gefühl,das
+dream,Traum,der
+memory,Erinnerung,die
+imagination,Vorstellung,die
+decision,Entscheidung,die
+choice,Wahl,die
+plan,Plan,der
+goal,Ziel,das
+wish,Wunsch,der
+hope,Hoffnung,die
+fear,Angst,die
+love,Liebe,die
+hate,Hass,der
+joy,Freude,die
+sadness,Traurigkeit,die
+anger,Wut,die
+surprise,Überraschung,die
+trust,Vertrauen,das
+respect,Respekt,der
+friendship,Freundschaft,die
+freedom,Freiheit,die
+peace,Frieden,der
+war,Krieg,der
+danger,Gefahr,die
+luck,Glück,das
+success,Erfolg,der
+failure,Misserfolg,der
+mistake,Fehler,der
+problem,Problem,das
+solution,Lösung,die
+reason,Grund,der
+cause,Ursache,die
+effect,Wirkung,die
+result,Ergebnis,das
+experience,Erfahrung,die
+advice,Rat,der
+rule,Regel,die
+law,Gesetz,das
+right,Recht,das
+responsibility,Verantwortung,die
+truth,Wahrheit,die
+lie,Lüge,die
+importance,Wichtigkeit,die
+value,Wert,der
+difference,Unterschied,der
+similarity,Ähnlichkeit,die
+change,Änderung,die
+progress,Fortschritt,der
+culture,Kultur,die
+tradition,Tradition,die
+religion,Religion,die
+politics,Politik,die
+society,Gesellschaft,die
+environment,Umwelt,die
+science,Wissenschaft,die
+technology,Technologie,die
+education,Bildung,die
+opportunity,Möglichkeit,die
+risk,Risiko,das
+loneliness,Einsamkeit,die
+nostalgia,Nostalgie,die
+enthusiasm,Begeisterung,die
+passion,Leidenschaft,die
+guilt,Schuld,die
+pride,Stolz,der
+gratitude,Dankbarkeit,die
+relief,Erleichterung,die
+boredom,Langeweile,die
+anxiety,Besorgnis,die
+empathy,Empathie,die
+compassion,Mitgefühl,das
+to be,sein,
+to have,haben,
+to do / make,machen,
+to say,sagen,
+to go,gehen,
+to come,kommen,
+to know (a fact),wissen,
+to know (a person),kennen,
+to think,denken,
+to see,sehen,
+to want,wollen,
+to give,geben,
+to take,nehmen,
+to find,finden,
+to tell,erzählen,
+to ask,fragen,
+to work,arbeiten,
+to call,rufen / anrufen,
+to try,versuchen,
+to need,brauchen,
+to feel,fühlen,
+to become,werden,
+to leave,verlassen,
+to mean,bedeuten,
+to keep,behalten,
+to let,lassen,
+to begin,beginnen / anfangen,
+to show,zeigen,
+to hear,hören,
+to play,spielen,
+to run,laufen,
+to move,bewegen,
+to live,leben,
+to believe,glauben,
+to hold,halten,
+to bring,bringen,
+to write,schreiben,
+to stand,stehen,
+to lose,verlieren,
+to pay,zahlen / bezahlen,
+to meet,treffen,
+to learn,lernen,
+to change,ändern,
+to lead,führen,
+to understand,verstehen,
+to watch,zuschauen / ansehen,
+to follow,folgen,
+to stop,stoppen / aufhören,
+to create,erstellen / schaffen,
+to speak,sprechen,
+to read,lesen,
+to spend (time),verbringen,
+to spend (money),ausgeben,
+to grow,wachsen,
+to open,öffnen / aufmachen,
+to close,schließen / zumachen,
+to walk,spazieren gehen,
+to win,gewinnen,
+to offer,anbieten,
+to remember,sich erinnern,
+to love,lieben,
+to buy,kaufen,
+to wait,warten,
+to die,sterben,
+to send,schicken,
+to build,bauen,
+to stay,bleiben,
+to fall,fallen,
+to cut,schneiden,
+to reach,erreichen,
+to sell,verkaufen,
+to decide,entscheiden,
+to return,zurückkehren,
+to explain,erklären,
+to hope,hoffen,
+to develop,entwickeln,
+to carry,tragen,
+to break,brechen,
+to receive,bekommen / erhalten,
+to agree,zustimmen,
+to support,unterstützen,
+to eat,essen,
+to drink,trinken,
+to sleep,schlafen,
+to sit,sitzen,
+to help,helfen,
+to travel,reisen,
+to fly,fliegen,
+to swim,schwimmen,
+to cook,kochen,
+to drive,fahren,
+to turn,drehen,
+to pull,ziehen,
+to push,drücken,
+to jump,springen,
+to throw,werfen,
+to catch,fangen,
+to sing,singen,
+to dance,tanzen,
+to laugh,lachen,
+to cry,weinen,
+to smile,lächeln,
+to kiss,küssen,
+to hug,umarmen,
+to fight,kämpfen,
+to choose,wählen,
+to use,benutzen / verwenden,
+to clean,putzen / reinigen,
+to fix,reparieren,
+to start,starten / anfangen,
+to finish,beenden / fertig sein,
+to check,überprüfen,
+to plan,planen,
+to prepare,vorbereiten,
+to measure,messen,
+to count,zählen,
+to share,teilen,
+to visit,besuchen,
+to invite,einladen,
+to accept,akzeptieren / annehmen,
+to refuse,ablehnen,
+to forget,vergessen,
+to forgive,vergeben / verzeihen,
+to promise,versprechen,
+to suggest,vorschlagen,
+to recommend,empfehlen,
+to thank,danken,
+to greet,begrüßen,
+to introduce,vorstellen,
+to confirm,bestätigen,
+to cancel,absagen / stornieren,
+to reserve,reservieren,
+to order,bestellen,
+to borrow,leihen / borgen,
+to lend,verleihen,
+to rent,mieten,
+to earn,verdienen,
+to save,sparen,
+to manage,verwalten / leiten,
+to organize,organisieren,
+to solve,lösen,
+to protect,schützen,
+to avoid,vermeiden,
+to allow,erlauben,
+to prevent,verhindern,
+to improve,verbessern,
+to increase,erhöhen / steigern,
+to decrease,verringern,
+to collect,sammeln,
+to search,suchen,
+to find out,herausfinden,
+to notice,bemerken,
+to imagine,sich vorstellen,
+to worry,sich sorgen,
+to enjoy,genießen,
+to suffer,leiden,
+to celebrate,feiern,
+to relax,sich entspannen,
+to study,studieren / lernen,
+to teach,lehren / unterrichten,
+to draw,zeichnen,
+to paint,malen,
+to photograph,fotografieren,
+to record,aufnehmen,
+to print,drucken,
+to save (file),speichern,
+to delete,löschen,
+to install,installieren,
+to download,herunterladen,
+to upload,hochladen,
+to connect,verbinden,
+to translate,übersetzen,
+to repeat,wiederholen,
+to practice,üben,
+to hire,einstellen,
+to fire,entlassen,
+to apply,sich bewerben,
+to retire,in Rente gehen,
+to participate,teilnehmen,
+to compare,vergleichen,
+to lie down,sich hinlegen,
+to stand up,aufstehen,
+to sit down,sich setzen,
+to get up,aufstehen,
+to wake up,aufwachen,
+to fall asleep,einschlafen,
+to get dressed,sich anziehen,
+to get undressed,sich ausziehen,
+to hurry,sich beeilen,
+to calm down,sich beruhigen,
+to fall in love,sich verlieben,
+to get lost,sich verirren,
+to get used to,sich gewöhnen an,
+to complain,sich beschweren,
+to apologize,sich entschuldigen,
+to concentrate,sich konzentrieren,
+I am,ich bin,
+you are (sg.),du bist,
+he / she / it is,er/sie/es ist,
+we are,wir sind,
+you are (pl.),ihr seid,
+they are,sie sind,
+I have,ich habe,
+you have (sg.),du hast,
+he / she / it has,er/sie/es hat,
+we have,wir haben,
+you have (pl.),ihr habt,
+they have,sie haben,
+I become,ich werde,
+you become (sg.),du wirst,
+he / she / it becomes,er/sie/es wird,
+I can,ich kann,
+you can (sg.),du kannst,
+he / she / it can,er/sie/es kann,
+we can,wir können,
+they can,sie können,
+I must,ich muss,
+you must (sg.),du musst,
+he / she / it must,er/sie/es muss,
+we must,wir müssen,
+they must,sie müssen,
+I want,ich will,
+you want (sg.),du willst,
+he / she / it wants,er/sie/es will,
+we want,wir wollen,
+they want,sie wollen,
+I should,ich soll,
+you should (sg.),du sollst,
+he / she / it should,er/sie/es soll,
+I may / am allowed to,ich darf,
+you may (sg.),du darfst,
+he / she / it may,er/sie/es darf,
+we may,wir dürfen,
+I like,ich mag,
+you like (sg.),du magst,
+he / she / it likes,er/sie/es mag,
+I would like,ich möchte,
+you would like (sg.),du möchtest,
+he / she / it would like,er/sie/es möchte,
+I know (a fact),ich weiß,
+you know (sg.),du weißt,
+he / she / it knows,er/sie/es weiß,
+I see,ich sehe,
+you see (sg.),du siehst,
+he / she / it sees,er/sie/es sieht,
+I give,ich gebe,
+you give (sg.),du gibst,
+he / she / it gives,er/sie/es gibt,
+I take,ich nehme,
+you take (sg.),du nimmst,
+he / she / it takes,er/sie/es nimmt,
+I drive,ich fahre,
+you drive (sg.),du fährst,
+he / she / it drives,er/sie/es fährt,
+I run,ich laufe,
+you run (sg.),du läufst,
+he / she / it runs,er/sie/es läuft,
+I eat,ich esse,
+you eat (sg.),du isst,
+he / she / it eats,er/sie/es isst,
+I read,ich lese,
+you read (sg.),du liest,
+he / she / it reads,er/sie/es liest,
+I speak,ich spreche,
+you speak (sg.),du sprichst,
+he / she / it speaks,er/sie/es spricht,
+I help,ich helfe,
+you help (sg.),du hilfst,
+he / she / it helps,er/sie/es hilft,
+I hold,ich halte,
+you hold (sg.),du hältst,
+he / she / it holds,er/sie/es hält,
+I sleep,ich schlafe,
+you sleep (sg.),du schläfst,
+he / she / it sleeps,er/sie/es schläft,
+I carry / wear,ich trage,
+you carry (sg.),du trägst,
+he / she / it carries,er/sie/es trägt,
+I fall,ich falle,
+you fall (sg.),du fällst,
+he / she / it falls,er/sie/es fällt,
+I meet,ich treffe,
+you meet (sg.),du triffst,
+he / she / it meets,er/sie/es trifft,
+I throw,ich werfe,
+you throw (sg.),du wirfst,
+he / she / it throws,er/sie/es wirft,
+I wash,ich wasche,
+you wash (sg.),du wäschst,
+he / she / it washes,er/sie/es wäscht,
+I was,ich war,
+you were (sg.),du warst,
+he / she / it was,er/sie/es war,
+we were,wir waren,
+you were (pl.),ihr wart,
+they were,sie waren,
+I had,ich hatte,
+you had (sg.),du hattest,
+he / she / it had,er/sie/es hatte,
+we had,wir hatten,
+they had,sie hatten,
+I became,ich wurde,
+he / she / it became,er/sie/es wurde,
+we became,wir wurden,
+I could,ich konnte,
+he could,er konnte,
+we could,wir konnten,
+I had to,ich musste,
+he had to,er musste,
+we had to,wir mussten,
+I wanted,ich wollte,
+he wanted,er wollte,
+we wanted,wir wollten,
+I was supposed to,ich sollte,
+he was supposed to,er sollte,
+I was allowed to,ich durfte,
+he was allowed to,er durfte,
+I went,ich ging,
+I came,ich kam,
+I saw,ich sah,
+I gave,ich gab,
+I took,ich nahm,
+I wrote,ich schrieb,
+I read (past),ich las,
+I spoke,ich sprach,
+I ran,ich lief,
+I drove,ich fuhr,
+I ate,ich aß,
+I drank,ich trank,
+I slept,ich schlief,
+I stood,ich stand,
+I sat,ich saß,
+I thought,ich dachte,
+I brought,ich brachte,
+I held,ich hielt,
+I fell,ich fiel,
+I lost,ich verlor,
+I won,ich gewann,
+I flew,ich flog,
+I sang,ich sang,
+I helped,ich half,
+I met,ich traf,
+I found,ich fand,
+I called,ich rief,
+I left,ich verließ,
+I broke,ich brach,
+I cut,ich schnitt,
+I threw,ich warf,
+I carried,ich trug,
+I knew,ich wusste,
+I began,ich begann,
+to be → been,sein → gewesen,
+to have → had,haben → gehabt,
+to become → become,werden → geworden,
+to go → gone,gehen → gegangen,
+to come → come,kommen → gekommen,
+to see → seen,sehen → gesehen,
+to know → known,wissen → gewusst,
+to give → given,geben → gegeben,
+to take → taken,nehmen → genommen,
+to find → found,finden → gefunden,
+to write → written,schreiben → geschrieben,
+to read → read,lesen → gelesen,
+to speak → spoken,sprechen → gesprochen,
+to run → run,laufen → gelaufen,
+to drive → driven,fahren → gefahren,
+to eat → eaten,essen → gegessen,
+to drink → drunk,trinken → getrunken,
+to sleep → slept,schlafen → geschlafen,
+to stand → stood,stehen → gestanden,
+to sit → sat,sitzen → gesessen,
+to think → thought,denken → gedacht,
+to bring → brought,bringen → gebracht,
+to hold → held,halten → gehalten,
+to fall → fallen,fallen → gefallen,
+to call → called,rufen → gerufen,
+to lose → lost,verlieren → verloren,
+to win → won,gewinnen → gewonnen,
+to fly → flown,fliegen → geflogen,
+to swim → swum,schwimmen → geschwommen,
+to sing → sung,singen → gesungen,
+to begin → begun,beginnen → begonnen,
+to help → helped,helfen → geholfen,
+to carry → carried,tragen → getragen,
+to wash → washed,waschen → gewaschen,
+to throw → thrown,werfen → geworfen,
+to break → broken,brechen → gebrochen,
+to meet → met,treffen → getroffen,
+to cut → cut,schneiden → geschnitten,
+to leave → left,verlassen → verlassen,
+to understand → understood,verstehen → verstanden,
+to forget → forgotten,vergessen → vergessen,
+to receive → received,erhalten → erhalten,
+to stay → stayed,bleiben → geblieben,
+to recommend → recommended,empfehlen → empfohlen,
+to rise → risen,steigen → gestiegen,
+to pull → pulled,ziehen → gezogen,
+I have gone (Perfekt),ich bin gegangen,
+I have come (Perfekt),ich bin gekommen,
+I have stayed (Perfekt),ich bin geblieben,
+I have arrived (Perfekt),ich bin angekommen,
+I have flown (Perfekt),ich bin geflogen,
+I have driven (Perfekt),ich bin gefahren,
+I have fallen (Perfekt),ich bin gefallen,
+I have eaten (Perfekt),ich habe gegessen,
+I have written (Perfekt),ich habe geschrieben,
+I have seen (Perfekt),ich habe gesehen,
+I have spoken (Perfekt),ich habe gesprochen,
+I have slept (Perfekt),ich habe geschlafen,
+I have worked (Perfekt),ich habe gearbeitet,
+I have thought (Perfekt),ich habe gedacht,
+good,gut,
+bad,schlecht,
+big,groß,
+small,klein,
+new,neu,
+old,alt,
+fast,schnell,
+slow,langsam,
+hot,heiß,
+cold,kalt,
+warm,warm,
+cool,kühl,
+long,lang,
+short,kurz,
+wide,breit,
+narrow,schmal,
+high,hoch,
+low,niedrig,
+deep,tief,
+flat,flach,
+heavy,schwer,
+light,leicht,
+hard,hart,
+soft,weich,
+strong,stark,
+weak,schwach,
+loud,laut,
+quiet,leise,
+beautiful,schön,
+ugly,hässlich,
+clean,sauber,
+dirty,dreckig,
+empty,leer,
+full,voll,
+open,offen,
+closed,geschlossen,
+free,frei,
+busy,beschäftigt,
+easy,einfach,
+difficult,schwierig,
+possible,möglich,
+impossible,unmöglich,
+necessary,notwendig,
+important,wichtig,
+interesting,interessant,
+boring,langweilig,
+funny,lustig,
+serious,ernst,
+polite,höflich,
+rude,grob,
+kind,freundlich,
+mean,gemein,
+honest,ehrlich,
+FALSE,falsch,
+TRUE,wahr,
+real,echt,
+strange,seltsam,
+normal,normal,
+special,besonders,
+simple,einfach,
+complex,komplex,
+happy,glücklich,
+sad,traurig,
+angry,wütend,
+afraid,ängstlich,
+surprised,überrascht,
+tired,müde,
+hungry,hungrig,
+thirsty,durstig,
+sick,krank,
+healthy,gesund,
+rich,reich,
+poor,arm,
+expensive,teuer,
+cheap,billig,
+clever,klug,
+stupid,dumm,
+brave,mutig,
+cowardly,feige,
+lazy,faul,
+diligent,fleißig,
+patient,geduldig,
+impatient,ungeduldig,
+generous,großzügig,
+selfish,selbstsüchtig,
+ambitious,ehrgeizig,
+creative,kreativ,
+reliable,zuverlässig,
+flexible,flexibel,
+shy,schüchtern,
+confident,selbstbewusst,
+curious,neugierig,
+talkative,gesprächig,
+sensitive,empfindlich,
+stubborn,stur,
+naive,naiv,
+mature,reif,
+good – better – best,gut – besser – am besten,
+bad – worse – worst,schlecht – schlechter – am schlechtesten,
+big – bigger – biggest,groß – größer – am größten,
+small – smaller – smallest,klein – kleiner – am kleinsten,
+much – more – most,viel – mehr – am meisten,
+little – less – least,wenig – weniger – am wenigsten,
+high – higher – highest,hoch – höher – am höchsten,
+near – nearer – nearest,nah – näher – am nächsten,
+old – older – oldest,alt – älter – am ältesten,
+young – younger – youngest,jung – jünger – am jüngsten,
+long – longer – longest,lang – länger – am längsten,
+expensive – more – most,teuer – teurer – am teuersten,
+clever – cleverer – cleverest,klug – klüger – am klügsten,
+obvious,offensichtlich,
+vague,vage,
+significant,bedeutsam,
+temporary,vorübergehend,
+permanent,dauerhaft,
+frequent,häufig,
+rare,selten,
+regular,regelmäßig,
+typical,typisch,
+unusual,ungewöhnlich,
+unique,einzigartig,
+modern,modern,
+traditional,traditionell,
+ancient,uralt,
+dangerous,gefährlich,
+safe,sicher,
+comfortable,bequem,
+uncomfortable,unbequem,
+popular,beliebt,
+famous,berühmt,
+married,verheiratet,
+divorced,geschieden,
+single,ledig,
+educated,gebildet,
+experienced,erfahren,
+qualified,qualifiziert,
+unemployed,arbeitslos,
+retired,pensioniert,
+now,jetzt,
+then,dann,
+soon,bald,
+later,später,
+before,vorher,
+after,nachher,
+already,schon / bereits,
+still,noch,
+no longer,nicht mehr,
+again,wieder,
+always,immer,
+never,nie,
+often,oft,
+sometimes,manchmal,
+usually,normalerweise,
+rarely,selten,
+finally,endlich,
+suddenly,plötzlich,
+immediately,sofort,
+gradually,allmählich,
+recently,kürzlich,
+nowadays,heutzutage,
+daily,täglich,
+weekly,wöchentlich,
+monthly,monatlich,
+yearly,jährlich,
+early,früh,
+late,spät,
+on time,pünktlich,
+here,hier,
+there,dort,
+everywhere,überall,
+nowhere,nirgendwo,
+somewhere,irgendwo,
+upstairs,oben,
+downstairs,unten,
+inside,drinnen,
+outside,draußen,
+nearby,in der Nähe,
+far away,weit weg,
+abroad,im Ausland,
+at home,zu Hause,
+straight ahead,geradeaus,
+to the left,nach links,
+to the right,nach rechts,
+quickly,schnell,
+slowly,langsam,
+carefully,vorsichtig,
+easily,einfach / leicht,
+together,zusammen,
+alone,allein,
+on purpose,absichtlich,
+by chance,zufällig,
+accidentally,versehentlich,
+gladly,gerne,
+reluctantly,ungern,
+approximately,ungefähr,
+exactly,genau,
+almost,fast,
+at least,mindestens,
+at most,höchstens,
+especially,besonders,
+mainly,hauptsächlich,
+above all,vor allem,
+otherwise,sonst,
+anyway,sowieso,
+actually,eigentlich,
+indeed,tatsächlich,
+unfortunately,leider,
+fortunately,glücklicherweise,
+clearly,eindeutig,
+apparently,anscheinend,
+very,sehr,
+quite,ziemlich,
+too,zu,
+enough,genug,
+extremely,äußerst,
+fairly,recht,
+rather,eher,
+more,mehr,
+less,weniger,
+today,heute,
+yesterday,gestern,
+tomorrow,morgen,
+the day before yesterday,vorgestern,
+the day after tomorrow,übermorgen,
+last week,letzte Woche,
+next week,nächste Woche,
+in the morning,morgens,
+in the afternoon,nachmittags,
+in the evening,abends,
+at night,nachts,
+through (Akkusativ),durch,
+for (Akkusativ),für,
+against (Akkusativ),gegen,
+without (Akkusativ),ohne,
+around (Akkusativ),um,
+until / by (Akkusativ),bis,
+from (Dativ),von,
+with (Dativ),mit,
+after / to (Dativ),nach,
+since / for (Dativ),seit,
+out of (Dativ),aus,
+at / by (Dativ),bei,
+"to (Dativ, person)",zu,
+opposite (Dativ),gegenüber,
+except (Dativ),außer,
+because of (Genitiv),wegen,
+despite (Genitiv),trotz,
+during (Genitiv),während,
+instead of (Genitiv),statt / anstatt,
+in + Dativ (location),in (Dativ),
+in + Akkusativ (movement),in (Akkusativ),
+on + Dativ (location),auf (Dativ),
+on + Akkusativ (movement),auf (Akkusativ),
+next to (Dativ),neben (Dativ),
+between (Dativ),zwischen (Dativ),
+behind (Dativ),hinter (Dativ),
+in front of (Dativ),vor (Dativ),
+above (Dativ),über (Dativ),
+below (Dativ),unter (Dativ),
+in the → im,in + dem → im,
+at the → am,an + dem → am,
+to the → zum,zu + dem → zum,
+to the (f) → zur,zu + der → zur,
+from the → vom,von + dem → vom,
+at the → beim,bei + dem → beim,
+into the → ins,in + das → ins,
+onto the → ans,an + das → ans,
+and,und,
+or,oder,
+but,aber,
+because (coord.),denn,
+because (subord.),weil,
+although,obwohl,
+if / when,wenn,
+when (past),als,
+while,während,
+since,seit / da,
+until,bis,
+so that,damit,
+in order to,um ... zu,
+as soon as,sobald,
+as long as,solange,
+whether,ob,
+that (subord.),dass,
+however,jedoch / allerdings,
+therefore,deshalb / daher,
+moreover,außerdem,
+nevertheless,trotzdem,
+on the other hand,andererseits,
+in addition,zusätzlich,
+for example,zum Beispiel,
+in other words,mit anderen Worten,
+both ... and ...,sowohl ... als auch ...,
+either ... or ...,entweder ... oder ...,
+neither ... nor ...,weder ... noch ...,
+not only ... but also ...,nicht nur ... sondern auch ...,
+not,nicht,
+no / not a (m),kein,
+no / not a (f),keine,
+no / not a (n),kein,
+never,nie / niemals,
+not at all,gar nicht,
+not yet,noch nicht,
+no longer,nicht mehr,
+to get up,aufstehen,
+to wake up,aufwachen,
+to put on (clothes),anziehen,
+to take off (clothes),ausziehen,
+to arrive,ankommen,
+to depart,abfahren,
+to get in (vehicle),einsteigen,
+to get out (vehicle),aussteigen,
+to go out,ausgehen,
+to come back,zurückkommen,
+to bring along,mitbringen,
+to take along,mitnehmen,
+to come along,mitkommen,
+to call (phone),anrufen,
+to call back,zurückrufen,
+to turn on,einschalten / anmachen,
+to turn off,ausschalten / ausmachen,
+to open,aufmachen,
+to close,zumachen,
+to fill in / complete,ausfüllen,
+to pick up,abholen,
+to hand in,abgeben,
+to try on,anprobieren,
+to look at,ansehen,
+to write down,aufschreiben,
+to listen to,zuhören,
+to look up (a word),nachschlagen,
+to throw away,wegwerfen,
+to clean up,aufräumen,
+to prepare,vorbereiten,
+to imagine,sich vorstellen,
+to take part,teilnehmen,
+to agree / arrange,ausmachen,
+to add,hinzufügen,
+to break off,abbrechen,
+to give back,zurückgeben,
+to find out,herausfinden,
+to read through,durchlesen,
+to charge (battery),aufladen,
+to forward,weiterleiten,
+He gets up early.,Er steht früh auf.,
+She calls her mother.,Sie ruft ihre Mutter an.,
+We arrive at seven.,Wir kommen um sieben Uhr an.,
+Turn off the light!,Mach das Licht aus!,
+She tries on the dress.,Sie probiert das Kleid an.,
+He fills in the form.,Er füllt das Formular aus.,
+I write down the word.,Ich schreibe das Wort auf.,
+They pick me up.,Sie holen mich ab.,
+Clean up your room!,Räum dein Zimmer auf!,
+He looks the word up.,Er schlägt das Wort nach.,
+to wash oneself,sich waschen,
+to comb one's hair,sich kämmen,
+to shave,sich rasieren,
+to brush one's teeth,sich die Zähne putzen,
+to sit down,sich setzen,
+to lie down,sich hinlegen,
+to feel (well/ill),sich fühlen,
+to enjoy oneself,sich amüsieren,
+to relax,sich entspannen,
+to hurry,sich beeilen,
+to remember,sich erinnern (an),
+to be interested in,sich interessieren für,
+to worry about,sich Sorgen machen um,
+to look forward to,sich freuen auf,
+to be happy about,sich freuen über,
+to get used to,sich gewöhnen an,
+to complain about,sich beschweren über,
+to apologize,sich entschuldigen,
+to introduce oneself,sich vorstellen,
+to meet (each other),sich treffen,
+to fall in love,sich verlieben,
+to be wrong,sich irren,
+to concentrate,sich konzentrieren,
+to turn around,sich umdrehen,
+I feel sick.,Ich fühle mich krank.,
+She hurries.,Sie beeilt sich.,
+He sits down.,Er setzt sich.,
+I remember him.,Ich erinnere mich an ihn.,
+He apologizes.,Er entschuldigt sich.,
+They fall in love.,Sie verlieben sich.,
+Hello!,Hallo!,
+Good morning!,Guten Morgen!,
+Good afternoon!,Guten Tag!,
+Good evening!,Guten Abend!,
+Good night!,Gute Nacht!,
+Goodbye!,Auf Wiedersehen!,
+See you later!,Bis später!,
+See you soon!,Bis bald!,
+Bye! (informal),Tschüss!,
+Hello! (Austrian/Southern),Servus!,
+How are you?,Wie geht es Ihnen? / Wie geht's?,
+"I'm fine, thank you.","Mir geht es gut, danke.",
+Not so well.,Nicht so gut.,
+So so.,Es geht so.,
+Please.,Bitte.,
+Thank you.,Danke.,
+Thank you very much.,Vielen Dank.,
+You're welcome.,Bitte sehr. / Gern geschehen.,
+Excuse me.,Entschuldigung.,
+I'm sorry.,Es tut mir leid.,
+No problem.,Kein Problem.,
+Of course!,Natürlich!,
+Good luck!,Viel Glück!,
+Have fun!,Viel Spaß!,
+Congratulations!,Herzlichen Glückwunsch!,
+Happy birthday!,Alles Gute zum Geburtstag!,
+Merry Christmas!,Frohe Weihnachten!,
+Happy New Year!,Frohes Neues Jahr!,
+Cheers!,Prost!,
+Bless you!,Gesundheit!,
+Get well soon!,Gute Besserung!,
+Help!,Hilfe!,
+What's your name?,Wie heißen Sie? / Wie heißt du?,
+My name is...,Ich heiße... / Mein Name ist...,
+Where are you from?,Woher kommen Sie?,
+I'm from Hungary.,Ich komme aus Ungarn.,
+I live in Berlin.,Ich wohne in Berlin.,
+Nice to meet you.,"Schön, Sie kennenzulernen.",
+Do you speak German?,Sprechen Sie Deutsch?,
+I don't understand.,Ich verstehe nicht.,
+Could you repeat that?,Könnten Sie das wiederholen?,
+Could you speak more slowly?,Könnten Sie langsamer sprechen?,
+What does that mean?,Was bedeutet das?,
+How do you say... in German?,Wie sagt man... auf Deutsch?,
+Can you help me?,Können Sie mir helfen?,
+I would like...,Ich möchte...,
+I need...,Ich brauche...,
+How much does it cost?,Was kostet das?,
+Where is the toilet?,Wo ist die Toilette?,
+"The bill, please.","Die Rechnung, bitte.",
+Enjoy your meal!,Guten Appetit!,
+It was delicious!,Es war köstlich!,
+Turn left.,Biegen Sie links ab.,
+Turn right.,Biegen Sie rechts ab.,
+Go straight ahead.,Gehen Sie geradeaus.,
+It's sunny.,Es ist sonnig.,
+It's raining.,Es regnet.,
+It's snowing.,Es schneit.,
+It's cold.,Es ist kalt.,
+I think that...,"Ich denke, dass...",
+In my opinion...,Meiner Meinung nach...,
+I agree.,Ich stimme zu.,
+I disagree.,Ich bin anderer Meinung.,
+I'm not sure.,Ich bin nicht sicher.,
+Maybe.,Vielleicht.,
+Definitely.,Auf jeden Fall.,
+That's great!,Das ist toll!,
+I like it.,Es gefällt mir.,
+I don't like it.,Es gefällt mir nicht.,
+I'm happy.,Ich bin glücklich.,
+I'm tired.,Ich bin müde.,
+I'm hungry.,Ich habe Hunger.,
+I'm thirsty.,Ich habe Durst.,
+I'm in a hurry.,Ich habe es eilig.,
+I have time.,Ich habe Zeit.,
+Let's go!,Gehen wir! / Lass uns gehen!,
+What happened?,Was ist passiert?,
+Are you ready?,Bist du fertig?,
+How was your day?,Wie war dein Tag?,
+Not my cup of tea.,Nicht mein Ding.,
+That makes sense.,Das macht Sinn.,
+Never mind.,Macht nichts.,
+It doesn't matter.,Es ist egal.,
+Really?!,Wirklich?!,
+Are you serious?,Im Ernst?,
+No way!,Nicht möglich!,
+What a coincidence!,Was für ein Zufall!,
+I see.,Ich verstehe. / Ach so.,
+I'll think about it.,Ich werde darüber nachdenken.,
+That's a good idea.,Das ist eine gute Idee.,
+You're right.,Sie haben recht.,
+"One moment, please.","Einen Moment, bitte.",
+Keep going!,Mach weiter!,
+Don't give up!,Gib nicht auf!,
+You can do it!,Du schaffst das!,
+I would go,ich würde gehen,
+I would buy,ich würde kaufen,
+Would you help me?,Würdest du mir helfen?,
+I would be,ich wäre,
+you would be (sg.),du wärst,
+he / she would be,er/sie wäre,
+we would be,wir wären,
+I would have,ich hätte,
+you would have (sg.),du hättest,
+he would have,er hätte,
+we would have,wir hätten,
+I could,ich könnte,
+you could (sg.),du könntest,
+he could,er könnte,
+we could,wir könnten,
+I would have to,ich müsste,
+he would have to,er müsste,
+I should,ich sollte,
+he should,er sollte,
+If I were rich...,Wenn ich reich wäre...,
+If I had more time...,Wenn ich mehr Zeit hätte...,
+I wish I could fly.,"Ich wünschte, ich könnte fliegen.",
+I would travel if I had money.,"Ich würde reisen, wenn ich Geld hätte.",
+"Could you help me, please?",Könntest du mir bitte helfen?,
+That would be great.,Das wäre toll.,
+It would be better to...,"Es wäre besser,...",
+I would prefer...,Ich würde lieber...,
+What would you do?,Was würdest du tun?,
+I should have said that.,Ich hätte das sagen sollen.,
+He could have come.,Er hätte kommen können.,
+We should have left earlier.,Wir hätten früher abfahren sollen.,
+If only I had known...,Wenn ich das nur gewusst hätte...,
+Would you mind if I...?,"Würde es Ihnen etwas ausmachen, wenn ich...?",
+I'd appreciate it if you could...,"Ich wäre dankbar, wenn Sie...",
+to kill two birds with one stone,zwei Fliegen mit einer Klappe schlagen,
+to pull someone's leg,jemanden auf den Arm nehmen,
+to hit the nail on the head,den Nagel auf den Kopf treffen,
+once in a blue moon,alle Jubeljahre einmal,
+to break a leg!,Hals- und Beinbruch!,
+to be all thumbs,zwei linke Hände haben,
+to let the cat out of the bag,die Katze aus dem Sack lassen,
+to get cold feet,kalte Füße bekommen,
+to be on cloud nine,im siebten Himmel sein,
+to sleep on it,eine Nacht darüber schlafen,
+to read between the lines,zwischen den Zeilen lesen,
+to be in the same boat,im gleichen Boot sitzen,
+to spill the beans,alles ausplaudern,
+to add fuel to the fire,Öl ins Feuer gießen,
+to throw in the towel,das Handtuch werfen,
+to be green with envy,grün vor Neid sein,
+every cloud has a silver lining,jedes Unglück hat auch sein Gutes,
+better late than never,besser spät als nie,
+time is money,Zeit ist Geld,
+practice makes perfect,Übung macht den Meister,
+no pain no gain,ohne Fleiß kein Preis,
+the early bird catches the worm,Morgenstund hat Gold im Mund,
+to have butterflies in one's stomach,Schmetterlinge im Bauch haben,
+to be head over heels in love,bis über beide Ohren verliebt sein,
+to put one's foot in one's mouth,ins Fettnäpfchen treten,
+to be all ears,ganz Ohr sein,
+to keep one's fingers crossed,die Daumen drücken,
+to hit the road,sich auf den Weg machen,
+to go with the flow,mit dem Strom schwimmen,
+to scratch the surface,nur an der Oberfläche kratzen,
+to give someone the cold shoulder,jemandem die kalte Schulter zeigen,
+to let sleeping dogs lie,schlafende Hunde nicht wecken,
+to be on thin ice,auf dünnem Eis stehen,
+to make a mountain out of a molehill,aus einer Mücke einen Elefanten machen,
+to bite the bullet,in den sauren Apfel beißen,
+actions speak louder than words,Taten sagen mehr als Worte,
+when pigs fly,wenn Schweine fliegen können,
+to have one's hands full,alle Hände voll zu tun haben,
+to make a long story short,um es kurz zu fassen,
+to cost a pretty penny,eine schöne Stange Geld kosten,
+to tie the knot,den Bund fürs Leben schließen,
+to call it a day,Feierabend machen,
+to be a wolf in sheep's clothing,ein Wolf im Schafspelz sein,
+to be behind the times,hinter dem Mond leben,
+to be on the same page,auf derselben Wellenlänge sein,
+to get the ball rolling,den Ball ins Rollen bringen,
+to put all eggs in one basket,alles auf eine Karte setzen,
+to take the bull by the horns,den Stier bei den Hörnern packen,
+to burn the midnight oil,bis in die Nacht arbeiten,
+to bite off more than you can chew,sich zu viel vornehmen,
+to lose one's temper,die Fassung verlieren,
+football / soccer,Fußball,der
+basketball,Basketball,der
+volleyball,Volleyball,der
+tennis,Tennis,das
+swimming,Schwimmen,das
+cycling,Radfahren,das
+running,Laufen,das
+hiking,Wandern,das
+skiing,Skifahren,das
+snowboarding,Snowboarden,das
+yoga,Yoga,das
+dancing,Tanzen,das
+boxing,Boxen,das
+gymnastics,Turnen,das
+chess,Schach,das
+reading,Lesen,das
+painting,Malen,das
+photography,Fotografie,die
+cooking,Kochen,das
+baking,Backen,das
+gardening,Gärtnern,das
+knitting,Stricken,das
+singing,Singen,das
+guitar,Gitarre,die
+piano,Klavier,das
+violin,Geige,die
+drums,Schlagzeug,das
+concert,Konzert,das
+film / movie,Film,der
+series,Serie,die
+episode,Folge,die
+board game,Brettspiel,das
+video game,Videospiel,das
+to play football,Fußball spielen,
+to go swimming,schwimmen gehen,
+to go for a run,joggen gehen,
+to go cycling,Rad fahren,
+to go hiking,wandern gehen,
+to go skiing,Ski fahren,
+to play chess,Schach spielen,
+to do yoga,Yoga machen,
+What are your hobbies?,Was sind deine Hobbys?,
+I like reading.,Ich lese gerne.,
+I love cooking.,Ich liebe es zu kochen.,
+I go jogging every morning.,Ich gehe jeden Morgen joggen.,
+train ticket,Bahnfahrkarte,die
+platform,Bahnsteig,der
+boarding pass,Bordkarte,die
+suitcase,Koffer,der
+hand luggage,Handgepäck,das
+checkout (supermarket),Kasse,die
+shopping cart,Einkaufswagen,der
+price tag,Preisschild,das
+business trip,Geschäftsreise,die
+business card,Visitenkarte,die
+working hours,Arbeitszeit,die
+fitting room,Umkleidekabine,die
+waiting room,Wartezimmer,das
+emergency exit,Notausgang,der
+fire extinguisher,Feuerlöscher,der
+fire alarm,Feueralarm,der
+sports hall,Sporthalle,die
+sports club,Sportverein,der
+art gallery,Kunstgalerie,die
+nature reserve,Naturschutzgebiet,das
+hiking trail,Wanderweg,der
+mountain top,Berggipfel,der
+world record,Weltrekord,der
+mother tongue,Muttersprache,die
+foreign language,Fremdsprache,die
+language course,Sprachkurs,der
+Christmas tree,Weihnachtsbaum,der
+Christmas market,Weihnachtsmarkt,der
+Easter egg,Osterei,das
+fireworks,Feuerwerk,das
+credit card,Kreditkarte,die
+bank account,Bankkonto,das
+health insurance,Krankenversicherung,die
+blood pressure,Blutdruck,der
+first aid kit,Erste-Hilfe-Set,das
+climate change,Klimawandel,der
+greenhouse effect,Treibhauseffekt,der
+renewable energy,erneuerbare Energie,die
+solar panel,Solarpanel,das
+wind turbine,Windkraftanlage,die
+carbon footprint,CO2-Fußabdruck,der
+artificial intelligence,Künstliche Intelligenz,die
+machine learning,maschinelles Lernen,das
+virtual reality,virtuelle Realität,die
+operating system,Betriebssystem,das
+video call,Videoanruf,der
+email address,E-Mail-Adresse,die
+phone number,Telefonnummer,die
+return ticket,Rückfahrkarte,die
+window seat,Fensterplatz,der
+room service,Zimmerservice,der
+single room,Einzelzimmer,das
+double room,Doppelzimmer,das
+baggage claim,Gepäckausgabe,die
+stopover,Zwischenstopp,der
+exchange rate,Wechselkurs,der
+travel insurance,Reiseversicherung,die
+Come! (du),Komm!,
+Go! (du),Geh!,
+Wait! (du),Warte!,
+Stop! (du),Hör auf!,
+Listen! (du),Hör zu!,
+Look! (du),Schau!,
+Sit down! (du),Setz dich!,
+Stand up! (du),Steh auf!,
+Come in! (du),Komm rein!,
+Be quiet! (du),Sei ruhig!,
+Be careful! (du),Pass auf!,
+Help me! (du),Hilf mir!,
+Read this! (du),Lies das!,
+Speak slowly! (du),Sprich langsam!,
+Tell me! (du),Erzähl mir!,
+Give me! (du),Gib mir!,
+Take it! (du),Nimm es!,
+Bring it! (du),Bring es!,
+Come! (ihr),Kommt!,
+Wait! (ihr),Wartet!,
+Be quiet! (ihr),Seid ruhig!,
+Help me! (ihr),Helft mir!,
+Come in! (Sie),Kommen Sie herein!,
+Please wait! (Sie),Bitte warten Sie!,
+Please sit down! (Sie),Bitte setzen Sie sich!,
+Please speak slowly! (Sie),Bitte sprechen Sie langsam!,
+Please fill in the form! (Sie),Bitte füllen Sie das Formular aus!,
+Please sign here! (Sie),Bitte unterschreiben Sie hier!,
+Let's eat!,Essen wir! / Lass uns essen!,
+Let's start!,Fangen wir an!,
+Turn it off! (du),Mach es aus!,
+Turn it on! (du),Mach es an!,
+Clean up! (du),Räum auf!,
+Get dressed! (du),Zieh dich an!,
+'aktuell' = current/topical (NOT 'actual'),aktuell = gegenwärtig (tatsächlich = actual),
+'also' = so/therefore (NOT 'also/too'),also = daher (auch = also/too),
+'bald' = soon (NOT 'bald'),bald = in Kürze (kahl = bald),
+'bekommen' = to get/receive (NOT 'become'),bekommen = erhalten (werden = become),
+'Brief' = letter (NOT 'brief'),der Brief = Schreiben (kurz = brief),
+'Chef' = boss (NOT 'chef'),der Chef = Boss (Koch = chef),
+'eventuell' = possibly (NOT 'eventually'),eventuell = möglicherweise (schließlich = eventually),
+'fast' = almost (NOT 'fast'),fast = beinahe (schnell = fast),
+'Gift' = poison (NOT 'gift'),das Gift = Poison (Geschenk = gift),
+'hell' = bright/light (NOT 'hell'),hell = leuchtend (Hölle = hell),
+'Gymnasium' = high school (NOT 'gym'),das Gymnasium = Schule (Turnhalle = gym),
+'Handy' = mobile phone (NOT 'handy'),das Handy = Mobiltelefon (praktisch = handy),
+'komisch' = funny/strange (NOT 'comic'),komisch = seltsam/lustig (Comic = comic book),
+'ordinär' = vulgar (NOT 'ordinary'),ordinär = vulgär (gewöhnlich = ordinary),
+'passieren' = to happen (NOT always 'to pass'),passieren = geschehen (vorbeigehen = to pass by),
+'sensibel' = sensitive (NOT 'sensible'),sensibel = empfindlich (vernünftig = sensible),
+'sympathisch' = likeable (NOT 'sympathetic'),sympathisch = nett (mitfühlend = sympathetic),
+'Smoking' = tuxedo (NOT 'smoking'),der Smoking = Abendanzug (Rauchen = smoking),
+'spenden' = to donate (NOT 'to spend'),spenden = schenken (ausgeben = to spend),
+'still' = quiet (NOT 'still/yet'),still = ruhig (noch = still/yet),
+'Wand' = wall (NOT 'wand'),die Wand = wall (Zauberstab = wand),
+'wo' = where (NOT 'who'),wo = where (wer = who),
+'See' (m) = lake / 'See' (f) = sea,der See = lake / die See = sea,
+'Rat' = advice/council (NOT 'rat'),der Rat = Rat/Empfehlung (Ratte = rat),
+'irritieren' = to irritate or confuse,irritieren = stören / verwirren,
+Where have you been?,Wo warst du?,
+I was at the office.,Ich war im Büro.,
+I had a lot to do.,Ich hatte viel zu tun.,
+Did you have a good day?,Hattest du einen guten Tag?,
+It was exhausting.,Es war anstrengend.,
+What are your plans for the evening?,Was hast du heute Abend vor?,
+I'm staying home.,Ich bleibe zu Hause.,
+Would you like to join us?,Möchtest du mitkommen?,
+Unfortunately I can't.,Leider kann ich nicht.,
+Maybe next time.,Vielleicht beim nächsten Mal.,
+Do you have this in a larger size?,Haben Sie das in einer größeren Größe?,
+I'd like to try this on.,Ich möchte das anprobieren.,
+It fits perfectly.,Es passt perfekt.,
+It's a bit too tight.,Es ist etwas zu eng.,
+I'll take it.,Ich nehme es.,
+Can I pay by card?,Kann ich mit Karte zahlen?,
+I'd like to return this.,Ich möchte das zurückgeben.,
+"A table for two, please.","Einen Tisch für zwei Personen, bitte.",
+What do you recommend?,Was empfehlen Sie?,
+I'm a vegetarian.,Ich bin Vegetarier/Vegetarierin.,
+Does this contain gluten?,Enthält das Gluten?,
+"Excuse me, where is the station?","Entschuldigung, wo ist der Bahnhof?",
+It's about 10 minutes on foot.,Es ist ungefähr 10 Minuten zu Fuß.,
+Take the first street on the left.,Nehmen Sie die erste Straße links.,
+Is it far from here?,Ist es weit von hier?,
+Which line do I take?,Welche Linie nehme ich?,
+You need to change at the central station.,Sie müssen am Hauptbahnhof umsteigen.,
+I have a reservation.,Ich habe eine Reservierung.,
+Is breakfast included?,Ist das Frühstück inbegriffen?,
+What time is check-out?,Um wie viel Uhr ist der Check-out?,
+Where does it hurt?,Wo tut es weh?,
+It hurts here.,Hier tut es weh.,
+I need a prescription.,Ich brauche ein Rezept.,
+Are you taking any medication?,Nehmen Sie Medikamente?,
+Do you have any allergies?,Haben Sie Allergien?,
+When does the shift start?,Wann beginnt die Schicht?,
+I need to take a day off.,Ich muss einen Tag freinehmen.,
+The project is on track.,Das Projekt liegt im Zeitplan.,
+We missed the deadline.,Wir haben die Frist verpasst.,
+Can you send me the report?,Kannst du mir den Bericht schicken?,
+I'll get back to you on that.,Ich werde mich diesbezüglich bei dir melden.,
+I can't hear you very well.,Ich kann Sie nicht sehr gut hören.,
+My battery is almost dead.,Mein Akku ist fast leer.,
+Have you tried turning it off and on?,"Hast du versucht, es aus- und einzuschalten?",
+I'm looking for...,Ich suche...,
+Can you recommend something?,Können Sie etwas empfehlen?,
+I'm afraid I don't know.,Das weiß ich leider nicht.,
+Could you write that down?,Könnten Sie das aufschreiben?,
+What time does the shop close?,Wann schließt der Laden?,
+Is this seat taken?,Ist dieser Platz besetzt?,
+How long have you been learning German?,Wie lange lernst du schon Deutsch?,
+Who?,Wer?,
+Whom? (accusative),Wen?,
+To whom? (dative),Wem?,
+Whose?,Wessen?,
+What?,Was?,
+Where?,Wo?,
+Where to?,Wohin?,
+Where from?,Woher?,
+When?,Wann?,
+Why?,Warum?,
+How?,Wie?,
+How much?,Wie viel?,
+How many?,Wie viele?,
+How long?,Wie lange?,
+How often?,Wie oft?,
+Which? (m),Welcher?,
+Which? (f),Welche?,
+Which? (n),Welches?,
+What kind of?,Was für ein?,
+With what?,Womit?,
+About what?,Worüber?,
+For what?,Wofür?,
+With whom?,Mit wem?,
+What is your name?,Wie heißt du?,
+Where do you live?,Wo wohnst du?,
+What do you do?,Was machst du?,
+How old are you?,Wie alt bist du?,
+Where are you going?,Wohin gehst du?,
+When does it start?,Wann fängt es an?,
+Why are you late?,Warum kommst du zu spät?,
+How long have you been here?,Wie lange bist du schon hier?,
+How many people are there?,Wie viele Leute sind da?,
+What time is it?,Wie spät ist es?,
+Do you understand?,Verstehst du?,
+Do you have time?,Hast du Zeit?,
+Is everything okay?,Ist alles in Ordnung?,
+How does this work?,Wie funktioniert das?,
+Did you eat?,Hast du gegessen?,
+What are you thinking about?,Woran denkst du?,
+What are you looking for?,Wonach suchst du?,
+Can I help you?,Kann ich Ihnen helfen?,
+Are you coming?,Kommst du?,
+Is she here?,Ist sie hier?,
+Can you help?,Kannst du helfen?,
+Verb always in second position,Das Verb steht immer an zweiter Stelle,
+She reads the book.,Sie liest das Buch.,
+Yesterday he read the book.,Gestern hat er das Buch gelesen.,
+On Monday we have class.,Am Montag haben wir Unterricht.,
+Subordinate clause: verb goes to end,Im Nebensatz: Verb geht ans Ende,
+I know that he is tired.,"Ich weiß, dass er müde ist.",
+He goes because he is hungry.,"Er geht, weil er hungrig ist.",
+"Although it rains, I go out.","Obwohl es regnet, gehe ich raus.",
+"When I was young, I played football.","Als ich jung war, spielte ich Fußball.",
+Separable prefix at end of main clause,Trennbares Präfix am Ende des Hauptsatzes,
+He turns off the light.,Er macht das Licht aus.,
+She picks up her friend.,Sie holt ihre Freundin ab.,
+I can swim.,Ich kann schwimmen.,
+She must work.,Sie muss arbeiten.,
+I have eaten. (Perfekt),Ich habe gegessen.,
+She has gone. (Perfekt),Sie ist gegangen.,
+Dative before Accusative (nouns),Dativ vor Akkusativ bei Nomen,
+He gives the woman the book.,Er gibt der Frau das Buch.,
+He gives it to her. (pronouns),Er gibt es ihr.,
+Time – Manner – Place order,Zeit – Art und Weise – Ort (TeKaMoLo),
+He doesn't come. (nicht),Er kommt nicht.,
+I have no time. (kein),Ich habe keine Zeit.,
+Are you coming? (yes/no question),Kommst du?,
+I know that she is coming.,"Ich weiß, dass sie kommt.",
+She says that it is cold.,"Sie sagt, dass es kalt ist.",
+"If you need help, call me.","Wenn du Hilfe brauchst, ruf mich an.",
+"Before I go out, I check the weather.","Bevor ich rausgehe, schaue ich das Wetter an.",
+"After she ate, she went for a walk.","Nachdem sie gegessen hatte, machte sie einen Spaziergang.",
+"While he reads, she cooks.","Während er liest, kocht sie.",
+I don't know if he is coming.,"Ich weiß nicht, ob er kommt.",
+the man who is standing there,"der Mann, der dort steht",
+the book that I read,"das Buch, das ich gelesen habe",
+the city where I was born,"die Stadt, in der ich geboren wurde",
+to make a decision,eine Entscheidung treffen,
+to take a photo,ein Foto machen,
+to take a break,eine Pause machen,
+to make progress,Fortschritte machen,
+to make a mistake,einen Fehler machen,
+to make a phone call,einen Anruf machen,
+to make an appointment,einen Termin vereinbaren,
+to ask a question,eine Frage stellen,
+to give an answer,eine Antwort geben,
+to give advice,Rat geben,
+to give a speech,eine Rede halten,
+to give a present,ein Geschenk geben,
+to pay attention,aufpassen / achtgeben,
+to keep a promise,ein Versprechen halten,
+to keep a secret,ein Geheimnis bewahren,
+to keep in touch,in Kontakt bleiben,
+to lose weight,abnehmen,
+to gain weight,zunehmen,
+to lose patience,die Geduld verlieren,
+to hold a meeting,ein Meeting abhalten,
+to catch a cold,sich erkälten,
+to break a promise,ein Versprechen brechen,
+to run out of time,keine Zeit mehr haben,
+to fall asleep,einschlafen,
+to feel at home,sich wie zu Hause fühlen,
+to get ready,sich fertigmachen,
+to get better,besser werden / sich erholen,
+to get worse,sich verschlechtern,
+to get rid of,loswerden,
+to go wrong,schiefgehen,
+to go on vacation,in den Urlaub fahren,
+to go for a walk,spazieren gehen,
+to go shopping,einkaufen gehen,
+to go to bed,ins Bett gehen,
+to be in a good mood,gute Laune haben,
+to be in a bad mood,schlechte Laune haben,
+to be late,zu spät kommen,
+to be right,recht haben,
+to be wrong,falsch liegen / sich irren,
+to be afraid of,Angst haben vor,
+to be proud of,stolz sein auf,
+to be interested in,interessiert sein an,
+to be fed up with,die Nase voll haben von,
+to be disappointed with,enttäuscht sein von,
+to be satisfied with,zufrieden sein mit,
+to be looking forward to,sich freuen auf,
+to be aware of,sich bewusst sein über,
+to come to a conclusion,zu einer Schlussfolgerung kommen,
+to fall apart,auseinanderfallen,
+to break the law,das Gesetz brechen,
+Germany,Deutschland,
+Austria,Österreich,
+Switzerland,die Schweiz,
+Berlin,Berlin,
+Vienna,Wien,
+Zurich,Zürich,
+Munich,München,
+Hamburg,Hamburg,
+Cologne,Köln,
+German-speaking countries (D-A-CH),deutschsprachige Länder (D-A-CH),
+Standard German,Hochdeutsch / Standarddeutsch,
+dialect,Dialekt,der
+January (Austrian variant),Jänner (statt Januar),der
+hello (Austrian/Southern),Servus!,
+goodbye (Austrian informal),Pfiat di!,
+bread roll (Austrian),Semmel (statt Brötchen),die
+tomato (Austrian),Paradeiser (statt Tomate),der
+potato (Austrian),Erdapfel (statt Kartoffel),der
+cream (Austrian),Obers / Schlagobers (statt Sahne),das
+elevator (Austrian/general),Lift (statt Aufzug),der
+hello (Swiss formal),Grüezi!,
+bike (Swiss informal),Velo (statt Fahrrad),das
+mobile phone (Swiss),Natel,das
+Swiss franc,Schweizer Franken (CHF),der
+pretzel,Brezel,die
+bratwurst,Bratwurst,die
+schnitzel,Schnitzel,das
+sauerkraut,Sauerkraut,das
+rye bread,Schwarzbrot,das
+Oktoberfest,das Oktoberfest,
+Christmas Eve,Heiligabend,der
+Day of German Unity,Tag der Deutschen Einheit,der
+Carnival,Karneval / Fasching,der
+Easter,Ostern,
+New Year's Eve,Silvester,der
+"South Tyrol (Italy, German-speaking)",Südtirol (Italien),
+Liechtenstein (also German-speaking),Liechtenstein,
+research,Forschung,die
+experiment,Experiment,das
+theory,Theorie,die
+hypothesis,Hypothese,die
+analysis,Analyse,die
+conclusion,Schlussfolgerung,die
+innovation,Innovation,die
+invention,Erfindung,die
+discovery,Entdeckung,die
+evolution,Evolution,die
+revolution,Revolution,die
+democracy,Demokratie,die
+election,Wahl,die
+parliament,Parlament,das
+constitution,Verfassung,die
+human rights,Menschenrechte,die
+equality,Gleichheit,die
+justice,Gerechtigkeit,die
+corruption,Korruption,die
+protest,Protest,der
+globalization,Globalisierung,die
+immigration,Einwanderung,die
+integration,Integration,die
+discrimination,Diskriminierung,die
+poverty,Armut,die
+wealth,Reichtum,der
+inflation,Inflation,die
+recession,Rezession,die
+growth,Wachstum,das
+export,Export,der
+import,Import,der
+bankruptcy,Insolvenz,die
+merger,Fusion,die
+startup,Start-up,das
+ecosystem,Ökosystem,das
+biodiversity,Artenvielfalt,die
+cell,Zelle,die
+gene,Gen,das
+photosynthesis,Photosynthese,die
+immune system,Immunsystem,das
+antibiotic,Antibiotikum,das
+pandemic,Pandemie,die
+epidemic,Epidemie,die
+neural network,neuronales Netz,das
+3D printing,3D-Druck,der
+automation,Automatisierung,die
+cybersecurity,Cybersicherheit,die
+encryption,Verschlüsselung,die
+"Dear Sir/Madam,","Sehr geehrte Damen und Herren,",
+I am writing to you regarding...,Ich schreibe Ihnen bezüglich...,
+Please find attached...,Im Anhang finden Sie...,
+I look forward to hearing from you.,Ich freue mich auf Ihre Antwort.,
+"Yours sincerely,","Mit freundlichen Grüßen,",
+In my opinion...,Meiner Meinung nach...,
+This suggests that...,"Das deutet darauf hin, dass...",
+To conclude...,Abschließend...,
+In summary...,Zusammenfassend...,
+Let's get down to business.,Kommen wir zur Sache.,
+That's not negotiable.,Das ist nicht verhandelbar.,
+That's a deal.,Abgemacht!,
+All things considered...,Alles in allem...,
+The most important thing is...,Das Wichtigste ist...,
+Ultimately...,Letztendlich...,
+It depends on...,Es hängt von... ab.,
+Apparently...,Anscheinend...,
+It seems like...,"Es scheint, als ob...",
+sooner or later,früher oder später,
+more or less,mehr oder weniger,
+step by step,Schritt für Schritt,
+sustainable,nachhaltig,
+ambitious,ambitioniert,
+significant,bedeutsam,
+transparent,transparent,
+efficient,effizient,
+innovative,innovativ,
+competitive,wettbewerbsfähig,
+proactive,proaktiv,
+collaborative,kollaborativ,
+"Well, anyway...","Na ja, jedenfalls...",
+To be honest...,Ehrlich gesagt...,
+Between you and me...,Unter uns gesagt...,
+Don't get me wrong.,Verstehen Sie mich nicht falsch.,
+If I understand correctly...,Wenn ich das richtig verstehe...,
+wood,Holz,das
+metal,Metall,das
+plastic,Plastik,das
+glass,Glas,das
+paper,Papier,das
+leather,Leder,das
+cotton,Baumwolle,die
+silk,Seide,die
+wool,Wolle,die
+rubber,Gummi,das
+gold,Gold,das
+silver,Silber,das
+iron,Eisen,das
+steel,Stahl,der
+copper,Kupfer,das
+concrete,Beton,der
+clay,Ton,der
+wax,Wachs,das
+knife,Messer,das
+fork,Gabel,die
+spoon,Löffel,der
+plate,Teller,der
+cup,Tasse,die
+glass (drinking),Glas,das
+bottle,Flasche,die
+box,Schachtel,die
+basket,Korb,der
+bowl,Schüssel,die
+pot,Topf,der
+pan,Pfanne,die
+soap,Seife,die
+brush,Bürste,die
+comb,Kamm,der
+scissors,Schere,die
+needle,Nadel,die
+thread,Faden,der
+rope,Seil,das
+chain,Kette,die
+hook,Haken,der
+nail (hardware),Nagel,der
+screw,Schraube,die
+hammer,Hammer,der
+screwdriver,Schraubenzieher,der
+drill,Bohrer,der
+ruler,Lineal,das
+tape measure,Maßband,das
+clock,Uhr,die
+alarm clock,Wecker,der
+wallet,Geldbörse,die
+backpack,Rucksack,der
+suitcase,Koffer,der
+envelope,Briefumschlag,der
+stamp,Briefmarke,die
+label,Etikett,das
+newspaper,Zeitung,die
+magazine,Zeitschrift,die
+headline,Überschrift,die
+article,Artikel,der
+documentary,Dokumentarfilm,der
+channel,Kanal,der
+post (social media),Beitrag,der
+comment,Kommentar,der
+hashtag,Hashtag,der
+podcast,Podcast,der
+streaming service,Streamingdienst,der
+influencer,Influencer,der
+inbox,Postfach,das
+attachment,Anhang,der
+subject line,Betreffzeile,die
+spam,Spam,der
+screenshot,Screenshot,der
+username,Benutzername,der
+profile picture,Profilbild,das
+calendar,Kalender,der
+reminder,Erinnerung,die
+self-confidence,Selbstvertrauen,das
+self-esteem,Selbstwertgefühl,das
+depression,Depression,die
+stress,Stress,der
+trauma,Trauma,das
+therapy,Therapie,die
+motivation,Motivation,die
+attitude,Einstellung,die
+habit,Gewohnheit,die
+routine,Routine,die
+atom,Atom,das
+molecule,Molekül,das
+element,Element,das
+gravity,Schwerkraft,die
+energy,Energie,die
+power,Kraft,die
+electricity,Elektrizität,die
+current,Strom,der
+voltage,Spannung,die
+frequency,Frequenz,die
+radiation,Strahlung,die
+experiment,Versuch,der
+microscope,Mikroskop,das
+telescope,Teleskop,das
+laboratory,Labor,das
+wall (outer),Mauer,die
+fence,Zaun,der
+gate,Tor,das
+tower,Turm,der
+column,Säule,die
+arch,Bogen,der
+tunnel,Tunnel,der
+dam,Damm,der
+canal,Kanal,der
+harbor,Hafen,der
+lighthouse,Leuchtturm,der
+monument,Denkmal,das
+statue,Statue,die
+fountain,Brunnen,der
+sidewalk,Bürgersteig,der
+crossroads,Kreuzung,die
+goal,Tor,das
+point,Punkt,der
+score,Punktestand,der
+team,Mannschaft,die
+player,Spieler,der
+coach,Trainer,der
+referee,Schiedsrichter,der
+championship,Meisterschaft,die
+tournament,Turnier,das
+medal,Medaille,die
+trophy,Pokal,der
+race,Rennen,das
+finish line,Ziellinie,die
+to subscribe,abonnieren,
+to unsubscribe,abbestellen,
+to block,blockieren,
+to report (online),melden,
+to scroll,scrollen,
+to click,klicken,
+to tap,tippen,
+to zoom in,reinzoomen,
+to zoom out,rauszoomen,
+to charge (phone),aufladen,
+to reboot,neu starten,
+to update,aktualisieren,
+to backup,sichern,
+to encrypt,verschlüsseln,
+to stream,streamen,
+to share (online),teilen,
+to like (social media),liken / gefallen,
+to post,posten / veröffentlichen,
+to tag,markieren,
+to follow,folgen,
+to quit,aufhören / kündigen,
+to resign,zurücktreten / kündigen,
+to negotiate,verhandeln,
+to sign,unterschreiben,
+to submit,einreichen,
+to approve,genehmigen,
+to reject,ablehnen,
+to fund,finanzieren,
+to budget,budgetieren,
+to audit,prüfen / auditieren,
+to export,exportieren,
+to import,importieren,
+to recycle,recyceln,
+to compost,kompostieren,
+to conserve,konservieren / schonen,
+to pollute,verschmutzen,
+to emit,ausstoßen / emittieren,
+to absorb,aufnehmen / absorbieren,
+to vote,wählen,
+to elect,wählen / wählen,
+to govern,regieren,
+to ban,verbieten,
+to legalize,legalisieren,
+to regulate,regulieren,
+to investigate,untersuchen,
+to prosecute,verfolgen,
+to sentence,verurteilen,
+to appeal,Berufung einlegen,
+to donate,spenden,
+to volunteer,ehrenamtlich tätig sein,
+to raise (money),sammeln / aufbringen,
+to convince,überzeugen,
+to persuade,überreden,
+to negotiate,verhandeln,
+to argue,streiten / argumentieren,
+to debate,debattieren,
+to protest,protestieren,
+to demonstrate,demonstrieren,
+to strike,streiken,
+to publish,veröffentlichen,
+to edit,bearbeiten,
+to proofread,Korrektur lesen,
+to cite,zitieren,
+to summarize,zusammenfassen,
+to analyze,analysieren,
+to evaluate,auswerten / bewerten,
+to calculate,berechnen,
+to estimate,schätzen,
+to predict,vorhersagen,
+to simulate,simulieren,
+to program,programmieren,
+to code,programmieren / coden,
+to debug,debuggen,
+to test,testen,
+to deploy,einsetzen / deployen,
+to automate,automatisieren,
+to optimize,optimieren,
+It is 3 o'clock.,Es ist 3 Uhr.,
+It is half past 3.,Es ist halb vier.,
+It is quarter past 3.,Es ist Viertel nach drei.,
+It is quarter to 4.,Es ist Viertel vor vier.,
+It is noon.,Es ist Mittag.,
+It is midnight.,Es ist Mitternacht.,
+at 5 o'clock,um 5 Uhr,
+in 10 minutes,in 10 Minuten,
+an hour ago,vor einer Stunde,
+in two days,in zwei Tagen,
+three weeks ago,vor drei Wochen,
+on Monday,am Montag,
+on the weekend,am Wochenende,
+in January,im Januar,
+in spring,im Frühling,
+from Monday to Friday,von Montag bis Freitag,
+every day,jeden Tag,
+every week,jede Woche,
+every year,jedes Jahr,
+for two hours,zwei Stunden lang,
+since Monday,seit Montag,
+until Friday,bis Freitag,
+before noon,vor dem Mittag,
+after school,nach der Schule,
+during summer,während des Sommers,
+at the beginning,am Anfang,
+at the end,am Ende,
+from now on,von nun an,
+up until now,bis jetzt,
+in the end,letztendlich / am Ende,
+in the long run,auf lange Sicht,
+in the short term,kurzfristig,
+at first glance,auf den ersten Blick,
+at the same time,gleichzeitig,
+in the meantime,in der Zwischenzeit,
+ever since,seitdem,
+NOT: Ich bin kalt. → USE: Mir ist kalt.,Mir ist kalt. (I feel cold),
+NOT: Ich habe Hunger haben. → USE: Ich habe Hunger.,Ich habe Hunger.,
+NOT: Er ist 30 Jahre. → USE: Er ist 30 Jahre alt.,Er ist 30 Jahre alt.,
+NOT: Wann du kommst? → USE: Wann kommst du?,Wann kommst du?,
+NOT: Sie hat angekommen. → USE: Sie ist angekommen.,Sie ist angekommen. (ankommen → sein),
+"NOT: Ich denke das er müde ist. → USE: Ich denke, dass er müde ist.","Ich denke, dass er müde ist.",
+wissen vs. kennen,wissen = Fakten kennen / kennen = Personen/Orte kennen,
+mögen vs. möchten,mögen = mögen/gernhaben / möchten = möchten/hätten gern,
+hören vs. zuhören,hören = hören / zuhören = zuhören (jemandem),
+legen vs. liegen,legen = legen (transitiv) / liegen = liegen (intransitiv),
+stellen vs. stehen,stellen = (aufrecht) stellen / stehen = stehen,
+setzen vs. sitzen,setzen = setzen / sitzen = sitzen,
+fahren vs. gehen,fahren = mit Fahrzeug fahren / gehen = zu Fuß gehen,
+bringen vs. holen,bringen = bringen / holen = holen/abholen,
+lernen vs. studieren,lernen = lernen / studieren = an der Uni studieren,
+after 'weil': verb at end,"Nach 'weil': Verb ans Ende – Ich komme, weil ich Zeit habe.",
+after 'obwohl': verb at end,"Nach 'obwohl': Verb ans Ende – Obwohl es regnet, gehe ich raus.",
+"Genitiv -s: des Mannes, des Hauses",Mask./Neutr. im Genitiv: -(e)s,
+Dative plural always -n,"Dativ Plural: immer -n → den Männern, den Kindern",
+n-Declension: der Junge → den Jungen,n-Deklination: Mask. bekommt -(e)n in Akk./Dat./Gen.,
+Perfekt with sein: movement/change,Perfekt mit sein: Bewegung oder Zustandsänderung,
+Perfekt with haben: most other verbs,Perfekt mit haben: die meisten anderen Verben,
+Comparative: add -er → größer,"Komparativ: -er anhängen → größer, schneller",
+Superlative: am ...sten → am größten,Superlativ: am ...sten → am größten,
+Umlaut in comparatives: alt → älter,"Umlaut im Komparativ: alt → älter, warm → wärmer",
+der/die/das → dem/der/dem (Dativ),Dativ: dem (m/n) / der (f) / den+n (pl.),
+der/die/das → des/der/des (Genitiv),Genitiv: des (m/n) / der (f) / der (pl.),
+"ein → einen (m, Akkusativ)","Unbestimmter Artikel m, Akk.: einen",
+"kein → keinen (m, Akkusativ)","Negation m, Akk.: keinen",
+Reflexivpronomen: sich (er/sie/es/Sie),Reflexiv 3. Pers.: sich – er wäscht sich,
+tall,groß / hochgewachsen,
+short (height),klein / niedrig,
+slim,schlank,
+overweight,übergewichtig,
+muscular,muskulös,
+athletic,sportlich,
+blonde hair,blonde Haare,
+brown hair,braune Haare,
+black hair,schwarze Haare,
+red hair,rote Haare,
+grey hair,graue Haare,
+curly hair,lockige Haare,
+straight hair,glatte Haare,
+bald,kahl / glatzköpfig,
+beard,Bart,der
+mustache,Schnurrbart,der
+blue eyes,blaue Augen,
+brown eyes,braune Augen,
+freckles,Sommersprossen,die
+wrinkles,Falten,die
+scar,Narbe,die
+tattoo,Tattoo,das
+pale skin,blasse Haut,
+tanned skin,gebräunte Haut,
+He looks like his father.,Er sieht seinem Vater ähnlich.,
+What does she look like?,Wie sieht sie aus?,
+She has long curly hair.,Sie hat lange lockige Haare.,
+He is tall and slim.,Er ist groß und schlank.,
+She looks young for her age.,Sie sieht jung aus für ihr Alter.,
+open-minded,aufgeschlossen,
+broad-minded,tolerant,
+narrow-minded,engstirnig,
+sarcastic,sarkastisch,
+witty,witzig / schlagfertig,
+charming,charmant,
+arrogant,arrogant,
+modest,bescheiden,
+hardworking,fleißig / arbeitsam,
+to the left,nach links,
+to the right,nach rechts,
+at the top,oben / ganz oben,
+at the bottom,unten / ganz unten,
+in the middle,in der Mitte,
+on the left side,auf der linken Seite,
+on the right side,auf der rechten Seite,
+in the corner,in der Ecke,
+around the corner,um die Ecke,
+across the street,auf der anderen Straßenseite,
+opposite the station,gegenüber dem Bahnhof,
+in front of the hotel,vor dem Hotel,
+between the church and the café,zwischen der Kirche und dem Café,
+on the second floor,im zweiten Stock,
+on the ground floor,im Erdgeschoss,
+in the city center,im Stadtzentrum,
+in the suburbs,in den Vororten,
+in the countryside,auf dem Land,
+by the sea,am Meer,
+in the mountains,in den Bergen,
+near the river,am Fluss,
+in the north of Germany,im Norden Deutschlands,
+in the south of Austria,im Süden Österreichs,
+as big as,genauso groß wie,
+bigger than,größer als,
+the biggest,am größten,
+as fast as possible,so schnell wie möglich,
+better than expected,besser als erwartet,
+worse than yesterday,schlechter als gestern,
+This is the best film I've seen.,"Das ist der beste Film, den ich gesehen habe.",
+She is taller than her brother.,Sie ist größer als ihr Bruder.,
+"The more you practice, the better.","Je mehr du übst, desto besser.",
+The sooner the better.,Je früher desto besser.,
+slightly better,etwas besser,
+much worse,viel schlechter,
+even better,noch besser,
+not as good as,nicht so gut wie,
+twice as old,doppelt so alt,
+far more interesting,viel interessanter,
+The letter is written.,Der Brief wird geschrieben.,
+The car is being repaired.,Das Auto wird repariert.,
+The letter was written.,Der Brief wurde geschrieben.,
+The thief was caught.,Der Dieb wurde gefangen.,
+The bill has been paid.,Die Rechnung ist bezahlt worden.,
+The form must be filled in.,Das Formular muss ausgefüllt werden.,
+The report should be written.,Der Bericht soll geschrieben werden.,
+The machine can be repaired.,Die Maschine kann repariert werden.,
+The letter was written by her.,Der Brief wurde von ihr geschrieben.,
+The door is closed. (state),Die Tür ist geschlossen.,
+The work is done. (state),Die Arbeit ist erledigt.,
+The meal is ready. (state),Das Essen ist fertig.,
+to work → work → worker,arbeiten → Arbeit → Arbeiter,
+to write → writing → writer,schreiben → Schreiben → Schriftsteller,
+to speak → speech → speaker,sprechen → Rede → Sprecher,
+to learn → lesson → learner → teacher,lernen → Lektion → Lernende → Lehrer,
+to cook → cooking → cook → kitchen,kochen → Kochen → Koch → Küche,
+to drive → driver → ride → vehicle,fahren → Fahrer → Fahrt → Fahrzeug,
+to buy → buyer → purchase → seller → sale,kaufen → Käufer → Kauf → Verkäufer → Verkauf,
+sick → illness → patient → hospital → nurse,krank → Krankheit → Patient → Krankenhaus → Krankenschwester,
+to love → love → lover → beloved → lovable,lieben → Liebe → Liebhaber → Geliebte → liebenswert,
+friend → friendship → friendly,Freund → Freundschaft → freundlich,
+primary school,Grundschule,die
+secondary school,Hauptschule,die
+high school,Gymnasium,das
+vocational school,Berufsschule,die
+curriculum,Lehrplan,der
+semester,Semester,das
+enrollment,Einschreibung,die
+tuition fee,Studiengebühr,die
+oral exam,mündliche Prüfung,die
+written exam,schriftliche Prüfung,die
+essay,Aufsatz,der
+presentation,Präsentation,die
+research paper,Forschungsarbeit,die
+plagiarism,Plagiat,das
+citation,Zitat,das
+grade A / very good,sehr gut,
+grade B / good,gut,
+grade C / satisfactory,befriedigend,
+grade F / fail,ungenügend,
+to pass an exam,eine Prüfung bestehen,
+to fail an exam,eine Prüfung nicht bestehen,
+to graduate,einen Abschluss machen,
+graduation ceremony,Abschlussfeier,die
+canteen / mensa,Mensa,die
+dormitory,Wohnheim,das
+"Dear Mr. Schmidt,","Sehr geehrter Herr Schmidt,",
+"Dear Ms. Müller,","Sehr geehrte Frau Müller,",
+I would like to inquire about...,Ich möchte mich nach ... erkundigen.,
+"Kind regards,","Freundliche Grüße,",
+"Best regards,","Beste Grüße,",
+I strongly believe that...,"Ich bin fest davon überzeugt, dass...",
+This shows that...,"Das zeigt, dass...",
+It is worth noting that...,"Es ist erwähnenswert, dass...",
+That's a valid concern.,Das ist eine berechtigte Sorge.,
+I see where you're coming from.,"Ich verstehe, woher Sie kommen.",
+That's not what I meant.,Das habe ich nicht so gemeint.,
+Allow me to clarify.,Erlauben Sie mir zu klären.,
+To be more precise...,Um genauer zu sein...,
+So to speak.,Sozusagen.,
+The fact remains that...,"Die Tatsache bleibt, dass...",
+That changes everything.,Das ändert alles.,
+What's the bottom line?,Was ist das Fazit?,
+We need to find a compromise.,Wir müssen einen Kompromiss finden.,
+The ball is in your court.,Der Ball liegt bei Ihnen.,
+Let's touch base later.,Lassen Sie uns später Kontakt aufnehmen.,
+We're on the same page.,Wir sind uns einig.,
+I'm in over my head.,Das überfordert mich.,
+It's now or never.,Jetzt oder nie.,
+Better safe than sorry.,Vorsicht ist besser als Nachsicht.,
+One step at a time.,Schritt für Schritt.,
+Hard work pays off.,Harte Arbeit zahlt sich aus.,
+one-way ticket,einfache Fahrkarte,die
+first class,erste Klasse,die
+second class,zweite Klasse,die
+window seat,Fensterplatz,der
+aisle seat,Gangplatz,der
+to check in (hotel),einchecken,
+to check out (hotel),auschecken,
+reception,Rezeption,die
+delayed,verspätet,
+cancelled,storniert / annulliert,
+connection,Anschluss,der
+to miss the bus,den Bus verpassen,
+to catch the train,den Zug erwischen,
+direct flight,Direktflug,der
+layover,Zwischenstopp,der
+itinerary,Reiseplan,der
+tour guide,Reiseführer,der
+sightseeing,Besichtigung,die
+souvenir,Souvenir,das
+local time,Ortszeit,die
+jet lag,Jetlag,der
+last-minute booking,Last-Minute-Buchung,die
+I bit,ich biss,
+I chose,ich wählte / ich erkor,
+I flew,ich flog,
+I grew,ich wuchs,
+I hid,ich versteckte / ich verbarg,
+I hit,ich schlug,
+I hurt,ich verletzte,
+I rang,ich läutete / ich rief an,
+I rose,ich stieg,
+I shook,ich schüttelte,
+I shut,ich schloss,
+I sold,ich verkaufte,
+I spent,ich verbrachte / ich gab aus,
+I stole,ich stahl,
+I swam,ich schwamm,
+I taught,ich lehrte / ich unterrichtete,
+I told,ich erzählte / ich sagte,
+I wore,ich trug,
+I washed myself.,Ich habe mich gewaschen.,
+She combed her hair.,Sie hat sich gekämmt.,
+He shaved.,Er hat sich rasiert.,
+We enjoyed ourselves.,Wir haben uns amüsiert.,
+She got used to it.,Sie hat sich daran gewöhnt.,
+He concentrated.,Er hat sich konzentriert.,
+I'm interested in art.,Ich interessiere mich für Kunst.,
+She complains about everything.,Sie beschwert sich über alles.,
+to be built,gebaut werden,
+to be sold,verkauft werden,
+to be sent,geschickt werden,
+to be found,gefunden werden,
+to be used,benutzt werden,
+to be shown,gezeigt werden,
+to be translated,übersetzt werden,
+to be published,veröffentlicht werden,
+to be announced,bekannt gegeben werden,
+to be cancelled,abgesagt werden,
+the number,Nummer,die
+the word,Wort,das
+the name,Name,der
+the place,Ort,der
+the thing,Sache,die
+the way,Weg,der
+the fact,Tatsache,die
+the case,Fall,der
+the group,Gruppe,die
+the world,Welt,die
+the life,Leben,das
+the point,Punkt,der
+the information,Information,die
+the example,Beispiel,das
+the situation,Situation,die
+the position,Position,die
+the role,Rolle,die
+the function,Funktion,die
+the task,Aufgabe,die
+the activity,Aktivität,die
+the action,Aktion,die
+the reaction,Reaktion,die
+the behavior,Verhalten,das
+the principle,Prinzip,das
+the practice,Praxis,die
+the performance,Leistung,die
+the capacity,Kapazität,die
+the limit,Grenze,die
+the support,Unterstützung,die
+the help,Hilfe,die
+the warning,Warnung,die
+the instruction,Anweisung,die
+the order,Bestellung,die
+the request,Anfrage,die
+the permission,Erlaubnis,die
+the response,Antwort,die
+the addition,Ergänzung,die
+the exception,Ausnahme,die
+the detail,Detail,das
+the summary,Zusammenfassung,die
+the beginning,Anfang,der
+the end,Ende,das
+the whole,Ganze,das
+the piece,Stück,das
+the section,Abschnitt,der
+the amount,Menge,die
+the distance,Entfernung,die
+the speed,Geschwindigkeit,die
+the temperature,Temperatur,die
+the level,Niveau,das
+the surface,Oberfläche,die
+the edge,Rand,der
+the half,Hälfte,die
+the center,Mitte,die
+the top,Spitze,die
+the bottom,Boden,der
+the side,Seite,die
+the direction,Richtung,die
+the step,Schritt,der
+the stage,Stufe,die
+the process,Prozess,der
+the method,Methode,die
+the strategy,Strategie,die
+the purpose,Zweck,der
+the movement,Bewegung,die
+the connection,Verbindung,die
+the development,Entwicklung,die
+the improvement,Verbesserung,die
+the increase,Erhöhung,die
+the decrease,Verringerung,die
+the condition,Bedingung,die
+the agreement,Vereinbarung,die
+the community,Gemeinschaft,die
+the relationship,Beziehung,die
+as big as possible,so groß wie möglich,
+as quickly as possible,so schnell wie möglich,
+as soon as possible,so bald wie möglich,
+It was a long time ago.,Das war vor langer Zeit.,
+It won't take long.,Es dauert nicht lange.,
+I've been waiting for an hour.,Ich warte seit einer Stunde.,
+She has been living here for two years.,Sie wohnt seit zwei Jahren hier.,
+He has been working since morning.,Er arbeitet seit dem Morgen.,
+We haven't spoken for weeks.,Wir haben seit Wochen nicht gesprochen.,
+I'll be there in five minutes.,Ich bin in fünf Minuten da.,
+She left three days ago.,Sie ist vor drei Tagen abgereist.,
+The meeting starts at half past two.,Das Meeting beginnt um halb drei.,
+I have no idea.,Ich habe keine Ahnung.,
+That's obvious.,Das ist offensichtlich.,
+What a surprise!,Was für eine Überraschung!,
+I can't believe it.,Ich kann es nicht glauben.,
+That's incredible!,Das ist unglaublich!,
+Well done!,Gut gemacht!,
+Keep it up!,Weiter so!,
+I'm proud of you.,Ich bin stolz auf dich.,
+You did great!,Du hast das toll gemacht!,
+I'm not feeling well.,Ich fühle mich nicht wohl.,
+I need to see a doctor.,Ich muss zum Arzt.,
+Can you call an ambulance?,Können Sie einen Krankenwagen rufen?,
+I've lost my passport.,Ich habe meinen Reisepass verloren.,
+I've been robbed.,Ich wurde bestohlen.,
+Call the police!,Rufen Sie die Polizei!,
+Where is the nearest hospital?,Wo ist das nächste Krankenhaus?,
+I need help.,Ich brauche Hilfe.,
+It's an emergency.,Es ist ein Notfall.,
+The phone number for emergencies in Germany is 112.,Die Notrufnummer in Deutschland ist 112.,
+Can I use your phone?,Kann ich Ihr Telefon benutzen?,
+I've forgotten my wallet.,Ich habe meine Geldbörse vergessen.,
+I don't have any cash.,Ich habe kein Bargeld.,
+Is there a cash machine nearby?,Gibt es einen Geldautomaten in der Nähe?,
+Could you lend me some money?,Könntest du mir etwas Geld leihen?,
+I'll pay you back tomorrow.,Ich zahle es dir morgen zurück.,
+Let's split the cost.,Lass uns die Kosten teilen.,
+cash machine / ATM,Geldautomat,der
+cash,Bargeld,das
+coin,Münze,die
+banknote,Geldschein,der
+change (coins),Wechselgeld,das
+price list,Preisliste,die
+total,Gesamtbetrag,der
+tip,Trinkgeld,das
+value added tax,Mehrwertsteuer,die
+invoice,Rechnung,die
+payment,Zahlung,die
+installment,Rate,die
+deposit,Anzahlung,die
+refund,Rückerstattung,die
+sale (reduced price),Ausverkauf / Sale,der
+bargain,Schnäppchen,das
+membership,Mitgliedschaft,die
+subscription,Abonnement,das
+registration,Anmeldung,die
+confirmation,Bestätigung,die
+cancellation,Stornierung,die
+complaint,Beschwerde,die
+feedback,Feedback,das
+review,Bewertung,die
+rating,Bewertung,die
+recommendation,Empfehlung,die
+reference,Referenz,die
+certificate,Zertifikat,das
+license,Lizenz,die
+permit,Genehmigung,die
+visa,Visum,das
+residence permit,Aufenthaltserlaubnis,die
+citizenship,Staatsbürgerschaft,die
+nationality,Nationalität,die
+identity card,Personalausweis,der
+driving license,Führerschein,der
+insurance card,Versicherungskarte,die
+I would like to register.,Ich möchte mich anmelden.,
+I would like to deregister.,Ich möchte mich abmelden.,
+I would like to renew my visa.,Ich möchte mein Visum verlängern.,
+I would like to open a bank account.,Ich möchte ein Konto eröffnen.,
+I would like to apply for a job.,Ich möchte mich um eine Stelle bewerben.,
+I have an appointment at 3 pm.,Ich habe einen Termin um 15 Uhr.,
+Can I reschedule?,Kann ich den Termin verschieben?,
+Where do I sign?,Wo muss ich unterschreiben?,
+Do I need to bring any documents?,Muss ich Dokumente mitbringen?,
+Is this form correct?,Ist dieses Formular richtig?,
+How long does it take to process?,Wie lange dauert die Bearbeitung?,
+When will I hear back?,Wann bekomme ich eine Rückmeldung?,
+the color,Farbe,die
+red,rot,
+blue,blau,
+green,grün,
+yellow,gelb,
+black,schwarz,
+white,weiß,
+orange (color),orange,
+purple,lila,
+pink,rosa,
+brown,braun,
+grey,grau,
+light (color),hell,
+dark (color),dunkel,
+the shape,Form,die
+circle,Kreis,der
+square,Quadrat,das
+triangle,Dreieck,das
+line,Linie,die
+corner,Ecke,die
+to be on time,pünktlich sein,
+to be late,zu spät kommen,
+to be early,zu früh kommen,
+to be right,recht haben,
+morning routine,Morgenroutine,die
+evening routine,Abendroutine,die
+healthy lifestyle,gesunder Lebensstil,der
+balanced diet,ausgewogene Ernährung,die
+physical activity,körperliche Aktivität,die
+mental health,geistige Gesundheit,die
+well-being,Wohlbefinden,das
+quality of life,Lebensqualität,die
+work-life balance,Work-Life-Balance,die
+free time,Freizeit,die
+leisure,Freizeit,die
+entertainment,Unterhaltung,die
+enjoyment,Genuss,der
+satisfaction,Zufriedenheit,die
+happiness,Glück,das
+I feel great today.,Ich fühle mich heute großartig.,
+She is in good shape.,Sie ist in guter Form.,
+He leads a healthy life.,Er führt ein gesundes Leben.,
+They work out every day.,Sie trainieren jeden Tag.,
+I go to bed early.,Ich gehe früh ins Bett.,
+She meditates in the morning.,Sie meditiert morgens.,
+He eats a lot of vegetables.,Er isst viel Gemüse.,
+We cook at home most of the time.,Wir kochen meistens zu Hause.,
+I try to avoid sugar.,Ich versuche Zucker zu vermeiden.,
+She drinks two liters of water a day.,Sie trinkt täglich zwei Liter Wasser.,
+in other words,mit anderen Worten,
+namely,nämlich,
+particularly,besonders / insbesondere,
+generally speaking,im Allgemeinen,
+strictly speaking,streng genommen,
+as far as I know,soweit ich weiß,
+it seems that,"es scheint, dass",
+no wonder that,"kein Wunder, dass",
+as a matter of fact,tatsächlich / eigentlich,
+for this reason,aus diesem Grund,
+hence,daher / deshalb,
+thus,somit / also,
+likewise,ebenso,
+whereas,während / wohingegen,
+under no circumstances,unter keinen Umständen,
+at first glance,auf den ersten Blick,
+all the same,trotzdem / dennoch,
+even so,trotzdem,
+What time does the film start?,Wann beginnt der Film?,
+Is there a pharmacy open on Sunday?,"Gibt es eine Apotheke, die sonntags geöffnet ist?",
+Could you turn down the music?,Könnten Sie die Musik leiser machen?,
+Could you open the window?,Könnten Sie das Fenster öffnen?,
+Do you have a map of the city?,Haben Sie einen Stadtplan?,
+Can I take a picture here?,Darf ich hier fotografieren?,
+Is the museum open today?,Ist das Museum heute geöffnet?,
+How long is the waiting time?,Wie lang ist die Wartezeit?,
+I have a question about my bill.,Ich habe eine Frage zu meiner Rechnung.,
+The service was excellent.,Der Service war ausgezeichnet.,
+I'd like to leave a review.,Ich möchte eine Bewertung hinterlassen.,
+That's not what I ordered.,Das habe ich nicht bestellt.,
+My order hasn't arrived yet.,Meine Bestellung ist noch nicht angekommen.,
+Can I speak to the manager?,Kann ich mit dem Manager sprechen?,
+I'd like a refund.,Ich möchte eine Rückerstattung.,
+The product is defective.,Das Produkt ist defekt.,
+I'm a regular customer.,Ich bin Stammkunde.,
+Do you offer a student discount?,Bieten Sie einen Studentenrabatt an?,
+Is there a loyalty card?,Gibt es eine Kundenkarte?,
+I have a voucher.,Ich habe einen Gutschein.,
+coupon / voucher,Gutschein,der
+loyalty card,Kundenkarte,die
+special deal,Sonderangebot,das
+clearance sale,Räumungsverkauf,der
+second-hand,gebraucht / Second-Hand,
+brand new,brandneu,
+out of stock,ausverkauft,
+in stock,auf Lager,
+available,verfügbar,
+unavailable,nicht verfügbar,
+delivery,Lieferung,die
+shipping,Versand,der
+express delivery,Expresslieferung,die
+free shipping,kostenloser Versand,der
+tracking number,Sendungsnummer,die
+return policy,Rückgabebedingungen,die
+I'm looking forward to it.,Ich freue mich darauf.,
+See you next time!,Bis zum nächsten Mal!,
+It was a pleasure.,Es war mir ein Vergnügen.,
