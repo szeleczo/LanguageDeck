@@ -10,6 +10,10 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
+  <link rel="apple-touch-icon" sizes="167x167" href="icon-192.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="icon-192.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="icon-192.png" />
   <title>LanguageDeck — Vocabulary trainer</title>
   <style>
     /* ---------- Reset ---------- */
@@ -49,11 +53,20 @@
       --tap: 44px;
 
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Georgia Pro", Georgia, serif;
+      /* Display font: rounded, bold, friendly — Duolingo-like.
+         Stack prefers system rounded/full-width fonts where available
+         and falls back to the same sans for visual consistency. */
+      --font-display: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN",
+                      "Quicksand", "Comfortaa", -apple-system, BlinkMacSystemFont,
+                      "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
+    /* Dark theme is applied either:
+       - automatically when the OS asks for it AND user hasn't overridden, or
+       - explicitly when the user picks "Dark" in Settings.
+       We use [data-theme="..."] on <html> as the override mechanism. */
     @media (prefers-color-scheme: dark) {
-      :root {
+      html:not([data-theme="light"]) {
         --bg: #0b1120;
         --surface: #111827;
         --surface-2: #0f172a;
@@ -68,6 +81,21 @@
         --danger-soft: rgba(239, 68, 68, 0.15);
         --warning-soft: rgba(245, 158, 11, 0.15);
       }
+    }
+    html[data-theme="dark"] {
+      --bg: #0b1120;
+      --surface: #111827;
+      --surface-2: #0f172a;
+      --border: #1e293b;
+      --border-strong: #334155;
+      --text: #f1f5f9;
+      --text-muted: #cbd5e1;
+      --text-faint: #94a3b8;
+      --primary-soft: #1e3a8a;
+      --primary-deep: #1e40af;
+      --success-soft: rgba(34, 197, 94, 0.15);
+      --danger-soft: rgba(239, 68, 68, 0.15);
+      --warning-soft: rgba(245, 158, 11, 0.15);
     }
 
     html, body {
@@ -85,7 +113,9 @@
 
     body {
       padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-      min-height: 100vh;
+      min-height: var(--vh, 100vh);
+      display: flex;
+      flex-direction: column;
     }
 
     /* ---------- Sticky app bar ---------- */
@@ -99,8 +129,9 @@
       border-bottom: 1px solid var(--border);
     }
     @media (prefers-color-scheme: dark) {
-      .appbar { background: rgba(11, 17, 32, 0.85); }
+      html:not([data-theme="light"]) .appbar { background: rgba(11, 17, 32, 0.85); }
     }
+    html[data-theme="dark"] .appbar { background: rgba(11, 17, 32, 0.85); }
     .appbar-inner {
       max-width: 1280px;
       margin: 0 auto;
@@ -111,11 +142,11 @@
       gap: 12px;
     }
     .brand {
-      font-family: var(--font-serif);
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      color: var(--primary);
     }
     .appbar-actions { display: flex; gap: 4px; }
 
@@ -141,44 +172,75 @@
     .icon-btn:active:not(:disabled) { transform: scale(0.96); }
     .icon-btn svg { width: 20px; height: 20px; }
 
+    /* Make the page a vertical flex container so the game-card area can be
+       pushed toward the bottom of the screen, where thumbs naturally reach. */
     .main {
       max-width: 1280px;
+      width: 100%;
       margin: 0 auto;
-      padding: 16px 16px 120px;
+      padding: 16px 16px 100px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    /* Push everything below the gate strip toward the bottom of the viewport
+       on tall phone screens, so the cards land in the lower half where the
+       thumb can reach them comfortably. */
+    .game-area-spacer {
+      flex: 1 1 0;
+      min-height: 8px;
+      max-height: 200px;
     }
 
     /* ---------- Buttons ---------- */
+    /* Duolingo-style "physical button" feel: thick bottom border that
+       collapses on press, mimicking a tactile button. Same trick as cards. */
     button:not(.icon-btn) {
       font: inherit;
       cursor: pointer;
       background: var(--primary);
       color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
+      border: 2px solid transparent;
+      border-bottom: 4px solid var(--primary-deep);
+      border-radius: 12px;
       padding: 10px 16px;
       min-height: var(--tap);
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.01em;
-      transition: background-color 0.15s ease, transform 0.05s ease, opacity 0.15s ease;
+      transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.06s ease, opacity 0.15s ease;
     }
     button:not(.icon-btn):hover:not(:disabled) { background: var(--primary-hover); }
-    button:not(.icon-btn):active:not(:disabled) { transform: scale(0.98); }
+    button:not(.icon-btn):active:not(:disabled) {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+      margin-bottom: 2px;
+    }
     button:disabled { opacity: 0.4; cursor: not-allowed; }
 
     button.ghost {
       background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border: 2px solid var(--border);
+      border-bottom: 4px solid var(--border);
     }
-    button.ghost:hover:not(:disabled) { background: var(--surface-2); }
+    button.ghost:hover:not(:disabled) {
+      background: var(--surface-2);
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
 
     button.secondary {
       background: var(--surface-2);
       color: var(--text);
+      border: 2px solid var(--border);
+      border-bottom: 4px solid var(--border-strong);
     }
     button.secondary:hover:not(:disabled) { background: var(--border); }
 
-    button.danger { background: var(--danger); }
+    button.danger {
+      background: var(--danger);
+      border-bottom: 4px solid #7f1d1d;
+    }
     button.danger:hover:not(:disabled) { background: #991b1b; }
 
     /* ---------- Inputs ---------- */
@@ -251,17 +313,21 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 12px;
+      padding: 8px 14px;
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: 999px;
       font-size: 13px;
+      font-weight: 500;
       color: var(--text-muted);
-      box-shadow: var(--shadow-sm);
     }
-    .context-chip strong { color: var(--text); font-weight: 600; }
+    .context-chip strong {
+      color: var(--text);
+      font-family: var(--font-display);
+      font-weight: 800;
+    }
     .context-chip .chip-dot {
-      width: 6px; height: 6px; border-radius: 50%;
+      width: 8px; height: 8px; border-radius: 50%;
       background: var(--primary);
     }
 
@@ -282,15 +348,18 @@
       min-width: 0;
     }
     .score-display {
+      font-family: var(--font-display);
       font-variant-numeric: tabular-nums;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-faint);
       white-space: nowrap;
     }
-    .score-display .ok { color: var(--success); font-weight: 600; }
-    .score-display .ko { color: var(--danger); font-weight: 600; }
+    .score-display .ok { color: var(--success); font-weight: 800; }
+    .score-display .ko { color: var(--danger); font-weight: 800; }
 
     /* ---------- Gate strip (compact, tap to expand) ---------- */
+    /* These are <button> elements but visually plain "chip" surfaces, so we
+       neutralise the Duolingo button styling that the global rule applies. */
     .gate-strip {
       display: flex;
       align-items: stretch;
@@ -298,23 +367,29 @@
       margin-bottom: 16px;
     }
     .gate-strip[hidden] { display: none; }
+    .gate-strip.gate-disabled { display: none; }
     .gate-nav {
       flex: 0 0 auto;
-      width: 36px;
-      min-height: 52px;
+      width: 40px;
+      min-height: 56px;
       padding: 0;
-      background: var(--surface);
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      background: var(--surface) !important;
+      color: var(--text-muted) !important;
+      border: 2px solid var(--border) !important;
+      border-bottom-width: 4px !important;
+      border-radius: 14px;
       font-size: 22px;
-      font-weight: 500;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: var(--shadow-sm);
-      transition: background 0.15s ease, color 0.15s ease;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     }
-    .gate-nav:hover:not(:disabled) { background: var(--surface-2); color: var(--text); }
+    .gate-nav:hover:not(:disabled) { background: var(--surface-2) !important; color: var(--text) !important; }
     .gate-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+    .gate-nav:active:not(:disabled) {
+      transform: translateY(2px);
+      border-bottom-width: 2px !important;
+      margin-bottom: 2px;
+    }
     .gate-summary {
       flex: 1 1 auto;
       display: flex;
@@ -323,17 +398,22 @@
       justify-content: center;
       gap: 8px;
       padding: 10px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      background: var(--surface) !important;
+      border: 2px solid var(--border) !important;
+      border-bottom-width: 4px !important;
+      border-radius: 14px;
       cursor: pointer;
-      box-shadow: var(--shadow-sm);
       text-align: left;
-      min-height: 52px;
-      color: var(--text);
-      font-weight: 400;
+      min-height: 56px;
+      color: var(--text) !important;
+      font-weight: 500;
     }
-    .gate-summary:hover:not(:disabled) { background: var(--surface-2); }
+    .gate-summary:hover:not(:disabled) { background: var(--surface-2) !important; }
+    .gate-summary:active:not(:disabled) {
+      transform: translateY(2px);
+      border-bottom-width: 2px !important;
+      margin-bottom: 2px;
+    }
     .gate-summary-text {
       display: flex;
       align-items: center;
@@ -342,10 +422,15 @@
       font-size: 13px;
       color: var(--text-muted);
     }
-    .gate-summary-text strong { color: var(--text); }
+    .gate-summary-text strong {
+      color: var(--text);
+      font-family: var(--font-display);
+      font-weight: 800;
+    }
     .gate-pct {
+      font-family: var(--font-display);
       font-variant-numeric: tabular-nums;
-      font-weight: 600;
+      font-weight: 800;
       color: var(--primary);
     }
     .gate-progress-bar {
@@ -378,32 +463,231 @@
     .column-flow {
       display: contents;
     }
-    /* In landscape (wide-and-short viewports, typical for held-sideways phones)
-       give the columns a bit more breathing room and centre them so they
-       sit comfortably under both thumbs. */
-    @media (orientation: landscape) and (max-height: 540px) {
-      .game {
-        gap: 12px;
-        max-width: 760px;
-        margin: 0 auto;
+
+    /* ---------- Column ordering ----------
+       Cards have data-side="english" or "target". The HTML root carries
+       data-col-order which decides which side is on the left.
+       Default (data-col-order is missing or "english_first"): English left.
+       "target_first": target language on the left. */
+
+    /* PORTRAIT: cards go directly into the .game grid via display:contents,
+       so we just set grid-column based on the side. */
+    html:not([data-col-order="target_first"]) .card[data-side="english"] { grid-column: 1; }
+    html:not([data-col-order="target_first"]) .card[data-side="target"]  { grid-column: 2; }
+    html[data-col-order="target_first"]      .card[data-side="english"] { grid-column: 2; }
+    html[data-col-order="target_first"]      .card[data-side="target"]  { grid-column: 1; }
+
+    /* LANDSCAPE: the column swap is handled below via grid-column overrides
+       inside the landscape @media query (search for data-col-order there). */
+    /* ---------- Landscape layout ----------
+       Held-sideways phone: two card columns hug the LEFT and RIGHT edges
+       of the screen, with progress / status info centred between them.
+       Everything fits on screen — no scrolling. The page becomes a
+       3-column grid: [left cards][centre info][right cards].
+    */
+    @media (min-aspect-ratio: 13/10) {
+      /* Compact app bar */
+      .appbar {
+        position: static;
+        flex: 0 0 auto;
       }
+      .appbar-inner { padding: 4px 12px; }
+      .icon-btn { width: 36px; height: 36px; min-height: 36px; }
+      .brand { font-size: 18px; }
+
+      /* HARD-LOCK the viewport height so nothing can scroll.
+         We use --vh (set by JS to window.innerHeight) instead of 100dvh
+         because Chrome PWA on Android sometimes reports dvh values larger
+         than the actual visible area, causing the bottom of the page to be
+         clipped under the navigation bar. Setting --vh in JS guarantees
+         pixel-perfect alignment with the rendered viewport. */
+      html, body {
+        height: var(--vh, 100dvh);
+        max-height: var(--vh, 100dvh);
+        overflow: hidden;
+      }
+      body {
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .appbar { flex: 0 0 auto; }
+      .main {
+        padding: 6px 10px 10px;
+        flex: 1 1 0;
+        min-height: 0;
+        max-height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* Hide the portrait-only spacer */
+      .game-area-spacer { display: none; }
+
+      /* The empty state should still take the whole space */
+      .empty-state {
+        padding: 16px 16px;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* In landscape we hide the standalone status/score/context strip
+         and gate-strip — their info is shown in the centre of the
+         3-column game grid below. !important needed to defeat any inline
+         display style or specificity issues. */
+      .context-strip,
+      .play-meta,
+      .gate-strip { display: none !important; }
+
+      /* The matching game becomes a 3-column layout filling vertical space */
+      #wordMatchContainer {
+        flex: 1 1 0;
+        min-height: 0;
+        max-height: 100%;
+        display: flex;
+        overflow: hidden;
+      }
+      #wordMatchContainer .game {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        min-height: 0;
+        display: grid;
+        /* left cards | centre info | right cards */
+        grid-template-columns: 1fr minmax(140px, 22%) 1fr;
+        grid-template-rows: 1fr;
+        gap: 6px 14px;
+        align-items: stretch;
+      }
+      /* The two flow wrappers (display: contents) need to be replaced with
+         actual flex columns in landscape, so cards can stack vertically.
+         overflow: hidden + min-height: 0 prevents any single card from
+         pushing the column past the grid track height. */
+      #wordMatchContainer .column-flow {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        height: 100%;
+        max-height: 100%;
+        min-height: 0;
+        overflow: hidden;
+      }
+      #wordMatchContainer #leftColumn { grid-column: 1; grid-row: 1; }
+      #wordMatchContainer #rightColumn { grid-column: 3; grid-row: 1; }
+      /* Swap when target language should be on the left */
+      html[data-col-order="target_first"] #wordMatchContainer #leftColumn { grid-column: 3; }
+      html[data-col-order="target_first"] #wordMatchContainer #rightColumn { grid-column: 1; }
+
+      /* Each card gets equal share of column height. We use !important on
+         the size-related properties because the base `.card` rule appears
+         later in the source order than this @media block, and would
+         otherwise override these values. */
       .card {
-        min-height: 64px;
-        padding: 10px 16px;
-        font-size: 17px;
+        flex: 1 1 0 !important;
+        min-height: 0 !important;
+        height: 0 !important;
+        padding: 4px 12px !important;
+        font-size: 14px !important;
+        margin-bottom: 0 !important;
+        border-bottom-width: 3px !important;
+        line-height: 1.15 !important;
+        /* Override the explicit grid-row/grid-column from JS — they apply
+           only in portrait mode now. In landscape, cards live inside the
+           flex columns instead of being grid-positioned siblings. */
+        grid-row: auto !important;
+        grid-column: auto !important;
       }
+      .card:active:not(.disabled):not(.correct) {
+        transform: translateY(1.5px);
+        margin-bottom: 1.5px !important;
+      }
+
+      /* Centre info column: gate progress + score + status, vertically stacked */
+      .landscape-info {
+        grid-column: 2;
+        grid-row: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 4px 6px;
+        text-align: center;
+        min-width: 0;
+      }
+      .landscape-info .li-gate-pct {
+        font-family: var(--font-display);
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--primary);
+        line-height: 1;
+      }
+      .landscape-info .li-gate-label {
+        font-size: 11px;
+        color: var(--text-muted);
+        font-weight: 600;
+        line-height: 1.2;
+      }
+      .landscape-info .li-progress-bar {
+        width: 100%;
+        max-width: 120px;
+        height: 4px;
+        background: var(--surface-2);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .landscape-info .li-progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--primary), #60a5fa);
+        transition: width 0.5s ease;
+      }
+      .landscape-info .li-score {
+        font-family: var(--font-display);
+        font-variant-numeric: tabular-nums;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+      .landscape-info .li-score .ok { color: var(--success); font-weight: 800; }
+      .landscape-info .li-score .ko { color: var(--danger); font-weight: 800; }
+      .landscape-info .li-status {
+        font-size: 11px;
+        color: var(--text-faint);
+        line-height: 1.3;
+      }
+      .landscape-info .li-gate-arrows {
+        display: flex;
+        gap: 4px;
+        margin-top: 2px;
+      }
+      .landscape-info .li-arrow {
+        width: 28px;
+        height: 28px;
+        min-height: 28px;
+        padding: 0;
+        font-size: 14px;
+        background: var(--surface) !important;
+        color: var(--text-muted) !important;
+        border: 2px solid var(--border) !important;
+        border-bottom-width: 3px !important;
+        border-radius: 8px;
+        font-weight: 800;
+      }
+      .landscape-info .li-arrow:disabled { opacity: 0.3; }
     }
-    @media (max-height: 540px) {
-      :root[data-orientation="landscape"] .game {
-        gap: 12px;
-        max-width: 760px;
-        margin: 0 auto;
-      }
-      :root[data-orientation="landscape"] .card {
-        min-height: 64px;
-        padding: 10px 16px;
-        font-size: 17px;
-      }
+    /* In portrait, hide the landscape-only info column */
+    @media not all and (min-aspect-ratio: 13/10) {
+      .landscape-info { display: none; }
+    }
+    /* When portrait but on regular tall phones, keep the landscape-info hidden */
+    .landscape-info { display: none; }
+    @media (min-aspect-ratio: 13/10) {
+      .landscape-info { display: flex; }
     }
 
     .card {
@@ -428,7 +712,12 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      word-break: break-word;
+      /* Wrap rules: prefer breaking at spaces, but if a single word is wider
+         than the card, allow breaking inside it (as a last resort). The old
+         `word-break: break-word` was too aggressive and split short words
+         like "Haus" into "Hau-s". */
+      overflow-wrap: break-word;
+      word-break: normal;
       hyphens: auto;
       color: var(--text);
       line-height: 1.25;
@@ -487,10 +776,10 @@
       box-shadow: var(--shadow-sm);
     }
     .typing-word {
-      font-family: var(--font-serif);
+      font-family: var(--font-display);
       font-size: 32px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
+      font-weight: 800;
+      letter-spacing: -0.015em;
       text-align: center;
       margin: 8px 0 6px;
       color: var(--text);
@@ -520,12 +809,12 @@
       box-shadow: var(--shadow-sm);
     }
     .sentence-english {
-      font-family: var(--font-serif);
+      font-family: var(--font-display);
       font-size: 20px;
-      font-weight: 600;
+      font-weight: 800;
       margin-bottom: 6px;
       line-height: 1.4;
-      letter-spacing: -0.005em;
+      letter-spacing: -0.01em;
     }
     .sentence-help {
       font-size: 13px;
@@ -583,16 +872,24 @@
       margin-bottom: 16px;
     }
     .bank-word {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 14px;
-      min-height: 36px;
+      background: var(--surface) !important;
+      border: 2px solid var(--border) !important;
+      border-bottom: 4px solid var(--border-strong) !important;
+      color: var(--text) !important;
+      padding: 8px 16px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      min-height: 42px;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.06s ease;
     }
-    .bank-word.used { opacity: 0.4; }
-    .bank-word:hover:not(:disabled) { background: var(--border); }
+    .bank-word.used { opacity: 0.35; }
+    .bank-word:hover:not(:disabled):not(.used) { background: var(--surface-2) !important; }
+    .bank-word:active:not(:disabled):not(.used) {
+      transform: translateY(2px);
+      border-bottom-width: 2px !important;
+      margin-bottom: 2px;
+    }
     .sentence-actions {
       display: flex;
       flex-wrap: wrap;
@@ -615,13 +912,13 @@
       border-radius: var(--radius-lg);
     }
     .empty-state h2 {
-      font-family: var(--font-serif);
+      font-family: var(--font-display);
       font-size: 22px;
-      font-weight: 600;
+      font-weight: 800;
       margin: 0 0 8px;
       color: var(--text);
       text-transform: none;
-      letter-spacing: 0;
+      letter-spacing: -0.005em;
     }
     .empty-state p {
       font-size: 14px;
@@ -644,6 +941,28 @@
       padding: 16px;
     }
     .modal-backdrop.active { display: flex; }
+
+    /* "Bottom sheet" variant: anchor the modal card to the bottom of the
+       screen on portrait phones, so action buttons (like der/die/das) sit
+       in the thumb-reach zone. On wider screens (tablets, landscape) the
+       modal stays centered as normal. */
+    /* Article modal sits in the natural thumb-reach zone — around the lower
+       third of the screen, where the user's eyes are also focused (the cards
+       they just matched). We anchor it with padding-top: 55vh so the card
+       starts roughly at vertical 55% of the viewport, leaving the actual
+       der/die/das buttons centered around 65–75% — comfortable for thumbs.
+       On tablets/landscape, the modal stays vertically centred. */
+    @media (orientation: portrait) and (max-width: 700px) {
+      .modal-backdrop.bottom-sheet {
+        align-items: flex-start;
+        padding: 55vh 12px calc(20px + env(safe-area-inset-bottom));
+      }
+      .modal-backdrop.bottom-sheet .modal-card {
+        max-width: 100%;
+        border-radius: 20px;
+      }
+    }
+
     .modal-card {
       background: var(--surface);
       border-radius: var(--radius-lg);
@@ -657,18 +976,19 @@
     }
     .modal-card.wide { max-width: 540px; }
     .modal-title {
-      font-family: var(--font-serif);
+      font-family: var(--font-display);
       font-size: 20px;
-      font-weight: 600;
+      font-weight: 800;
       margin: 0 0 14px;
-      letter-spacing: -0.005em;
+      letter-spacing: -0.01em;
     }
     .modal-subtitle {
-      font-family: var(--font-serif);
+      font-family: var(--font-display);
       font-size: 26px;
-      font-weight: 600;
+      font-weight: 800;
       text-align: center;
       margin: 0 0 16px;
+      letter-spacing: -0.01em;
     }
     .modal-section-title {
       font-size: 13px;
@@ -767,11 +1087,11 @@
     }
     .stat-cell .stat-value {
       display: block;
-      font-family: var(--font-serif);
-      font-size: 26px;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -0.01em;
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.015em;
       line-height: 1.1;
     }
     .stat-cell .stat-label {
@@ -887,9 +1207,18 @@
     </div>
   </header>
 
+  <!-- Android / Chromium "Install" banner — fires on `beforeinstallprompt` -->
   <div class="install-banner" id="installBanner">
     <span>Install the app to your home screen for offline use.</span>
     <button id="installBtn">Install</button>
+  </div>
+
+  <!-- iOS Safari "Add to Home Screen" hint — Safari does not fire
+       beforeinstallprompt, so we show a small banner with manual instructions
+       only when we detect iOS Safari and we're not already running standalone. -->
+  <div class="install-banner" id="iosInstallBanner">
+    <span style="line-height:1.4;">Install on iPhone: tap <strong>Share</strong> <span aria-hidden="true">⬆️</span> below, then <strong>Add to Home Screen</strong>.</span>
+    <button id="iosInstallDismissBtn" class="ghost" style="padding:4px 10px;min-height:32px;">Got it</button>
   </div>
 
   <main class="main">
@@ -922,6 +1251,11 @@
       <button class="gate-nav" id="nextGateBtn" aria-label="Next gate">›</button>
     </div>
 
+    <!-- Flexible spacer that pushes the game cards down toward the lower
+         half of the screen, into the natural thumb-reach zone on tall phones.
+         Capped at ~200px in CSS so it doesn't add absurd amounts on tall pages. -->
+    <div class="game-area-spacer" aria-hidden="true"></div>
+
     <!-- Word match -->
     <!-- The two visually-separate columns are actually a single CSS grid:
          this guarantees that the left and right card in the same logical
@@ -932,6 +1266,26 @@
     <div id="wordMatchContainer">
       <div class="game">
         <div id="leftColumn" class="column-flow"></div>
+
+        <!-- Centre info column — only visible in landscape mode.
+             Shows compact gate progress, score, and gate navigation arrows
+             between the two card columns, so the user doesn't lose context. -->
+        <div class="landscape-info" aria-hidden="true">
+          <div>
+            <div class="li-gate-pct" id="liGatePct">—</div>
+            <div class="li-gate-label" id="liGateLabel">—</div>
+          </div>
+          <div class="li-progress-bar"><div class="li-progress-fill" id="liProgressFill"></div></div>
+          <div class="li-score" id="liScore">
+            <span class="ok">0</span> ✓ <span class="ko">0</span> ✗
+          </div>
+          <div class="li-status" id="liStatus"></div>
+          <div class="li-gate-arrows" id="liGateArrows">
+            <button class="li-arrow" id="liPrevGateBtn" aria-label="Previous gate">‹</button>
+            <button class="li-arrow" id="liNextGateBtn" aria-label="Next gate">›</button>
+          </div>
+        </div>
+
         <div id="rightColumn" class="column-flow"></div>
       </div>
     </div>
@@ -976,8 +1330,9 @@
   <!-- (The floating settings button was removed — the gear icon in the top-right
        app bar is the single source of truth for opening settings.) -->
 
-  <!-- Article modal -->
-  <div id="articleModal" class="modal-backdrop">
+  <!-- Article modal — uses bottom-sheet styling on phones so the der/die/das
+       buttons sit in the natural thumb-reach zone instead of the screen middle. -->
+  <div id="articleModal" class="modal-backdrop bottom-sheet">
     <div class="modal-card">
       <div class="modal-subtitle" id="articleWordText">Haus</div>
       <div class="article-buttons">
@@ -1059,11 +1414,18 @@
         <summary>Appearance</summary>
         <div class="settings-section-body">
           <div>
-            <label for="orientationSelect">Orientation</label>
-            <select id="orientationSelect">
-              <option value="system" selected>Follow device</option>
-              <option value="portrait">Lock portrait</option>
-              <option value="landscape">Lock landscape</option>
+            <label for="themeSelect">Theme</label>
+            <select id="themeSelect">
+              <option value="system" selected>Match device (auto)</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+          <div>
+            <label for="columnOrderSelect">Column order</label>
+            <select id="columnOrderSelect">
+              <option value="english_first" selected>English on the left</option>
+              <option value="target_first">Target language on the left</option>
             </select>
           </div>
         </div>
@@ -1635,6 +1997,11 @@
       return shuffleArr(selected).slice(0, limit);
     }
 
+    /* Number of consecutive correct answers required to clear ONE wrong-strike.
+       Higher value = harder to "rehabilitate" a previously wrong word.
+       Was effectively 1 (each correct decremented times_wrong); now 3. */
+    const WRONG_RECOVERY_STREAK = 3;
+
     async function recordAnswer(table, itemId, correct, profile) {
       const row = await DB.getById(table, itemId);
       if (!row) return null;
@@ -1642,16 +2009,27 @@
       if (correct) {
         row.times_correct = (row.times_correct | 0) + 1;
         row.streak = (row.streak | 0) + 1;
-        if ((row.times_wrong | 0) > 0) row.times_wrong = (row.times_wrong | 0) - 1;
+        // Only decrement wrong-count after enough consecutive correct answers
+        // since the last mistake. This prevents a single lucky match from
+        // wiping out a wrong-strike — the user must demonstrate real recall.
+        if ((row.times_wrong | 0) > 0) {
+          row.recovery_progress = (row.recovery_progress | 0) + 1;
+          if (row.recovery_progress >= WRONG_RECOVERY_STREAK) {
+            row.times_wrong = (row.times_wrong | 0) - 1;
+            row.recovery_progress = 0;
+          }
+        } else {
+          row.recovery_progress = 0;
+        }
         row.next_due = calcNextDue(row.streak, row.difficulty || 1.0, profile);
       } else {
         row.times_wrong = (row.times_wrong | 0) + 1;
         row.streak = 0;
+        row.recovery_progress = 0; // mistake resets recovery progress
         row.next_due = calcWrongDue(profile);
       }
       row.last_seen = nowIso();
       await DB.update(table, row);
-      syncCachedRow(table, row);
       return row;
     }
 
@@ -1662,7 +2040,6 @@
     let currentDeck = "de";
     let currentSetName = "__all__";
     let importType = "words";
-    let orientationPreference = "system";
 
     let wordMode = "match";
     let sentenceMode = "choice";
@@ -1676,6 +2053,9 @@
     let currentGateIndex = 0;
     let totalGates = 0;
     let strictGate = true;
+
+    let theme = "system"; // "system" | "light" | "dark"
+    let columnOrder = "english_first"; // "english_first" | "target_first"
 
     let selectedLeft = null;
     let selectedRight = null;
@@ -1715,7 +2095,6 @@
     const setSelect = $("setSelect");
     const newSetNameInput = $("newSetNameInput");
     const importTypeSelect = $("importTypeSelect");
-    const orientationSelect = $("orientationSelect");
 
     const leftColumnTitle = $("leftColumnTitle");
     const rightColumnTitle = $("rightColumnTitle");
@@ -1813,10 +2192,11 @@
     const SETTINGS_KEY = "languagedeck_settings_v1";
     function saveSettings() {
       const s = {
-        currentGame, currentDeck, currentSetName, importType, orientationPreference,
+        currentGame, currentDeck, currentSetName, importType,
         wordMode, sentenceMode, practiceScope, repetitionProfile,
         newRatio, visibleCount,
-        gateEnabled, gateSize, currentGateIndex, strictGate
+        gateEnabled, gateSize, currentGateIndex, strictGate,
+        theme, columnOrder
       };
       try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch (_) {}
     }
@@ -1828,61 +2208,39 @@
       } catch (_) { return null; }
     }
 
-    /* ---------- Lightweight in-memory cache ---------- */
-    const rowsCache = new Map();
+    /* ---------- Theme ---------- */
+    /* Applies the chosen theme by setting (or removing) data-theme on <html>.
+       For "system" we remove the attribute so the OS preference takes over via
+       the @media (prefers-color-scheme: dark) rules. */
+    function applyTheme() {
+      const html = document.documentElement;
+      if (theme === "light") html.setAttribute("data-theme", "light");
+      else if (theme === "dark") html.setAttribute("data-theme", "dark");
+      else html.removeAttribute("data-theme");
 
-    function cacheKey(table, deck, setName) {
-      return `${table}::${deck}::${setName}`;
+      // Keep the browser theme-color meta in sync, so the Android status bar
+      // and PWA chrome match the actual rendered background.
+      const dark =
+        theme === "dark" ||
+        (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+      if (themeColorMeta) themeColorMeta.setAttribute("content", dark ? "#0b1120" : "#f8fafc");
     }
+    // Re-apply when system theme changes (only matters if user picked "system")
+    try {
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+        if (theme === "system") applyTheme();
+      });
+    } catch (_) { /* old browsers */ }
 
-    async function getRowsCached(table, deck, setName, force = false) {
-      const key = cacheKey(table, deck, setName);
-      if (!force && rowsCache.has(key)) return rowsCache.get(key);
-      const rows = await DB.getAll(table, deck, setName);
-      rowsCache.set(key, rows);
-      return rows;
-    }
-
-    function invalidateRowsCache() {
-      rowsCache.clear();
-    }
-
-    function syncCachedRow(table, row) {
-      for (const [key, rows] of rowsCache.entries()) {
-        const [cachedTable, cachedDeck, cachedSet] = key.split('::');
-        if (cachedTable !== table) continue;
-        if (cachedDeck !== row.deck) continue;
-        if (!(cachedSet === '__all__' || cachedSet === row.set_name)) continue;
-        const idx = rows.findIndex(item => item.id === row.id);
-        if (idx >= 0) rows[idx] = { ...row };
-      }
-    }
-
-    function syncViewportOrientationClass() {
-      const orientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
-      document.documentElement.dataset.orientation = orientation;
-    }
-
-    async function applyOrientationPreference(showFeedback = false) {
-      syncViewportOrientationClass();
-      const orientationApi = screen.orientation;
-      if (!orientationApi) return false;
-
-      try {
-        if (orientationPreference === 'system') {
-          if (typeof orientationApi.unlock === 'function') orientationApi.unlock();
-          return true;
-        }
-        if (typeof orientationApi.lock !== 'function') {
-          if (showFeedback) showToast('Orientation lock is not supported here.');
-          return false;
-        }
-        await orientationApi.lock(orientationPreference);
-        return true;
-      } catch (err) {
-        if (showFeedback) showToast('Orientation lock may only work in an installed app.');
-        return false;
-      }
+    /* ---------- Column order ----------
+       The two card columns can be swapped: which side English appears on
+       (left / right) is up to the user. The DOM order stays the same
+       (#leftColumn always holds English cards, #rightColumn always holds
+       target-language cards), but their on-screen position is controlled
+       by CSS `order` plus an attribute on a wrapper. */
+    function applyColumnOrder() {
+      document.documentElement.setAttribute("data-col-order", columnOrder);
     }
 
     /* ---------- UI helpers ---------- */
@@ -1970,8 +2328,11 @@
       updateModeSummary();
     }
     function updateGateUI() {
-      // gate-strip uses display: flex when visible (or we hide via 'hidden' class)
-      gatePanel.style.display = gateEnabled ? "flex" : "none";
+      // Toggle a class instead of inline style, so @media rules can still
+      // override (inline style has higher specificity than @media rules).
+      gatePanel.classList.toggle("gate-disabled", !gateEnabled);
+      // Clear any leftover inline style from previous versions
+      gatePanel.style.display = "";
       updateModeSummary();
     }
 
@@ -1992,7 +2353,7 @@
 
     async function refreshStats() {
       const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
-      const all = await getRowsCached(table, currentDeck, currentSetName);
+      const all = await DB.getAll(table, currentDeck, currentSetName);
       const now = nowIso();
       const total = all.length;
       const newCount = all.filter(r => r.next_due == null).length;
@@ -2050,7 +2411,7 @@
 
     async function refreshGateInfo() {
       const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
-      const all = await getRowsCached(table, currentDeck, currentSetName);
+      const all = await DB.getAll(table, currentDeck, currentSetName);
       const useGateSize = currentGame === "words" ? gateSize : Math.min(gateSize, 50);
 
       let total_gates = 0;
@@ -2082,6 +2443,22 @@
 
       prevGateBtn.disabled = !gateEnabled || currentGateIndex <= 0;
       nextGateBtn.disabled = !gateEnabled || totalGates === 0 || currentGateIndex >= totalGates - 1;
+
+      // Landscape-info column mirror
+      const liPct = document.getElementById("liGatePct");
+      const liLbl = document.getElementById("liGateLabel");
+      const liFill = document.getElementById("liProgressFill");
+      const liPrev = document.getElementById("liPrevGateBtn");
+      const liNext = document.getElementById("liNextGateBtn");
+      const liArrows = document.getElementById("liGateArrows");
+      if (liPct) liPct.textContent = `${progress.percent}%`;
+      if (liLbl) liLbl.textContent = gateEnabled
+        ? `Gate ${totalGates === 0 ? 0 : currentGateIndex + 1} / ${totalGates}`
+        : "All items";
+      if (liFill) liFill.style.width = `${progress.percent}%`;
+      if (liArrows) liArrows.style.display = gateEnabled ? "flex" : "none";
+      if (liPrev) liPrev.disabled = !gateEnabled || currentGateIndex <= 0;
+      if (liNext) liNext.disabled = !gateEnabled || totalGates === 0 || currentGateIndex >= totalGates - 1;
 
       rebuildGateSelect();
       updateGateUI();
@@ -2131,7 +2508,7 @@
       fetchingMore = true;
       try {
         const table = "word_pairs";
-        const all = await getRowsCached(table, currentDeck, currentSetName);
+        const all = await DB.getAll(table, currentDeck, currentSetName);
         const useGateSize = gateSize;
         const batchSize = gateEnabled ? Math.max(useGateSize, visibleCount * 20) : Math.max(100, visibleCount * 20);
 
@@ -2153,7 +2530,7 @@
       fetchingMore = true;
       try {
         const table = "sentence_pairs";
-        const all = await getRowsCached(table, currentDeck, currentSetName);
+        const all = await DB.getAll(table, currentDeck, currentSetName);
         const useGateSize = Math.min(gateSize, 50);
         const batchSize = gateEnabled ? Math.max(useGateSize, 30) : 50;
 
@@ -2271,8 +2648,8 @@
         const card = document.createElement("div");
         card.className = "card";
         card.dataset.id = pair.id;
-        // Pin to left column, row = index + 1 (1-indexed)
-        card.style.gridColumn = "1";
+        card.dataset.side = "english";
+        // Row is fixed by index; column is decided by CSS based on data-col-order.
         card.style.gridRow = String(index + 1);
         const badge = document.createElement("span");
         badge.className = "shortcut-badge";
@@ -2297,8 +2674,8 @@
         const card = document.createElement("div");
         card.className = "card";
         card.dataset.id = pair.id;
-        // Pin to right column, row = index + 1 (1-indexed)
-        card.style.gridColumn = "2";
+        card.dataset.side = "target";
+        // Row is fixed by index; column is decided by CSS based on data-col-order.
         card.style.gridRow = String(index + 1);
         const badge = document.createElement("span");
         badge.className = "shortcut-badge";
@@ -2330,8 +2707,29 @@
     }
 
     function updateScore() {
-      scoreEl.innerHTML = `<span class="ok">${correctCount}</span> ✓ &nbsp; <span class="ko">${wrongCount}</span> ✗`;
+      const html = `<span class="ok">${correctCount}</span> ✓ &nbsp; <span class="ko">${wrongCount}</span> ✗`;
+      scoreEl.innerHTML = html;
+      // Mirror to landscape-info column (a compact variant)
+      const liScore = document.getElementById("liScore");
+      if (liScore) liScore.innerHTML = `<span class="ok">${correctCount}</span> ✓ <span class="ko">${wrongCount}</span> ✗`;
     }
+
+    /* Mirror the status text to the landscape-info column too. We wrap
+       statusEl assignments via a setter so existing call-sites stay simple. */
+    Object.defineProperty(statusEl, "textContent", (function() {
+      const proto = Object.getPrototypeOf(statusEl);
+      const desc = Object.getOwnPropertyDescriptor(proto, "textContent") ||
+                   Object.getOwnPropertyDescriptor(Node.prototype, "textContent");
+      return {
+        configurable: true,
+        get() { return desc.get.call(this); },
+        set(v) {
+          desc.set.call(this, v);
+          const li = document.getElementById("liStatus");
+          if (li) li.textContent = v || "";
+        }
+      };
+    })());
 
     async function saveWordAnswer(wordId, isCorrect) {
       await recordAnswer("word_pairs", wordId, isCorrect, repetitionProfile);
@@ -2756,66 +3154,176 @@
     });
 
     /* ---------- Built-in deck list ---------- */
-    async function loadBuiltinList() {
-      builtinList.innerHTML = "Loading…";
+    /* ---------- Built-in deck discovery ----------
+       Two paths to find deck CSVs:
+       1) PRIMARY: query the GitHub Contents API for the `decks/` folder of the
+          repo we're hosted on. This automatically picks up any CSV file
+          dropped into a language subfolder (e.g. `decks/de/foo.csv`), so the
+          user can add new decks just by committing files — no JSON edits.
+       2) FALLBACK: read decks/index.json (committed manually). Used when:
+          - we're not on github.io (running locally or on a different host)
+          - the GitHub API call fails (rate-limited, offline, etc.)
+
+       Convention for auto-discovered decks:
+       - File path is `decks/<lang>/<name>.csv`
+       - <lang> becomes the deck code (de, it, fr, es, …)
+       - <name> (without .csv) becomes the displayed deck name
+       - All discovered decks default to type "words". For sentence-type
+         decks, list them explicitly in index.json. */
+
+    function detectGitHubRepo() {
+      // Parse `username.github.io/repo/...` style URLs
+      const host = location.hostname; // e.g. szeleczo.github.io
+      const m = host.match(/^([^.]+)\.github\.io$/i);
+      if (!m) return null;
+      const owner = m[1];
+      // Path looks like /LanguageDeck/ — first segment is the repo (or empty
+      // if it's the user's root site)
+      const segments = location.pathname.split("/").filter(Boolean);
+      const repo = segments[0] || owner + ".github.io";
+      return { owner, repo };
+    }
+
+    async function fetchDecksFromGitHubAPI() {
+      const r = detectGitHubRepo();
+      if (!r) return null;
+      const baseUrl = `https://api.github.com/repos/${r.owner}/${r.repo}/contents/decks`;
+      try {
+        // 1) List `decks/` — find language subfolders
+        const rootRes = await fetch(baseUrl, { cache: "no-cache" });
+        if (!rootRes.ok) return null;
+        const rootEntries = await rootRes.json();
+        if (!Array.isArray(rootEntries)) return null;
+
+        const decks = [];
+        // 2) For each subfolder, list its CSV files
+        for (const entry of rootEntries) {
+          if (entry.type !== "dir") continue;
+          const lang = entry.name.toLowerCase();
+          // Only consider 2-letter language codes (de, it, fr, es...)
+          if (!/^[a-z]{2,3}$/.test(lang)) continue;
+          const subRes = await fetch(`${baseUrl}/${encodeURIComponent(entry.name)}`, { cache: "no-cache" });
+          if (!subRes.ok) continue;
+          const subEntries = await subRes.json();
+          if (!Array.isArray(subEntries)) continue;
+          for (const f of subEntries) {
+            if (f.type !== "file") continue;
+            if (!/\.csv$/i.test(f.name)) continue;
+            const baseName = f.name.replace(/\.csv$/i, "");
+            decks.push({
+              name: baseName,
+              file: `${lang}/${f.name}`,
+              deck: lang,
+              type: "words", // GitHub-API-discovered default
+              source: "api"
+            });
+          }
+        }
+        return decks;
+      } catch (err) {
+        return null;
+      }
+    }
+
+    async function fetchDecksFromIndexJson() {
       try {
         const res = await fetch("decks/index.json", { cache: "no-cache" });
-        if (!res.ok) throw new Error("not found");
+        if (!res.ok) return null;
         const data = await res.json();
         const decks = Array.isArray(data) ? data : (data.decks || []);
-        if (decks.length === 0) { builtinList.innerHTML = "<em>No built-in decks listed in decks/index.json</em>"; return; }
-        builtinList.innerHTML = "";
-        decks.forEach(d => {
-          const wrap = document.createElement("div");
-          wrap.style.cssText = "display:flex;flex-direction:column;gap:4px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);";
-          const title = document.createElement("div");
-          title.innerHTML = `<strong>${escapeHtml(d.name || d.file)}</strong>`;
-          const meta = document.createElement("div");
-          meta.style.cssText = "font-size:12px;color:var(--text-faint);";
-          meta.textContent = `${d.type || "words"} · ${d.deck || "de"} · ${d.file}`;
-          const btn = document.createElement("button");
-          btn.textContent = "Import";
-          btn.style.marginTop = "6px";
-          btn.addEventListener("click", async () => {
-            try {
-              const url = `decks/${d.file}`;
-              const r = await fetch(url, { cache: "no-cache" });
-              if (!r.ok) throw new Error(`Could not download ${d.file}`);
-              const text = await r.text();
-              const setName = (d.name || d.file.replace(/\.csv$/i, ""));
-              if ((d.type || "words") === "sentences") {
-                const n = await importSentencesFromCsv(text, d.deck || currentDeck, setName);
-                showToast(`Imported ${n} sentences into "${setName}".`);
-                invalidateRowsCache();
-                importType = "sentences"; importTypeSelect.value = "sentences";
-              } else {
-                const n = await importWordsFromCsv(text, d.deck || currentDeck, setName);
-                showToast(`Imported ${n} words into "${setName}".`);
-                invalidateRowsCache();
-                importType = "words"; importTypeSelect.value = "words";
-              }
-              currentSetName = setName; currentGateIndex = 0;
-              await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
-              await loadCurrentGame(true);
-              builtinModal.classList.remove("active");
-              closeSettings();
-            } catch (err) { showToast("Error: " + err.message); }
-          });
-          wrap.appendChild(title); wrap.appendChild(meta); wrap.appendChild(btn);
-          builtinList.appendChild(wrap);
-        });
+        return decks.map(d => ({ ...d, source: d.source || "json" }));
       } catch (err) {
-        builtinList.innerHTML = `
-          <em>No <code>decks/index.json</code> found yet.</em>
-          <p style="font-size:13px;color:var(--text-faint);margin-top:6px;">
-            Create a <code>decks/</code> folder next to this app, drop your CSV files in,
-            and add an <code>index.json</code> like this:
-          </p>
-          <pre style="background:var(--surface-2);padding:10px;border-radius:8px;font-size:12px;overflow:auto;border:1px solid var(--border);">[
-  { "name": "german_3000", "file": "german_3000.csv", "deck": "de", "type": "words" },
-  { "name": "italian_3000", "file": "italian_3000.csv", "deck": "it", "type": "words" }
-]</pre>`;
+        return null;
       }
+    }
+
+    async function loadBuiltinList() {
+      builtinList.innerHTML = "Loading…";
+
+      // Try GitHub API first, then index.json. We always also try index.json
+      // and merge — entries with the same `file` path are deduplicated, with
+      // index.json winning (so a maintainer can override defaults).
+      const [apiDecks, jsonDecks] = await Promise.all([
+        fetchDecksFromGitHubAPI(),
+        fetchDecksFromIndexJson()
+      ]);
+
+      const merged = new Map();
+      for (const d of (apiDecks || [])) merged.set(d.file, d);
+      for (const d of (jsonDecks || [])) merged.set(d.file, d); // json overrides api
+
+      const decks = Array.from(merged.values()).sort((a, b) => {
+        // Group by language, then alphabetical by name
+        if (a.deck !== b.deck) return (a.deck || "").localeCompare(b.deck || "");
+        return (a.name || "").localeCompare(b.name || "");
+      });
+
+      if (decks.length === 0) {
+        builtinList.innerHTML = `
+          <em>No built-in decks found.</em>
+          <p style="font-size:13px;color:var(--text-faint);margin-top:6px;">
+            Drop CSV files into <code>decks/&lt;lang&gt;/</code> in your repo,
+            or list them in <code>decks/index.json</code>.
+          </p>`;
+        return;
+      }
+
+      builtinList.innerHTML = "";
+
+      // Group by language for cleaner display
+      let lastLang = null;
+      decks.forEach(d => {
+        if (d.deck !== lastLang) {
+          const header = document.createElement("div");
+          header.style.cssText = "font-size:11px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin:8px 0 4px;";
+          header.textContent = (d.deck || "??").toUpperCase();
+          builtinList.appendChild(header);
+          lastLang = d.deck;
+        }
+
+        const wrap = document.createElement("div");
+        wrap.className = "builtin-item";
+        const title = document.createElement("div");
+        title.innerHTML = `<strong>${escapeHtml(d.name || d.file)}</strong>`;
+        const meta = document.createElement("div");
+        meta.className = "builtin-item-meta";
+        meta.textContent = `${d.type || "words"} · ${d.file}`;
+        const btn = document.createElement("button");
+        btn.textContent = "Import";
+        btn.style.marginTop = "6px";
+        btn.addEventListener("click", async () => {
+          try {
+            const url = `decks/${d.file}`;
+            const r = await fetch(url, { cache: "no-cache" });
+            if (!r.ok) throw new Error(`Could not download ${d.file}`);
+            const text = await r.text();
+            const setName = (d.name || d.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, ""));
+            if ((d.type || "words") === "sentences") {
+              const n = await importSentencesFromCsv(text, d.deck || currentDeck, setName);
+              showToast(`Imported ${n} sentences into "${setName}".`);
+              importType = "sentences"; importTypeSelect.value = "sentences";
+            } else {
+              const n = await importWordsFromCsv(text, d.deck || currentDeck, setName);
+              showToast(`Imported ${n} words into "${setName}".`);
+              importType = "words"; importTypeSelect.value = "words";
+            }
+            // Switch active deck to the language we just imported into,
+            // so the user sees their new content immediately.
+            if (d.deck) {
+              currentDeck = d.deck;
+              deckSelect.value = currentDeck;
+              applyDeckUI();
+            }
+            currentSetName = setName; currentGateIndex = 0;
+            await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
+            await loadCurrentGame(true);
+            builtinModal.classList.remove("active");
+            closeSettings();
+          } catch (err) { showToast("Error: " + err.message); }
+        });
+        wrap.appendChild(title); wrap.appendChild(meta); wrap.appendChild(btn);
+        builtinList.appendChild(wrap);
+      });
     }
 
     /* ---------- Event handlers ---------- */
@@ -2848,7 +3356,6 @@
           ? await importWordsFromCsv(text, currentDeck, setName)
           : await importSentencesFromCsv(text, currentDeck, setName);
         showToast(`Imported ${n} ${importType === "words" ? "words" : "sentences"} into "${setName}".`);
-        invalidateRowsCache();
         fileInput.value = "";
         currentSetName = setName; currentGateIndex = 0;
         await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
@@ -2869,7 +3376,6 @@
           ? await importWordsFromCsv(text, currentDeck, setName)
           : await importSentencesFromCsv(text, currentDeck, setName);
         showToast(`Imported ${n} ${importType === "words" ? "words" : "sentences"} into "${setName}".`);
-        invalidateRowsCache();
         urlInput.value = "";
         currentSetName = setName; currentGateIndex = 0;
         await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
@@ -2886,7 +3392,6 @@
       if (!ok) return;
       const table = tt === "words" ? "word_pairs" : "sentence_pairs";
       const n = await DB.clear(table, currentDeck, currentSetName);
-      invalidateRowsCache();
       showToast(`Cleared ${n} items.`);
       sessionLoadedIds = new Set();
       wordQueue = []; sentenceQueue = []; sentencePool = [];
@@ -2924,14 +3429,6 @@
       importType = importTypeSelect.value; saveSettings(); updateModeSummary();
     });
 
-    if (orientationSelect) {
-      orientationSelect.addEventListener("change", async () => {
-        orientationPreference = orientationSelect.value;
-        saveSettings();
-        await applyOrientationPreference(true);
-      });
-    }
-
     modeSelect.addEventListener("change", async () => {
       wordMode = modeSelect.value; saveSettings(); updateGameUI();
       if (currentGame === "words") await loadCurrentGame(true);
@@ -2967,8 +3464,30 @@
       updateModeSummary(); await refreshGateInfo();
     });
 
+    const themeSelectEl = document.getElementById("themeSelect");
+    if (themeSelectEl) {
+      themeSelectEl.addEventListener("change", () => {
+        theme = themeSelectEl.value;
+        applyTheme();
+        saveSettings();
+      });
+    }
+
+    const columnOrderSelectEl = document.getElementById("columnOrderSelect");
+    if (columnOrderSelectEl) {
+      columnOrderSelectEl.addEventListener("change", () => {
+        columnOrder = columnOrderSelectEl.value;
+        applyColumnOrder();
+        saveSettings();
+      });
+    }
+
     prevGateBtn.addEventListener("click", () => tryMoveGate(-1));
     nextGateBtn.addEventListener("click", () => tryMoveGate(1));
+    const liPrevBtn = document.getElementById("liPrevGateBtn");
+    const liNextBtn = document.getElementById("liNextGateBtn");
+    if (liPrevBtn) liPrevBtn.addEventListener("click", () => tryMoveGate(-1));
+    if (liNextBtn) liNextBtn.addEventListener("click", () => tryMoveGate(1));
     gateSelect.addEventListener("change", async () => {
       const t = parseInt(gateSelect.value, 10);
       if (!Number.isNaN(t)) await tryJumpToGate(t);
@@ -3003,6 +3522,67 @@
       deferredPrompt = null;
     });
     window.addEventListener("appinstalled", () => { installBanner.classList.remove("visible"); });
+
+    /* iOS Safari has no `beforeinstallprompt` — show a manual hint when:
+       - the device looks like iOS, AND
+       - we're not already running standalone (i.e. not yet installed), AND
+       - the user hasn't dismissed the hint before. */
+    (function setupIosInstallHint() {
+      const iosBanner = document.getElementById("iosInstallBanner");
+      const dismissBtn = document.getElementById("iosInstallDismissBtn");
+      if (!iosBanner || !dismissBtn) return;
+
+      const ua = window.navigator.userAgent || "";
+      const isIos = /iPad|iPhone|iPod/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+      const isStandalone = window.navigator.standalone === true ||
+                           window.matchMedia("(display-mode: standalone)").matches;
+      const dismissedKey = "languagedeck_ios_install_dismissed";
+      const wasDismissed = localStorage.getItem(dismissedKey) === "1";
+
+      if (isIos && !isStandalone && !wasDismissed) {
+        iosBanner.classList.add("visible");
+      }
+      dismissBtn.addEventListener("click", () => {
+        iosBanner.classList.remove("visible");
+        try { localStorage.setItem(dismissedKey, "1"); } catch (_) {}
+      });
+    })();
+
+    /* ---------- Orientation unlock ---------- */
+    /* Some PWAs (Chrome on Android in particular) cache the manifest's
+       orientation lock from when the app was first installed, even after
+       the manifest is later changed. So we explicitly request "any" at
+       runtime in case orientation got locked to portrait. */
+    function unlockOrientation() {
+      try {
+        if (screen && screen.orientation && typeof screen.orientation.unlock === "function") {
+          screen.orientation.unlock();
+        }
+      } catch (_) { /* ignore — best-effort only */ }
+    }
+    unlockOrientation();
+    window.addEventListener("load", unlockOrientation);
+
+    /* ---------- Viewport height tracker ----------
+       Keeps a CSS variable --vh in sync with the actual visible viewport.
+       Needed because Chrome PWA on Android sometimes reports dvh values that
+       leave the bottom navigation bar overlapping the content. Using JS-
+       measured `window.innerHeight` is the only reliable way to fill exactly
+       the rendered area on every device. */
+    function updateVh() {
+      const h = window.innerHeight;
+      document.documentElement.style.setProperty("--vh", h + "px");
+    }
+    updateVh();
+    window.addEventListener("resize", updateVh);
+    window.addEventListener("orientationchange", () => {
+      // Orientation change fires before innerHeight settles; sample twice
+      updateVh();
+      setTimeout(updateVh, 100);
+      setTimeout(updateVh, 400);
+    });
+    // Also update once the page is fully laid out
+    window.addEventListener("load", updateVh);
 
     /* ---------- Service worker ---------- */
     /* When a new SW version is detected, show an unobtrusive toast.
@@ -3045,7 +3625,10 @@
       gateSizeSelect.value = String(gateSize);
       strictGateCheckbox.value = strictGate ? "true" : "false";
       importTypeSelect.value = importType;
-      if (orientationSelect) orientationSelect.value = orientationPreference;
+      const themeSel = document.getElementById("themeSelect");
+      if (themeSel) themeSel.value = theme;
+      const colOrderSel = document.getElementById("columnOrderSelect");
+      if (colOrderSel) colOrderSel.value = columnOrder;
     }
 
     async function init() {
@@ -3055,7 +3638,6 @@
         currentDeck = saved.currentDeck ?? currentDeck;
         currentSetName = saved.currentSetName ?? currentSetName;
         importType = saved.importType ?? importType;
-        orientationPreference = saved.orientationPreference ?? orientationPreference;
         wordMode = saved.wordMode ?? wordMode;
         sentenceMode = saved.sentenceMode ?? sentenceMode;
         practiceScope = saved.practiceScope ?? practiceScope;
@@ -3066,11 +3648,13 @@
         gateSize = saved.gateSize ?? gateSize;
         currentGateIndex = saved.currentGateIndex ?? 0;
         strictGate = saved.strictGate ?? strictGate;
+        theme = saved.theme ?? theme;
+        columnOrder = saved.columnOrder ?? columnOrder;
       }
 
+      applyTheme();
+      applyColumnOrder();
       applySettingsToUI();
-      syncViewportOrientationClass();
-      await applyOrientationPreference(false);
 
       try {
         await DB.open();
@@ -3097,7 +3681,7 @@
      */
     async function checkEmptyState() {
       const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
-      const all = await getRowsCached(table, currentDeck, "__all__");
+      const all = await DB.getAll(table, currentDeck, "__all__");
       const isEmpty = all.length === 0;
 
       emptyState.classList.toggle("hidden", !isEmpty);
@@ -3107,25 +3691,12 @@
         wordMatchContainer.classList.add("hidden");
         wordTypingContainer.classList.add("hidden");
         sentenceContainer.classList.add("hidden");
-        gatePanel.style.display = "none";
+        gatePanel.classList.add("gate-disabled");
         statusEl.textContent = "Welcome! Import a deck to start.";
       } else {
         // Restore correct game container visibility
         updateGameUI();
       }
-    }
-
-    window.addEventListener('resize', () => {
-      syncViewportOrientationClass();
-    });
-    window.addEventListener('orientationchange', () => {
-      syncViewportOrientationClass();
-      setTimeout(() => applyOrientationPreference(false), 120);
-    });
-    if (screen.orientation && typeof screen.orientation.addEventListener === 'function') {
-      screen.orientation.addEventListener('change', () => {
-        syncViewportOrientationClass();
-      });
     }
 
     init();
