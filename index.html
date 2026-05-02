@@ -3509,9 +3509,6 @@
         orientationLock = orientationSelectEl.value;
         applyOrientationLock();
         saveSettings();
-        if (orientationLock !== "auto") {
-          showToast("Orientation lock works best in the installed app.", 3500);
-        }
       });
     }
 
@@ -3583,33 +3580,47 @@
 
     /* ---------- Orientation lock ----------
        The user can choose in Settings → Appearance:
-         - "auto"      → app rotates with the device (factory default)
-         - "portrait"  → only portrait, even when device is sideways
-         - "landscape" → only landscape, even when device is upright
-       The screen.orientation.lock API only works in installed PWAs (display:
-       standalone) — in plain browser tabs it usually throws SecurityError or
-       NotSupportedError. We swallow those errors silently because the device's
-       OS-level rotation lock should take over for normal browsing.
+         - "auto"      → respect device orientation AND OS-level rotation lock
+         - "portrait"  → force portrait inside the app (only works in installed PWA)
+         - "landscape" → force landscape inside the app (only works in installed PWA)
 
-       NOTE: orientation.lock requires fullscreen on some Android browsers. In
-       a PWA installed to the home screen, that condition is met automatically. */
+       Implementation notes:
+       - "auto" must NOT call screen.orientation.unlock(). That call would
+         override the OS-level rotation lock — meaning if the user has
+         disabled autorotate on their phone, calling unlock would re-enable
+         rotation just for our app, which is exactly what they don't want.
+         For "auto", we do nothing — the manifest's orientation:"any" plus the
+         OS rotation lock are the source of truth.
+       - "portrait" / "landscape" use screen.orientation.lock(), which only
+         works reliably inside an installed PWA on Android. In a regular
+         browser tab the call usually throws — we catch it and tell the user
+         to install the app first. */
+
+    let orientationLockNotice = false;
+
     async function applyOrientationLock() {
+      const o = screen && screen.orientation;
+      if (!o) return;
+
       try {
-        const o = screen && screen.orientation;
-        if (!o) return;
         if (orientationLock === "auto") {
-          if (typeof o.unlock === "function") o.unlock();
-        } else if (typeof o.lock === "function") {
-          // Map our setting to the API enum — `portrait-primary` is the most
-          // common form on phones.
-          const target = orientationLock === "landscape"
-            ? "landscape"
-            : "portrait";
+          // Critical: do NOT call unlock() here. That would override the
+          // user's OS-level rotation lock, allowing the app to rotate even
+          // when their phone is set to "no rotate". Doing nothing is the
+          // correct behavior for "auto".
+          return;
+        }
+        if (typeof o.lock === "function") {
+          const target = orientationLock === "landscape" ? "landscape" : "portrait";
           await o.lock(target);
         }
-      } catch (_) {
-        /* Browsers without lock support fall through; the visual UI still
-           reacts to actual device orientation via media queries. */
+      } catch (err) {
+        // Lock failed (likely SecurityError or NotSupportedError).
+        // Show a one-time notice so the user understands why nothing happened.
+        if (!orientationLockNotice) {
+          orientationLockNotice = true;
+          showToast("Lock requires the installed app. Add to home screen first.", 4500);
+        }
       }
     }
     applyOrientationLock();
