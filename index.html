@@ -1428,6 +1428,14 @@
               <option value="target_first">Target language on the left</option>
             </select>
           </div>
+          <div>
+            <label for="orientationSelect">Screen orientation</label>
+            <select id="orientationSelect">
+              <option value="auto" selected>Follow device (rotate freely)</option>
+              <option value="portrait">Lock to portrait</option>
+              <option value="landscape">Lock to landscape</option>
+            </select>
+          </div>
         </div>
       </details>
 
@@ -2056,6 +2064,7 @@
 
     let theme = "system"; // "system" | "light" | "dark"
     let columnOrder = "english_first"; // "english_first" | "target_first"
+    let orientationLock = "auto"; // "auto" | "portrait" | "landscape"
 
     let selectedLeft = null;
     let selectedRight = null;
@@ -2196,7 +2205,7 @@
         wordMode, sentenceMode, practiceScope, repetitionProfile,
         newRatio, visibleCount,
         gateEnabled, gateSize, currentGateIndex, strictGate,
-        theme, columnOrder
+        theme, columnOrder, orientationLock
       };
       try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch (_) {}
     }
@@ -2738,17 +2747,27 @@
     async function finalizeCorrectWordPair(pairId) {
       matchedIds.add(pairId);
       correctCount++; updateScore();
-      await saveWordAnswer(pairId, true);
-      setTimeout(async () => {
-        locked = false; renderWordMatch();
-        if (allCurrentRoundMatched()) {
-          statusEl.textContent = "Round complete — next coming up.";
-          setTimeout(async () => {
-            await loadNextWordRound(); renderWordMatch();
-            await refreshStats(); await refreshGateInfo();
-          }, 450);
-        } else { await refreshStats(); await refreshGateInfo(); }
-      }, 250);
+      // Unlock IMMEDIATELY so the user can pick the next pair without waiting.
+      // The cosmetic "correct" state is visible because the card already has
+      // the .correct CSS class from matchedIds.
+      locked = false;
+      renderWordMatch();
+      // Persist the answer + refresh stats in the background — these include
+      // IndexedDB transactions that can take 50-200ms each on slower phones.
+      // Awaiting them serially before unlocking caused a noticeable "dead
+      // zone" between matches, especially on languages without article prompts.
+      saveWordAnswer(pairId, true).catch(() => {});
+      if (allCurrentRoundMatched()) {
+        statusEl.textContent = "Round complete — next coming up.";
+        setTimeout(async () => {
+          await loadNextWordRound(); renderWordMatch();
+          refreshStats().catch(() => {});
+          refreshGateInfo().catch(() => {});
+        }, 350);
+      } else {
+        refreshStats().catch(() => {});
+        refreshGateInfo().catch(() => {});
+      }
     }
 
     async function checkWordMatch() {
@@ -2772,12 +2791,14 @@
         statusEl.textContent = "Wrong match.";
         const wrongId = selectedLeft;
         markWordWrongTemporarily();
-        await saveWordAnswer(wrongId, false);
-        setTimeout(async () => {
+        // Persist the wrong answer in the background.
+        saveWordAnswer(wrongId, false).catch(() => {});
+        setTimeout(() => {
           selectedLeft = null; selectedRight = null;
           locked = false; renderWordMatch();
-          await refreshStats(); await refreshGateInfo();
-        }, 700);
+          refreshStats().catch(() => {});
+          refreshGateInfo().catch(() => {});
+        }, 500);
       }
     }
 
@@ -3482,6 +3503,18 @@
       });
     }
 
+    const orientationSelectEl = document.getElementById("orientationSelect");
+    if (orientationSelectEl) {
+      orientationSelectEl.addEventListener("change", () => {
+        orientationLock = orientationSelectEl.value;
+        applyOrientationLock();
+        saveSettings();
+        if (orientationLock !== "auto") {
+          showToast("Orientation lock works best in the installed app.", 3500);
+        }
+      });
+    }
+
     prevGateBtn.addEventListener("click", () => tryMoveGate(-1));
     nextGateBtn.addEventListener("click", () => tryMoveGate(1));
     const liPrevBtn = document.getElementById("liPrevGateBtn");
@@ -3548,20 +3581,39 @@
       });
     })();
 
-    /* ---------- Orientation unlock ---------- */
-    /* Some PWAs (Chrome on Android in particular) cache the manifest's
-       orientation lock from when the app was first installed, even after
-       the manifest is later changed. So we explicitly request "any" at
-       runtime in case orientation got locked to portrait. */
-    function unlockOrientation() {
+    /* ---------- Orientation lock ----------
+       The user can choose in Settings → Appearance:
+         - "auto"      → app rotates with the device (factory default)
+         - "portrait"  → only portrait, even when device is sideways
+         - "landscape" → only landscape, even when device is upright
+       The screen.orientation.lock API only works in installed PWAs (display:
+       standalone) — in plain browser tabs it usually throws SecurityError or
+       NotSupportedError. We swallow those errors silently because the device's
+       OS-level rotation lock should take over for normal browsing.
+
+       NOTE: orientation.lock requires fullscreen on some Android browsers. In
+       a PWA installed to the home screen, that condition is met automatically. */
+    async function applyOrientationLock() {
       try {
-        if (screen && screen.orientation && typeof screen.orientation.unlock === "function") {
-          screen.orientation.unlock();
+        const o = screen && screen.orientation;
+        if (!o) return;
+        if (orientationLock === "auto") {
+          if (typeof o.unlock === "function") o.unlock();
+        } else if (typeof o.lock === "function") {
+          // Map our setting to the API enum — `portrait-primary` is the most
+          // common form on phones.
+          const target = orientationLock === "landscape"
+            ? "landscape"
+            : "portrait";
+          await o.lock(target);
         }
-      } catch (_) { /* ignore — best-effort only */ }
+      } catch (_) {
+        /* Browsers without lock support fall through; the visual UI still
+           reacts to actual device orientation via media queries. */
+      }
     }
-    unlockOrientation();
-    window.addEventListener("load", unlockOrientation);
+    applyOrientationLock();
+    window.addEventListener("load", applyOrientationLock);
 
     /* ---------- Viewport height tracker ----------
        Keeps a CSS variable --vh in sync with the actual visible viewport.
@@ -3629,6 +3681,8 @@
       if (themeSel) themeSel.value = theme;
       const colOrderSel = document.getElementById("columnOrderSelect");
       if (colOrderSel) colOrderSel.value = columnOrder;
+      const orientSel = document.getElementById("orientationSelect");
+      if (orientSel) orientSel.value = orientationLock;
     }
 
     async function init() {
@@ -3650,10 +3704,12 @@
         strictGate = saved.strictGate ?? strictGate;
         theme = saved.theme ?? theme;
         columnOrder = saved.columnOrder ?? columnOrder;
+        orientationLock = saved.orientationLock ?? orientationLock;
       }
 
       applyTheme();
       applyColumnOrder();
+      applyOrientationLock();
       applySettingsToUI();
 
       try {
