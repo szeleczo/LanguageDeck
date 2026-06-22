@@ -1,0 +1,44 @@
+﻿english,target,article,plural,type,register,tags,note,alternatives,article_prompt
+model,Modell,das,Modelle,noun,professional,bim;revit,,,
+parameter,Parameter,der,Parameter,noun,professional,bim;revit,,,
+shared parameter,gemeinsam genutzter Parameter,der,gemeinsam genutzte Parameter,noun,professional,bim;revit,German Revit-like term,,
+parameter mapping,Parameterzuordnung,die,Parameterzuordnungen,noun,professional,bim;data,,,
+category,Kategorie,die,Kategorien,noun,professional,bim,,,
+family,Familie,die,Familien,noun,professional,revit,Revit family,,
+type,Typ,der,Typen,noun,professional,revit,,,
+instance,Instanz,die,Instanzen,noun,professional,revit,,,
+view,Ansicht,die,Ansichten,noun,professional,revit,,,
+sheet / drawing sheet,Plan,der,Pläne,noun,professional,revit;documentation,,,
+schedule,Bauteilliste,die,Bauteillisten,noun,professional,revit,Revit schedule for building elements,,
+workset,Workset,das,Worksets,noun,professional,revit,Common borrowed term,,
+coordinate,Koordinate,die,Koordinaten,noun,professional,coordination,,,
+origin point,Ursprungspunkt,der,Ursprungspunkte,noun,professional,coordination,,,
+export,Export,der,Exporte,noun,professional,ifc;data,,,
+IFC export,IFC-Export,der,IFC-Exporte,noun,professional,ifc,,,
+GUID,GUID,die,GUIDs,noun,professional,ifc;data,Often feminine when spoken as ID/Nummer; accepted usage varies,der GUID,
+collision / clash,Kollision,die,Kollisionen,noun,professional,coordination,,,
+clash detection,Kollisionsprüfung,die,Kollisionsprüfungen,noun,professional,coordination,,,
+issue / problem,Problem,das,Probleme,noun,professional,coordination,,,
+warning,Warnung,die,Warnungen,noun,professional,revit,,,
+error,Fehler,der,Fehler,noun,professional,revit;qa,,,
+deadline,Frist,die,Fristen,noun,professional,project,,,
+handover / delivery,Übergabe,die,Übergaben,noun,professional,project,,,
+responsibility,Zuständigkeit,die,Zuständigkeiten,noun,professional,project,Who is responsible for what,,
+to import a CSV file,eine CSV-Datei importieren,die,,phrase,professional,data,,,false
+to export a model,ein Modell exportieren,das,,phrase,professional,bim;ifc,,,false
+to reload a link,eine Verknüpfung neu laden,die,,phrase,professional,revit,,,false
+to check a model,ein Modell prüfen,das,,phrase,professional,qa;bim,,,false
+to clean up a model,ein Modell bereinigen,das,,phrase,professional,revit,,,false
+to assign a workset,ein Workset zuweisen,das,,phrase,professional,revit,,,false
+to fill a parameter,einen Parameter ausfüllen,der,,phrase,professional,bim;data,,,false
+to map parameters,Parameter zuordnen,der,,phrase,professional,bim;data,,,false
+to keep the structure simple,die Struktur einfach halten,die,,phrase,professional,data;process,,,false
+The parameter mapping is inconsistent.,Die Parameterzuordnung ist nicht konsistent.,,,sentence,professional,bim;data,,,false
+The problem is probably not in the export.,Das Problem liegt wahrscheinlich nicht im Export.,,,sentence,professional,ifc;diagnostics,,,false
+We should clarify the structure first.,Wir sollten zuerst die Struktur klären.,,,sentence,professional,process,,,false
+This should not break the Italian deck.,Das sollte den italienischen Deck nicht kaputtmachen.,,,sentence,professional,app;testing,,,false
+The existing import flow must remain compatible.,Der bestehende Importablauf muss kompatibel bleiben.,,,sentence,professional,app;testing,,,false
+The CSV still needs an English source column.,Die CSV braucht weiterhin eine englische Ausgangsspalte.,,,sentence,professional,app;csv,,,false
+German nouns should include the article.,Deutsche Substantive sollten den Artikel enthalten.,,,sentence,professional,german;csv,,,false
+Expressions should be learned as chunks.,Ausdrücke sollten als Chunks gelernt werden.,,,sentence,professional,learning,,,false
+The article is metadata for this phrase.,Der Artikel ist bei diesem Ausdruck nur eine Metainformation.,,,sentence,professional,csv,,,false

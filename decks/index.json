@@ -1,4 +1,32 @@
 [
-  { "name": "german_3000",  "file": "de/german_3000.csv",  "deck": "de", "type": "words" },
-  { "name": "italian_3000", "file": "it/italian_3000.csv", "deck": "it", "type": "words" }
+  {
+    "name": "german_3000",
+    "file": "de/german_3000.csv",
+    "deck": "de",
+    "type": "words"
+  },
+  {
+    "name": "italian_3000",
+    "file": "it/italian_3000.csv",
+    "deck": "it",
+    "type": "words"
+  },
+  {
+    "name": "oliver_core_chunks",
+    "file": "de/oliver_core_chunks.csv",
+    "deck": "de",
+    "type": "words"
+  },
+  {
+    "name": "oliver_sentence_patterns",
+    "file": "de/oliver_sentence_patterns.csv",
+    "deck": "de",
+    "type": "sentences"
+  },
+  {
+    "name": "oliver_bim_architecture",
+    "file": "de/oliver_bim_architecture.csv",
+    "deck": "de",
+    "type": "words"
+  }
 ]

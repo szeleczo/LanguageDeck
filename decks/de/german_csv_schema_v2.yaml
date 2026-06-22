@@ -1,0 +1,43 @@
+# LanguageDeck CSV schema v2 — English source only
+# Existing CSVs remain valid: english,target[,article]
+# The app still supports Italian without article prompts.
+
+supported_languages:
+  de:
+    label: English → German
+    article_prompt: true
+    target_aliases: [target, german, de, deutsch, translation, answer]
+  it:
+    label: English → Italian
+    article_prompt: false
+    target_aliases: [target, italian, it, italiano, translation, answer]
+
+word_columns:
+  required:
+    english: English source cue. Aliases: [english, en, source, prompt, cue]
+    target: Target-language word, chunk, or expression.
+  optional:
+    article: German noun article: der, die, das. Ignored for Italian article prompts.
+    plural: Optional plural form for German nouns.
+    type: noun | verb | phrase | expression | chunk | sentence | idiom
+    register: neutral | natural | colloquial | formal | professional | emotional | direct
+    tags: Semicolon-separated topic tags.
+    note: Short learning note or hint.
+    alternatives: Accepted typing answers separated by vertical bars, e.g. "Druck herausnehmen|Druck rausnehmen".
+    article_prompt: true/false. Use false for phrases where article is metadata only.
+
+sentence_columns:
+  required:
+    english: Full English source sentence.
+    target: Full target-language sentence.
+  optional:
+    register: Same register values as word decks.
+    tags: Semicolon-separated topic tags.
+    note: Short note.
+    alternatives: Accepted typing answers separated by vertical bars.
+
+deck_strategy:
+  - Prefer chunks and sentence patterns over isolated vocabulary.
+  - For German nouns, include article and plural when useful.
+  - For German phrases with an embedded noun, keep article_prompt false unless the whole row is meant to test the article.
+  - Keep English as the only source language for this project phase.

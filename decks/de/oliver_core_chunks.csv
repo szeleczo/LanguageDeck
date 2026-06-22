@@ -1,0 +1,76 @@
+﻿english,target,article,plural,type,register,tags,note,alternatives,article_prompt
+clarity,Klarheit,die,Klarheiten,noun,neutral,core;thinking,Abstract noun; article prompt on,,
+decision,Entscheidung,die,Entscheidungen,noun,neutral,core;thinking,,,
+responsibility,Verantwortung,die,Verantwortungen,noun,neutral,core;relationship;work,,,
+trust,Vertrauen,das,,noun,neutral,core;relationship,Usually singular,,
+boundary,Grenze,die,Grenzen,noun,neutral,relationship;boundaries,,,
+distance,Abstand,der,Abstände,noun,neutral,relationship;space,,,
+closeness,Nähe,die,,noun,neutral,relationship,Usually singular,,
+pressure,Druck,der,,noun,neutral,core;relationship,Usually singular,,
+misunderstanding,Missverständnis,das,Missverständnisse,noun,neutral,communication,,,
+intention,Absicht,die,Absichten,noun,neutral,communication,,,
+doubt,Zweifel,der,Zweifel,noun,neutral,thinking,Often plural in use: Zweifel,,
+fear,Angst,die,Ängste,noun,neutral,emotion,,,
+pain / hurt,Verletzung,die,Verletzungen,noun,neutral,emotion;relationship,Can be physical or emotional injury,,
+pattern,Muster,das,Muster,noun,neutral,thinking,,,
+framework / frame,Rahmen,der,Rahmen,noun,neutral,thinking;boundaries,,,
+to clarify something,etwas klären,,,phrase,neutral,communication,Verb chunk with accusative object,,false
+to clarify something calmly,etwas in Ruhe klären,,,phrase,neutral,communication,Useful polite conflict phrase,,false
+to force something,etwas erzwingen,,,phrase,neutral,boundaries,,,false
+to push something onto someone,jemandem etwas aufdrängen,,,phrase,neutral,boundaries,Dative person + accusative thing,,false
+to misunderstand something,etwas missverstehen,,,phrase,neutral,communication,,,false
+to take something personally,etwas persönlich nehmen,,,phrase,neutral,emotion,,,false
+to take something seriously,etwas ernst nehmen,,,phrase,neutral,communication,,,false
+to make a decision,eine Entscheidung treffen,die,,phrase,neutral,thinking,Article is metadata only; no article prompt for the phrase,,false
+to postpone a decision,eine Entscheidung aufschieben,die,,phrase,neutral,thinking,,,false
+to set a boundary,eine Grenze setzen,die,,phrase,neutral,boundaries,,,false
+to cross a boundary,eine Grenze überschreiten,die,,phrase,neutral,boundaries,,,false
+to build trust,Vertrauen aufbauen,das,,phrase,neutral,relationship,,,false
+to lose trust,Vertrauen verlieren,das,,phrase,neutral,relationship,,,false
+to create pressure,Druck aufbauen,der,,phrase,neutral,communication,,,false
+to take pressure out of something,Druck rausnehmen,,,phrase,colloquial,communication,Natural spoken German; more formal: Druck herausnehmen,Druck herausnehmen,false
+to overthink something,sich zu viele Gedanken über etwas machen,,,phrase,natural,thinking,More natural than überanalysieren in speech,etwas überdenken|etwas zerdenken,false
+to overanalyse something,etwas überanalysieren,,,phrase,intellectual,thinking,Acceptable but more formal/intellectual,,false
+to read too much into something,zu viel in etwas hineininterpretieren,,,phrase,neutral,thinking,,,false
+to keep something in mind,etwas im Hinterkopf behalten,,,phrase,neutral,thinking,,,false
+to get stuck in something,in etwas hängen bleiben,,,phrase,natural,emotion,,,false
+to calm down,runterkommen,,,phrase,colloquial,emotion,Spoken German; separable verb,zur Ruhe kommen,false
+to stay calm,ruhig bleiben,,,phrase,neutral,emotion,,,false
+to remain respectful,respektvoll bleiben,,,phrase,neutral,communication,,,false
+to draw the wrong conclusion,den falschen Schluss ziehen,,,phrase,neutral,thinking,,,false
+to start from this assumption,von dieser Annahme ausgehen,die,,phrase,neutral,thinking,,,false
+to not assume the worst,nicht vom Schlimmsten ausgehen,,,phrase,neutral,thinking,,,false
+to not jump to conclusions,keine voreiligen Schlüsse ziehen,,,phrase,neutral,thinking,,,false
+to leave room for something,Raum für etwas lassen,der,,phrase,neutral,boundaries,,,false
+to need space,Raum brauchen,der,,phrase,neutral,boundaries;relationship,,,false
+to be available / present,da sein,,,phrase,natural,relationship,Often means emotionally present,,false
+to not disappear,nicht verschwinden,,,phrase,neutral,relationship,,,false
+to give someone safety,jemandem Sicherheit geben,die,,phrase,neutral,relationship,,,false
+to feel safe,sich sicher fühlen,,,phrase,neutral,emotion,,,false
+to feel misunderstood,sich missverstanden fühlen,,,phrase,neutral,emotion;communication,,,false
+to be overwhelmed,überfordert sein,,,phrase,neutral,emotion,,,false
+to shut down / freeze,zumachen,,,phrase,colloquial,emotion;relationship,In emotional context: to close down,dichtmachen,false
+to withdraw,sich zurückziehen,,,phrase,neutral,relationship,Reflexive verb,,false
+to come closer,näher kommen,,,phrase,neutral,relationship,,,false
+to reconnect,wieder zueinanderfinden,,,phrase,neutral,relationship,,,false
+to force a solution,eine Lösung erzwingen,die,,phrase,neutral,communication,,,false
+to look for a solution,nach einer Lösung suchen,die,,phrase,neutral,communication,,,false
+to take one step at a time,Schritt für Schritt vorgehen,der,,phrase,neutral,planning,,,false
+to keep the frame,den Rahmen halten,der,,phrase,neutral,boundaries,"Slightly abstract, but useful in your style",,false
+to lose myself,mich selbst verlieren,,,phrase,emotional,boundaries,,,false
+to give myself up,mich selbst aufgeben,,,phrase,emotional,boundaries,,,false
+to take my part of responsibility,meinen Teil der Verantwortung übernehmen,die,,phrase,neutral,relationship,,,false
+to take all the blame,die ganze Schuld auf mich nehmen,die,,phrase,emotional,relationship,,,false
+to stay with the facts,bei den Fakten bleiben,,,phrase,neutral,thinking,,,false
+to make something explicit,etwas ausdrücklich sagen,,,phrase,neutral,communication,,,false
+to say something clearly,etwas klar sagen,,,phrase,neutral,communication,,,false
+to leave something vague,etwas vage lassen,,,phrase,neutral,communication,,,false
+to put something into words,etwas in Worte fassen,das,,phrase,neutral,communication,,,false
+to signal something,etwas signalisieren,,,phrase,neutral,communication,,,false
+to interpret a signal,ein Signal deuten,das,,phrase,neutral,communication,,,false
+to be consistent,konsistent sein,,,phrase,neutral,work;thinking,,,false
+to be coherent / make sense,schlüssig sein,,,phrase,neutral,thinking,,,false
+to not add up,nicht zusammenpassen,,,phrase,natural,thinking,,nicht aufgehen,false
+to change the situation,die Lage verändern,die,,phrase,neutral,thinking,,die Situation verändern,false
+to handle a situation,mit einer Situation umgehen,die,,phrase,neutral,communication,,,false
+to handle conflict,mit Konflikten umgehen,der,,phrase,neutral,relationship,,,false
