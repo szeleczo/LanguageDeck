@@ -1,323 +1,323 @@
 english,target,article,plural,type,register,tags,note,alternatives,article_prompt
-That makes sense.,Das ergibt Sinn.,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-That makes sense. (fits / works),Das passt.,,,"chunk","casual","conversation,natural_german,A2","Very versatile: 'it fits', 'that works', 'sounds good'.",,FALSE
-That's logical.,Das ist logisch.,,,"chunk","neutral","conversation,natural_german,A2",,,FALSE
-That depends.,Das kommt darauf an.,,,"chunk","neutral","conversation,natural_german,B1","One of the most useful phrases in German.",,FALSE
-It depends on the situation.,Es kommt auf die Situation an.,,,"chunk","neutral","conversation,natural_german,B1",separable: kommt … an.,,FALSE
-It depends on you.,Das hängt von dir ab.,,,"chunk","casual","conversation,natural_german,B1","hängen von + Dative. Separable: hängt … ab.",Das liegt bei dir.,FALSE
-Not necessarily.,Nicht unbedingt.,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-More or less.,Mehr oder weniger.,,,"chunk","neutral","conversation,natural_german,A2",,,FALSE
-Kind of / sort of.,Irgendwie.,,,"chunk","casual","conversation,natural_german,A2","A true filler word — used constantly in spoken German.",Irgendwie schon.,FALSE
-Kind of yes.,Irgendwie schon.,,,"chunk","casual","conversation,natural_german,A2",,,FALSE
-Kind of not.,Irgendwie nicht.,,,"chunk","casual","conversation,natural_german,A2",,,FALSE
-Roughly / approximately.,In etwa.,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-We'll see.,Mal sehen.,,,"chunk","casual","conversation,natural_german,A2","One of the most common German conversation chunks.",Schauen wir mal.,FALSE
-Let's see how it goes.,Schauen wir mal wie es läuft.,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-I'm not sure.,Ich bin mir nicht sicher.,,,"chunk","neutral","conversation,natural_german,A2",,Ich weiß nicht so genau.,FALSE
-I'm not entirely sure.,Ich bin mir nicht ganz sicher.,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-I have no idea.,Ich habe keine Ahnung.,,,"chunk","casual","conversation,natural_german,A2",,,FALSE
-I don't know exactly.,Ich weiß das nicht genau.,,,"chunk","neutral","conversation,natural_german,A2",,,FALSE
-Hard to say.,Schwer zu sagen.,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-That's a good question.,Das ist eine gute Frage.,,,"chunk","neutral","conversation,natural_german,A2","Buys thinking time while sounding engaged.",Das frage ich mich auch.,FALSE
-Honestly I don't know.,Ehrlich gesagt weiß ich das nicht.,,,"chunk","casual","conversation,natural_german,B1",'Ehrlich gesagt' is a natural opener for honest admissions.,,FALSE
-I think so.,Ich glaube schon.,,,"chunk","neutral","conversation,natural_german,A2",,,FALSE
-I don't think so.,Ich glaube nicht.,,,"chunk","neutral","conversation,natural_german,A2",,Das glaube ich nicht.,FALSE
-I think so, yes.,Eigentlich schon.,,,"chunk","casual","conversation,natural_german,B1","'Eigentlich' softens and adds nuance — closer to 'actually yes'.",Ich würde sagen schon.,FALSE
-Not really.,Eigentlich nicht.,,,"chunk","casual","conversation,natural_german,B1","'Eigentlich nicht' is softer and more natural than 'Nicht wirklich'.",Nicht wirklich.,FALSE
-Actually…,Eigentlich…,,,"chunk","casual","conversation,natural_german,B1","Powerful filler — signals a correction, nuance, or soft contradiction.",,FALSE
-To be honest…,Ehrlich gesagt…,,,"chunk","casual","conversation,natural_german,B1","Used to signal an honest or slightly uncomfortable opinion.",,FALSE
-If I'm honest…,Wenn ich ehrlich bin…,,,"chunk","casual","conversation,natural_german,B1",,Ehrlich gesagt…,FALSE
-Personally I think…,Ich persönlich finde…,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-From my point of view…,Aus meiner Sicht…,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-In my opinion…,Meiner Meinung nach…,,,"chunk","neutral","conversation,opinions,B1","Takes verb-final word order after it: Meiner Meinung nach ist das falsch.",Meines Erachtens…,FALSE
-I find that…,Ich finde das…,,,"chunk","neutral","conversation,opinions,A2","Extremely versatile opener for opinions.",Ich finde…,FALSE
-I think that's right.,Ich finde das richtig.,,,"chunk","neutral","conversation,opinions,A2",,,FALSE
-I'm not sure I agree.,Da bin ich nicht ganz einverstanden.,,,"chunk","polite","conversation,disagreement,B1",,,FALSE
-I see it differently.,Ich sehe das anders.,,,"chunk","neutral","conversation,disagreement,B1",,,FALSE
-I have a different opinion.,Ich habe da eine andere Meinung.,,,"chunk","neutral","conversation,disagreement,B1",,,FALSE
-That's not quite right.,Das stimmt nicht ganz.,,,"chunk","neutral","conversation,disagreement,B1","Softer than 'Das ist falsch'.",Nicht unbedingt.,FALSE
-I don't see it that way.,Das sehe ich nicht so.,,,"chunk","casual","conversation,disagreement,B1",,,FALSE
-I wouldn't say that.,Das würde ich nicht sagen.,,,"chunk","neutral","conversation,disagreement,B1",,,FALSE
-Yes and no.,Jein.,,,"chunk","casual","conversation,natural_german,B1","A real German word — blend of 'Ja' and 'Nein'. Very commonly used.",Ja und nein.,FALSE
-You could say that.,Das kann man so sagen.,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-You could see it that way.,Das kann man so sehen.,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-That's one way to look at it.,So kann man das auch sehen.,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-That's true.,Das stimmt.,,,"chunk","neutral","conversation,agreement,A2",,Das ist wahr.,FALSE
-That's right.,Genau.,,,"chunk","casual","conversation,agreement,A2","One of the most used agreement words in German.",,FALSE
-Exactly!,Eben!,,,"chunk","casual","conversation,agreement,B1","Slightly stronger and more emphatic than 'Genau'.",Genau!,FALSE
-Absolutely.,Auf jeden Fall.,,,"chunk","casual","conversation,agreement,B1",,,FALSE
-Of course.,Natürlich.,,,"chunk","neutral","conversation,agreement,A2",,Selbstverständlich. (more formal),FALSE
-Exactly right.,Ganz genau.,,,"chunk","neutral","conversation,agreement,B1",,,FALSE
-I completely agree.,Da stimme ich völlig zu.,,,"chunk","neutral","conversation,agreement,B1",,,FALSE
-I agree.,Da stimme ich zu.,,,"chunk","neutral","conversation,agreement,A2",,,FALSE
-I feel the same way.,Das sehe ich genauso.,,,"chunk","casual","conversation,agreement,B1",,,FALSE
-You're right.,Du hast recht.,,,"chunk","casual","conversation,agreement,A2",,Sie haben recht. (formal),FALSE
-That's fair.,Das ist fair.,,,"chunk","casual","conversation,agreement,B1",,,FALSE
-Good point.,Guter Punkt.,,,"chunk","casual","conversation,agreement,B1",,,FALSE
-That makes sense to me.,Das leuchtet mir ein.,,,"chunk","neutral","conversation,agreement,B1","Idiomatic: 'einleuchten' = to make sense / become clear.",Das ergibt Sinn.,FALSE
-I understand what you mean.,Ich verstehe was du meinst.,,,"chunk","casual","conversation,natural_german,A2",,Ich weiß was du meinst.,FALSE
-I know what you mean.,Ich weiß was du meinst.,,,"chunk","casual","conversation,natural_german,A2",,,FALSE
-Fair enough.,Na gut.,,,"chunk","casual","conversation,agreement,A2","Accepting something with mild reservation — very natural.",Gut, okay.,FALSE
-OK let's say that.,Also gut.,,,"chunk","casual","conversation,agreement,A2","Signals reluctant agreement or moving forward.",Schön und gut.,FALSE
-That could be.,Das könnte sein.,,,"chunk","neutral","conversation,uncertainty,B1",,Das mag sein.,FALSE
-Maybe.,Vielleicht.,,,"chunk","neutral","conversation,uncertainty,A1",,,FALSE
-Possibly.,Möglicherweise.,,,"chunk","neutral","conversation,uncertainty,B1","More formal register than 'vielleicht'.",Eventuell.,FALSE
-It's possible.,Es ist möglich.,,,"chunk","neutral","conversation,uncertainty,B1",,,FALSE
-You never know.,Man weiß nie.,,,"chunk","casual","conversation,uncertainty,B1",,,FALSE
-Everything is open.,Es ist noch alles offen.,,,"chunk","neutral","conversation,uncertainty,B1","Signals nothing is decided yet.",Es steht noch nichts fest.,FALSE
-Nothing is decided yet.,Es ist noch nichts entschieden.,,,"chunk","neutral","conversation,uncertainty,B1",,,FALSE
-I'll think about it.,Ich denke darüber nach.,,,"chunk","neutral","conversation,uncertainty,A2","Separable: denke … nach. Also used to politely deflect.",Ich überlege es mir.,FALSE
-I need to think about it.,Ich muss darüber nachdenken.,,,"chunk","neutral","conversation,uncertainty,B1",Separable: denke … nach.,,FALSE
-I don't want to overthink it.,Ich will mir da nicht zu viele Gedanken machen.,,,"chunk","casual","conversation,natural_german,B2","Natural self-correction in conversation.",,FALSE
-Let me put it this way.,Sagen wir mal so.,,,"chunk","casual","conversation,natural_german,B1","Signals a rephrasing or clarification.",,FALSE
-How can I put it?,Wie soll ich sagen?,,,"chunk","casual","conversation,hesitation,B1","Classic hesitation phrase while searching for words.",Wie sagt man…,FALSE
-That is to say…,Das heißt…,,,"chunk","neutral","conversation,natural_german,A2","Clarification opener — abbreviates to 'd.h.' in writing.",Sprich…,FALSE
-In other words…,Das bedeutet…,,,"chunk","neutral","conversation,natural_german,A2",,Mit anderen Worten…,FALSE
-What I mean is…,Was ich damit meine ist…,,,"chunk","neutral","conversation,clarification,B1",,,FALSE
-What do you mean exactly?,Was meinst du genau?,,,"chunk","casual","conversation,clarification,A2",,Was meinen Sie genau?,FALSE
-Can you explain that?,Kannst du das erklären?,,,"chunk","casual","conversation,clarification,A2",,Können Sie das erklären?,FALSE
-What do you mean by that?,Was meinst du damit?,,,"chunk","casual","conversation,clarification,A2",,Was meinen Sie damit?,FALSE
-How do you mean?,Wie meinst du das?,,,"chunk","casual","conversation,clarification,A2",,Wie meinen Sie das?,FALSE
-Could you be more specific?,Kannst du das genauer sagen?,,,"chunk","casual","conversation,clarification,B1",,Können Sie das präzisieren?,FALSE
-Just to make sure I understand.,Nur damit ich das richtig verstehe.,,,"chunk","polite","conversation,clarification,B1",,,FALSE
-Sorry what did you say?,Entschuldigung, was haben Sie gesagt?,,,"chunk","polite","conversation,clarification,A2",,Wie bitte?,FALSE
-Pardon?,Wie bitte?,,,"chunk","polite","conversation,clarification,A1","Standard polite request to repeat.",,FALSE
-One moment.,Einen Moment.,,,"chunk","neutral","conversation,hesitation,A1",,Einen Augenblick.,FALSE
-Just a second.,Kurz.,,,"chunk","casual","conversation,hesitation,A2","Very colloquial shortening.",Moment mal.,FALSE
-Let me think.,Lass mich kurz nachdenken.,,,"chunk","casual","conversation,hesitation,A2",,,FALSE
-So…,Also…,,,"chunk","casual","conversation,hesitation,A2","One of the most common German conversation fillers — signals thinking or launching into a point.",,FALSE
-Well…,Nun…,,,"chunk","neutral","conversation,hesitation,B1","More formal than 'also'. Used to open a considered statement.",Naja…,FALSE
-Hmm / Well…,Naja…,,,"chunk","casual","conversation,hesitation,A2","Signals mild doubt, hesitation, or soft disagreement. Very natural.",,FALSE
-Look…,Schau mal…,,,"chunk","casual","conversation,hesitation,B1","Used to draw attention before making a point.",Sieh mal…,FALSE
-I mean…,Ich meine…,,,"chunk","casual","conversation,hesitation,B1",,Also ich…,FALSE
-The thing is…,Die Sache ist die…,,,"chunk","casual","conversation,hesitation,B1","Sets up a complication or honest explanation.",,FALSE
-The problem is…,Das Problem ist…,,,"chunk","neutral","conversation,natural_german,A2",,,FALSE
-To be fair…,Fairerweise…,,,"chunk","casual","conversation,natural_german,B1",,Zur Ehrlichkeit…,FALSE
-After all…,Immerhin.,,,"chunk","casual","conversation,natural_german,B1","Signals a redeeming or mitigating point: 'at least…'.",,FALSE
-At least…,Wenigstens.,,,"chunk","casual","conversation,natural_german,A2",,Zumindest.,FALSE
-At least.,Zumindest.,,,"chunk","neutral","conversation,natural_german,B1","Slightly more formal/written than 'wenigstens'.",Wenigstest.,FALSE
-That's not the point.,Darum geht es nicht.,,,"chunk","casual","conversation,disagreement,B1",,,FALSE
-That's beside the point.,Das ist nicht der Punkt.,,,"chunk","neutral","conversation,disagreement,B1",,,FALSE
-That's a different matter.,Das ist eine andere Sache.,,,"chunk","neutral","conversation,disagreement,B1",,,FALSE
-Don't get me wrong.,Versteh mich nicht falsch.,,,"chunk","casual","conversation,softeners,B1","Preempts a potential misunderstanding.",Missversteht mich nicht.,FALSE
-I don't mean it badly.,Ich meine das nicht böse.,,,"chunk","casual","conversation,softeners,B1",,,FALSE
-That's not what I meant.,Das habe ich nicht so gemeint.,,,"chunk","casual","conversation,softeners,B1",,,FALSE
-No offence meant.,Nichts für ungut.,,,"chunk","casual","conversation,softeners,B1","Fixed idiom — nothing to be taken badly.",Das ist nicht persönlich gemeint.,FALSE
-Don't take it personally.,Nimm das nicht persönlich.,,,"chunk","casual","conversation,softeners,B1",,,FALSE
-I hope you understand.,Ich hoffe du verstehst das.,,,"chunk","casual","conversation,softeners,B1",,Ich hoffe Sie verstehen das.,FALSE
-Just between us.,Nur zwischen uns.,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-No pressure.,Kein Druck.,,,"chunk","casual","conversation,softeners,B1",,,FALSE
-Take your time.,Lass dir Zeit.,,,"chunk","casual","conversation,softeners,A2",,Lassen Sie sich Zeit. (formal),FALSE
-Whenever suits you.,Wann immer es dir passt.,,,"chunk","casual","conversation,softeners,B1",,Wann immer es Ihnen passt.,FALSE
-It's not urgent.,Es ist nicht dringend.,,,"chunk","neutral","conversation,softeners,A2",,,FALSE
-No worries.,Keine Sorge.,,,"chunk","casual","conversation,softeners,A2",,Kein Problem.,FALSE
-That's fine.,Das ist in Ordnung.,,,"chunk","neutral","conversation,agreement,A2",,Passt schon.,FALSE
-It's all good.,Alles gut.,,,"chunk","casual","conversation,agreement,A2","Very common casual reassurance.",Alles in Ordnung.,FALSE
-That's not a problem.,Das ist kein Problem.,,,"chunk","neutral","conversation,agreement,A2",,Kein Problem.,FALSE
-No big deal.,Das ist nicht so schlimm.,,,"chunk","casual","conversation,softeners,A2",,Halb so wild.,FALSE
-It's not that bad.,Halb so wild.,,,"chunk","casual","conversation,softeners,B1","Idiomatic: literally 'half as wild' — it's not such a big deal.",Nicht so schlimm.,FALSE
-Could be worse.,Es könnte schlimmer sein.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-Happens to everyone.,Das passiert jedem.,,,"chunk","casual","conversation,softeners,A2",,,FALSE
-These things happen.,Sowas passiert.,,,"chunk","casual","conversation,softeners,A2",,,FALSE
-It'll work out.,Das wird schon klappen.,,,"chunk","casual","conversation,reactions,B1","'Schon' adds encouragement — 'it'll work out alright'.",Das kriegen wir hin.,FALSE
-We'll manage.,Wir kriegen das hin.,,,"chunk","casual","conversation,reactions,B1","'hinkriegen' = to manage/get it done.",Wir schaffen das.,FALSE
-It's worth a try.,Es ist einen Versuch wert.,,,"chunk","neutral","conversation,suggestions,B1",,,FALSE
-Why not?,Warum nicht?,,,"chunk","casual","conversation,agreement,A2","Can mean genuine agreement or rhetorical openness.",Klar doch.,FALSE
-Sure thing.,Klar doch.,,,"chunk","casual","conversation,agreement,A2",,,FALSE
-Gladly.,Gern.,,,"chunk","polite","conversation,agreement,A1","Standard polite acceptance: 'with pleasure'.",Gerne.,FALSE
-With pleasure.,Sehr gerne.,,,"chunk","polite","conversation,agreement,A2","More emphatic version of 'gern'.",,FALSE
-I'd be happy to.,Ich mache das gerne.,,,"chunk","polite","conversation,agreement,A2",,,FALSE
-I'd rather not.,Lieber nicht.,,,"chunk","casual","conversation,refusal,B1","Soft and non-confrontational refusal.",Eigentlich lieber nicht.,FALSE
-I'd prefer not to.,Ich würde es lieber lassen.,,,"chunk","neutral","conversation,refusal,B1",,,FALSE
-That's not really for me.,Das ist nicht so meins.,,,"chunk","casual","conversation,refusal,B1","Natural casual way to decline.",Das ist nicht mein Ding.,FALSE
-I'll pass.,Ich lasse das lieber.,,,"chunk","casual","conversation,refusal,B1",,,FALSE
-Not right now.,Im Moment nicht.,,,"chunk","casual","conversation,refusal,A2",,,FALSE
-Maybe another time.,Vielleicht ein anderes Mal.,,,"chunk","casual","conversation,refusal,A2",,,FALSE
-I'm afraid that won't work.,Das wird leider nicht gehen.,,,"chunk","polite","conversation,refusal,B1","'Leider' softens the refusal considerably.",Das geht leider nicht.,FALSE
-Unfortunately that's not possible.,Das ist leider nicht möglich.,,,"chunk","polite","conversation,refusal,B1","Formal polite refusal.",,FALSE
-I'm sorry I can't.,Tut mir leid, das kann ich nicht.,,,"chunk","neutral","conversation,refusal,A2",,,FALSE
-What do you think?,Was denkst du?,,,"chunk","casual","conversation,natural_german,A2",,Was meinst du?,FALSE
-What's your take on it?,Was hältst du davon?,,,"chunk","casual","conversation,natural_german,B1","'Halten von' = to think of / have an opinion on.",Wie siehst du das?,FALSE
-How do you see it?,Wie siehst du das?,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-Any thoughts?,Irgendwelche Gedanken dazu?,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-What would you say?,Was würdest du sagen?,,,"chunk","casual","conversation,natural_german,B1",,Was würden Sie sagen?,FALSE
-What would you recommend?,Was würdest du empfehlen?,,,"chunk","casual","conversation,natural_german,A2",,Was würden Sie empfehlen?,FALSE
-What do you suggest?,Was schlägst du vor?,,,"chunk","casual","conversation,suggestions,B1","Separable: schlägst … vor.",Was würdest du vorschlagen?,FALSE
-How about…?,Wie wäre es mit…?,,,"chunk","casual","conversation,suggestions,B1","Takes Dative after 'mit'.",Was wäre wenn…?,FALSE
-What if…?,Was wäre wenn…?,,,"chunk","casual","conversation,suggestions,B1",,,FALSE
-We could also…,Wir könnten auch…,,,"chunk","casual","conversation,suggestions,B1","Konjunktiv II makes suggestions sound less pushy.",,FALSE
-Why don't we…?,Warum nicht einfach…?,,,"chunk","casual","conversation,suggestions,B1",,,FALSE
-Have you thought about…?,Hast du schon mal darüber nachgedacht…?,,,"chunk","casual","conversation,suggestions,B1",,,FALSE
-It would be worth it.,Es wäre es wert.,,,"chunk","neutral","conversation,suggestions,B1",,,FALSE
-I suggest…,Ich schlage vor…,,,"chunk","neutral","conversation,suggestions,B1","Separable: schlage … vor.",,FALSE
-I have a suggestion.,Ich hätte einen Vorschlag.,,,"chunk","polite","conversation,suggestions,B1","Konjunktiv II adds politeness.",,FALSE
-Let me suggest something.,Darf ich etwas vorschlagen?,,,"chunk","polite","conversation,suggestions,B1",,,FALSE
-Anyway…,Jedenfalls…,,,"chunk","casual","conversation,topic_change,B1","Used to wrap up or refocus — 'in any case'.",Auf jeden Fall…,FALSE
-By the way…,Übrigens…,,,"chunk","casual","conversation,topic_change,A2","Classic topic-change or add-on opener.",,FALSE
-Speaking of which…,Da wir gerade dabei sind…,,,"chunk","casual","conversation,topic_change,B1","Literally 'while we're at it'.",,FALSE
-While we're on the subject…,Wo wir gerade davon sprechen…,,,"chunk","casual","conversation,topic_change,B1",,,FALSE
-Before I forget…,Bevor ich es vergesse…,,,"chunk","casual","conversation,topic_change,B1",,,FALSE
-To get back to the topic…,Um auf das Thema zurückzukommen…,,,"chunk","neutral","conversation,topic_change,B1","Common in discussions and meetings.",Um nochmal darauf zurückzukommen…,FALSE
-Let's move on.,Kommen wir weiter.,,,"chunk","neutral","conversation,topic_change,B1",,Gehen wir weiter.,FALSE
-To sum up…,Zusammenfassend…,,,"chunk","neutral","conversation,topic_change,B1",,Kurz gesagt…,FALSE
-In short…,Kurz gesagt…,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-To put it simply…,Einfach gesagt…,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-On the one hand… on the other hand…,Einerseits… andererseits…,,,"chunk","neutral","conversation,natural_german,B1","Core balancing structure in German.",,FALSE
-On one hand…,Auf der einen Seite…,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-On the other hand…,Auf der anderen Seite…,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-That said…,Andererseits…,,,"chunk","casual","conversation,natural_german,B1","Can be used alone to introduce a counterpoint.",,FALSE
-Nevertheless.,Trotzdem.,,,"chunk","neutral","conversation,natural_german,B1","Introduces a contrasting point despite what was just said.",Dennoch.,FALSE
-Despite that.,Trotz allem.,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-Even so.,Auch wenn das so ist.,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-At the same time…,Gleichzeitig…,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-As a result…,Deshalb…,,,"chunk","neutral","conversation,natural_german,A2",,,FALSE
-That's why.,Deswegen.,,,"chunk","casual","conversation,natural_german,A2",,Deshalb.,FALSE
-That's the reason.,Das ist der Grund.,,,"chunk","neutral","conversation,natural_german,A2",,,FALSE
-Because of that.,Dadurch.,,,"chunk","neutral","conversation,natural_german,B1","Slightly more formal; implies a direct result.",Deswegen.,FALSE
-In the end.,Am Ende.,,,"chunk","neutral","conversation,natural_german,A2",,Letztendlich.,FALSE
-Ultimately.,Letztendlich.,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-Basically.,Im Grunde.,,,"chunk","casual","conversation,natural_german,B1","Im Grunde (genommen) = basically / fundamentally.",Im Grunde genommen.,FALSE
-Essentially.,Im Wesentlichen.,,,"chunk","neutral","conversation,natural_german,B1","More formal register.",Im Grunde.,FALSE
-Actually (correcting),Eigentlich.,,,"chunk","casual","conversation,natural_german,B1","Key word — softens, corrects, or adds a surprising nuance.",,FALSE
-Isn't it? / Right?,Oder?,,,"chunk","casual","conversation,natural_german,A2","German tag question — used at the end of sentences like 'right?'",Ne? (very casual),FALSE
-Right? / You know?,Ne?,,,"chunk","casual","conversation,natural_german,B1","Northern German informal tag. Very colloquial.",Oder?,FALSE
-Something like that.,So in der Art.,,,"chunk","casual","conversation,natural_german,B1",,Sowas in der Richtung.,FALSE
-Something along those lines.,Sowas in der Richtung.,,,"chunk","casual","conversation,natural_german,B1","Very natural vague agreement.",So ähnlich.,FALSE
-More or less something like that.,So ungefähr sowas.,,,"chunk","casual","conversation,natural_german,B1","Stacking vague words — very idiomatic in spoken German.",,FALSE
-In a way.,Gewissermaßen.,,,"chunk","neutral","conversation,natural_german,B2","Formal/written register. Spoken alternative: 'irgendwie'.",Irgendwie.,FALSE
-That's often the case.,Das ist oft so.,,,"chunk","casual","conversation,natural_german,A2",,,FALSE
-It's always like that.,Das ist immer so.,,,"chunk","casual","conversation,natural_german,A2",,,FALSE
-That's just how it is.,So ist das nun mal.,,,"chunk","casual","conversation,natural_german,B1","'Nun mal' is an untranslatable particle adding resigned acceptance.",,FALSE
-What can you do.,Da kann man nichts machen.,,,"chunk","casual","conversation,reactions,B1",,Was soll man machen.,FALSE
-That's life.,So ist das Leben.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-Unfortunately.,Leider.,,,"chunk","neutral","conversation,softeners,A2","Position-flexible: at start or end of sentence.",,,FALSE
-Sadly.,Leider Gottes.,,,"chunk","casual","conversation,reactions,B1","Stronger version of 'leider' — 'unfortunately God knows'.",Leider.,FALSE
-Luckily.,Zum Glück.,,,"chunk","neutral","conversation,reactions,A2",,Glücklicherweise.,FALSE
-Thank goodness.,Gott sei Dank.,,,"chunk","casual","conversation,reactions,A2","Used as relief expression, not necessarily religious.",,FALSE
-What a shame.,Wie schade.,,,"chunk","neutral","conversation,reactions,A2",,Schade.,FALSE
-That's a pity.,Das ist schade.,,,"chunk","neutral","conversation,reactions,A2",,,FALSE
-Oh well.,Na ja.,,,"chunk","casual","conversation,reactions,A2","Signals mild resignation or acceptance.",Naja.,FALSE
-What a surprise!,Was für eine Überraschung!,,,"chunk","neutral","conversation,reactions,B1",,,FALSE
-Really?,Wirklich?,,,"chunk","casual","conversation,reactions,A2",,Echt?,FALSE
-Oh really?,Ach ja?,,,"chunk","casual","conversation,reactions,A2","Softer surprise reaction.",Ach so?,FALSE
-Oh I see.,Ach so.,,,"chunk","casual","conversation,reactions,A2","One of the most natural German reactions — signals understanding or mild surprise.",Ah okay.,FALSE
-I see.,Ich verstehe.,,,"chunk","neutral","conversation,reactions,A1",,Alles klar.,FALSE
-Got it.,Alles klar.,,,"chunk","casual","conversation,reactions,A2","Literally 'all clear' — very widely used.",Verstanden.,FALSE
-Noted.,Verstanden.,,,"chunk","neutral","conversation,reactions,A2","Clean and direct — used in work and everyday contexts.",Alles klar.,FALSE
-Oh interesting.,Oh interessant.,,,"chunk","casual","conversation,reactions,A2",,,FALSE
-That's interesting.,Das ist interessant.,,,"chunk","neutral","conversation,reactions,A2",,Das finde ich interessant.,FALSE
-That's surprising.,Das überrascht mich.,,,"chunk","neutral","conversation,reactions,B1","Literally 'that surprises me'.",,FALSE
-I didn't know that.,Das wusste ich nicht.,,,"chunk","casual","conversation,reactions,A2",,,FALSE
-That's new to me.,Das ist mir neu.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-Good to know.,Gut zu wissen.,,,"chunk","casual","conversation,reactions,A2",,,FALSE
-Tell me about it.,Das kann ich dir sagen.,,,"chunk","casual","conversation,reactions,B1","Ironic empathy: 'you're telling me'.",Das sag mir nicht.,FALSE
-Exactly what I was thinking.,Genau das dachte ich.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-That's what I said.,Das habe ich doch gesagt.,,,"chunk","casual","conversation,reactions,B1","'Doch' adds emphasis here.",,,FALSE
-I said so.,Ich hab's doch gewusst.,,,"chunk","casual","conversation,reactions,B1","'Ich hab's gewusst' = I knew it. Doch adds slight 'told you so' tone.",,FALSE
-Not bad.,Nicht schlecht.,,,"chunk","casual","conversation,reactions,A2","Can be genuine praise or gentle irony depending on tone.",Gar nicht schlecht.,FALSE
-Not bad at all.,Gar nicht schlecht.,,,"chunk","casual","conversation,reactions,A2","More genuinely positive than just 'nicht schlecht'.",,FALSE
-Well done.,Gut gemacht.,,,"chunk","casual","conversation,reactions,A2",,Sehr gut.,FALSE
-Impressive.,Beeindruckend.,,,"chunk","neutral","conversation,reactions,B1",,,FALSE
-I'm happy with that.,Damit bin ich zufrieden.,,,"chunk","neutral","conversation,reactions,B1",,,FALSE
-That works for me.,Das passt mir gut.,,,"chunk","casual","conversation,reactions,A2",,Das ist mir recht.,FALSE
-That suits me.,Das kommt mir gelegen.,,,"chunk","casual","conversation,reactions,B1","'Gelegen kommen' = to come at a convenient time.",Das passt mir.,FALSE
-That's convenient.,Das kommt mir gerade recht.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-Not ideal.,Nicht ideal.,,,"chunk","neutral","conversation,reactions,B1",,Nicht optimal.,FALSE
-That's a bit much.,Das ist ein bisschen viel.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-That's too much.,Das ist zu viel.,,,"chunk","casual","conversation,reactions,A2",,,FALSE
-That's going too far.,Das geht zu weit.,,,"chunk","neutral","conversation,disagreement,B1",,,FALSE
-I don't think that's okay.,Das finde ich nicht in Ordnung.,,,"chunk","casual","conversation,disagreement,B1",,,FALSE
-That bothers me.,Das stört mich.,,,"chunk","neutral","conversation,reactions,B1",,,FALSE
-That doesn't sit right with me.,Das ist mir unangenehm.,,,"chunk","neutral","conversation,reactions,B1","Literally 'that's uncomfortable to me'.",Das gefällt mir nicht.,FALSE
-I have mixed feelings about it.,Da bin ich zwiegespalten.,,,"chunk","casual","conversation,reactions,B2","'Zwiegespalten' = torn / of two minds.",Da bin ich hin- und hergerissen.,FALSE
-I'm torn.,Da bin ich hin- und hergerissen.,,,"chunk","casual","conversation,reactions,B2","Lit. 'pulled back and forth'.",Da bin ich zwiegespalten.,FALSE
-Something feels off.,Irgendwas stimmt da nicht.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-I can't quite put my finger on it.,Ich kann es nicht ganz in Worte fassen.,,,"chunk","casual","conversation,natural_german,B2","Lit. 'I can't quite put it into words'.",,FALSE
-I can imagine that.,Das kann ich mir vorstellen.,,,"chunk","neutral","conversation,reactions,B1","sich vorstellen = to imagine.",Das glaube ich dir.,FALSE
-I can believe that.,Das glaube ich dir.,,,"chunk","casual","conversation,reactions,B1","Takes Dative: 'I believe you on that'.",,FALSE
-I find that hard to believe.,Das glaube ich kaum.,,,"chunk","casual","conversation,reactions,B1","'Kaum' = barely/hardly — softer than 'Das glaube ich nicht'.",Das kann ich kaum glauben.,FALSE
-That can't be right.,Das kann nicht stimmen.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-Are you serious?,Ist das dein Ernst?,,,"chunk","casual","conversation,reactions,B1","Lit. 'is that your seriousness'.",Das meinst du nicht ernst.,FALSE
-You're kidding.,Das kann nicht dein Ernst sein.,,,"chunk","casual","conversation,reactions,B1","Expresses disbelief.",Mach Witze.,FALSE
-No way.,Das gibt's doch nicht.,,,"chunk","casual","conversation,reactions,B1","Lit. 'that can't exist' — expressing disbelief.",Das darf nicht wahr sein.,FALSE
-That can't be true.,Das darf nicht wahr sein.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-I can't believe it.,Ich kann's nicht glauben.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-That's absurd.,Das ist absurd.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-I'm speechless.,Ich bin sprachlos.,,,"chunk","neutral","conversation,reactions,B1",,,FALSE
-That's great.,Das ist toll.,,,"chunk","casual","conversation,reactions,A2",,Das ist super.,FALSE
-Wonderful.,Wunderbar.,,,"chunk","neutral","conversation,reactions,A2",,,FALSE
-That pleases me.,Das freut mich.,,,"chunk","neutral","conversation,reactions,A2","'Freuen' = to please/make happy. More natural than direct translation.",Ich freue mich darüber.,FALSE
-That's a relief.,Das ist eine Erleichterung.,,,"chunk","neutral","conversation,reactions,B1",,Zum Glück.,FALSE
-I'm relieved.,Ich bin erleichtert.,,,"chunk","neutral","conversation,reactions,B1",,,FALSE
-I'm exhausted.,Ich bin erschöpft.,,,"chunk","casual","conversation,reactions,A2",,Ich bin total platt.,FALSE
-I'm completely done in.,Ich bin total platt.,,,"chunk","casual","conversation,reactions,B1","Colloquial: 'platt' = exhausted in spoken German.",Ich bin erledigt.,FALSE
-I'm stressed out.,Ich bin gestresst.,,,"chunk","casual","conversation,reactions,A2",,,FALSE
-I'm overwhelmed.,Ich bin überfordert.,,,"chunk","neutral","conversation,reactions,B1","'Überfordert sein' = to be overwhelmed/overtaxed.",,FALSE
-I don't feel like it.,Ich habe keine Lust.,,,"chunk","casual","conversation,reactions,A2","'Keine Lust haben' = to not feel like it / not be in the mood.",,FALSE
-I feel like it.,Ich habe Lust darauf.,,,"chunk","casual","conversation,reactions,A2","'Lust haben auf + Acc' = to feel like doing something.",,FALSE
-That was tough.,Das war nicht leicht.,,,"chunk","casual","conversation,reactions,A2",,Das war schwer.,FALSE
-That was harder than expected.,Das war schwieriger als gedacht.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-Better than expected.,Besser als erwartet.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-Worse than expected.,Schlechter als erwartet.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-At least it's done.,Wenigstens ist es fertig.,,,"chunk","casual","conversation,reactions,A2",,,FALSE
-It is what it is.,Es ist wie es ist.,,,"chunk","casual","conversation,reactions,B1","German calque of the English — used similarly.",So ist es nun mal.,FALSE
-What's done is done.,Was gemacht ist, ist gemacht.,,,"chunk","casual","conversation,reactions,B1",,,FALSE
-Let's not make a big deal of it.,Machen wir kein Drama daraus.,,,"chunk","casual","conversation,softeners,B1",,,FALSE
-It's not the end of the world.,Es ist nicht das Ende der Welt.,,,"chunk","casual","conversation,softeners,B1",,,FALSE
-It could have been worse.,Es hätte schlimmer kommen können.,,,"chunk","casual","conversation,softeners,B1",,,FALSE
-That's encouraging.,Das ist ermutigend.,,,"chunk","neutral","conversation,reactions,B1",,,FALSE
-You can do it.,Das schaffst du.,,,"chunk","casual","conversation,reactions,A2","'Schaffen' = to manage / achieve.",,FALSE
-I believe in you.,Ich glaube an dich.,,,"chunk","casual","conversation,emotional,B1","glauben an + Accusative.",,FALSE
-It'll be fine.,Das wird schon.,,,"chunk","casual","conversation,reactions,B1","'Schon' here = it'll sort itself out. Very natural.",Das wird schon gut.,FALSE
-Don't stress.,Stress dich nicht.,,,"chunk","casual","conversation,softeners,B1",,Mach dir keinen Stress.,FALSE
-Don't worry about it.,Mach dir keine Sorgen.,,,"chunk","casual","conversation,softeners,B1",,,FALSE
-Don't overthink it.,Denk nicht zu viel darüber nach.,,,"chunk","casual","conversation,softeners,B1",,,FALSE
-Take it easy.,Entspann dich.,,,"chunk","casual","conversation,softeners,A2",,Nimm's locker.,FALSE
-Take it easy (idiom),Nimm's locker.,,,"chunk","casual","conversation,softeners,B1","Idiomatic: 'take it loosely'. Very natural spoken German.",Entspann dich.,FALSE
-One step at a time.,Eins nach dem anderen.,,,"chunk","casual","conversation,softeners,B1",,,FALSE
-Let's start from the beginning.,Fangen wir von vorne an.,,,"chunk","casual","conversation,natural_german,A2","Separable: fangen … an.",,FALSE
-Let's start fresh.,Machen wir einen Neuanfang.,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-It's water under the bridge.,Das ist Schnee von gestern.,,,"chunk","casual","conversation,natural_german,B2","Lit. 'that's yesterday's snow'. German idiom for something outdated/forgotten.",,FALSE
-That's old news.,Das ist längst bekannt.,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-Between you and me.,Unter uns gesagt.,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-If you ask me…,Wenn du mich fragst…,,,"chunk","casual","conversation,opinions,B1",,Wenn Sie mich fragen…,FALSE
-For what it's worth…,Für das, was es wert ist…,,,"chunk","casual","conversation,opinions,B1","Less common — native speakers more often use 'wenn du mich fragst'.",Falls es hilft…,FALSE
-With all due respect…,Bei allem Respekt…,,,"chunk","polite","conversation,disagreement,B1","Introduces a soft challenge.",Mit allem Respekt…,FALSE
-I don't want to be rude but…,Ich will nicht unhöflich sein, aber…,,,"chunk","polite","conversation,softeners,B1",,,FALSE
-I have to be honest.,Ich muss ehrlich sein.,,,"chunk","neutral","conversation,softeners,B1",,Ehrlich gesagt…,FALSE
-Strictly speaking…,Streng genommen…,,,"chunk","neutral","conversation,natural_german,B1","Signals a precise or pedantic point.",Genau genommen…,FALSE
-All things considered.,Alles in allem.,,,"chunk","neutral","conversation,natural_german,B1","Classic wrap-up phrase.",Alles zusammengenommen.,FALSE
-In general.,Im Allgemeinen.,,,"chunk","neutral","conversation,natural_german,B1",,,FALSE
-Generally speaking.,Im Großen und Ganzen.,,,"chunk","neutral","conversation,natural_german,B1","Lit. 'in the big and the whole'. Very idiomatic.",Im Allgemeinen.,FALSE
-As far as I know.,Soweit ich weiß.,,,"chunk","neutral","conversation,uncertainty,B1",,,FALSE
-As far as I can tell.,Soweit ich das beurteilen kann.,,,"chunk","neutral","conversation,uncertainty,B1",,,FALSE
-Unless I'm wrong.,Wenn ich mich nicht irre.,,,"chunk","neutral","conversation,uncertainty,B1","Softens a statement — 'if I'm not mistaken'.",Wenn ich nicht falsch liege.,FALSE
-I could be wrong.,Ich könnte mich irren.,,,"chunk","neutral","conversation,uncertainty,B1",,,FALSE
-Don't hold me to that.,Das sage ich ohne Gewähr.,,,"chunk","casual","conversation,uncertainty,B1","Lit. 'I say that without guarantee'.",Da bin ich mir nicht sicher.,FALSE
-If I'm not mistaken…,Wenn ich mich nicht täusche…,,,"chunk","neutral","conversation,uncertainty,B1",,,FALSE
-Let me double-check.,Ich schaue kurz nach.,,,"chunk","casual","conversation,natural_german,A2","'Nachschauen' = to check / look up. Separable.",Ich prüfe das kurz.,FALSE
-I'll look into it.,Ich schaue mir das an.,,,"chunk","casual","conversation,natural_german,A2","Separable: schaue … an.",Ich kümmere mich darum.,FALSE
-I'll take care of it.,Ich kümmere mich darum.,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-Leave it to me.,Lass das mich erledigen.,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-I'll sort it out.,Ich kläre das.,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-That's not my call.,Das liegt nicht in meiner Hand.,,,"chunk","casual","conversation,natural_german,B1","Lit. 'that's not in my hands'.",Das entscheide ich nicht.,FALSE
-That's up to you.,Das liegt bei dir.,,,"chunk","casual","conversation,natural_german,B1","hängen von / liegen bei + Dative.",Das entscheidest du.,FALSE
-That's your decision.,Das ist deine Entscheidung.,,,"chunk","neutral","conversation,natural_german,A2",,,FALSE
-Whatever you prefer.,Wie du möchtest.,,,"chunk","casual","conversation,natural_german,A2",,Ganz wie Sie möchten. (formal),FALSE
-Either way is fine.,So oder so ist es in Ordnung.,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-It doesn't matter to me.,Das ist mir egal.,,,"chunk","casual","conversation,natural_german,A2","'Egal' can sound dismissive in tone — soften with 'Das macht mir nichts aus'.",Das macht mir nichts aus.,FALSE
-I don't mind.,Das macht mir nichts aus.,,,"chunk","casual","conversation,natural_german,B1","Softer and more polite than 'Das ist mir egal'.",Das ist mir egal.,FALSE
-It doesn't bother me.,Das stört mich nicht.,,,"chunk","casual","conversation,natural_german,B1",,,FALSE
-I can live with that.,Damit kann ich leben.,,,"chunk","casual","conversation,agreement,B1","Natural acceptance of a compromise.",,FALSE
-That works.,Das geht.,,,"chunk","casual","conversation,agreement,A2","Short and natural. 'Das geht' = that's doable / that works.",Das passt.,FALSE
-That's doable.,Das ist machbar.,,,"chunk","neutral","conversation,agreement,B1",,,FALSE
-Sounds good.,Klingt gut.,,,"chunk","casual","conversation,agreement,A2",,,FALSE
-Sounds reasonable.,Klingt vernünftig.,,,"chunk","casual","conversation,agreement,B1",,,FALSE
-Perfect.,Perfekt.,,,"chunk","casual","conversation,agreement,A2",,Super.,FALSE
-Deal!,Abgemacht!,,,"chunk","casual","conversation,agreement,B1","Standard word for a done deal.",Einverstanden!,FALSE
-Agreed.,Einverstanden.,,,"chunk","polite","conversation,agreement,A2","Slightly more formal than 'Abgemacht'.",Abgemacht.,FALSE
-I'm in.,Ich bin dabei.,,,"chunk","casual","conversation,agreement,A2",,,FALSE
-Count me in.,Ich mache mit.,,,"chunk","casual","conversation,agreement,A2","Separable: mache … mit.",Ich bin dabei.,FALSE
-I'm not in.,Ich bin nicht dabei.,,,"chunk","casual","conversation,refusal,A2",,,FALSE
-That's not for me.,Das ist nichts für mich.,,,"chunk","casual","conversation,refusal,B1",,Das ist nicht mein Ding.,FALSE
-I'll sit this one out.,Da halte ich mich raus.,,,"chunk","casual","conversation,refusal,B1","Lit. 'I keep myself out of that'.",Das mache ich nicht mit.,FALSE
+That makes sense.,Das ergibt Sinn.,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+That makes sense. (fits / works),Das passt.,,,chunk,casual,"conversation,natural_german,A2","Very versatile: 'it fits', 'that works', 'sounds good'.",,FALSE
+That's logical.,Das ist logisch.,,,chunk,neutral,"conversation,natural_german,A2",,,FALSE
+That depends.,Das kommt darauf an.,,,chunk,neutral,"conversation,natural_german,B1",One of the most useful phrases in German.,,FALSE
+It depends on the situation.,Es kommt auf die Situation an.,,,chunk,neutral,"conversation,natural_german,B1",separable: kommt … an.,,FALSE
+It depends on you.,Das hängt von dir ab.,,,chunk,casual,"conversation,natural_german,B1",hängen von + Dative. Separable: hängt … ab.,Das liegt bei dir.,FALSE
+Not necessarily.,Nicht unbedingt.,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+More or less.,Mehr oder weniger.,,,chunk,neutral,"conversation,natural_german,A2",,,FALSE
+Kind of / sort of.,Irgendwie.,,,chunk,casual,"conversation,natural_german,A2",A true filler word — used constantly in spoken German.,Irgendwie schon.,FALSE
+Kind of yes.,Irgendwie schon.,,,chunk,casual,"conversation,natural_german,A2",,,FALSE
+Kind of not.,Irgendwie nicht.,,,chunk,casual,"conversation,natural_german,A2",,,FALSE
+Roughly / approximately.,In etwa.,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+We'll see.,Mal sehen.,,,chunk,casual,"conversation,natural_german,A2",One of the most common German conversation chunks.,Schauen wir mal.,FALSE
+Let's see how it goes.,Schauen wir mal wie es läuft.,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+I'm not sure.,Ich bin mir nicht sicher.,,,chunk,neutral,"conversation,natural_german,A2",,Ich weiß nicht so genau.,FALSE
+I'm not entirely sure.,Ich bin mir nicht ganz sicher.,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+I have no idea.,Ich habe keine Ahnung.,,,chunk,casual,"conversation,natural_german,A2",,,FALSE
+I don't know exactly.,Ich weiß das nicht genau.,,,chunk,neutral,"conversation,natural_german,A2",,,FALSE
+Hard to say.,Schwer zu sagen.,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+That's a good question.,Das ist eine gute Frage.,,,chunk,neutral,"conversation,natural_german,A2",Buys thinking time while sounding engaged.,Das frage ich mich auch.,FALSE
+Honestly I don't know.,Ehrlich gesagt weiß ich das nicht.,,,chunk,casual,"conversation,natural_german,B1",'Ehrlich gesagt' is a natural opener for honest admissions.,,FALSE
+I think so.,Ich glaube schon.,,,chunk,neutral,"conversation,natural_german,A2",,,FALSE
+I don't think so.,Ich glaube nicht.,,,chunk,neutral,"conversation,natural_german,A2",,Das glaube ich nicht.,FALSE
+"I think so, yes.",Eigentlich schon.,,,chunk,casual,"conversation,natural_german,B1",'Eigentlich' softens and adds nuance — closer to 'actually yes'.,Ich würde sagen schon.,FALSE
+Not really.,Eigentlich nicht.,,,chunk,casual,"conversation,natural_german,B1",'Eigentlich nicht' is softer and more natural than 'Nicht wirklich'.,Nicht wirklich.,FALSE
+Actually…,Eigentlich…,,,chunk,casual,"conversation,natural_german,B1","Powerful filler — signals a correction, nuance, or soft contradiction.",,FALSE
+To be honest…,Ehrlich gesagt…,,,chunk,casual,"conversation,natural_german,B1",Used to signal an honest or slightly uncomfortable opinion.,,FALSE
+If I'm honest…,Wenn ich ehrlich bin…,,,chunk,casual,"conversation,natural_german,B1",,Ehrlich gesagt…,FALSE
+Personally I think…,Ich persönlich finde…,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+From my point of view…,Aus meiner Sicht…,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+In my opinion…,Meiner Meinung nach…,,,chunk,neutral,"conversation,opinions,B1",Takes verb-final word order after it: Meiner Meinung nach ist das falsch.,Meines Erachtens…,FALSE
+I find that…,Ich finde das…,,,chunk,neutral,"conversation,opinions,A2",Extremely versatile opener for opinions.,Ich finde…,FALSE
+I think that's right.,Ich finde das richtig.,,,chunk,neutral,"conversation,opinions,A2",,,FALSE
+I'm not sure I agree.,Da bin ich nicht ganz einverstanden.,,,chunk,polite,"conversation,disagreement,B1",,,FALSE
+I see it differently.,Ich sehe das anders.,,,chunk,neutral,"conversation,disagreement,B1",,,FALSE
+I have a different opinion.,Ich habe da eine andere Meinung.,,,chunk,neutral,"conversation,disagreement,B1",,,FALSE
+That's not quite right.,Das stimmt nicht ganz.,,,chunk,neutral,"conversation,disagreement,B1",Softer than 'Das ist falsch'.,Nicht unbedingt.,FALSE
+I don't see it that way.,Das sehe ich nicht so.,,,chunk,casual,"conversation,disagreement,B1",,,FALSE
+I wouldn't say that.,Das würde ich nicht sagen.,,,chunk,neutral,"conversation,disagreement,B1",,,FALSE
+Yes and no.,Jein.,,,chunk,casual,"conversation,natural_german,B1",A real German word — blend of 'Ja' and 'Nein'. Very commonly used.,Ja und nein.,FALSE
+You could say that.,Das kann man so sagen.,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+You could see it that way.,Das kann man so sehen.,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+That's one way to look at it.,So kann man das auch sehen.,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+That's true.,Das stimmt.,,,chunk,neutral,"conversation,agreement,A2",,Das ist wahr.,FALSE
+That's right.,Genau.,,,chunk,casual,"conversation,agreement,A2",One of the most used agreement words in German.,,FALSE
+Exactly!,Eben!,,,chunk,casual,"conversation,agreement,B1",Slightly stronger and more emphatic than 'Genau'.,Genau!,FALSE
+Absolutely.,Auf jeden Fall.,,,chunk,casual,"conversation,agreement,B1",,,FALSE
+Of course.,Natürlich.,,,chunk,neutral,"conversation,agreement,A2",,Selbstverständlich. (more formal),FALSE
+Exactly right.,Ganz genau.,,,chunk,neutral,"conversation,agreement,B1",,,FALSE
+I completely agree.,Da stimme ich völlig zu.,,,chunk,neutral,"conversation,agreement,B1",,,FALSE
+I agree.,Da stimme ich zu.,,,chunk,neutral,"conversation,agreement,A2",,,FALSE
+I feel the same way.,Das sehe ich genauso.,,,chunk,casual,"conversation,agreement,B1",,,FALSE
+You're right.,Du hast recht.,,,chunk,casual,"conversation,agreement,A2",,Sie haben recht. (formal),FALSE
+That's fair.,Das ist fair.,,,chunk,casual,"conversation,agreement,B1",,,FALSE
+Good point.,Guter Punkt.,,,chunk,casual,"conversation,agreement,B1",,,FALSE
+That makes sense to me.,Das leuchtet mir ein.,,,chunk,neutral,"conversation,agreement,B1",Idiomatic: 'einleuchten' = to make sense / become clear.,Das ergibt Sinn.,FALSE
+I understand what you mean.,Ich verstehe was du meinst.,,,chunk,casual,"conversation,natural_german,A2",,Ich weiß was du meinst.,FALSE
+I know what you mean.,Ich weiß was du meinst.,,,chunk,casual,"conversation,natural_german,A2",,,FALSE
+Fair enough.,Na gut.,,,chunk,casual,"conversation,agreement,A2",Accepting something with mild reservation — very natural.,"Gut, okay.",FALSE
+OK let's say that.,Also gut.,,,chunk,casual,"conversation,agreement,A2",Signals reluctant agreement or moving forward.,Schön und gut.,FALSE
+That could be.,Das könnte sein.,,,chunk,neutral,"conversation,uncertainty,B1",,Das mag sein.,FALSE
+Maybe.,Vielleicht.,,,chunk,neutral,"conversation,uncertainty,A1",,,FALSE
+Possibly.,Möglicherweise.,,,chunk,neutral,"conversation,uncertainty,B1",More formal register than 'vielleicht'.,Eventuell.,FALSE
+It's possible.,Es ist möglich.,,,chunk,neutral,"conversation,uncertainty,B1",,,FALSE
+You never know.,Man weiß nie.,,,chunk,casual,"conversation,uncertainty,B1",,,FALSE
+Everything is open.,Es ist noch alles offen.,,,chunk,neutral,"conversation,uncertainty,B1",Signals nothing is decided yet.,Es steht noch nichts fest.,FALSE
+Nothing is decided yet.,Es ist noch nichts entschieden.,,,chunk,neutral,"conversation,uncertainty,B1",,,FALSE
+I'll think about it.,Ich denke darüber nach.,,,chunk,neutral,"conversation,uncertainty,A2",Separable: denke … nach. Also used to politely deflect.,Ich überlege es mir.,FALSE
+I need to think about it.,Ich muss darüber nachdenken.,,,chunk,neutral,"conversation,uncertainty,B1",Separable: denke … nach.,,FALSE
+I don't want to overthink it.,Ich will mir da nicht zu viele Gedanken machen.,,,chunk,casual,"conversation,natural_german,B2",Natural self-correction in conversation.,,FALSE
+Let me put it this way.,Sagen wir mal so.,,,chunk,casual,"conversation,natural_german,B1",Signals a rephrasing or clarification.,,FALSE
+How can I put it?,Wie soll ich sagen?,,,chunk,casual,"conversation,hesitation,B1",Classic hesitation phrase while searching for words.,Wie sagt man…,FALSE
+That is to say…,Das heißt…,,,chunk,neutral,"conversation,natural_german,A2",Clarification opener — abbreviates to 'd.h.' in writing.,Sprich…,FALSE
+In other words…,Das bedeutet…,,,chunk,neutral,"conversation,natural_german,A2",,Mit anderen Worten…,FALSE
+What I mean is…,Was ich damit meine ist…,,,chunk,neutral,"conversation,clarification,B1",,,FALSE
+What do you mean exactly?,Was meinst du genau?,,,chunk,casual,"conversation,clarification,A2",,Was meinen Sie genau?,FALSE
+Can you explain that?,Kannst du das erklären?,,,chunk,casual,"conversation,clarification,A2",,Können Sie das erklären?,FALSE
+What do you mean by that?,Was meinst du damit?,,,chunk,casual,"conversation,clarification,A2",,Was meinen Sie damit?,FALSE
+How do you mean?,Wie meinst du das?,,,chunk,casual,"conversation,clarification,A2",,Wie meinen Sie das?,FALSE
+Could you be more specific?,Kannst du das genauer sagen?,,,chunk,casual,"conversation,clarification,B1",,Können Sie das präzisieren?,FALSE
+Just to make sure I understand.,Nur damit ich das richtig verstehe.,,,chunk,polite,"conversation,clarification,B1",,,FALSE
+Sorry what did you say?,"Entschuldigung, was haben Sie gesagt?",,,chunk,polite,"conversation,clarification,A2",,Wie bitte?,FALSE
+Pardon?,Wie bitte?,,,chunk,polite,"conversation,clarification,A1",Standard polite request to repeat.,,FALSE
+One moment.,Einen Moment.,,,chunk,neutral,"conversation,hesitation,A1",,Einen Augenblick.,FALSE
+Just a second.,Kurz.,,,chunk,casual,"conversation,hesitation,A2",Very colloquial shortening.,Moment mal.,FALSE
+Let me think.,Lass mich kurz nachdenken.,,,chunk,casual,"conversation,hesitation,A2",,,FALSE
+So…,Also…,,,chunk,casual,"conversation,hesitation,A2",One of the most common German conversation fillers — signals thinking or launching into a point.,,FALSE
+Well…,Nun…,,,chunk,neutral,"conversation,hesitation,B1",More formal than 'also'. Used to open a considered statement.,Naja…,FALSE
+Hmm / Well…,Naja…,,,chunk,casual,"conversation,hesitation,A2","Signals mild doubt, hesitation, or soft disagreement. Very natural.",,FALSE
+Look…,Schau mal…,,,chunk,casual,"conversation,hesitation,B1",Used to draw attention before making a point.,Sieh mal…,FALSE
+I mean…,Ich meine…,,,chunk,casual,"conversation,hesitation,B1",,Also ich…,FALSE
+The thing is…,Die Sache ist die…,,,chunk,casual,"conversation,hesitation,B1",Sets up a complication or honest explanation.,,FALSE
+The problem is…,Das Problem ist…,,,chunk,neutral,"conversation,natural_german,A2",,,FALSE
+To be fair…,Fairerweise…,,,chunk,casual,"conversation,natural_german,B1",,Zur Ehrlichkeit…,FALSE
+After all…,Immerhin.,,,chunk,casual,"conversation,natural_german,B1",Signals a redeeming or mitigating point: 'at least…'.,,FALSE
+At least…,Wenigstens.,,,chunk,casual,"conversation,natural_german,A2",,Zumindest.,FALSE
+At least.,Zumindest.,,,chunk,neutral,"conversation,natural_german,B1",Slightly more formal/written than 'wenigstens'.,Wenigstest.,FALSE
+That's not the point.,Darum geht es nicht.,,,chunk,casual,"conversation,disagreement,B1",,,FALSE
+That's beside the point.,Das ist nicht der Punkt.,,,chunk,neutral,"conversation,disagreement,B1",,,FALSE
+That's a different matter.,Das ist eine andere Sache.,,,chunk,neutral,"conversation,disagreement,B1",,,FALSE
+Don't get me wrong.,Versteh mich nicht falsch.,,,chunk,casual,"conversation,softeners,B1",Preempts a potential misunderstanding.,Missversteht mich nicht.,FALSE
+I don't mean it badly.,Ich meine das nicht böse.,,,chunk,casual,"conversation,softeners,B1",,,FALSE
+That's not what I meant.,Das habe ich nicht so gemeint.,,,chunk,casual,"conversation,softeners,B1",,,FALSE
+No offence meant.,Nichts für ungut.,,,chunk,casual,"conversation,softeners,B1",Fixed idiom — nothing to be taken badly.,Das ist nicht persönlich gemeint.,FALSE
+Don't take it personally.,Nimm das nicht persönlich.,,,chunk,casual,"conversation,softeners,B1",,,FALSE
+I hope you understand.,Ich hoffe du verstehst das.,,,chunk,casual,"conversation,softeners,B1",,Ich hoffe Sie verstehen das.,FALSE
+Just between us.,Nur zwischen uns.,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+No pressure.,Kein Druck.,,,chunk,casual,"conversation,softeners,B1",,,FALSE
+Take your time.,Lass dir Zeit.,,,chunk,casual,"conversation,softeners,A2",,Lassen Sie sich Zeit. (formal),FALSE
+Whenever suits you.,Wann immer es dir passt.,,,chunk,casual,"conversation,softeners,B1",,Wann immer es Ihnen passt.,FALSE
+It's not urgent.,Es ist nicht dringend.,,,chunk,neutral,"conversation,softeners,A2",,,FALSE
+No worries.,Keine Sorge.,,,chunk,casual,"conversation,softeners,A2",,Kein Problem.,FALSE
+That's fine.,Das ist in Ordnung.,,,chunk,neutral,"conversation,agreement,A2",,Passt schon.,FALSE
+It's all good.,Alles gut.,,,chunk,casual,"conversation,agreement,A2",Very common casual reassurance.,Alles in Ordnung.,FALSE
+That's not a problem.,Das ist kein Problem.,,,chunk,neutral,"conversation,agreement,A2",,Kein Problem.,FALSE
+No big deal.,Das ist nicht so schlimm.,,,chunk,casual,"conversation,softeners,A2",,Halb so wild.,FALSE
+It's not that bad.,Halb so wild.,,,chunk,casual,"conversation,softeners,B1",Idiomatic: literally 'half as wild' — it's not such a big deal.,Nicht so schlimm.,FALSE
+Could be worse.,Es könnte schlimmer sein.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+Happens to everyone.,Das passiert jedem.,,,chunk,casual,"conversation,softeners,A2",,,FALSE
+These things happen.,Sowas passiert.,,,chunk,casual,"conversation,softeners,A2",,,FALSE
+It'll work out.,Das wird schon klappen.,,,chunk,casual,"conversation,reactions,B1",'Schon' adds encouragement — 'it'll work out alright'.,Das kriegen wir hin.,FALSE
+We'll manage.,Wir kriegen das hin.,,,chunk,casual,"conversation,reactions,B1",'hinkriegen' = to manage/get it done.,Wir schaffen das.,FALSE
+It's worth a try.,Es ist einen Versuch wert.,,,chunk,neutral,"conversation,suggestions,B1",,,FALSE
+Why not?,Warum nicht?,,,chunk,casual,"conversation,agreement,A2",Can mean genuine agreement or rhetorical openness.,Klar doch.,FALSE
+Sure thing.,Klar doch.,,,chunk,casual,"conversation,agreement,A2",,,FALSE
+Gladly.,Gern.,,,chunk,polite,"conversation,agreement,A1",Standard polite acceptance: 'with pleasure'.,Gerne.,FALSE
+With pleasure.,Sehr gerne.,,,chunk,polite,"conversation,agreement,A2",More emphatic version of 'gern'.,,FALSE
+I'd be happy to.,Ich mache das gerne.,,,chunk,polite,"conversation,agreement,A2",,,FALSE
+I'd rather not.,Lieber nicht.,,,chunk,casual,"conversation,refusal,B1",Soft and non-confrontational refusal.,Eigentlich lieber nicht.,FALSE
+I'd prefer not to.,Ich würde es lieber lassen.,,,chunk,neutral,"conversation,refusal,B1",,,FALSE
+That's not really for me.,Das ist nicht so meins.,,,chunk,casual,"conversation,refusal,B1",Natural casual way to decline.,Das ist nicht mein Ding.,FALSE
+I'll pass.,Ich lasse das lieber.,,,chunk,casual,"conversation,refusal,B1",,,FALSE
+Not right now.,Im Moment nicht.,,,chunk,casual,"conversation,refusal,A2",,,FALSE
+Maybe another time.,Vielleicht ein anderes Mal.,,,chunk,casual,"conversation,refusal,A2",,,FALSE
+I'm afraid that won't work.,Das wird leider nicht gehen.,,,chunk,polite,"conversation,refusal,B1",'Leider' softens the refusal considerably.,Das geht leider nicht.,FALSE
+Unfortunately that's not possible.,Das ist leider nicht möglich.,,,chunk,polite,"conversation,refusal,B1",Formal polite refusal.,,FALSE
+I'm sorry I can't.,"Tut mir leid, das kann ich nicht.",,,chunk,neutral,"conversation,refusal,A2",,,FALSE
+What do you think?,Was denkst du?,,,chunk,casual,"conversation,natural_german,A2",,Was meinst du?,FALSE
+What's your take on it?,Was hältst du davon?,,,chunk,casual,"conversation,natural_german,B1",'Halten von' = to think of / have an opinion on.,Wie siehst du das?,FALSE
+How do you see it?,Wie siehst du das?,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+Any thoughts?,Irgendwelche Gedanken dazu?,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+What would you say?,Was würdest du sagen?,,,chunk,casual,"conversation,natural_german,B1",,Was würden Sie sagen?,FALSE
+What would you recommend?,Was würdest du empfehlen?,,,chunk,casual,"conversation,natural_german,A2",,Was würden Sie empfehlen?,FALSE
+What do you suggest?,Was schlägst du vor?,,,chunk,casual,"conversation,suggestions,B1",Separable: schlägst … vor.,Was würdest du vorschlagen?,FALSE
+How about…?,Wie wäre es mit…?,,,chunk,casual,"conversation,suggestions,B1",Takes Dative after 'mit'.,Was wäre wenn…?,FALSE
+What if…?,Was wäre wenn…?,,,chunk,casual,"conversation,suggestions,B1",,,FALSE
+We could also…,Wir könnten auch…,,,chunk,casual,"conversation,suggestions,B1",Konjunktiv II makes suggestions sound less pushy.,,FALSE
+Why don't we…?,Warum nicht einfach…?,,,chunk,casual,"conversation,suggestions,B1",,,FALSE
+Have you thought about…?,Hast du schon mal darüber nachgedacht…?,,,chunk,casual,"conversation,suggestions,B1",,,FALSE
+It would be worth it.,Es wäre es wert.,,,chunk,neutral,"conversation,suggestions,B1",,,FALSE
+I suggest…,Ich schlage vor…,,,chunk,neutral,"conversation,suggestions,B1",Separable: schlage … vor.,,FALSE
+I have a suggestion.,Ich hätte einen Vorschlag.,,,chunk,polite,"conversation,suggestions,B1",Konjunktiv II adds politeness.,,FALSE
+Let me suggest something.,Darf ich etwas vorschlagen?,,,chunk,polite,"conversation,suggestions,B1",,,FALSE
+Anyway…,Jedenfalls…,,,chunk,casual,"conversation,topic_change,B1",Used to wrap up or refocus — 'in any case'.,Auf jeden Fall…,FALSE
+By the way…,Übrigens…,,,chunk,casual,"conversation,topic_change,A2",Classic topic-change or add-on opener.,,FALSE
+Speaking of which…,Da wir gerade dabei sind…,,,chunk,casual,"conversation,topic_change,B1",Literally 'while we're at it'.,,FALSE
+While we're on the subject…,Wo wir gerade davon sprechen…,,,chunk,casual,"conversation,topic_change,B1",,,FALSE
+Before I forget…,Bevor ich es vergesse…,,,chunk,casual,"conversation,topic_change,B1",,,FALSE
+To get back to the topic…,Um auf das Thema zurückzukommen…,,,chunk,neutral,"conversation,topic_change,B1",Common in discussions and meetings.,Um nochmal darauf zurückzukommen…,FALSE
+Let's move on.,Kommen wir weiter.,,,chunk,neutral,"conversation,topic_change,B1",,Gehen wir weiter.,FALSE
+To sum up…,Zusammenfassend…,,,chunk,neutral,"conversation,topic_change,B1",,Kurz gesagt…,FALSE
+In short…,Kurz gesagt…,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+To put it simply…,Einfach gesagt…,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+On the one hand… on the other hand…,Einerseits… andererseits…,,,chunk,neutral,"conversation,natural_german,B1",Core balancing structure in German.,,FALSE
+On one hand…,Auf der einen Seite…,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+On the other hand…,Auf der anderen Seite…,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+That said…,Andererseits…,,,chunk,casual,"conversation,natural_german,B1",Can be used alone to introduce a counterpoint.,,FALSE
+Nevertheless.,Trotzdem.,,,chunk,neutral,"conversation,natural_german,B1",Introduces a contrasting point despite what was just said.,Dennoch.,FALSE
+Despite that.,Trotz allem.,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+Even so.,Auch wenn das so ist.,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+At the same time…,Gleichzeitig…,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+As a result…,Deshalb…,,,chunk,neutral,"conversation,natural_german,A2",,,FALSE
+That's why.,Deswegen.,,,chunk,casual,"conversation,natural_german,A2",,Deshalb.,FALSE
+That's the reason.,Das ist der Grund.,,,chunk,neutral,"conversation,natural_german,A2",,,FALSE
+Because of that.,Dadurch.,,,chunk,neutral,"conversation,natural_german,B1",Slightly more formal; implies a direct result.,Deswegen.,FALSE
+In the end.,Am Ende.,,,chunk,neutral,"conversation,natural_german,A2",,Letztendlich.,FALSE
+Ultimately.,Letztendlich.,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+Basically.,Im Grunde.,,,chunk,casual,"conversation,natural_german,B1",Im Grunde (genommen) = basically / fundamentally.,Im Grunde genommen.,FALSE
+Essentially.,Im Wesentlichen.,,,chunk,neutral,"conversation,natural_german,B1",More formal register.,Im Grunde.,FALSE
+Actually (correcting),Eigentlich.,,,chunk,casual,"conversation,natural_german,B1","Key word — softens, corrects, or adds a surprising nuance.",,FALSE
+Isn't it? / Right?,Oder?,,,chunk,casual,"conversation,natural_german,A2",German tag question — used at the end of sentences like 'right?',Ne? (very casual),FALSE
+Right? / You know?,Ne?,,,chunk,casual,"conversation,natural_german,B1",Northern German informal tag. Very colloquial.,Oder?,FALSE
+Something like that.,So in der Art.,,,chunk,casual,"conversation,natural_german,B1",,Sowas in der Richtung.,FALSE
+Something along those lines.,Sowas in der Richtung.,,,chunk,casual,"conversation,natural_german,B1",Very natural vague agreement.,So ähnlich.,FALSE
+More or less something like that.,So ungefähr sowas.,,,chunk,casual,"conversation,natural_german,B1",Stacking vague words — very idiomatic in spoken German.,,FALSE
+In a way.,Gewissermaßen.,,,chunk,neutral,"conversation,natural_german,B2",Formal/written register. Spoken alternative: 'irgendwie'.,Irgendwie.,FALSE
+That's often the case.,Das ist oft so.,,,chunk,casual,"conversation,natural_german,A2",,,FALSE
+It's always like that.,Das ist immer so.,,,chunk,casual,"conversation,natural_german,A2",,,FALSE
+That's just how it is.,So ist das nun mal.,,,chunk,casual,"conversation,natural_german,B1",'Nun mal' is an untranslatable particle adding resigned acceptance.,,FALSE
+What can you do.,Da kann man nichts machen.,,,chunk,casual,"conversation,reactions,B1",,Was soll man machen.,FALSE
+That's life.,So ist das Leben.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+Unfortunately.,Leider.,,,chunk,neutral,"conversation,softeners,A2",Position-flexible: at start or end of sentence.,,FALSE
+Sadly.,Leider Gottes.,,,chunk,casual,"conversation,reactions,B1",Stronger version of 'leider' — 'unfortunately God knows'.,Leider.,FALSE
+Luckily.,Zum Glück.,,,chunk,neutral,"conversation,reactions,A2",,Glücklicherweise.,FALSE
+Thank goodness.,Gott sei Dank.,,,chunk,casual,"conversation,reactions,A2","Used as relief expression, not necessarily religious.",,FALSE
+What a shame.,Wie schade.,,,chunk,neutral,"conversation,reactions,A2",,Schade.,FALSE
+That's a pity.,Das ist schade.,,,chunk,neutral,"conversation,reactions,A2",,,FALSE
+Oh well.,Na ja.,,,chunk,casual,"conversation,reactions,A2",Signals mild resignation or acceptance.,Naja.,FALSE
+What a surprise!,Was für eine Überraschung!,,,chunk,neutral,"conversation,reactions,B1",,,FALSE
+Really?,Wirklich?,,,chunk,casual,"conversation,reactions,A2",,Echt?,FALSE
+Oh really?,Ach ja?,,,chunk,casual,"conversation,reactions,A2",Softer surprise reaction.,Ach so?,FALSE
+Oh I see.,Ach so.,,,chunk,casual,"conversation,reactions,A2",One of the most natural German reactions — signals understanding or mild surprise.,Ah okay.,FALSE
+I see.,Ich verstehe.,,,chunk,neutral,"conversation,reactions,A1",,Alles klar.,FALSE
+Got it.,Alles klar.,,,chunk,casual,"conversation,reactions,A2",Literally 'all clear' — very widely used.,Verstanden.,FALSE
+Noted.,Verstanden.,,,chunk,neutral,"conversation,reactions,A2",Clean and direct — used in work and everyday contexts.,Alles klar.,FALSE
+Oh interesting.,Oh interessant.,,,chunk,casual,"conversation,reactions,A2",,,FALSE
+That's interesting.,Das ist interessant.,,,chunk,neutral,"conversation,reactions,A2",,Das finde ich interessant.,FALSE
+That's surprising.,Das überrascht mich.,,,chunk,neutral,"conversation,reactions,B1",Literally 'that surprises me'.,,FALSE
+I didn't know that.,Das wusste ich nicht.,,,chunk,casual,"conversation,reactions,A2",,,FALSE
+That's new to me.,Das ist mir neu.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+Good to know.,Gut zu wissen.,,,chunk,casual,"conversation,reactions,A2",,,FALSE
+Tell me about it.,Das kann ich dir sagen.,,,chunk,casual,"conversation,reactions,B1",Ironic empathy: 'you're telling me'.,Das sag mir nicht.,FALSE
+Exactly what I was thinking.,Genau das dachte ich.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+That's what I said.,Das habe ich doch gesagt.,,,chunk,casual,"conversation,reactions,B1",'Doch' adds emphasis here.,,FALSE
+I said so.,Ich hab's doch gewusst.,,,chunk,casual,"conversation,reactions,B1",'Ich hab's gewusst' = I knew it. Doch adds slight 'told you so' tone.,,FALSE
+Not bad.,Nicht schlecht.,,,chunk,casual,"conversation,reactions,A2",Can be genuine praise or gentle irony depending on tone.,Gar nicht schlecht.,FALSE
+Not bad at all.,Gar nicht schlecht.,,,chunk,casual,"conversation,reactions,A2",More genuinely positive than just 'nicht schlecht'.,,FALSE
+Well done.,Gut gemacht.,,,chunk,casual,"conversation,reactions,A2",,Sehr gut.,FALSE
+Impressive.,Beeindruckend.,,,chunk,neutral,"conversation,reactions,B1",,,FALSE
+I'm happy with that.,Damit bin ich zufrieden.,,,chunk,neutral,"conversation,reactions,B1",,,FALSE
+That works for me.,Das passt mir gut.,,,chunk,casual,"conversation,reactions,A2",,Das ist mir recht.,FALSE
+That suits me.,Das kommt mir gelegen.,,,chunk,casual,"conversation,reactions,B1",'Gelegen kommen' = to come at a convenient time.,Das passt mir.,FALSE
+That's convenient.,Das kommt mir gerade recht.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+Not ideal.,Nicht ideal.,,,chunk,neutral,"conversation,reactions,B1",,Nicht optimal.,FALSE
+That's a bit much.,Das ist ein bisschen viel.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+That's too much.,Das ist zu viel.,,,chunk,casual,"conversation,reactions,A2",,,FALSE
+That's going too far.,Das geht zu weit.,,,chunk,neutral,"conversation,disagreement,B1",,,FALSE
+I don't think that's okay.,Das finde ich nicht in Ordnung.,,,chunk,casual,"conversation,disagreement,B1",,,FALSE
+That bothers me.,Das stört mich.,,,chunk,neutral,"conversation,reactions,B1",,,FALSE
+That doesn't sit right with me.,Das ist mir unangenehm.,,,chunk,neutral,"conversation,reactions,B1",Literally 'that's uncomfortable to me'.,Das gefällt mir nicht.,FALSE
+I have mixed feelings about it.,Da bin ich zwiegespalten.,,,chunk,casual,"conversation,reactions,B2",'Zwiegespalten' = torn / of two minds.,Da bin ich hin- und hergerissen.,FALSE
+I'm torn.,Da bin ich hin- und hergerissen.,,,chunk,casual,"conversation,reactions,B2",Lit. 'pulled back and forth'.,Da bin ich zwiegespalten.,FALSE
+Something feels off.,Irgendwas stimmt da nicht.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+I can't quite put my finger on it.,Ich kann es nicht ganz in Worte fassen.,,,chunk,casual,"conversation,natural_german,B2",Lit. 'I can't quite put it into words'.,,FALSE
+I can imagine that.,Das kann ich mir vorstellen.,,,chunk,neutral,"conversation,reactions,B1",sich vorstellen = to imagine.,Das glaube ich dir.,FALSE
+I can believe that.,Das glaube ich dir.,,,chunk,casual,"conversation,reactions,B1",Takes Dative: 'I believe you on that'.,,FALSE
+I find that hard to believe.,Das glaube ich kaum.,,,chunk,casual,"conversation,reactions,B1",'Kaum' = barely/hardly — softer than 'Das glaube ich nicht'.,Das kann ich kaum glauben.,FALSE
+That can't be right.,Das kann nicht stimmen.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+Are you serious?,Ist das dein Ernst?,,,chunk,casual,"conversation,reactions,B1",Lit. 'is that your seriousness'.,Das meinst du nicht ernst.,FALSE
+You're kidding.,Das kann nicht dein Ernst sein.,,,chunk,casual,"conversation,reactions,B1",Expresses disbelief.,Mach Witze.,FALSE
+No way.,Das gibt's doch nicht.,,,chunk,casual,"conversation,reactions,B1",Lit. 'that can't exist' — expressing disbelief.,Das darf nicht wahr sein.,FALSE
+That can't be true.,Das darf nicht wahr sein.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+I can't believe it.,Ich kann's nicht glauben.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+That's absurd.,Das ist absurd.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+I'm speechless.,Ich bin sprachlos.,,,chunk,neutral,"conversation,reactions,B1",,,FALSE
+That's great.,Das ist toll.,,,chunk,casual,"conversation,reactions,A2",,Das ist super.,FALSE
+Wonderful.,Wunderbar.,,,chunk,neutral,"conversation,reactions,A2",,,FALSE
+That pleases me.,Das freut mich.,,,chunk,neutral,"conversation,reactions,A2",'Freuen' = to please/make happy. More natural than direct translation.,Ich freue mich darüber.,FALSE
+That's a relief.,Das ist eine Erleichterung.,,,chunk,neutral,"conversation,reactions,B1",,Zum Glück.,FALSE
+I'm relieved.,Ich bin erleichtert.,,,chunk,neutral,"conversation,reactions,B1",,,FALSE
+I'm exhausted.,Ich bin erschöpft.,,,chunk,casual,"conversation,reactions,A2",,Ich bin total platt.,FALSE
+I'm completely done in.,Ich bin total platt.,,,chunk,casual,"conversation,reactions,B1",Colloquial: 'platt' = exhausted in spoken German.,Ich bin erledigt.,FALSE
+I'm stressed out.,Ich bin gestresst.,,,chunk,casual,"conversation,reactions,A2",,,FALSE
+I'm overwhelmed.,Ich bin überfordert.,,,chunk,neutral,"conversation,reactions,B1",'Überfordert sein' = to be overwhelmed/overtaxed.,,FALSE
+I don't feel like it.,Ich habe keine Lust.,,,chunk,casual,"conversation,reactions,A2",'Keine Lust haben' = to not feel like it / not be in the mood.,,FALSE
+I feel like it.,Ich habe Lust darauf.,,,chunk,casual,"conversation,reactions,A2",'Lust haben auf + Acc' = to feel like doing something.,,FALSE
+That was tough.,Das war nicht leicht.,,,chunk,casual,"conversation,reactions,A2",,Das war schwer.,FALSE
+That was harder than expected.,Das war schwieriger als gedacht.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+Better than expected.,Besser als erwartet.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+Worse than expected.,Schlechter als erwartet.,,,chunk,casual,"conversation,reactions,B1",,,FALSE
+At least it's done.,Wenigstens ist es fertig.,,,chunk,casual,"conversation,reactions,A2",,,FALSE
+It is what it is.,Es ist wie es ist.,,,chunk,casual,"conversation,reactions,B1",German calque of the English — used similarly.,So ist es nun mal.,FALSE
+What's done is done.,"Was gemacht ist, ist gemacht.",,,chunk,casual,"conversation,reactions,B1",,,FALSE
+Let's not make a big deal of it.,Machen wir kein Drama daraus.,,,chunk,casual,"conversation,softeners,B1",,,FALSE
+It's not the end of the world.,Es ist nicht das Ende der Welt.,,,chunk,casual,"conversation,softeners,B1",,,FALSE
+It could have been worse.,Es hätte schlimmer kommen können.,,,chunk,casual,"conversation,softeners,B1",,,FALSE
+That's encouraging.,Das ist ermutigend.,,,chunk,neutral,"conversation,reactions,B1",,,FALSE
+You can do it.,Das schaffst du.,,,chunk,casual,"conversation,reactions,A2",'Schaffen' = to manage / achieve.,,FALSE
+I believe in you.,Ich glaube an dich.,,,chunk,casual,"conversation,emotional,B1",glauben an + Accusative.,,FALSE
+It'll be fine.,Das wird schon.,,,chunk,casual,"conversation,reactions,B1",'Schon' here = it'll sort itself out. Very natural.,Das wird schon gut.,FALSE
+Don't stress.,Stress dich nicht.,,,chunk,casual,"conversation,softeners,B1",,Mach dir keinen Stress.,FALSE
+Don't worry about it.,Mach dir keine Sorgen.,,,chunk,casual,"conversation,softeners,B1",,,FALSE
+Don't overthink it.,Denk nicht zu viel darüber nach.,,,chunk,casual,"conversation,softeners,B1",,,FALSE
+Take it easy.,Entspann dich.,,,chunk,casual,"conversation,softeners,A2",,Nimm's locker.,FALSE
+Take it easy (idiom),Nimm's locker.,,,chunk,casual,"conversation,softeners,B1",Idiomatic: 'take it loosely'. Very natural spoken German.,Entspann dich.,FALSE
+One step at a time.,Eins nach dem anderen.,,,chunk,casual,"conversation,softeners,B1",,,FALSE
+Let's start from the beginning.,Fangen wir von vorne an.,,,chunk,casual,"conversation,natural_german,A2",Separable: fangen … an.,,FALSE
+Let's start fresh.,Machen wir einen Neuanfang.,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+It's water under the bridge.,Das ist Schnee von gestern.,,,chunk,casual,"conversation,natural_german,B2",Lit. 'that's yesterday's snow'. German idiom for something outdated/forgotten.,,FALSE
+That's old news.,Das ist längst bekannt.,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+Between you and me.,Unter uns gesagt.,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+If you ask me…,Wenn du mich fragst…,,,chunk,casual,"conversation,opinions,B1",,Wenn Sie mich fragen…,FALSE
+For what it's worth…,"Für das, was es wert ist…",,,chunk,casual,"conversation,opinions,B1",Less common — native speakers more often use 'wenn du mich fragst'.,Falls es hilft…,FALSE
+With all due respect…,Bei allem Respekt…,,,chunk,polite,"conversation,disagreement,B1",Introduces a soft challenge.,Mit allem Respekt…,FALSE
+I don't want to be rude but…,"Ich will nicht unhöflich sein, aber…",,,chunk,polite,"conversation,softeners,B1",,,FALSE
+I have to be honest.,Ich muss ehrlich sein.,,,chunk,neutral,"conversation,softeners,B1",,Ehrlich gesagt…,FALSE
+Strictly speaking…,Streng genommen…,,,chunk,neutral,"conversation,natural_german,B1",Signals a precise or pedantic point.,Genau genommen…,FALSE
+All things considered.,Alles in allem.,,,chunk,neutral,"conversation,natural_german,B1",Classic wrap-up phrase.,Alles zusammengenommen.,FALSE
+In general.,Im Allgemeinen.,,,chunk,neutral,"conversation,natural_german,B1",,,FALSE
+Generally speaking.,Im Großen und Ganzen.,,,chunk,neutral,"conversation,natural_german,B1",Lit. 'in the big and the whole'. Very idiomatic.,Im Allgemeinen.,FALSE
+As far as I know.,Soweit ich weiß.,,,chunk,neutral,"conversation,uncertainty,B1",,,FALSE
+As far as I can tell.,Soweit ich das beurteilen kann.,,,chunk,neutral,"conversation,uncertainty,B1",,,FALSE
+Unless I'm wrong.,Wenn ich mich nicht irre.,,,chunk,neutral,"conversation,uncertainty,B1",Softens a statement — 'if I'm not mistaken'.,Wenn ich nicht falsch liege.,FALSE
+I could be wrong.,Ich könnte mich irren.,,,chunk,neutral,"conversation,uncertainty,B1",,,FALSE
+Don't hold me to that.,Das sage ich ohne Gewähr.,,,chunk,casual,"conversation,uncertainty,B1",Lit. 'I say that without guarantee'.,Da bin ich mir nicht sicher.,FALSE
+If I'm not mistaken…,Wenn ich mich nicht täusche…,,,chunk,neutral,"conversation,uncertainty,B1",,,FALSE
+Let me double-check.,Ich schaue kurz nach.,,,chunk,casual,"conversation,natural_german,A2",'Nachschauen' = to check / look up. Separable.,Ich prüfe das kurz.,FALSE
+I'll look into it.,Ich schaue mir das an.,,,chunk,casual,"conversation,natural_german,A2",Separable: schaue … an.,Ich kümmere mich darum.,FALSE
+I'll take care of it.,Ich kümmere mich darum.,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+Leave it to me.,Lass das mich erledigen.,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+I'll sort it out.,Ich kläre das.,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+That's not my call.,Das liegt nicht in meiner Hand.,,,chunk,casual,"conversation,natural_german,B1",Lit. 'that's not in my hands'.,Das entscheide ich nicht.,FALSE
+That's up to you.,Das liegt bei dir.,,,chunk,casual,"conversation,natural_german,B1",hängen von / liegen bei + Dative.,Das entscheidest du.,FALSE
+That's your decision.,Das ist deine Entscheidung.,,,chunk,neutral,"conversation,natural_german,A2",,,FALSE
+Whatever you prefer.,Wie du möchtest.,,,chunk,casual,"conversation,natural_german,A2",,Ganz wie Sie möchten. (formal),FALSE
+Either way is fine.,So oder so ist es in Ordnung.,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+It doesn't matter to me.,Das ist mir egal.,,,chunk,casual,"conversation,natural_german,A2",'Egal' can sound dismissive in tone — soften with 'Das macht mir nichts aus'.,Das macht mir nichts aus.,FALSE
+I don't mind.,Das macht mir nichts aus.,,,chunk,casual,"conversation,natural_german,B1",Softer and more polite than 'Das ist mir egal'.,Das ist mir egal.,FALSE
+It doesn't bother me.,Das stört mich nicht.,,,chunk,casual,"conversation,natural_german,B1",,,FALSE
+I can live with that.,Damit kann ich leben.,,,chunk,casual,"conversation,agreement,B1",Natural acceptance of a compromise.,,FALSE
+That works.,Das geht.,,,chunk,casual,"conversation,agreement,A2",Short and natural. 'Das geht' = that's doable / that works.,Das passt.,FALSE
+That's doable.,Das ist machbar.,,,chunk,neutral,"conversation,agreement,B1",,,FALSE
+Sounds good.,Klingt gut.,,,chunk,casual,"conversation,agreement,A2",,,FALSE
+Sounds reasonable.,Klingt vernünftig.,,,chunk,casual,"conversation,agreement,B1",,,FALSE
+Perfect.,Perfekt.,,,chunk,casual,"conversation,agreement,A2",,Super.,FALSE
+Deal!,Abgemacht!,,,chunk,casual,"conversation,agreement,B1",Standard word for a done deal.,Einverstanden!,FALSE
+Agreed.,Einverstanden.,,,chunk,polite,"conversation,agreement,A2",Slightly more formal than 'Abgemacht'.,Abgemacht.,FALSE
+I'm in.,Ich bin dabei.,,,chunk,casual,"conversation,agreement,A2",,,FALSE
+Count me in.,Ich mache mit.,,,chunk,casual,"conversation,agreement,A2",Separable: mache … mit.,Ich bin dabei.,FALSE
+I'm not in.,Ich bin nicht dabei.,,,chunk,casual,"conversation,refusal,A2",,,FALSE
+That's not for me.,Das ist nichts für mich.,,,chunk,casual,"conversation,refusal,B1",,Das ist nicht mein Ding.,FALSE
+I'll sit this one out.,Da halte ich mich raus.,,,chunk,casual,"conversation,refusal,B1",Lit. 'I keep myself out of that'.,Das mache ich nicht mit.,FALSE
