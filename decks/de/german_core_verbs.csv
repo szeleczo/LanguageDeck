@@ -1,0 +1,49 @@
+﻿english,target,article,plural,type,register,tags,note,alternatives,article_prompt,level,example_en,example_target
+to be,sein,,,verb,neutral,core;verb,,,false,A1,I am tired.,Ich bin müde.
+to have,haben,,,verb,neutral,core;verb,,,false,A1,I have time.,Ich habe Zeit.
+to become / to get,werden,,,verb,neutral,core;verb,,,false,A1,It is getting better.,Es wird besser.
+to go,gehen,,,verb,neutral,core;verb,,,false,A1,I am going home.,Ich gehe nach Hause.
+to come,kommen,,,verb,neutral,core;verb,,,false,A1,Are you coming with me?,Kommst du mit?
+to do / to make,machen,,,verb,neutral,core;verb,,,false,A1,What are you doing?,Was machst du?
+to say,sagen,,,verb,neutral,core;verb,,,false,A1,What did you say?,Was hast du gesagt?
+to speak,sprechen,,,verb,neutral,core;verb,,,false,A1,We need to talk.,Wir müssen sprechen.
+to ask,fragen,,,verb,neutral,core;verb,,,false,A1,Can I ask you something?,Kann ich dich etwas fragen?
+to answer,antworten,,,verb,neutral,core;verb,,,false,A1,I will answer later.,Ich antworte später.
+to think,denken,,,verb,neutral,core;verb,,,false,A1,I think about it.,Ich denke darüber nach.
+to know,wissen,,,verb,neutral,core;verb,,,false,A1,I do not know.,Ich weiß es nicht.
+to know a person / place,kennen,,,verb,neutral,core;verb,,,false,A1,I know him.,Ich kenne ihn.
+to understand,verstehen,,,verb,neutral,core;verb,,,false,A1,I understand you.,Ich verstehe dich.
+to mean,meinen,,,verb,neutral,core;verb,,,false,A1,What do you mean?,Was meinst du?
+to want,wollen,,,verb,neutral,core;modal,,,false,A1,I do not want to force anything.,Ich will nichts erzwingen.
+would like,möchten,,,verb,polite,core;modal,,,false,A1,I would like to understand it.,Ich möchte es verstehen.
+can / to be able to,können,,,verb,neutral,core;modal,,,false,A1,I can do it.,Ich kann das machen.
+must / have to,müssen,,,verb,neutral,core;modal,,,false,A1,We have to clarify this.,Wir müssen das klären.
+should / supposed to,sollen,,,verb,neutral,core;modal,,,false,A1,What should I do?,Was soll ich tun?
+may / to be allowed to,dürfen,,,verb,neutral,core;modal,,,false,A1,May I ask?,Darf ich fragen?
+to need,brauchen,,,verb,neutral,core;verb,,,false,A1,I need clarity.,Ich brauche Klarheit.
+to stay / remain,bleiben,,,verb,neutral,core;verb,,,false,A1,Stay here.,Bleib hier.
+to let / leave,lassen,,,verb,neutral,core;verb,,,false,A2,Let it be for now.,Lass es erst mal.
+to give,geben,,,verb,neutral,core;verb,,,false,A1,Give me a moment.,Gib mir einen Moment.
+to take,nehmen,,,verb,neutral,core;verb,,,false,A1,I will take this one.,Ich nehme das.
+to find,finden,,,verb,neutral,core;verb,,,false,A1,I find it difficult.,Ich finde es schwierig.
+to feel,fühlen,,,verb,neutral,core;emotion,,,false,A1,I feel safe.,Ich fühle mich sicher.
+to notice,merken,,,verb,neutral,core;perception,,,false,A2,I notice that something is wrong.,"Ich merke, dass etwas nicht stimmt."
+to see,sehen,,,verb,neutral,core;perception,,,false,A1,I see what you mean.,"Ich sehe, was du meinst."
+to hear,hören,,,verb,neutral,core;perception,,,false,A1,I heard that differently.,Ich habe das anders gehört.
+to believe / think,glauben,,,verb,neutral,core;thinking,,,false,A1,I believe you.,Ich glaube dir.
+to hope,hoffen,,,verb,neutral,core;emotion,,,false,A1,I hope so.,Ich hoffe es.
+to fear / be afraid,sich fürchten,,,verb,neutral,core;emotion,,,false,A2,I am not afraid of you.,Ich fürchte mich nicht vor dir.
+to be afraid,Angst haben vor,die,,expression,neutral,core;emotion;preposition,vor + dative,,false,A2,I am afraid of losing this.,"Ich habe Angst davor, das zu verlieren."
+to wait for,warten auf,,,expression,neutral,core;verb;preposition,auf + accusative,,false,A1,I am waiting for you.,Ich warte auf dich.
+to think about,nachdenken über,,,expression,neutral,core;verb;preposition,über + accusative,,false,A2,I am thinking about it.,Ich denke darüber nach.
+to talk about,sprechen über,,,expression,neutral,core;verb;preposition,über + accusative,,false,A1,We should talk about it.,Wir sollten darüber sprechen.
+to decide,entscheiden,,,verb,neutral,core;decision,,,false,A2,I do not want to decide now.,Ich möchte jetzt nicht entscheiden.
+to clarify,klären,,,verb,neutral,core;decision;work,,,false,A2,Let us clarify this calmly.,Lass uns das in Ruhe klären.
+to explain,erklären,,,verb,neutral,core;communication,,,false,A2,Can you explain it to me?,Kannst du mir das erklären?
+to try,versuchen,,,verb,neutral,core;verb,,,false,A1,I am trying to understand it.,"Ich versuche, es zu verstehen."
+to change,ändern,,,verb,neutral,core;verb,,,false,A2,That changes the situation.,Das ändert die Situation.
+to happen,passieren,,,verb,neutral,core;verb,,,false,A1,What happened?,Was ist passiert?
+to work / function,funktionieren,,,verb,neutral,core;work,,,false,A2,This does not work like this.,Das funktioniert so nicht.
+to need to be,müssen sein,,,pattern,neutral,core;pattern,,,false,A2,It has to be clear.,Es muss klar sein.
+to make sense,Sinn ergeben,der,,expression,neutral,core;thinking,,,false,A2,That makes sense.,Das ergibt Sinn.
+to fall back into,zurückfallen in,,,expression,neutral,core;relationship,in + accusative,,false,B1,I do not want to fall back into the same dynamic.,Ich möchte nicht in dieselbe Dynamik zurückfallen.

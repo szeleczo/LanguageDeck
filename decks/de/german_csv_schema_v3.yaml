@@ -1,0 +1,55 @@
+# LanguageDeck German CSV schema v3
+# Backwards-compatible with old english,target[,article] imports.
+# Italian CSVs are unaffected.
+columns:
+  english:
+    required: true
+    description: English prompt / cue shown to the learner.
+  target:
+    required: true
+    description: German answer. For nouns, use the lemma without article if article is in the article column.
+  article:
+    required: false
+    values: [der, die, das]
+    description: German noun article. Leave blank for phrases, verbs, sentences, and patterns.
+  plural:
+    required: false
+    description: German plural form, when useful.
+  type:
+    required: false
+    examples: [noun, verb, phrase, expression, chunk, sentence, pattern]
+    description: Controls whether article prompts should appear by default. Phrase/expression/chunk/sentence/pattern do not ask der/die/das by default.
+  register:
+    required: false
+    examples: [neutral, natural, formal, colloquial, technical, emotional]
+  tags:
+    required: false
+    description: Semicolon-separated topic tags.
+  note:
+    required: false
+    description: Short learner note or grammar hint.
+  alternatives:
+    required: false
+    description: Alternative accepted answers separated by |.
+  article_prompt:
+    required: false
+    values: [true, false]
+    description: Force der/die/das prompt on or off for German cards.
+  level:
+    required: false
+    examples: [A1, A2, B1, B2]
+  example_en:
+    required: false
+  example_target:
+    required: false
+recommended_deck_order:
+  - german_a1_survival.csv
+  - german_core_verbs.csv
+  - german_native_chunks.csv
+  - oliver_core_chunks.csv
+  - german_relationship_boundaries.csv
+  - german_sentence_patterns.csv
+  - german_bim_architecture_work.csv
+  - german_grammar_chunks.csv
+  - german_nouns_articles_core.csv
+  - german_register_pairs.csv
