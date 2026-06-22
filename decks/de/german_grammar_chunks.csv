@@ -1,44 +1,260 @@
-﻿english,target,article,plural,type,register,tags,note,alternatives,article_prompt,level,example_en,example_target
-because I do not know,weil ich es nicht weiß,,,pattern,neutral,grammar;weil,,Verb goes to end after weil.,,A2,,
-because it is important,weil es wichtig ist,,,pattern,neutral,grammar;weil,,,false,A2,,
-because I need clarity,weil ich Klarheit brauche,die,,pattern,neutral,grammar;weil,,,false,A2,,
-that I do not understand it,dass ich es nicht verstehe,,,pattern,neutral,grammar;dass,,Verb goes to end after dass.,,A2,,
-that we should talk,dass wir sprechen sollten,,,pattern,neutral,grammar;dass;modal,,,false,A2,,
-if you have time,wenn du Zeit hast,die,,pattern,neutral,grammar;wenn,,,false,A1,,
-if something is wrong,wenn etwas nicht stimmt,,,pattern,neutral,grammar;wenn,,,false,A2,,
-although I understand it,obwohl ich es verstehe,,,pattern,neutral,grammar;obwohl,,,false,A2,,
-although it hurts,obwohl es weh tut,,,pattern,neutral,grammar;obwohl,,,false,A2,,
-before I answer,bevor ich antworte,,,pattern,neutral,grammar;bevor,,,false,A2,,
-after we talk,nachdem wir sprechen,,,pattern,neutral,grammar;nachdem,,,false,B1,,
-so that it is clear,damit es klar ist,,,pattern,neutral,grammar;damit,,,false,B1,,
-whether it works,ob es funktioniert,,,pattern,neutral,grammar;ob,,,false,A2,,
-what happened,was passiert ist,,,pattern,neutral,grammar;question,,,false,A2,,
-why it hurts,warum es weh tut,,,pattern,neutral,grammar;question,,,false,A2,,
-how I should say it,wie ich es sagen soll,,,pattern,neutral,grammar;question;modal,,,false,A2,,
-I have to go.,Ich muss gehen.,,,sentence,neutral,grammar;modal;müssen,,,false,A1,,
-I can stay.,Ich kann bleiben.,,,sentence,neutral,grammar;modal;können,,,false,A1,,
-I want to understand it.,Ich will es verstehen.,,,sentence,neutral,grammar;modal;wollen,,,false,A1,,
-I would like to ask something.,Ich möchte etwas fragen.,,,sentence,polite,grammar;modal;möchten,,,false,A1,,
-I should not react now.,Ich sollte jetzt nicht reagieren.,,,sentence,neutral,grammar;modal;sollten,,,false,A2,,
-May I ask you something?,Darf ich dich etwas fragen?,,,sentence,neutral,grammar;modal;dürfen,,,false,A1,,
-I am thinking about it.,Ich denke darüber nach.,,,sentence,neutral,grammar;preposition;nachdenken,,über + accusative; da-compound darüber,false,A2,,
-I am waiting for you.,Ich warte auf dich.,,,sentence,neutral,grammar;preposition;warten,,auf + accusative,false,A1,,
-I am talking about it.,Ich spreche darüber.,,,sentence,neutral,grammar;preposition;sprechen,,über + accusative; darüber,false,A2,,
-I am afraid of it.,Ich habe Angst davor.,die,,sentence,neutral,grammar;preposition;angst,,vor + dative; davor,false,A2,,
-I am looking forward to it.,Ich freue mich darauf.,,,sentence,neutral,grammar;preposition;freuen,,auf + accusative; darauf,false,A2,,
-It depends on it.,Es hängt davon ab.,,,sentence,neutral,grammar;preposition;abhängen,,von + dative; davon,false,B1,,
-I agree with you.,Ich stimme dir zu.,,,sentence,neutral,grammar;dative,,dative object,false,A2,,
-I believe you.,Ich glaube dir.,,,sentence,neutral,grammar;dative,,dative object,false,A1,,
-I understand you.,Ich verstehe dich.,,,sentence,neutral,grammar;accusative,,accusative object,false,A1,,
-I miss you.,Du fehlst mir.,,,sentence,neutral,grammar;dative;relationship,,Literally: you are missing to me.,false,A2,,
-I like that.,Das gefällt mir.,,,sentence,neutral,grammar;dative,,,false,A1,,
-I feel good.,Mir geht es gut.,,,sentence,neutral,grammar;dative,,,false,A1,,
-I am calling you.,Ich rufe dich an.,,,sentence,neutral,grammar;separable,,anrufen is separable,false,A1,,
-I will come along.,Ich komme mit.,,,sentence,neutral,grammar;separable,,mitkommen is separable,false,A1,,
-I will come back.,Ich komme zurück.,,,sentence,neutral,grammar;separable,,zurückkommen is separable,false,A1,,
-I am starting now.,Ich fange jetzt an.,,,sentence,neutral,grammar;separable,,anfangen is separable,false,A1,,
-I am stopping now.,Ich höre jetzt auf.,,,sentence,neutral,grammar;separable,,aufhören is separable,false,A1,,
-I have misunderstood that.,Ich habe das missverstanden.,,,sentence,neutral,grammar;perfect,,Perfect tense with haben,false,A2,,
-I came back late.,Ich bin spät zurückgekommen.,,,sentence,neutral,grammar;perfect,,Movement/change of location often uses sein.,false,A2,,
-I would say that ...,"Ich würde sagen, dass ...",,,pattern,neutral,grammar;subjunctive,,Konjunktiv II polite/softening.,false,A2,,
-I would rather not do that.,Das würde ich lieber nicht machen.,,,sentence,neutral,grammar;subjunctive,,,false,A2,,
+english,target,article,plural,type,register,tags,note,alternatives,article_prompt
+I think that…,Ich glaube, dass…,,,"pattern","neutral","dass,subordinate,B1","Verb moves to end after 'dass'.",Ich denke, dass…,FALSE
+I know that…,Ich weiß, dass…,,,"pattern","neutral","dass,subordinate,A2","Verb at end after 'dass'.",,FALSE
+I hope that…,Ich hoffe, dass…,,,"pattern","neutral","dass,subordinate,A2","Verb at end after 'dass'.",,FALSE
+I think that it's a good idea.,Ich finde, dass das eine gute Idee ist.,,,"sentence","neutral","dass,subordinate,B1","'ist' goes to the end of the dass-clause.",,FALSE
+He says that he is tired.,Er sagt, dass er müde ist.,,,"sentence","neutral","dass,subordinate,A2","Verb at end after 'dass'.",,FALSE
+She knows that it's not easy.,Sie weiß, dass es nicht einfach ist.,,,"sentence","neutral","dass,subordinate,B1",,,FALSE
+It's important that you come.,Es ist wichtig, dass du kommst.,,,"sentence","neutral","dass,subordinate,B1","Verb at end after 'dass'.",,FALSE
+It's good that you're here.,Es ist gut, dass du hier bist.,,,"sentence","casual","dass,subordinate,A2",,,FALSE
+I think that we should wait.,Ich glaube, dass wir warten sollten.,,,"sentence","neutral","dass,subordinate,modal,B1","Modal goes to end; 'sollten' follows the infinitive 'warten'.",,FALSE
+I'm glad that it worked out.,Ich bin froh, dass es geklappt hat.,,,"sentence","casual","dass,subordinate,B1","Perfect tense in the dass-clause: 'hat' goes to end.",Ich freue mich, dass es geklappt hat.,FALSE
+It's a shame that you can't come.,Schade, dass du nicht kommen kannst.,,,"sentence","casual","dass,subordinate,B1","Modal 'kannst' at end of clause.",,FALSE
+because I don't know…,weil ich nicht weiß…,,,"pattern","neutral","weil,subordinate,A2","Verb at end after 'weil'. Very common subordinating conjunction.",,FALSE
+I'm tired because I didn't sleep.,Ich bin müde, weil ich nicht geschlafen habe.,,,"sentence","casual","weil,subordinate,A2","'habe' at the end — perfect tense in weil-clause.",,FALSE
+I can't come because I have to work.,Ich kann nicht kommen, weil ich arbeiten muss.,,,"sentence","neutral","weil,subordinate,modal,B1","Modal 'muss' goes to end after the infinitive 'arbeiten'.",,FALSE
+I did it because it was important.,Ich habe es gemacht, weil es wichtig war.,,,"sentence","neutral","weil,subordinate,B1","Past tense 'war' at end of weil-clause.",,FALSE
+She's late because the train was delayed.,Sie kommt spät, weil der Zug Verspätung hatte.,,,"sentence","neutral","weil,subordinate,B1",,,FALSE
+I like it because it's simple.,Ich mag es, weil es einfach ist.,,,"sentence","casual","weil,subordinate,A2",,,FALSE
+because it doesn't work…,weil es nicht funktioniert…,,,"pattern","neutral","weil,subordinate,A2","Verb at end after 'weil'.",,FALSE
+if you want…,wenn du möchtest…,,,"pattern","casual","wenn,subordinate,A2","Verb at end after 'wenn'. Covers both 'if' and 'when'.",wenn Sie möchten…,FALSE
+If I have time I'll call you.,Wenn ich Zeit habe, rufe ich dich an.,,,"sentence","casual","wenn,subordinate,B1","Main clause inverts after wenn-clause: 'rufe ich' not 'ich rufe'.",,FALSE
+When she arrives I'll tell her.,Wenn sie ankommt, sage ich es ihr.,,,"sentence","neutral","wenn,subordinate,B1","Same structure whether 'if' or 'when'.",,FALSE
+If it rains we'll stay home.,Wenn es regnet, bleiben wir zu Hause.,,,"sentence","casual","wenn,subordinate,A2",,,FALSE
+whenever it suits you,wann immer es dir passt,,,"pattern","casual","wenn,subordinate,B1","'Wann immer' = whenever.",wann immer es Ihnen passt,FALSE
+every time I see him…,jedes Mal wenn ich ihn sehe…,,,"pattern","neutral","wenn,subordinate,B1","'Jedes Mal wenn' = every time when.",,FALSE
+I don't know whether…,Ich weiß nicht, ob…,,,"pattern","neutral","ob,subordinate,A2","Verb at end after 'ob'. 'Ob' = whether/if (in indirect questions).",,FALSE
+I don't know whether she's coming.,Ich weiß nicht, ob sie kommt.,,,"sentence","casual","ob,subordinate,A2","'kommt' at end of ob-clause.",,FALSE
+I'm not sure whether it works.,Ich bin nicht sicher, ob es funktioniert.,,,"sentence","neutral","ob,subordinate,B1",,,FALSE
+Can you tell me whether it's possible?,Kannst du mir sagen, ob das möglich ist?,,,"sentence","casual","ob,subordinate,B1","'ist' at end of ob-clause.",Können Sie mir sagen, ob das möglich ist?,FALSE
+It depends on whether he agrees.,Es kommt darauf an, ob er zustimmt.,,,"sentence","neutral","ob,subordinate,B1","Combines 'darauf ankommen' + ob-clause.",,FALSE
+I asked whether she had time.,Ich habe gefragt, ob sie Zeit hatte.,,,"sentence","neutral","ob,subordinate,B1",,,FALSE
+although it is difficult…,obwohl es schwierig ist…,,,"pattern","neutral","obwohl,subordinate,B1","Verb at end after 'obwohl'. Signals concession: 'even though'.",,FALSE
+Although I'm tired I'll do it.,Obwohl ich müde bin, mache ich es.,,,"sentence","casual","obwohl,subordinate,B1","Main clause inverts after obwohl-clause.",,FALSE
+He keeps going although it hurts.,Er macht weiter, obwohl es wehtut.,,,"sentence","neutral","obwohl,subordinate,B1",,,FALSE
+Although it's expensive it's worth it.,Obwohl es teuer ist, ist es es wert.,,,"sentence","neutral","obwohl,subordinate,B1",,,FALSE
+She came although she was ill.,Sie kam, obwohl sie krank war.,,,"sentence","neutral","obwohl,subordinate,B1",,,FALSE
+so that you understand…,damit du es verstehst…,,,"pattern","casual","damit,subordinate,B1","Verb at end after 'damit'. 'Damit' = so that (purpose).",damit Sie es verstehen…,FALSE
+I explained it so that you'd understand.,Ich habe es erklärt, damit du es verstehst.,,,"sentence","casual","damit,subordinate,B1","'Damit' introduces a purpose clause.",,FALSE
+I wrote it down so that I wouldn't forget.,Ich habe es aufgeschrieben, damit ich es nicht vergesse.,,,"sentence","casual","damit,subordinate,B1","Separable 'aufgeschrieben' + damit-clause.",,FALSE
+I'll call you so that you're informed.,Ich rufe dich an, damit du Bescheid weißt.,,,"sentence","casual","damit,subordinate,B1","'Bescheid wissen' = to be informed.",,FALSE
+before I forget…,bevor ich es vergesse…,,,"pattern","casual","bevor,subordinate,B1","Verb at end after 'bevor'.",,FALSE
+Before we start let's check the plan.,Bevor wir anfangen, schauen wir den Plan durch.,,,"sentence","neutral","bevor,subordinate,B1","Main clause inverts after bevor-clause.",,FALSE
+Please read it before you sign.,Bitte lesen Sie es, bevor Sie unterschreiben.,,,"sentence","polite","bevor,subordinate,B1",,,FALSE
+Call me before you go.,Ruf mich an, bevor du gehst.,,,"sentence","casual","bevor,subordinate,A2",,,FALSE
+after I had eaten…,nachdem ich gegessen hatte…,,,"pattern","neutral","nachdem,subordinate,B2","'Nachdem' requires the past perfect (Plusquamperfekt) in the subordinate clause.",,FALSE
+After she arrived we started.,Nachdem sie angekommen war, haben wir angefangen.,,,"sentence","neutral","nachdem,subordinate,B2","'Angekommen war' = past perfect (sein + Partizip).",,FALSE
+After we had discussed it we decided.,Nachdem wir es besprochen hatten, haben wir entschieden.,,,"sentence","neutral","nachdem,subordinate,B2","'Hatten besprochen' = past perfect (haben + Partizip).",,FALSE
+the man who lives here,der Mann, der hier wohnt,,,"chunk","neutral","relative_clause,B1","Relative clause. Nominative relative pronoun agrees with noun: 'der' for masculine.",,FALSE
+the woman who called me,die Frau, die mich angerufen hat,,,"chunk","neutral","relative_clause,B1","Feminine relative pronoun 'die'. Perfect tense inside relative clause.",,FALSE
+the problem that we have,das Problem, das wir haben,,,"chunk","neutral","relative_clause,B1","Neuter relative pronoun 'das'.",,FALSE
+the people who helped us,die Leute, die uns geholfen haben,,,"chunk","neutral","relative_clause,B1","Plural relative pronoun 'die'. Dative 'uns' after 'helfen'.",,FALSE
+the city I grew up in,die Stadt, in der ich aufgewachsen bin,,,"chunk","neutral","relative_clause,B2","Prepositional relative clause: 'in der'. Feminine dative after 'in'.",,FALSE
+the reason why I came,der Grund, warum ich gekommen bin,,,"chunk","neutral","relative_clause,B1","'Warum' used as relative word for reason clauses.",,FALSE
+I can help you.,Ich kann dir helfen.,,,"sentence","neutral","modal,A2","'Können' + infinitive at end.",Ich kann Ihnen helfen.,FALSE
+I must do that.,Ich muss das machen.,,,"sentence","neutral","modal,A2","'Müssen' + infinitive at end.",,FALSE
+I want to finish it today.,Ich will es heute fertig machen.,,,"sentence","casual","modal,A2","'Wollen' + infinitive at end.",,FALSE
+I should call him.,Ich sollte ihn anrufen.,,,"sentence","neutral","modal,B1","'Sollte' (Konjunktiv II) = should. Softer than 'ich soll'.",,FALSE
+You don't have to do that.,Das musst du nicht machen.,,,"sentence","casual","modal,A2","'Nicht müssen' = don't have to (no obligation). ≠ 'nicht dürfen' (not allowed).",,FALSE
+You're not allowed to park here.,Hier darf man nicht parken.,,,"sentence","neutral","modal,A2","'Nicht dürfen' = not allowed. 'Man' = one/you (general).",,FALSE
+He can't come today.,Er kann heute nicht kommen.,,,"sentence","neutral","modal,A2","Modal 'kann' + infinitive at end.",,FALSE
+She would like to wait.,Sie möchte warten.,,,"sentence","polite","modal,A2","'Möchte' is Konjunktiv II of 'mögen' — the polite request form.",,FALSE
+We should clarify this.,Das sollten wir klären.,,,"sentence","neutral","modal,B1","'Sollten' (Konjunktiv II) = we should.",,FALSE
+You could try it.,Du könntest es versuchen.,,,"sentence","casual","modal,B1","'Könntest' (Konjunktiv II) = you could. Softer suggestion.",Sie könnten es versuchen.,FALSE
+It must be right.,Das muss stimmen.,,,"sentence","neutral","modal,B1","'Muss' expressing logical deduction.",,FALSE
+It can't be right.,Das kann nicht stimmen.,,,"sentence","casual","modal,B1","'Kann nicht' expressing impossibility.",,FALSE
+When does it start?,Wann fängt es an?,,,"sentence","neutral","separable,A2","'Anfangen' separates: fängt … an.",,FALSE
+Let's get started.,Fangen wir an.,,,"sentence","casual","separable,A2","Separable verb 'anfangen': prefix 'an' goes to end.",,FALSE
+I'll call you.,Ich rufe dich an.,,,"sentence","casual","separable,A2","'Anrufen' separates: rufe … an.",Ich rufe Sie an.,FALSE
+She came back.,Sie ist zurückgekommen.,,,"sentence","neutral","separable,A2","'Zurückkommen' separates in present; in perfect, 'ge' inserts between prefix and stem: zurück-ge-kommen.",,FALSE
+Please turn it off.,Schalte es bitte aus.,,,"sentence","casual","separable,A2","'Ausschalten' separates: schalte … aus.",,FALSE
+I'm thinking it over.,Ich denke darüber nach.,,,"sentence","casual","separable,B1","'Nachdenken' separates: denke … nach. 'Darüber' = about it.",,FALSE
+Are you coming with us?,Kommst du mit?,,,"sentence","casual","separable,A2","'Mitkommen' separates: kommt … mit.",,FALSE
+I'll pick you up at eight.,Ich hole dich um acht ab.,,,"sentence","casual","separable,B1","'Abholen' separates: hole … ab.",Ich hole Sie um acht ab.,FALSE
+He handed it in.,Er hat es abgegeben.,,,"sentence","neutral","separable,B1","'Abgeben' perfect: 'ge' between prefix and stem: ab-ge-geben.",,FALSE
+Please fill in the form.,Bitte füllen Sie das Formular aus.,,,"sentence","polite","separable,A2","'Ausfüllen' separates: füllen … aus.",,FALSE
+She pointed it out.,Sie hat darauf hingewiesen.,,,"sentence","neutral","separable,B1","'Hinweisen auf' separates: weist … hin. Perfect: hin-ge-wiesen.",,FALSE
+I suggested it.,Ich habe es vorgeschlagen.,,,"sentence","neutral","separable,B1","'Vorschlagen' perfect: vor-ge-schlagen.",,FALSE
+How do you feel?,Wie fühlst du dich?,,,"sentence","casual","reflexive,A2","Reflexive verb 'sich fühlen': 'dich' is the reflexive pronoun for 'du'.",,FALSE
+I feel good.,Ich fühle mich gut.,,,"sentence","casual","reflexive,A2","'Sich fühlen': 'mich' is the reflexive pronoun for 'ich'.",,FALSE
+I remember that.,Ich erinnere mich daran.,,,"sentence","neutral","reflexive,B1","'Sich erinnern an + Acc': 'daran' = an + das (contracted).",,FALSE
+Can you remember?,Kannst du dich erinnern?,,,"sentence","casual","reflexive,B1","Reflexive 'dich' stays with 'du' even in modal structures.",Können Sie sich erinnern?,FALSE
+I'm sorry.,Ich entschuldige mich.,,,"sentence","polite","reflexive,A2","'Sich entschuldigen' = to apologize. Formal alternative to 'Entschuldigung'.",,FALSE
+I'm looking forward to it.,Ich freue mich darauf.,,,"sentence","casual","reflexive,A2","'Sich freuen auf + Acc' (future anticipation). 'Darauf' = auf + das.",,FALSE
+I'm happy about it.,Ich freue mich darüber.,,,"sentence","casual","reflexive,A2","'Sich freuen über + Acc' (present happiness). 'Darüber' = über + das.",,FALSE
+I'm annoyed about it.,Ich ärgere mich darüber.,,,"sentence","casual","reflexive,B1","'Sich ärgern über + Acc'. 'Darüber' = über + das.",,FALSE
+I'm preparing for it.,Ich bereite mich darauf vor.,,,"sentence","neutral","reflexive,separable,B1","'Sich vorbereiten auf + Acc'. Both reflexive and separable.",,FALSE
+Have you decided?,Hast du dich entschieden?,,,"sentence","casual","reflexive,B1","'Sich entscheiden': perfect tense — 'hast dich entschieden'.",Haben Sie sich entschieden?,FALSE
+I'm worried.,Ich mache mir Sorgen.,,,"sentence","neutral","reflexive,B1","'Sich Sorgen machen': 'mir' is dative reflexive pronoun for 'ich'.",,FALSE
+to help someone,jemandem helfen,,,"chunk","neutral","dative_verb,B1","'Helfen' takes dative. The person helped = dative.",,FALSE
+Can you help me?,Kannst du mir helfen?,,,"sentence","casual","dative_verb,A2","'Mir' = dative of 'ich'. Helfen + Dative.",Können Sie mir helfen?,FALSE
+That suits me well.,Das passt mir gut.,,,"sentence","casual","dative_verb,A2","'Passen' + Dative: das passt mir/dir/ihm…",,FALSE
+It doesn't suit me.,Das passt mir nicht.,,,"sentence","casual","dative_verb,A2","'Passen' + Dative.",,FALSE
+It pleases me.,Das gefällt mir.,,,"sentence","casual","dative_verb,A2","'Gefallen' + Dative. Do not say 'Ich mag das' — both are correct but 'gefällt mir' is more natural for objects/things.",,FALSE
+I like this song.,Das Lied gefällt mir.,,,"sentence","casual","dative_verb,A2","'Gefallen' + Dative.",,FALSE
+It belongs to me.,Das gehört mir.,,,"sentence","casual","dative_verb,A2","'Gehören' + Dative.",,FALSE
+Does this belong to you?,Gehört das dir?,,,"sentence","casual","dative_verb,A2","Dative 'dir' = to you.",Gehört das Ihnen?,FALSE
+That matters to me.,Das ist mir wichtig.,,,"sentence","casual","dative_verb,B1","'Wichtig sein' + Dative.",,FALSE
+That's too much for me.,Das ist mir zu viel.,,,"sentence","casual","dative_verb,B1","Dative 'mir' with adjective predicates.",,FALSE
+I believe you.,Ich glaube dir.,,,"sentence","casual","dative_verb,B1","'Glauben' + Dative (person). Believing a fact = 'Ich glaube das' (Acc).",Ich glaube Ihnen.,FALSE
+I thank you.,Ich danke dir.,,,"sentence","casual","dative_verb,A2","'Danken' + Dative.",Ich danke Ihnen.,FALSE
+He answered me.,Er hat mir geantwortet.,,,"sentence","neutral","dative_verb,A2","'Antworten' + Dative: 'mir'.",,FALSE
+with me,mit mir,,,"chunk","neutral","dative_preposition,A2","'Mit' always takes Dative. Mit + mir/dir/ihm/ihr/uns/euch/ihnen.",,FALSE
+with a colleague,mit einem Kollegen,,,"chunk","neutral","dative_preposition,B1","'Mit' + Dative. Masculine: 'einem Kollegen'.",,FALSE
+I'm going with her.,Ich gehe mit ihr.,,,"sentence","casual","dative_preposition,A2","'Mit' + Dative: 'ihr'.",,FALSE
+from the station,vom Bahnhof,,,"chunk","neutral","dative_preposition,A2","'Von' always takes Dative. 'Vom' = von + dem.",,FALSE
+I come from Germany.,Ich komme aus Deutschland.,,,"sentence","neutral","dative_preposition,A2","'Aus' always takes Dative.",,FALSE
+since last week,seit letzter Woche,,,"chunk","neutral","dative_preposition,B1","'Seit' always takes Dative. Used for ongoing situations.",,FALSE
+I've been living here since March.,Ich wohne hier seit März.,,,"sentence","neutral","dative_preposition,B1","'Seit' + Dative + present tense for ongoing situation.",,FALSE
+after the meeting,nach dem Meeting,,,"chunk","neutral","dative_preposition,A2","'Nach' always takes Dative.",,FALSE
+opposite the station,gegenüber dem Bahnhof,,,"chunk","neutral","dative_preposition,B1","'Gegenüber' takes Dative.",,FALSE
+I'm going to the station.,Ich gehe zum Bahnhof.,,,"sentence","neutral","dative_preposition,A2","'Zu' always takes Dative. 'Zum' = zu + dem.",,FALSE
+I'm going to the pharmacy.,Ich gehe zur Apotheke.,,,"sentence","neutral","dative_preposition,A2","'Zur' = zu + der (feminine).",,FALSE
+I see the man. (Acc),Ich sehe den Mann.,,,"chunk","neutral","accusative,A2","Accusative case. Masculine: 'der' → 'den'.",,FALSE
+I'm buying a car.,Ich kaufe ein Auto.,,,"sentence","neutral","accusative,A2","Accusative after 'kaufen'. Neuter: 'ein Auto' (no change).",,FALSE
+I need a table for two.,Ich brauche einen Tisch für zwei.,,,"sentence","neutral","accusative,A2","Accusative after 'brauchen'. Masculine: 'einen Tisch'.",,FALSE
+through the city,durch die Stadt,,,"chunk","neutral","accusative_preposition,A2","'Durch' always takes Accusative.",,FALSE
+without a passport,ohne einen Reisepass,,,"chunk","neutral","accusative_preposition,A2","'Ohne' always takes Accusative. Masculine: 'einen Reisepass'.",,FALSE
+for me,für mich,,,"chunk","neutral","accusative_preposition,A2","'Für' always takes Accusative.",,FALSE
+against the plan,gegen den Plan,,,"chunk","neutral","accusative_preposition,B1","'Gegen' always takes Accusative. Masculine: 'den Plan'.",,FALSE
+around 8 o'clock,um acht Uhr,,,"chunk","neutral","accusative_preposition,A2","'Um' (time) takes Accusative.",,FALSE
+I'm waiting for her. (Acc),Ich warte auf sie.,,,"chunk","neutral","two_way_preposition,B1","'Auf' + Accusative with movement/direction or fixed prepositional verbs like 'warten auf'.",,FALSE
+I'm waiting for the train.,Ich warte auf den Zug.,,,"sentence","neutral","prepositional_verb,B1","'Warten auf + Accusative'. Fixed collocation.",,FALSE
+to wait for someone/something,auf jemanden / etwas warten,,,"chunk","neutral","prepositional_verb,B1","'Warten auf + Accusative'.",,FALSE
+I'm waiting for it.,Ich warte darauf.,,,"sentence","neutral","prepositional_verb,B1","'Darauf' = auf + das. Pronominal adverb replaces preposition + pronoun for things.",,FALSE
+I'm thinking about it.,Ich denke darüber nach.,,,"sentence","casual","prepositional_verb,separable,B1","'Nachdenken über + Acc'. 'Darüber' = über + das. Separable verb.",,FALSE
+to think about something,über etwas nachdenken,,,"chunk","neutral","prepositional_verb,separable,B1","'Nachdenken über + Accusative'. Separable.",,FALSE
+I'm looking forward to the trip.,Ich freue mich auf die Reise.,,,"sentence","casual","prepositional_verb,reflexive,B1","'Sich freuen auf + Accusative'.",,FALSE
+to be happy about something,sich über etwas freuen,,,"chunk","neutral","prepositional_verb,reflexive,B1","'Sich freuen über + Accusative'.",,FALSE
+I'm annoyed about the delay.,Ich ärgere mich über die Verspätung.,,,"sentence","casual","prepositional_verb,reflexive,B1","'Sich ärgern über + Accusative'.",,FALSE
+I'm thinking about changing jobs.,Ich denke daran, den Job zu wechseln.,,,"sentence","neutral","prepositional_verb,zu_infinitive,B2","'Denken an + Acc' + 'daran … zu + infinitive' structure.",,FALSE
+to depend on,abhängen von,,,"chunk","neutral","prepositional_verb,B1","'Abhängen von + Dative'. Separable: hängt … ab von.",,,FALSE
+It depends on the weather.,Es hängt vom Wetter ab.,,,"sentence","neutral","prepositional_verb,separable,B1","'Abhängen von + Dative'. 'Vom' = von + dem. Separable.",,FALSE
+I'm interested in it.,Ich interessiere mich dafür.,,,"sentence","neutral","prepositional_verb,reflexive,B1","'Sich interessieren für + Accusative'. 'Dafür' = für + das.",,FALSE
+to be interested in something,sich für etwas interessieren,,,"chunk","neutral","prepositional_verb,reflexive,B1","'Sich interessieren für + Accusative'.",,FALSE
+I'm looking for a job.,Ich suche nach einer Stelle.,,,"sentence","neutral","prepositional_verb,B1","'Suchen nach + Dative'. Can also say 'ich suche einen Job' (Acc, without 'nach').",Ich suche einen Job.,FALSE
+I'm asking about the price.,Ich frage nach dem Preis.,,,"sentence","neutral","prepositional_verb,B1","'Fragen nach + Dative'.",,FALSE
+to ask about something,nach etwas fragen,,,"chunk","neutral","prepositional_verb,B1","'Fragen nach + Dative'.",,FALSE
+I'm talking about the project.,Ich spreche über das Projekt.,,,"sentence","neutral","prepositional_verb,B1","'Sprechen über + Accusative'.",,FALSE
+to talk about something,über etwas sprechen,,,"chunk","neutral","prepositional_verb,B1","'Sprechen über + Accusative'.",,FALSE
+I'm writing to her.,Ich schreibe an sie.,,,"sentence","casual","prepositional_verb,B1","'Schreiben an + Accusative' (direction to a person).",,FALSE
+I'm applying for the position.,Ich bewerbe mich um die Stelle.,,,"sentence","neutral","prepositional_verb,reflexive,B2","'Sich bewerben um + Accusative'.",,FALSE
+to apply for something,sich um etwas bewerben,,,"chunk","neutral","prepositional_verb,reflexive,B2","'Sich bewerben um + Accusative'.",,FALSE
+I've done it. (haben perfect),Ich habe es gemacht.,,,"sentence","neutral","perfect_haben,A2","Perfect tense with 'haben'. Most transitive verbs use 'haben'.",,FALSE
+I've seen it.,Ich habe es gesehen.,,,"sentence","casual","perfect_haben,A2","'Haben' + past participle. 'Gesehen' = irregular past participle of 'sehen'.",,FALSE
+I've eaten.,Ich habe gegessen.,,,"sentence","casual","perfect_haben,A2","'Haben' + participle. 'Gegessen' from 'essen'.",,FALSE
+I've understood it.,Ich habe es verstanden.,,,"sentence","neutral","perfect_haben,A2","'Verstanden' = past participle of 'verstehen' (inseparable prefix).",,FALSE
+I've called him.,Ich habe ihn angerufen.,,,"sentence","casual","perfect_haben,separable,A2","Separable verb in perfect: 'an-ge-rufen'.",,FALSE
+I've prepared it.,Ich habe es vorbereitet.,,,"sentence","neutral","perfect_haben,separable,B1","Separable: 'vor-be-reitet'. 'Ge' inserts between prefix and stem.",,FALSE
+I've already done that.,Das habe ich schon gemacht.,,,"sentence","casual","perfect_haben,A2","'Schon' = already.",,FALSE
+I haven't done it yet.,Ich habe es noch nicht gemacht.,,,"sentence","casual","perfect_haben,A2","'Noch nicht' = not yet.",,FALSE
+I've arrived. (sein perfect),Ich bin angekommen.,,,"sentence","neutral","perfect_sein,A2","Perfect with 'sein'. Movement + change of state verbs use 'sein'.",,FALSE
+She's gone.,Sie ist gegangen.,,,"sentence","casual","perfect_sein,A2","'Gehen' uses 'sein' in perfect.",,FALSE
+He came back.,Er ist zurückgekommen.,,,"sentence","neutral","perfect_sein,separable,A2","'Zurückkommen' + sein. Separable perfect: zurück-ge-kommen.",,FALSE
+I've stayed.,Ich bin geblieben.,,,"sentence","neutral","perfect_sein,A2","'Bleiben' uses 'sein' in perfect.",,FALSE
+I traveled to Berlin.,Ich bin nach Berlin gefahren.,,,"sentence","neutral","perfect_sein,A2","'Fahren' uses 'sein' in perfect for travel.",,FALSE
+It happened.,Es ist passiert.,,,"sentence","casual","perfect_sein,A2","'Passieren' uses 'sein' in perfect.",,FALSE
+She became a doctor.,Sie ist Ärztin geworden.,,,"sentence","neutral","perfect_sein,A2","'Werden' uses 'sein' in perfect.",,FALSE
+I had done it. (past perfect),Ich hatte es gemacht.,,,"sentence","neutral","past_perfect,B2","Plusquamperfekt: 'hatte/war' + participle. Used in nachdem-clauses.",,FALSE
+She had already left.,Sie war schon gegangen.,,,"sentence","neutral","past_perfect,B2","'War' + participle — 'sein' verbs use 'war' in past perfect.",,FALSE
+I would like to…,Ich würde gern…,,,"pattern","polite","konjunktiv2,A2","'Würde + infinitive' = polite conditional. Very widely used.",Ich möchte…,FALSE
+I would like to help.,Ich würde gern helfen.,,,"sentence","polite","konjunktiv2,A2","'Würde + infinitive'.",,FALSE
+I would suggest…,Ich würde vorschlagen…,,,"pattern","polite","konjunktiv2,B1","Konjunktiv II for polite suggestions.",,FALSE
+Could you help me?,Könnten Sie mir helfen?,,,"sentence","polite","konjunktiv2,B1","'Könnten' = Konjunktiv II of 'können'. More polite than 'Können Sie'.",Könntest du mir helfen?,FALSE
+Could you repeat that?,Könnten Sie das wiederholen?,,,"sentence","polite","konjunktiv2,A2","Konjunktiv II for polite requests.",Könntest du das wiederholen?,FALSE
+Would you be so kind as to…,Wären Sie so freundlich zu…,,,"pattern","polite","konjunktiv2,B2","Very formal polite request.",,FALSE
+I would have time.,Ich hätte Zeit.,,,"sentence","neutral","konjunktiv2,B1","'Hätte' = Konjunktiv II of 'haben'.",,FALSE
+I would like a coffee please.,Ich hätte gern einen Kaffee.,,,"sentence","polite","konjunktiv2,A2","'Hätte gern' = the standard polite ordering formula.",,FALSE
+I wish I had more time.,Ich wünschte, ich hätte mehr Zeit.,,,"sentence","casual","konjunktiv2,B2","Konjunktiv II after 'ich wünschte'.",,FALSE
+If I were you…,An deiner Stelle würde ich…,,,"pattern","casual","konjunktiv2,B1","Lit. 'in your place I would…'. Natural way to give advice.",Wenn ich du wäre…,FALSE
+We should clarify that.,Das sollten wir klären.,,,"sentence","neutral","konjunktiv2,B1","'Sollten' = Konjunktiv II of 'sollen'. Softer than 'müssen'.",,FALSE
+That would be great.,Das wäre toll.,,,"sentence","casual","konjunktiv2,B1","'Wäre' = Konjunktiv II of 'sein'.",Das wäre super.,FALSE
+That would be possible.,Das wäre möglich.,,,"sentence","neutral","konjunktiv2,B1","'Wäre' + adjective.",,FALSE
+That would be a problem.,Das wäre ein Problem.,,,"sentence","neutral","konjunktiv2,B1","'Wäre' = Konjunktiv II of 'sein'.",,FALSE
+It would be better if…,Es wäre besser, wenn…,,,"pattern","neutral","konjunktiv2,B1","Combines 'wäre' + wenn-clause.",,FALSE
+If I knew…,Wenn ich es wüsste…,,,"pattern","neutral","konjunktiv2,B2","'Wüsste' = Konjunktiv II of 'wissen'.",,FALSE
+This was changed.,Das wurde geändert.,,,"sentence","neutral","passive,B1","'Wurde + Partizip II' = simple past passive (Vorgangspassiv).",,FALSE
+It has been cancelled.,Es wurde abgesagt.,,,"sentence","neutral","passive,B1","Passive with past participle of separable verb.",,FALSE
+The problem was solved.,Das Problem wurde gelöst.,,,"sentence","neutral","passive,B1","'Wurde' + Partizip II.",,FALSE
+The meeting was postponed.,Das Meeting wurde verschoben.,,,"sentence","neutral","passive,B1","'Wurde' + Partizip II of 'verschieben'.",,FALSE
+It's being repaired.,Es wird repariert.,,,"sentence","neutral","passive,B1","Present passive: 'wird + Partizip II'.",,FALSE
+It is expected.,Es wird erwartet.,,,"sentence","neutral","passive,B1","Present passive: 'wird' + Partizip II.",,FALSE
+That is known.,Das ist bekannt.,,,"sentence","neutral","passive,A2","'Ist + Partizip II' = Zustandspassiv (state result). Describes a resulting state.",,FALSE
+The door is open.,Die Tür ist geöffnet.,,,"sentence","neutral","passive,A2","Zustandspassiv: 'ist' + Partizip II. Result state.",,FALSE
+It is not allowed.,Es ist nicht erlaubt.,,,"sentence","neutral","passive,A2","Zustandspassiv with 'erlaubt'.",,FALSE
+I try to understand.,Ich versuche zu verstehen.,,,"pattern","neutral","zu_infinitive,A2","'Zu + Infinitive' after many verbs. 'zu' directly before the infinitive.",,FALSE
+I've started to learn.,Ich habe angefangen zu lernen.,,,"sentence","casual","zu_infinitive,separable,B1","Separable verb 'anfangen': 'zu' goes between prefix and stem — angefangen zu lernen.",Ich habe angefangen, Deutsch zu lernen.,FALSE
+I've decided to stay.,Ich habe mich entschieden zu bleiben.,,,"sentence","neutral","zu_infinitive,reflexive,B1","Reflexive + zu-infinitive.",,FALSE
+I'm planning to travel.,Ich plane zu reisen.,,,"sentence","neutral","zu_infinitive,B1","'Planen + zu + Infinitive'.",,FALSE
+I forgot to call.,Ich habe vergessen anzurufen.,,,"sentence","casual","zu_infinitive,separable,B1","Separable verb: 'zu' between prefix and stem: 'anzu-rufen'.",,FALSE
+I need to finish this.,Ich muss das noch fertigmachen.,,,"sentence","neutral","zu_infinitive,B1","With modal verbs: no 'zu' needed — just infinitive at end.",,FALSE
+It's easy to understand.,Es ist leicht zu verstehen.,,,"chunk","neutral","zu_infinitive,B1","'Es ist [adjective] zu + Infinitive' pattern.",,FALSE
+It's hard to say.,Es ist schwer zu sagen.,,,"chunk","neutral","zu_infinitive,B1","'Es ist schwer zu…' = it's hard to…",,FALSE
+It's worth trying.,Es ist einen Versuch wert.,,,"chunk","neutral","zu_infinitive,B1",,,FALSE
+I have a lot to do.,Ich habe viel zu tun.,,,"chunk","neutral","zu_infinitive,A2","'Haben + [noun/viel] + zu + Infinitive'.",,FALSE
+in order to learn German,um Deutsch zu lernen,,,"pattern","neutral","um_zu,A2","'Um … zu + Infinitive' = in order to. Subject must be same as main clause.",,FALSE
+I came here in order to work.,Ich bin hergekommen, um zu arbeiten.,,,"sentence","neutral","um_zu,B1","'Um zu + Infinitive' purpose clause.",,FALSE
+She called in order to cancel.,Sie hat angerufen, um abzusagen.,,,"sentence","neutral","um_zu,separable,B1","Separable in um-zu: 'ab-zu-sagen'.",,FALSE
+I went to the shop to buy bread.,Ich bin in den Laden gegangen, um Brot zu kaufen.,,,"sentence","casual","um_zu,B1","'Um … zu' purpose clause after main clause.",,FALSE
+I'm studying to pass the exam.,Ich lerne, um die Prüfung zu bestehen.,,,"sentence","neutral","um_zu,B1","'Um zu bestehen' = in order to pass.",,FALSE
+without saying a word,ohne ein Wort zu sagen,,,"chunk","neutral","ohne_zu,B2","'Ohne … zu + Infinitive' = without doing something. Subject same as main clause.",,FALSE
+He left without saying goodbye.,Er ist gegangen, ohne sich zu verabschieden.,,,"sentence","neutral","ohne_zu,reflexive,B2","'Ohne zu' + reflexive infinitive.",,FALSE
+instead of waiting,anstatt zu warten,,,"chunk","neutral","anstatt_zu,B2","'Anstatt … zu + Infinitive' = instead of doing something.",statt zu warten,FALSE
+He called instead of writing.,Er hat angerufen, anstatt zu schreiben.,,,"sentence","neutral","anstatt_zu,B2","'Anstatt zu' clause.",,FALSE
+an interesting book,ein interessantes Buch,,,"chunk","neutral","adjective_endings,B1","Neuter nominative: '-es' ending after indefinite article (ein).",,FALSE
+a good idea,eine gute Idee,,,"chunk","neutral","adjective_endings,A2","Feminine nominative: '-e' after indefinite article.",,FALSE
+a long journey,eine lange Reise,,,"chunk","neutral","adjective_endings,A2","Feminine nominative: '-e' after 'eine'.",,FALSE
+the old city,die alte Stadt,,,"chunk","neutral","adjective_endings,A2","Feminine nominative/accusative: '-e' after definite article.",,FALSE
+the long meeting,das lange Meeting,,,"chunk","neutral","adjective_endings,B1","Neuter nominative: '-e' after definite article.",,FALSE
+with a good colleague,mit einem guten Kollegen,,,"chunk","neutral","adjective_endings,B1","Dative after 'mit': masculine '-en' ending after 'einem'.",,FALSE
+in the new office,in dem neuen Büro,,,"chunk","neutral","adjective_endings,B1","Dative after 'in' (location): neuter '-en' after 'dem'.",,FALSE
+for a small fee,für eine kleine Gebühr,,,"chunk","neutral","adjective_endings,B1","Accusative after 'für': feminine '-e' after 'eine'.",,FALSE
+I have a good idea.,Ich habe eine gute Idee.,,,"sentence","casual","adjective_endings,A2","Accusative: feminine '-e' after 'eine'.",,FALSE
+It was a difficult decision.,Es war eine schwierige Entscheidung.,,,"sentence","neutral","adjective_endings,B1","Feminine '-e' after 'eine' in predicate.",,FALSE
+That was a long day.,Das war ein langer Tag.,,,"sentence","casual","adjective_endings,A2","Nominative masculine '-er' after 'ein'.",,FALSE
+an important meeting,ein wichtiges Meeting,,,"chunk","neutral","adjective_endings,B1","Neuter nominative '-es' after 'ein'.",,FALSE
+I'm going into the city. (Acc),Ich gehe in die Stadt.,,,"chunk","neutral","two_way_preposition,A2","'In' + Accusative with movement (direction into). Wo → Dative. Wohin → Accusative.",,FALSE
+I'm in the city. (Dat),Ich bin in der Stadt.,,,"chunk","neutral","two_way_preposition,A2","'In' + Dative for location (staying). 'Der' = dative feminine.",,FALSE
+I'm putting it on the table. (Acc),Ich lege es auf den Tisch.,,,"chunk","neutral","two_way_preposition,B1","'Auf' + Accusative with movement. 'Legen' = to lay/place.",,FALSE
+It's on the table. (Dat),Es liegt auf dem Tisch.,,,"chunk","neutral","two_way_preposition,B1","'Auf' + Dative for location. 'Liegen' = to lie/be located.",,FALSE
+I'm hanging it on the wall. (Acc),Ich hänge es an die Wand.,,,"chunk","neutral","two_way_preposition,B1","'An' + Accusative with movement.",,FALSE
+It's hanging on the wall. (Dat),Es hängt an der Wand.,,,"chunk","neutral","two_way_preposition,B1","'An' + Dative for location.",,FALSE
+Are you going into the office?,Gehst du ins Büro?,,,"sentence","casual","two_way_preposition,A2","'Ins' = in + das (Accusative). Movement.",,FALSE
+I'm sitting in the office.,Ich sitze im Büro.,,,"sentence","casual","two_way_preposition,A2","'Im' = in + dem (Dative). Location.",,FALSE
+Put it under the table.,Leg es unter den Tisch.,,,"sentence","casual","two_way_preposition,B1","'Unter' + Accusative with movement direction.",Stell es unter den Tisch.,FALSE
+It's under the table.,Es liegt unter dem Tisch.,,,"sentence","casual","two_way_preposition,B1","'Unter' + Dative for location.",,FALSE
+the table on which it lies,der Tisch, auf dem es liegt,,,"chunk","neutral","relative_clause,two_way_preposition,B2","Relative clause with preposition: 'auf dem' = on which. Dative after 'auf' (location).",,FALSE
+I always drink coffee.,Ich trinke immer Kaffee.,,,"sentence","casual","adverb_position,A2","'Immer' in mid-field position, after verb.",,FALSE
+I never do that.,Das mache ich nie.,,,"sentence","casual","adverb_position,A2","Topic-first inversion: 'das' as topic, 'mache ich' inverted.",,FALSE
+I often work late.,Ich arbeite oft bis spät.,,,"sentence","casual","adverb_position,A2","'Oft' in mid-field.",,FALSE
+He probably knows.,Er weiß es wahrscheinlich.,,,"sentence","casual","adverb_position,B1","'Wahrscheinlich' in mid-field.",,FALSE
+I unfortunately can't come.,Ich kann leider nicht kommen.,,,"sentence","casual","adverb_position,A2","'Leider' in mid-field after modal.",,FALSE
+The book I'm reading is good.,Das Buch, das ich lese, ist gut.,,,"sentence","neutral","relative_clause,B1","Nominative relative clause. 'Das' refers to neuter 'das Buch'.",,FALSE
+The colleague who helped me,der Kollege, der mir geholfen hat,,,"chunk","neutral","relative_clause,B1","Relative clause with perfect tense. 'Mir' dative after 'helfen'.",,FALSE
+The city I come from,die Stadt, aus der ich komme,,,"chunk","neutral","relative_clause,B1","Prepositional relative clause: 'aus der'. Feminine dative after 'aus'.",,FALSE
+Everything I need,alles, was ich brauche,,,"chunk","neutral","relative_clause,B1","After 'alles', 'nichts', 'etwas': use 'was' not 'das' as relative pronoun.",,FALSE
+The best thing about it,das Beste, was es gibt,,,"chunk","casual","relative_clause,B1","'Was' after superlative neuter noun.",,FALSE
+when it concerns…,wenn es darum geht…,,,"pattern","neutral","wenn,prepositional,B1","'Es geht darum + zu-infinitive' or 'dass-clause'. 'Darum gehen' = to be about.",,FALSE
+It's about solving the problem.,Es geht darum, das Problem zu lösen.,,,"sentence","neutral","um_zu,B2","'Es geht darum + zu-infinitive'.",,FALSE
+I had already eaten.,Ich hatte schon gegessen.,,,"sentence","neutral","past_perfect,B2","Plusquamperfekt with 'haben'. 'Schon' = already.",,FALSE
+She had already left when I arrived.,Sie war schon gegangen, als ich ankam.,,,"sentence","neutral","past_perfect,B2","'War gegangen' (past perfect) vs. 'ankam' (simple past). 'Als' = when (single past event).",,FALSE
+when it happened (single past),als es passierte,,,"pattern","neutral","als_wenn,B1","'Als' = when for single events in the past. 'Wenn' = when for repeated or present/future.",,FALSE
+when I was a child,als ich ein Kind war,,,"chunk","neutral","als_wenn,B1","'Als' for single past period.",,FALSE
+whenever I see her,wenn ich sie sehe,,,"chunk","casual","als_wenn,B1","'Wenn' = whenever / each time (repeated).",wann immer ich sie sehe,FALSE
+I don't know whether he'll come.,Ich weiß nicht, ob er kommen wird.,,,"sentence","neutral","ob,subordinate,B1","Future in ob-clause: 'wird kommen' — 'wird' at end.",,FALSE
+It's possible that we'll be late.,Es ist möglich, dass wir uns verspäten.,,,"sentence","neutral","dass,subordinate,B1","Reflexive verb in dass-clause: 'sich verspäten'.",,FALSE
+I'm glad that you told me.,Ich bin froh, dass du es mir gesagt hast.,,,"sentence","casual","dass,subordinate,B1","Perfect tense in dass-clause: auxiliary 'hast' at end.",Ich freue mich, dass du es mir gesagt hast.,FALSE
+so that we can start,damit wir anfangen können,,,"pattern","neutral","damit,subordinate,modal,B1","Modal in damit-clause: 'können' at end after infinitive 'anfangen'.",,FALSE
+although he said he would,obwohl er es versprochen hatte,,,"chunk","neutral","obwohl,subordinate,B2","Past perfect in obwohl-clause.",,FALSE
+before it gets too late,bevor es zu spät wird,,,"chunk","neutral","bevor,subordinate,B1","'Wird' at end of bevor-clause.",,FALSE
+to get to know someone,jemanden kennenlernen,,,"chunk","neutral","zu_infinitive,separable,A2","Separable verb. Perfect: kennengelernt.",,FALSE
+I'd like to get to know you better.,Ich würde dich gern besser kennenlernen.,,,"sentence","casual","konjunktiv2,separable,B1","'Würde + separable infinitive'.",Ich möchte dich besser kennenlernen.,FALSE
+That wasn't planned.,Das war nicht geplant.,,,"sentence","neutral","passive,B1","Zustandspassiv: 'war' + Partizip II.",,FALSE
+The email was sent.,Die E-Mail wurde verschickt.,,,"sentence","neutral","passive,B1","'Wurde' + Partizip II. Feminine subject: 'wurde' unchanged.",,FALSE
+The decision has been made.,Die Entscheidung wurde getroffen.,,,"sentence","neutral","passive,B1","'Entscheidung treffen' in passive: 'wurde getroffen'.",,FALSE
+It was agreed that…,Es wurde vereinbart, dass…,,,"sentence","neutral","passive,dass,B2","Passive + dass-clause.",,FALSE
+He seems to be tired.,Er scheint müde zu sein.,,,"sentence","neutral","zu_infinitive,B2","'Scheinen + zu + Infinitive' = to seem to.",,FALSE
+She appears to have forgotten.,Sie scheint es vergessen zu haben.,,,"sentence","neutral","zu_infinitive,B2","'Scheinen + Perfektinfinitiv (vergessen zu haben)'.",,FALSE
+I'm about to leave.,Ich bin im Begriff zu gehen.,,,"sentence","neutral","zu_infinitive,B2","'Im Begriff sein + zu + Infinitive' = to be about to.",,FALSE
+in order not to be late,um nicht zu spät zu kommen,,,"chunk","neutral","um_zu,B1","Negation 'nicht' inside um-zu clause.",,FALSE
+without being asked,ohne gefragt zu werden,,,"chunk","neutral","ohne_zu,passive,B2","Passive infinitive in ohne-zu clause.",,FALSE
