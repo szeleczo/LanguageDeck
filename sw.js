@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first so updates apply immediately when online. */
-const CACHE_VERSION = "languagedeck-v19-german-v3-cachepatched";
+const CACHE_VERSION = "languagedeck-v21-german-v3-quickswitch";
 const APP_SHELL = [
   "./",
   "./index.html",

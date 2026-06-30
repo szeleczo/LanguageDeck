@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="screen-orientation" content="portrait" />
+  <meta name="x5-orientation" content="portrait" />
   <meta name="theme-color" content="#1f2937" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -142,12 +145,19 @@
       gap: 12px;
     }
     .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
       font-family: var(--font-display);
-      font-size: 22px;
+      font-size: 19px;
       font-weight: 800;
-      letter-spacing: -0.015em;
-      color: var(--primary);
+      letter-spacing: -0.02em;
+      color: var(--text);
     }
+    .brand svg { width: 26px; height: 26px; display: block; flex: none; }
+    .brand .brand-name { line-height: 1; }
+    .brand .brand-name b { color: var(--text); }
+    .brand .brand-name span { color: var(--text-muted); font-weight: 700; }
     .appbar-actions { display: flex; gap: 4px; }
 
     .icon-btn {
@@ -321,6 +331,100 @@
       font-weight: 500;
       color: var(--text-muted);
     }
+    /* The chip is now the primary entry point for switching what you study. */
+    button.context-chip {
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+      font-family: inherit;
+    }
+    button.context-chip:hover { border-color: var(--border-strong); background: var(--surface-2); }
+    button.context-chip:active { transform: translateY(1px); }
+    .context-chip .chip-caret { margin-left: 2px; color: var(--text-faint); }
+
+    /* ---------- Quick-switch sheet ----------
+       Surfaces the first-order controls — what to study, how, and which deck —
+       one tap from the context chip, instead of buried in Settings. */
+    .qs-section { margin-bottom: 18px; }
+    .qs-section:last-child { margin-bottom: 4px; }
+    .qs-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 8px;
+    }
+    .segmented {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .segmented button {
+      flex: 1 1 0;
+      min-width: 92px;
+      min-height: 46px;
+      padding: 10px 14px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 14px;
+      transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+    }
+    .segmented button:hover:not(.on) { background: var(--surface-2); }
+    /* Keep the selected ("on") states dark on hover too — the base
+       button:hover rule (higher specificity) would otherwise flip them blue. */
+    .segmented button.on:hover:not(:disabled) { background: var(--text); }
+    .qs-decklist .qs-deck.on:hover:not(:disabled) { background: var(--text); }
+    .qs-lang button.on:hover:not(:disabled) { background: var(--surface); color: var(--text); }
+    .segmented button.on {
+      border-color: var(--text);
+      background: var(--text);
+      color: var(--surface);
+    }
+    .qs-decklist {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 38vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .qs-decklist .qs-deck {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 15px;
+      text-align: left;
+    }
+    .qs-decklist .qs-deck:hover:not(.on) { background: var(--surface-2); }
+    .qs-decklist .qs-deck.on {
+      border-color: var(--text);
+      background: var(--text);
+      color: var(--surface);
+    }
+    .qs-decklist .qs-deck .qs-check { color: var(--text); font-weight: 800; opacity: 0; }
+    .qs-decklist .qs-deck.on .qs-check { color: var(--surface); opacity: 1; }
+    .qs-lang {
+      display: flex; gap: 6px; margin-top: 10px;
+    }
+    .qs-lang button {
+      flex: 1; min-height: 40px; border: 2px solid var(--border);
+      border-radius: 10px; background: var(--surface); color: var(--text-muted);
+      font-weight: 700; font-size: 13px;
+    }
+    .qs-lang button.on { border-color: var(--text); color: var(--text); }
+    /* Controls relocated into the quick sheet / left as functional fallbacks. */
+    .relocated { display: none !important; }
     .context-chip strong {
       color: var(--text);
       font-family: var(--font-display);
@@ -890,6 +994,55 @@
       border-bottom-width: 2px !important;
       margin-bottom: 2px;
     }
+    /* ---------- Reorder ("order") sub-mode ----------
+       A drop area where tapped words land in sequence, plus the bank below.
+       Tapping a placed word sends it back to the bank. */
+    .order-build {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: flex-start;
+      min-height: 56px;
+      padding: 10px;
+      margin-bottom: 16px;
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-sm);
+      background: var(--surface-2);
+    }
+    .order-build.empty { align-items: center; justify-content: center; }
+    .order-empty-hint {
+      color: var(--text-faint);
+      font-size: 14px;
+      font-style: italic;
+    }
+    .order-chip {
+      background: var(--primary-soft) !important;
+      border: 2px solid var(--primary) !important;
+      border-bottom: 4px solid var(--primary-deep) !important;
+      color: var(--text) !important;
+      padding: 8px 14px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      min-height: 42px;
+      transition: transform 0.06s ease, border-color 0.15s ease;
+    }
+    .order-chip:active:not(:disabled) {
+      transform: translateY(2px);
+      border-bottom-width: 2px !important;
+      margin-bottom: 2px;
+    }
+    /* Per-word correctness feedback after a check in order mode. */
+    .order-chip.ok {
+      background: var(--ok-soft, #dcfce7) !important;
+      border-color: var(--ok, #16a34a) !important;
+      border-bottom-color: var(--ok, #16a34a) !important;
+    }
+    .order-chip.bad {
+      background: var(--ko-soft, #fee2e2) !important;
+      border-color: var(--ko, #dc2626) !important;
+      border-bottom-color: var(--ko, #dc2626) !important;
+    }
     .sentence-actions {
       display: flex;
       flex-wrap: wrap;
@@ -960,6 +1113,19 @@
       .modal-backdrop.bottom-sheet .modal-card {
         max-width: 100%;
         border-radius: 20px;
+      }
+    }
+
+    /* Quick-switch sheet: slides up from the bottom edge on phones, stays a
+       centered card on wide screens. */
+    @media (max-width: 700px) {
+      #quickSheet { align-items: flex-end; padding: 0; }
+      #quickSheet .modal-card {
+        max-width: 100%;
+        width: 100%;
+        border-radius: 22px 22px 0 0;
+        padding: 20px 18px calc(20px + env(safe-area-inset-bottom));
+        max-height: 88vh;
       }
     }
 
@@ -1195,7 +1361,13 @@
   <!-- ---------- Sticky app bar ---------- -->
   <header class="appbar">
     <div class="appbar-inner">
-      <div class="brand">LanguageDeck</div>
+      <div class="brand">
+        <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <rect x="20.5" y="20.5" width="59" height="59" rx="7" transform="rotate(45 50 50)" fill="currentColor"/>
+          <path fill="var(--surface)" d="M43 68 L43 60 C 38.5 57.8, 35 52.6, 35 46 C 35 37.7, 41.2 31.5, 49 31.5 C 55.8 31.5, 60.6 35.2, 62.7 40.4 C 63.5 42.5, 64.8 43.7, 66.7 44.5 C 68 45.1, 68 46, 66.9 46.9 L 64.1 49 C 63.8 51.5, 62.6 53.2, 60.7 53.9 C 59.8 54.2, 59.4 54.9, 59.4 55.9 L 59.4 68 Z"/>
+        </svg>
+        <span class="brand-name"><b>Language</b><span>Deck</span></span>
+      </div>
       <div class="appbar-actions">
         <button id="statsBtn" class="icon-btn" aria-label="Statistics" title="Statistics">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>
@@ -1222,12 +1394,12 @@
   </div>
 
   <main class="main">
-    <!-- Context chip -->
+    <!-- Context chip — tap to open the quick-switch sheet -->
     <div class="context-strip">
-      <div class="context-chip" id="modeSummary">
+      <button class="context-chip" id="modeSummary" type="button" aria-label="Switch what you study">
         <span class="chip-dot"></span>
         <span>Loading…</span>
-      </div>
+      </button>
     </div>
 
     <!-- Status + score -->
@@ -1381,12 +1553,39 @@
     </div>
   </div>
 
+  <!-- Quick-switch sheet — primary control for what/how/which deck -->
+  <div id="quickSheet" class="modal-backdrop">
+    <div class="modal-card bottom-sheet">
+      <div class="modal-title">Study</div>
+
+      <div class="qs-section">
+        <div class="qs-label">What</div>
+        <div class="segmented" id="qsModeSeg"></div>
+      </div>
+
+      <div class="qs-section">
+        <div class="qs-label">How</div>
+        <div class="segmented" id="qsVariantSeg"></div>
+      </div>
+
+      <div class="qs-section">
+        <div class="qs-label">Deck</div>
+        <div class="qs-decklist" id="qsDeckList"></div>
+        <div class="qs-lang" id="qsLang"></div>
+      </div>
+
+      <div class="settings-actions">
+        <button id="qsDoneBtn" class="secondary close-btn">Done</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Settings modal -->
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
 
-      <details class="settings-section" open>
+      <details class="settings-section relocated">
         <summary>Game</summary>
         <div class="settings-section-body">
           <div>
@@ -1410,7 +1609,7 @@
         </div>
       </details>
 
-      <details class="settings-section">
+      <details class="settings-section" open>
         <summary>Appearance</summary>
         <div class="settings-section-body">
           <div>
@@ -1434,17 +1633,18 @@
       <details class="settings-section">
         <summary>Practice</summary>
         <div class="settings-section-body">
-          <div>
+          <div class="relocated">
             <label for="modeSelect">Word mode</label>
             <select id="modeSelect">
               <option value="match" selected>Matching</option>
               <option value="typing">Typing</option>
             </select>
           </div>
-          <div>
+          <div class="relocated">
             <label for="sentenceModeSelect">Sentence mode</label>
             <select id="sentenceModeSelect">
               <option value="choice" selected>Word bank</option>
+              <option value="order">Reorder words</option>
               <option value="typing">Typing</option>
             </select>
           </div>
@@ -1608,35 +1808,6 @@
       const DB_VERSION = 1;
       let dbPromise = null;
 
-      // In-memory cache of fully-loaded (deck, set) row arrays.
-      // Eliminates repeated full IndexedDB cursor scans, which were the main
-      // source of UI lag on every answer and every gate switch.
-      // Key format: "table::deck::setName". Values are the same row-object
-      // references returned to callers, so an in-place update (see _syncCache)
-      // keeps every cached view consistent without a re-read.
-      const _cache = new Map();
-      function _cacheKey(table, deck, setName) { return table + "::" + deck + "::" + setName; }
-      function _invalidate(table) {
-        // Drop every cached view for this table (rare: import / clear / restart).
-        for (const k of [..._cache.keys()]) {
-          if (k.startsWith(table + "::")) _cache.delete(k);
-        }
-      }
-      function _syncCache(table, row) {
-        // After a single-row write, patch any cached array that holds this row
-        // (both the specific-set view and the "__all__" view) in place.
-        if (!row || row.id == null) return;
-        const prefix = table + "::" + row.deck + "::";
-        for (const [k, arr] of _cache.entries()) {
-          if (!k.startsWith(prefix)) continue;
-          const setName = k.slice(prefix.length);
-          if (setName !== "__all__" && setName !== row.set_name) continue;
-          const idx = arr.findIndex(r => r.id === row.id);
-          if (idx >= 0) Object.assign(arr[idx], row);
-          else arr.push(row); // newly relevant row (shouldn't normally happen mid-session)
-        }
-      }
-
       function open() {
         if (dbPromise) return dbPromise;
         dbPromise = new Promise((resolve, reject) => {
@@ -1665,23 +1836,23 @@
       }
 
       function getAll(table, deck, setName) {
-        const key = _cacheKey(table, deck, setName);
-        const cached = _cache.get(key);
-        if (cached) return Promise.resolve(cached);
         return tx([table]).then(t => {
           const store = t.objectStore(table);
           return new Promise((resolve, reject) => {
-            // Use the by_deck index instead of scanning the whole store.
-            // index.getAll() returns all matching rows in one native bulk
-            // operation (ordered by index key, then primary key) — no per-row
-            // cursor.continue() round-trips.
-            const req = store.index("by_deck").getAll(deck);
-            req.onsuccess = () => {
-              let out = req.result || [];
-              if (setName !== "__all__") out = out.filter(r => r.set_name === setName);
-              out.sort((a, b) => a.id - b.id);
-              _cache.set(key, out);
-              resolve(out);
+            const out = [];
+            const req = store.openCursor();
+            req.onsuccess = (e) => {
+              const cursor = e.target.result;
+              if (cursor) {
+                const row = cursor.value;
+                if (row.deck === deck && (setName === "__all__" || row.set_name === setName)) {
+                  out.push(row);
+                }
+                cursor.continue();
+              } else {
+                out.sort((a, b) => a.id - b.id);
+                resolve(out);
+              }
             };
             req.onerror = () => reject(req.error);
           });
@@ -1693,7 +1864,7 @@
           const store = t.objectStore(table);
           return new Promise((resolve, reject) => {
             let n = 0;
-            t.oncomplete = () => { _invalidate(table); resolve(n); };
+            t.oncomplete = () => resolve(n);
             t.onerror = () => reject(t.error);
             t.onabort = () => reject(t.error);
             for (const row of rows) {
@@ -1709,7 +1880,7 @@
           const store = t.objectStore(table);
           return new Promise((resolve, reject) => {
             const r = store.put(row);
-            r.onsuccess = () => { _syncCache(table, row); resolve(true); };
+            r.onsuccess = () => resolve(true);
             r.onerror = () => reject(r.error);
           });
         });
@@ -1739,7 +1910,6 @@
                 if (matches) { cursor.delete(); n++; }
                 cursor.continue();
               } else {
-                _invalidate(table);
                 resolve(n);
               }
             };
@@ -1852,17 +2022,50 @@
       return (article === "der" || article === "die" || article === "das") ? article : null;
     }
 
-    function splitArticleFromTarget(targetValue, articleValue) {
-      const explicitArticle = normalizeGermanArticle(articleValue);
+    function leadingGermanArticle(targetValue) {
       const target = String(targetValue || "").trim();
-      if (explicitArticle) return [explicitArticle, target];
       const lower = target.toLowerCase();
       for (const candidate of ["der ", "die ", "das "]) {
         if (lower.startsWith(candidate)) {
-          return [candidate.trim(), target.slice(candidate.length).trim()];
+          return { article: candidate.trim(), rest: target.slice(candidate.length).trim() };
         }
       }
-      return [null, target];
+      return null;
+    }
+
+    function looksLikeStandaloneGermanNoun(rest) {
+      const s = String(rest || "").trim();
+      if (!s) return false;
+      // Do not treat full sentences or comma-separated clauses as noun targets.
+      if (/[.!?;:=]/.test(s) || s.includes(",")) return false;
+      const words = s.split(/\s+/).filter(Boolean);
+      if (words.length > 2) return false;
+      // German nouns normally start uppercase. This keeps “Das ist ...” intact.
+      return /^[A-ZÄÖÜ]/.test(words[0] || "");
+    }
+
+    function shouldStripArticleFromImportedTarget(targetValue, articleValue, typeValue, articlePromptValue) {
+      const leading = leadingGermanArticle(targetValue);
+      if (!leading) return false;
+      const explicitArticle = normalizeGermanArticle(articleValue);
+      if (explicitArticle && explicitArticle !== leading.article) return false;
+
+      const t = normTxt(typeValue || "");
+      const explicitPrompt = parseOptionalBool(articlePromptValue);
+      if (t === "noun" || explicitPrompt === true) return true;
+      if (["phrase", "expression", "chunk", "sentence", "idiom", "pattern", "grammar", "register_pair", "professional", "verb"].includes(t)) return false;
+      return looksLikeStandaloneGermanNoun(leading.rest);
+    }
+
+    function splitArticleFromTarget(targetValue, articleValue, typeValue, articlePromptValue) {
+      const explicitArticle = normalizeGermanArticle(articleValue);
+      const target = String(targetValue || "").trim();
+      const leading = leadingGermanArticle(target);
+
+      if (shouldStripArticleFromImportedTarget(target, articleValue, typeValue, articlePromptValue)) {
+        return [explicitArticle || leading.article, leading.rest];
+      }
+      return [explicitArticle || null, target];
     }
 
     function csvTargetHeaderCandidates(deck) {
@@ -1998,12 +2201,14 @@
         const english = optionalCsvValue(it, englishKey);
         const targetRaw = optionalCsvValue(it, targetKey);
         const articleRaw = optionalCsvValue(it, articleKey);
+        const typeRaw = optionalCsvValue(it, typeKey);
+        const articlePromptRaw = optionalCsvValue(it, articlePromptKey);
         if (!english || !targetRaw) continue;
 
         let article = null;
         let target = targetRaw;
         if (deck === "de") {
-          [article, target] = splitArticleFromTarget(targetRaw, articleRaw);
+          [article, target] = splitArticleFromTarget(targetRaw, articleRaw, typeRaw, articlePromptRaw);
         }
 
         const row = {
@@ -2014,7 +2219,7 @@
 
         const optionalFields = {
           plural: optionalCsvValue(it, pluralKey),
-          type: optionalCsvValue(it, typeKey),
+          type: typeRaw,
           register: optionalCsvValue(it, registerKey),
           tags: optionalCsvValue(it, tagsKey),
           note: optionalCsvValue(it, noteKey),
@@ -2025,7 +2230,7 @@
         };
         for (const [k, v] of Object.entries(optionalFields)) if (v) row[k] = v;
 
-        const promptArticle = parseOptionalBool(optionalCsvValue(it, articlePromptKey));
+        const promptArticle = parseOptionalBool(articlePromptRaw);
         if (promptArticle !== null) row.article_prompt = promptArticle;
 
         rows.push(row);
@@ -2243,6 +2448,12 @@
     const settingsModal = $("settingsModal");
     const closeSettingsBtn = $("closeSettingsBtn");
     const modeSummary = $("modeSummary");
+    const quickSheet = $("quickSheet");
+    const qsModeSeg = $("qsModeSeg");
+    const qsVariantSeg = $("qsVariantSeg");
+    const qsDeckList = $("qsDeckList");
+    const qsLang = $("qsLang");
+    const qsDoneBtn = $("qsDoneBtn");
 
     const gameSelect = $("gameSelect");
     const deckSelect = $("deckSelect");
@@ -2409,15 +2620,23 @@
     }
 
     function updateModeSummary() {
-      // Compact context chip: language · active deck
-      // The current mode (words/sentences, match/typing) is visible from the UI below,
-      // so we don't repeat it here.
-      const langText = deckCfg().label;
+      // The chip is the entry to the quick-switch sheet, so it now reads back
+      // exactly what you're studying: mode · variant · deck.
+      const variantLabels = {
+        match: "Match", typing: "Type",
+        choice: "Word bank", order: "Reorder"
+      };
+      const modeLabel = currentGame === "words" ? "Words" : "Sentences";
+      const variant = currentGame === "words"
+        ? (variantLabels[wordMode] || wordMode)
+        : (variantLabels[sentenceMode] || sentenceMode);
       const setText = currentSetName === "__all__" ? "All decks" : currentSetName;
       modeSummary.innerHTML = `
         <span class="chip-dot"></span>
-        <span><strong>${escapeHtml(langText)}</strong> · ${escapeHtml(setText)}</span>
+        <span><strong>${escapeHtml(modeLabel)} · ${escapeHtml(variant)}</strong> · ${escapeHtml(setText)}</span>
+        <span class="chip-caret" aria-hidden="true">▾</span>
       `;
+      if (quickSheet && quickSheet.classList.contains("active")) renderQuickSheet();
     }
 
     function openStats() { statsModal.classList.add("active"); }
@@ -2430,6 +2649,85 @@
 
     function openSettings() { settingsModal.classList.add("active"); }
     function closeSettings() { settingsModal.classList.remove("active"); saveSettings(); }
+
+    /* ---------- Quick-switch sheet ----------
+       The sheet is a "remote control" for the (hidden) selects: tapping a
+       segment sets the underlying <select>'s value and dispatches a native
+       change event, so every existing handler (deck reload, gate reset, SRS)
+       runs unchanged — no duplicated logic. */
+    function setSelectAndFire(selectEl, value) {
+      if (!selectEl || selectEl.value === value) return;
+      selectEl.value = value;
+      selectEl.dispatchEvent(new Event("change"));
+    }
+
+    function buildSeg(container, options, currentValue, onPick) {
+      container.innerHTML = "";
+      for (const opt of options) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = opt.label;
+        if (opt.value === currentValue) btn.classList.add("on");
+        btn.addEventListener("click", async () => { await onPick(opt.value); });
+        container.appendChild(btn);
+      }
+    }
+
+    function renderQuickSheet() {
+      // WHAT — word cards vs sentences
+      buildSeg(qsModeSeg, [
+        { value: "words", label: "Words" },
+        { value: "sentences", label: "Sentences" }
+      ], currentGame, async (v) => {
+        setSelectAndFire(gameSelect, v);
+        renderQuickSheet();
+      });
+
+      // HOW — variant depends on the chosen mode
+      if (currentGame === "words") {
+        buildSeg(qsVariantSeg, [
+          { value: "match", label: "Match" },
+          { value: "typing", label: "Type" }
+        ], wordMode, async (v) => { setSelectAndFire(modeSelect, v); renderQuickSheet(); });
+      } else {
+        buildSeg(qsVariantSeg, [
+          { value: "choice", label: "Word bank" },
+          { value: "order", label: "Reorder" },
+          { value: "typing", label: "Type" }
+        ], sentenceMode, async (v) => { setSelectAndFire(sentenceModeSelect, v); renderQuickSheet(); });
+      }
+
+      // DECK — list of sets for the current language, mirrored from setSelect
+      qsDeckList.innerHTML = "";
+      Array.from(setSelect.options).forEach(opt => {
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = "qs-deck" + (opt.value === currentSetName ? " on" : "");
+        row.innerHTML = `<span>${escapeHtml(opt.textContent)}</span><span class="qs-check">✓</span>`;
+        row.addEventListener("click", () => {
+          setSelectAndFire(setSelect, opt.value);
+          renderQuickSheet();
+        });
+        qsDeckList.appendChild(row);
+      });
+
+      // LANGUAGE — mirrored from deckSelect
+      qsLang.innerHTML = "";
+      Array.from(deckSelect.options).forEach(opt => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        if (opt.value === currentDeck) btn.classList.add("on");
+        btn.textContent = opt.textContent;
+        btn.addEventListener("click", () => {
+          setSelectAndFire(deckSelect, opt.value);
+          renderQuickSheet();
+        });
+        qsLang.appendChild(btn);
+      });
+    }
+
+    function openQuickSheet() { renderQuickSheet(); quickSheet.classList.add("active"); }
+    function closeQuickSheet() { quickSheet.classList.remove("active"); saveSettings(); }
 
     async function refreshSetOptions() {
       const sets = await DB.getSets(currentGame === "words" ? "word_pairs" : "sentence_pairs", currentDeck);
@@ -2449,13 +2747,23 @@
       updateModeSummary();
     }
 
+    function displayTargetWithoutDuplicateArticle(pair) {
+      const target = String(pair.target || "").trim();
+      const article = articleOf(pair);
+      const leading = leadingGermanArticle(target);
+      if (article && leading && leading.article === article && shouldPromptArticle(pair)) {
+        return leading.rest;
+      }
+      return target;
+    }
+
     function targetDisplay(pair) {
       const article = String(pair.article || "").trim();
-      const target = String(pair.target || "").trim();
+      const target = displayTargetWithoutDuplicateArticle(pair);
       if (deckCfg().useArticles && article && shouldPromptArticle(pair)) return `${article} ${target}`;
       return target;
     }
-    function targetWordOnly(pair) { return String(pair.target || "").trim(); }
+    function targetWordOnly(pair) { return displayTargetWithoutDuplicateArticle(pair); }
     function articleOf(pair) { return String(pair.article || "").trim().toLowerCase(); }
     function hasArticle(pair) { return shouldPromptArticle(pair); }
 
@@ -2534,7 +2842,7 @@
       if (currentGame === "words") {
         hardestList.innerHTML = hardest.map(item => `
           <div class="hardest-item">
-            <strong>${escapeHtml(item.english)}</strong> — ${escapeHtml(deckCfg().useArticles && item.article ? item.article + " " + item.target : item.target)}
+            <strong>${escapeHtml(item.english)}</strong> — ${escapeHtml(targetDisplay(item))}
             <div class="meta">deck: ${escapeHtml(item.set_name || "default")} · wrong: ${item.times_wrong} · right: ${item.times_correct} · streak: ${item.streak}</div>
           </div>
         `).join("");
@@ -3107,17 +3415,85 @@
       const tokens = tokenizeSentence(s.target);
       const blankIndices = pickBlankIndices(tokens, s.streak || 0);
       const blankAnswers = blankIndices.map(i => tokens[i].raw);
+      // Reorder mode: every non-space token becomes a draggable chunk (with a
+      // stable uid so duplicates like "es … es" can be told apart in the DOM).
+      const orderWords = tokens
+        .filter(t => !t.isSpace)
+        .map((t, i) => ({ raw: t.raw, uid: i }));
       return {
         tokens, blankIndices, blankAnswers,
         choiceAnswers: new Array(blankIndices.length).fill(""),
         typingAnswers: new Array(blankIndices.length).fill(""),
-        bankWords: buildWordBank(blankAnswers)
+        bankWords: buildWordBank(blankAnswers),
+        orderWords,
+        orderBank: shuffleArr(orderWords),
+        orderPlaced: [],
+        orderChecked: false
       };
     }
 
     function renderSentence() {
       if (!currentSentence || !currentSentenceData) return;
       sentenceEnglish.textContent = currentSentence.english;
+
+      // ----- Reorder ("order") sub-mode -----
+      if (sentenceMode === "order") {
+        sentenceHelp.textContent = `Tap the ${deckCfg().targetName} words to put them in order.`;
+        sentenceMeta.textContent = `Words: ${currentSentenceData.orderWords.length} · Streak: ${currentSentence.streak || 0}`;
+        if (!currentSentenceData.orderChecked) sentenceResult.textContent = "";
+
+        const placed = currentSentenceData.orderPlaced;
+        const placedUids = new Set(placed.map(t => t.uid));
+        const answer = currentSentenceData.orderWords.map(t => t.raw);
+
+        // Build area (placed chips, in sequence)
+        sentenceTarget.innerHTML = "";
+        const build = document.createElement("div");
+        build.className = "order-build" + (placed.length === 0 ? " empty" : "");
+        if (placed.length === 0) {
+          const hint = document.createElement("span");
+          hint.className = "order-empty-hint";
+          hint.textContent = "Tap words below to build the sentence…";
+          build.appendChild(hint);
+        } else {
+          placed.forEach((tok, pos) => {
+            const chip = document.createElement("button");
+            chip.className = "order-chip";
+            chip.textContent = tok.raw;
+            // After a check, colour each chip by whether it matches the answer at this position.
+            if (currentSentenceData.orderChecked) {
+              const ok = normTxt(tok.raw) === normTxt(answer[pos] || "");
+              chip.classList.add(ok ? "ok" : "bad");
+            }
+            chip.addEventListener("click", () => {
+              if (locked) return;
+              currentSentenceData.orderPlaced.splice(pos, 1);
+              currentSentenceData.orderChecked = false;
+              renderSentence();
+            });
+            build.appendChild(chip);
+          });
+        }
+        sentenceTarget.appendChild(build);
+
+        // Bank (remaining scrambled words)
+        sentenceBank.innerHTML = "";
+        currentSentenceData.orderBank.forEach(tok => {
+          if (placedUids.has(tok.uid)) return;
+          const btn = document.createElement("button");
+          btn.className = "bank-word";
+          btn.textContent = tok.raw;
+          btn.addEventListener("click", () => {
+            if (locked) return;
+            currentSentenceData.orderPlaced.push(tok);
+            currentSentenceData.orderChecked = false;
+            renderSentence();
+          });
+          sentenceBank.appendChild(btn);
+        });
+        return;
+      }
+
       sentenceHelp.textContent = sentenceMode === "choice"
         ? `Fill in the missing ${deckCfg().targetName} words from the bank.`
         : `Type the missing ${deckCfg().targetName} words.`;
@@ -3198,6 +3574,11 @@
 
     function isCurrentSentenceCorrect() {
       if (!currentSentenceData) return false;
+      if (sentenceMode === "order") {
+        const placed = currentSentenceData.orderPlaced.map(t => t.raw).join(" ");
+        const answer = currentSentenceData.orderWords.map(t => t.raw).join(" ");
+        return normTxt(placed) === normTxt(answer);
+      }
       if (sentenceMode === "choice") {
         return currentSentenceData.blankAnswers.every((a, i) =>
           normTxt(a) === normTxt(currentSentenceData.choiceAnswers[i] || ""));
@@ -3223,6 +3604,10 @@
         return;
       }
       const correct = isCurrentSentenceCorrect();
+      if (sentenceMode === "order" && currentSentenceData) {
+        currentSentenceData.orderChecked = true;
+        renderSentence();
+      }
       if (correct) {
         correctCount++; updateScore();
         sentenceResult.textContent = "Correct.";
@@ -3243,6 +3628,8 @@
       if (!currentSentenceData) return;
       currentSentenceData.choiceAnswers = new Array(currentSentenceData.blankIndices.length).fill("");
       currentSentenceData.typingAnswers = new Array(currentSentenceData.blankIndices.length).fill("");
+      currentSentenceData.orderPlaced = [];
+      currentSentenceData.orderChecked = false;
       activeBlankIndex = 0;
       renderSentence();
     }
@@ -3285,6 +3672,7 @@
     document.addEventListener("keydown", async (event) => {
       if (event.key === "Escape") {
         if (settingsModal.classList.contains("active")) { closeSettings(); return; }
+        if (quickSheet.classList.contains("active")) { closeQuickSheet(); return; }
         if (statsModal.classList.contains("active")) { closeStats(); return; }
         if (gateDetailModal.classList.contains("active")) { closeGateDetail(); return; }
         if (builtinModal.classList.contains("active")) { builtinModal.classList.remove("active"); return; }
@@ -3492,6 +3880,10 @@
     if (settingsFab) settingsFab.addEventListener("click", openSettings);
     closeSettingsBtn.addEventListener("click", closeSettings);
     settingsModal.addEventListener("click", e => { if (e.target === settingsModal) closeSettings(); });
+
+    modeSummary.addEventListener("click", openQuickSheet);
+    qsDoneBtn.addEventListener("click", closeQuickSheet);
+    quickSheet.addEventListener("click", e => { if (e.target === quickSheet) closeQuickSheet(); });
 
     statsBtn.addEventListener("click", openStats);
     closeStatsBtn.addEventListener("click", closeStats);
@@ -3709,20 +4101,28 @@
       });
     })();
 
-    /* ---------- Orientation unlock ---------- */
-    /* Some PWAs (Chrome on Android in particular) cache the manifest's
-       orientation lock from when the app was first installed, even after
-       the manifest is later changed. So we explicitly request "any" at
-       runtime in case orientation got locked to portrait. */
-    function unlockOrientation() {
+    /* ---------- Orientation lock ---------- */
+    /* Best-effort portrait lock for installed PWAs. The manifest is the main
+       Android/PWA signal; this runtime call helps on browsers that support
+       ScreenOrientation.lock(). Normal mobile browser tabs and iOS may still
+       ignore web-level orientation locks. */
+    function lockPortraitOrientation() {
       try {
-        if (screen && screen.orientation && typeof screen.orientation.unlock === "function") {
-          screen.orientation.unlock();
+        if (screen && screen.orientation && typeof screen.orientation.lock === "function") {
+          const result = screen.orientation.lock("portrait-primary");
+          if (result && typeof result.catch === "function") {
+            result.catch(() => {
+              try { screen.orientation.lock("portrait").catch(() => {}); } catch (_) {}
+            });
+          }
         }
       } catch (_) { /* ignore — best-effort only */ }
     }
-    unlockOrientation();
-    window.addEventListener("load", unlockOrientation);
+    lockPortraitOrientation();
+    window.addEventListener("load", lockPortraitOrientation);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) lockPortraitOrientation();
+    });
 
     /* ---------- Viewport height tracker ----------
        Keeps a CSS variable --vh in sync with the actual visible viewport.

@@ -1,403 +1,59 @@
-english,target,article,plural,type,register,tags,note,alternatives,article_prompt
-Hello,Hallo,,,phrase,neutral,"greetings,A1",,Guten Tag | Hi,FALSE
-Good morning,Guten Morgen,,,phrase,neutral,"greetings,A1",Used until around noon.,,FALSE
-Good afternoon,Guten Tag,,,phrase,neutral,"greetings,A1",Literally 'good day'; used from midday onward.,,FALSE
-Good evening,Guten Abend,,,phrase,neutral,"greetings,A1",,,FALSE
-Goodbye,Auf Wiedersehen,,,phrase,neutral,"greetings,A1",,Tschüss | Ciao,FALSE
-Bye (casual),Tschüss,,,phrase,casual,"greetings,A1",Informal; fine in shops and casual settings.,,FALSE
-See you later,Bis später,,,phrase,casual,"greetings,A1",,Bis dann,FALSE
-Good night,Gute Nacht,,,phrase,neutral,"greetings,A1",Used when parting at night or going to bed.,,FALSE
-Please,Bitte,,,phrase,neutral,"basics,A1",Also means 'you're welcome' and 'here you go'.,,FALSE
-Thank you,Danke,,,phrase,neutral,"basics,A1",,Danke schön | Vielen Dank,FALSE
-Thank you very much,Vielen Dank,,,phrase,polite,"basics,A1",,Herzlichen Dank,FALSE
-You're welcome,Bitte sehr,,,phrase,polite,"basics,A1",,Gern geschehen | Kein Problem,FALSE
-Yes,Ja,,,phrase,neutral,"basics,A1",,,FALSE
-No,Nein,,,phrase,neutral,"basics,A1",,,FALSE
-Excuse me / Sorry,Entschuldigung,,,phrase,neutral,"basics,A1",Used to get attention or apologize.,,FALSE
-I'm sorry,Es tut mir leid,,,phrase,neutral,"basics,A1",More heartfelt than Entschuldigung.,,FALSE
-No problem,Kein Problem,,,phrase,casual,"basics,A1",,,FALSE
-OK / Alright,Alles klar,,,phrase,casual,"basics,A1",Very common in everyday speech.,,FALSE
-Of course,Natürlich,,,phrase,neutral,"basics,A1",,Selbstverständlich,FALSE
-My name is…,Ich heiße …,,,sentence,neutral,"introduction,A1",,Ich bin …,FALSE
-What is your name?,Wie heißen Sie?,,,sentence,polite,"introduction,A1",Formal. Use 'Wie heißt du?' informally.,,FALSE
-Nice to meet you,Freut mich,,,phrase,neutral,"introduction,A1",Short for 'Es freut mich'.,,FALSE
-I am from England,Ich komme aus England.,,,sentence,neutral,"introduction,A1",Replace 'England' with your country.,,FALSE
-Where are you from?,Woher kommen Sie?,,,sentence,polite,"introduction,A1",,Woher kommst du?,FALSE
-I speak a little German.,Ich spreche ein bisschen Deutsch.,,,sentence,neutral,"introduction,A1",Sets expectations right away.,,FALSE
-Do you speak English?,Sprechen Sie Englisch?,,,sentence,polite,"help,A1",,,FALSE
-I don't understand.,Ich verstehe nicht.,,,sentence,neutral,"help,A1",,,FALSE
-"Could you repeat that, please?",Können Sie das bitte wiederholen?,,,sentence,polite,"help,A1",,,FALSE
-Could you speak more slowly please?,Können Sie bitte langsamer sprechen?,,,sentence,polite,"help,A1",,,FALSE
-What does that mean?,Was bedeutet das?,,,sentence,neutral,"help,A1",,,FALSE
-How do you say … in German?,Wie sagt man … auf Deutsch?,,,sentence,neutral,"help,A1",,,FALSE
-I need help.,Ich brauche Hilfe.,,,sentence,neutral,"help,A1",,,FALSE
-Can you help me?,Können Sie mir helfen?,,,sentence,polite,"help,A1",,,FALSE
-I'm lost.,Ich habe mich verlaufen.,,,sentence,neutral,"problems,A1",For on foot. Use 'verfahren' when driving.,,FALSE
-Call the police!,Rufen Sie die Polizei!,,,sentence,direct,"emergency,A1",,,FALSE
-Help!,Hilfe!,,,phrase,direct,"emergency,A1",,,FALSE
-I would like a coffee.,Ich hätte gern einen Kaffee.,,,sentence,polite,"food,cafe,A1",'Hätte gern' is the polite standard for ordering.,,FALSE
-I would like a beer please.,Ich hätte gern ein Bier bitte.,,,sentence,polite,"food,drinks,A1",,,FALSE
-I would like a glass of water.,Ich hätte gern ein Glas Wasser.,,,sentence,polite,"food,drinks,A1",,,FALSE
-A table for two please.,Einen Tisch für zwei Personen bitte.,,,sentence,polite,"restaurant,A1",,,FALSE
-The menu please.,Die Speisekarte bitte.,,,sentence,polite,"restaurant,A1",,Die Karte bitte.,FALSE
-What do you recommend?,Was empfehlen Sie?,,,sentence,polite,"restaurant,A1",,,FALSE
-I'm vegetarian.,Ich bin Vegetarier / Vegetarierin.,,,sentence,neutral,"food,diet,A1",Use -er for male -erin for female speakers.,,FALSE
-I'm vegan.,Ich bin Veganer / Veganerin.,,,sentence,neutral,"food,diet,A1",,,FALSE
-I am allergic to nuts.,Ich bin allergisch gegen Nüsse.,,,sentence,neutral,"health,food,A1",Replace 'Nüsse' with your allergen.,,FALSE
-Does this contain gluten?,Enthält das Gluten?,,,sentence,neutral,"food,health,A1",,,FALSE
-That was delicious.,Das war sehr lecker.,,,sentence,neutral,"restaurant,A1",,Das hat gut geschmeckt.,FALSE
-The bill please.,Die Rechnung bitte.,,,sentence,polite,"restaurant,A1",,,FALSE
-Can I pay by card?,Kann ich mit Karte zahlen?,,,sentence,neutral,"paying,A1",,,FALSE
-Do you accept credit cards?,Akzeptieren Sie Kreditkarten?,,,sentence,polite,"paying,A1",,,FALSE
-Do you have cash?,Haben Sie Bargeld?,,,sentence,neutral,"paying,A1",,,FALSE
-Keep the change.,Stimmt so.,,,phrase,neutral,"paying,A1",Literally 'it's correct like that'; standard way to say keep the change.,,FALSE
-How much does this cost?,Was kostet das?,,,sentence,neutral,"shopping,A1",,Wie viel kostet das?,FALSE
-That's too expensive.,Das ist zu teuer.,,,sentence,neutral,"shopping,A1",,,FALSE
-Do you have this in a different size?,Haben Sie das in einer anderen Größe?,,,sentence,neutral,"shopping,A1",,,FALSE
-I'm just looking.,Ich schaue mich nur um.,,,sentence,casual,"shopping,A1",,,FALSE
-I'll take it.,Ich nehme es.,,,sentence,neutral,"shopping,A1",,,FALSE
-Where is the toilet?,Wo ist die Toilette?,,,sentence,neutral,"basics,travel,A1",,Wo sind die Toiletten?,FALSE
-Where is the exit?,Wo ist der Ausgang?,,,sentence,neutral,"travel,A1",,,FALSE
-Where is the entrance?,Wo ist der Eingang?,,,sentence,neutral,"travel,A1",,,FALSE
-Where is the station?,Wo ist der Bahnhof?,,,sentence,neutral,"transport,A1",,,FALSE
-Where is the airport?,Wo ist der Flughafen?,,,sentence,neutral,"transport,A1",,,FALSE
-How do I get to…?,Wie komme ich zum / zur …?,,,pattern,neutral,"directions,A1",'Zum' before masculine/neuter; 'zur' before feminine nouns.,,FALSE
-Turn left.,Biegen Sie links ab.,,,sentence,neutral,"directions,A1",,Links abbiegen.,FALSE
-Turn right.,Biegen Sie rechts ab.,,,sentence,neutral,"directions,A1",,Rechts abbiegen.,FALSE
-Go straight ahead.,Gehen Sie geradeaus.,,,sentence,neutral,"directions,A1",,,FALSE
-It's on the left.,Es ist auf der linken Seite.,,,sentence,neutral,"directions,A1",,Links.,FALSE
-It's on the right.,Es ist auf der rechten Seite.,,,sentence,neutral,"directions,A1",,Rechts.,FALSE
-Near / nearby,in der Nähe,,,phrase,neutral,"directions,A1",e.g. 'Es ist in der Nähe.',,FALSE
-Far away,weit weg,,,phrase,neutral,"directions,A1",,,FALSE
-How far is it?,Wie weit ist es?,,,sentence,neutral,"directions,A1",,,FALSE
-At the traffic lights,an der Ampel,,,chunk,neutral,"directions,A1",,,FALSE
-I need a ticket to Berlin.,Ich brauche eine Fahrkarte nach Berlin.,,,sentence,neutral,"transport,A1",,,FALSE
-One ticket to Munich please.,Einmal nach München bitte.,,,sentence,neutral,"transport,A1",Simplest way to buy a single ticket at a counter.,,FALSE
-Single or return?,Einfach oder hin und zurück?,,,sentence,neutral,"transport,A1",,,FALSE
-A single to Hamburg please.,Einmal einfach nach Hamburg bitte.,,,sentence,neutral,"transport,A1",,,FALSE
-A return to Vienna please.,Einmal hin und zurück nach Wien bitte.,,,sentence,neutral,"transport,A1",,,FALSE
-When does the next train leave?,Wann fährt der nächste Zug ab?,,,sentence,neutral,"transport,A1",,,FALSE
-Which platform?,Welches Gleis?,,,sentence,neutral,"transport,A1",,,FALSE
-Does this train go to…?,Fährt dieser Zug nach …?,,,sentence,neutral,"transport,A1",,,FALSE
-Is this seat taken?,Ist dieser Platz frei?,,,sentence,polite,"transport,A1",,Ist der Platz noch frei?,FALSE
-I have a reservation.,Ich habe eine Reservierung.,,,sentence,neutral,"transport,hotel,A1",,,FALSE
-I would like to check in.,Ich möchte einchecken.,,,sentence,neutral,"hotel,A1",,,FALSE
-I have a reservation for two nights.,Ich habe eine Reservierung für zwei Nächte.,,,sentence,neutral,"hotel,A1",,,FALSE
-Do you have a room available?,Haben Sie ein Zimmer frei?,,,sentence,polite,"hotel,A1",,,FALSE
-How much is a room per night?,Was kostet ein Zimmer pro Nacht?,,,sentence,neutral,"hotel,A1",,,FALSE
-Where is my room?,Wo ist mein Zimmer?,,,sentence,neutral,"hotel,A1",,,FALSE
-The air conditioning isn't working.,Die Klimaanlage funktioniert nicht.,,,sentence,neutral,"hotel,problems,A1",,,FALSE
-The heating isn't working.,Die Heizung funktioniert nicht.,,,sentence,neutral,"hotel,problems,A1",,,FALSE
-The Wi-Fi isn't working.,Das WLAN funktioniert nicht.,,,sentence,neutral,"hotel,problems,A1",,,FALSE
-What is the Wi-Fi password?,Was ist das WLAN-Passwort?,,,sentence,neutral,"hotel,A1",,,FALSE
-Do you have a charger?,Haben Sie ein Ladekabel?,,,sentence,neutral,"hotel,basics,A1",,,FALSE
-I need a towel.,Ich brauche ein Handtuch.,,,sentence,neutral,"hotel,A1",,,FALSE
-At what time is check-out?,Um wie viel Uhr ist der Check-out?,,,sentence,neutral,"hotel,A1",,,FALSE
-What time is it?,Wie spät ist es?,,,sentence,neutral,"time,A1",,Wie viel Uhr ist es?,FALSE
-It's two o'clock.,Es ist zwei Uhr.,,,sentence,neutral,"time,A1",,,FALSE
-It's half past three.,Es ist halb vier.,,,sentence,neutral,"time,A1",'Halb vier' means 3:30 — literally 'half to four'. Common source of confusion.,,FALSE
-It's quarter past five.,Es ist Viertel nach fünf.,,,sentence,neutral,"time,A1",,,FALSE
-It's quarter to six.,Es ist Viertel vor sechs.,,,sentence,neutral,"time,A1",,,FALSE
-In the morning,morgens,,,phrase,neutral,"time,A1",,am Morgen,FALSE
-In the afternoon,nachmittags,,,phrase,neutral,"time,A1",,am Nachmittag,FALSE
-In the evening,abends,,,phrase,neutral,"time,A1",,am Abend,FALSE
-At night,nachts,,,phrase,neutral,"time,A1",,,FALSE
-Today,heute,,,phrase,neutral,"time,A1",,,FALSE
-Tomorrow,morgen,,,phrase,neutral,"time,A1",,,FALSE
-Yesterday,gestern,,,phrase,neutral,"time,A1",,,FALSE
-Now,jetzt,,,phrase,neutral,"time,A1",,,FALSE
-Soon,bald,,,phrase,neutral,"time,A1",,,FALSE
-Later,später,,,phrase,neutral,"time,A1",,,FALSE
-Monday,Montag,der,Montage,noun,neutral,"time,days,A1",,,TRUE
-Tuesday,Dienstag,der,Dienstage,noun,neutral,"time,days,A1",,,TRUE
-Wednesday,Mittwoch,der,Mittwoche,noun,neutral,"time,days,A1",,,TRUE
-Thursday,Donnerstag,der,Donnerstage,noun,neutral,"time,days,A1",,,TRUE
-Friday,Freitag,der,Freitage,noun,neutral,"time,days,A1",,,TRUE
-Saturday,Samstag,der,Samstage,noun,neutral,"time,days,A1",,Sonnabend (northern Germany),TRUE
-Sunday,Sonntag,der,Sonntage,noun,neutral,"time,days,A1",,,TRUE
-January,Januar,der,,noun,neutral,"time,months,A1",,,TRUE
-February,Februar,der,,noun,neutral,"time,months,A1",,,TRUE
-March,März,der,,noun,neutral,"time,months,A1",,,TRUE
-April,April,der,,noun,neutral,"time,months,A1",,,TRUE
-May,Mai,der,,noun,neutral,"time,months,A1",,,TRUE
-June,Juni,der,,noun,neutral,"time,months,A1",,,TRUE
-July,Juli,der,,noun,neutral,"time,months,A1",,,TRUE
-August,August,der,,noun,neutral,"time,months,A1",,,TRUE
-September,September,der,,noun,neutral,"time,months,A1",,,TRUE
-October,Oktober,der,,noun,neutral,"time,months,A1",,,TRUE
-November,November,der,,noun,neutral,"time,months,A1",,,TRUE
-December,Dezember,der,,noun,neutral,"time,months,A1",,,TRUE
-Zero,null,,,phrase,neutral,"numbers,A1",,,FALSE
-One,eins,,,phrase,neutral,"numbers,A1",In compounds: 'ein-' e.g. 'einmal'.,,FALSE
-Two,zwei,,,phrase,neutral,"numbers,A1",,,FALSE
-Three,drei,,,phrase,neutral,"numbers,A1",,,FALSE
-Four,vier,,,phrase,neutral,"numbers,A1",,,FALSE
-Five,fünf,,,phrase,neutral,"numbers,A1",,,FALSE
-Six,sechs,,,phrase,neutral,"numbers,A1",,,FALSE
-Seven,sieben,,,phrase,neutral,"numbers,A1",,,FALSE
-Eight,acht,,,phrase,neutral,"numbers,A1",,,FALSE
-Nine,neun,,,phrase,neutral,"numbers,A1",,,FALSE
-Ten,zehn,,,phrase,neutral,"numbers,A1",,,FALSE
-Eleven,elf,,,phrase,neutral,"numbers,A1",,,FALSE
-Twelve,zwölf,,,phrase,neutral,"numbers,A1",,,FALSE
-Twenty,zwanzig,,,phrase,neutral,"numbers,A1",,,FALSE
-Thirty,dreißig,,,phrase,neutral,"numbers,A1",Note the ß — not dreissig.,,FALSE
-Fifty,fünfzig,,,phrase,neutral,"numbers,A1",,,FALSE
-One hundred,hundert,,,phrase,neutral,"numbers,A1",,einhundert,FALSE
-One thousand,tausend,,,phrase,neutral,"numbers,A1",,eintausend,FALSE
-My flight is delayed.,Mein Flug hat Verspätung.,,,sentence,neutral,"airport,problems,A1",,,FALSE
-My luggage is missing.,Mein Gepäck fehlt.,,,sentence,neutral,"airport,problems,A1",,Mein Koffer ist weg.,FALSE
-Where is baggage claim?,Wo ist die Gepäckausgabe?,,,sentence,neutral,"airport,A1",,,FALSE
-Where is the gate?,Wo ist das Gate?,,,sentence,neutral,"airport,A1",,,FALSE
-Boarding pass,die Bordkarte,die,Bordkarten,noun,neutral,"airport,A1",,,TRUE
-Passport,der Reisepass,der,Reisepässe,noun,neutral,"airport,A1",,,TRUE
-Luggage / baggage,das Gepäck,das,,noun,neutral,"airport,travel,A1",Usually uncountable in German.,,TRUE
-Carry-on bag,das Handgepäck,das,,noun,neutral,"airport,A1",,,TRUE
-Departure,die Abfahrt,die,Abfahrten,noun,neutral,"transport,A1",Used for trains/buses. 'Abflug' for flights.,,TRUE
-Arrival,die Ankunft,die,Ankünfte,noun,neutral,"transport,A1",,,TRUE
-Flight,der Flug,der,Flüge,noun,neutral,"airport,A1",,,TRUE
-Train,der Zug,der,Züge,noun,neutral,"transport,A1",,,TRUE
-Bus,der Bus,der,Busse,noun,neutral,"transport,A1",,,TRUE
-Tram,die Straßenbahn,die,Straßenbahnen,noun,neutral,"transport,A1",,,TRUE
-Underground / metro,die U-Bahn,die,U-Bahnen,noun,neutral,"transport,A1",Short for Untergrundbahn.,,TRUE
-Taxi,das Taxi,das,Taxis,noun,neutral,"transport,A1",,,TRUE
-Station,der Bahnhof,der,Bahnhöfe,noun,neutral,"transport,A1",,,TRUE
-Platform,das Gleis,das,Gleise,noun,neutral,"transport,A1",,,TRUE
-Ticket,die Fahrkarte,die,Fahrkarten,noun,neutral,"transport,A1",,das Ticket,TRUE
-Timetable / schedule,der Fahrplan,der,Fahrpläne,noun,neutral,"transport,A1",,,TRUE
-Delay,die Verspätung,die,Verspätungen,noun,neutral,"transport,problems,A1",,,TRUE
-Connection,der Anschluss,der,Anschlüsse,noun,neutral,"transport,A1",e.g. 'Ich verpasse meinen Anschluss.' — I'm missing my connection.,,TRUE
-Hotel,das Hotel,das,Hotels,noun,neutral,"hotel,A1",,,TRUE
-Room,das Zimmer,das,Zimmer,noun,neutral,"hotel,A1",,,TRUE
-Key,der Schlüssel,der,Schlüssel,noun,neutral,"hotel,A1",,,TRUE
-Breakfast,das Frühstück,das,Frühstücke,noun,neutral,"food,hotel,A1",,,TRUE
-Bathroom,das Bad,das,Bäder,noun,neutral,"hotel,A1",,das Badezimmer,TRUE
-Shower,die Dusche,die,Duschen,noun,neutral,"hotel,A1",,,TRUE
-Towel,das Handtuch,das,Handtücher,noun,neutral,"hotel,A1",,,TRUE
-Reception,die Rezeption,die,Rezeptionen,noun,neutral,"hotel,A1",,,TRUE
-I don't feel well.,Mir geht es nicht gut.,,,sentence,neutral,"health,A1",,,FALSE
-I have a headache.,Ich habe Kopfschmerzen.,,,sentence,neutral,"health,A1",Kopfschmerzen is plural in German.,,FALSE
-I have a stomachache.,Ich habe Bauchschmerzen.,,,sentence,neutral,"health,A1",,,FALSE
-I have a fever.,Ich habe Fieber.,,,sentence,neutral,"health,A1",,,FALSE
-I need a doctor.,Ich brauche einen Arzt.,,,sentence,neutral,"health,A1",,Ich brauche medizinische Hilfe.,FALSE
-Where is the nearest pharmacy?,Wo ist die nächste Apotheke?,,,sentence,neutral,"health,A1",,,FALSE
-Do you have something for a headache?,Haben Sie etwas gegen Kopfschmerzen?,,,sentence,neutral,"health,pharmacy,A1",,,FALSE
-I need a prescription.,Ich brauche ein Rezept.,,,sentence,neutral,"health,pharmacy,A1",,,FALSE
-I am diabetic.,Ich bin Diabetiker / Diabetikerin.,,,sentence,neutral,"health,A1",,,FALSE
-I take this medication.,Ich nehme dieses Medikament.,,,sentence,neutral,"health,pharmacy,A1",,,FALSE
-Pharmacy,die Apotheke,die,Apotheken,noun,neutral,"health,A1",In Germany pharmacies are marked with a red A.,,TRUE
-Doctor,der Arzt / die Ärztin,der,,noun,neutral,"health,A1",Der Arzt (m) / die Ärztin (f).,,TRUE
-Hospital,das Krankenhaus,das,Krankenhäuser,noun,neutral,"health,A1",,,TRUE
-Medicine / medication,das Medikament,das,Medikamente,noun,neutral,"health,A1",,,TRUE
-Pain,der Schmerz,der,Schmerzen,noun,neutral,"health,A1",Usually used in plural: 'Schmerzen'.,,TRUE
-Allergy,die Allergie,die,Allergien,noun,neutral,"health,A1",,,TRUE
-Good,gut,,,phrase,neutral,"opinions,A1",,,FALSE
-Bad,schlecht,,,phrase,neutral,"opinions,A1",,,FALSE
-Very good,sehr gut,,,phrase,neutral,"opinions,A1",,,FALSE
-Great / fantastic,super,,,phrase,casual,"opinions,A1",,toll | wunderbar,FALSE
-Terrible,schrecklich,,,phrase,neutral,"opinions,A1",,furchtbar,FALSE
-Enough,genug,,,phrase,neutral,"opinions,A1",,,FALSE
-Too much,zu viel,,,phrase,neutral,"opinions,A1",,,FALSE
-Too expensive,zu teuer,,,phrase,neutral,"opinions,shopping,A1",,,FALSE
-Too small,zu klein,,,phrase,neutral,"opinions,shopping,A1",,,FALSE
-Too big,zu groß,,,phrase,neutral,"opinions,shopping,A1",,,FALSE
-Not enough,nicht genug,,,phrase,neutral,"opinions,A1",,,FALSE
-I like it.,Es gefällt mir.,,,sentence,neutral,"opinions,A1",,,FALSE
-I don't like it.,Es gefällt mir nicht.,,,sentence,neutral,"opinions,A1",,,FALSE
-I like that very much.,Das gefällt mir sehr gut.,,,sentence,neutral,"opinions,A1",,,FALSE
-That's fine / OK.,Das passt.,,,phrase,casual,"opinions,A1",Very natural in everyday German.,,FALSE
-Exactly!,Genau!,,,phrase,neutral,"opinions,A1",Extremely common agreement word.,,FALSE
-Of course!,Natürlich!,,,phrase,neutral,"opinions,A1",,Selbstverständlich!,FALSE
-Not really.,Nicht wirklich.,,,phrase,neutral,"opinions,A1",,,FALSE
-I don't know.,Ich weiß nicht.,,,sentence,neutral,"basics,A1",,,FALSE
-Maybe,vielleicht,,,phrase,neutral,"basics,A1",,,FALSE
-I think so.,Ich glaube schon.,,,sentence,neutral,"basics,A1",,,FALSE
-I don't think so.,Ich glaube nicht.,,,sentence,neutral,"basics,A1",,,FALSE
-Water,das Wasser,das,,noun,neutral,"food,drinks,A1",Usually uncountable.,,TRUE
-Coffee,der Kaffee,der,Kaffees,noun,neutral,"food,drinks,A1",,,TRUE
-Tea,der Tee,der,Tees,noun,neutral,"food,drinks,A1",,,TRUE
-Beer,das Bier,das,Biere,noun,neutral,"food,drinks,A1",,,TRUE
-Wine,der Wein,der,Weine,noun,neutral,"food,drinks,A1",,,TRUE
-Juice,der Saft,der,Säfte,noun,neutral,"food,drinks,A1",,,TRUE
-Milk,die Milch,die,,noun,neutral,"food,drinks,A1",Usually uncountable.,,TRUE
-Bread,das Brot,das,Brote,noun,neutral,"food,A1",,,TRUE
-Butter,die Butter,die,,noun,neutral,"food,A1",Usually uncountable.,,TRUE
-Cheese,der Käse,der,Käse,noun,neutral,"food,A1",,,TRUE
-Ham,der Schinken,der,Schinken,noun,neutral,"food,A1",,,TRUE
-Egg,das Ei,das,Eier,noun,neutral,"food,A1",,,TRUE
-Soup,die Suppe,die,Suppen,noun,neutral,"food,restaurant,A1",,,TRUE
-Salad,der Salat,der,Salate,noun,neutral,"food,restaurant,A1",,,TRUE
-Meat,das Fleisch,das,,noun,neutral,"food,A1",Usually uncountable.,,TRUE
-Fish,der Fisch,der,Fische,noun,neutral,"food,A1",,,TRUE
-Vegetable,das Gemüse,das,,noun,neutral,"food,A1",Usually uncountable.,,TRUE
-Fruit,das Obst,das,,noun,neutral,"food,A1",Usually uncountable.,,TRUE
-Dessert,die Nachspeise,die,Nachspeisen,noun,neutral,"food,restaurant,A1",,das Dessert,TRUE
-Salt,das Salz,das,,noun,neutral,"food,A1",Usually uncountable.,,TRUE
-Pepper (spice),der Pfeffer,der,,noun,neutral,"food,A1",Usually uncountable.,,TRUE
-Sugar,der Zucker,der,,noun,neutral,"food,A1",Usually uncountable.,,TRUE
-The food is cold.,Das Essen ist kalt.,,,sentence,neutral,"restaurant,problems,A1",,,FALSE
-This isn't what I ordered.,Das habe ich nicht bestellt.,,,sentence,neutral,"restaurant,problems,A1",,,FALSE
-I'm a bit late.,Ich bin ein bisschen spät dran.,,,sentence,casual,"problems,A1",,,FALSE
-I've missed my train.,Ich habe meinen Zug verpasst.,,,sentence,neutral,"transport,problems,A1",,,FALSE
-Something is broken.,Etwas ist kaputt.,,,sentence,neutral,"problems,A1",,,FALSE
-It doesn't work.,Es funktioniert nicht.,,,sentence,neutral,"problems,A1",,Es geht nicht.,FALSE
-My phone is dead.,Mein Handy hat keinen Akku mehr.,,,sentence,casual,"problems,A1",Literally 'my phone has no battery left'.,,FALSE
-I've lost my wallet.,Ich habe meine Geldbörse verloren.,,,sentence,neutral,"problems,A1",,Mein Portemonnaie ist weg.,FALSE
-I've lost my passport.,Ich habe meinen Reisepass verloren.,,,sentence,neutral,"problems,emergency,A1",,,FALSE
-My bag has been stolen.,Meine Tasche wurde gestohlen.,,,sentence,neutral,"problems,emergency,A1",,,FALSE
-Where is the police station?,Wo ist die Polizeiwache?,,,sentence,neutral,"emergency,A1",,,FALSE
-I need to make a phone call.,Ich muss telefonieren.,,,sentence,neutral,"basics,A1",,,FALSE
-Can I borrow your phone?,Kann ich kurz Ihr Handy benutzen?,,,sentence,polite,"basics,A1",Use 'dein' informally.,,FALSE
-Do you have Wi-Fi?,Haben Sie WLAN?,,,sentence,neutral,"basics,hotel,A1",,,FALSE
-I would like to book a room.,Ich möchte ein Zimmer buchen.,,,sentence,polite,"hotel,A1",,,FALSE
-For how many nights?,Für wie viele Nächte?,,,sentence,neutral,"hotel,A1",,,FALSE
-With breakfast?,Mit Frühstück?,,,sentence,neutral,"hotel,A1",,,FALSE
-Where can I park?,Wo kann ich parken?,,,sentence,neutral,"transport,A1",,,FALSE
-Is parking free?,Ist das Parken kostenlos?,,,sentence,neutral,"transport,A1",,,FALSE
-I'd like to rent a car.,Ich möchte ein Auto mieten.,,,sentence,neutral,"transport,A1",,,FALSE
-How much per day?,Wie viel pro Tag?,,,sentence,neutral,"transport,shopping,A1",,,FALSE
-Near here,hier in der Nähe,,,phrase,neutral,"directions,A1",,,FALSE
-Straight on for 200 metres.,Zweihundert Meter geradeaus.,,,sentence,neutral,"directions,A1",,,FALSE
-At the corner,an der Ecke,,,chunk,neutral,"directions,A1",,,FALSE
-Opposite,gegenüber,,,phrase,neutral,"directions,A1",,,FALSE
-Next to,neben,,,phrase,neutral,"directions,A1",Takes dative: 'neben dem Hotel'.,,FALSE
-Behind,hinter,,,phrase,neutral,"directions,A1",Takes dative in location context.,,FALSE
-In front of,vor,,,phrase,neutral,"directions,A1",Takes dative in location context.,,FALSE
-Between,zwischen,,,phrase,neutral,"directions,A1",Takes dative: 'zwischen dem Bahnhof und…',,FALSE
-Street,die Straße,die,Straßen,noun,neutral,"directions,A1",,,TRUE
-Square (town square),der Platz,der,Plätze,noun,neutral,"directions,A1",,,TRUE
-Bridge,die Brücke,die,Brücken,noun,neutral,"directions,A1",,,TRUE
-Church,die Kirche,die,Kirchen,noun,neutral,"directions,A1",,,TRUE
-Museum,das Museum,das,Museen,noun,neutral,"directions,travel,A1",,,TRUE
-Park,der Park,der,Parks,noun,neutral,"directions,A1",,,TRUE
-Supermarket,der Supermarkt,der,Supermärkte,noun,neutral,"shopping,A1",,,TRUE
-Bakery,die Bäckerei,die,Bäckereien,noun,neutral,"shopping,food,A1",,,TRUE
-Bank,die Bank,die,Banken,noun,neutral,"basics,A1",,,TRUE
-ATM / cash machine,der Geldautomat,der,Geldautomaten,noun,neutral,"basics,A1",,,TRUE
-Post office,die Post,die,,noun,neutral,"basics,A1",,das Postamt,TRUE
-Shop / store,das Geschäft,das,Geschäfte,noun,neutral,"shopping,A1",,der Laden,TRUE
-Market,der Markt,der,Märkte,noun,neutral,"shopping,A1",,,TRUE
-When does it open?,Wann öffnet es?,,,sentence,neutral,"shopping,A1",,Wann macht es auf?,FALSE
-When does it close?,Wann schließt es?,,,sentence,neutral,"shopping,A1",,Wann macht es zu?,FALSE
-Is it open on Sunday?,Ist es sonntags geöffnet?,,,sentence,neutral,"shopping,A1",,,FALSE
-Do you have…?,Haben Sie …?,,,pattern,neutral,"shopping,basics,A1",Core question pattern.,,FALSE
-I'm looking for…,Ich suche …,,,pattern,neutral,"shopping,A1",,,FALSE
-Where can I find…?,Wo finde ich …?,,,pattern,neutral,"shopping,directions,A1",,,FALSE
-What floor is it on?,In welchem Stock ist das?,,,sentence,neutral,"shopping,A1",,In welcher Etage?,FALSE
-It's on the ground floor.,Es ist im Erdgeschoss.,,,sentence,neutral,"shopping,A1",'Erdgeschoss' = ground floor (0 in Germany). First floor = 'erstes Obergeschoss'.,,FALSE
-Can I try this on?,Kann ich das anprobieren?,,,sentence,neutral,"shopping,A1",,,FALSE
-It doesn't fit.,Es passt nicht.,,,sentence,neutral,"shopping,A1",,,FALSE
-Do you have a bag?,Haben Sie eine Tüte?,,,sentence,neutral,"shopping,A1",,,FALSE
-Receipt,die Quittung,die,Quittungen,noun,neutral,"shopping,paying,A1",,der Kassenbon,TRUE
-Price,der Preis,der,Preise,noun,neutral,"shopping,A1",,,TRUE
-Discount,der Rabatt,der,Rabatte,noun,neutral,"shopping,A1",,,TRUE
-Sale / special offer,das Angebot,das,Angebote,noun,neutral,"shopping,A1",,,TRUE
-Cash,das Bargeld,das,,noun,neutral,"paying,A1",,,TRUE
-Card (payment),die Karte,die,Karten,noun,neutral,"paying,A1",Short for Bankkarte or Kreditkarte.,,TRUE
-Change (coins),das Wechselgeld,das,,noun,neutral,"paying,A1",,,TRUE
-I would like the check please.,Die Rechnung bitte.,,,sentence,polite,"restaurant,paying,A1",Standard phrase at a restaurant.,,FALSE
-Do we pay separately?,Zahlen wir getrennt?,,,sentence,neutral,"restaurant,paying,A1",Very common question between friends.,,FALSE
-Together please.,Zusammen bitte.,,,sentence,neutral,"restaurant,paying,A1",,,FALSE
-Is service included?,Ist die Bedienung inbegriffen?,,,sentence,neutral,"restaurant,paying,A1",Tipping is expected in Germany but not compulsory.,,FALSE
-I'll pay.,Ich zahle.,,,sentence,neutral,"restaurant,paying,A1",,Ich bezahle.,FALSE
-To eat in or take away?,Hier essen oder mitnehmen?,,,sentence,neutral,"food,A1",Common question in fast food or cafes.,,FALSE
-For here.,Hier.,,,phrase,neutral,"food,A1",,Zum Hieressen.,FALSE
-To take away.,Zum Mitnehmen.,,,phrase,neutral,"food,A1",,,FALSE
-Excuse me! (to call a waiter),Entschuldigung!,,,phrase,neutral,"restaurant,A1",Same word as 'sorry' — context makes it clear.,,FALSE
-Waiter / waitress,der Kellner / die Kellnerin,der,,noun,neutral,"restaurant,A1",,,TRUE
-Warm / hot,warm,,,phrase,neutral,"food,A1",,heiß (very hot),FALSE
-Cold,kalt,,,phrase,neutral,"food,A1",,,FALSE
-Spicy,scharf,,,phrase,neutral,"food,A1",Also means 'sharp' or 'hot' (spice).,,FALSE
-Sweet,süß,,,phrase,neutral,"food,A1",,,FALSE
-Sour,sauer,,,phrase,neutral,"food,A1",,,FALSE
-Salty,salzig,,,phrase,neutral,"food,A1",,,FALSE
-Without,ohne,,,phrase,neutral,"food,basics,A1",Takes accusative: 'ohne Milch'.,,FALSE
-With,mit,,,phrase,neutral,"food,basics,A1",Takes dative: 'mit Milch'.,,FALSE
-I have a question.,Ich habe eine Frage.,,,sentence,neutral,"basics,A1",,,FALSE
-One moment please.,Einen Moment bitte.,,,phrase,polite,"basics,A1",,Einen Augenblick bitte.,FALSE
-I'll be right back.,Ich bin gleich zurück.,,,sentence,casual,"basics,A1",,,FALSE
-Where exactly?,Wo genau?,,,sentence,neutral,"directions,A1",,,FALSE
-Can you write that down?,Können Sie das aufschreiben?,,,sentence,polite,"basics,A1",Useful when you can't catch spoken directions.,,FALSE
-Can you show me on the map?,Können Sie es mir auf der Karte zeigen?,,,sentence,polite,"directions,A1",,,FALSE
-I am in a hurry.,Ich habe es eilig.,,,sentence,neutral,"basics,A1",,,FALSE
-Is it far from here?,Ist es weit von hier?,,,sentence,neutral,"directions,A1",,,FALSE
-How long does it take?,Wie lange dauert es?,,,sentence,neutral,"transport,A1",,,FALSE
-About ten minutes.,Ungefähr zehn Minuten.,,,phrase,neutral,"time,A1",,Etwa zehn Minuten.,FALSE
-Half an hour,eine halbe Stunde,,,phrase,neutral,"time,A1",,,FALSE
-An hour,eine Stunde,,,phrase,neutral,"time,A1",,,FALSE
-A day,ein Tag,,,phrase,neutral,"time,A1",,,FALSE
-A week,eine Woche,,,phrase,neutral,"time,A1",,,FALSE
-Next week,nächste Woche,,,phrase,neutral,"time,A1",,,FALSE
-Last week,letzte Woche,,,phrase,neutral,"time,A1",,,FALSE
-This week,diese Woche,,,phrase,neutral,"time,A1",,,FALSE
-In the morning (at 9am),um neun Uhr morgens,,,phrase,neutral,"time,A1",,,FALSE
-At midday,um zwölf Uhr mittags,,,phrase,neutral,"time,A1",,zu Mittag,FALSE
-At midnight,um Mitternacht,,,phrase,neutral,"time,A1",,,FALSE
-Open,geöffnet,,,phrase,neutral,"basics,A1",,offen,FALSE
-Closed,geschlossen,,,phrase,neutral,"basics,A1",,zu,FALSE
-Free (no charge),kostenlos,,,phrase,neutral,"basics,A1",,gratis | umsonst,FALSE
-Included,inbegriffen,,,phrase,neutral,"basics,hotel,A1",,inklusive,FALSE
-Required / necessary,notwendig,,,phrase,neutral,"basics,A1",,nötig,FALSE
-Left,links,,,phrase,neutral,"directions,A1",,,FALSE
-Right,rechts,,,phrase,neutral,"directions,A1",,,FALSE
-Straight ahead,geradeaus,,,phrase,neutral,"directions,A1",,,FALSE
-Up,oben,,,phrase,neutral,"directions,A1",,,FALSE
-Down,unten,,,phrase,neutral,"directions,A1",,,FALSE
-Here,hier,,,phrase,neutral,"basics,A1",,,FALSE
-There,da,,,phrase,neutral,"basics,A1",,dort,FALSE
-Near,nah,,,phrase,neutral,"directions,A1",,in der Nähe,FALSE
-Far,weit,,,phrase,neutral,"directions,A1",,,FALSE
-I don't speak German well.,Ich spreche nicht gut Deutsch.,,,sentence,neutral,"help,A1",,,FALSE
-Is there anyone who speaks English?,Spricht hier jemand Englisch?,,,sentence,neutral,"help,A1",,,FALSE
-Could you speak more slowly?,Könnten Sie bitte langsamer sprechen?,,,sentence,polite,"help,A1",Slightly more polite than 'Können Sie'.,,FALSE
-I didn't understand that.,Das habe ich nicht verstanden.,,,sentence,neutral,"help,A1",,,FALSE
-What did you say?,Was haben Sie gesagt?,,,sentence,neutral,"help,A1",,Wie bitte?,FALSE
-Pardon? / Sorry?,Wie bitte?,,,phrase,polite,"help,A1",The standard polite way to ask for repetition.,,FALSE
-Can you write it down?,Können Sie das aufschreiben?,,,sentence,polite,"help,A1",,,FALSE
-I understand.,Ich verstehe.,,,sentence,neutral,"basics,A1",,,FALSE
-I understand a little.,Ich verstehe ein bisschen.,,,sentence,neutral,"basics,A1",,,FALSE
-I don't speak German.,Ich spreche kein Deutsch.,,,sentence,neutral,"help,A1",,,FALSE
-Man,der Mann,der,Männer,noun,neutral,"basics,A1",,,TRUE
-Woman,die Frau,die,Frauen,noun,neutral,"basics,A1",Also means 'Mrs'.,,TRUE
-Child,das Kind,das,Kinder,noun,neutral,"basics,A1",,,TRUE
-Friend,der Freund / die Freundin,der,Freunde,noun,neutral,"basics,A1",Also means 'boyfriend / girlfriend' depending on context.,,TRUE
-Family,die Familie,die,Familien,noun,neutral,"basics,A1",,,TRUE
-Name,der Name,der,Namen,noun,neutral,"basics,A1",,,TRUE
-Address,die Adresse,die,Adressen,noun,neutral,"basics,A1",,,TRUE
-Telephone number,die Telefonnummer,die,Telefonnummern,noun,neutral,"basics,A1",,,TRUE
-Email address,die E-Mail-Adresse,die,E-Mail-Adressen,noun,neutral,"basics,A1",,,TRUE
-Country,das Land,das,Länder,noun,neutral,"basics,A1",,,TRUE
-City,die Stadt,die,Städte,noun,neutral,"basics,A1",,,TRUE
-I want to go to…,Ich möchte nach … fahren.,,,pattern,neutral,"transport,A1",Use 'nach' before city/country names.,,FALSE
-to speak,sprechen,,,verb,neutral,"basics,A1",,,FALSE
-to understand,verstehen,,,verb,neutral,"basics,A1",,,FALSE
-to have,haben,,,verb,neutral,"basics,A1",Core verb for expressing possession and need.,,FALSE
-to be,sein,,,verb,neutral,"basics,A1",Highly irregular; essential.,,FALSE
-to go (on foot),gehen,,,verb,neutral,"transport,basics,A1",,,FALSE
-to drive / travel by vehicle,fahren,,,verb,neutral,"transport,A1",,,FALSE
-to come,kommen,,,verb,neutral,"basics,A1",,,FALSE
-to need,brauchen,,,verb,neutral,"basics,A1",,,FALSE
-to want,wollen,,,verb,neutral,"basics,A1",Modal verb.,,FALSE
-to be able to / can,können,,,verb,neutral,"basics,A1",Modal verb; essential for polite requests.,,FALSE
-to pay,zahlen,,,verb,neutral,"paying,A1",,bezahlen,FALSE
-to order,bestellen,,,verb,neutral,"restaurant,A1",,,FALSE
-to book / reserve,buchen,,,verb,neutral,"hotel,transport,A1",,,FALSE
-to buy,kaufen,,,verb,neutral,"shopping,A1",,,FALSE
-to find,finden,,,verb,neutral,"basics,A1",,,FALSE
-to look for,suchen,,,verb,neutral,"basics,A1",,,FALSE
-to take,nehmen,,,verb,neutral,"basics,A1",,,FALSE
-to eat,essen,,,verb,neutral,"food,A1",Irregular: ich esse du isst er isst.,,FALSE
-to drink,trinken,,,verb,neutral,"food,A1",,,FALSE
-to sleep,schlafen,,,verb,neutral,"hotel,A1",,,FALSE
-to arrive,ankommen,,,verb,neutral,"transport,A1",Separable verb: 'ich komme … an'.,,FALSE
-to depart / leave,abfahren,,,verb,neutral,"transport,A1",Separable: 'der Zug fährt ab'.,,FALSE
-to repeat,wiederholen,,,verb,neutral,"help,A1",,nochmal sagen,FALSE
-to show,zeigen,,,verb,neutral,"basics,A1",,,FALSE
-to help,helfen,,,verb,neutral,"basics,A1",Takes dative: 'Können Sie mir helfen?',,FALSE
-to call (phone),anrufen,,,verb,neutral,"basics,A1",Separable: 'ich rufe … an'.,,FALSE
-to wait,warten,,,verb,neutral,"transport,basics,A1",,,FALSE
-to change (trains),umsteigen,,,verb,neutral,"transport,A1",Separable: 'ich steige … um'. Do I need to change? = 'Muss ich umsteigen?',,FALSE
-Do I need to change?,Muss ich umsteigen?,,,sentence,neutral,"transport,A1",,,FALSE
-How many stops?,Wie viele Haltestellen?,,,sentence,neutral,"transport,A1",,,FALSE
-Stop (bus/tram),die Haltestelle,die,Haltestellen,noun,neutral,"transport,A1",,,TRUE
-Are you open now?,Haben Sie jetzt geöffnet?,,,sentence,neutral,"shopping,A1",,,FALSE
+english,target,article,plural,type,register,tags,note,alternatives,article_prompt,level,example_en,example_target
+hello / good day,Guten Tag,,,phrase,neutral,a1;survival;greeting,,Hallo|Guten Morgen|Guten Abend,false,A1,,
+goodbye,Auf Wiedersehen,,,phrase,neutral,a1;survival;greeting,,Tschüss|Bis später,false,A1,,
+please,bitte,,,phrase,neutral,a1;politeness,,,false,A1,,
+thank you,danke,,,phrase,neutral,a1;politeness,,Vielen Dank|Danke schön,false,A1,,
+you are welcome,gern geschehen,,,phrase,neutral,a1;politeness,,Bitte schön|Kein Problem,false,A1,,
+excuse me / sorry,Entschuldigung,,,phrase,neutral,a1;politeness,,Tut mir leid,false,A1,,
+yes,ja,,,phrase,neutral,a1;basic,,,false,A1,,
+no,nein,,,phrase,neutral,a1;basic,,,false,A1,,
+maybe,vielleicht,,,phrase,neutral,a1;basic,,,false,A1,,
+I do not understand.,Ich verstehe nicht.,,,sentence,neutral,a1;survival,,,false,A1,,
+"Could you repeat that, please?",Könnten Sie das bitte wiederholen?,,,sentence,formal,a1;survival,,Kannst du das bitte wiederholen?,false,A2,,
+Do you speak English?,Sprechen Sie Englisch?,,,sentence,formal,a1;survival,,Sprichst du Englisch?,false,A1,,
+I speak a little German.,Ich spreche ein bisschen Deutsch.,,,sentence,neutral,a1;survival,,,false,A1,,
+I am learning German.,Ich lerne Deutsch.,,,sentence,neutral,a1;survival,,,false,A1,,
+I am from Hungary.,Ich komme aus Ungarn.,,,sentence,neutral,a1;intro,,,false,A1,,
+My name is Oliver.,Ich heiße Oliver.,,,sentence,neutral,a1;intro,,,false,A1,,
+Nice to meet you.,Freut mich.,,,phrase,neutral,a1;intro,,Sehr erfreut,false,A1,,
+How are you?,Wie geht es Ihnen?,,,sentence,formal,a1;smalltalk,,Wie geht es dir?,false,A1,,
+"I am fine, thanks.","Mir geht es gut, danke.",,,sentence,neutral,a1;smalltalk,,,false,A1,,
+Where is the station?,Wo ist der Bahnhof?,,,sentence,neutral,a1;travel,,,false,A1,,
+Where is the toilet?,Wo ist die Toilette?,,,sentence,neutral,a1;travel,,,false,A1,,
+Where is the exit?,Wo ist der Ausgang?,,,sentence,neutral,a1;travel,,,false,A1,,
+Where is the entrance?,Wo ist der Eingang?,,,sentence,neutral,a1;travel,,,false,A1,,
+I am looking for this address.,Ich suche diese Adresse.,,,sentence,neutral,a1;travel,,,false,A1,,
+Can you help me?,Können Sie mir helfen?,,,sentence,formal,a1;survival,,Kannst du mir helfen?,false,A1,,
+How much does it cost?,Wie viel kostet das?,,,sentence,neutral,a1;shopping,,,false,A1,,
+Can I pay by card?,Kann ich mit Karte zahlen?,,,sentence,neutral,a1;shopping,,,false,A1,,
+Can I pay in cash?,Kann ich bar zahlen?,,,sentence,neutral,a1;shopping,,,false,A1,,
+I would like a coffee.,Ich hätte gern einen Kaffee.,,,sentence,neutral,a1;food,,Ich möchte einen Kaffee.,false,A1,,
+I would like a beer.,Ich hätte gern ein Bier.,,,sentence,neutral,a1;food,,,false,A1,,
+"A table for two, please.","Einen Tisch für zwei, bitte.",,,phrase,neutral,a1;restaurant,,,false,A1,,
+"The bill, please.","Die Rechnung, bitte.",,,phrase,neutral,a1;restaurant,,,false,A1,,
+Is this free?,Ist das frei?,,,sentence,neutral,a1;restaurant;travel,,,false,A1,,
+I have a reservation.,Ich habe eine Reservierung.,,,sentence,neutral,a1;hotel;restaurant,,,false,A1,,
+I need a ticket.,Ich brauche eine Fahrkarte.,,,sentence,neutral,a1;travel,,,false,A1,,
+"One ticket to Berlin, please.","Eine Fahrkarte nach Berlin, bitte.",,,phrase,neutral,a1;travel,,,false,A1,,
+When does the train leave?,Wann fährt der Zug ab?,,,sentence,neutral,a1;travel,,,false,A1,,
+When does it arrive?,Wann kommt er an?,,,sentence,neutral,a1;travel,,,false,A1,,
+I am lost.,Ich habe mich verlaufen.,,,sentence,neutral,a1;travel,,,false,A2,,
+I need a doctor.,Ich brauche einen Arzt.,,,sentence,neutral,a1;emergency,,Ich brauche eine Ärztin.,false,A1,,
+I do not feel well.,Mir geht es nicht gut.,,,sentence,neutral,a1;health,,,false,A1,,
+It hurts here.,Es tut hier weh.,,,sentence,neutral,a1;health,,,false,A1,,
+I am allergic to this.,Ich bin dagegen allergisch.,,,sentence,neutral,a1;health,,,false,A2,,
+I need water.,Ich brauche Wasser.,,,sentence,neutral,a1;food;health,,,false,A1,,
+left,links,,,word,neutral,a1;directions,,,false,A1,,
+right,rechts,,,word,neutral,a1;directions,,,false,A1,,
+straight ahead,geradeaus,,,word,neutral,a1;directions,,,false,A1,,
+nearby,in der Nähe,,,phrase,neutral,a1;directions,,,false,A1,,
+today,heute,,,word,neutral,a1;time,,,false,A1,,
+tomorrow,morgen,,,word,neutral,a1;time,,,false,A1,,
+yesterday,gestern,,,word,neutral,a1;time,,,false,A1,,
+now,jetzt,,,word,neutral,a1;time,,,false,A1,,
+later,später,,,word,neutral,a1;time,,,false,A1,,
+I am in a hurry.,Ich habe es eilig.,,,sentence,neutral,a1;time,,,false,A2,,
+I have time.,Ich habe Zeit.,,,sentence,neutral,a1;time,,,false,A1,,
+No problem.,Kein Problem.,,,phrase,neutral,a1;reaction,,,false,A1,,
+That is okay.,Das ist in Ordnung.,,,phrase,neutral,a1;reaction,,,false,A1,,
+I am sorry.,Es tut mir leid.,,,sentence,neutral,a1;politeness,,,false,A1,,

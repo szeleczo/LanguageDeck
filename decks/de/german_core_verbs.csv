@@ -1,331 +1,49 @@
-english,target,article,plural,type,register,tags,note,alternatives,article_prompt
-to be,sein,,,verb,neutral,"basics,verbs,A1",Highly irregular: ich bin / du bist / er ist / wir sind. Essential.,,FALSE
-I am tired.,Ich bin müde.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-She is at home.,Sie ist zu Hause.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-We are ready.,Wir sind bereit.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-It's not a problem.,Das ist kein Problem.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-to have,haben,,,verb,neutral,"basics,verbs,A1",Irregular: ich habe / du hast / er hat. Used to form past tense.,,FALSE
-I have a question.,Ich habe eine Frage.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-Do you have time?,Hast du Zeit?,,,sentence,casual,"basics,verbs,A1",,Haben Sie Zeit? (formal),FALSE
-I have no idea.,Ich habe keine Ahnung.,,,sentence,casual,"basics,verbs,A1",,,FALSE
-We don't have much time.,Wir haben nicht viel Zeit.,,,sentence,neutral,"basics,verbs,B1",,,FALSE
-to become / will (future),werden,,,verb,neutral,"basics,verbs,A2",Two uses: 1) to become (Er wird Arzt.) 2) future auxiliary (Es wird klappen.).,,FALSE
-It will work out.,Es wird klappen.,,,sentence,casual,"basics,verbs,B1",,,FALSE
-She's becoming a doctor.,Sie wird Ärztin.,,,sentence,neutral,"basics,verbs,A2",,,FALSE
-It's getting late.,Es wird spät.,,,sentence,neutral,"basics,verbs,A2",,,FALSE
-to do / make,machen,,,verb,neutral,"basics,verbs,A1","Very versatile: machen + noun = collocations (einen Vorschlag machen, Pause machen).",,FALSE
-What are you doing?,Was machst du?,,,sentence,casual,"basics,verbs,A1",,Was machen Sie? (formal),FALSE
-Let's take a break.,Lass uns eine Pause machen.,,,sentence,casual,"basics,verbs,A1",,,FALSE
-That makes sense.,Das macht Sinn.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-to make a suggestion,einen Vorschlag machen,,,chunk,neutral,"work,verbs,B1",,,FALSE
-to make progress,Fortschritte machen,,,chunk,neutral,"work,verbs,B1",,,FALSE
-to go (on foot),gehen,,,verb,neutral,"basics,verbs,A1",Use 'fahren' for going by vehicle. Also used: Wie geht es dir? / Es geht mir gut.,,FALSE
-I'm going home.,Ich gehe nach Hause.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-How are you?,Wie geht es Ihnen?,,,sentence,polite,"basics,verbs,A1",,Wie geht's? (casual),FALSE
-I'm fine thanks.,"Es geht mir gut, danke.",,,sentence,neutral,"basics,verbs,A1",,,FALSE
-Shall we go?,Gehen wir?,,,sentence,casual,"basics,verbs,A1",,,FALSE
-to come,kommen,,,verb,neutral,"basics,verbs,A1",Common: kommen aus (to come from). Takes sein in perfect: ich bin gekommen.,,FALSE
-Where do you come from?,Woher kommst du?,,,sentence,casual,"basics,verbs,A1",,Woher kommen Sie? (formal),FALSE
-Are you coming with us?,Kommst du mit?,,,sentence,casual,"basics,verbs,A1",Short form of mitkommen.,,FALSE
-I'm coming right away.,Ich komme gleich.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-Something came up.,Es ist etwas dazwischengekommen.,,,sentence,neutral,"basics,verbs,B1",Common excuse.,Etwas ist aufgekommen.,FALSE
-to stay / remain,bleiben,,,verb,neutral,"basics,verbs,A2",Takes sein in perfect: ich bin geblieben. bleiben + adjective = to stay/remain (bleib ruhig).,,FALSE
-I'm staying here.,Ich bleibe hier.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-Stay calm.,Bleib ruhig.,,,sentence,casual,"basics,verbs,A2",,Bleiben Sie ruhig. (formal),FALSE
-We're staying until Friday.,Wir bleiben bis Freitag.,,,sentence,neutral,"basics,verbs,A2",,,FALSE
-to take,nehmen,,,verb,neutral,"basics,verbs,A1",Irregular: ich nehme / du nimmst / er nimmt.,,FALSE
-I'll take it.,Ich nehme es.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-Take a seat.,Nehmen Sie Platz.,,,sentence,polite,"basics,verbs,A1",,Setzen Sie sich.,FALSE
-I take the train.,Ich nehme den Zug.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-to give,geben,,,verb,neutral,"basics,verbs,A1",Irregular: ich gebe / du gibst / er gibt. Takes dative for recipient: Ich gebe dir…,,FALSE
-Can you give me a moment?,Kannst du mir einen Moment geben?,,,sentence,casual,"basics,verbs,A1",,,FALSE
-It gives me confidence.,Das gibt mir Sicherheit.,,,sentence,neutral,"basics,verbs,B1",,,FALSE
-to find,finden,,,verb,neutral,"basics,verbs,A1",Two meanings: to find (locate) and to find/think (opinion). Ich finde das gut. = I think that's good.,,FALSE
-I can't find it.,Ich kann das nicht finden.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-I find that interesting.,Ich finde das interessant.,,,sentence,neutral,"basics,verbs,A1",,,FALSE
-How do you find it?,Wie findest du das?,,,sentence,casual,"basics,verbs,A1",,Wie finden Sie das?,FALSE
-to be able to / can,können,,,verb,neutral,"modals,verbs,A1",Modal: ich kann / du kannst / er kann. For requests: Könnte ich…? is more polite.,,FALSE
-I can help you.,Ich kann Ihnen helfen.,,,sentence,polite,"modals,verbs,A1",,,FALSE
-Can I ask you something?,Kann ich Sie etwas fragen?,,,sentence,polite,"modals,verbs,A1",,Kann ich dich etwas fragen?,FALSE
-Could you help me?,Könnten Sie mir helfen?,,,sentence,polite,"modals,verbs,B1",Konjunktiv II — more polite than 'Können Sie'.,,FALSE
-I couldn't do it.,Ich konnte es nicht machen.,,,sentence,neutral,"modals,verbs,A2",,,FALSE
-to have to / must,müssen,,,verb,neutral,"modals,verbs,A1",Modal: ich muss / du musst. Negative 'nicht müssen' = don't have to (NOT must not — that's 'dürfen nicht').,,FALSE
-I have to go.,Ich muss gehen.,,,sentence,neutral,"modals,verbs,A1",,,FALSE
-You don't have to do that.,Das musst du nicht machen.,,,sentence,casual,"modals,verbs,A2",'Nicht müssen' = not obligated. Don't confuse with 'nicht dürfen' (not allowed).,,FALSE
-We have to clarify that.,Das müssen wir klären.,,,sentence,neutral,"modals,work,verbs,B1",,,FALSE
-I had to wait a long time.,Ich musste lange warten.,,,sentence,neutral,"modals,verbs,A2",,,FALSE
-to be supposed to / should (external),sollen,,,verb,neutral,"modals,verbs,A2",Expresses an external expectation or instruction: You are supposed to… / They say you should…,,FALSE
-You should call them.,Du sollst sie anrufen.,,,sentence,casual,"modals,verbs,A2",External instruction — someone told you to.,,FALSE
-What am I supposed to do?,Was soll ich machen?,,,sentence,neutral,"modals,verbs,A2",,,FALSE
-That's not how it should be.,Das soll nicht so sein.,,,sentence,neutral,"modals,verbs,B1",,,FALSE
-to be allowed to / may,dürfen,,,verb,neutral,"modals,verbs,A2",Modal: ich darf / du darfst. Negative 'nicht dürfen' = must not / not allowed.,,FALSE
-Am I allowed to park here?,Darf ich hier parken?,,,sentence,neutral,"modals,verbs,A2",,,FALSE
-You are not allowed to smoke here.,Hier darf man nicht rauchen.,,,sentence,neutral,"modals,verbs,A2",'Man' = one / you (general). Very common pattern.,,FALSE
-May I ask?,Darf ich fragen?,,,sentence,polite,"modals,verbs,A2",,,FALSE
-to want to,wollen,,,verb,neutral,"modals,verbs,A1",Modal: ich will / du willst. Note: 'ich will' is direct — use 'ich möchte' for polite requests.,,FALSE
-I want to speak to the manager.,Ich will mit dem Manager sprechen.,,,sentence,neutral,"modals,verbs,A2",,,FALSE
-I wanted to ask you something.,Ich wollte dich etwas fragen.,,,sentence,casual,"modals,verbs,B1",Past tense of wollen — sounds softer and polite.,,FALSE
-What do you want?,Was willst du?,,,sentence,casual,"modals,verbs,A2",,,FALSE
-to like / would like,mögen,,,verb,neutral,"modals,verbs,A1",Möchte (Konjunktiv II) = would like — the polite ordering/request form used everywhere.,,FALSE
-I would like a coffee.,Ich möchte einen Kaffee.,,,sentence,polite,"modals,food,verbs,A1",Möchte is the standard polite form for requests.,,FALSE
-I like this.,Das mag ich.,,,sentence,casual,"modals,verbs,A2",,,FALSE
-I don't like that.,Das mag ich nicht.,,,sentence,casual,"modals,verbs,A2",,Das gefällt mir nicht.,FALSE
-I would like to ask something.,Ich möchte gerne etwas fragen.,,,sentence,polite,"modals,verbs,A2",,Ich hätte gerne…,FALSE
-to think (process),denken,,,verb,neutral,"thinking,verbs,A2",denken an + Acc = to think of/about. denken über + Acc = to think about (form an opinion).,,FALSE
-I have to think about it.,Ich muss darüber nachdenken.,,,sentence,neutral,"thinking,verbs,A2",'Nachdenken' is the separable verb meaning to reflect/think over something.,Ich muss das überdenken.,FALSE
-I was thinking of you.,Ich habe an dich gedacht.,,,sentence,casual,"thinking,emotional,verbs,B1",denken an + Accusative.,Ich habe an Sie gedacht.,FALSE
-What do you think?,Was denkst du?,,,sentence,casual,"thinking,verbs,A2",,Was denken Sie?,FALSE
-to believe / think (opinion),glauben,,,verb,neutral,"thinking,verbs,A2",Expresses belief or opinion. glauben an + Acc = to believe in something. Less certain than 'wissen'.,,FALSE
-I believe so.,Ich glaube schon.,,,sentence,neutral,"thinking,verbs,A2",,,FALSE
-I don't believe that.,Das glaube ich nicht.,,,sentence,neutral,"thinking,verbs,A2",,,FALSE
-Do you believe me?,Glaubst du mir?,,,sentence,casual,"thinking,verbs,B1",glauben + Dative = to believe someone.,Glauben Sie mir?,FALSE
-I believe in you.,Ich glaube an dich.,,,sentence,casual,"thinking,emotional,verbs,B1",glauben an + Accusative.,,FALSE
-to think / be of the opinion,meinen,,,verb,neutral,"thinking,verbs,B1",Expresses an opinion. More direct than 'glauben'. 'Was meinst du?' = What do you mean/think?,,FALSE
-What do you mean?,Was meinst du?,,,sentence,casual,"thinking,verbs,A2",,Was meinen Sie?,FALSE
-I mean it seriously.,Das meine ich ernst.,,,sentence,neutral,"thinking,verbs,B1",,,FALSE
-Do you think that's a good idea?,Meinst du das ist eine gute Idee?,,,sentence,casual,"thinking,verbs,B1",,,FALSE
-to know (a fact),wissen,,,verb,neutral,"thinking,verbs,A2",Irregular: ich weiß / du weißt. For knowing people/places use 'kennen'.,,FALSE
-I don't know.,Ich weiß nicht.,,,sentence,neutral,"thinking,verbs,A1",,,FALSE
-I know that.,Das weiß ich.,,,sentence,neutral,"thinking,verbs,A1",,,FALSE
-I didn't know that.,Das wusste ich nicht.,,,sentence,neutral,"thinking,verbs,A2",,,FALSE
-Do you know where it is?,Weißt du wo das ist?,,,sentence,casual,"thinking,verbs,A2",,Wissen Sie wo das ist?,FALSE
-to understand,verstehen,,,verb,neutral,"thinking,verbs,A1",Irregular past: ich habe verstanden.,,FALSE
-I don't understand.,Ich verstehe nicht.,,,sentence,neutral,"thinking,verbs,A1",,,FALSE
-I misunderstood that.,Ich habe das falsch verstanden.,,,sentence,neutral,"thinking,verbs,A2",,,FALSE
-Do you understand what I mean?,Verstehst du was ich meine?,,,sentence,casual,"thinking,verbs,A2",,,FALSE
-I don't understand the problem.,Ich verstehe das Problem nicht.,,,sentence,neutral,"thinking,verbs,A2",,,FALSE
-to ask,fragen,,,verb,neutral,"thinking,communication,verbs,A1",fragen + Acc (person). For asking about something: fragen nach + Dative.,,FALSE
-He asked for the bill.,Er hat nach der Rechnung gefragt.,,,sentence,neutral,"thinking,communication,verbs,A2",fragen nach + Dative.,,FALSE
-to answer,antworten,,,verb,neutral,"thinking,communication,verbs,A1",antworten + Dative (person): Ich antworte dir. Or: auf etwas antworten.,,FALSE
-Please answer my question.,Bitte antworten Sie auf meine Frage.,,,sentence,polite,"thinking,communication,verbs,A2",antworten auf + Accusative.,,FALSE
-He didn't answer.,Er hat nicht geantwortet.,,,sentence,neutral,"thinking,communication,verbs,A2",,,FALSE
-to say / tell,sagen,,,verb,neutral,"communication,verbs,A1","sagen + Dative (to tell someone): Sag mir. / Sie hat mir gesagt. sagen, dass = to say that.",,FALSE
-What did you say?,Was hast du gesagt?,,,sentence,casual,"communication,verbs,A1",,Was haben Sie gesagt?,FALSE
-She told me that.,"Sie hat mir gesagt, dass…",,,sentence,neutral,"communication,verbs,A2",sagen + Dative for recipient.,,FALSE
-I have to say something.,Ich muss etwas sagen.,,,sentence,neutral,"communication,verbs,A1",,,FALSE
-to tell / narrate,erzählen,,,verb,neutral,"communication,verbs,A2",erzählen + Dative (person) + von or über: Er erzählt mir von seiner Arbeit.,,FALSE
-Tell me.,Erzähl mir.,,,sentence,casual,"communication,verbs,A2",,Erzählen Sie mir.,FALSE
-She told me about her trip.,Sie hat mir von ihrer Reise erzählt.,,,sentence,neutral,"communication,verbs,B1",erzählen von + Dative.,,FALSE
-to explain,erklären,,,verb,neutral,"communication,verbs,A2",erklären + Dative (person): Kannst du mir das erklären?,,FALSE
-Can you explain that to me?,Kannst du mir das erklären?,,,sentence,casual,"communication,verbs,A2",,Können Sie mir das erklären?,FALSE
-I'll explain it.,Ich erkläre das.,,,sentence,neutral,"communication,verbs,A2",,,FALSE
-to clarify / sort out,klären,,,verb,neutral,"work,communication,verbs,B1",Can be used for clearing up a matter or resolving an issue. etwas klären.,,FALSE
-to clarify something,etwas klären,,,chunk,neutral,"work,communication,verbs,B1",,,FALSE
-We should clarify this calmly.,Das sollten wir in Ruhe klären.,,,sentence,neutral,"work,communication,verbs,B1",,,FALSE
-The matter has been clarified.,Die Sache ist geklärt.,,,sentence,neutral,"work,communication,verbs,B1",,,FALSE
-to feel (emotion — reflexive),sich fühlen,,,verb,neutral,"emotional,verbs,reflexive,A2",Reflexive: ich fühle mich / du fühlst dich. Wie fühlst du dich? = How do you feel?,,FALSE
-How do you feel?,Wie fühlst du dich?,,,sentence,casual,"emotional,verbs,A2",,Wie fühlen Sie sich?,FALSE
-I feel good.,Ich fühle mich gut.,,,sentence,neutral,"emotional,verbs,A2",,,FALSE
-I don't feel well.,Ich fühle mich nicht gut.,,,sentence,neutral,"emotional,health,verbs,A1",,,FALSE
-I feel exhausted.,Ich fühle mich erschöpft.,,,sentence,neutral,"emotional,verbs,B1",,,FALSE
-to miss (someone/something),vermissen,,,verb,neutral,"emotional,verbs,B1",Takes Accusative: Ich vermisse dich.,,FALSE
-I miss you.,Ich vermisse dich.,,,sentence,casual,"emotional,verbs,B1",,,FALSE
-I miss home.,Ich vermisse meine Heimat.,,,sentence,neutral,"emotional,verbs,B1",,,FALSE
-to trust,vertrauen,,,verb,neutral,"emotional,verbs,B1",Takes Dative: Ich vertraue dir. vertrauen auf + Acc also possible.,,FALSE
-I trust you.,Ich vertraue dir.,,,sentence,casual,"emotional,verbs,B1",Takes Dative.,,FALSE
-You can trust me.,Du kannst mir vertrauen.,,,sentence,casual,"emotional,verbs,B1",,,FALSE
-to hurt / offend,verletzen,,,verb,neutral,"emotional,verbs,B1",Can be physical or emotional. Das hat mich verletzt. = That hurt me.,,FALSE
-That hurt me.,Das hat mich verletzt.,,,sentence,neutral,"emotional,verbs,B1",,,FALSE
-I didn't mean to hurt you.,Ich wollte dich nicht verletzen.,,,sentence,casual,"emotional,verbs,B1",,,FALSE
-to calm down,beruhigen,,,verb,neutral,"emotional,verbs,B1",Reflexive: sich beruhigen = to calm oneself. Or transitive: jemanden beruhigen.,,FALSE
-Calm down.,Beruhig dich.,,,sentence,casual,"emotional,verbs,B1",,Bleib ruhig.,FALSE
-Everything will be fine.,Alles wird gut.,,,sentence,neutral,"emotional,verbs,A2",Often said to reassure someone.,,FALSE
-to bother / disturb,stören,,,verb,neutral,"emotional,communication,verbs,B1",Common polite phrase: Stört es Sie wenn…? = Does it bother you if…?,,FALSE
-Am I disturbing you?,Störe ich?,,,sentence,polite,"emotional,communication,verbs,B1",,Störe ich gerade?,FALSE
-That bothers me.,Das stört mich.,,,sentence,neutral,"emotional,verbs,B1",,,FALSE
-to be happy about (reflexive),sich freuen über,,,verb,neutral,"emotional,verbs,reflexive,A2",sich freuen über + Acc = happy about sth now. sich freuen auf + Acc = looking forward to sth future.,,FALSE
-I'm really happy about that.,Ich freue mich sehr darüber.,,,sentence,neutral,"emotional,verbs,A2",sich freuen über + Accusative.,,FALSE
-I'm looking forward to it.,Ich freue mich darauf.,,,sentence,neutral,"emotional,verbs,A2",sich freuen auf + Accusative (future).,,FALSE
-to be annoyed / irritated,sich ärgern,,,verb,neutral,"emotional,verbs,B1",sich ärgern über + Acc = to be annoyed about something.,,FALSE
-I'm annoyed about that.,Ich ärgere mich darüber.,,,sentence,neutral,"emotional,verbs,B1",sich ärgern über + Accusative.,,FALSE
-Don't let it annoy you.,Ärger dich nicht.,,,sentence,casual,"emotional,verbs,B1",,,FALSE
-to check / verify,prüfen,,,verb,neutral,"work,verbs,B1","Work context: prüfen = to check, verify, review.",,FALSE
-I'll check that.,Ich prüfe das.,,,sentence,neutral,"work,verbs,B1",,Ich schaue das nach.,FALSE
-Can you check this?,Kannst du das prüfen?,,,sentence,casual,"work,verbs,B1",,,FALSE
-We need to check the figures.,Wir müssen die Zahlen prüfen.,,,sentence,neutral,"work,verbs,B1",,,FALSE
-to change / alter,ändern,,,verb,neutral,"work,verbs,B1",ändern = to change/alter. Different from 'wechseln' (to switch/exchange).,,FALSE
-We need to change that.,Das müssen wir ändern.,,,sentence,neutral,"work,verbs,B1",,,FALSE
-Nothing has changed.,Es hat sich nichts geändert.,,,sentence,neutral,"work,verbs,B1",Reflexive: sich ändern = to change (on its own).,,FALSE
-to adjust / adapt,anpassen,,,verb,neutral,"work,verbs,B1",anpassen = to adapt/adjust. etwas an etwas anpassen.,,FALSE
-We need to adjust the plan.,Wir müssen den Plan anpassen.,,,sentence,neutral,"work,verbs,B1",,,FALSE
-Can you adapt this?,Kannst du das anpassen?,,,sentence,casual,"work,verbs,B1",,,FALSE
-to create / produce,erstellen,,,verb,neutral,"work,verbs,B1","Formal/work register: ein Dokument erstellen, einen Bericht erstellen.",,FALSE
-Can you create a report?,Kannst du einen Bericht erstellen?,,,sentence,casual,"work,verbs,B1",,,FALSE
-I created a new version.,Ich habe eine neue Version erstellt.,,,sentence,neutral,"work,verbs,B1",,,FALSE
-to export,exportieren,,,verb,neutral,"work,verbs,B1",Common in tech/work: Datei exportieren.,,FALSE
-Please export the file as PDF.,Bitte exportiere die Datei als PDF.,,,sentence,neutral,"work,verbs,B1",,,FALSE
-to coordinate,koordinieren,,,verb,neutral,"work,verbs,B1",Work context: Abläufe koordinieren = to coordinate processes.,,FALSE
-Who is coordinating this?,Wer koordiniert das?,,,sentence,neutral,"work,verbs,B1",,,FALSE
-to discuss,besprechen,,,verb,neutral,"work,communication,verbs,B1",besprechen = to discuss/talk through. Separable in some uses but commonly written solid.,,FALSE
-We need to discuss this.,Das müssen wir besprechen.,,,sentence,neutral,"work,communication,verbs,B1",,,FALSE
-Can we discuss this tomorrow?,Können wir das morgen besprechen?,,,sentence,neutral,"work,communication,verbs,B1",,,FALSE
-to decide,entscheiden,,,verb,neutral,"work,verbs,B1",Often reflexive: sich entscheiden (für/gegen) = to decide (for/against). entscheiden = to decide/determine.,,FALSE
-Who decides that?,Wer entscheidet das?,,,sentence,neutral,"work,verbs,B1",,,FALSE
-I haven't decided yet.,Ich habe mich noch nicht entschieden.,,,sentence,neutral,"work,verbs,B1",Reflexive: sich entscheiden.,,FALSE
-We need to decide soon.,Wir müssen bald eine Entscheidung treffen.,,,sentence,neutral,"work,verbs,B1",Collocation: eine Entscheidung treffen.,,FALSE
-to bring,bringen,,,verb,neutral,"everyday,verbs,A2",bringen = to bring. Takes Accusative for object: Kannst du mir das bringen?,,FALSE
-Can you bring me that?,Kannst du mir das bringen?,,,sentence,casual,"everyday,verbs,A2",,Können Sie mir das bringen?,FALSE
-I'll bring it.,Ich bringe es.,,,sentence,neutral,"everyday,verbs,A2",,,FALSE
-That brings me to my next point.,Das bringt mich zu meinem nächsten Punkt.,,,sentence,neutral,"work,communication,verbs,B1",,,FALSE
-to fetch / get,holen,,,verb,neutral,"everyday,verbs,A2",holen = to go get/fetch. Can be used reflexively: sich etwas holen.,,FALSE
-I'll go get it.,Ich hole es.,,,sentence,neutral,"everyday,verbs,A2",,,FALSE
-Can you get me a glass of water?,Kannst du mir ein Glas Wasser holen?,,,sentence,casual,"everyday,verbs,A2",,,FALSE
-to wait,warten,,,verb,neutral,"everyday,verbs,A1",warten auf + Acc = to wait for someone/something.,,FALSE
-to wait for someone/something,auf jemanden/etwas warten,,,chunk,neutral,"everyday,verbs,A2",warten auf + Accusative.,,FALSE
-I've been waiting for half an hour.,Ich warte seit einer halben Stunde.,,,sentence,neutral,"everyday,verbs,A2",,,FALSE
-Wait a moment please.,Warten Sie bitte einen Moment.,,,sentence,polite,"everyday,verbs,A1",,Einen Augenblick bitte.,FALSE
-to search / look for,suchen,,,verb,neutral,"everyday,verbs,A1",suchen + Acc = to look for something. Not to be confused with 'suchen nach' (searching through).,,FALSE
-I'm looking for the exit.,Ich suche den Ausgang.,,,sentence,neutral,"everyday,verbs,A1",,,FALSE
-What are you looking for?,Was suchst du?,,,sentence,casual,"everyday,verbs,A1",,Was suchen Sie?,FALSE
-I've been looking for this for ages.,Das habe ich schon lange gesucht.,,,sentence,casual,"everyday,verbs,A2",,,FALSE
-to need,brauchen,,,verb,neutral,"everyday,verbs,A1",brauchen + Acc. Also used with negation: Du brauchst das nicht zu tun. = You don't need to do that.,,FALSE
-I need help.,Ich brauche Hilfe.,,,sentence,neutral,"everyday,verbs,A1",,,FALSE
-You don't need to do that.,Das brauchst du nicht zu machen.,,,sentence,casual,"everyday,verbs,B1",Negative 'brauchen' + zu + infinitive.,,FALSE
-What do you need?,Was brauchst du?,,,sentence,casual,"everyday,verbs,A1",,Was brauchen Sie?,FALSE
-to try,versuchen,,,verb,neutral,"everyday,verbs,A2",versuchen + zu + infinitive = to try to do something.,,FALSE
-I'll try.,Ich versuche es.,,,sentence,neutral,"everyday,verbs,A2",,,FALSE
-I'm trying to understand.,Ich versuche zu verstehen.,,,sentence,neutral,"everyday,verbs,A2",versuchen + zu + infinitive.,,FALSE
-Try again.,Versuch es nochmal.,,,sentence,casual,"everyday,verbs,A2",,,FALSE
-to begin / start (separable),anfangen,,,verb,neutral,"everyday,verbs,A2",Separable: fängt an. 'anfangen mit' or 'anfangen zu + inf'.,,FALSE
-When does it start?,Wann fängt es an?,,,sentence,neutral,"everyday,verbs,A2",Separable verb: fängt … an.,,FALSE
-Let's get started.,Fangen wir an.,,,sentence,neutral,"everyday,work,verbs,A2",,,FALSE
-She started crying.,Sie hat angefangen zu weinen.,,,sentence,neutral,"everyday,verbs,B1",anfangen zu + infinitive.,,FALSE
-to stop / finish (separable),aufhören,,,verb,neutral,"everyday,verbs,A2",Separable: hört auf. 'aufhören mit' or 'aufhören zu + inf'.,,FALSE
-Stop it!,Hör auf!,,,sentence,casual,"everyday,verbs,A2",Separable: hört … auf.,,FALSE
-When does it stop?,Wann hört es auf?,,,sentence,neutral,"everyday,verbs,A2",,,FALSE
-He stopped smoking.,Er hat aufgehört zu rauchen.,,,sentence,neutral,"everyday,verbs,B1",aufhören zu + infinitive.,,FALSE
-to come along / come with (separable),mitkommen,,,verb,neutral,"everyday,verbs,A2",Separable: kommt mit. 'Kommst du mit?' = Are you coming?,,FALSE
-I'll come with you.,Ich komme mit.,,,sentence,casual,"everyday,verbs,A2",,,FALSE
-to come back / return (separable),zurückkommen,,,verb,neutral,"everyday,verbs,A2",Separable: kommt zurück. Takes sein in perfect: ich bin zurückgekommen.,,FALSE
-When are you coming back?,Wann kommst du zurück?,,,sentence,casual,"everyday,verbs,A2",,Wann kommen Sie zurück?,FALSE
-I'll be right back.,Ich bin gleich zurück.,,,sentence,neutral,"everyday,verbs,A1",Can also say: Ich komme gleich zurück.,,FALSE
-to call (phone) (separable),anrufen,,,verb,neutral,"everyday,verbs,A2",Separable: ruft an. Ich rufe dich an. = I'll call you.,,FALSE
-I'll call you.,Ich rufe dich an.,,,sentence,casual,"everyday,verbs,A2",Separable: rufe … an.,,FALSE
-Can you call me later?,Kannst du mich später anrufen?,,,sentence,casual,"everyday,verbs,A2",,,FALSE
-He called me.,Er hat mich angerufen.,,,sentence,neutral,"everyday,verbs,A2",,,FALSE
-to tidy up (separable),aufräumen,,,verb,neutral,"everyday,verbs,A2",Separable: räumt auf.,,FALSE
-I need to tidy up.,Ich muss aufräumen.,,,sentence,casual,"everyday,verbs,A2",Separable: räume … auf.,,FALSE
-to prepare (separable),vorbereiten,,,verb,neutral,"work,everyday,verbs,B1",Separable: bereitet vor. Also reflexive: sich vorbereiten auf + Acc.,,FALSE
-I need to prepare.,Ich muss mich vorbereiten.,,,sentence,neutral,"work,everyday,reflexive,verbs,B1",Reflexive: sich vorbereiten.,,FALSE
-to prepare for something (reflexive),sich auf etwas vorbereiten,,,chunk,neutral,"work,everyday,reflexive,verbs,B1",sich vorbereiten auf + Accusative.,,FALSE
-I'm preparing for the meeting.,Ich bereite mich auf das Meeting vor.,,,sentence,neutral,"work,reflexive,verbs,B1",,,FALSE
-to remember (reflexive),sich erinnern,,,verb,neutral,"thinking,reflexive,verbs,A2",Reflexive: sich erinnern an + Acc = to remember something/someone.,,FALSE
-I remember that.,Ich erinnere mich daran.,,,sentence,neutral,"thinking,reflexive,verbs,A2",sich erinnern an + Accusative.,,FALSE
-I can't remember.,Ich kann mich nicht erinnern.,,,sentence,neutral,"thinking,reflexive,verbs,A2",,,FALSE
-Do you remember?,Erinnerst du dich?,,,sentence,casual,"thinking,reflexive,verbs,A2",,Erinnern Sie sich?,FALSE
-to decide (reflexive),sich entscheiden,,,verb,neutral,"thinking,reflexive,verbs,B1",sich entscheiden für + Acc = to decide in favour of. gegen + Acc = against.,,FALSE
-I've decided.,Ich habe mich entschieden.,,,sentence,neutral,"thinking,reflexive,verbs,B1",,,FALSE
-Have you decided?,Hast du dich entschieden?,,,sentence,casual,"thinking,reflexive,verbs,B1",,Haben Sie sich entschieden?,FALSE
-I decided against it.,Ich habe mich dagegen entschieden.,,,sentence,neutral,"thinking,reflexive,verbs,B1",sich entscheiden gegen + Accusative.,,FALSE
-to enjoy (reflexive),sich freuen über etwas,,,verb,neutral,"emotional,reflexive,verbs,A2",sich freuen über + Acc = happy about current thing. sich freuen auf + Acc = anticipating something.,,FALSE
-I really enjoyed that.,Das hat mich wirklich gefreut.,,,sentence,neutral,"emotional,reflexive,verbs,A2",,,FALSE
-I'm looking forward to Friday.,Ich freue mich auf Freitag.,,,sentence,casual,"emotional,reflexive,verbs,A2",sich freuen auf + Acc (future anticipation).,,FALSE
-to worry (reflexive),sich Sorgen machen,,,verb,neutral,"emotional,reflexive,verbs,B1",Fixed chunk: sich Sorgen machen um + Acc = to worry about someone/something.,,FALSE
-I'm worried about you.,Ich mache mir Sorgen um dich.,,,sentence,casual,"emotional,reflexive,verbs,B1",sich Sorgen machen um + Accusative.,,FALSE
-Don't worry.,Mach dir keine Sorgen.,,,sentence,casual,"emotional,reflexive,verbs,B1",,Keine Sorge.,FALSE
-to apologize (reflexive),sich entschuldigen,,,verb,neutral,"communication,reflexive,verbs,A2",sich entschuldigen bei + Dat (to apologize to someone) / für + Acc (for something).,,FALSE
-I'm sorry. / I apologize.,Ich entschuldige mich.,,,sentence,polite,"communication,reflexive,verbs,A2",More formal than just 'Entschuldigung'.,,FALSE
-I'd like to apologize for that.,Ich möchte mich dafür entschuldigen.,,,sentence,polite,"communication,reflexive,verbs,B1",,,FALSE
-to introduce oneself (reflexive),sich vorstellen,,,verb,neutral,"communication,reflexive,verbs,A1",Separable and reflexive. Also: sich etwas vorstellen = to imagine something.,,FALSE
-Let me introduce myself.,Ich möchte mich vorstellen.,,,sentence,polite,"communication,reflexive,verbs,A1",,,FALSE
-I can't imagine that.,Das kann ich mir nicht vorstellen.,,,sentence,neutral,"thinking,reflexive,verbs,B1",sich etwas vorstellen = to imagine.,Ich stelle mir das anders vor.,FALSE
-to sit down (reflexive),sich setzen,,,verb,neutral,"everyday,reflexive,verbs,A2",Reflexive: ich setze mich. 'Setzen Sie sich' = Please sit down.,,FALSE
-Please sit down.,Setzen Sie sich bitte.,,,sentence,polite,"everyday,reflexive,verbs,A2",,,FALSE
-to get up / stand up,aufstehen,,,verb,neutral,"everyday,verbs,A2",Separable: steht auf. Takes sein in perfect.,,FALSE
-I get up at 7.,Ich stehe um 7 Uhr auf.,,,sentence,casual,"everyday,verbs,A2",Separable: stehe … auf.,,FALSE
-to go out (separable),ausgehen,,,verb,neutral,"everyday,verbs,A2",Separable: geht aus. Takes sein in perfect: ich bin ausgegangen.,,FALSE
-Shall we go out tonight?,Gehen wir heute Abend aus?,,,sentence,casual,"everyday,verbs,A2",Separable: gehen … aus.,,FALSE
-to give back / return (separable),zurückgeben,,,verb,neutral,"everyday,verbs,B1",Separable: gibt zurück.,,FALSE
-Can I have it back please?,Kannst du es mir zurückgeben?,,,sentence,casual,"everyday,verbs,B1",Separable: gibst … zurück.,,FALSE
-to turn off / switch off (separable),ausschalten,,,verb,neutral,"everyday,verbs,A2",Separable: schaltet aus. Opposite: einschalten.,,FALSE
-Please turn it off.,Schalte es bitte aus.,,,sentence,casual,"everyday,verbs,A2",Separable: schalte … aus.,Mach es aus.,FALSE
-to turn on / switch on (separable),einschalten,,,verb,neutral,"everyday,verbs,A2",Separable: schaltet ein.,,FALSE
-Please turn it on.,Schalte es bitte ein.,,,sentence,casual,"everyday,verbs,A2",Separable: schalte … ein.,Mach es an.,FALSE
-to fill in / complete,ausfüllen,,,verb,neutral,"work,everyday,verbs,A2",Separable: füllt aus. Common: ein Formular ausfüllen = to fill in a form.,,FALSE
-Please fill in the form.,Bitte füllen Sie das Formular aus.,,,sentence,polite,"work,everyday,verbs,A2",Separable: füllen … aus.,,FALSE
-to turn up / appear,auftauchen,,,verb,neutral,"everyday,verbs,B1",Separable: taucht auf. Takes sein in perfect.,,FALSE
-He turned up late.,Er ist spät aufgetaucht.,,,sentence,neutral,"everyday,verbs,B1",Separable: taucht … auf.,,FALSE
-to point out / draw attention to (separable),hinweisen auf,,,verb,neutral,"work,communication,verbs,B1",Separable: weist hin auf + Acc.,,FALSE
-I'd like to point that out.,Ich möchte darauf hinweisen.,,,sentence,neutral,"work,communication,verbs,B1",Separable: weise … hin auf + Acc.,,FALSE
-to suggest,vorschlagen,,,verb,neutral,"work,communication,verbs,B1","Separable: schlägt vor. Ich schlage vor, dass… = I suggest that…",,FALSE
-I suggest we meet tomorrow.,"Ich schlage vor, dass wir uns morgen treffen.",,,sentence,neutral,"work,communication,verbs,B1",Separable: schlage … vor.,,FALSE
-May I make a suggestion?,Darf ich einen Vorschlag machen?,,,sentence,polite,"work,communication,verbs,B1",,,FALSE
-to meet,treffen,,,verb,neutral,"everyday,social,verbs,A2",Irregular: trifft. Also reflexive: sich treffen = to meet up.,,FALSE
-Shall we meet on Monday?,Treffen wir uns am Montag?,,,sentence,casual,"everyday,social,verbs,A2",,Sollen wir uns Montag treffen?,FALSE
-Nice to meet you.,"Freut mich, Sie kennenzulernen.",,,sentence,polite,"everyday,social,verbs,A1",Lit. 'It pleases me to get to know you'. kennenlernen = to meet/get to know.,,FALSE
-I met him last year.,Ich habe ihn letztes Jahr kennengelernt.,,,sentence,neutral,"everyday,social,verbs,A2",kennenlernen = to meet for the first time.,,FALSE
-to read,lesen,,,verb,neutral,"everyday,verbs,A1",Irregular: ich lese / du liest / er liest.,,FALSE
-Did you read it?,Hast du es gelesen?,,,sentence,casual,"everyday,verbs,A2",,,FALSE
-to write,schreiben,,,verb,neutral,"everyday,work,verbs,A1",schreiben an + Acc = to write to someone.,,FALSE
-I'll write you an email.,Ich schreibe dir eine E-Mail.,,,sentence,casual,"everyday,work,verbs,A2",,,FALSE
-to send,schicken,,,verb,neutral,"everyday,work,verbs,A1",schicken + Dative for recipient: Ich schicke dir…,,FALSE
-Can you send me that?,Kannst du mir das schicken?,,,sentence,casual,"everyday,work,verbs,A2",,,FALSE
-to receive,bekommen,,,verb,neutral,"everyday,verbs,A2",Irregular past: ich habe bekommen.,,FALSE
-I received your message.,Ich habe deine Nachricht bekommen.,,,sentence,casual,"everyday,verbs,A2",,,FALSE
-to open,öffnen,,,verb,neutral,"everyday,verbs,A1",,aufmachen (casual),FALSE
-Please open the window.,Bitte öffnen Sie das Fenster.,,,sentence,polite,"everyday,verbs,A1",,Mach das Fenster auf.,FALSE
-to close,schließen,,,verb,neutral,"everyday,verbs,A1",,zumachen (casual),FALSE
-Please close the door.,Bitte schließen Sie die Tür.,,,sentence,polite,"everyday,verbs,A1",,Mach die Tür zu.,FALSE
-to show,zeigen,,,verb,neutral,"everyday,communication,verbs,A1",zeigen + Dative (person): Zeig mir. Can you show me = Kannst du mir zeigen…?,,FALSE
-Can you show me?,Kannst du mir das zeigen?,,,sentence,casual,"everyday,verbs,A1",,Können Sie mir das zeigen?,FALSE
-to work (person),arbeiten,,,verb,neutral,"work,everyday,verbs,A1",arbeiten an + Dat = to work on something.,,FALSE
-I'm working on it.,Ich arbeite daran.,,,sentence,neutral,"work,everyday,verbs,A1",,,FALSE
-I work in an office.,Ich arbeite in einem Büro.,,,sentence,neutral,"work,everyday,verbs,A1",,,FALSE
-to work (thing/machine),funktionieren,,,verb,neutral,"everyday,verbs,A1",,,FALSE
-It doesn't work.,Es funktioniert nicht.,,,sentence,neutral,"everyday,verbs,A1",,Es geht nicht.,FALSE
-to think about something (separable),über etwas nachdenken,,,chunk,neutral,"thinking,verbs,B1",Separable: denkt nach. nachdenken über + Accusative.,,FALSE
-I need to think about it.,Ich muss darüber nachdenken.,,,sentence,neutral,"thinking,verbs,B1",Separable: denke … nach.,,FALSE
-Let me think about it.,Lass mich darüber nachdenken.,,,sentence,casual,"thinking,verbs,B1",,,FALSE
-to look at / have a look (separable),sich etwas ansehen,,,verb,neutral,"everyday,verbs,A2",Separable: sieht an. sich etwas ansehen = to look at something.,,FALSE
-Let me have a look.,Ich sehe mal nach.,,,sentence,casual,"everyday,verbs,A2",,Ich schaue kurz.,FALSE
-Can I have a look?,Kann ich mal schauen?,,,sentence,casual,"everyday,verbs,A2",,,FALSE
-to help,helfen,,,verb,neutral,"everyday,verbs,A1",Takes Dative: Ich helfe dir. Can you help me? = Kannst du mir helfen?,,FALSE
-Can I help you?,Kann ich Ihnen helfen?,,,sentence,polite,"everyday,verbs,A1",,Kann ich dir helfen?,FALSE
-That doesn't help.,Das hilft nicht.,,,sentence,neutral,"everyday,verbs,A1",,,FALSE
-to know (a person/place),kennen,,,verb,neutral,"thinking,verbs,A1","kennen = to know / be familiar with (person, place). wissen = to know a fact.",,FALSE
-Do you know him?,Kennst du ihn?,,,sentence,casual,"thinking,verbs,A1",,Kennen Sie ihn?,FALSE
-I don't know this city.,Ich kenne diese Stadt nicht.,,,sentence,neutral,"thinking,verbs,A1",,,FALSE
-to belong to,gehören,,,verb,neutral,"everyday,verbs,A2",gehören + Dative: Das gehört mir. = That belongs to me.,,FALSE
-This belongs to me.,Das gehört mir.,,,sentence,neutral,"everyday,verbs,A2",Takes Dative.,,FALSE
-Does this belong to you?,Gehört das Ihnen?,,,sentence,polite,"everyday,verbs,A2",,,FALSE
-to cost,kosten,,,verb,neutral,"shopping,verbs,A1",,,FALSE
-How much does it cost?,Was kostet das?,,,sentence,neutral,"shopping,verbs,A1",,,FALSE
-to pay,bezahlen,,,verb,neutral,"shopping,paying,verbs,A1",,zahlen,FALSE
-I'd like to pay.,Ich möchte bezahlen.,,,sentence,neutral,"shopping,paying,verbs,A1",,Ich würde gerne zahlen.,FALSE
-to order,bestellen,,,verb,neutral,"restaurant,verbs,A1",,,FALSE
-Have you ordered?,Haben Sie schon bestellt?,,,sentence,polite,"restaurant,verbs,A1",,,FALSE
-to reserve / book,reservieren,,,verb,neutral,"restaurant,hotel,verbs,A1",,buchen,FALSE
-I'd like to reserve a table.,Ich möchte einen Tisch reservieren.,,,sentence,polite,"restaurant,verbs,A1",,,FALSE
-to recommend,empfehlen,,,verb,neutral,"restaurant,verbs,A2",Irregular: empfiehlt. empfehlen + Dative for recipient.,,FALSE
-What would you recommend?,Was empfehlen Sie?,,,sentence,polite,"restaurant,verbs,A2",,,FALSE
-to carry / bear,tragen,,,verb,neutral,"everyday,verbs,A2",Irregular: trägt. Can mean to carry physically or to wear clothes.,,FALSE
-Can you carry this?,Kannst du das tragen?,,,sentence,casual,"everyday,verbs,A2",,,FALSE
-to leave (a place),verlassen,,,verb,neutral,"everyday,verbs,B1",verlassen = to leave a place or person.,,FALSE
-I'm leaving now.,Ich verlasse jetzt das Gebäude.,,,sentence,neutral,"everyday,verbs,B1",,,FALSE
-to follow,folgen,,,verb,neutral,"everyday,verbs,A2",folgen + Dative. Takes sein in perfect: ich bin gefolgt.,,FALSE
-Follow me please.,Folgen Sie mir bitte.,,,sentence,polite,"everyday,verbs,A2",Takes Dative.,,FALSE
-to run,laufen,,,verb,neutral,"everyday,verbs,A1",Irregular: läuft. Takes sein in perfect. Also: to work/run (for machines in some dialects).,,FALSE
-I run every morning.,Ich laufe jeden Morgen.,,,sentence,casual,"everyday,verbs,A2",,,FALSE
-to speak / talk,sprechen,,,verb,neutral,"communication,verbs,A1",Irregular: spricht. sprechen mit + Dat = to talk with someone. sprechen über + Acc = to talk about.,,FALSE
-Can I speak to you?,Kann ich kurz mit Ihnen sprechen?,,,sentence,polite,"communication,verbs,B1",,,FALSE
-We need to talk.,Wir müssen reden.,,,sentence,neutral,"communication,verbs,B1",,Wir müssen sprechen.,FALSE
-to discuss / talk about,reden über,,,chunk,neutral,"communication,verbs,B1",reden über + Accusative.,,FALSE
-Can we talk about this?,Können wir darüber reden?,,,sentence,casual,"communication,verbs,B1",,,FALSE
-to manage / handle,schaffen,,,verb,neutral,"everyday,work,verbs,B1",schaffen = to manage/achieve. Also: etwas schaffen = to get something done. Das schaffst du! = You can do it!,,FALSE
-I can do it.,Ich schaffe das.,,,sentence,casual,"everyday,verbs,B1",,Das krieg ich hin.,FALSE
-Did you manage it?,Hast du das geschafft?,,,sentence,casual,"everyday,verbs,B1",,,FALSE
-We'll manage.,Wir schaffen das.,,,sentence,neutral,"everyday,verbs,B1",,,FALSE
-to happen,passieren,,,verb,neutral,"everyday,verbs,A2",Takes sein in perfect: Es ist passiert.,,FALSE
-What happened?,Was ist passiert?,,,sentence,neutral,"everyday,verbs,A2",,Was ist los?,FALSE
-It won't happen again.,Das passiert nicht wieder.,,,sentence,neutral,"everyday,verbs,A2",,,FALSE
-to miss (transport),verpassen,,,verb,neutral,"transport,everyday,verbs,A2",,,FALSE
-I missed my train.,Ich habe meinen Zug verpasst.,,,sentence,neutral,"transport,everyday,verbs,A2",,,FALSE
-to lose,verlieren,,,verb,neutral,"everyday,verbs,A2",Irregular: verlor / verloren.,,FALSE
-I lost my key.,Ich habe meinen Schlüssel verloren.,,,sentence,neutral,"everyday,verbs,A2",,,FALSE
-to forget,vergessen,,,verb,neutral,"everyday,verbs,A2",Irregular: vergisst / vergaß / vergessen.,,FALSE
-I forgot.,Ich habe das vergessen.,,,sentence,casual,"everyday,verbs,A2",,,FALSE
-Don't forget.,Vergiss nicht.,,,sentence,casual,"everyday,verbs,A2",,Vergessen Sie nicht.,FALSE
-to learn,lernen,,,verb,neutral,"everyday,verbs,A1",,,FALSE
-I'm learning German.,Ich lerne Deutsch.,,,sentence,neutral,"everyday,verbs,A1",,,FALSE
-to repeat,wiederholen,,,verb,neutral,"communication,verbs,A1",,,FALSE
-Could you repeat that?,Könnten Sie das wiederholen?,,,sentence,polite,"communication,verbs,A1",,,FALSE
+english,target,article,plural,type,register,tags,note,alternatives,article_prompt,level,example_en,example_target
+to be,sein,,,verb,neutral,core;verb,,,false,A1,I am tired.,Ich bin müde.
+to have,haben,,,verb,neutral,core;verb,,,false,A1,I have time.,Ich habe Zeit.
+to become / to get,werden,,,verb,neutral,core;verb,,,false,A1,It is getting better.,Es wird besser.
+to go,gehen,,,verb,neutral,core;verb,,,false,A1,I am going home.,Ich gehe nach Hause.
+to come,kommen,,,verb,neutral,core;verb,,,false,A1,Are you coming with me?,Kommst du mit?
+to do / to make,machen,,,verb,neutral,core;verb,,,false,A1,What are you doing?,Was machst du?
+to say,sagen,,,verb,neutral,core;verb,,,false,A1,What did you say?,Was hast du gesagt?
+to speak,sprechen,,,verb,neutral,core;verb,,,false,A1,We need to talk.,Wir müssen sprechen.
+to ask,fragen,,,verb,neutral,core;verb,,,false,A1,Can I ask you something?,Kann ich dich etwas fragen?
+to answer,antworten,,,verb,neutral,core;verb,,,false,A1,I will answer later.,Ich antworte später.
+to think,denken,,,verb,neutral,core;verb,,,false,A1,I think about it.,Ich denke darüber nach.
+to know,wissen,,,verb,neutral,core;verb,,,false,A1,I do not know.,Ich weiß es nicht.
+to know a person / place,kennen,,,verb,neutral,core;verb,,,false,A1,I know him.,Ich kenne ihn.
+to understand,verstehen,,,verb,neutral,core;verb,,,false,A1,I understand you.,Ich verstehe dich.
+to mean,meinen,,,verb,neutral,core;verb,,,false,A1,What do you mean?,Was meinst du?
+to want,wollen,,,verb,neutral,core;modal,,,false,A1,I do not want to force anything.,Ich will nichts erzwingen.
+would like,möchten,,,verb,polite,core;modal,,,false,A1,I would like to understand it.,Ich möchte es verstehen.
+can / to be able to,können,,,verb,neutral,core;modal,,,false,A1,I can do it.,Ich kann das machen.
+must / have to,müssen,,,verb,neutral,core;modal,,,false,A1,We have to clarify this.,Wir müssen das klären.
+should / supposed to,sollen,,,verb,neutral,core;modal,,,false,A1,What should I do?,Was soll ich tun?
+may / to be allowed to,dürfen,,,verb,neutral,core;modal,,,false,A1,May I ask?,Darf ich fragen?
+to need,brauchen,,,verb,neutral,core;verb,,,false,A1,I need clarity.,Ich brauche Klarheit.
+to stay / remain,bleiben,,,verb,neutral,core;verb,,,false,A1,Stay here.,Bleib hier.
+to let / leave,lassen,,,verb,neutral,core;verb,,,false,A2,Let it be for now.,Lass es erst mal.
+to give,geben,,,verb,neutral,core;verb,,,false,A1,Give me a moment.,Gib mir einen Moment.
+to take,nehmen,,,verb,neutral,core;verb,,,false,A1,I will take this one.,Ich nehme das.
+to find,finden,,,verb,neutral,core;verb,,,false,A1,I find it difficult.,Ich finde es schwierig.
+to feel,fühlen,,,verb,neutral,core;emotion,,,false,A1,I feel safe.,Ich fühle mich sicher.
+to notice,merken,,,verb,neutral,core;perception,,,false,A2,I notice that something is wrong.,"Ich merke, dass etwas nicht stimmt."
+to see,sehen,,,verb,neutral,core;perception,,,false,A1,I see what you mean.,"Ich sehe, was du meinst."
+to hear,hören,,,verb,neutral,core;perception,,,false,A1,I heard that differently.,Ich habe das anders gehört.
+to believe / think,glauben,,,verb,neutral,core;thinking,,,false,A1,I believe you.,Ich glaube dir.
+to hope,hoffen,,,verb,neutral,core;emotion,,,false,A1,I hope so.,Ich hoffe es.
+to fear / be afraid,sich fürchten,,,verb,neutral,core;emotion,,,false,A2,I am not afraid of you.,Ich fürchte mich nicht vor dir.
+to be afraid,Angst haben vor,,,expression,neutral,core;emotion;preposition,vor + dative,,false,A2,I am afraid of losing this.,"Ich habe Angst davor, das zu verlieren."
+to wait for,warten auf,,,expression,neutral,core;verb;preposition,auf + accusative,,false,A1,I am waiting for you.,Ich warte auf dich.
+to think about,nachdenken über,,,expression,neutral,core;verb;preposition,über + accusative,,false,A2,I am thinking about it.,Ich denke darüber nach.
+to talk about,sprechen über,,,expression,neutral,core;verb;preposition,über + accusative,,false,A1,We should talk about it.,Wir sollten darüber sprechen.
+to decide,entscheiden,,,verb,neutral,core;decision,,,false,A2,I do not want to decide now.,Ich möchte jetzt nicht entscheiden.
+to clarify,klären,,,verb,neutral,core;decision;work,,,false,A2,Let us clarify this calmly.,Lass uns das in Ruhe klären.
+to explain,erklären,,,verb,neutral,core;communication,,,false,A2,Can you explain it to me?,Kannst du mir das erklären?
+to try,versuchen,,,verb,neutral,core;verb,,,false,A1,I am trying to understand it.,"Ich versuche, es zu verstehen."
+to change,ändern,,,verb,neutral,core;verb,,,false,A2,That changes the situation.,Das ändert die Situation.
+to happen,passieren,,,verb,neutral,core;verb,,,false,A1,What happened?,Was ist passiert?
+to work / function,funktionieren,,,verb,neutral,core;work,,,false,A2,This does not work like this.,Das funktioniert so nicht.
+to need to be,müssen sein,,,pattern,neutral,core;pattern,,,false,A2,It has to be clear.,Es muss klar sein.
+to make sense,Sinn ergeben,,,expression,neutral,core;thinking,,,false,A2,That makes sense.,Das ergibt Sinn.
+to fall back into,zurückfallen in,,,expression,neutral,core;relationship,in + accusative,,false,B1,I do not want to fall back into the same dynamic.,Ich möchte nicht in dieselbe Dynamik zurückfallen.
