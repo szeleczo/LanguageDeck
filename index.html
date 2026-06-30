@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="manifest" href="manifest.webmanifest?v=v23-sentencebuilder-cachefast-20260630" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1584,6 +1584,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
+      <div class="meta" id="appBuildLabel">Build: v23-sentencebuilder-cachefast-20260630</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -1750,6 +1751,7 @@
 
       <div class="settings-actions">
         <button id="restartBtn" class="ghost">Restart session</button>
+        <button id="forceUpdateBtn" class="ghost">Update app</button>
         <button id="clearBtn" class="danger">Clear deck</button>
         <button id="closeSettingsBtn" class="secondary close-btn">Close</button>
       </div>
@@ -1801,12 +1803,33 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
+    const APP_BUILD = "v23-sentencebuilder-cachefast-20260630";
+    function cacheBustedUrl(path) {
+      const sep = String(path).includes("?") ? "&" : "?";
+      return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
+    }
 
     /* ---------- DB layer (IndexedDB) ---------- */
     const DB = (() => {
       const DB_NAME = "languagedeck";
       const DB_VERSION = 1;
       let dbPromise = null;
+      const rowCache = new Map();
+
+      function cacheKey(table, deck, setName) {
+        return `${table}|${deck || ""}|${setName || ""}`;
+      }
+
+      function invalidate(table, deck, setName) {
+        const prefix = `${table}|${deck || ""}|`;
+        for (const key of Array.from(rowCache.keys())) {
+          if (setName === undefined || setName === "__all__") {
+            if (key.startsWith(prefix)) rowCache.delete(key);
+          } else if (key === cacheKey(table, deck, setName) || key === cacheKey(table, deck, "__all__")) {
+            rowCache.delete(key);
+          }
+        }
+      }
 
       function open() {
         if (dbPromise) return dbPromise;
@@ -1835,36 +1858,56 @@
         return open().then(db => db.transaction(stores, mode));
       }
 
+      function readAllFromRequest(req) {
+        return new Promise((resolve, reject) => {
+          req.onsuccess = () => resolve(req.result || []);
+          req.onerror = () => reject(req.error);
+        });
+      }
+
       function getAll(table, deck, setName) {
+        const key = cacheKey(table, deck, setName);
+        if (rowCache.has(key)) return Promise.resolve(rowCache.get(key));
+
         return tx([table]).then(t => {
           const store = t.objectStore(table);
-          return new Promise((resolve, reject) => {
-            const out = [];
-            const req = store.openCursor();
-            req.onsuccess = (e) => {
-              const cursor = e.target.result;
-              if (cursor) {
-                const row = cursor.value;
-                if (row.deck === deck && (setName === "__all__" || row.set_name === setName)) {
-                  out.push(row);
-                }
-                cursor.continue();
-              } else {
-                out.sort((a, b) => a.id - b.id);
-                resolve(out);
-              }
-            };
-            req.onerror = () => reject(req.error);
+          let req;
+
+          if (setName !== "__all__" && store.indexNames.contains("by_deck_set")) {
+            req = store.index("by_deck_set").getAll([deck, setName]);
+          } else if (store.indexNames.contains("by_deck")) {
+            req = store.index("by_deck").getAll(deck);
+          } else {
+            req = store.getAll();
+          }
+
+          return readAllFromRequest(req).then(rows => {
+            let out = rows;
+            if (!store.indexNames.contains("by_deck")) {
+              out = out.filter(row => row.deck === deck);
+            }
+            if (setName !== "__all__" && !store.indexNames.contains("by_deck_set")) {
+              out = out.filter(row => row.set_name === setName);
+            }
+            out.sort((a, b) => a.id - b.id);
+            rowCache.set(key, out);
+            return out;
           });
         });
       }
 
       function bulkInsert(table, rows) {
+        if (!rows.length) return Promise.resolve(0);
+        const deck = rows[0].deck;
+        const setName = rows[0].set_name;
         return tx([table], "readwrite").then(t => {
           const store = t.objectStore(table);
           return new Promise((resolve, reject) => {
             let n = 0;
-            t.oncomplete = () => resolve(n);
+            t.oncomplete = () => {
+              invalidate(table, deck, setName);
+              resolve(n);
+            };
             t.onerror = () => reject(t.error);
             t.onabort = () => reject(t.error);
             for (const row of rows) {
@@ -1880,7 +1923,14 @@
           const store = t.objectStore(table);
           return new Promise((resolve, reject) => {
             const r = store.put(row);
-            r.onsuccess = () => resolve(true);
+            r.onsuccess = () => {
+              // Keep existing cached arrays live and consistent.
+              for (const arr of rowCache.values()) {
+                const idx = arr.findIndex(x => x.id === row.id);
+                if (idx !== -1) arr[idx] = row;
+              }
+              resolve(true);
+            };
             r.onerror = () => reject(r.error);
           });
         });
@@ -1910,6 +1960,7 @@
                 if (matches) { cursor.delete(); n++; }
                 cursor.continue();
               } else {
+                invalidate(table, deck, setName);
                 resolve(n);
               }
             };
@@ -1925,9 +1976,15 @@
             counts.set(r.set_name, (counts.get(r.set_name) || 0) + 1);
           }
           const arr = [...counts.entries()].map(([set_name, item_count]) => ({ set_name, item_count }));
-          arr.sort((a, b) => a.set_name.localeCompare(b.set_name));
+          arr.sort((a, b) => set_nameSort(a.set_name, b.set_name));
           return arr;
         });
+      }
+
+      function set_nameSort(a, b) {
+        if (a === "__all__") return -1;
+        if (b === "__all__") return 1;
+        return String(a).localeCompare(String(b));
       }
 
       return { open, getAll, bulkInsert, update, getById, clear, getSets };
@@ -2474,6 +2531,7 @@
     const closeBuiltinBtn = $("closeBuiltinBtn");
 
     const restartBtn = $("restartBtn");
+    const forceUpdateBtn = $("forceUpdateBtn");
     const clearBtn = $("clearBtn");
 
     const modeSelect = $("modeSelect");
@@ -3739,7 +3797,7 @@
       const baseUrl = `https://api.github.com/repos/${r.owner}/${r.repo}/contents/decks`;
       try {
         // 1) List `decks/` — find language subfolders
-        const rootRes = await fetch(baseUrl, { cache: "no-cache" });
+        const rootRes = await fetch(baseUrl, { cache: "reload" });
         if (!rootRes.ok) return null;
         const rootEntries = await rootRes.json();
         if (!Array.isArray(rootEntries)) return null;
@@ -3751,7 +3809,7 @@
           const lang = entry.name.toLowerCase();
           // Only consider 2-letter language codes (de, it, fr, es...)
           if (!/^[a-z]{2,3}$/.test(lang)) continue;
-          const subRes = await fetch(`${baseUrl}/${encodeURIComponent(entry.name)}`, { cache: "no-cache" });
+          const subRes = await fetch(`${baseUrl}/${encodeURIComponent(entry.name)}`, { cache: "reload" });
           if (!subRes.ok) continue;
           const subEntries = await subRes.json();
           if (!Array.isArray(subEntries)) continue;
@@ -3776,7 +3834,7 @@
 
     async function fetchDecksFromIndexJson() {
       try {
-        const res = await fetch("decks/index.json", { cache: "no-cache" });
+        const res = await fetch(cacheBustedUrl("decks/index.json"), { cache: "reload" });
         if (!res.ok) return null;
         const data = await res.json();
         const decks = Array.isArray(data) ? data : (data.decks || []);
@@ -3843,7 +3901,7 @@
         btn.addEventListener("click", async () => {
           try {
             const url = `decks/${d.file}`;
-            const r = await fetch(url, { cache: "no-cache" });
+            const r = await fetch(cacheBustedUrl(url), { cache: "reload" });
             if (!r.ok) throw new Error(`Could not download ${d.file}`);
             const text = await r.text();
             const setName = (d.name || d.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, ""));
@@ -3936,6 +3994,27 @@
         closeSettings();
       } catch (err) { showToast("Error: " + err.message); }
     });
+
+
+    async function forceAppUpdate() {
+      try {
+        showToast("Refreshing app cache…", 2000);
+        if ("serviceWorker" in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(reg => reg.unregister()));
+        }
+        if ("caches" in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map(k => caches.delete(k)));
+        }
+      } catch (err) {
+        console.log("Force update cleanup skipped:", err);
+      }
+      const cleanUrl = location.pathname + "?v=" + encodeURIComponent(APP_BUILD) + location.hash;
+      location.replace(cleanUrl);
+    }
+
+    forceUpdateBtn.addEventListener("click", forceAppUpdate);
 
     restartBtn.addEventListener("click", async () => { await loadCurrentGame(true); closeSettings(); });
 
@@ -4146,22 +4225,34 @@
     window.addEventListener("load", updateVh);
 
     /* ---------- Service worker ---------- */
-    /* When a new SW version is detected, show an unobtrusive toast.
-       The new SW takes over automatically thanks to skipWaiting + clients.claim
-       in sw.js, so a simple page reload activates it. */
+    /* Robust update handling for GitHub Pages / installed Android PWAs.
+       The registration URL is cache-busted, the SW calls skipWaiting(), and
+       controllerchange reloads the page once so the new HTML takes over. */
     if ("serviceWorker" in navigator) {
+      let refreshingForNewController = false;
+
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (refreshingForNewController) return;
+        refreshingForNewController = true;
+        location.reload();
+      });
+
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register("sw.js").then(reg => {
-          // Force a check for an updated sw.js on every page load
+        navigator.serviceWorker.register(cacheBustedUrl("sw.js"), { scope: "./" }).then(reg => {
           reg.update().catch(() => {});
+
+          if (reg.waiting) {
+            showToast("New version ready — updating…", 1800);
+            reg.waiting.postMessage({ type: "SKIP_WAITING" });
+          }
 
           reg.addEventListener("updatefound", () => {
             const newWorker = reg.installing;
             if (!newWorker) return;
             newWorker.addEventListener("statechange", () => {
-              // Only notify if this is genuinely an update of an already-controlled page
               if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-                showToast("New version ready — close and reopen the app.", 5000);
+                showToast("New version ready — updating…", 1800);
+                newWorker.postMessage({ type: "SKIP_WAITING" });
               }
             });
           });

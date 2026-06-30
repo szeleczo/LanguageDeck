@@ -12,6 +12,12 @@
     "type": "sentences"
   },
   {
+    "name": "german_3000_sentence_builder",
+    "file": "de/german_3000_sentence_builder.csv",
+    "deck": "de",
+    "type": "sentences"
+  },
+  {
     "name": "italian_3000",
     "file": "it/italian_3000.csv",
     "deck": "it",

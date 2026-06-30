@@ -1,5 +1,5 @@
-/* LanguageDeck service worker — network-first so updates apply immediately when online. */
-const CACHE_VERSION = "languagedeck-v21-german-v3-quickswitch";
+/* LanguageDeck service worker — network-first, update-friendly. */
+const CACHE_VERSION = "languagedeck-v23-sentencebuilder-cachefast-20260630";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -8,6 +8,10 @@ const APP_SHELL = [
   "./icon-512.png",
   "./icon-maskable-512.png"
 ];
+
+self.addEventListener("message", event => {
+  if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();
+});
 
 self.addEventListener("install", event => {
   event.waitUntil(
@@ -30,16 +34,18 @@ self.addEventListener("fetch", event => {
   if (req.method !== "GET") return;
 
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return; // ignore cross-origin
+  if (url.origin !== self.location.origin) return;
 
-  // Network-first: try the network, fall back to cache when offline.
-  // This means online users ALWAYS see the latest deployed code, while offline
-  // users still get the cached copy.
+  // Network-first: online users get the latest deployed files; offline users get cache.
   event.respondWith(
-    fetch(req).then(resp => {
+    fetch(req, { cache: "reload" }).then(resp => {
       if (resp.ok) {
         const path = url.pathname.split("/").pop();
-        if (APP_SHELL.some(p => p.endsWith(path)) || url.pathname.includes("/decks/") || url.pathname.endsWith("/")) {
+        if (
+          APP_SHELL.some(p => p.endsWith(path)) ||
+          url.pathname.includes("/decks/") ||
+          url.pathname.endsWith("/")
+        ) {
           const copy = resp.clone();
           caches.open(CACHE_VERSION).then(cache => cache.put(req, copy));
         }
