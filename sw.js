@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v23-sentencebuilder-cachefast-20260630";
+const CACHE_VERSION = "languagedeck-v25-order-reserved-layout-20260630";
 const APP_SHELL = [
   "./",
   "./index.html",

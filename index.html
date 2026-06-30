@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v23-sentencebuilder-cachefast-20260630" />
+  <link rel="manifest" href="manifest.webmanifest?v=v25-order-reserved-layout-20260630" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -930,6 +930,15 @@
       color: var(--text-faint);
       margin-bottom: 16px;
     }
+    .sentence-meta.under-bank {
+      margin: -4px 0 14px;
+      text-align: center;
+    }
+    .sentence-meta.order-meta {
+      margin: -6px 0 14px;
+      font-size: 11px;
+      opacity: 0.72;
+    }
     .sentence-target {
       font-size: 17px;
       line-height: 2.2;
@@ -987,7 +996,11 @@
       min-height: 42px;
       transition: background 0.15s ease, border-color 0.15s ease, transform 0.06s ease;
     }
-    .bank-word.used { opacity: 0.35; }
+    .bank-word.used {
+      opacity: 0.42;
+      cursor: default;
+      transform: none !important;
+    }
     .bank-word:hover:not(:disabled):not(.used) { background: var(--surface-2) !important; }
     .bank-word:active:not(:disabled):not(.used) {
       transform: translateY(2px);
@@ -1002,12 +1015,13 @@
       flex-wrap: wrap;
       gap: 6px;
       align-items: flex-start;
-      min-height: 56px;
+      min-height: var(--order-build-min-h, 56px);
       padding: 10px;
       margin-bottom: 16px;
       border: 1px dashed var(--border-strong);
       border-radius: var(--radius-sm);
       background: var(--surface-2);
+      transition: min-height 0.12s ease;
     }
     .order-build.empty { align-items: center; justify-content: center; }
     .order-empty-hint {
@@ -1031,6 +1045,11 @@
       transform: translateY(2px);
       border-bottom-width: 2px !important;
       margin-bottom: 2px;
+    }
+    .sentence-bank.order-bank {
+      align-items: flex-start;
+      min-height: var(--order-bank-min-h, 54px);
+      contain: layout;
     }
     /* Per-word correctness feedback after a check in order mode. */
     .order-chip.ok {
@@ -1584,7 +1603,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v23-sentencebuilder-cachefast-20260630</div>
+      <div class="meta" id="appBuildLabel">Build: v25-order-reserved-layout-20260630</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -1803,7 +1822,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v23-sentencebuilder-cachefast-20260630";
+    const APP_BUILD = "v25-order-reserved-layout-20260630";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3486,8 +3505,59 @@
         orderWords,
         orderBank: shuffleArr(orderWords),
         orderPlaced: [],
-        orderChecked: false
+        orderChecked: false,
+        orderLayout: null
       };
+    }
+
+    function placeSentenceMeta(position = "top") {
+      sentenceMeta.classList.toggle("under-bank", position === "under-bank");
+      if (position === "under-bank") {
+        sentenceBank.after(sentenceMeta);
+      } else {
+        sentenceHelp.after(sentenceMeta);
+      }
+    }
+
+    function estimateChipWrapHeight(items, containerEl, minHeight = 54) {
+      const widthSource = containerEl || sentenceContainer || document.body;
+      const rawWidth = widthSource.clientWidth || sentenceContainer.clientWidth || window.innerWidth || 360;
+      const usableWidth = Math.max(220, rawWidth - 26);
+      let lines = 1;
+      let lineWidth = 0;
+      const gap = 6;
+      const chipHeight = 42;
+      const verticalGap = 6;
+      const sidePadding = 0;
+      for (const item of items) {
+        const raw = String(item && item.raw !== undefined ? item.raw : item || "");
+        // Conservative estimate: chips have horizontal padding and a 2px border.
+        // A capped width prevents one long token from reserving a whole absurd line.
+        const chipWidth = Math.min(Math.max(raw.length * 8.5 + 34, 54), usableWidth);
+        if (lineWidth > 0 && lineWidth + gap + chipWidth > usableWidth) {
+          lines += 1;
+          lineWidth = chipWidth;
+        } else {
+          lineWidth += (lineWidth > 0 ? gap : 0) + chipWidth;
+        }
+      }
+      return Math.max(minHeight, sidePadding + lines * chipHeight + (lines - 1) * verticalGap);
+    }
+
+    function ensureOrderLayoutEstimates(data) {
+      if (!data) return { buildMin: 56, bankMin: 54 };
+      const widthKey = Math.round((sentenceContainer && sentenceContainer.clientWidth) || window.innerWidth || 0);
+      if (data.orderLayout && data.orderLayout.widthKey === widthKey) return data.orderLayout;
+      const buildMin = estimateChipWrapHeight(data.orderWords || [], sentenceTarget, 56) + 20;
+      const bankMin = estimateChipWrapHeight(data.orderBank || [], sentenceBank, 54);
+      data.orderLayout = { widthKey, buildMin, bankMin };
+      return data.orderLayout;
+    }
+
+    function renderSentenceKeepingScroll() {
+      const y = window.scrollY;
+      renderSentence();
+      requestAnimationFrame(() => window.scrollTo({ top: y, left: 0, behavior: "auto" }));
     }
 
     function renderSentence() {
@@ -3496,18 +3566,25 @@
 
       // ----- Reorder ("order") sub-mode -----
       if (sentenceMode === "order") {
-        sentenceHelp.textContent = `Tap the ${deckCfg().targetName} words to put them in order.`;
-        sentenceMeta.textContent = `Words: ${currentSentenceData.orderWords.length} · Streak: ${currentSentence.streak || 0}`;
+        sentenceHelp.textContent = "";
+        sentenceHelp.classList.add("hidden");
+        sentenceMeta.textContent = `${currentSentenceData.orderWords.length} words · streak ${currentSentence.streak || 0}`;
+        sentenceMeta.classList.add("order-meta");
+        placeSentenceMeta("under-bank");
+        sentenceBank.classList.add("order-bank");
         if (!currentSentenceData.orderChecked) sentenceResult.textContent = "";
 
         const placed = currentSentenceData.orderPlaced;
         const placedUids = new Set(placed.map(t => t.uid));
         const answer = currentSentenceData.orderWords.map(t => t.raw);
+        const layout = ensureOrderLayoutEstimates(currentSentenceData);
 
-        // Build area (placed chips, in sequence)
+        // Build area (placed chips, in sequence). It reserves roughly the final
+        // answer height from the start, so adding words does not push the screen down.
         sentenceTarget.innerHTML = "";
         const build = document.createElement("div");
         build.className = "order-build" + (placed.length === 0 ? " empty" : "");
+        build.style.setProperty("--order-build-min-h", `${layout.buildMin}px`);
         if (placed.length === 0) {
           const hint = document.createElement("span");
           hint.className = "order-empty-hint";
@@ -3527,15 +3604,17 @@
               if (locked) return;
               currentSentenceData.orderPlaced.splice(pos, 1);
               currentSentenceData.orderChecked = false;
-              renderSentence();
+              renderSentenceKeepingScroll();
             });
             build.appendChild(chip);
           });
         }
         sentenceTarget.appendChild(build);
 
-        // Bank (remaining scrambled words)
+        // Bank: used words are removed visually, but the bank keeps its initially
+        // estimated height. This avoids grey ghost cards while keeping the page stable.
         sentenceBank.innerHTML = "";
+        sentenceBank.style.setProperty("--order-bank-min-h", `${layout.bankMin}px`);
         currentSentenceData.orderBank.forEach(tok => {
           if (placedUids.has(tok.uid)) return;
           const btn = document.createElement("button");
@@ -3545,13 +3624,18 @@
             if (locked) return;
             currentSentenceData.orderPlaced.push(tok);
             currentSentenceData.orderChecked = false;
-            renderSentence();
+            renderSentenceKeepingScroll();
           });
           sentenceBank.appendChild(btn);
         });
         return;
       }
 
+      sentenceHelp.classList.remove("hidden");
+      sentenceMeta.classList.remove("order-meta");
+      sentenceBank.classList.remove("order-bank");
+      sentenceBank.style.removeProperty("--order-bank-min-h");
+      placeSentenceMeta("top");
       sentenceHelp.textContent = sentenceMode === "choice"
         ? `Fill in the missing ${deckCfg().targetName} words from the bank.`
         : `Type the missing ${deckCfg().targetName} words.`;
@@ -3627,7 +3711,7 @@
       currentSentenceData = prepareSentenceData(currentSentence);
       activeBlankIndex = 0;
       renderSentence();
-      statusEl.textContent = "Fill in the missing words.";
+      statusEl.textContent = currentGame === "sentences" && sentenceMode === "order" ? "Build the sentence." : "Fill in the missing words.";
     }
 
     function isCurrentSentenceCorrect() {
