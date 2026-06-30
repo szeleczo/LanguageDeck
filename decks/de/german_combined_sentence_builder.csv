@@ -1,0 +1,638 @@
+english,target,register,tags,note,level
+the person,die Person,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the person.,Das ist die Person.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the person (plural),die Personen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the man,der Mann,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the man.,Das ist der Mann.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the man (plural),die Männer,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the woman,die Frau,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the woman.,Das ist die Frau.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the woman (plural),die Frauen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the child,das Kind,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the child.,Das ist das Kind.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the child (plural),die Kinder,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the friend,der Freund,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the friend.,Das ist der Freund.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the friend (plural),die Freunde,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the female friend,die Freundin,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the female friend.,Das ist die Freundin.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the female friend (plural),die Freundinnen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the family,die Familie,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the family.,Das ist die Familie.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the family (plural),die Familien,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the house,das Haus,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the house.,Das ist das Haus.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the house (plural),die Häuser,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the apartment,die Wohnung,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the apartment.,Das ist die Wohnung.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the apartment (plural),die Wohnungen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the room,das Zimmer,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the room.,Das ist das Zimmer.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the room (plural),die Zimmer,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the door,die Tür,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the door.,Das ist die Tür.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the door (plural),die Türen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the window,das Fenster,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the window.,Das ist das Fenster.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the window (plural),die Fenster,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the table,der Tisch,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the table.,Das ist der Tisch.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the table (plural),die Tische,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the chair,der Stuhl,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the chair.,Das ist der Stuhl.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the chair (plural),die Stühle,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the bed,das Bett,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the bed.,Das ist das Bett.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the bed (plural),die Betten,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the city,die Stadt,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the city.,Das ist die Stadt.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the city (plural),die Städte,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the street,die Straße,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the street.,Das ist die Straße.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the street (plural),die Straßen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the station,der Bahnhof,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the station.,Das ist der Bahnhof.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the station (plural),die Bahnhöfe,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the airport,der Flughafen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the airport.,Das ist der Flughafen.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the airport (plural),die Flughäfen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the train,der Zug,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the train.,Das ist der Zug.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the train (plural),die Züge,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the car,das Auto,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the car.,Das ist das Auto.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the car (plural),die Autos,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the bike,das Fahrrad,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the bike.,Das ist das Fahrrad.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the bike (plural),die Fahrräder,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the ticket,die Fahrkarte,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the ticket.,Das ist die Fahrkarte.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the ticket (plural),die Fahrkarten,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the money,das Geld,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the money.,Das ist das Geld.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the money (plural),die Gelder,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the card,die Karte,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the card.,Das ist die Karte.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the card (plural),die Karten,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the bill,die Rechnung,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the bill.,Das ist die Rechnung.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the bill (plural),die Rechnungen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the food,das Essen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the food.,Das ist das Essen.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the water,das Wasser,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the water.,Das ist das Wasser.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the coffee,der Kaffee,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the coffee.,Das ist der Kaffee.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the coffee (plural),die Kaffees,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the beer,das Bier,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the beer.,Das ist das Bier.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the beer (plural),die Biere,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the wine,der Wein,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the wine.,Das ist der Wein.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the wine (plural),die Weine,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the bread,das Brot,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the bread.,Das ist das Brot.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the bread (plural),die Brote,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the breakfast,das Frühstück,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the breakfast.,Das ist das Frühstück.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the breakfast (plural),die Frühstücke,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the lunch,das Mittagessen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the lunch.,Das ist das Mittagessen.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the dinner,das Abendessen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the dinner.,Das ist das Abendessen.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the day,der Tag,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the day.,Das ist der Tag.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the day (plural),die Tage,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the week,die Woche,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the week.,Das ist die Woche.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the week (plural),die Wochen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the month,der Monat,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the month.,Das ist der Monat.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the month (plural),die Monate,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the year,das Jahr,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the year.,Das ist das Jahr.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the year (plural),die Jahre,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the time,die Zeit,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the time.,Das ist die Zeit.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the time (plural),die Zeiten,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the moment,der Moment,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the moment.,Das ist der Moment.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the moment (plural),die Momente,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the question,die Frage,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the question.,Das ist die Frage.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the question (plural),die Fragen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the answer,die Antwort,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the answer.,Das ist die Antwort.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the answer (plural),die Antworten,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the problem,das Problem,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the problem.,Das ist das Problem.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the problem (plural),die Probleme,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the solution,die Lösung,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the solution.,Das ist die Lösung.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the solution (plural),die Lösungen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the idea,die Idee,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the idea.,Das ist die Idee.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the idea (plural),die Ideen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the thought,der Gedanke,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the thought.,Das ist der Gedanke.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the thought (plural),die Gedanken,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the feeling,das Gefühl,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the feeling.,Das ist das Gefühl.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the feeling (plural),die Gefühle,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the fear,die Angst,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the fear.,Das ist die Angst.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the fear (plural),die Ängste,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the love,die Liebe,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the love.,Das ist die Liebe.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the trust,das Vertrauen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the trust.,Das ist das Vertrauen.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the clarity,die Klarheit,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the clarity.,Das ist die Klarheit.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the safety,die Sicherheit,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the safety.,Das ist die Sicherheit.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the safety (plural),die Sicherheiten,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the boundary,die Grenze,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the boundary.,Das ist die Grenze.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the boundary (plural),die Grenzen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the decision,die Entscheidung,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the decision.,Das ist die Entscheidung.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the decision (plural),die Entscheidungen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the responsibility,die Verantwortung,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the responsibility.,Das ist die Verantwortung.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the responsibility (plural),die Verantwortungen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the truth,die Wahrheit,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the truth.,Das ist die Wahrheit.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the truth (plural),die Wahrheiten,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the conversation,das Gespräch,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the conversation.,Das ist das Gespräch.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the conversation (plural),die Gespräche,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the conflict,der Konflikt,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the conflict.,Das ist der Konflikt.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the conflict (plural),die Konflikte,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the mistake,der Fehler,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the mistake.,Das ist der Fehler.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the mistake (plural),die Fehler,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the reason,der Grund,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the reason.,Das ist der Grund.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the reason (plural),die Gründe,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the situation,die Situation,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the situation.,Das ist die Situation.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the situation (plural),die Situationen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the state / condition,der Zustand,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the state / condition.,Das ist der Zustand.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the state / condition (plural),die Zustände,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the direction,die Richtung,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the direction.,Das ist die Richtung.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the direction (plural),die Richtungen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the plan,der Plan,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the plan.,Das ist der Plan.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the plan (plural),die Pläne,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the work,die Arbeit,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the work.,Das ist die Arbeit.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the work (plural),die Arbeiten,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the task,die Aufgabe,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the task.,Das ist die Aufgabe.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the task (plural),die Aufgaben,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the project,das Projekt,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the project.,Das ist das Projekt.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the project (plural),die Projekte,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the model,das Modell,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the model.,Das ist das Modell.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the model (plural),die Modelle,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the parameter,der Parameter,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the parameter.,Das ist der Parameter.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the parameter (plural),die Parameter,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the view,die Ansicht,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the view.,Das ist die Ansicht.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the view (plural),die Ansichten,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the export,der Export,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the export.,Das ist der Export.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the export (plural),die Exporte,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the structure,die Struktur,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the structure.,Das ist die Struktur.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the structure (plural),die Strukturen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the system,das System,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the system.,Das ist das System.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the system (plural),die Systeme,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the process,der Prozess,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the process.,Das ist der Prozess.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the process (plural),die Prozesse,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the quality,die Qualität,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the quality.,Das ist die Qualität.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the quality (plural),die Qualitäten,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the risk,das Risiko,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the risk.,Das ist das Risiko.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the risk (plural),die Risiken,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the change,die Änderung,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the change.,Das ist die Änderung.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the change (plural),die Änderungen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the date / appointment,der Termin,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the date / appointment.,Das ist der Termin.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the date / appointment (plural),die Termine,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the deadline,die Frist,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the deadline.,Das ist die Frist.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the deadline (plural),die Fristen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the message,die Nachricht,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the message.,Das ist die Nachricht.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the message (plural),die Nachrichten,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the email,die E-Mail,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the email.,Das ist die E-Mail.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the email (plural),die E-Mails,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the file,die Datei,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the file.,Das ist die Datei.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the file (plural),die Dateien,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the folder,der Ordner,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the folder.,Das ist der Ordner.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the folder (plural),die Ordner,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the phone,das Telefon,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the phone.,Das ist das Telefon.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the phone (plural),die Telefone,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the computer,der Computer,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the computer.,Das ist der Computer.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the computer (plural),die Computer,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the app,die App,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the app.,Das ist die App.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the app (plural),die Apps,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the language,die Sprache,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the language.,Das ist die Sprache.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the language (plural),die Sprachen,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the word,das Wort,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the word.,Das ist das Wort.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the word (plural),die Wörter,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the sentence,der Satz,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the sentence.,Das ist der Satz.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the sentence (plural),die Sätze,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the expression,der Ausdruck,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the expression.,Das ist der Ausdruck.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the expression (plural),die Ausdrücke,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the example,das Beispiel,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the example.,Das ist das Beispiel.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the example (plural),die Beispiele,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the level,das Niveau,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the level.,Das ist das Niveau.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the level (plural),die Niveaus,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the article,der Artikel,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the article.,Das ist der Artikel.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the article (plural),die Artikel,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the plural,der Plural,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the plural.,Das ist der Plural.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the plural (plural),die Plurale,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+the grammar,die Grammatik,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Article practice from noun deck.,A1
+This is the grammar.,Das ist die Grammatik.,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Generated sentence from noun card.,A1
+the grammar (plural),die Grammatiken,neutral,core;noun;source:german_nouns_articles_core;sentence_builder,Plural practice from noun deck.,A1
+I do not want to overthink this.,Ich will mir da nicht zu viele Gedanken machen.,natural,register;thinking;source:german_register_pairs;sentence_builder,,B1
+I do not want to overthink this. [alternative],Ich möchte das nicht überanalysieren.,natural,register;thinking;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich will mir da nicht zu viele Gedanken machen..,B1
+I do not want to overthink this. [alternative],Ich möchte mich da nicht reinsteigern.,natural,register;thinking;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich will mir da nicht zu viele Gedanken machen..,B1
+I do not want to force anything.,Ich möchte nichts erzwingen.,neutral,register;boundary;source:german_register_pairs;sentence_builder,,A2
+I do not want to force anything. [alternative],Ich will nichts erzwingen.,neutral,register;boundary;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich möchte nichts erzwingen..,A2
+I do not want to force anything. [alternative],Ich möchte da keinen Druck machen.,neutral,register;boundary;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich möchte nichts erzwingen..,A2
+That hurt me.,Das hat mich verletzt.,neutral,register;emotion;source:german_register_pairs;sentence_builder,,A2
+That hurt me. [alternative],Das hat mich getroffen.,neutral,register;emotion;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das hat mich verletzt..,A2
+That hurt me. [alternative],Das tat mir weh.,neutral,register;emotion;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das hat mich verletzt..,A2
+I need clarity.,Ich brauche Klarheit.,neutral,register;boundary;source:german_register_pairs;sentence_builder,,B1
+I need clarity. [alternative],Ich brauche eine klare Aussage.,neutral,register;boundary;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich brauche Klarheit..,B1
+I need clarity. [alternative],"Ich muss wissen, woran ich bin.",neutral,register;boundary;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich brauche Klarheit..,B1
+I am not blaming you.,Ich mache dir keinen Vorwurf.,neutral,register;communication;source:german_register_pairs;sentence_builder,,A2
+I am not blaming you. [alternative],Ich will dir nichts vorwerfen.,neutral,register;communication;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich mache dir keinen Vorwurf..,A2
+I am not blaming you. [alternative],Das ist kein Vorwurf.,neutral,register;communication;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich mache dir keinen Vorwurf..,A2
+Do not misunderstand me.,Versteh mich nicht falsch.,natural,register;communication;source:german_register_pairs;sentence_builder,,A2
+Do not misunderstand me. [alternative],Bitte missversteh mich nicht.,natural,register;communication;source:german_register_pairs;sentence_builder;alternative,Alternative for: Versteh mich nicht falsch..,A2
+Do not misunderstand me. [alternative],Das meine ich nicht böse.,natural,register;communication;source:german_register_pairs;sentence_builder;alternative,Alternative for: Versteh mich nicht falsch..,A2
+This came across wrong.,Das kam falsch rüber.,natural,register;communication;source:german_register_pairs;sentence_builder,,B1
+This came across wrong. [alternative],Das wurde falsch verstanden.,natural,register;communication;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das kam falsch rüber..,B1
+This came across wrong. [alternative],"Das ist anders angekommen, als ich es gemeint habe.",natural,register;communication;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das kam falsch rüber..,B1
+That does not work for me.,Das funktioniert für mich so nicht.,neutral,register;boundary;source:german_register_pairs;sentence_builder,,B1
+That does not work for me. [alternative],So geht das für mich nicht.,neutral,register;boundary;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das funktioniert für mich so nicht..,B1
+That does not work for me. [alternative],Damit kann ich so nicht gut umgehen.,neutral,register;boundary;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das funktioniert für mich so nicht..,B1
+I need a moment.,Ich brauche einen Moment.,neutral,register;self-regulation;source:german_register_pairs;sentence_builder,,A2
+I need a moment. [alternative],Gib mir bitte kurz Zeit.,neutral,register;self-regulation;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich brauche einen Moment..,A2
+I need a moment. [alternative],Ich muss kurz sammeln.,neutral,register;self-regulation;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich brauche einen Moment..,A2
+I am trying to stay calm.,"Ich versuche, ruhig zu bleiben.",neutral,register;self-regulation;source:german_register_pairs;sentence_builder,,B1
+I am trying to stay calm. [alternative],"Ich versuche, nicht aus der Emotion zu reagieren.",neutral,register;self-regulation;source:german_register_pairs;sentence_builder;alternative,"Alternative for: Ich versuche, ruhig zu bleiben..",B1
+I am trying to stay calm. [alternative],Ich will jetzt nicht impulsiv reagieren.,neutral,register;self-regulation;source:german_register_pairs;sentence_builder;alternative,"Alternative for: Ich versuche, ruhig zu bleiben..",B1
+Let us clarify this calmly.,Lass uns das in Ruhe klären.,natural,register;communication;source:german_register_pairs;sentence_builder,,B1
+Let us clarify this calmly. [alternative],Wir sollten das sachlich klären.,natural,register;communication;source:german_register_pairs;sentence_builder;alternative,Alternative for: Lass uns das in Ruhe klären..,B1
+Let us clarify this calmly. [alternative],Lass uns da später in Ruhe drüber sprechen.,natural,register;communication;source:german_register_pairs;sentence_builder;alternative,Alternative for: Lass uns das in Ruhe klären..,B1
+This is too much for me right now.,Das ist mir gerade zu viel.,natural,register;emotion;source:german_register_pairs;sentence_builder,,A2
+This is too much for me right now. [alternative],Ich bin damit gerade überfordert.,natural,register;emotion;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das ist mir gerade zu viel..,A2
+This is too much for me right now. [alternative],Das überfordert mich gerade.,natural,register;emotion;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das ist mir gerade zu viel..,A2
+I want to understand you.,Ich möchte dich verstehen.,neutral,register;relationship;source:german_register_pairs;sentence_builder,,A2
+I want to understand you. [alternative],"Ich will nachvollziehen, was in dir passiert.",neutral,register;relationship;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich möchte dich verstehen..,A2
+I want to understand you. [alternative],"Ich möchte besser verstehen, was du meinst.",neutral,register;relationship;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich möchte dich verstehen..,A2
+I cannot read your mind.,Ich kann deine Gedanken nicht lesen.,neutral,register;relationship;source:german_register_pairs;sentence_builder,,B1
+I cannot read your mind. [alternative],"Ich kann nicht erraten, was du brauchst.",neutral,register;relationship;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich kann deine Gedanken nicht lesen..,B1
+I cannot read your mind. [alternative],"Ich brauche, dass du es mir sagst.",neutral,register;relationship;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich kann deine Gedanken nicht lesen..,B1
+I do not want to chase.,Ich möchte nicht hinterherrennen.,natural,register;boundary;source:german_register_pairs;sentence_builder,,B1
+I do not want to chase. [alternative],Ich will niemandem hinterherlaufen.,natural,register;boundary;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich möchte nicht hinterherrennen..,B1
+I do not want to chase. [alternative],Ich möchte nicht in eine Bittstellerrolle gehen.,natural,register;boundary;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich möchte nicht hinterherrennen..,B1
+I care about you.,Du bist mir wichtig.,natural,register;relationship;source:german_register_pairs;sentence_builder,,A2
+I care about you. [alternative],Ich habe dich sehr gern.,natural,register;relationship;source:german_register_pairs;sentence_builder;alternative,Alternative for: Du bist mir wichtig..,A2
+I care about you. [alternative],Du bedeutest mir viel.,natural,register;relationship;source:german_register_pairs;sentence_builder;alternative,Alternative for: Du bist mir wichtig..,A2
+I want to be honest.,Ich möchte ehrlich sein.,neutral,register;communication;source:german_register_pairs;sentence_builder,,A2
+I want to be honest. [alternative],Ich sage dir das ganz ehrlich.,neutral,register;communication;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich möchte ehrlich sein..,A2
+I want to be honest. [alternative],Mir ist Ehrlichkeit wichtig.,neutral,register;communication;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich möchte ehrlich sein..,A2
+That depends.,Das kommt darauf an.,natural,register;thinking;source:german_register_pairs;sentence_builder,,A2
+That depends. [alternative],Das hängt davon ab.,natural,register;thinking;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das kommt darauf an..,A2
+That depends. [alternative],Es kommt auf die Situation an.,natural,register;thinking;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das kommt darauf an..,A2
+This is not about winning.,Es geht nicht ums Gewinnen.,neutral,register;conflict;source:german_register_pairs;sentence_builder,,B1
+This is not about winning. [alternative],"Es geht mir nicht darum, recht zu haben.",neutral,register;conflict;source:german_register_pairs;sentence_builder;alternative,Alternative for: Es geht nicht ums Gewinnen..,B1
+This is not about winning. [alternative],Ich will keinen Kampf daraus machen.,neutral,register;conflict;source:german_register_pairs;sentence_builder;alternative,Alternative for: Es geht nicht ums Gewinnen..,B1
+We are on the same side.,Wir stehen auf derselben Seite.,neutral,register;conflict;source:german_register_pairs;sentence_builder,,B1
+We are on the same side. [alternative],Wir sind nicht gegeneinander.,neutral,register;conflict;source:german_register_pairs;sentence_builder;alternative,Alternative for: Wir stehen auf derselben Seite..,B1
+We are on the same side. [alternative],"Ich will, dass wir zusammen daran arbeiten.",neutral,register;conflict;source:german_register_pairs;sentence_builder;alternative,Alternative for: Wir stehen auf derselben Seite..,B1
+I see this differently.,Ich sehe das anders.,natural,register;disagreement;source:german_register_pairs;sentence_builder,,A2
+I see this differently. [alternative],Ich habe da eine andere Sicht.,natural,register;disagreement;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich sehe das anders..,A2
+I see this differently. [alternative],Aus meiner Sicht ist das anders.,natural,register;disagreement;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich sehe das anders..,A2
+I partly agree.,Ich stimme dir teilweise zu.,neutral,register;disagreement;source:german_register_pairs;sentence_builder,,B1
+I partly agree. [alternative],Da bin ich teilweise bei dir.,neutral,register;disagreement;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich stimme dir teilweise zu..,B1
+I partly agree. [alternative],Ein Stück weit verstehe ich das.,neutral,register;disagreement;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich stimme dir teilweise zu..,B1
+I am not convinced yet.,Ich bin noch nicht überzeugt.,neutral,register;thinking;source:german_register_pairs;sentence_builder,,B1
+I am not convinced yet. [alternative],Das überzeugt mich noch nicht ganz.,neutral,register;thinking;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich bin noch nicht überzeugt..,B1
+I am not convinced yet. [alternative],Ich bin da noch unsicher.,neutral,register;thinking;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich bin noch nicht überzeugt..,B1
+This is probably the cleaner solution.,Das ist wahrscheinlich die sauberere Lösung.,technical,register;work;source:german_register_pairs;sentence_builder,,B1
+This is probably the cleaner solution. [alternative],Das ist vermutlich der robustere Weg.,technical,register;work;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das ist wahrscheinlich die sauberere Lösung..,B1
+This is probably the cleaner solution. [alternative],Das wäre aus meiner Sicht die stabilere Lösung.,technical,register;work;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das ist wahrscheinlich die sauberere Lösung..,B1
+Let us not overcomplicate it.,Lass es uns nicht verkomplizieren.,natural,register;work;source:german_register_pairs;sentence_builder,,B1
+Let us not overcomplicate it. [alternative],Lass uns das nicht unnötig kompliziert machen.,natural,register;work;source:german_register_pairs;sentence_builder;alternative,Alternative for: Lass es uns nicht verkomplizieren..,B1
+Let us not overcomplicate it. [alternative],Wir sollten es einfach halten.,natural,register;work;source:german_register_pairs;sentence_builder;alternative,Alternative for: Lass es uns nicht verkomplizieren..,B1
+This needs a robust solution.,Das braucht eine robuste Lösung.,technical,register;work;source:german_register_pairs;sentence_builder,,B1
+This needs a robust solution. [alternative],Wir brauchen hier eine stabile Lösung.,technical,register;work;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das braucht eine robuste Lösung..,B1
+This needs a robust solution. [alternative],Das sollte sauber gelöst werden.,technical,register;work;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das braucht eine robuste Lösung..,B1
+I would start with the structure.,Ich würde mit der Struktur anfangen.,technical,register;work;source:german_register_pairs;sentence_builder,,B1
+I would start with the structure. [alternative],Ich würde zuerst die Struktur klären.,technical,register;work;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich würde mit der Struktur anfangen..,B1
+I would start with the structure. [alternative],Aus meiner Sicht sollten wir zuerst die Struktur definieren.,technical,register;work;source:german_register_pairs;sentence_builder;alternative,Alternative for: Ich würde mit der Struktur anfangen..,B1
+That is not the root cause.,Das ist nicht die eigentliche Ursache.,technical,register;work;source:german_register_pairs;sentence_builder,,B2
+That is not the root cause. [alternative],Das ist wahrscheinlich nur ein Symptom.,technical,register;work;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das ist nicht die eigentliche Ursache..,B2
+That is not the root cause. [alternative],Die Ursache liegt vermutlich woanders.,technical,register;work;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das ist nicht die eigentliche Ursache..,B2
+This should not break the existing version.,Das sollte die bestehende Version nicht kaputtmachen.,technical,register;dev;source:german_register_pairs;sentence_builder,,B2
+This should not break the existing version. [alternative],Das darf die bestehende Version nicht beschädigen.,technical,register;dev;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das sollte die bestehende Version nicht kaputtmachen..,B2
+This should not break the existing version. [alternative],Die bestehende Funktionalität muss erhalten bleiben.,technical,register;dev;source:german_register_pairs;sentence_builder;alternative,Alternative for: Das sollte die bestehende Version nicht kaputtmachen..,B2
+We should keep it backward-compatible.,Wir sollten es abwärtskompatibel halten.,technical,register;dev;source:german_register_pairs;sentence_builder,,B2
+We should keep it backward-compatible. [alternative],Die alte Struktur sollte weiterhin funktionieren.,technical,register;dev;source:german_register_pairs;sentence_builder;alternative,Alternative for: Wir sollten es abwärtskompatibel halten..,B2
+We should keep it backward-compatible. [alternative],Die bestehende CSV-Struktur muss weiterhin unterstützt werden.,technical,register;dev;source:german_register_pairs;sentence_builder;alternative,Alternative for: Wir sollten es abwärtskompatibel halten..,B2
+hello / good day,Guten Tag,neutral,a1;survival;greeting;source:german_a1_survival;sentence_builder,,A1
+hello / good day [alternative],Hallo,neutral,a1;survival;greeting;source:german_a1_survival;sentence_builder;alternative,Alternative for: Guten Tag.,A1
+hello / good day [alternative],Guten Morgen,neutral,a1;survival;greeting;source:german_a1_survival;sentence_builder;alternative,Alternative for: Guten Tag.,A1
+hello / good day [alternative],Guten Abend,neutral,a1;survival;greeting;source:german_a1_survival;sentence_builder;alternative,Alternative for: Guten Tag.,A1
+goodbye,Auf Wiedersehen,neutral,a1;survival;greeting;source:german_a1_survival;sentence_builder,,A1
+goodbye [alternative],Tschüss,neutral,a1;survival;greeting;source:german_a1_survival;sentence_builder;alternative,Alternative for: Auf Wiedersehen.,A1
+goodbye [alternative],Bis später,neutral,a1;survival;greeting;source:german_a1_survival;sentence_builder;alternative,Alternative for: Auf Wiedersehen.,A1
+please,bitte,neutral,a1;politeness;source:german_a1_survival;sentence_builder,,A1
+thank you,danke,neutral,a1;politeness;source:german_a1_survival;sentence_builder,,A1
+thank you [alternative],Vielen Dank,neutral,a1;politeness;source:german_a1_survival;sentence_builder;alternative,Alternative for: danke.,A1
+thank you [alternative],Danke schön,neutral,a1;politeness;source:german_a1_survival;sentence_builder;alternative,Alternative for: danke.,A1
+you are welcome,gern geschehen,neutral,a1;politeness;source:german_a1_survival;sentence_builder,,A1
+you are welcome [alternative],Bitte schön,neutral,a1;politeness;source:german_a1_survival;sentence_builder;alternative,Alternative for: gern geschehen.,A1
+you are welcome [alternative],Kein Problem,neutral,a1;politeness;source:german_a1_survival;sentence_builder;alternative,Alternative for: gern geschehen.,A1
+excuse me / sorry,Entschuldigung,neutral,a1;politeness;source:german_a1_survival;sentence_builder,,A1
+excuse me / sorry [alternative],Tut mir leid,neutral,a1;politeness;source:german_a1_survival;sentence_builder;alternative,Alternative for: Entschuldigung.,A1
+yes,ja,neutral,a1;basic;source:german_a1_survival;sentence_builder,,A1
+no,nein,neutral,a1;basic;source:german_a1_survival;sentence_builder,,A1
+maybe,vielleicht,neutral,a1;basic;source:german_a1_survival;sentence_builder,,A1
+I do not understand.,Ich verstehe nicht.,neutral,a1;survival;source:german_a1_survival;sentence_builder,,A1
+"Could you repeat that, please?",Könnten Sie das bitte wiederholen?,formal,a1;survival;source:german_a1_survival;sentence_builder,,A2
+"Could you repeat that, please? [alternative]",Kannst du das bitte wiederholen?,formal,a1;survival;source:german_a1_survival;sentence_builder;alternative,Alternative for: Könnten Sie das bitte wiederholen?.,A2
+Do you speak English?,Sprechen Sie Englisch?,formal,a1;survival;source:german_a1_survival;sentence_builder,,A1
+Do you speak English? [alternative],Sprichst du Englisch?,formal,a1;survival;source:german_a1_survival;sentence_builder;alternative,Alternative for: Sprechen Sie Englisch?.,A1
+I speak a little German.,Ich spreche ein bisschen Deutsch.,neutral,a1;survival;source:german_a1_survival;sentence_builder,,A1
+I am learning German.,Ich lerne Deutsch.,neutral,a1;survival;source:german_a1_survival;sentence_builder,,A1
+I am from Hungary.,Ich komme aus Ungarn.,neutral,a1;intro;source:german_a1_survival;sentence_builder,,A1
+My name is Oliver.,Ich heiße Oliver.,neutral,a1;intro;source:german_a1_survival;sentence_builder,,A1
+Nice to meet you.,Freut mich.,neutral,a1;intro;source:german_a1_survival;sentence_builder,,A1
+Nice to meet you. [alternative],Sehr erfreut,neutral,a1;intro;source:german_a1_survival;sentence_builder;alternative,Alternative for: Freut mich..,A1
+How are you?,Wie geht es Ihnen?,formal,a1;smalltalk;source:german_a1_survival;sentence_builder,,A1
+How are you? [alternative],Wie geht es dir?,formal,a1;smalltalk;source:german_a1_survival;sentence_builder;alternative,Alternative for: Wie geht es Ihnen?.,A1
+"I am fine, thanks.","Mir geht es gut, danke.",neutral,a1;smalltalk;source:german_a1_survival;sentence_builder,,A1
+Where is the station?,Wo ist der Bahnhof?,neutral,a1;travel;source:german_a1_survival;sentence_builder,,A1
+Where is the toilet?,Wo ist die Toilette?,neutral,a1;travel;source:german_a1_survival;sentence_builder,,A1
+Where is the exit?,Wo ist der Ausgang?,neutral,a1;travel;source:german_a1_survival;sentence_builder,,A1
+Where is the entrance?,Wo ist der Eingang?,neutral,a1;travel;source:german_a1_survival;sentence_builder,,A1
+I am looking for this address.,Ich suche diese Adresse.,neutral,a1;travel;source:german_a1_survival;sentence_builder,,A1
+Can you help me?,Können Sie mir helfen?,formal,a1;survival;source:german_a1_survival;sentence_builder,,A1
+Can you help me? [alternative],Kannst du mir helfen?,formal,a1;survival;source:german_a1_survival;sentence_builder;alternative,Alternative for: Können Sie mir helfen?.,A1
+How much does it cost?,Wie viel kostet das?,neutral,a1;shopping;source:german_a1_survival;sentence_builder,,A1
+Can I pay by card?,Kann ich mit Karte zahlen?,neutral,a1;shopping;source:german_a1_survival;sentence_builder,,A1
+Can I pay in cash?,Kann ich bar zahlen?,neutral,a1;shopping;source:german_a1_survival;sentence_builder,,A1
+I would like a coffee.,Ich hätte gern einen Kaffee.,neutral,a1;food;source:german_a1_survival;sentence_builder,,A1
+I would like a coffee. [alternative],Ich möchte einen Kaffee.,neutral,a1;food;source:german_a1_survival;sentence_builder;alternative,Alternative for: Ich hätte gern einen Kaffee..,A1
+I would like a beer.,Ich hätte gern ein Bier.,neutral,a1;food;source:german_a1_survival;sentence_builder,,A1
+"A table for two, please.","Einen Tisch für zwei, bitte.",neutral,a1;restaurant;source:german_a1_survival;sentence_builder,,A1
+"The bill, please.","Die Rechnung, bitte.",neutral,a1;restaurant;source:german_a1_survival;sentence_builder,,A1
+Is this free?,Ist das frei?,neutral,a1;restaurant;travel;source:german_a1_survival;sentence_builder,,A1
+I have a reservation.,Ich habe eine Reservierung.,neutral,a1;hotel;restaurant;source:german_a1_survival;sentence_builder,,A1
+I need a ticket.,Ich brauche eine Fahrkarte.,neutral,a1;travel;source:german_a1_survival;sentence_builder,,A1
+"One ticket to Berlin, please.","Eine Fahrkarte nach Berlin, bitte.",neutral,a1;travel;source:german_a1_survival;sentence_builder,,A1
+When does the train leave?,Wann fährt der Zug ab?,neutral,a1;travel;source:german_a1_survival;sentence_builder,,A1
+When does it arrive?,Wann kommt er an?,neutral,a1;travel;source:german_a1_survival;sentence_builder,,A1
+I am lost.,Ich habe mich verlaufen.,neutral,a1;travel;source:german_a1_survival;sentence_builder,,A2
+I need a doctor.,Ich brauche einen Arzt.,neutral,a1;emergency;source:german_a1_survival;sentence_builder,,A1
+I need a doctor. [alternative],Ich brauche eine Ärztin.,neutral,a1;emergency;source:german_a1_survival;sentence_builder;alternative,Alternative for: Ich brauche einen Arzt..,A1
+I do not feel well.,Mir geht es nicht gut.,neutral,a1;health;source:german_a1_survival;sentence_builder,,A1
+It hurts here.,Es tut hier weh.,neutral,a1;health;source:german_a1_survival;sentence_builder,,A1
+I am allergic to this.,Ich bin dagegen allergisch.,neutral,a1;health;source:german_a1_survival;sentence_builder,,A2
+I need water.,Ich brauche Wasser.,neutral,a1;food;health;source:german_a1_survival;sentence_builder,,A1
+left,links,neutral,a1;directions;source:german_a1_survival;sentence_builder,,A1
+right,rechts,neutral,a1;directions;source:german_a1_survival;sentence_builder,,A1
+straight ahead,geradeaus,neutral,a1;directions;source:german_a1_survival;sentence_builder,,A1
+nearby,in der Nähe,neutral,a1;directions;source:german_a1_survival;sentence_builder,,A1
+today,heute,neutral,a1;time;source:german_a1_survival;sentence_builder,,A1
+tomorrow,morgen,neutral,a1;time;source:german_a1_survival;sentence_builder,,A1
+yesterday,gestern,neutral,a1;time;source:german_a1_survival;sentence_builder,,A1
+now,jetzt,neutral,a1;time;source:german_a1_survival;sentence_builder,,A1
+later,später,neutral,a1;time;source:german_a1_survival;sentence_builder,,A1
+I am in a hurry.,Ich habe es eilig.,neutral,a1;time;source:german_a1_survival;sentence_builder,,A2
+I have time.,Ich habe Zeit.,neutral,a1;time;source:german_a1_survival;sentence_builder,,A1
+No problem.,Kein Problem.,neutral,a1;reaction;source:german_a1_survival;sentence_builder,,A1
+That is okay.,Das ist in Ordnung.,neutral,a1;reaction;source:german_a1_survival;sentence_builder,,A1
+I am sorry.,Es tut mir leid.,neutral,a1;politeness;source:german_a1_survival;sentence_builder,,A1
+to be,sein,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I am tired.,Ich bin müde.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to be → sein.,A1
+to have,haben,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I have time.,Ich habe Zeit.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to have → haben.,A1
+to become / to get,werden,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+It is getting better.,Es wird besser.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to become / to get → werden.,A1
+to go,gehen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I am going home.,Ich gehe nach Hause.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to go → gehen.,A1
+to come,kommen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+Are you coming with me?,Kommst du mit?,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to come → kommen.,A1
+to do / to make,machen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+What are you doing?,Was machst du?,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to do / to make → machen.,A1
+to say,sagen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+What did you say?,Was hast du gesagt?,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to say → sagen.,A1
+to speak,sprechen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+We need to talk.,Wir müssen sprechen.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to speak → sprechen.,A1
+to ask,fragen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+Can I ask you something?,Kann ich dich etwas fragen?,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to ask → fragen.,A1
+to answer,antworten,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I will answer later.,Ich antworte später.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to answer → antworten.,A1
+to think,denken,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I think about it.,Ich denke darüber nach.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to think → denken.,A1
+to know,wissen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I do not know.,Ich weiß es nicht.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to know → wissen.,A1
+to know a person / place,kennen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I know him.,Ich kenne ihn.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to know a person / place → kennen.,A1
+to understand,verstehen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I understand you.,Ich verstehe dich.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to understand → verstehen.,A1
+to mean,meinen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+What do you mean?,Was meinst du?,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to mean → meinen.,A1
+to want,wollen,neutral,core;modal;source:german_core_verbs;sentence_builder,,A1
+I do not want to force anything.,Ich will nichts erzwingen.,neutral,core;modal;source:german_core_verbs;sentence_builder;example,Example for: to want → wollen.,A1
+would like,möchten,polite,core;modal;source:german_core_verbs;sentence_builder,,A1
+I would like to understand it.,Ich möchte es verstehen.,polite,core;modal;source:german_core_verbs;sentence_builder;example,Example for: would like → möchten.,A1
+can / to be able to,können,neutral,core;modal;source:german_core_verbs;sentence_builder,,A1
+I can do it.,Ich kann das machen.,neutral,core;modal;source:german_core_verbs;sentence_builder;example,Example for: can / to be able to → können.,A1
+must / have to,müssen,neutral,core;modal;source:german_core_verbs;sentence_builder,,A1
+We have to clarify this.,Wir müssen das klären.,neutral,core;modal;source:german_core_verbs;sentence_builder;example,Example for: must / have to → müssen.,A1
+should / supposed to,sollen,neutral,core;modal;source:german_core_verbs;sentence_builder,,A1
+What should I do?,Was soll ich tun?,neutral,core;modal;source:german_core_verbs;sentence_builder;example,Example for: should / supposed to → sollen.,A1
+may / to be allowed to,dürfen,neutral,core;modal;source:german_core_verbs;sentence_builder,,A1
+May I ask?,Darf ich fragen?,neutral,core;modal;source:german_core_verbs;sentence_builder;example,Example for: may / to be allowed to → dürfen.,A1
+to need,brauchen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I need clarity.,Ich brauche Klarheit.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to need → brauchen.,A1
+to stay / remain,bleiben,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+Stay here.,Bleib hier.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to stay / remain → bleiben.,A1
+to let / leave,lassen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A2
+Let it be for now.,Lass es erst mal.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to let / leave → lassen.,A2
+to give,geben,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+Give me a moment.,Gib mir einen Moment.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to give → geben.,A1
+to take,nehmen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I will take this one.,Ich nehme das.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to take → nehmen.,A1
+to find,finden,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I find it difficult.,Ich finde es schwierig.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to find → finden.,A1
+to feel,fühlen,neutral,core;emotion;source:german_core_verbs;sentence_builder,,A1
+I feel safe.,Ich fühle mich sicher.,neutral,core;emotion;source:german_core_verbs;sentence_builder;example,Example for: to feel → fühlen.,A1
+to notice,merken,neutral,core;perception;source:german_core_verbs;sentence_builder,,A2
+I notice that something is wrong.,"Ich merke, dass etwas nicht stimmt.",neutral,core;perception;source:german_core_verbs;sentence_builder;example,Example for: to notice → merken.,A2
+to see,sehen,neutral,core;perception;source:german_core_verbs;sentence_builder,,A1
+I see what you mean.,"Ich sehe, was du meinst.",neutral,core;perception;source:german_core_verbs;sentence_builder;example,Example for: to see → sehen.,A1
+to hear,hören,neutral,core;perception;source:german_core_verbs;sentence_builder,,A1
+I heard that differently.,Ich habe das anders gehört.,neutral,core;perception;source:german_core_verbs;sentence_builder;example,Example for: to hear → hören.,A1
+to believe / think,glauben,neutral,core;thinking;source:german_core_verbs;sentence_builder,,A1
+I believe you.,Ich glaube dir.,neutral,core;thinking;source:german_core_verbs;sentence_builder;example,Example for: to believe / think → glauben.,A1
+to hope,hoffen,neutral,core;emotion;source:german_core_verbs;sentence_builder,,A1
+I hope so.,Ich hoffe es.,neutral,core;emotion;source:german_core_verbs;sentence_builder;example,Example for: to hope → hoffen.,A1
+to fear / be afraid,sich fürchten,neutral,core;emotion;source:german_core_verbs;sentence_builder,,A2
+I am not afraid of you.,Ich fürchte mich nicht vor dir.,neutral,core;emotion;source:german_core_verbs;sentence_builder;example,Example for: to fear / be afraid → sich fürchten.,A2
+to be afraid,Angst haben vor,neutral,core;emotion;preposition;source:german_core_verbs;sentence_builder,vor + dative,A2
+I am afraid of losing this.,"Ich habe Angst davor, das zu verlieren.",neutral,core;emotion;preposition;source:german_core_verbs;sentence_builder;example,vor + dative Example for: to be afraid → Angst haben vor.,A2
+to wait for,warten auf,neutral,core;verb;preposition;source:german_core_verbs;sentence_builder,auf + accusative,A1
+I am waiting for you.,Ich warte auf dich.,neutral,core;verb;preposition;source:german_core_verbs;sentence_builder;example,auf + accusative Example for: to wait for → warten auf.,A1
+to think about,nachdenken über,neutral,core;verb;preposition;source:german_core_verbs;sentence_builder,über + accusative,A2
+I am thinking about it.,Ich denke darüber nach.,neutral,core;verb;preposition;source:german_core_verbs;sentence_builder;example,über + accusative Example for: to think about → nachdenken über.,A2
+to talk about,sprechen über,neutral,core;verb;preposition;source:german_core_verbs;sentence_builder,über + accusative,A1
+We should talk about it.,Wir sollten darüber sprechen.,neutral,core;verb;preposition;source:german_core_verbs;sentence_builder;example,über + accusative Example for: to talk about → sprechen über.,A1
+to decide,entscheiden,neutral,core;decision;source:german_core_verbs;sentence_builder,,A2
+I do not want to decide now.,Ich möchte jetzt nicht entscheiden.,neutral,core;decision;source:german_core_verbs;sentence_builder;example,Example for: to decide → entscheiden.,A2
+to clarify,klären,neutral,core;decision;work;source:german_core_verbs;sentence_builder,,A2
+Let us clarify this calmly.,Lass uns das in Ruhe klären.,neutral,core;decision;work;source:german_core_verbs;sentence_builder;example,Example for: to clarify → klären.,A2
+to explain,erklären,neutral,core;communication;source:german_core_verbs;sentence_builder,,A2
+Can you explain it to me?,Kannst du mir das erklären?,neutral,core;communication;source:german_core_verbs;sentence_builder;example,Example for: to explain → erklären.,A2
+to try,versuchen,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+I am trying to understand it.,"Ich versuche, es zu verstehen.",neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to try → versuchen.,A1
+to change,ändern,neutral,core;verb;source:german_core_verbs;sentence_builder,,A2
+That changes the situation.,Das ändert die Situation.,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to change → ändern.,A2
+to happen,passieren,neutral,core;verb;source:german_core_verbs;sentence_builder,,A1
+What happened?,Was ist passiert?,neutral,core;verb;source:german_core_verbs;sentence_builder;example,Example for: to happen → passieren.,A1
+to work / function,funktionieren,neutral,core;work;source:german_core_verbs;sentence_builder,,A2
+This does not work like this.,Das funktioniert so nicht.,neutral,core;work;source:german_core_verbs;sentence_builder;example,Example for: to work / function → funktionieren.,A2
+to need to be,müssen sein,neutral,core;pattern;source:german_core_verbs;sentence_builder,,A2
+It has to be clear.,Es muss klar sein.,neutral,core;pattern;source:german_core_verbs;sentence_builder;example,Example for: to need to be → müssen sein.,A2
+to make sense,Sinn ergeben,neutral,core;thinking;source:german_core_verbs;sentence_builder,,A2
+That makes sense.,Das ergibt Sinn.,neutral,core;thinking;source:german_core_verbs;sentence_builder;example,Example for: to make sense → Sinn ergeben.,A2
+to fall back into,zurückfallen in,neutral,core;relationship;source:german_core_verbs;sentence_builder,in + accusative,B1
+I do not want to fall back into the same dynamic.,Ich möchte nicht in dieselbe Dynamik zurückfallen.,neutral,core;relationship;source:german_core_verbs;sentence_builder;example,in + accusative Example for: to fall back into → zurückfallen in.,B1
+That depends.,Das kommt darauf an.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+Let’s see.,Mal sehen.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+No idea.,Keine Ahnung.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+That makes sense.,Das ergibt Sinn.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+That does not make sense.,Das ergibt keinen Sinn.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+I see what you mean.,"Ich verstehe, was du meinst.",natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+I see it differently.,Ich sehe das anders.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+That sounds good.,Das klingt gut.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+That sounds difficult.,Das klingt schwierig.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+Exactly.,Genau.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+Not exactly.,Nicht ganz.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+More or less.,Mehr oder weniger.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+In any case.,Auf jeden Fall.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+Anyway.,Jedenfalls.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+By the way.,Übrigens.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+Actually...,Eigentlich ...,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+To be honest...,Ehrlich gesagt ...,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+Honestly?,Ganz ehrlich?,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+I mean...,Ich meine ...,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+How should I put it?,Wie soll ich sagen?,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+It is hard to say.,Das ist schwer zu sagen.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+It is not that simple.,So einfach ist das nicht.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+That is the point.,Darum geht es.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+That is not the point.,Darum geht es nicht.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+That is the problem.,Das ist das Problem.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+Not necessarily.,Nicht unbedingt.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+Probably.,Wahrscheinlich.,neutral,native;spoken;source:german_native_chunks;sentence_builder,,A1
+Apparently.,Anscheinend.,neutral,native;spoken;source:german_native_chunks;sentence_builder,,A2
+Of course.,Natürlich.,neutral,native;spoken;source:german_native_chunks;sentence_builder,,A1
+Unfortunately.,Leider.,neutral,native;spoken;source:german_native_chunks;sentence_builder,,A1
+Luckily.,Zum Glück.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+No worries.,Mach dir keine Sorgen.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+Take your time.,Lass dir Zeit.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+One moment.,Einen Moment.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+Wait a second.,Warte kurz.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+I will be right back.,Ich bin gleich zurück.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+I do not want to overthink it.,Ich will mir da nicht zu viele Gedanken machen.,natural,native;thinking;source:german_native_chunks;sentence_builder,,B1
+I do not want to overthink it. [alternative],Ich möchte das nicht zerdenken.,natural,native;thinking;source:german_native_chunks;sentence_builder;alternative,Alternative for: Ich will mir da nicht zu viele Gedanken machen..,B1
+Do not get me wrong.,Versteh mich nicht falsch.,natural,native;communication;source:german_native_chunks;sentence_builder,,A2
+That came across wrong.,Das kam falsch rüber.,natural,native;communication;source:german_native_chunks;sentence_builder,,B1
+I did not mean it like that.,So habe ich das nicht gemeint.,natural,native;communication;source:german_native_chunks;sentence_builder,,A2
+I need to think about it.,Ich muss darüber nachdenken.,natural,native;thinking;source:german_native_chunks;sentence_builder,,A2
+Let us not make it too complicated.,Lass es uns nicht zu kompliziert machen.,natural,native;spoken;source:german_native_chunks;sentence_builder,,B1
+It is fine for now.,Für den Moment ist es okay.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+We will manage somehow.,Wir kriegen das schon hin.,colloquial,native;spoken;source:german_native_chunks;sentence_builder,,B1
+We will manage somehow. [alternative],Wir schaffen das schon.,colloquial,native;spoken;source:german_native_chunks;sentence_builder;alternative,Alternative for: Wir kriegen das schon hin..,B1
+It will be alright.,Das wird schon.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A2
+I am not in the mood.,Ich habe gerade keine Lust.,natural,native;emotion;source:german_native_chunks;sentence_builder,,A2
+I am tired.,Ich bin müde.,natural,native;state;source:german_native_chunks;sentence_builder,,A1
+I am exhausted.,Ich bin erschöpft.,natural,native;state;source:german_native_chunks;sentence_builder,,A2
+I need some air.,Ich brauche kurz frische Luft.,natural,native;state;source:german_native_chunks;sentence_builder,,A2
+Let’s take a break.,Lass uns eine Pause machen.,natural,native;spoken;source:german_native_chunks;sentence_builder,,A1
+because I do not know,weil ich es nicht weiß,neutral,grammar;weil;source:german_grammar_chunks;sentence_builder,Verb goes to end after weil.,A2
+because it is important,weil es wichtig ist,neutral,grammar;weil;source:german_grammar_chunks;sentence_builder,,A2
+because I need clarity,weil ich Klarheit brauche,neutral,grammar;weil;source:german_grammar_chunks;sentence_builder,Related noun article: die.,A2
+that I do not understand it,dass ich es nicht verstehe,neutral,grammar;dass;source:german_grammar_chunks;sentence_builder,Verb goes to end after dass.,A2
+that we should talk,dass wir sprechen sollten,neutral,grammar;dass;modal;source:german_grammar_chunks;sentence_builder,,A2
+if you have time,wenn du Zeit hast,neutral,grammar;wenn;source:german_grammar_chunks;sentence_builder,Related noun article: die.,A1
+if something is wrong,wenn etwas nicht stimmt,neutral,grammar;wenn;source:german_grammar_chunks;sentence_builder,,A2
+although I understand it,obwohl ich es verstehe,neutral,grammar;obwohl;source:german_grammar_chunks;sentence_builder,,A2
+although it hurts,obwohl es weh tut,neutral,grammar;obwohl;source:german_grammar_chunks;sentence_builder,,A2
+before I answer,bevor ich antworte,neutral,grammar;bevor;source:german_grammar_chunks;sentence_builder,,A2
+after we talk,nachdem wir sprechen,neutral,grammar;nachdem;source:german_grammar_chunks;sentence_builder,,B1
+so that it is clear,damit es klar ist,neutral,grammar;damit;source:german_grammar_chunks;sentence_builder,,B1
+whether it works,ob es funktioniert,neutral,grammar;ob;source:german_grammar_chunks;sentence_builder,,A2
+what happened,was passiert ist,neutral,grammar;question;source:german_grammar_chunks;sentence_builder,,A2
+why it hurts,warum es weh tut,neutral,grammar;question;source:german_grammar_chunks;sentence_builder,,A2
+how I should say it,wie ich es sagen soll,neutral,grammar;question;modal;source:german_grammar_chunks;sentence_builder,,A2
+I have to go.,Ich muss gehen.,neutral,grammar;modal;müssen;source:german_grammar_chunks;sentence_builder,,A1
+I can stay.,Ich kann bleiben.,neutral,grammar;modal;können;source:german_grammar_chunks;sentence_builder,,A1
+I want to understand it.,Ich will es verstehen.,neutral,grammar;modal;wollen;source:german_grammar_chunks;sentence_builder,,A1
+I would like to ask something.,Ich möchte etwas fragen.,polite,grammar;modal;möchten;source:german_grammar_chunks;sentence_builder,,A1
+I should not react now.,Ich sollte jetzt nicht reagieren.,neutral,grammar;modal;sollten;source:german_grammar_chunks;sentence_builder,,A2
+May I ask you something?,Darf ich dich etwas fragen?,neutral,grammar;modal;dürfen;source:german_grammar_chunks;sentence_builder,,A1
+I am thinking about it.,Ich denke darüber nach.,neutral,grammar;preposition;nachdenken;source:german_grammar_chunks;sentence_builder,über + accusative; da-compound darüber,A2
+I am waiting for you.,Ich warte auf dich.,neutral,grammar;preposition;warten;source:german_grammar_chunks;sentence_builder,auf + accusative,A1
+I am talking about it.,Ich spreche darüber.,neutral,grammar;preposition;sprechen;source:german_grammar_chunks;sentence_builder,über + accusative; darüber,A2
+I am afraid of it.,Ich habe Angst davor.,neutral,grammar;preposition;angst;source:german_grammar_chunks;sentence_builder,vor + dative; davor Related noun article: die.,A2
+I am looking forward to it.,Ich freue mich darauf.,neutral,grammar;preposition;freuen;source:german_grammar_chunks;sentence_builder,auf + accusative; darauf,A2
+It depends on it.,Es hängt davon ab.,neutral,grammar;preposition;abhängen;source:german_grammar_chunks;sentence_builder,von + dative; davon,B1
+I agree with you.,Ich stimme dir zu.,neutral,grammar;dative;source:german_grammar_chunks;sentence_builder,dative object,A2
+I believe you.,Ich glaube dir.,neutral,grammar;dative;source:german_grammar_chunks;sentence_builder,dative object,A1
+I understand you.,Ich verstehe dich.,neutral,grammar;accusative;source:german_grammar_chunks;sentence_builder,accusative object,A1
+I miss you.,Du fehlst mir.,neutral,grammar;dative;relationship;source:german_grammar_chunks;sentence_builder,Literally: you are missing to me.,A2
+I like that.,Das gefällt mir.,neutral,grammar;dative;source:german_grammar_chunks;sentence_builder,,A1
+I feel good.,Mir geht es gut.,neutral,grammar;dative;source:german_grammar_chunks;sentence_builder,,A1
+I am calling you.,Ich rufe dich an.,neutral,grammar;separable;source:german_grammar_chunks;sentence_builder,anrufen is separable,A1
+I will come along.,Ich komme mit.,neutral,grammar;separable;source:german_grammar_chunks;sentence_builder,mitkommen is separable,A1
+I will come back.,Ich komme zurück.,neutral,grammar;separable;source:german_grammar_chunks;sentence_builder,zurückkommen is separable,A1
+I am starting now.,Ich fange jetzt an.,neutral,grammar;separable;source:german_grammar_chunks;sentence_builder,anfangen is separable,A1
+I am stopping now.,Ich höre jetzt auf.,neutral,grammar;separable;source:german_grammar_chunks;sentence_builder,aufhören is separable,A1
+I have misunderstood that.,Ich habe das missverstanden.,neutral,grammar;perfect;source:german_grammar_chunks;sentence_builder,Perfect tense with haben,A2
+I came back late.,Ich bin spät zurückgekommen.,neutral,grammar;perfect;source:german_grammar_chunks;sentence_builder,Movement/change of location often uses sein.,A2
+I would say that ...,"Ich würde sagen, dass ...",neutral,grammar;subjunctive;source:german_grammar_chunks;sentence_builder,Konjunktiv II polite/softening.,A2
+I would rather not do that.,Das würde ich lieber nicht machen.,neutral,grammar;subjunctive;source:german_grammar_chunks;sentence_builder,,A2
