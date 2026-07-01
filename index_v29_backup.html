@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v30-order-thumb-zone-actions-20260630" />
+  <link rel="manifest" href="manifest.webmanifest?v=v29-order-actions-under-bank-20260630" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -200,17 +200,6 @@
       flex: 1 1 0;
       min-height: 8px;
       max-height: 200px;
-    }
-    /* Sentence order mode is tap-speed sensitive. Do not push the whole
-       exercise too far down with the generic portrait spacer; keep enough
-       vertical room for the word bank and the under-bank action row. */
-    html.order-practice-active .game-area-spacer {
-      flex: 0 0 8px;
-      min-height: 8px;
-      max-height: 8px;
-    }
-    html.order-practice-active .main {
-      padding-bottom: calc(82px + env(safe-area-inset-bottom));
     }
 
     /* ---------- Buttons ---------- */
@@ -1049,15 +1038,6 @@
       --order-chip-minh: 33px;
       --order-chip-radius: 11px;
     }
-    .sentence-panel.order-mode.order-micro {
-      --order-gap: 3px;
-      --order-chip-font: 12px;
-      --order-chip-pady: 5px;
-      --order-chip-padx-bank: 7px;
-      --order-chip-padx-build: 7px;
-      --order-chip-minh: 30px;
-      --order-chip-radius: 10px;
-    }
     .order-build {
       display: flex;
       flex-wrap: wrap;
@@ -1145,20 +1125,7 @@
       margin: 0 0 8px;
       min-height: 42px;
       overflow-anchor: none;
-      /* Keep the under-bank actions in the thumb zone during long sentences.
-         It remains after the word bank in the document/order, but will pin
-         itself just above the phone navigation/safe-area when needed. */
-      position: sticky;
-      bottom: calc(10px + env(safe-area-inset-bottom));
-      z-index: 18;
-      padding: 6px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--surface);
-      background: color-mix(in srgb, var(--surface) 94%, transparent);
-      box-shadow: var(--shadow-md);
-      backdrop-filter: saturate(160%) blur(8px);
-      -webkit-backdrop-filter: saturate(160%) blur(8px);
+      contain: layout paint;
     }
     .sentence-panel.order-mode .sentence-actions button {
       min-height: 40px;
@@ -1957,7 +1924,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v30-order-thumb-zone-actions-20260630";
+    const APP_BUILD = "v29-order-actions-under-bank-20260630";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3001,7 +2968,6 @@
       wordMatchContainer.classList.toggle("hidden", !isWordMatch);
       wordTypingContainer.classList.toggle("hidden", !isWordTyping);
       sentenceContainer.classList.toggle("hidden", isWords);
-      document.documentElement.classList.toggle("order-practice-active", !isWords && sentenceMode === "order");
       visibleCountSelect.disabled = !isWordMatch;
       sentenceModeSelect.disabled = isWords;
       modeSelect.disabled = !isWords;
@@ -3662,8 +3628,7 @@
     const ORDER_DENSITY = {
       normal:  { charW: 8.5, extraBank: 34, extraBuild: 30, minW: 54, chipH: 42, gap: 6, buildPad: 20, bankPad: 4, minBuild: 64, minBank: 86 },
       compact: { charW: 7.7, extraBank: 28, extraBuild: 26, minW: 48, chipH: 37, gap: 5, buildPad: 18, bankPad: 4, minBuild: 58, minBank: 72 },
-      dense:   { charW: 6.9, extraBank: 22, extraBuild: 20, minW: 42, chipH: 33, gap: 4, buildPad: 16, bankPad: 4, minBuild: 52, minBank: 60 },
-      micro:  { charW: 6.2, extraBank: 18, extraBuild: 18, minW: 36, chipH: 30, gap: 3, buildPad: 14, bankPad: 3, minBuild: 46, minBank: 52 }
+      dense:   { charW: 6.9, extraBank: 22, extraBuild: 20, minW: 42, chipH: 33, gap: 4, buildPad: 16, bankPad: 4, minBuild: 52, minBank: 60 }
     };
 
     function estimateChipWrapHeight(items, containerEl, minHeight = 54, densityName = "normal", kind = "bank") {
@@ -3709,26 +3674,18 @@
       // visible grey used cards. For long sentences, choose a more compact chip
       // density rather than letting taps shift the remaining cards around.
       const viewport = Math.max(520, window.innerHeight || 720);
-      const panelTop = Math.max(0, Math.round((sentenceContainer && sentenceContainer.getBoundingClientRect().top) || 140));
-      const thumbActionReserve = 68; // action row + gap, kept in the lower thumb zone
-      const bottomComfort = Math.max(72, Math.round(viewport * 0.13));
-      const availableForBuildAndBank = Math.max(180, viewport - panelTop - thumbActionReserve - bottomComfort);
-
+      const budget = Math.round(viewport * 0.48);
       let density = "normal";
       let sizes = estimateOrderLayoutForDensity(data, density);
-      if (sizes.buildH + sizes.bankH > availableForBuildAndBank) {
+      if (sizes.buildH + sizes.bankH > budget) {
         density = "compact";
         sizes = estimateOrderLayoutForDensity(data, density);
       }
-      if (sizes.buildH + sizes.bankH > availableForBuildAndBank) {
+      if (sizes.buildH + sizes.bankH > Math.round(viewport * 0.54)) {
         density = "dense";
         sizes = estimateOrderLayoutForDensity(data, density);
       }
-      if (sizes.buildH + sizes.bankH > availableForBuildAndBank) {
-        density = "micro";
-        sizes = estimateOrderLayoutForDensity(data, density);
-      }
-      data.orderLayout = { widthKey, heightKey, panelTop, buildH: sizes.buildH, bankH: sizes.bankH, density };
+      data.orderLayout = { widthKey, heightKey, buildH: sizes.buildH, bankH: sizes.bankH, density };
       return data.orderLayout;
     }
 
@@ -3752,11 +3709,9 @@
       sentenceEnglish.textContent = currentSentence.english;
 
       // ----- Reorder ("order") sub-mode -----
-      const isOrderMode = sentenceMode === "order";
-      document.documentElement.classList.toggle("order-practice-active", isOrderMode && !sentenceContainer.classList.contains("hidden"));
-      sentenceContainer.classList.toggle("order-mode", isOrderMode);
-      sentenceContainer.classList.remove("order-compact", "order-dense", "order-micro");
-      if (isOrderMode) {
+      sentenceContainer.classList.toggle("order-mode", sentenceMode === "order");
+      sentenceContainer.classList.remove("order-compact", "order-dense");
+      if (sentenceMode === "order") {
         sentenceHelp.textContent = "";
         sentenceHelp.classList.add("hidden");
         sentenceMeta.textContent = `${currentSentenceData.orderWords.length} words · streak ${currentSentence.streak || 0}`;
@@ -3771,7 +3726,6 @@
         const layout = ensureOrderLayoutEstimates(currentSentenceData);
         sentenceContainer.classList.toggle("order-compact", layout.density === "compact");
         sentenceContainer.classList.toggle("order-dense", layout.density === "dense");
-        sentenceContainer.classList.toggle("order-micro", layout.density === "micro");
 
         // Build area (placed chips, in sequence). It reserves the estimated final
         // answer height from the start, so adding words does not push the screen down.
@@ -3831,8 +3785,7 @@
         return;
       }
 
-      sentenceContainer.classList.remove("order-mode", "order-compact", "order-dense", "order-micro");
-      document.documentElement.classList.remove("order-practice-active");
+      sentenceContainer.classList.remove("order-mode", "order-compact", "order-dense");
       sentenceHelp.classList.remove("hidden");
       sentenceMeta.classList.remove("order-meta");
       sentenceBank.classList.remove("order-bank");
@@ -4629,7 +4582,6 @@
         wordMatchContainer.classList.add("hidden");
         wordTypingContainer.classList.add("hidden");
         sentenceContainer.classList.add("hidden");
-        document.documentElement.classList.remove("order-practice-active");
         gatePanel.classList.add("gate-disabled");
         statusEl.textContent = "Welcome! Import a deck to start.";
       } else {

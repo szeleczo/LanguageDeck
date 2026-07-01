@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v29-order-actions-under-bank-20260630";
+const CACHE_VERSION = "languagedeck-v30-order-thumb-zone-actions-20260630";
 const APP_SHELL = [
   "./",
   "./index.html",
