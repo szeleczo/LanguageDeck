@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v25-order-reserved-layout-20260630" />
+  <link rel="manifest" href="manifest.webmanifest?v=v27-order-slot-stable-20260630" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1008,20 +1008,50 @@
       margin-bottom: 2px;
     }
     /* ---------- Reorder ("order") sub-mode ----------
-       A drop area where tapped words land in sequence, plus the bank below.
-       Tapping a placed word sends it back to the bank. */
+       The word bank is slot-stable: every word keeps its original place even
+       after it has been tapped. Used slots become invisible placeholders, not
+       grey cards, so fast tapping does not move the user's next target. */
+    .sentence-panel.order-mode {
+      --order-gap: 6px;
+      --order-chip-font: 15px;
+      --order-chip-pady: 8px;
+      --order-chip-padx-bank: 16px;
+      --order-chip-padx-build: 14px;
+      --order-chip-minh: 42px;
+      --order-chip-radius: 14px;
+    }
+    .sentence-panel.order-mode.order-compact {
+      --order-gap: 5px;
+      --order-chip-font: 14px;
+      --order-chip-pady: 7px;
+      --order-chip-padx-bank: 12px;
+      --order-chip-padx-build: 11px;
+      --order-chip-minh: 37px;
+      --order-chip-radius: 12px;
+    }
+    .sentence-panel.order-mode.order-dense {
+      --order-gap: 4px;
+      --order-chip-font: 13px;
+      --order-chip-pady: 6px;
+      --order-chip-padx-bank: 9px;
+      --order-chip-padx-build: 8px;
+      --order-chip-minh: 33px;
+      --order-chip-radius: 11px;
+    }
     .order-build {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: var(--order-gap);
       align-items: flex-start;
-      min-height: var(--order-build-min-h, 56px);
+      min-height: var(--order-build-h, 64px);
       padding: 10px;
       margin-bottom: 16px;
       border: 1px dashed var(--border-strong);
       border-radius: var(--radius-sm);
       background: var(--surface-2);
-      transition: min-height 0.12s ease;
+      overflow: hidden;
+      overflow-anchor: none;
+      contain: layout paint;
     }
     .order-build.empty { align-items: center; justify-content: center; }
     .order-empty-hint {
@@ -1034,22 +1064,44 @@
       border: 2px solid var(--primary) !important;
       border-bottom: 4px solid var(--primary-deep) !important;
       color: var(--text) !important;
-      padding: 8px 14px;
-      border-radius: 14px;
-      font-size: 15px;
+      padding: var(--order-chip-pady) var(--order-chip-padx-build);
+      border-radius: var(--order-chip-radius);
+      font-size: var(--order-chip-font);
       font-weight: 700;
-      min-height: 42px;
+      min-height: var(--order-chip-minh);
       transition: transform 0.06s ease, border-color 0.15s ease;
     }
     .order-chip:active:not(:disabled) {
       transform: translateY(2px);
       border-bottom-width: 2px !important;
-      margin-bottom: 2px;
+      margin-bottom: 0;
     }
     .sentence-bank.order-bank {
       align-items: flex-start;
-      min-height: var(--order-bank-min-h, 54px);
-      contain: layout;
+      gap: var(--order-gap);
+      min-height: var(--order-bank-h, 86px);
+      overflow: hidden;
+      overflow-anchor: none;
+      contain: layout paint;
+    }
+    .sentence-bank.order-bank .bank-word {
+      padding: var(--order-chip-pady) var(--order-chip-padx-bank);
+      border-radius: var(--order-chip-radius);
+      font-size: var(--order-chip-font);
+      min-height: var(--order-chip-minh);
+    }
+    .sentence-bank.order-bank .bank-word.order-placeholder {
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .sentence-panel.order-mode,
+    .sentence-panel.order-mode .sentence-target,
+    .sentence-panel.order-mode .sentence-bank,
+    .sentence-panel.order-mode .order-build {
+      overflow-anchor: none;
+    }
+    .sentence-panel.order-mode .bank-word:active:not(:disabled):not(.used) {
+      margin-bottom: 0;
     }
     /* Per-word correctness feedback after a check in order mode. */
     .order-chip.ok {
@@ -1603,7 +1655,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v25-order-reserved-layout-20260630</div>
+      <div class="meta" id="appBuildLabel">Build: v27-order-slot-stable-20260630</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -1822,7 +1874,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v25-order-reserved-layout-20260630";
+    const APP_BUILD = "v27-order-slot-stable-20260630";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3519,21 +3571,29 @@
       }
     }
 
-    function estimateChipWrapHeight(items, containerEl, minHeight = 54) {
+    function clampNumber(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    const ORDER_DENSITY = {
+      normal:  { charW: 8.5, extraBank: 34, extraBuild: 30, minW: 54, chipH: 42, gap: 6, buildPad: 20, bankPad: 4, minBuild: 64, minBank: 86 },
+      compact: { charW: 7.7, extraBank: 28, extraBuild: 26, minW: 48, chipH: 37, gap: 5, buildPad: 18, bankPad: 4, minBuild: 58, minBank: 72 },
+      dense:   { charW: 6.9, extraBank: 22, extraBuild: 20, minW: 42, chipH: 33, gap: 4, buildPad: 16, bankPad: 4, minBuild: 52, minBank: 60 }
+    };
+
+    function estimateChipWrapHeight(items, containerEl, minHeight = 54, densityName = "normal", kind = "bank") {
+      const density = ORDER_DENSITY[densityName] || ORDER_DENSITY.normal;
       const widthSource = containerEl || sentenceContainer || document.body;
       const rawWidth = widthSource.clientWidth || sentenceContainer.clientWidth || window.innerWidth || 360;
-      const usableWidth = Math.max(220, rawWidth - 26);
+      const usableWidth = Math.max(190, rawWidth - 26);
       let lines = 1;
       let lineWidth = 0;
-      const gap = 6;
-      const chipHeight = 42;
-      const verticalGap = 6;
-      const sidePadding = 0;
+      const gap = density.gap;
+      const chipHeight = density.chipH;
+      const extra = kind === "build" ? density.extraBuild : density.extraBank;
       for (const item of items) {
         const raw = String(item && item.raw !== undefined ? item.raw : item || "");
-        // Conservative estimate: chips have horizontal padding and a 2px border.
-        // A capped width prevents one long token from reserving a whole absurd line.
-        const chipWidth = Math.min(Math.max(raw.length * 8.5 + 34, 54), usableWidth);
+        const chipWidth = Math.min(Math.max(raw.length * density.charW + extra, density.minW), usableWidth);
         if (lineWidth > 0 && lineWidth + gap + chipWidth > usableWidth) {
           lines += 1;
           lineWidth = chipWidth;
@@ -3541,23 +3601,57 @@
           lineWidth += (lineWidth > 0 ? gap : 0) + chipWidth;
         }
       }
-      return Math.max(minHeight, sidePadding + lines * chipHeight + (lines - 1) * verticalGap);
+      return Math.max(minHeight, lines * chipHeight + (lines - 1) * gap);
+    }
+
+    function estimateOrderLayoutForDensity(data, densityName) {
+      const density = ORDER_DENSITY[densityName] || ORDER_DENSITY.normal;
+      const estimatedBuild = estimateChipWrapHeight(data.orderWords || [], sentenceTarget, density.minBuild, densityName, "build") + density.buildPad;
+      // Use the original full bank, not the remaining bank. The hidden placeholders
+      // keep every untouched word in the same tap target location throughout the round.
+      const estimatedBank = estimateChipWrapHeight(data.orderBank || [], sentenceBank, density.minBank, densityName, "bank") + density.bankPad;
+      return { buildH: estimatedBuild, bankH: estimatedBank };
     }
 
     function ensureOrderLayoutEstimates(data) {
-      if (!data) return { buildMin: 56, bankMin: 54 };
+      if (!data) return { buildH: 64, bankH: 86, density: "normal" };
       const widthKey = Math.round((sentenceContainer && sentenceContainer.clientWidth) || window.innerWidth || 0);
-      if (data.orderLayout && data.orderLayout.widthKey === widthKey) return data.orderLayout;
-      const buildMin = estimateChipWrapHeight(data.orderWords || [], sentenceTarget, 56) + 20;
-      const bankMin = estimateChipWrapHeight(data.orderBank || [], sentenceBank, 54);
-      data.orderLayout = { widthKey, buildMin, bankMin };
+      const heightKey = Math.round(window.innerHeight || 0);
+      if (data.orderLayout && data.orderLayout.widthKey === widthKey && data.orderLayout.heightKey === heightKey) return data.orderLayout;
+
+      // Stable slot layout: the build area reserves the final sentence height,
+      // and the bank reserves every original word slot. No internal scrolling, no
+      // visible grey used cards. For long sentences, choose a more compact chip
+      // density rather than letting taps shift the remaining cards around.
+      const viewport = Math.max(520, window.innerHeight || 720);
+      const budget = Math.round(viewport * 0.48);
+      let density = "normal";
+      let sizes = estimateOrderLayoutForDensity(data, density);
+      if (sizes.buildH + sizes.bankH > budget) {
+        density = "compact";
+        sizes = estimateOrderLayoutForDensity(data, density);
+      }
+      if (sizes.buildH + sizes.bankH > Math.round(viewport * 0.54)) {
+        density = "dense";
+        sizes = estimateOrderLayoutForDensity(data, density);
+      }
+      data.orderLayout = { widthKey, heightKey, buildH: sizes.buildH, bankH: sizes.bankH, density };
       return data.orderLayout;
     }
 
     function renderSentenceKeepingScroll() {
+      const x = window.scrollX;
       const y = window.scrollY;
+      const root = document.documentElement;
+      const prevBehavior = root.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
       renderSentence();
-      requestAnimationFrame(() => window.scrollTo({ top: y, left: 0, behavior: "auto" }));
+      // Mobile browsers can still try to anchor-scroll after the DOM mutation.
+      // Restore the exact viewport position more than once across frames.
+      const restore = () => window.scrollTo(x, y);
+      restore();
+      requestAnimationFrame(() => { restore(); requestAnimationFrame(restore); });
+      setTimeout(() => { restore(); root.style.scrollBehavior = prevBehavior; }, 80);
     }
 
     function renderSentence() {
@@ -3565,6 +3659,8 @@
       sentenceEnglish.textContent = currentSentence.english;
 
       // ----- Reorder ("order") sub-mode -----
+      sentenceContainer.classList.toggle("order-mode", sentenceMode === "order");
+      sentenceContainer.classList.remove("order-compact", "order-dense");
       if (sentenceMode === "order") {
         sentenceHelp.textContent = "";
         sentenceHelp.classList.add("hidden");
@@ -3578,13 +3674,15 @@
         const placedUids = new Set(placed.map(t => t.uid));
         const answer = currentSentenceData.orderWords.map(t => t.raw);
         const layout = ensureOrderLayoutEstimates(currentSentenceData);
+        sentenceContainer.classList.toggle("order-compact", layout.density === "compact");
+        sentenceContainer.classList.toggle("order-dense", layout.density === "dense");
 
-        // Build area (placed chips, in sequence). It reserves roughly the final
+        // Build area (placed chips, in sequence). It reserves the estimated final
         // answer height from the start, so adding words does not push the screen down.
         sentenceTarget.innerHTML = "";
         const build = document.createElement("div");
         build.className = "order-build" + (placed.length === 0 ? " empty" : "");
-        build.style.setProperty("--order-build-min-h", `${layout.buildMin}px`);
+        build.style.setProperty("--order-build-h", `${layout.buildH}px`);
         if (placed.length === 0) {
           const hint = document.createElement("span");
           hint.className = "order-empty-hint";
@@ -3611,30 +3709,37 @@
         }
         sentenceTarget.appendChild(build);
 
-        // Bank: used words are removed visually, but the bank keeps its initially
-        // estimated height. This avoids grey ghost cards while keeping the page stable.
+        // Bank: every original word keeps its slot. A used word becomes an invisible
+        // placeholder with the same dimensions, so the next untouched card stays under
+        // the user's finger during fast tapping.
         sentenceBank.innerHTML = "";
-        sentenceBank.style.setProperty("--order-bank-min-h", `${layout.bankMin}px`);
+        sentenceBank.style.setProperty("--order-bank-h", `${layout.bankH}px`);
         currentSentenceData.orderBank.forEach(tok => {
-          if (placedUids.has(tok.uid)) return;
           const btn = document.createElement("button");
-          btn.className = "bank-word";
+          btn.className = "bank-word" + (placedUids.has(tok.uid) ? " order-placeholder" : "");
           btn.textContent = tok.raw;
-          btn.addEventListener("click", () => {
-            if (locked) return;
-            currentSentenceData.orderPlaced.push(tok);
-            currentSentenceData.orderChecked = false;
-            renderSentenceKeepingScroll();
-          });
+          if (placedUids.has(tok.uid)) {
+            btn.disabled = true;
+            btn.setAttribute("aria-hidden", "true");
+            btn.tabIndex = -1;
+          } else {
+            btn.addEventListener("click", () => {
+              if (locked) return;
+              currentSentenceData.orderPlaced.push(tok);
+              currentSentenceData.orderChecked = false;
+              renderSentenceKeepingScroll();
+            });
+          }
           sentenceBank.appendChild(btn);
         });
         return;
       }
 
+      sentenceContainer.classList.remove("order-mode", "order-compact", "order-dense");
       sentenceHelp.classList.remove("hidden");
       sentenceMeta.classList.remove("order-meta");
       sentenceBank.classList.remove("order-bank");
-      sentenceBank.style.removeProperty("--order-bank-min-h");
+      sentenceBank.style.removeProperty("--order-bank-h");
       placeSentenceMeta("top");
       sentenceHelp.textContent = sentenceMode === "choice"
         ? `Fill in the missing ${deckCfg().targetName} words from the bank.`
