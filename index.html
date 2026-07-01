@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v27-order-slot-stable-20260630" />
+  <link rel="manifest" href="manifest.webmanifest?v=v29-order-actions-under-bank-20260630" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1103,6 +1103,56 @@
     .sentence-panel.order-mode .bank-word:active:not(:disabled):not(.used) {
       margin-bottom: 0;
     }
+    /* In order mode, the word bank remains directly under the answer field.
+       The Check/Clear/Reveal row stays under the word bank as requested.
+       Word-card positions remain stable because used words leave invisible slots,
+       so fast tapping keeps targeting the same card positions. */
+    .sentence-panel.order-mode {
+      display: flex;
+      flex-direction: column;
+      padding-top: 18px;
+      padding-bottom: 16px;
+    }
+    .sentence-panel.order-mode .sentence-english { order: 1; margin-bottom: 8px; }
+    .sentence-panel.order-mode .sentence-help { order: 2; }
+    .sentence-panel.order-mode .sentence-target { order: 3; margin-bottom: 8px; }
+    .sentence-panel.order-mode .sentence-bank { order: 4; margin-bottom: 8px; }
+    .sentence-panel.order-mode .sentence-actions {
+      order: 5;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr) minmax(0, 0.82fr);
+      gap: 6px;
+      margin: 0 0 8px;
+      min-height: 42px;
+      overflow-anchor: none;
+      contain: layout paint;
+    }
+    .sentence-panel.order-mode .sentence-actions button {
+      min-height: 40px;
+      padding: 8px 10px;
+      font-size: 14px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+    .sentence-panel.order-mode .sentence-meta.under-bank {
+      order: 6;
+      margin: -2px 0 8px;
+      min-height: 14px;
+      text-align: center;
+    }
+    .sentence-panel.order-mode .sentence-result {
+      order: 7;
+      margin-top: 0;
+      min-height: 1.4em;
+      overflow-anchor: none;
+    }
+    @media (max-width: 420px) {
+      .sentence-panel.order-mode .sentence-actions button {
+        padding-left: 7px;
+        padding-right: 7px;
+        font-size: 13px;
+      }
+    }
     /* Per-word correctness feedback after a check in order mode. */
     .order-chip.ok {
       background: var(--ok-soft, #dcfce7) !important;
@@ -1655,7 +1705,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v27-order-slot-stable-20260630</div>
+      <div class="meta" id="appBuildLabel">Build: v29-order-actions-under-bank-20260630</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -1874,7 +1924,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v27-order-slot-stable-20260630";
+    const APP_BUILD = "v29-order-actions-under-bank-20260630";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3686,7 +3736,7 @@
         if (placed.length === 0) {
           const hint = document.createElement("span");
           hint.className = "order-empty-hint";
-          hint.textContent = "Tap words below to build the sentence…";
+          hint.textContent = "";
           build.appendChild(hint);
         } else {
           placed.forEach((tok, pos) => {
