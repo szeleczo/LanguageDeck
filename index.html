@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v33-order-fixed-bottom-actions-20260703" />
+  <link rel="manifest" href="manifest.webmanifest?v=v34-order-feedback-above-actions-20260703" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -210,9 +210,9 @@
       max-height: 8px;
     }
     html.order-practice-active .main {
-      /* Room for the fixed Check/Clear/Reveal row, so content is not hidden
-         behind the thumb-zone controls. */
-      padding-bottom: calc(118px + env(safe-area-inset-bottom));
+      /* Room for the fixed feedback strip plus the fixed Check/Clear/Reveal row,
+         so corrections/solutions are not hidden behind the thumb-zone controls. */
+      padding-bottom: calc(178px + env(safe-area-inset-bottom));
     }
 
     /* ---------- Buttons ---------- */
@@ -1189,8 +1189,37 @@
     .sentence-panel.order-mode .sentence-result {
       order: 7;
       margin-top: 0;
-      min-height: 1.4em;
+      min-height: 0;
       overflow-anchor: none;
+    }
+    /* In order mode the action row is fixed to the thumb zone. Feedback must
+       not render behind those controls, so non-empty feedback becomes a fixed
+       strip directly above the action row. Empty feedback takes no space. */
+    .sentence-panel.order-mode .sentence-result:empty {
+      display: none;
+    }
+    .sentence-panel.order-mode .sentence-result:not(:empty) {
+      display: block;
+      position: fixed;
+      left: max(12px, env(safe-area-inset-left));
+      right: max(12px, env(safe-area-inset-right));
+      bottom: max(82px, calc(env(safe-area-inset-bottom) + 78px));
+      z-index: 33;
+      width: auto;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      background: color-mix(in srgb, var(--surface) 97%, transparent);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
+      text-align: center;
+      line-height: 1.35;
+      pointer-events: none;
     }
     @media (max-width: 420px) {
       .sentence-panel.order-mode .sentence-actions button {
@@ -1751,7 +1780,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v33-order-fixed-bottom-actions-20260703</div>
+      <div class="meta" id="appBuildLabel">Build: v34-order-feedback-above-actions-20260703</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -1970,7 +1999,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v33-order-fixed-bottom-actions-20260703";
+    const APP_BUILD = "v34-order-feedback-above-actions-20260703";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;

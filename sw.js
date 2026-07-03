@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v33-order-fixed-bottom-actions-20260703";
+const CACHE_VERSION = "languagedeck-v34-order-feedback-above-actions-20260703";
 const APP_SHELL = [
   "./",
   "./index.html",
