@@ -1,23 +1,5 @@
 [
   {
-    "name": "german_3000",
-    "file": "de/german_3000.csv",
-    "deck": "de",
-    "type": "words"
-  },
-  {
-    "name": "german_sentence_builder",
-    "file": "de/german_sentence_builder.csv",
-    "deck": "de",
-    "type": "sentences"
-  },
-  {
-    "name": "german_3000_sentence_builder",
-    "file": "de/german_3000_sentence_builder.csv",
-    "deck": "de",
-    "type": "sentences"
-  },
-  {
     "name": "italian_3000",
     "file": "it/italian_3000.csv",
     "deck": "it",
@@ -72,12 +54,6 @@
     "type": "words"
   },
   {
-    "name": "german_sentence_patterns",
-    "file": "de/german_sentence_patterns.csv",
-    "deck": "de",
-    "type": "sentences"
-  },
-  {
     "name": "german_bim_architecture_work",
     "file": "de/german_bim_architecture_work.csv",
     "deck": "de",
@@ -100,5 +76,41 @@
     "file": "de/german_register_pairs.csv",
     "deck": "de",
     "type": "words"
+  },
+  {
+    "name": "german_combined_flashcards",
+    "file": "de/german_combined_flashcards.csv",
+    "deck": "de",
+    "type": "words"
+  },
+  {
+    "name": "german_combined_sentence_builder",
+    "file": "de/german_combined_sentence_builder.csv",
+    "deck": "de",
+    "type": "sentences"
+  },
+  {
+    "name": "german_sentence_builder",
+    "file": "de/german_sentence_builder.csv",
+    "deck": "de",
+    "type": "sentences"
+  },
+  {
+    "name": "german_sentence_patterns",
+    "file": "de/german_sentence_patterns.csv",
+    "deck": "de",
+    "type": "sentences"
+  },
+  {
+    "name": "german_3000",
+    "file": "de/german_3000.csv",
+    "deck": "de",
+    "type": "words"
+  },
+  {
+    "name": "german_3000_sentence_builder",
+    "file": "de/german_3000_sentence_builder.csv",
+    "deck": "de",
+    "type": "sentences"
   }
 ]

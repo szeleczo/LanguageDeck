@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v34-order-feedback-above-actions-20260703" />
+  <link rel="manifest" href="manifest.webmanifest?v=v35-german-deck-indexfix-20260703" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1780,7 +1780,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v34-order-feedback-above-actions-20260703</div>
+      <div class="meta" id="appBuildLabel">Build: v35-german-deck-indexfix-20260703</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -1999,7 +1999,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v34-order-feedback-above-actions-20260703";
+    const APP_BUILD = "v35-german-deck-indexfix-20260703";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -4177,6 +4177,15 @@
       return { owner, repo };
     }
 
+
+    function inferBuiltinDeckTypeFromFilename(fileName) {
+      const base = String(fileName || "").replace(/\.csv$/i, "").toLowerCase();
+      if (base.includes("sentence_builder")) return "sentences";
+      if (base.includes("sentence_patterns")) return "sentences";
+      if (base.includes("grammar_practice")) return "sentences";
+      return "words";
+    }
+
     async function fetchDecksFromGitHubAPI() {
       const r = detectGitHubRepo();
       if (!r) return null;
@@ -4207,7 +4216,7 @@
               name: baseName,
               file: `${lang}/${f.name}`,
               deck: lang,
-              type: "words", // GitHub-API-discovered default
+              type: inferBuiltinDeckTypeFromFilename(f.name), // inferred for API-discovered decks; index.json still overrides
               source: "api"
             });
           }

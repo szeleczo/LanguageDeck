@@ -16,13 +16,13 @@
 <body>
   <h1>LanguageDeck update reset</h1>
   <p>This page clears the PWA Service Worker and Cache Storage, then reloads the latest app. Your learned deck progress in IndexedDB is not deleted.</p>
-  <p>Reset build: <code>v34-order-feedback-above-actions-20260703</code></p>
+  <p>Reset build: <code>v35-german-deck-indexfix-20260703</code></p>
   <button id="reset" type="button">Reset app cache and reopen</button>
   <p id="status"></p>
   <script>
     async function resetApp() {
       const status = document.getElementById("status");
-      const stamp = "v34-order-feedback-above-actions-20260703-" + Date.now();
+      const stamp = "v35-german-deck-indexfix-20260703-" + Date.now();
       status.textContent = "Clearing app cache…";
       try {
         if ("serviceWorker" in navigator) {
