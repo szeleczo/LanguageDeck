@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v30-order-thumb-zone-actions-20260630" />
+  <link rel="manifest" href="manifest.webmanifest?v=v33-order-fixed-bottom-actions-20260703" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -210,7 +210,9 @@
       max-height: 8px;
     }
     html.order-practice-active .main {
-      padding-bottom: calc(82px + env(safe-area-inset-bottom));
+      /* Room for the fixed Check/Clear/Reveal row, so content is not hidden
+         behind the thumb-zone controls. */
+      padding-bottom: calc(118px + env(safe-area-inset-bottom));
     }
 
     /* ---------- Buttons ---------- */
@@ -1142,23 +1144,31 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr) minmax(0, 0.82fr);
       gap: 6px;
-      margin: 0 0 8px;
+      margin: 0;
       min-height: 42px;
       overflow-anchor: none;
-      /* Keep the under-bank actions in the thumb zone during long sentences.
-         It remains after the word bank in the document/order, but will pin
-         itself just above the phone navigation/safe-area when needed. */
-      position: sticky;
-      bottom: calc(10px + env(safe-area-inset-bottom));
-      z-index: 18;
-      padding: 6px;
+      /* Order mode is optimized for rapid thumb tapping. The action row is
+         fixed to a comfortable bottom thumb zone so Check/Clear/Reveal never
+         jumps when the word bank or answer field changes height. The row still
+         belongs to the order exercise and remains visually after the word bank,
+         but it is taken out of document flow for stability. */
+      position: fixed;
+      left: max(12px, env(safe-area-inset-left));
+      right: max(12px, env(safe-area-inset-right));
+      bottom: max(16px, calc(env(safe-area-inset-bottom) + 12px));
+      z-index: 34;
+      max-width: 720px;
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 7px;
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 16px;
       background: var(--surface);
-      background: color-mix(in srgb, var(--surface) 94%, transparent);
-      box-shadow: var(--shadow-md);
-      backdrop-filter: saturate(160%) blur(8px);
-      -webkit-backdrop-filter: saturate(160%) blur(8px);
+      background: color-mix(in srgb, var(--surface) 96%, transparent);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
     }
     .sentence-panel.order-mode .sentence-actions button {
       min-height: 40px;
@@ -1166,6 +1176,9 @@
       font-size: 14px;
       border-radius: 12px;
       white-space: nowrap;
+    }
+    .sentence-panel.order-mode .sentence-bank.order-bank {
+      margin-bottom: 10px;
     }
     .sentence-panel.order-mode .sentence-meta.under-bank {
       order: 6;
@@ -1738,7 +1751,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v29-order-actions-under-bank-20260630</div>
+      <div class="meta" id="appBuildLabel">Build: v33-order-fixed-bottom-actions-20260703</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -1957,7 +1970,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v31-order-continue-after-feedback-20260630";
+    const APP_BUILD = "v33-order-fixed-bottom-actions-20260703";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3710,7 +3723,7 @@
       // density rather than letting taps shift the remaining cards around.
       const viewport = Math.max(520, window.innerHeight || 720);
       const panelTop = Math.max(0, Math.round((sentenceContainer && sentenceContainer.getBoundingClientRect().top) || 140));
-      const thumbActionReserve = 68; // action row + gap, kept in the lower thumb zone
+      const thumbActionReserve = 86; // fixed action row + breathing room in the lower thumb zone
       const bottomComfort = Math.max(72, Math.round(viewport * 0.13));
       const availableForBuildAndBank = Math.max(180, viewport - panelTop - thumbActionReserve - bottomComfort);
 
