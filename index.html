@@ -1957,7 +1957,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v30-order-thumb-zone-actions-20260630";
+    const APP_BUILD = "v31-order-continue-after-feedback-20260630";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3732,6 +3732,30 @@
       return data.orderLayout;
     }
 
+    function continueAfterOrderFeedback() {
+      if (!currentSentenceData || !currentSentenceData.orderAwaitingContinue || locked) return;
+      locked = true;
+      currentSentenceData.orderAwaitingContinue = false;
+      (async () => {
+        await loadNextSentence();
+        await refreshStats();
+        await refreshGateInfo();
+        locked = false;
+      })();
+    }
+
+    function updateSentenceActionButtons() {
+      if (!sentenceCheckBtn || !sentenceResetBtn || !sentenceRevealBtn) return;
+      const isOrderMode = sentenceMode === "order";
+      const awaiting = isOrderMode && currentSentenceData && currentSentenceData.orderAwaitingContinue;
+      sentenceCheckBtn.textContent = "Check";
+      sentenceResetBtn.textContent = "Clear";
+      sentenceRevealBtn.textContent = awaiting ? "Continue" : "Reveal";
+      sentenceCheckBtn.disabled = !!awaiting;
+      sentenceResetBtn.disabled = !!awaiting;
+      sentenceRevealBtn.disabled = false;
+    }
+
     function renderSentenceKeepingScroll() {
       const x = window.scrollX;
       const y = window.scrollY;
@@ -3757,6 +3781,7 @@
       sentenceContainer.classList.toggle("order-mode", isOrderMode);
       sentenceContainer.classList.remove("order-compact", "order-dense", "order-micro");
       if (isOrderMode) {
+        updateSentenceActionButtons();
         sentenceHelp.textContent = "";
         sentenceHelp.classList.add("hidden");
         sentenceMeta.textContent = `${currentSentenceData.orderWords.length} words · streak ${currentSentence.streak || 0}`;
@@ -3795,7 +3820,7 @@
               chip.classList.add(ok ? "ok" : "bad");
             }
             chip.addEventListener("click", () => {
-              if (locked) return;
+              if (locked || currentSentenceData.orderAwaitingContinue) return;
               currentSentenceData.orderPlaced.splice(pos, 1);
               currentSentenceData.orderChecked = false;
               renderSentenceKeepingScroll();
@@ -3820,7 +3845,7 @@
             btn.tabIndex = -1;
           } else {
             btn.addEventListener("click", () => {
-              if (locked) return;
+              if (locked || currentSentenceData.orderAwaitingContinue) return;
               currentSentenceData.orderPlaced.push(tok);
               currentSentenceData.orderChecked = false;
               renderSentenceKeepingScroll();
@@ -3833,6 +3858,7 @@
 
       sentenceContainer.classList.remove("order-mode", "order-compact", "order-dense", "order-micro");
       document.documentElement.classList.remove("order-practice-active");
+      updateSentenceActionButtons();
       sentenceHelp.classList.remove("hidden");
       sentenceMeta.classList.remove("order-meta");
       sentenceBank.classList.remove("order-bank");
@@ -3936,17 +3962,40 @@
     }
 
     async function submitSentenceAnswer(showSolutionOnly = false) {
-      if (!currentSentence || !currentSentenceData || locked) return;
+      if (!currentSentence || !currentSentenceData) return;
+
+      // In sentence order mode, wrong/revealed answers should stay on screen
+      // until the learner explicitly continues. This avoids the card moving on
+      // before the user has had time to read the correction.
+      if (sentenceMode === "order" && currentSentenceData.orderAwaitingContinue) {
+        continueAfterOrderFeedback();
+        return;
+      }
+
+      if (locked) return;
       locked = true;
+
       if (showSolutionOnly) {
         wrongCount++; updateScore();
-        sentenceResult.textContent = `Solution: ${currentSentence.target}`;
         statusEl.textContent = "Marked as wrong.";
         await saveSentenceAnswer(currentSentence.id, false);
         sentenceQueue.push(currentSentence);
+
+        if (sentenceMode === "order") {
+          currentSentenceData.orderPlaced = currentSentenceData.orderWords.slice();
+          currentSentenceData.orderChecked = true;
+          currentSentenceData.orderAwaitingContinue = true;
+          renderSentence();
+          sentenceResult.textContent = `Solution: ${currentSentence.target}`;
+          locked = false;
+          return;
+        }
+
+        sentenceResult.textContent = `Solution: ${currentSentence.target}`;
         setTimeout(async () => { locked = false; await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 1200);
         return;
       }
+
       const correct = isCurrentSentenceCorrect();
       if (sentenceMode === "order" && currentSentenceData) {
         currentSentenceData.orderChecked = true;
@@ -3964,6 +4013,14 @@
         statusEl.textContent = "Sentence not correct.";
         await saveSentenceAnswer(currentSentence.id, false);
         sentenceQueue.push(currentSentence);
+
+        if (sentenceMode === "order" && currentSentenceData) {
+          currentSentenceData.orderAwaitingContinue = true;
+          updateSentenceActionButtons();
+          locked = false;
+          return;
+        }
+
         setTimeout(async () => { locked = false; await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 1400);
       }
     }
@@ -3974,6 +4031,7 @@
       currentSentenceData.typingAnswers = new Array(currentSentenceData.blankIndices.length).fill("");
       currentSentenceData.orderPlaced = [];
       currentSentenceData.orderChecked = false;
+      currentSentenceData.orderAwaitingContinue = false;
       activeBlankIndex = 0;
       renderSentence();
     }
