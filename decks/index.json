@@ -1,114 +1,42 @@
 [
   {
-    "name": "italian_3000",
+    "name": "Italian 3000",
     "file": "it/italian_3000.csv",
     "deck": "it",
     "type": "words"
   },
   {
-    "name": "Tschick_Expressions",
-    "file": "de/Tschick_Expressions.csv",
-    "deck": "de",
-    "type": "words"
-  },
-  {
-    "name": "Tschick_Kap1_4",
-    "file": "de/Tschick_Kap1_4.csv",
-    "deck": "de",
-    "type": "sentences"
-  },
-  {
-    "name": "Tschick_Grammar_Practice",
-    "file": "de/Tschick_Grammar_Practice.csv",
-    "deck": "de",
-    "type": "sentences"
-  },
-  {
-    "name": "german_a1_survival",
-    "file": "de/german_a1_survival.csv",
-    "deck": "de",
-    "type": "words"
-  },
-  {
-    "name": "german_core_verbs",
-    "file": "de/german_core_verbs.csv",
-    "deck": "de",
-    "type": "words"
-  },
-  {
-    "name": "german_native_chunks",
-    "file": "de/german_native_chunks.csv",
-    "deck": "de",
-    "type": "words"
-  },
-  {
-    "name": "oliver_core_chunks",
-    "file": "de/oliver_core_chunks.csv",
-    "deck": "de",
-    "type": "words"
-  },
-  {
-    "name": "german_relationship_boundaries",
-    "file": "de/german_relationship_boundaries.csv",
-    "deck": "de",
-    "type": "words"
-  },
-  {
-    "name": "german_bim_architecture_work",
-    "file": "de/german_bim_architecture_work.csv",
-    "deck": "de",
-    "type": "words"
-  },
-  {
-    "name": "german_grammar_chunks",
-    "file": "de/german_grammar_chunks.csv",
-    "deck": "de",
-    "type": "sentences"
-  },
-  {
-    "name": "german_nouns_articles_core",
-    "file": "de/german_nouns_articles_core.csv",
-    "deck": "de",
-    "type": "words"
-  },
-  {
-    "name": "german_register_pairs",
-    "file": "de/german_register_pairs.csv",
-    "deck": "de",
-    "type": "words"
-  },
-  {
-    "name": "german_combined_flashcards",
+    "name": "German Combined Flashcards",
     "file": "de/german_combined_flashcards.csv",
     "deck": "de",
     "type": "words"
   },
   {
-    "name": "german_combined_sentence_builder",
+    "name": "German Combined Sentence Builder",
     "file": "de/german_combined_sentence_builder.csv",
     "deck": "de",
     "type": "sentences"
   },
   {
-    "name": "german_sentence_builder",
+    "name": "German Sentence Builder",
     "file": "de/german_sentence_builder.csv",
     "deck": "de",
     "type": "sentences"
   },
   {
-    "name": "german_sentence_patterns",
+    "name": "German Sentence Patterns",
     "file": "de/german_sentence_patterns.csv",
     "deck": "de",
     "type": "sentences"
   },
   {
-    "name": "german_3000",
+    "name": "German 3000",
     "file": "de/german_3000.csv",
     "deck": "de",
     "type": "words"
   },
   {
-    "name": "german_3000_sentence_builder",
+    "name": "German 3000 Sentence Builder",
     "file": "de/german_3000_sentence_builder.csv",
     "deck": "de",
     "type": "sentences"

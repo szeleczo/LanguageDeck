@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v35-german-deck-indexfix-20260703" />
+  <link rel="manifest" href="manifest.webmanifest?v=v36-index-only-decklist-20260703" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1780,7 +1780,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v35-german-deck-indexfix-20260703</div>
+      <div class="meta" id="appBuildLabel">Build: v36-index-only-decklist-20260703</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -1999,7 +1999,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v35-german-deck-indexfix-20260703";
+    const APP_BUILD = "v36-index-only-decklist-20260703";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -4147,85 +4147,12 @@
     });
 
     /* ---------- Built-in deck list ---------- */
-    /* ---------- Built-in deck discovery ----------
-       Two paths to find deck CSVs:
-       1) PRIMARY: query the GitHub Contents API for the `decks/` folder of the
-          repo we're hosted on. This automatically picks up any CSV file
-          dropped into a language subfolder (e.g. `decks/de/foo.csv`), so the
-          user can add new decks just by committing files — no JSON edits.
-       2) FALLBACK: read decks/index.json (committed manually). Used when:
-          - we're not on github.io (running locally or on a different host)
-          - the GitHub API call fails (rate-limited, offline, etc.)
-
-       Convention for auto-discovered decks:
-       - File path is `decks/<lang>/<name>.csv`
-       - <lang> becomes the deck code (de, it, fr, es, …)
-       - <name> (without .csv) becomes the displayed deck name
-       - All discovered decks default to type "words". For sentence-type
-         decks, list them explicitly in index.json. */
-
-    function detectGitHubRepo() {
-      // Parse `username.github.io/repo/...` style URLs
-      const host = location.hostname; // e.g. szeleczo.github.io
-      const m = host.match(/^([^.]+)\.github\.io$/i);
-      if (!m) return null;
-      const owner = m[1];
-      // Path looks like /LanguageDeck/ — first segment is the repo (or empty
-      // if it's the user's root site)
-      const segments = location.pathname.split("/").filter(Boolean);
-      const repo = segments[0] || owner + ".github.io";
-      return { owner, repo };
-    }
-
-
-    function inferBuiltinDeckTypeFromFilename(fileName) {
-      const base = String(fileName || "").replace(/\.csv$/i, "").toLowerCase();
-      if (base.includes("sentence_builder")) return "sentences";
-      if (base.includes("sentence_patterns")) return "sentences";
-      if (base.includes("grammar_practice")) return "sentences";
-      return "words";
-    }
-
-    async function fetchDecksFromGitHubAPI() {
-      const r = detectGitHubRepo();
-      if (!r) return null;
-      const baseUrl = `https://api.github.com/repos/${r.owner}/${r.repo}/contents/decks`;
-      try {
-        // 1) List `decks/` — find language subfolders
-        const rootRes = await fetch(baseUrl, { cache: "reload" });
-        if (!rootRes.ok) return null;
-        const rootEntries = await rootRes.json();
-        if (!Array.isArray(rootEntries)) return null;
-
-        const decks = [];
-        // 2) For each subfolder, list its CSV files
-        for (const entry of rootEntries) {
-          if (entry.type !== "dir") continue;
-          const lang = entry.name.toLowerCase();
-          // Only consider 2-letter language codes (de, it, fr, es...)
-          if (!/^[a-z]{2,3}$/.test(lang)) continue;
-          const subRes = await fetch(`${baseUrl}/${encodeURIComponent(entry.name)}`, { cache: "reload" });
-          if (!subRes.ok) continue;
-          const subEntries = await subRes.json();
-          if (!Array.isArray(subEntries)) continue;
-          for (const f of subEntries) {
-            if (f.type !== "file") continue;
-            if (!/\.csv$/i.test(f.name)) continue;
-            const baseName = f.name.replace(/\.csv$/i, "");
-            decks.push({
-              name: baseName,
-              file: `${lang}/${f.name}`,
-              deck: lang,
-              type: inferBuiltinDeckTypeFromFilename(f.name), // inferred for API-discovered decks; index.json still overrides
-              source: "api"
-            });
-          }
-        }
-        return decks;
-      } catch (err) {
-        return null;
-      }
-    }
+    /*
+      Built-in deck list is intentionally index-only.
+      Do not auto-discover CSV files from GitHub or the decks/ folder.
+      decks/index.json is the single source of truth, so removed/legacy CSVs
+      cannot reappear as importable "ghost decks".
+    */
 
     async function fetchDecksFromIndexJson() {
       try {
@@ -4242,20 +4169,8 @@
     async function loadBuiltinList() {
       builtinList.innerHTML = "Loading…";
 
-      // Try GitHub API first, then index.json. We always also try index.json
-      // and merge — entries with the same `file` path are deduplicated, with
-      // index.json winning (so a maintainer can override defaults).
-      const [apiDecks, jsonDecks] = await Promise.all([
-        fetchDecksFromGitHubAPI(),
-        fetchDecksFromIndexJson()
-      ]);
-
-      const merged = new Map();
-      for (const d of (apiDecks || [])) merged.set(d.file, d);
-      for (const d of (jsonDecks || [])) merged.set(d.file, d); // json overrides api
-
-      const decks = Array.from(merged.values()).sort((a, b) => {
-        // Group by language, then alphabetical by name
+      const jsonDecks = await fetchDecksFromIndexJson();
+      const decks = (jsonDecks || []).sort((a, b) => {
         if (a.deck !== b.deck) return (a.deck || "").localeCompare(b.deck || "");
         return (a.name || "").localeCompare(b.name || "");
       });
@@ -4264,8 +4179,8 @@
         builtinList.innerHTML = `
           <em>No built-in decks found.</em>
           <p style="font-size:13px;color:var(--text-faint);margin-top:6px;">
-            Drop CSV files into <code>decks/&lt;lang&gt;/</code> in your repo,
-            or list them in <code>decks/index.json</code>.
+            Add the deck to <code>decks/index.json</code>.
+            CSV files not listed there are intentionally ignored.
           </p>`;
         return;
       }
