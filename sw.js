@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v47-mobile-ux-20260706";
+const CACHE_VERSION = "languagedeck-v49-in-app-keypad-20260706";
 const APP_SHELL = [
   "./",
   "./index.html",

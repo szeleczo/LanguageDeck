@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v47-mobile-ux-20260706" />
+  <link rel="manifest" href="manifest.webmanifest?v=v49-in-app-keypad-20260706" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1039,6 +1039,63 @@
       max-width: none;
       margin: 0 0 14px;
     }
+    .inline-keypad {
+      display: grid;
+      gap: 7px;
+      margin: -2px 0 12px;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .inline-keypad.hidden { display: none !important; }
+    .inline-keypad-row {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+    }
+    .inline-keypad-key {
+      appearance: none;
+      border: 1px solid var(--border);
+      border-bottom: 3px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 10px;
+      width: clamp(23px, 7vw, 34px);
+      min-width: 0;
+      min-height: 38px;
+      padding: 6px 6px;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 0.06s ease, border-bottom-width 0.06s ease, margin-top 0.06s ease;
+    }
+    .inline-keypad-key:active {
+      transform: translateY(2px);
+      border-bottom-width: 1px;
+      margin-top: 2px;
+    }
+    .inline-keypad-key.wide {
+      min-width: 56px;
+      font-size: 14px;
+      font-weight: 750;
+    }
+    .inline-keypad-target {
+      caret-color: transparent;
+      cursor: default;
+    }
+    @media (max-width: 480px) {
+      .inline-keypad { gap: 6px; margin-bottom: 10px; }
+      .inline-keypad-row { gap: 4px; }
+      .inline-keypad-key {
+        width: clamp(22px, 7vw, 32px);
+        min-width: 0;
+        min-height: 36px;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      .inline-keypad-key.wide { min-width: 50px; }
+    }
     .typing-form { display: grid; gap: 10px; }
     .typing-result {
       margin-top: 14px;
@@ -1839,6 +1896,7 @@
       <div class="typing-clue hidden" id="typingClue">—</div>
       <div class="typing-form">
         <input type="text" id="typingInput" placeholder="Answer" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" />
+        <div id="typingInlineKeypad" class="inline-keypad hidden" aria-label="Missing letters keypad"></div>
         <div style="display:flex;gap:8px;">
           <button id="typingSubmitBtn" style="flex:1;">Check</button>
           <button id="typingRevealBtn" class="ghost">Reveal</button>
@@ -1955,7 +2013,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v47-mobile-ux-20260706</div>
+      <div class="meta" id="appBuildLabel">Build: v49-in-app-keypad-20260706</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2194,7 +2252,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v47-mobile-ux-20260706";
+    const APP_BUILD = "v49-in-app-keypad-20260706";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2702,8 +2760,14 @@
 
     function progressiveHelpText(item, scopeLabel) {
       const info = progressiveInfo(item);
-      if (info.kind === "full") return `Type the full ${scopeLabel}.`;
-      return "Type only the missing letters, in order.";
+      if (info.kind === "full") {
+        return isTouchPrimaryDevice()
+          ? `Enter the full ${scopeLabel} with the app keyboard.`
+          : `Type the full ${scopeLabel}.`;
+      }
+      return isTouchPrimaryDevice()
+        ? "Tap the missing letters in order."
+        : "Type only the missing letters, in order.";
     }
 
     function indexRange(start, endExclusive) {
@@ -2763,11 +2827,11 @@
       return String(text || "").replace(/[\p{L}\p{M}]+/gu, word => maskLetterRunAdaptive(word, info));
     }
 
-    /* ---------- Missing-letters input (levels 1–4) ----------
-       On levels 1–4 the learner types ONLY the hidden letters, in order,
-       and the pattern fills back live. Level 5 stays full typing.
-       A challenge bundles the masked pattern with the exact sequence of
-       hidden characters, aligned code point by code point. */
+    /* ---------- Progressive input ----------
+       On levels 1–4 the learner enters ONLY the hidden letters, in order,
+       and the pattern fills back live. Level 5 is still a full-answer task.
+       On touch devices both variants are handled by the in-app keypad so the
+       OS keyboard does not jump into the layout. */
     function buildProgressiveChallenge(text, item) {
       const info = progressiveInfo(item);
       const masked = maskTextForProgressiveAnswer(text, info);
@@ -2842,20 +2906,125 @@
       return tag === "INPUT" || tag === "TEXTAREA" || el.isContentEditable;
     }
 
-    function shouldAutoFocusPracticeInput() {
-      // Desktop keyboard users benefit from autofocus. Touch devices do not:
-      // the soft keyboard jumps in immediately and shoves the practice area.
+    function isTouchPrimaryDevice() {
       try {
-        return !window.matchMedia("(pointer: coarse), (hover: none), (max-width: 820px)").matches;
+        return window.matchMedia("(pointer: coarse) and (hover: none)").matches;
       } catch (_) {
-        return (window.innerWidth || 1024) > 820;
+        return false;
       }
     }
 
+    function shouldAutoFocusPracticeInput(el) {
+      // Desktop keyboard users should be able to start typing immediately.
+      // Touch-first devices should not open the OS keyboard automatically; for
+      // missing-letter levels the app shows its own inline keypad instead.
+      if (el && el.dataset && el.dataset.inlineKeypad === "1") return false;
+      return !isTouchPrimaryDevice();
+    }
+
     function focusPracticeInput(el) {
-      if (!el || !shouldAutoFocusPracticeInput()) return;
+      if (!el || !shouldAutoFocusPracticeInput(el)) return;
       try { el.focus({ preventScroll: true }); }
       catch (_) { try { el.focus(); } catch (__) {} }
+    }
+
+    function shouldUseInlineMissingKeypad(challenge) {
+      // On touch-first devices the progressive mode should never fall back to
+      // the OS keyboard. Levels 1–4 use missing-letter entry; level 5 uses the
+      // same in-app keypad as a full-answer builder.
+      return !!(challenge && isTouchPrimaryDevice());
+    }
+
+    function setInlineKeypadInputMode(input, enabled) {
+      if (!input) return;
+      input.readOnly = !!enabled;
+      input.classList.toggle("inline-keypad-target", !!enabled);
+      if (enabled) {
+        input.setAttribute("inputmode", "none");
+        input.dataset.inlineKeypad = "1";
+        input.setAttribute("aria-readonly", "true");
+      } else {
+        input.removeAttribute("inputmode");
+        delete input.dataset.inlineKeypad;
+        input.removeAttribute("aria-readonly");
+      }
+    }
+
+    const INLINE_KEYPAD_ROWS = ["qwertzuiop", "asdfghjkl", "yxcvbnm", "äöüß"];
+    const INLINE_KEYPAD_PUNCTUATION = [".", ",", "?", "!", "'", "-"];
+
+    function inlineKeypadRowsFor(challenge) {
+      const base = INLINE_KEYPAD_ROWS.map(r => Array.from(r));
+      const known = new Set(base.flat().map(ch => ch.toLocaleLowerCase()));
+      const extras = [];
+      const punctuation = [];
+      const source = `${challenge && challenge.full ? challenge.full : ""}${challenge && challenge.missing ? challenge.missing : ""}`;
+      Array.from(source).forEach(ch => {
+        if (/\p{L}|\p{M}/u.test(ch)) {
+          const lower = ch.toLocaleLowerCase();
+          if (!known.has(lower) && !extras.includes(lower)) extras.push(lower);
+          return;
+        }
+        if (/[^\s]/u.test(ch) && !INLINE_KEYPAD_PUNCTUATION.includes(ch) && !punctuation.includes(ch)) {
+          punctuation.push(ch);
+        }
+      });
+      const rows = extras.length ? [...base, extras] : base;
+      const puncRow = [...INLINE_KEYPAD_PUNCTUATION, ...punctuation].filter((ch, idx, arr) => arr.indexOf(ch) === idx);
+      return challenge && challenge.masked ? rows : [...rows, puncRow];
+    }
+
+    function renderInlineMissingKeypad(container, input, challenge, onChange) {
+      if (!container || !input) return;
+      const enabled = shouldUseInlineMissingKeypad(challenge);
+      setInlineKeypadInputMode(input, enabled);
+      container.classList.toggle("hidden", !enabled);
+      container.innerHTML = "";
+      if (!enabled) return;
+
+      const isMissingOnly = !!(challenge && challenge.masked);
+      const applyValue = value => {
+        let next = String(value || "");
+        if (isMissingOnly) {
+          const limit = Array.from(challenge.missing || "").length;
+          const chars = Array.from(next.replace(/\s+/g, ""));
+          next = chars.slice(0, limit).join("");
+        } else {
+          const limit = Math.max(32, Array.from(challenge.full || "").length + 24);
+          next = Array.from(next).slice(0, limit).join("");
+        }
+        input.value = next;
+        if (typeof onChange === "function") onChange(input.value);
+      };
+
+      const makeKey = (label, action, extraClass = "") => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `inline-keypad-key${extraClass ? " " + extraClass : ""}`;
+        btn.textContent = label;
+        btn.addEventListener("pointerdown", e => e.preventDefault());
+        btn.addEventListener("click", e => {
+          e.preventDefault();
+          if (locked) return;
+          action();
+        });
+        return btn;
+      };
+
+      inlineKeypadRowsFor(challenge).forEach(rowChars => {
+        if (!rowChars.length) return;
+        const row = document.createElement("div");
+        row.className = "inline-keypad-row";
+        rowChars.forEach(ch => row.appendChild(makeKey(ch, () => applyValue(input.value + ch))));
+        container.appendChild(row);
+      });
+
+      const tools = document.createElement("div");
+      tools.className = "inline-keypad-row";
+      if (!isMissingOnly) tools.appendChild(makeKey("Space", () => applyValue(input.value + " "), "wide"));
+      tools.appendChild(makeKey("⌫", () => applyValue(Array.from(input.value).slice(0, -1).join("")), "wide"));
+      tools.appendChild(makeKey("Clear", () => applyValue(""), "wide"));
+      container.appendChild(tools);
     }
 
     function shuffleArr(array) {
@@ -3338,6 +3507,7 @@
     const typingClue = $("typingClue");
     const typingLevelDots = $("typingLevelDots");
     const typingInput = $("typingInput");
+    const typingInlineKeypad = $("typingInlineKeypad");
     const typingSubmitBtn = $("typingSubmitBtn");
     const typingRevealBtn = $("typingRevealBtn");
     const typingResult = $("typingResult");
@@ -4156,6 +4326,7 @@
         typingHelp.textContent = gateEnabled ? "No more words in this gate." : "No more words in this deck.";
         typingResult.textContent = "";
         if (typingClue) typingClue.classList.add("hidden");
+        renderInlineMissingKeypad(typingInlineKeypad, typingInput, null, null);
         updateTypingActionButtons();
         return;
       }
@@ -4176,9 +4347,15 @@
       typingClue.classList.toggle("hidden", !hasMask);
       typingClue.innerHTML = hasMask ? clueHtml(currentTypingChallenge.masked, "") : "—";
       typingInput.placeholder = isProgressive
-        ? (hasMask ? "Missing letters only" : "Full answer")
+        ? (hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer"))
         : deckCfg().typingPlaceholder;
       typingInput.value = "";
+      renderInlineMissingKeypad(typingInlineKeypad, typingInput, currentTypingChallenge, value => {
+        if (wordMode === "progressive" && currentTypingChallenge && currentTypingChallenge.masked) {
+          typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, value);
+        }
+        updateTypingActionButtons();
+      });
       typingResult.textContent = "";
       updateTypingActionButtons();
       focusPracticeInput(typingInput);
@@ -4627,7 +4804,7 @@
         inp.autocorrect = "off";
         inp.spellcheck = false;
         inp.enterKeyHint = "done";
-        inp.placeholder = hasMask ? "Missing letters only" : "Full answer";
+        inp.placeholder = hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer");
         inp.value = currentSentenceData.progressiveAnswer || "";
         inp.addEventListener("input", e => {
           currentSentenceData.progressiveAnswer = e.target.value;
@@ -4638,6 +4815,15 @@
           if (e.key === "Enter") { e.preventDefault(); await submitSentenceAnswer(false); }
         });
         sentenceTarget.appendChild(inp);
+        const keypad = document.createElement("div");
+        keypad.className = "inline-keypad hidden";
+        keypad.setAttribute("aria-label", "Missing letters keypad");
+        sentenceTarget.appendChild(keypad);
+        renderInlineMissingKeypad(keypad, inp, challenge, value => {
+          currentSentenceData.progressiveAnswer = value;
+          if (clue) clue.innerHTML = clueHtml(challenge.masked, value);
+          updateSentenceActionButtons();
+        });
         updateSentenceActionButtons();
         setTimeout(() => focusPracticeInput(inp), 0);
         return;
