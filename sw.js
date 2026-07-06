@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v42-progressive-typing-20260706";
+const CACHE_VERSION = "languagedeck-v43-adaptive-missing-letters-20260706";
 const APP_SHELL = [
   "./",
   "./index.html",
