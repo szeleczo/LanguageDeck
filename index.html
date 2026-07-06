@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v45-missing-letters-input-20260706" />
+  <link rel="manifest" href="manifest.webmanifest?v=v46-ui-polish-20260706" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -271,6 +271,7 @@
     input[type="url"],
     select {
       font: inherit;
+      font-size: 16px;
       width: 100%;
       padding: 10px 12px;
       min-height: var(--tap);
@@ -997,12 +998,35 @@
       margin: 0 0 14px;
       text-align: center;
       color: var(--text);
-      font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      line-height: 1.45;
+      /* Monospace: every slot is the same width, so gaps are countable at a
+         glance and the pattern doesn't reflow while letters fill in live. */
+      font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1.5;
       word-break: break-word;
+    }
+    .clue-gap { opacity: 0.32; }
+    .clue-fill { color: var(--primary); }
+
+    /* Compact difficulty indicator: 5 dots instead of "Level 2/5 · about
+       25% hidden" prose. */
+    .level-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 0 0 10px;
+    }
+    .level-dots i {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--border-strong);
+      opacity: 0.5;
+    }
+    .level-dots i.on {
+      background: var(--primary);
+      opacity: 1;
     }
     .progressive-clue {
       text-align: left;
@@ -1768,13 +1792,14 @@
     <!-- Word typing -->
     <div id="wordTypingContainer" class="typing-panel hidden">
       <div class="typing-word" id="typingPrompt">—</div>
+      <div class="level-dots hidden" id="typingLevelDots" aria-hidden="true"></div>
       <div class="typing-help" id="typingHelp">Type the target-language equivalent.</div>
       <div class="typing-clue hidden" id="typingClue">—</div>
       <div class="typing-form">
         <input type="text" id="typingInput" placeholder="Answer" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
         <div style="display:flex;gap:8px;">
           <button id="typingSubmitBtn" style="flex:1;">Check</button>
-          <button id="typingRevealBtn" class="secondary" style="flex:1;">Reveal</button>
+          <button id="typingRevealBtn" class="ghost">Reveal</button>
         </div>
       </div>
       <div class="typing-result" id="typingResult"></div>
@@ -1888,7 +1913,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v45-missing-letters-input-20260706</div>
+      <div class="meta" id="appBuildLabel">Build: v46-ui-polish-20260706</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2127,7 +2152,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v45-missing-letters-input-20260706";
+    const APP_BUILD = "v46-ui-polish-20260706";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2622,16 +2647,21 @@
       };
     }
 
-    function progressiveMetaText(item) {
+    /* Difficulty shown as 5 dots — replaces the "Level 2/5 · about 25%
+       hidden" prose that used to appear (twice) on the play screen. */
+    function levelDotsHtml(item) {
       const info = progressiveInfo(item);
-      return `Level ${info.humanLevel}/${info.maxLevel} · ${info.shortLabel}`;
+      let html = "";
+      for (let i = 0; i < info.maxLevel; i++) {
+        html += `<i${i < info.humanLevel ? ' class="on"' : ""}></i>`;
+      }
+      return html;
     }
 
     function progressiveHelpText(item, scopeLabel) {
       const info = progressiveInfo(item);
-      const base = `Level ${info.humanLevel}/${info.maxLevel}: ${info.shortLabel}.`;
-      if (info.kind === "full") return `${base} Type the full ${scopeLabel}.`;
-      return `${base} Type only the missing letters, in order.`;
+      if (info.kind === "full") return `Type the full ${scopeLabel}.`;
+      return "Type only the missing letters, in order.";
     }
 
     function indexRange(start, endExclusive) {
@@ -2713,15 +2743,22 @@
       return { info, masked, missing, full: String(text || "") };
     }
 
-    /* Fill typed characters into the pattern's gaps, left to right. */
-    function fillProgressiveMask(masked, typed) {
+    /* Render the pattern with typed characters filled into the gaps, left
+       to right. Filled characters are highlighted, remaining gaps dimmed —
+       direct visual feedback while typing. Returns HTML. */
+    function clueHtml(masked, typed) {
       const m = Array.from(String(masked || ""));
       const t = Array.from(String(typed || "").replace(/\s+/g, ""));
-      let ti = 0;
-      for (let i = 0; i < m.length && ti < t.length; i++) {
-        if (m[i] === "_") m[i] = t[ti++];
+      let ti = 0, html = "";
+      for (let i = 0; i < m.length; i++) {
+        if (m[i] === "_") {
+          if (ti < t.length) html += `<span class="clue-fill">${escapeHtml(t[ti++])}</span>`;
+          else html += `<span class="clue-gap">_</span>`;
+        } else {
+          html += escapeHtml(m[i]);
+        }
       }
-      return m.join("");
+      return html;
     }
 
     function normalizeMissingLetters(v) {
@@ -3229,6 +3266,7 @@
     const typingPrompt = $("typingPrompt");
     const typingHelp = $("typingHelp");
     const typingClue = $("typingClue");
+    const typingLevelDots = $("typingLevelDots");
     const typingInput = $("typingInput");
     const typingSubmitBtn = $("typingSubmitBtn");
     const typingRevealBtn = $("typingRevealBtn");
@@ -4049,20 +4087,22 @@
         ? buildProgressiveChallenge(targetDisplay(currentTypingWord), currentTypingWord)
         : null;
       const hasMask = !!(currentTypingChallenge && currentTypingChallenge.masked);
+      // ONE instruction, said once: help line. Level lives in the dots,
+      // the placeholder only echoes what goes in the box.
       typingHelp.textContent = isProgressive
         ? progressiveHelpText(currentTypingWord, `${deckCfg().targetName} answer`)
         : deckCfg().typingHelp;
+      typingLevelDots.classList.toggle("hidden", !isProgressive);
+      if (isProgressive) typingLevelDots.innerHTML = levelDotsHtml(currentTypingWord);
       typingClue.classList.toggle("hidden", !hasMask);
-      typingClue.textContent = hasMask ? currentTypingChallenge.masked : "—";
+      typingClue.innerHTML = hasMask ? clueHtml(currentTypingChallenge.masked, "") : "—";
       typingInput.placeholder = isProgressive
         ? (hasMask ? "Missing letters only" : "Full answer")
         : deckCfg().typingPlaceholder;
       typingInput.value = "";
       typingResult.textContent = "";
       typingInput.focus();
-      statusEl.textContent = isProgressive
-        ? `${progressiveMetaText(currentTypingWord)} · ${hasMask ? "Type only the missing letters." : "Type the full answer."}`
-        : `Type the correct ${deckCfg().targetName} equivalent.`;
+      statusEl.textContent = "";
     }
 
     function isTypingAnswerCorrect(pair, ans) {
@@ -4076,7 +4116,7 @@
       if (showSolutionOnly) {
         wrongCount++; updateScore();
         typingResult.textContent = `Solution: ${targetDisplay(currentTypingWord)}`;
-        statusEl.textContent = "Marked as wrong.";
+        statusEl.textContent = "";
         await saveWordAnswer(currentTypingWord.id, false);
         wordQueue.push(currentTypingWord);
         setTimeout(async () => { locked = false; await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 1000);
@@ -4093,13 +4133,13 @@
       if (correct) {
         correctCount++; updateScore();
         typingResult.textContent = "Correct.";
-        statusEl.textContent = "Correct answer.";
+        statusEl.textContent = "";
         await saveWordAnswer(currentTypingWord.id, true);
         setTimeout(async () => { locked = false; await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 450);
       } else {
         wrongCount++; updateScore();
         typingResult.textContent = `Wrong. Correct: ${targetDisplay(currentTypingWord)}`;
-        statusEl.textContent = "Wrong answer.";
+        statusEl.textContent = "";
         await saveWordAnswer(currentTypingWord.id, false);
         wordQueue.push(currentTypingWord);
         setTimeout(async () => { locked = false; await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 1000);
@@ -4334,7 +4374,8 @@
         updateSentenceActionButtons();
         sentenceHelp.textContent = "";
         sentenceHelp.classList.add("hidden");
-        sentenceMeta.textContent = `${currentSentenceData.orderWords.length} words · streak ${currentSentence.streak || 0}`;
+        sentenceResetBtn.classList.remove("hidden");
+        sentenceMeta.textContent = (currentSentence.streak | 0) > 0 ? `Streak ${currentSentence.streak}` : "";
         sentenceMeta.classList.add("order-meta");
         placeSentenceMeta("under-bank");
         sentenceBank.classList.add("order-bank");
@@ -4421,16 +4462,17 @@
         const challenge = currentSentenceData.progressiveChallenge;
         const hasMask = !!(challenge && challenge.masked);
         sentenceHelp.textContent = progressiveHelpText(currentSentence, `${deckCfg().targetName} sentence`);
-        sentenceMeta.textContent = `${progressiveMetaText(currentSentence)} · Streak: ${currentSentence.streak || 0}`;
+        sentenceMeta.innerHTML = `<span class="level-dots" style="display:inline-flex;margin:0;vertical-align:middle;">${levelDotsHtml(currentSentence)}</span>`;
         sentenceResult.textContent = "";
         sentenceTarget.innerHTML = "";
         sentenceBank.innerHTML = "";
+        sentenceResetBtn.classList.add("hidden"); // Clear has no role here
 
         let clue = null;
         if (hasMask) {
           clue = document.createElement("div");
           clue.className = "progressive-clue";
-          clue.textContent = fillProgressiveMask(challenge.masked, currentSentenceData.progressiveAnswer || "");
+          clue.innerHTML = clueHtml(challenge.masked, currentSentenceData.progressiveAnswer || "");
           sentenceTarget.appendChild(clue);
         }
 
@@ -4445,7 +4487,7 @@
         inp.value = currentSentenceData.progressiveAnswer || "";
         inp.addEventListener("input", e => {
           currentSentenceData.progressiveAnswer = e.target.value;
-          if (clue) clue.textContent = fillProgressiveMask(challenge.masked, e.target.value);
+          if (clue) clue.innerHTML = clueHtml(challenge.masked, e.target.value);
         });
         inp.addEventListener("keydown", async e => {
           if (e.key === "Enter") { e.preventDefault(); await submitSentenceAnswer(false); }
@@ -4455,7 +4497,8 @@
         return;
       }
 
-      sentenceMeta.textContent = `Blanks: ${currentSentenceData.blankIndices.length} · Streak: ${currentSentence.streak || 0}`;
+      sentenceResetBtn.classList.remove("hidden");
+      sentenceMeta.textContent = (currentSentence.streak | 0) > 0 ? `Streak ${currentSentence.streak}` : "";
       sentenceResult.textContent = "";
 
       const blankMap = new Map();
@@ -4577,7 +4620,7 @@
 
       if (showSolutionOnly) {
         wrongCount++; updateScore();
-        statusEl.textContent = "Marked as wrong.";
+        statusEl.textContent = "";
         await saveSentenceAnswer(currentSentence.id, false);
         sentenceQueue.push(currentSentence);
 
@@ -4604,13 +4647,13 @@
       if (correct) {
         correctCount++; updateScore();
         sentenceResult.textContent = "Correct.";
-        statusEl.textContent = "Sentence completed correctly.";
+        statusEl.textContent = "";
         await saveSentenceAnswer(currentSentence.id, true);
         setTimeout(async () => { locked = false; await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 650);
       } else {
         wrongCount++; updateScore();
         sentenceResult.textContent = `Wrong. Correct: ${currentSentence.target}`;
-        statusEl.textContent = "Sentence not correct.";
+        statusEl.textContent = "";
         await saveSentenceAnswer(currentSentence.id, false);
         sentenceQueue.push(currentSentence);
 
@@ -5211,7 +5254,7 @@
     typingInput.addEventListener("input", () => {
       // Missing-letters mode: fill typed characters into the pattern live.
       if (wordMode === "progressive" && currentTypingChallenge && currentTypingChallenge.masked) {
-        typingClue.textContent = fillProgressiveMask(currentTypingChallenge.masked, typingInput.value);
+        typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, typingInput.value);
       }
     });
 
