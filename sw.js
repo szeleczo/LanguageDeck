@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v36-index-only-decklist-20260703";
+const CACHE_VERSION = "languagedeck-v37-hooks-peek-autodecklist-20260706";
 const APP_SHELL = [
   "./",
   "./index.html",

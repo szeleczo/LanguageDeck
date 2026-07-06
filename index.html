@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v36-index-only-decklist-20260703" />
+  <link rel="manifest" href="manifest.webmanifest?v=v37-hooks-peek-autodecklist-20260706" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -873,6 +873,75 @@
       color: var(--danger);
     }
     .card.disabled { pointer-events: none; opacity: 0.7; }
+
+    /* ---------- Hook / hint peek (hold-to-flip) ----------
+       Cards with a hint carry a faint dot marker. Holding the card for a
+       moment flips it (3D rotateY) and reveals the hint in small, muted
+       text; releasing flips it back. The hint face is pre-rotated 180deg
+       so it reads correctly when the card is flipped. */
+    .card.has-hint::after {
+      content: "";
+      position: absolute;
+      top: 8px; right: 10px;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--text-faint);
+      opacity: 0.55;
+    }
+    .card {
+      transform-style: preserve-3d;
+      -webkit-touch-callout: none;
+    }
+    .card.hint-peek {
+      transform: rotateY(180deg);
+      transition: transform 0.22s ease;
+    }
+    .card .card-front,
+    .card .card-hint {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .card .card-hint {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      transform: rotateY(180deg);
+      font-size: 12px;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--text-faint);
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .card.hint-peek .shortcut-badge { opacity: 0; }
+    .card.hint-peek::after { opacity: 0; }
+
+    /* Prompt-style peek (typing word, sentence prompt): text is swapped
+       for the hint while held; styling signals "this is a whisper". */
+    .hint-peek-text {
+      color: var(--text-faint) !important;
+      font-style: italic;
+      font-weight: 500 !important;
+      font-size: 0.82em !important;
+    }
+    .hint-dot {
+      display: inline-block;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--text-faint);
+      opacity: 0.55;
+      margin-left: 7px;
+      vertical-align: middle;
+    }
+    #typingPrompt, #sentenceEnglish {
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
 
     .shortcut-badge {
       position: absolute;
@@ -1780,7 +1849,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v36-index-only-decklist-20260703</div>
+      <div class="meta" id="appBuildLabel">Build: v37-hooks-peek-autodecklist-20260706</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -1938,8 +2007,10 @@
           <div class="meta" style="font-size:12px;line-height:1.35;">
             CSV: <code>english,target</code> still works. German decks may also use
             <code>article</code>, <code>plural</code>, <code>type</code>, <code>register</code>,
-            <code>tags</code>, <code>note</code>, <code>alternatives</code> and
+            <code>tags</code>, <code>note</code>/<code>hint</code>, <code>alternatives</code> and
             <code>article_prompt</code>. Italian imports ignore German article prompts.
+            Cards with a <code>hint</code> show a small dot — press and hold the card
+            (or the prompt in typing/sentence mode) to peek at the hook.
           </div>
           <button id="browseBuiltinBtn" class="ghost" style="width:100%;">Browse built-in decks</button>
         </div>
@@ -1999,7 +2070,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v36-index-only-decklist-20260703";
+    const APP_BUILD = "v37-hooks-peek-autodecklist-20260706";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2325,6 +2396,52 @@
       if (deck === "de") return ["target", "german", "de", "deutsch", "translation", "answer"];
       if (deck === "it") return ["target", "italian", "it", "italiano", "translation", "answer"];
       return ["target", "translation", "answer"];
+    }
+
+    /* ---------- Hook / hint peek ---------- */
+    /* A "hint" is the pair's note field, unless it is a pure provenance
+       note (e.g. "From german_3000." / "Generated verb pattern: ...").
+       Those exist in older decks and carry no learning value, so they are
+       not surfaced as peekable hints. */
+    function hintTextOf(pair) {
+      const note = String(pair && pair.note || "").trim();
+      if (!note) return "";
+      if (/^(from |generated |imported |source:|article practice|plural practice)/i.test(note)) return "";
+      return note;
+    }
+
+    /* Attach hold-to-peek behaviour to an element.
+       - Hold ~350ms  -> onPeek(hint) fires (flip / swap text)
+       - Release      -> onUnpeek() fires (flip back)
+       - A completed peek suppresses the click that the browser fires on
+         release, so peeking never accidentally selects a card.
+       - Moving the pointer (scrolling) cancels the pending peek. */
+    const HINT_HOLD_MS = 350;
+    function attachHoldPeek(el, getHint, onPeek, onUnpeek) {
+      let timer = null, peeking = false, startX = 0, startY = 0;
+      const cancelTimer = () => { if (timer) { clearTimeout(timer); timer = null; } };
+      const stop = () => {
+        cancelTimer();
+        if (peeking) { onUnpeek(); /* keep `peeking` until click fires */ setTimeout(() => { peeking = false; }, 0); }
+      };
+      el.addEventListener("pointerdown", e => {
+        const hint = getHint();
+        if (!hint) return;
+        startX = e.clientX; startY = e.clientY;
+        cancelTimer();
+        timer = setTimeout(() => { peeking = true; onPeek(hint); }, HINT_HOLD_MS);
+      });
+      el.addEventListener("pointermove", e => {
+        if (!timer) return;
+        if (Math.abs(e.clientX - startX) > 10 || Math.abs(e.clientY - startY) > 10) cancelTimer();
+      });
+      el.addEventListener("pointerup", stop);
+      el.addEventListener("pointercancel", stop);
+      el.addEventListener("pointerleave", stop);
+      el.addEventListener("click", e => {
+        if (peeking) { e.stopImmediatePropagation(); e.preventDefault(); }
+      }, true);
+      el.addEventListener("contextmenu", e => { if (getHint()) e.preventDefault(); });
     }
 
     function cardTypeOf(pair) {
@@ -3364,6 +3481,25 @@
 
     function getCurrentWordPairById(id) { return currentWordRoundPairs.find(p => p.id === id); }
 
+    /* Put the visible text on a "front" face and, when the pair has a hint,
+       add a hidden "hint" face plus hold-to-peek behaviour. */
+    function buildCardFaces(card, text, pair) {
+      const front = document.createElement("span");
+      front.className = "card-front";
+      front.textContent = text;
+      card.appendChild(front);
+      const hint = hintTextOf(pair);
+      if (!hint) return;
+      card.classList.add("has-hint");
+      const back = document.createElement("span");
+      back.className = "card-hint";
+      back.textContent = hint;
+      card.appendChild(back);
+      attachHoldPeek(card, () => hintTextOf(pair),
+        () => card.classList.add("hint-peek"),
+        () => card.classList.remove("hint-peek"));
+    }
+
     function renderWordMatch() {
       leftColumn.innerHTML = "";
       rightColumn.innerHTML = "";
@@ -3382,7 +3518,7 @@
         if (matchedIds.has(pair.id)) card.classList.add("correct");
         if (pendingArticlePairId === pair.id) card.classList.add("word-correct");
         if (locked) card.classList.add("disabled");
-        card.appendChild(document.createTextNode(pair.english));
+        buildCardFaces(card, pair.english, pair);
         card.addEventListener("click", () => {
           if (locked || matchedIds.has(pair.id) || pendingArticlePairId !== null) return;
           selectedLeft = selectedLeft === pair.id ? null : pair.id;
@@ -3408,7 +3544,7 @@
         if (matchedIds.has(pair.id)) card.classList.add("correct");
         if (pendingArticlePairId === pair.id) card.classList.add("word-correct");
         if (locked) card.classList.add("disabled");
-        card.appendChild(document.createTextNode(targetWordOnly(pair)));
+        buildCardFaces(card, targetWordOnly(pair), pair);
         card.addEventListener("click", () => {
           if (locked || matchedIds.has(pair.id) || pendingArticlePairId !== null) return;
           selectedRight = selectedRight === pair.id ? null : pair.id;
@@ -3539,6 +3675,33 @@
       }
     }
 
+    /* ---------- Prompt-style hint peek (typing + sentences) ----------
+       Holding the prompt swaps its text for the hint (faint, italic);
+       releasing restores the original prompt. A small dot marks prompts
+       that have a hint available. */
+    function setPromptWithHintDot(el, text, hasHint) {
+      el.textContent = text;
+      el.classList.remove("hint-peek-text");
+      if (hasHint) {
+        const dot = document.createElement("span");
+        dot.className = "hint-dot";
+        el.appendChild(dot);
+      }
+    }
+    function attachPromptPeek(el, getPair) {
+      attachHoldPeek(el, () => hintTextOf(getPair()),
+        (hint) => {
+          el.dataset.origText = el.textContent;
+          el.textContent = hint;
+          el.classList.add("hint-peek-text");
+        },
+        () => {
+          setPromptWithHintDot(el, el.dataset.origText || "", !!hintTextOf(getPair()));
+        });
+    }
+    attachPromptPeek(typingPrompt, () => currentTypingWord);
+    attachPromptPeek(sentenceEnglish, () => currentSentence);
+
     /* ---------- Word typing ---------- */
     async function loadNextTypingWord() {
       await ensureWordQueue(1);
@@ -3550,7 +3713,7 @@
         return;
       }
       currentTypingWord = wordQueue.shift();
-      typingPrompt.textContent = currentTypingWord.english;
+      setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
       typingHelp.textContent = deckCfg().typingHelp;
       typingInput.placeholder = deckCfg().typingPlaceholder;
       typingInput.value = "";
@@ -3815,7 +3978,7 @@
 
     function renderSentence() {
       if (!currentSentence || !currentSentenceData) return;
-      sentenceEnglish.textContent = currentSentence.english;
+      setPromptWithHintDot(sentenceEnglish, currentSentence.english, !!hintTextOf(currentSentence));
 
       // ----- Reorder ("order") sub-mode -----
       const isOrderMode = sentenceMode === "order";
@@ -4148,11 +4311,84 @@
 
     /* ---------- Built-in deck list ---------- */
     /*
-      Built-in deck list is intentionally index-only.
-      Do not auto-discover CSV files from GitHub or the decks/ folder.
-      decks/index.json is the single source of truth, so removed/legacy CSVs
-      cannot reappear as importable "ghost decks".
+      Deck discovery, v37:
+      1. PRIMARY: the GitHub Contents API lists what is ACTUALLY in the
+         decks/ folder of the deployed repo right now. New CSVs appear
+         automatically; deleted CSVs disappear automatically. No ghost
+         decks, no manual bookkeeping.
+      2. OVERLAY: if decks/index.json exists, its entries provide nicer
+         display names / explicit types for matching files. Files listed
+         in index.json but absent from GitHub are NOT shown.
+      3. FALLBACK: if the API is unreachable (offline, rate-limited, or
+         not hosted on *.github.io), index.json alone is used, as before.
     */
+
+    let githubDeckCache = null; // { at, decks }
+    const GITHUB_DECK_CACHE_MS = 5 * 60 * 1000;
+
+    function detectGitHubRepo() {
+      const m = location.hostname.match(/^([^.]+)\.github\.io$/i);
+      if (!m) return null;
+      const owner = m[1];
+      const segs = location.pathname.split("/").filter(Boolean);
+      // Project pages live under /<repo>/..., user pages at the root.
+      const repo = segs.length > 0 ? segs[0] : `${owner}.github.io`;
+      return { owner, repo };
+    }
+
+    function prettifyDeckName(fileName) {
+      return fileName
+        .replace(/\.csv$/i, "")
+        .split(/[_\-]+/)
+        .map(w => w ? w.charAt(0).toUpperCase() + w.slice(1) : w)
+        .join(" ");
+    }
+
+    function guessDeckType(fileName) {
+      return /sentence|pattern/i.test(fileName) ? "sentences" : "words";
+    }
+
+    async function fetchDecksFromGitHubApi() {
+      const repoInfo = detectGitHubRepo();
+      if (!repoInfo) return null;
+      if (githubDeckCache && Date.now() - githubDeckCache.at < GITHUB_DECK_CACHE_MS) {
+        return githubDeckCache.decks;
+      }
+      const base = `https://api.github.com/repos/${repoInfo.owner}/${repoInfo.repo}/contents`;
+      const opts = { headers: { "Accept": "application/vnd.github+json" } };
+      try {
+        const res = await fetch(`${base}/decks`, opts);
+        if (!res.ok) return null;
+        const entries = await res.json();
+        if (!Array.isArray(entries)) return null;
+        const dirs = entries.filter(e => e.type === "dir");
+        const perDir = await Promise.all(dirs.map(async d => {
+          try {
+            const r = await fetch(`${base}/decks/${encodeURIComponent(d.name)}`, opts);
+            if (!r.ok) return [];
+            const files = await r.json();
+            return Array.isArray(files) ? files : [];
+          } catch { return []; }
+        }));
+        const decks = [];
+        dirs.forEach((d, i) => {
+          for (const f of perDir[i]) {
+            if (f.type !== "file" || !/\.csv$/i.test(f.name)) continue;
+            decks.push({
+              name: prettifyDeckName(f.name),
+              file: `${d.name}/${f.name}`,
+              deck: d.name,
+              type: guessDeckType(f.name),
+              source: "github"
+            });
+          }
+        });
+        githubDeckCache = { at: Date.now(), decks };
+        return decks;
+      } catch {
+        return null;
+      }
+    }
 
     async function fetchDecksFromIndexJson() {
       try {
@@ -4169,8 +4405,27 @@
     async function loadBuiltinList() {
       builtinList.innerHTML = "Loading…";
 
-      const jsonDecks = await fetchDecksFromIndexJson();
-      const decks = (jsonDecks || []).sort((a, b) => {
+      const [ghDecks, jsonDecks] = await Promise.all([
+        fetchDecksFromGitHubApi(),
+        fetchDecksFromIndexJson()
+      ]);
+
+      let baseDecks, sourceNote;
+      if (ghDecks && ghDecks.length > 0) {
+        // GitHub listing is the source of truth for WHICH decks exist;
+        // index.json (if present) only improves names/types of matches.
+        const meta = new Map((jsonDecks || []).map(d => [d.file, d]));
+        baseDecks = ghDecks.map(d => {
+          const m = meta.get(d.file);
+          return m ? { ...d, name: m.name || d.name, type: m.type || d.type } : d;
+        });
+        sourceNote = "Live list from GitHub — new files appear and deleted files disappear automatically.";
+      } else {
+        baseDecks = jsonDecks || [];
+        sourceNote = "Offline list from decks/index.json (GitHub not reachable).";
+      }
+
+      const decks = baseDecks.sort((a, b) => {
         if (a.deck !== b.deck) return (a.deck || "").localeCompare(b.deck || "");
         return (a.name || "").localeCompare(b.name || "");
       });
@@ -4179,13 +4434,17 @@
         builtinList.innerHTML = `
           <em>No built-in decks found.</em>
           <p style="font-size:13px;color:var(--text-faint);margin-top:6px;">
-            Add the deck to <code>decks/index.json</code>.
-            CSV files not listed there are intentionally ignored.
+            Put CSV files under <code>decks/&lt;lang&gt;/</code> in the repo —
+            they are discovered automatically.
           </p>`;
         return;
       }
 
       builtinList.innerHTML = "";
+      const note = document.createElement("div");
+      note.style.cssText = "font-size:11px;color:var(--text-faint);margin-bottom:6px;line-height:1.35;";
+      note.textContent = sourceNote;
+      builtinList.appendChild(note);
 
       // Group by language for cleaner display
       let lastLang = null;
