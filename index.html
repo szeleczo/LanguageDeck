@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v37-hooks-peek-autodecklist-20260706" />
+  <link rel="manifest" href="manifest.webmanifest?v=v40-deck-manager-20260706" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -892,9 +892,19 @@
       transform-style: preserve-3d;
       -webkit-touch-callout: none;
     }
-    .card.hint-peek {
-      transform: rotateY(180deg);
+    .card.hint-peek,
+    .card.hint-peek:active:not(.disabled):not(.correct) {
+      /* !important + explicit :active variant: the flip must beat the
+         "physical button press" translateY effect, which is by definition
+         active during a long press (that rule has higher specificity and
+         was silently winning — the card never visually rotated). */
+      transform: rotateY(180deg) !important;
       transition: transform 0.22s ease;
+    }
+    .card.has-hint {
+      /* Don't let Android hijack the hold gesture for scrolling/selection —
+         a hijack fires pointercancel and kills the peek timer. */
+      touch-action: none;
     }
     .card .card-front,
     .card .card-hint {
@@ -941,6 +951,7 @@
       user-select: none;
       -webkit-user-select: none;
       -webkit-touch-callout: none;
+      touch-action: none;
     }
 
     .shortcut-badge {
@@ -1849,7 +1860,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v37-hooks-peek-autodecklist-20260706</div>
+      <div class="meta" id="appBuildLabel">Build: v40-deck-manager-20260706</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2013,6 +2024,7 @@
             (or the prompt in typing/sentence mode) to peek at the hook.
           </div>
           <button id="browseBuiltinBtn" class="ghost" style="width:100%;">Browse built-in decks</button>
+          <button id="manageDecksBtn" class="ghost" style="width:100%;">Manage installed decks</button>
         </div>
       </details>
 
@@ -2032,6 +2044,21 @@
       <div id="builtinList" style="display:grid;gap:8px;">Loading…</div>
       <div class="settings-actions">
         <button id="closeBuiltinBtn" class="secondary close-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="manageDecksModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-title">Installed decks</div>
+      <div style="font-size:12px;color:var(--text-faint);margin-bottom:8px;line-height:1.35;">
+        Decks stored on this device. Delete one to free it up before importing
+        a new version — deleting here only removes the local copy, never the
+        file on GitHub.
+      </div>
+      <div id="manageDecksList" style="display:grid;gap:8px;">Loading…</div>
+      <div class="settings-actions">
+        <button id="closeManageDecksBtn" class="secondary close-btn">Done</button>
       </div>
     </div>
   </div>
@@ -2070,7 +2097,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v37-hooks-peek-autodecklist-20260706";
+    const APP_BUILD = "v40-deck-manager-20260706";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2418,13 +2445,18 @@
        - Moving the pointer (scrolling) cancels the pending peek. */
     const HINT_HOLD_MS = 350;
     function attachHoldPeek(el, getHint, onPeek, onUnpeek) {
-      let timer = null, peeking = false, startX = 0, startY = 0;
+      let timer = null, peeking = false, suppressClick = false, startX = 0, startY = 0;
       const cancelTimer = () => { if (timer) { clearTimeout(timer); timer = null; } };
       const stop = () => {
         cancelTimer();
-        if (peeking) { onUnpeek(); /* keep `peeking` until click fires */ setTimeout(() => { peeking = false; }, 0); }
+        if (peeking) {
+          peeking = false;
+          suppressClick = true; // consumed by the click handler (or next pointerdown)
+          onUnpeek();
+        }
       };
       el.addEventListener("pointerdown", e => {
+        suppressClick = false;
         const hint = getHint();
         if (!hint) return;
         startX = e.clientX; startY = e.clientY;
@@ -2439,7 +2471,10 @@
       el.addEventListener("pointercancel", stop);
       el.addEventListener("pointerleave", stop);
       el.addEventListener("click", e => {
-        if (peeking) { e.stopImmediatePropagation(); e.preventDefault(); }
+        if (peeking || suppressClick) {
+          suppressClick = false;
+          e.stopImmediatePropagation(); e.preventDefault();
+        }
       }, true);
       el.addEventListener("contextmenu", e => { if (getHint()) e.preventDefault(); });
     }
@@ -2839,6 +2874,10 @@
     const urlInput = $("urlInput");
     const urlImportBtn = $("urlImportBtn");
     const browseBuiltinBtn = $("browseBuiltinBtn");
+    const manageDecksBtn = $("manageDecksBtn");
+    const manageDecksModal = $("manageDecksModal");
+    const manageDecksList = $("manageDecksList");
+    const closeManageDecksBtn = $("closeManageDecksBtn");
     const builtinModal = $("builtinModal");
     const builtinList = $("builtinList");
     const closeBuiltinBtn = $("closeBuiltinBtn");
@@ -4402,6 +4441,83 @@
       }
     }
 
+    /* ---------- Manage installed decks (local delete) ---------- */
+    /* Lists every imported set across both languages and both card types,
+       with item counts and a per-deck Delete button. Deleting removes only
+       the local IndexedDB copy for that (deck, table, set_name). */
+    async function collectInstalledDecks() {
+      const out = [];
+      for (const deck of ["de", "it"]) {
+        for (const [table, kind] of [["word_pairs", "words"], ["sentence_pairs", "sentences"]]) {
+          const sets = await DB.getSets(table, deck);
+          for (const s of sets) {
+            if (s.set_name === "__all__") continue;
+            out.push({ deck, table, kind, set_name: s.set_name, count: s.item_count });
+          }
+        }
+      }
+      out.sort((a, b) => a.deck.localeCompare(b.deck) ||
+        a.kind.localeCompare(b.kind) || String(a.set_name).localeCompare(String(b.set_name)));
+      return out;
+    }
+
+    async function deleteInstalledDeck(entry) {
+      const n = await DB.clear(entry.table, entry.deck, entry.set_name);
+      // If the deck we just deleted was the active one, fall back to "All decks".
+      if (entry.deck === currentDeck && entry.set_name === currentSetName) {
+        currentSetName = "__all__";
+        currentGateIndex = 0;
+        sessionLoadedIds = new Set();
+        wordQueue = []; sentenceQueue = []; sentencePool = [];
+        await refreshSetOptions();
+        await refreshStats(); await refreshGateInfo();
+        await loadCurrentGame(true);
+      }
+      return n;
+    }
+
+    async function renderManageDecks() {
+      manageDecksList.innerHTML = "Loading…";
+      const decks = await collectInstalledDecks();
+      if (decks.length === 0) {
+        manageDecksList.innerHTML = `<em style="color:var(--text-faint);">No decks installed on this device yet.</em>`;
+        return;
+      }
+      manageDecksList.innerHTML = "";
+      let lastGroup = null;
+      decks.forEach(entry => {
+        const group = `${entry.deck.toUpperCase()} · ${entry.kind}`;
+        if (group !== lastGroup) {
+          const header = document.createElement("div");
+          header.style.cssText = "font-size:11px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin:8px 0 2px;";
+          header.textContent = group;
+          manageDecksList.appendChild(header);
+          lastGroup = group;
+        }
+        const wrap = document.createElement("div");
+        wrap.className = "builtin-item";
+        wrap.style.cssText = "display:flex;align-items:center;justify-content:space-between;gap:10px;";
+        const info = document.createElement("div");
+        info.style.minWidth = "0";
+        info.innerHTML = `<strong style="word-break:break-word;">${escapeHtml(entry.set_name)}</strong>` +
+          `<div class="builtin-item-meta">${entry.count} ${entry.kind}${entry.set_name === currentSetName && entry.deck === currentDeck ? " · active" : ""}</div>`;
+        const btn = document.createElement("button");
+        btn.className = "danger";
+        btn.textContent = "Delete";
+        btn.style.flex = "0 0 auto";
+        btn.addEventListener("click", async () => {
+          const ok = confirm(`Delete "${entry.set_name}" (${entry.count} ${entry.kind}) from this device? This cannot be undone. The file on GitHub is not affected.`);
+          if (!ok) return;
+          btn.disabled = true;
+          const n = await deleteInstalledDeck(entry);
+          showToast(`Deleted "${entry.set_name}" (${n} items).`);
+          await renderManageDecks();
+        });
+        wrap.appendChild(info); wrap.appendChild(btn);
+        manageDecksList.appendChild(wrap);
+      });
+    }
+
     async function loadBuiltinList() {
       builtinList.innerHTML = "Loading…";
 
@@ -4474,6 +4590,17 @@
             if (!r.ok) throw new Error(`Could not download ${d.file}`);
             const text = await r.text();
             const setName = (d.name || d.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, ""));
+            const targetTable = (d.type || "words") === "sentences" ? "sentence_pairs" : "word_pairs";
+            const targetDeck = d.deck || currentDeck;
+            // Replace, don't stack: if this set is already installed, clear the
+            // old local copy first so re-importing an updated deck refreshes it
+            // instead of duplicating every row.
+            const existing = (await DB.getSets(targetTable, targetDeck))
+              .some(s => s.set_name === setName);
+            if (existing) {
+              const wipe = await DB.clear(targetTable, targetDeck, setName);
+              if (wipe > 0) showToast(`Refreshing "${setName}"…`, 1200);
+            }
             if ((d.type || "words") === "sentences") {
               const n = await importSentencesFromCsv(text, d.deck || currentDeck, setName);
               showToast(`Imported ${n} sentences into "${setName}".`);
@@ -4498,6 +4625,29 @@
           } catch (err) { showToast("Error: " + err.message); }
         });
         wrap.appendChild(title); wrap.appendChild(meta); wrap.appendChild(btn);
+        // Mark decks already installed on this device, and offer inline delete.
+        (async () => {
+          const targetTable = (d.type || "words") === "sentences" ? "sentence_pairs" : "word_pairs";
+          const targetDeck = d.deck || currentDeck;
+          const setName = (d.name || d.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, ""));
+          const match = (await DB.getSets(targetTable, targetDeck)).find(s => s.set_name === setName);
+          if (!match) return;
+          btn.textContent = "Re-import";
+          const del = document.createElement("button");
+          del.className = "danger";
+          del.textContent = "Delete";
+          del.style.marginTop = "6px";
+          del.style.marginLeft = "6px";
+          del.addEventListener("click", async () => {
+            const ok = confirm(`Delete "${setName}" (${match.item_count} items) from this device? The file on GitHub is not affected.`);
+            if (!ok) return;
+            await deleteInstalledDeck({ deck: targetDeck, table: targetTable, set_name: setName });
+            showToast(`Deleted "${setName}".`);
+            loadBuiltinList();
+          });
+          meta.textContent += " · installed";
+          wrap.appendChild(del);
+        })();
         builtinList.appendChild(wrap);
       });
     }
@@ -4525,6 +4675,10 @@
     closeBuiltinBtn.addEventListener("click", () => builtinModal.classList.remove("active"));
     builtinModal.addEventListener("click", e => { if (e.target === builtinModal) builtinModal.classList.remove("active"); });
     browseBuiltinBtn.addEventListener("click", () => { builtinModal.classList.add("active"); loadBuiltinList(); });
+
+    if (manageDecksBtn) manageDecksBtn.addEventListener("click", () => { manageDecksModal.classList.add("active"); renderManageDecks(); });
+    if (closeManageDecksBtn) closeManageDecksBtn.addEventListener("click", () => manageDecksModal.classList.remove("active"));
+    manageDecksModal.addEventListener("click", e => { if (e.target === manageDecksModal) manageDecksModal.classList.remove("active"); });
 
     uploadBtn.addEventListener("click", async () => {
       const file = fileInput.files[0];
