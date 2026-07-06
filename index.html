@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v44-inline-missing-letters-20260706" />
+  <link rel="manifest" href="manifest.webmanifest?v=v45-missing-letters-input-20260706" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1888,7 +1888,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v44-inline-missing-letters-20260706</div>
+      <div class="meta" id="appBuildLabel">Build: v45-missing-letters-input-20260706</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2127,7 +2127,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v44-inline-missing-letters-20260706";
+    const APP_BUILD = "v45-missing-letters-input-20260706";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2630,7 +2630,7 @@
     function progressiveHelpText(item, scopeLabel) {
       const info = progressiveInfo(item);
       const base = `Level ${info.humanLevel}/${info.maxLevel}: ${info.shortLabel}.`;
-      if (info.kind === "full") return `${base} Type the full ${scopeLabel} without a clue.`;
+      if (info.kind === "full") return `${base} Type the full ${scopeLabel}.`;
       return `${base} Type only the missing letters, in order.`;
     }
 
@@ -2640,13 +2640,10 @@
       return out;
     }
 
-    function maskLetterRunAdaptiveDetailed(word, info) {
+    function maskLetterRunAdaptive(word, info) {
       const chars = Array.from(String(word || ""));
       const len = chars.length;
-      if (len <= 1 || !info || info.kind === "full") {
-        const plain = chars.join("");
-        return { mask: plain, missing: "" };
-      }
+      if (len <= 1 || !info || info.kind === "full") return chars.join("");
 
       let candidates = indexRange(0, len);
       let minVisible = 1;
@@ -2658,12 +2655,16 @@
         minVisible = len >= 3 ? 2 : 1;
         hideCount = 1;
       } else if (info.kind === "ratio") {
+        // Always keep the first letter as an anchor (len>=3): without this,
+        // level 3 could hide the initial letter while the HARDER skeleton
+        // level always preserves it — an inverted difficulty step.
         const protectedIdx = new Set();
+        if (len >= 3) protectedIdx.add(0);
         if (info.keepEdges && len >= 4) {
           protectedIdx.add(0);
           protectedIdx.add(len - 1);
-          minVisible = 2;
         }
+        minVisible = Math.max(1, protectedIdx.size);
         candidates = indexRange(0, len).filter(i => !protectedIdx.has(i));
         hideCount = Math.max(1, Math.round(len * (info.ratio || 0.25)));
       } else if (info.kind === "skeleton") {
@@ -2678,59 +2679,66 @@
 
       const maxHidden = Math.max(0, len - minVisible);
       hideCount = Math.min(hideCount, maxHidden, candidates.length);
-      if (hideCount <= 0) {
-        const plain = chars.join("");
-        return { mask: plain, missing: "" };
-      }
+      if (hideCount <= 0) return chars.join("");
 
       const hidden = new Set(shuffleArr(candidates).slice(0, hideCount));
-      return {
-        mask: chars.map((ch, i) => hidden.has(i) ? "_" : ch).join(""),
-        missing: chars.filter((_, i) => hidden.has(i)).join("")
-      };
-    }
-
-    function buildProgressiveMaskAnswer(text, itemOrInfo) {
-      const info = itemOrInfo && itemOrInfo.kind ? itemOrInfo : progressiveInfo(itemOrInfo);
-      const source = String(text || "");
-      if (info.kind === "full") return { mask: "", missing: "", info };
-
-      let missing = "";
-      const mask = source.replace(/[\p{L}\p{M}]+/gu, word => {
-        const part = maskLetterRunAdaptiveDetailed(word, info);
-        missing += part.missing;
-        return part.mask;
-      });
-      return { mask, missing, info };
+      return chars.map((ch, i) => hidden.has(i) ? "_" : ch).join("");
     }
 
     function maskTextForProgressiveAnswer(text, itemOrInfo) {
-      return buildProgressiveMaskAnswer(text, itemOrInfo).mask;
+      const info = itemOrInfo && itemOrInfo.kind ? itemOrInfo : progressiveInfo(itemOrInfo);
+      if (info.kind === "full") return "";
+      return String(text || "").replace(/[\p{L}\p{M}]+/gu, word => maskLetterRunAdaptive(word, info));
     }
 
-    function compactMissingInput(v) {
+    /* ---------- Missing-letters input (levels 1–4) ----------
+       On levels 1–4 the learner types ONLY the hidden letters, in order,
+       and the pattern fills back live. Level 5 stays full typing.
+       A challenge bundles the masked pattern with the exact sequence of
+       hidden characters, aligned code point by code point. */
+    function buildProgressiveChallenge(text, item) {
+      const info = progressiveInfo(item);
+      const masked = maskTextForProgressiveAnswer(text, info);
+      if (info.kind === "full" || !masked) {
+        return { info, masked: "", missing: "", full: String(text || "") };
+      }
+      const o = Array.from(String(text || ""));
+      const m = Array.from(masked);
+      let missing = "";
+      for (let i = 0; i < m.length; i++) {
+        // Only slots the masker created count; a literal "_" in the source
+        // text stays visible and must not be treated as a gap.
+        if (m[i] === "_" && o[i] !== "_") missing += o[i];
+      }
+      return { info, masked, missing, full: String(text || "") };
+    }
+
+    /* Fill typed characters into the pattern's gaps, left to right. */
+    function fillProgressiveMask(masked, typed) {
+      const m = Array.from(String(masked || ""));
+      const t = Array.from(String(typed || "").replace(/\s+/g, ""));
+      let ti = 0;
+      for (let i = 0; i < m.length && ti < t.length; i++) {
+        if (m[i] === "_") m[i] = t[ti++];
+      }
+      return m.join("");
+    }
+
+    function normalizeMissingLetters(v) {
+      // Same leniency as full-text answers (case, apostrophes), then strip
+      // whitespace: the learner types a bare letter sequence.
       return answerNorm(v).replace(/\s+/g, "");
     }
 
-    function fillProgressiveMask(mask, input) {
-      const typed = Array.from(String(input || "").replace(/\s+/g, ""));
-      let idx = 0;
-      return Array.from(String(mask || "")).map(ch => {
-        if (ch !== "_") return ch;
-        if (idx >= typed.length) return "_";
-        return typed[idx++];
-      }).join("");
-    }
-
-    function isProgressiveInlineAnswerCorrect(expected, given, data, alternatives = []) {
-      if (!data || !data.info || data.info.kind === "full") {
-        return isFullTextAnswerCorrect(expected, given, alternatives);
+    function isProgressiveAnswerCorrect(challenge, typedValue, fullExpected, alternatives = []) {
+      if (!challenge || !challenge.masked) {
+        return isFullTextAnswerCorrect(fullExpected, typedValue, alternatives);
       }
-      const expectedMissing = compactMissingInput(data.missing || "");
-      const givenMissing = compactMissingInput(given || "");
-      if (expectedMissing && givenMissing === expectedMissing) return true;
-      // Backwards-compatible fallback: if someone still types the whole answer, accept it.
-      return isFullTextAnswerCorrect(expected, given, alternatives);
+      if (normalizeMissingLetters(typedValue) === normalizeMissingLetters(challenge.missing)) {
+        return true;
+      }
+      // Safety net: the FULL correct answer is always accepted too.
+      return isFullTextAnswerCorrect(fullExpected, typedValue, alternatives);
     }
 
     async function recordProgressiveAnswer(table, itemId, correct, profile) {
@@ -2955,7 +2963,24 @@
       };
     }
 
-    function selectStudyItems(rows, limit, newRatio, practiceScope) {
+    /* Maximum number of items allowed to be "in learning" at once when the
+       gate is OFF. An item is in learning once it has been seen but its streak
+       is still below GATE_MASTERY_STREAK. While the learning pool is full, NO
+       new items are introduced — the engine re-serves due and (if needed)
+       ahead-of-schedule reviews until enough items are mastered. This is what
+       makes no-gate mode "don't show me new words until the current ones go
+       really well". */
+    const MAX_LEARNING_POOL = 10;
+
+    function countLearning(rows) {
+      let n = 0;
+      for (const r of rows) {
+        if (r.next_due != null && (r.streak | 0) < GATE_MASTERY_STREAK) n++;
+      }
+      return n;
+    }
+
+    function selectStudyItems(rows, limit, newRatio, practiceScope, throttleNew = false) {
       let pool = rows;
       if (practiceScope === "wrong") pool = pool.filter(r => (r.times_wrong | 0) > 0);
 
@@ -2983,17 +3008,37 @@
       }
 
       const dueTarget = Math.floor(limit * (1 - newRatio));
-      const newTarget = limit - dueTarget;
+      let newTarget = limit - dueTarget;
+
+      // New-intake throttle (no-gate mode): the learning pool caps how many
+      // new items may enter. NOTE: `rows` (the full scope), not `pool`, is
+      // used for the count so practice-scope filters can't hide learning load.
+      let newBudget = Infinity;
+      if (throttleNew) {
+        newBudget = Math.max(0, MAX_LEARNING_POOL - countLearning(rows));
+        newTarget = Math.min(newTarget, newBudget);
+      }
+
       let selected = due.slice(0, dueTarget);
       const remDue = due.slice(dueTarget);
       selected = selected.concat(newItems.slice(0, newTarget));
+      let newUsed = Math.min(newTarget, newItems.length);
       const remNew = newItems.slice(newTarget);
 
       if (selected.length < limit) {
         const seen = new Set(selected.map(x => x.id));
-        for (const it of [...remDue, ...remNew, ...future]) {
+        // Backfill priority: overflow due items first, then ahead-of-schedule
+        // reviews (future). New items come LAST and only within the remaining
+        // budget — previously remNew was preferred over future, which flooded
+        // the session with new words exactly when reviews were scarce.
+        for (const it of [...remDue, ...future]) {
           if (!seen.has(it.id)) { selected.push(it); seen.add(it.id); }
           if (selected.length >= limit) break;
+        }
+        for (const it of remNew) {
+          if (selected.length >= limit) break;
+          if (throttleNew && newUsed >= newBudget) break;
+          if (!seen.has(it.id)) { selected.push(it); seen.add(it.id); newUsed++; }
         }
       }
       return shuffleArr(selected).slice(0, limit);
@@ -3074,7 +3119,7 @@
     let currentWordRoundPairs = [];
     let rightOrder = [];
     let currentTypingWord = null;
-    let currentTypingProgressiveData = null;
+    let currentTypingChallenge = null;
 
     let sentenceQueue = [];
     let sentencePool = [];
@@ -3418,13 +3463,6 @@
     function targetWordOnly(pair) { return displayTargetWithoutDuplicateArticle(pair); }
     function articleOf(pair) { return String(pair.article || "").trim().toLowerCase(); }
     function hasArticle(pair) { return shouldPromptArticle(pair); }
-
-    function typingAcceptedAnswers(pair) {
-      const answers = [targetDisplay(pair)];
-      for (const alt of splitAlternatives(pair.alternatives || pair.alt || "")) answers.push(alt);
-      return answers;
-    }
-
     function applyDeckUI() {
       if (leftColumnTitle) leftColumnTitle.textContent = deckCfg().leftTitle;
       if (rightColumnTitle) rightColumnTitle.textContent = deckCfg().rightTitle;
@@ -3459,19 +3497,7 @@
 
     // Kept as a no-op so existing call-sites don't break;
     // the keyboard hint UI was removed in favor of a cleaner main area.
-    function updateKeyboardHint() {}
-
     // Kept as a no-op so call-sites still work; deck-and-count info now lives in the chip.
-    async function refreshDbInfo() {}
-
-    function getSelectionPhase() {
-      if (currentGame === "sentences") return "sentence";
-      if (pendingArticlePairId !== null) return "article";
-      if (wordMode === "typing" || wordMode === "progressive") return "typing";
-      if (selectedLeft === null) return "left";
-      return "right";
-    }
-
     async function refreshStats() {
       const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
       const all = await DB.getAll(table, currentDeck, currentSetName);
@@ -3635,11 +3661,11 @@
 
         let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
         let filtered = pool.filter(r => !sessionLoadedIds.has(r.id));
-        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope);
+        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled);
 
         if (forceResetIfEmpty && data.length === 0 && sessionLoadedIds.size > 0) {
           sessionLoadedIds = new Set();
-          data = selectStudyItems(pool, batchSize, newRatio, practiceScope);
+          data = selectStudyItems(pool, batchSize, newRatio, practiceScope, !gateEnabled);
         }
         for (const it of data) sessionLoadedIds.add(it.id);
         return data;
@@ -3657,11 +3683,11 @@
 
         let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
         let filtered = pool.filter(r => !sessionLoadedIds.has(r.id));
-        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope);
+        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled);
 
         if (forceResetIfEmpty && data.length === 0 && sessionLoadedIds.size > 0) {
           sessionLoadedIds = new Set();
-          data = selectStudyItems(pool, batchSize, newRatio, practiceScope);
+          data = selectStudyItems(pool, batchSize, newRatio, practiceScope, !gateEnabled);
         }
         for (const it of data) sessionLoadedIds.add(it.id);
         return data;
@@ -3758,7 +3784,6 @@
       statusEl.textContent = currentWordRoundPairs.length > 0
         ? "Pick one item from each column."
         : (gateEnabled ? "Done. No more items in this gate." : "Done. No more items in this deck.");
-      updateKeyboardHint();
     }
 
     function getCurrentWordPairById(id) { return currentWordRoundPairs.find(p => p.id === id); }
@@ -3804,8 +3829,7 @@
         card.addEventListener("click", () => {
           if (locked || matchedIds.has(pair.id) || pendingArticlePairId !== null) return;
           selectedLeft = selectedLeft === pair.id ? null : pair.id;
-          renderWordMatch(); checkWordMatch(); updateKeyboardHint();
-        });
+          renderWordMatch(); checkWordMatch();        });
         leftColumn.appendChild(card);
       });
 
@@ -3830,8 +3854,7 @@
         card.addEventListener("click", () => {
           if (locked || matchedIds.has(pair.id) || pendingArticlePairId !== null) return;
           selectedRight = selectedRight === pair.id ? null : pair.id;
-          renderWordMatch(); checkWordMatch(); updateKeyboardHint();
-        });
+          renderWordMatch(); checkWordMatch();        });
         rightColumn.appendChild(card);
       });
     }
@@ -3872,12 +3895,33 @@
       };
     })());
 
+    /* After recording an answer, mirror the updated DB fields back into the
+       in-memory copies of the same item (current card + queued copies).
+       Without this, a re-queued wrong answer keeps its STALE streak and
+       progressive_level for the rest of the session — so the adaptive mask
+       never actually got easier after a mistake, and sentence blank counts
+       were computed from an outdated streak. */
+    function syncRowIntoLiveItems(row) {
+      if (!row) return;
+      const fields = ["streak", "next_due", "times_seen", "times_correct",
+        "times_wrong", "recovery_progress", "progressive_level", "last_seen", "difficulty"];
+      const apply = (it) => {
+        if (!it || it.id !== row.id) return;
+        for (const f of fields) if (row[f] !== undefined) it[f] = row[f];
+      };
+      apply(currentTypingWord);
+      apply(currentSentence);
+      for (const it of wordQueue) apply(it);
+      for (const it of sentenceQueue) apply(it);
+      for (const it of sentencePool) apply(it);
+      for (const it of currentWordRoundPairs) apply(it);
+    }
+
     async function saveWordAnswer(wordId, isCorrect) {
-      if (wordMode === "progressive") {
-        await recordProgressiveAnswer("word_pairs", wordId, isCorrect, repetitionProfile);
-      } else {
-        await recordAnswer("word_pairs", wordId, isCorrect, repetitionProfile);
-      }
+      const row = wordMode === "progressive"
+        ? await recordProgressiveAnswer("word_pairs", wordId, isCorrect, repetitionProfile)
+        : await recordAnswer("word_pairs", wordId, isCorrect, repetitionProfile);
+      syncRowIntoLiveItems(row);
     }
 
     async function finalizeCorrectWordPair(pairId) {
@@ -3933,12 +3977,10 @@
       if (!pair) return;
       articleWordText.textContent = targetWordOnly(pair);
       articleModal.classList.add("active");
-      updateKeyboardHint();
     }
     function hideArticleModal() {
       pendingArticlePairId = null;
       articleModal.classList.remove("active");
-      updateKeyboardHint();
     }
 
     async function handleArticleChoice(chosen) {
@@ -3993,7 +4035,7 @@
       await ensureWordQueue(1);
       if (wordQueue.length === 0) {
         currentTypingWord = null;
-        currentTypingProgressiveData = null;
+        currentTypingChallenge = null;
         typingPrompt.textContent = "Done";
         typingHelp.textContent = gateEnabled ? "No more words in this gate." : "No more words in this deck.";
         typingResult.textContent = "";
@@ -4003,19 +4045,23 @@
       currentTypingWord = wordQueue.shift();
       setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
       const isProgressive = wordMode === "progressive";
-      const prog = progressiveInfo(currentTypingWord);
-      currentTypingProgressiveData = isProgressive ? buildProgressiveMaskAnswer(targetDisplay(currentTypingWord), prog) : null;
+      currentTypingChallenge = isProgressive
+        ? buildProgressiveChallenge(targetDisplay(currentTypingWord), currentTypingWord)
+        : null;
+      const hasMask = !!(currentTypingChallenge && currentTypingChallenge.masked);
       typingHelp.textContent = isProgressive
         ? progressiveHelpText(currentTypingWord, `${deckCfg().targetName} answer`)
         : deckCfg().typingHelp;
-      typingClue.classList.toggle("hidden", !isProgressive || prog.kind === "full");
-      typingClue.textContent = isProgressive && currentTypingProgressiveData ? currentTypingProgressiveData.mask : "—";
-      typingInput.placeholder = isProgressive && prog.kind !== "full" ? "Missing letters only" : deckCfg().typingPlaceholder;
+      typingClue.classList.toggle("hidden", !hasMask);
+      typingClue.textContent = hasMask ? currentTypingChallenge.masked : "—";
+      typingInput.placeholder = isProgressive
+        ? (hasMask ? "Missing letters only" : "Full answer")
+        : deckCfg().typingPlaceholder;
       typingInput.value = "";
       typingResult.textContent = "";
       typingInput.focus();
       statusEl.textContent = isProgressive
-        ? `${progressiveMetaText(currentTypingWord)} · ${prog.kind === "full" ? "Full typing." : "Type the missing letters only."}`
+        ? `${progressiveMetaText(currentTypingWord)} · ${hasMask ? "Type only the missing letters." : "Type the full answer."}`
         : `Type the correct ${deckCfg().targetName} equivalent.`;
     }
 
@@ -4038,7 +4084,11 @@
       }
 
       const correct = wordMode === "progressive"
-        ? isProgressiveInlineAnswerCorrect(targetDisplay(currentTypingWord), typingInput.value, currentTypingProgressiveData, splitAlternatives(currentTypingWord.alternatives || currentTypingWord.alt || ""))
+        ? isProgressiveAnswerCorrect(
+            currentTypingChallenge,
+            typingInput.value,
+            targetDisplay(currentTypingWord),
+            splitAlternatives(currentTypingWord.alternatives || currentTypingWord.alt || ""))
         : isTypingAnswerCorrect(currentTypingWord, typingInput.value);
       if (correct) {
         correctCount++; updateScore();
@@ -4136,15 +4186,12 @@
       const orderWords = tokens
         .filter(t => !t.isSpace)
         .map((t, i) => ({ raw: t.raw, uid: i }));
-      const progressiveData = buildProgressiveMaskAnswer(s.target, progressiveInfo(s));
       return {
         tokens, blankIndices, blankAnswers,
         choiceAnswers: new Array(blankIndices.length).fill(""),
         typingAnswers: new Array(blankIndices.length).fill(""),
         progressiveAnswer: "",
-        progressiveMask: progressiveData.mask,
-        progressiveMissing: progressiveData.missing,
-        progressiveInfo: progressiveData.info,
+        progressiveChallenge: buildProgressiveChallenge(s.target, s),
         bankWords: buildWordBank(blankAnswers),
         orderWords,
         orderBank: shuffleArr(orderWords),
@@ -4162,11 +4209,6 @@
         sentenceHelp.after(sentenceMeta);
       }
     }
-
-    function clampNumber(value, min, max) {
-      return Math.max(min, Math.min(max, value));
-    }
-
     const ORDER_DENSITY = {
       normal:  { charW: 8.5, extraBank: 34, extraBuild: 30, minW: 54, chipH: 42, gap: 6, buildPad: 20, bankPad: 4, minBuild: 64, minBank: 86 },
       compact: { charW: 7.7, extraBank: 28, extraBuild: 26, minW: 48, chipH: 37, gap: 5, buildPad: 18, bankPad: 4, minBuild: 58, minBank: 72 },
@@ -4376,7 +4418,8 @@
         ? `Fill in the missing ${deckCfg().targetName} words from the bank.`
         : `Type the missing ${deckCfg().targetName} words.`;
       if (sentenceMode === "progressive") {
-        const prog = progressiveInfo(currentSentence);
+        const challenge = currentSentenceData.progressiveChallenge;
+        const hasMask = !!(challenge && challenge.masked);
         sentenceHelp.textContent = progressiveHelpText(currentSentence, `${deckCfg().targetName} sentence`);
         sentenceMeta.textContent = `${progressiveMetaText(currentSentence)} · Streak: ${currentSentence.streak || 0}`;
         sentenceResult.textContent = "";
@@ -4384,10 +4427,10 @@
         sentenceBank.innerHTML = "";
 
         let clue = null;
-        if (prog.kind !== "full") {
+        if (hasMask) {
           clue = document.createElement("div");
           clue.className = "progressive-clue";
-          clue.textContent = fillProgressiveMask(currentSentenceData.progressiveMask, currentSentenceData.progressiveAnswer || "");
+          clue.textContent = fillProgressiveMask(challenge.masked, currentSentenceData.progressiveAnswer || "");
           sentenceTarget.appendChild(clue);
         }
 
@@ -4398,11 +4441,11 @@
         inp.autocapitalize = "off";
         inp.autocorrect = "off";
         inp.spellcheck = false;
-        inp.placeholder = prog.kind === "full" ? `Type the full ${deckCfg().targetName} sentence` : "Missing letters only";
+        inp.placeholder = hasMask ? "Missing letters only" : "Full answer";
         inp.value = currentSentenceData.progressiveAnswer || "";
         inp.addEventListener("input", e => {
           currentSentenceData.progressiveAnswer = e.target.value;
-          if (clue) clue.textContent = fillProgressiveMask(currentSentenceData.progressiveMask, currentSentenceData.progressiveAnswer || "");
+          if (clue) clue.textContent = fillProgressiveMask(challenge.masked, e.target.value);
         });
         inp.addEventListener("keydown", async e => {
           if (e.key === "Enter") { e.preventDefault(); await submitSentenceAnswer(false); }
@@ -4486,7 +4529,7 @@
       renderSentence();
       statusEl.textContent = currentGame === "sentences" && sentenceMode === "order"
         ? "Build the sentence."
-        : (sentenceMode === "progressive" ? "Use the clue and type only the missing letters." : "Fill in the missing words.");
+        : (sentenceMode === "progressive" ? "Use the missing-letter clue and type the full sentence." : "Fill in the missing words.");
     }
 
     function isCurrentSentenceCorrect() {
@@ -4501,18 +4544,21 @@
           normTxt(a) === normTxt(currentSentenceData.choiceAnswers[i] || ""));
       }
       if (sentenceMode === "progressive") {
-        return isProgressiveInlineAnswerCorrect(currentSentence.target, currentSentenceData.progressiveAnswer || "", currentSentenceData, splitAlternatives(currentSentence.alternatives || currentSentence.alt || ""));
+        return isProgressiveAnswerCorrect(
+          currentSentenceData.progressiveChallenge,
+          currentSentenceData.progressiveAnswer || "",
+          currentSentence.target,
+          splitAlternatives(currentSentence.alternatives || currentSentence.alt || ""));
       }
       return currentSentenceData.blankAnswers.every((a, i) =>
         normTxt(a) === normTxt(currentSentenceData.typingAnswers[i] || ""));
     }
 
     async function saveSentenceAnswer(id, isCorrect) {
-      if (sentenceMode === "progressive") {
-        await recordProgressiveAnswer("sentence_pairs", id, isCorrect, repetitionProfile);
-      } else {
-        await recordAnswer("sentence_pairs", id, isCorrect, repetitionProfile);
-      }
+      const row = sentenceMode === "progressive"
+        ? await recordProgressiveAnswer("sentence_pairs", id, isCorrect, repetitionProfile)
+        : await recordAnswer("sentence_pairs", id, isCorrect, repetitionProfile);
+      syncRowIntoLiveItems(row);
     }
 
     async function submitSentenceAnswer(showSolutionOnly = false) {
@@ -4600,22 +4646,19 @@
     function clearSelections() {
       if (pendingArticlePairId !== null) return;
       selectedLeft = null; selectedRight = null;
-      renderWordMatch(); updateKeyboardHint();
-    }
+      renderWordMatch();    }
     function selectLeftByIndex(i) {
       if (i === null || i >= currentWordRoundPairs.length) return;
       const pair = currentWordRoundPairs[i];
       if (!pair || matchedIds.has(pair.id) || locked || pendingArticlePairId !== null) return;
       selectedLeft = selectedLeft === pair.id ? null : pair.id;
-      renderWordMatch(); checkWordMatch(); updateKeyboardHint();
-    }
+      renderWordMatch(); checkWordMatch();    }
     function selectRightByIndex(i) {
       if (i === null || i >= rightOrder.length) return;
       const pair = getCurrentWordPairById(rightOrder[i]);
       if (!pair || matchedIds.has(pair.id) || locked || pendingArticlePairId !== null) return;
       selectedRight = selectedRight === pair.id ? null : pair.id;
-      renderWordMatch(); checkWordMatch(); updateKeyboardHint();
-    }
+      renderWordMatch(); checkWordMatch();    }
     function handleChoiceSentenceKeyboard(i) {
       if (!currentSentenceData || sentenceMode !== "choice") return;
       if (i >= currentSentenceData.bankWords.length) return;
@@ -4929,7 +4972,7 @@
               applyDeckUI();
             }
             currentSetName = setName; currentGateIndex = 0;
-            await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
+            await refreshSetOptions(); await refreshStats();
             await loadCurrentGame(true);
             builtinModal.classList.remove("active");
             closeSettings();
@@ -5003,7 +5046,7 @@
         showToast(`Imported ${n} ${importType === "words" ? "words" : "sentences"} into "${setName}".`);
         fileInput.value = "";
         currentSetName = setName; currentGateIndex = 0;
-        await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
+        await refreshSetOptions(); await refreshStats();
         await loadCurrentGame(true);
         closeSettings();
       } catch (err) { showToast("Error: " + err.message); }
@@ -5023,7 +5066,7 @@
         showToast(`Imported ${n} ${importType === "words" ? "words" : "sentences"} into "${setName}".`);
         urlInput.value = "";
         currentSetName = setName; currentGateIndex = 0;
-        await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
+        await refreshSetOptions(); await refreshStats();
         await loadCurrentGame(true);
         closeSettings();
       } catch (err) { showToast("Error: " + err.message); }
@@ -5062,7 +5105,7 @@
       sessionLoadedIds = new Set();
       wordQueue = []; sentenceQueue = []; sentencePool = [];
       currentGateIndex = 0; totalGates = 0;
-      await refreshSetOptions(); await refreshDbInfo(); await refreshStats();
+      await refreshSetOptions(); await refreshStats();
       await refreshGateInfo(); await loadCurrentGame(true);
       closeSettings();
     });
@@ -5071,7 +5114,7 @@
       currentGame = gameSelect.value; currentGateIndex = 0; sessionLoadedIds = new Set();
       saveSettings();
       await refreshSetOptions(); updateGameUI();
-      await refreshDbInfo(); await refreshStats(); await refreshGateInfo();
+      await refreshStats(); await refreshGateInfo();
       await loadCurrentGame(true);
     });
 
@@ -5079,7 +5122,7 @@
       currentDeck = deckSelect.value; currentGateIndex = 0; sessionLoadedIds = new Set();
       saveSettings();
       await refreshSetOptions(); applyDeckUI(); updateGameUI();
-      await refreshDbInfo(); await refreshStats(); await refreshGateInfo();
+      await refreshStats(); await refreshGateInfo();
       await loadCurrentGame(true);
     });
 
@@ -5087,7 +5130,7 @@
       currentSetName = setSelect.value; currentGateIndex = 0; sessionLoadedIds = new Set();
       saveSettings();
       updateModeSummary();
-      await refreshDbInfo(); await refreshStats(); await refreshGateInfo();
+      await refreshStats(); await refreshGateInfo();
       await loadCurrentGame(true);
     });
 
@@ -5166,10 +5209,12 @@
     typingSubmitBtn.addEventListener("click", () => submitTypingWordAnswer(false));
     typingRevealBtn.addEventListener("click", () => submitTypingWordAnswer(true));
     typingInput.addEventListener("input", () => {
-      if (wordMode === "progressive" && currentTypingProgressiveData && currentTypingProgressiveData.info.kind !== "full" && typingClue) {
-        typingClue.textContent = fillProgressiveMask(currentTypingProgressiveData.mask, typingInput.value);
+      // Missing-letters mode: fill typed characters into the pattern live.
+      if (wordMode === "progressive" && currentTypingChallenge && currentTypingChallenge.masked) {
+        typingClue.textContent = fillProgressiveMask(currentTypingChallenge.masked, typingInput.value);
       }
     });
+
     typingInput.addEventListener("keydown", async e => {
       if (e.key === "Enter") { e.preventDefault(); await submitTypingWordAnswer(false); }
     });
@@ -5359,7 +5404,6 @@
       updateGameUI();
       updateScore();
       updateModeSummary();
-      await refreshDbInfo();
       await refreshStats();
       await refreshGateInfo();
       await loadCurrentGame(true);

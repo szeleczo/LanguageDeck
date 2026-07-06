@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v44-inline-missing-letters-20260706";
+const CACHE_VERSION = "languagedeck-v45-missing-letters-input-20260706";
 const APP_SHELL = [
   "./",
   "./index.html",
