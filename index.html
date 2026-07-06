@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v46-ui-polish-20260706" />
+  <link rel="manifest" href="manifest.webmanifest?v=v47-mobile-ux-20260706" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1663,6 +1663,48 @@
     /* ---------- Helpers ---------- */
     .hidden { display: none !important; }
 
+
+    /* ---------- Mobile keyboard ergonomics ----------
+       Do not let an automatically opened soft keyboard compress the whole
+       practice layout. On phones we also hide non-essential chrome while an
+       input has focus, leaving the clue + input + action row in view. */
+    @media (max-width: 700px) {
+      html.keyboard-open .appbar { position: static; }
+      html.keyboard-open .install-banner,
+      html.keyboard-open .context-strip,
+      html.keyboard-open .gate-strip,
+      html.keyboard-open .play-meta,
+      html.keyboard-open .game-area-spacer { display: none !important; }
+      html.keyboard-open .main {
+        padding: 8px 12px calc(16px + env(safe-area-inset-bottom));
+      }
+      html.keyboard-open .typing-panel,
+      html.keyboard-open .sentence-panel {
+        padding: 16px 14px;
+        border-radius: 16px;
+      }
+      html.keyboard-open .typing-word,
+      html.keyboard-open .sentence-english {
+        font-size: 23px;
+        margin-top: 0;
+        margin-bottom: 4px;
+      }
+      html.keyboard-open .typing-help,
+      html.keyboard-open .sentence-help,
+      html.keyboard-open .sentence-meta {
+        margin-bottom: 8px;
+      }
+      html.keyboard-open .progressive-clue,
+      html.keyboard-open .typing-clue {
+        font-size: 16px;
+        line-height: 1.45;
+        max-height: 30vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      html.keyboard-open .level-dots { margin-bottom: 6px; }
+    }
+
     /* ---------- Responsive ---------- */
     @media (min-width: 700px) {
       .main { padding: 24px 28px 80px; }
@@ -1796,7 +1838,7 @@
       <div class="typing-help" id="typingHelp">Type the target-language equivalent.</div>
       <div class="typing-clue hidden" id="typingClue">—</div>
       <div class="typing-form">
-        <input type="text" id="typingInput" placeholder="Answer" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
+        <input type="text" id="typingInput" placeholder="Answer" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" />
         <div style="display:flex;gap:8px;">
           <button id="typingSubmitBtn" style="flex:1;">Check</button>
           <button id="typingRevealBtn" class="ghost">Reveal</button>
@@ -1913,7 +1955,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v46-ui-polish-20260706</div>
+      <div class="meta" id="appBuildLabel">Build: v47-mobile-ux-20260706</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2152,7 +2194,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v46-ui-polish-20260706";
+    const APP_BUILD = "v47-mobile-ux-20260706";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2786,6 +2828,34 @@
       row.progressive_level = nextProgressiveLevel(beforeLevel, correct);
       await DB.update(table, row);
       return row;
+    }
+
+
+    function hasTypedText(v) {
+      return String(v || "").trim().length > 0;
+    }
+
+    function activeElementIsTextInput() {
+      const el = document.activeElement;
+      if (!el) return false;
+      const tag = (el.tagName || "").toUpperCase();
+      return tag === "INPUT" || tag === "TEXTAREA" || el.isContentEditable;
+    }
+
+    function shouldAutoFocusPracticeInput() {
+      // Desktop keyboard users benefit from autofocus. Touch devices do not:
+      // the soft keyboard jumps in immediately and shoves the practice area.
+      try {
+        return !window.matchMedia("(pointer: coarse), (hover: none), (max-width: 820px)").matches;
+      } catch (_) {
+        return (window.innerWidth || 1024) > 820;
+      }
+    }
+
+    function focusPracticeInput(el) {
+      if (!el || !shouldAutoFocusPracticeInput()) return;
+      try { el.focus({ preventScroll: true }); }
+      catch (_) { try { el.focus(); } catch (__) {} }
     }
 
     function shuffleArr(array) {
@@ -3962,6 +4032,14 @@
       syncRowIntoLiveItems(row);
     }
 
+
+    function updateTypingActionButtons() {
+      if (!typingSubmitBtn || !typingRevealBtn) return;
+      const hasAnswer = hasTypedText(typingInput && typingInput.value);
+      typingSubmitBtn.disabled = !currentTypingWord || locked || !hasAnswer;
+      typingRevealBtn.disabled = !currentTypingWord || locked;
+    }
+
     async function finalizeCorrectWordPair(pairId) {
       matchedIds.add(pairId);
       correctCount++; updateScore();
@@ -4078,6 +4156,7 @@
         typingHelp.textContent = gateEnabled ? "No more words in this gate." : "No more words in this deck.";
         typingResult.textContent = "";
         if (typingClue) typingClue.classList.add("hidden");
+        updateTypingActionButtons();
         return;
       }
       currentTypingWord = wordQueue.shift();
@@ -4101,7 +4180,8 @@
         : deckCfg().typingPlaceholder;
       typingInput.value = "";
       typingResult.textContent = "";
-      typingInput.focus();
+      updateTypingActionButtons();
+      focusPracticeInput(typingInput);
       statusEl.textContent = "";
     }
 
@@ -4111,7 +4191,12 @@
 
     async function submitTypingWordAnswer(showSolutionOnly = false) {
       if (!currentTypingWord || locked) return;
+      if (!showSolutionOnly && !hasTypedText(typingInput && typingInput.value)) {
+        updateTypingActionButtons();
+        return;
+      }
       locked = true;
+      updateTypingActionButtons();
 
       if (showSolutionOnly) {
         wrongCount++; updateScore();
@@ -4237,6 +4322,8 @@
         orderBank: shuffleArr(orderWords),
         orderPlaced: [],
         orderChecked: false,
+        orderAwaitingContinue: false,
+        orderAutoSubmitting: false,
         orderLayout: null
       };
     }
@@ -4322,10 +4409,64 @@
       return data.orderLayout;
     }
 
+
+    function isOrderSentenceComplete() {
+      return !!(currentSentenceData &&
+        currentSentenceData.orderPlaced &&
+        currentSentenceData.orderWords &&
+        currentSentenceData.orderPlaced.length === currentSentenceData.orderWords.length);
+    }
+
+    function hasCurrentSentenceInput() {
+      if (!currentSentenceData) return false;
+      if (sentenceMode === "order") return currentSentenceData.orderPlaced.length > 0;
+      if (sentenceMode === "choice") return currentSentenceData.choiceAnswers.some(hasTypedText);
+      if (sentenceMode === "progressive") return hasTypedText(currentSentenceData.progressiveAnswer);
+      return currentSentenceData.typingAnswers.some(hasTypedText);
+    }
+
+    function canSubmitCurrentSentenceAnswer() {
+      if (!currentSentenceData) return false;
+      if (sentenceMode === "order") return isOrderSentenceComplete();
+      if (sentenceMode === "choice") return currentSentenceData.choiceAnswers.every(hasTypedText);
+      if (sentenceMode === "progressive") return hasTypedText(currentSentenceData.progressiveAnswer);
+      return currentSentenceData.typingAnswers.every(hasTypedText);
+    }
+
+    function orderSignature() {
+      if (!currentSentenceData || !currentSentenceData.orderPlaced) return "";
+      return currentSentenceData.orderPlaced.map(t => t.uid).join("|");
+    }
+
+    function maybeAutoSubmitCompletedOrder() {
+      if (sentenceMode !== "order" || !currentSentenceData || locked || currentSentenceData.orderAwaitingContinue) return;
+      if (!isOrderSentenceComplete()) {
+        renderSentenceKeepingScroll();
+        return;
+      }
+      currentSentenceData.orderChecked = true;
+      const correctNow = isCurrentSentenceCorrect();
+      const sig = orderSignature();
+      renderSentenceKeepingScroll();
+      updateSentenceActionButtons();
+      if (!correctNow) {
+        sentenceResult.textContent = "Not quite — tap a word to fix it.";
+        return;
+      }
+      if (currentSentenceData.orderAutoSubmitting) return;
+      currentSentenceData.orderAutoSubmitting = true;
+      sentenceResult.textContent = "Correct.";
+      setTimeout(() => {
+        if (!currentSentenceData || sentenceMode !== "order" || orderSignature() !== sig) return;
+        submitSentenceAnswer(false);
+      }, 180);
+    }
+
     function continueAfterOrderFeedback() {
       if (!currentSentenceData || !currentSentenceData.orderAwaitingContinue || locked) return;
       locked = true;
       currentSentenceData.orderAwaitingContinue = false;
+      currentSentenceData.orderAutoSubmitting = false;
       (async () => {
         await loadNextSentence();
         await refreshStats();
@@ -4341,9 +4482,9 @@
       sentenceCheckBtn.textContent = "Check";
       sentenceResetBtn.textContent = "Clear";
       sentenceRevealBtn.textContent = awaiting ? "Continue" : "Reveal";
-      sentenceCheckBtn.disabled = !!awaiting;
-      sentenceResetBtn.disabled = !!awaiting;
-      sentenceRevealBtn.disabled = false;
+      sentenceCheckBtn.disabled = !!awaiting || locked || !canSubmitCurrentSentenceAnswer();
+      sentenceResetBtn.disabled = !!awaiting || locked || !hasCurrentSentenceInput();
+      sentenceRevealBtn.disabled = locked || !currentSentence;
     }
 
     function renderSentenceKeepingScroll() {
@@ -4414,6 +4555,7 @@
               if (locked || currentSentenceData.orderAwaitingContinue) return;
               currentSentenceData.orderPlaced.splice(pos, 1);
               currentSentenceData.orderChecked = false;
+              currentSentenceData.orderAutoSubmitting = false;
               renderSentenceKeepingScroll();
             });
             build.appendChild(chip);
@@ -4439,7 +4581,8 @@
               if (locked || currentSentenceData.orderAwaitingContinue) return;
               currentSentenceData.orderPlaced.push(tok);
               currentSentenceData.orderChecked = false;
-              renderSentenceKeepingScroll();
+              currentSentenceData.orderAutoSubmitting = false;
+              maybeAutoSubmitCompletedOrder();
             });
           }
           sentenceBank.appendChild(btn);
@@ -4483,17 +4626,20 @@
         inp.autocapitalize = "off";
         inp.autocorrect = "off";
         inp.spellcheck = false;
+        inp.enterKeyHint = "done";
         inp.placeholder = hasMask ? "Missing letters only" : "Full answer";
         inp.value = currentSentenceData.progressiveAnswer || "";
         inp.addEventListener("input", e => {
           currentSentenceData.progressiveAnswer = e.target.value;
           if (clue) clue.innerHTML = clueHtml(challenge.masked, e.target.value);
+          updateSentenceActionButtons();
         });
         inp.addEventListener("keydown", async e => {
           if (e.key === "Enter") { e.preventDefault(); await submitSentenceAnswer(false); }
         });
         sentenceTarget.appendChild(inp);
-        setTimeout(() => inp.focus(), 0);
+        updateSentenceActionButtons();
+        setTimeout(() => focusPracticeInput(inp), 0);
         return;
       }
 
@@ -4526,7 +4672,10 @@
             inp.className = "blank-input";
             inp.value = currentSentenceData.typingAnswers[blankIdx] || "";
             inp.dataset.blankIndex = blankIdx;
-            inp.addEventListener("input", e => { currentSentenceData.typingAnswers[blankIdx] = e.target.value; });
+            inp.addEventListener("input", e => {
+              currentSentenceData.typingAnswers[blankIdx] = e.target.value;
+              updateSentenceActionButtons();
+            });
             sentenceTarget.appendChild(inp);
           }
         } else {
@@ -4554,6 +4703,7 @@
           sentenceBank.appendChild(btn);
         });
       }
+      updateSentenceActionButtons();
     }
 
     async function loadNextSentence() {
@@ -4572,7 +4722,7 @@
       renderSentence();
       statusEl.textContent = currentGame === "sentences" && sentenceMode === "order"
         ? "Build the sentence."
-        : (sentenceMode === "progressive" ? "Use the missing-letter clue and type the full sentence." : "Fill in the missing words.");
+        : (sentenceMode === "progressive" ? "Type only the missing letters." : "Fill in the missing words.");
     }
 
     function isCurrentSentenceCorrect() {
@@ -4616,7 +4766,12 @@
       }
 
       if (locked) return;
+      if (!showSolutionOnly && !canSubmitCurrentSentenceAnswer()) {
+        updateSentenceActionButtons();
+        return;
+      }
       locked = true;
+      updateSentenceActionButtons();
 
       if (showSolutionOnly) {
         wrongCount++; updateScore();
@@ -4676,6 +4831,7 @@
       currentSentenceData.orderPlaced = [];
       currentSentenceData.orderChecked = false;
       currentSentenceData.orderAwaitingContinue = false;
+      currentSentenceData.orderAutoSubmitting = false;
       activeBlankIndex = 0;
       renderSentence();
     }
@@ -5256,6 +5412,7 @@
       if (wordMode === "progressive" && currentTypingChallenge && currentTypingChallenge.masked) {
         typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, typingInput.value);
       }
+      updateTypingActionButtons();
     });
 
     typingInput.addEventListener("keydown", async e => {
@@ -5336,16 +5493,31 @@
        leave the bottom navigation bar overlapping the content. Using JS-
        measured `window.innerHeight` is the only reliable way to fill exactly
        the rendered area on every device. */
+    let stableViewportHeight = Math.max(window.innerHeight || 0, (window.visualViewport && window.visualViewport.height) || 0);
     function updateVh() {
-      const h = window.innerHeight;
-      document.documentElement.style.setProperty("--vh", h + "px");
+      const vv = window.visualViewport;
+      const visibleH = vv ? vv.height : window.innerHeight;
+      const candidateH = Math.max(window.innerHeight || 0, visibleH || 0);
+      const inputFocused = activeElementIsTextInput();
+      const keyboardOpen = inputFocused && stableViewportHeight - visibleH > 140;
+      if (!keyboardOpen) stableViewportHeight = candidateH;
+      document.documentElement.classList.toggle("keyboard-open", !!keyboardOpen);
+      document.documentElement.style.setProperty("--vh", (keyboardOpen ? stableViewportHeight : window.innerHeight) + "px");
     }
     updateVh();
     window.addEventListener("resize", updateVh);
+    window.addEventListener("focusin", () => setTimeout(updateVh, 0));
+    window.addEventListener("focusout", () => setTimeout(updateVh, 120));
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", updateVh);
+      window.visualViewport.addEventListener("scroll", updateVh);
+    }
     window.addEventListener("orientationchange", () => {
-      // Orientation change fires before innerHeight settles; sample twice
+      // Orientation change fires before innerHeight settles; sample twice and
+      // reset the stable baseline for the new orientation.
+      stableViewportHeight = Math.max(window.innerHeight || 0, (window.visualViewport && window.visualViewport.height) || 0);
       updateVh();
-      setTimeout(updateVh, 100);
+      setTimeout(() => { stableViewportHeight = Math.max(window.innerHeight || 0, (window.visualViewport && window.visualViewport.height) || 0); updateVh(); }, 100);
       setTimeout(updateVh, 400);
     });
     // Also update once the page is fully laid out
