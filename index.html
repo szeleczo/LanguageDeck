@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v40-deck-manager-20260706" />
+  <link rel="manifest" href="manifest.webmanifest?v=v42-progressive-typing-20260706" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -988,6 +988,33 @@
       color: var(--text-muted);
       margin-bottom: 18px;
     }
+    .typing-clue,
+    .progressive-clue {
+      background: var(--surface-2);
+      border: 1px dashed var(--border-strong);
+      border-radius: 12px;
+      padding: 13px 14px;
+      margin: 0 0 14px;
+      text-align: center;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+    .progressive-clue {
+      text-align: left;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .progressive-input {
+      display: block;
+      width: 100%;
+      max-width: none;
+      margin: 0 0 14px;
+    }
     .typing-form { display: grid; gap: 10px; }
     .typing-result {
       margin-top: 14px;
@@ -1742,6 +1769,7 @@
     <div id="wordTypingContainer" class="typing-panel hidden">
       <div class="typing-word" id="typingPrompt">—</div>
       <div class="typing-help" id="typingHelp">Type the target-language equivalent.</div>
+      <div class="typing-clue hidden" id="typingClue">—</div>
       <div class="typing-form">
         <input type="text" id="typingInput" placeholder="Answer" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
         <div style="display:flex;gap:8px;">
@@ -1860,7 +1888,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v40-deck-manager-20260706</div>
+      <div class="meta" id="appBuildLabel">Build: v42-progressive-typing-20260706</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -1915,6 +1943,7 @@
             <select id="modeSelect">
               <option value="match" selected>Matching</option>
               <option value="typing">Typing</option>
+              <option value="progressive">Progressive typing</option>
             </select>
           </div>
           <div class="relocated">
@@ -1923,6 +1952,7 @@
               <option value="choice" selected>Word bank</option>
               <option value="order">Reorder words</option>
               <option value="typing">Typing</option>
+              <option value="progressive">Progressive typing</option>
             </select>
           </div>
           <div>
@@ -2097,7 +2127,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v40-deck-manager-20260706";
+    const APP_BUILD = "v42-progressive-typing-20260706";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2503,6 +2533,43 @@
         .split("|")
         .map(x => x.trim())
         .filter(Boolean);
+    }
+
+    function answerNorm(v) {
+      return normTxt(v)
+        .normalize("NFC")
+        .replace(/[’‘`´]/g, "'")
+        .replace(/\s+([,.!?;:])/g, "$1")
+        .replace(/([¿¡])\s+/g, "$1")
+        .trim();
+    }
+
+    function stripTerminalPunctuation(v) {
+      return String(v || "").replace(/[.!?]+$/u, "").trim();
+    }
+
+    function isFullTextAnswerCorrect(expected, given, alternatives = []) {
+      const g = answerNorm(given);
+      const accepted = [expected, ...alternatives].map(a => answerNorm(a));
+      if (accepted.includes(g)) return true;
+      return accepted.map(stripTerminalPunctuation).includes(stripTerminalPunctuation(g));
+    }
+
+    function progressiveMissingPerWord(item) {
+      return Math.max(1, (item && (item.streak | 0)) + 1);
+    }
+
+    function maskLetterRun(word, missingPerWord) {
+      const chars = Array.from(String(word || ""));
+      if (chars.length === 0) return "";
+      const maxHidden = chars.length <= 1 ? 1 : Math.max(1, chars.length - 1);
+      const hideCount = Math.min(Math.max(1, missingPerWord | 0), maxHidden);
+      const hidden = new Set(shuffleArr(chars.map((_, i) => i)).slice(0, hideCount));
+      return chars.map((ch, i) => hidden.has(i) ? "_" : ch).join("");
+    }
+
+    function maskTextForProgressiveAnswer(text, missingPerWord) {
+      return String(text || "").replace(/[\p{L}\p{M}]+/gu, word => maskLetterRun(word, missingPerWord));
     }
 
     function shuffleArr(array) {
@@ -2944,6 +3011,7 @@
 
     const typingPrompt = $("typingPrompt");
     const typingHelp = $("typingHelp");
+    const typingClue = $("typingClue");
     const typingInput = $("typingInput");
     const typingSubmitBtn = $("typingSubmitBtn");
     const typingRevealBtn = $("typingRevealBtn");
@@ -3033,7 +3101,7 @@
       // The chip is the entry to the quick-switch sheet, so it now reads back
       // exactly what you're studying: mode · variant · deck.
       const variantLabels = {
-        match: "Match", typing: "Type",
+        match: "Match", typing: "Type", progressive: "Missing letters",
         choice: "Word bank", order: "Reorder"
       };
       const modeLabel = currentGame === "words" ? "Words" : "Sentences";
@@ -3097,13 +3165,15 @@
       if (currentGame === "words") {
         buildSeg(qsVariantSeg, [
           { value: "match", label: "Match" },
-          { value: "typing", label: "Type" }
+          { value: "typing", label: "Type" },
+          { value: "progressive", label: "Missing letters" }
         ], wordMode, async (v) => { setSelectAndFire(modeSelect, v); renderQuickSheet(); });
       } else {
         buildSeg(qsVariantSeg, [
           { value: "choice", label: "Word bank" },
           { value: "order", label: "Reorder" },
-          { value: "typing", label: "Type" }
+          { value: "typing", label: "Type" },
+          { value: "progressive", label: "Missing letters" }
         ], sentenceMode, async (v) => { setSelectAndFire(sentenceModeSelect, v); renderQuickSheet(); });
       }
 
@@ -3195,7 +3265,7 @@
     function updateGameUI() {
       const isWords = currentGame === "words";
       const isWordMatch = isWords && wordMode === "match";
-      const isWordTyping = isWords && wordMode === "typing";
+      const isWordTyping = isWords && (wordMode === "typing" || wordMode === "progressive");
       wordMatchContainer.classList.toggle("hidden", !isWordMatch);
       wordTypingContainer.classList.toggle("hidden", !isWordTyping);
       sentenceContainer.classList.toggle("hidden", isWords);
@@ -3225,7 +3295,7 @@
     function getSelectionPhase() {
       if (currentGame === "sentences") return "sentence";
       if (pendingArticlePairId !== null) return "article";
-      if (wordMode === "typing") return "typing";
+      if (wordMode === "typing" || wordMode === "progressive") return "typing";
       if (selectedLeft === null) return "left";
       return "right";
     }
@@ -3470,6 +3540,7 @@
       typingPrompt.textContent = "—";
       typingResult.textContent = "";
       typingInput.value = "";
+      if (typingClue) typingClue.classList.add("hidden");
     }
 
     async function ensureWordQueue(min) {
@@ -3749,21 +3820,29 @@
         typingPrompt.textContent = "Done";
         typingHelp.textContent = gateEnabled ? "No more words in this gate." : "No more words in this deck.";
         typingResult.textContent = "";
+        if (typingClue) typingClue.classList.add("hidden");
         return;
       }
       currentTypingWord = wordQueue.shift();
       setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
-      typingHelp.textContent = deckCfg().typingHelp;
+      const isProgressive = wordMode === "progressive";
+      const missing = progressiveMissingPerWord(currentTypingWord);
+      typingHelp.textContent = isProgressive
+        ? `Type the full ${deckCfg().targetName} answer. Missing letters per word: ${missing}.`
+        : deckCfg().typingHelp;
+      typingClue.classList.toggle("hidden", !isProgressive);
+      typingClue.textContent = isProgressive ? maskTextForProgressiveAnswer(targetDisplay(currentTypingWord), missing) : "—";
       typingInput.placeholder = deckCfg().typingPlaceholder;
       typingInput.value = "";
       typingResult.textContent = "";
       typingInput.focus();
-      statusEl.textContent = `Type the correct ${deckCfg().targetName} equivalent.`;
+      statusEl.textContent = isProgressive
+        ? `Use the missing-letter clue and type the full ${deckCfg().targetName} answer.`
+        : `Type the correct ${deckCfg().targetName} equivalent.`;
     }
 
     function isTypingAnswerCorrect(pair, ans) {
-      const given = normTxt(ans);
-      return typingAcceptedAnswers(pair).some(a => normTxt(a) === given);
+      return isFullTextAnswerCorrect(targetDisplay(pair), ans, splitAlternatives(pair.alternatives || pair.alt || ""));
     }
 
     async function submitTypingWordAnswer(showSolutionOnly = false) {
@@ -3881,6 +3960,8 @@
         tokens, blankIndices, blankAnswers,
         choiceAnswers: new Array(blankIndices.length).fill(""),
         typingAnswers: new Array(blankIndices.length).fill(""),
+        progressiveAnswer: "",
+        progressiveMask: maskTextForProgressiveAnswer(s.target, progressiveMissingPerWord(s)),
         bankWords: buildWordBank(blankAnswers),
         orderWords,
         orderBank: shuffleArr(orderWords),
@@ -4111,6 +4192,37 @@
       sentenceHelp.textContent = sentenceMode === "choice"
         ? `Fill in the missing ${deckCfg().targetName} words from the bank.`
         : `Type the missing ${deckCfg().targetName} words.`;
+      if (sentenceMode === "progressive") {
+        const missing = progressiveMissingPerWord(currentSentence);
+        sentenceHelp.textContent = `Type the full ${deckCfg().targetName} sentence from the missing-letter clue.`;
+        sentenceMeta.textContent = `Missing letters per word: ${missing} · Streak: ${currentSentence.streak || 0}`;
+        sentenceResult.textContent = "";
+        sentenceTarget.innerHTML = "";
+        sentenceBank.innerHTML = "";
+
+        const clue = document.createElement("div");
+        clue.className = "progressive-clue";
+        clue.textContent = currentSentenceData.progressiveMask;
+        sentenceTarget.appendChild(clue);
+
+        const inp = document.createElement("input");
+        inp.className = "blank-input progressive-input";
+        inp.type = "text";
+        inp.autocomplete = "off";
+        inp.autocapitalize = "off";
+        inp.autocorrect = "off";
+        inp.spellcheck = false;
+        inp.placeholder = `Type the full ${deckCfg().targetName} sentence`;
+        inp.value = currentSentenceData.progressiveAnswer || "";
+        inp.addEventListener("input", e => { currentSentenceData.progressiveAnswer = e.target.value; });
+        inp.addEventListener("keydown", async e => {
+          if (e.key === "Enter") { e.preventDefault(); await submitSentenceAnswer(false); }
+        });
+        sentenceTarget.appendChild(inp);
+        setTimeout(() => inp.focus(), 0);
+        return;
+      }
+
       sentenceMeta.textContent = `Blanks: ${currentSentenceData.blankIndices.length} · Streak: ${currentSentence.streak || 0}`;
       sentenceResult.textContent = "";
 
@@ -4183,7 +4295,9 @@
       currentSentenceData = prepareSentenceData(currentSentence);
       activeBlankIndex = 0;
       renderSentence();
-      statusEl.textContent = currentGame === "sentences" && sentenceMode === "order" ? "Build the sentence." : "Fill in the missing words.";
+      statusEl.textContent = currentGame === "sentences" && sentenceMode === "order"
+        ? "Build the sentence."
+        : (sentenceMode === "progressive" ? "Use the missing-letter clue and type the full sentence." : "Fill in the missing words.");
     }
 
     function isCurrentSentenceCorrect() {
@@ -4196,6 +4310,9 @@
       if (sentenceMode === "choice") {
         return currentSentenceData.blankAnswers.every((a, i) =>
           normTxt(a) === normTxt(currentSentenceData.choiceAnswers[i] || ""));
+      }
+      if (sentenceMode === "progressive") {
+        return isFullTextAnswerCorrect(currentSentence.target, currentSentenceData.progressiveAnswer || "", splitAlternatives(currentSentence.alternatives || currentSentence.alt || ""));
       }
       return currentSentenceData.blankAnswers.every((a, i) =>
         normTxt(a) === normTxt(currentSentenceData.typingAnswers[i] || ""));
@@ -4273,6 +4390,7 @@
       if (!currentSentenceData) return;
       currentSentenceData.choiceAnswers = new Array(currentSentenceData.blankIndices.length).fill("");
       currentSentenceData.typingAnswers = new Array(currentSentenceData.blankIndices.length).fill("");
+      currentSentenceData.progressiveAnswer = "";
       currentSentenceData.orderPlaced = [];
       currentSentenceData.orderChecked = false;
       currentSentenceData.orderAwaitingContinue = false;
