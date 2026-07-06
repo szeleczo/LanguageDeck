@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v49-in-app-keypad-20260706" />
+  <link rel="manifest" href="manifest.webmanifest?v=v50-smart-letter-pad-20260706" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1041,8 +1041,8 @@
     }
     .inline-keypad {
       display: grid;
-      gap: 7px;
-      margin: -2px 0 12px;
+      gap: 6px;
+      margin: 4px 0 12px;
       touch-action: manipulation;
       user-select: none;
       -webkit-user-select: none;
@@ -1050,20 +1050,20 @@
     .inline-keypad.hidden { display: none !important; }
     .inline-keypad-row {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 5px;
     }
     .inline-keypad-key {
       appearance: none;
       border: 1px solid var(--border);
-      border-bottom: 3px solid var(--border-strong);
+      border-bottom: 2px solid var(--border-strong);
       background: var(--surface);
       color: var(--text);
-      border-radius: 10px;
-      width: clamp(23px, 7vw, 34px);
-      min-width: 0;
-      min-height: 38px;
-      padding: 6px 6px;
+      border-radius: 9px;
+      min-width: 34px;
+      min-height: 34px;
+      padding: 5px 9px;
       font-size: 16px;
       font-weight: 800;
       line-height: 1;
@@ -1071,30 +1071,57 @@
       transition: transform 0.06s ease, border-bottom-width 0.06s ease, margin-top 0.06s ease;
     }
     .inline-keypad-key:active {
-      transform: translateY(2px);
+      transform: translateY(1px);
       border-bottom-width: 1px;
-      margin-top: 2px;
+      margin-top: 1px;
     }
     .inline-keypad-key.wide {
-      min-width: 56px;
-      font-size: 14px;
+      min-width: 46px;
+      font-size: 13px;
       font-weight: 750;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .inline-keypad.compact .inline-keypad-key {
+      min-width: 38px;
+      min-height: 36px;
+      padding: 5px 11px;
+      font-size: 17px;
     }
     .inline-keypad-target {
       caret-color: transparent;
       cursor: default;
     }
+    .inline-keypad-input-hidden {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      min-height: 1px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: 0 !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
     @media (max-width: 480px) {
-      .inline-keypad { gap: 6px; margin-bottom: 10px; }
-      .inline-keypad-row { gap: 4px; }
+      .typing-panel { padding: 22px 14px 18px; }
+      .inline-keypad { gap: 5px; margin: 2px 0 10px; }
+      .inline-keypad-row { gap: 5px; }
       .inline-keypad-key {
-        width: clamp(22px, 7vw, 32px);
-        min-width: 0;
-        min-height: 36px;
-        padding-left: 5px;
-        padding-right: 5px;
+        min-width: 32px;
+        min-height: 32px;
+        padding: 4px 8px;
+        border-radius: 8px;
+        font-size: 15px;
       }
-      .inline-keypad-key.wide { min-width: 50px; }
+      .inline-keypad.compact .inline-keypad-key {
+        min-width: 36px;
+        min-height: 34px;
+        padding: 4px 10px;
+        font-size: 16px;
+      }
+      .inline-keypad-key.wide { min-width: 42px; }
+      .progressive-input { margin-bottom: 8px; }
     }
     .typing-form { display: grid; gap: 10px; }
     .typing-result {
@@ -2013,7 +2040,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v49-in-app-keypad-20260706</div>
+      <div class="meta" id="appBuildLabel">Build: v50-smart-letter-pad-20260706</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2252,7 +2279,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v49-in-app-keypad-20260706";
+    const APP_BUILD = "v50-smart-letter-pad-20260706";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2873,6 +2900,59 @@
       return answerNorm(v).replace(/\s+/g, "");
     }
 
+    function progressiveMissingCharCount(value) {
+      return Array.from(normalizeMissingLetters(value || "")).length;
+    }
+
+    function progressiveMissingIsFilled(challenge, value) {
+      if (!challenge || !challenge.masked) return false;
+      const expected = progressiveMissingCharCount(challenge.missing || "");
+      return expected > 0 && progressiveMissingCharCount(value || "") >= expected;
+    }
+
+    function maybeAutoSubmitProgressiveWord() {
+      if (wordMode !== "progressive" || locked || !currentTypingWord || !currentTypingChallenge || !currentTypingChallenge.masked) return;
+      if (!progressiveMissingIsFilled(currentTypingChallenge, typingInput.value)) return;
+      clearTimeout(wordProgressiveAutoSubmitTimer);
+      const typed = typingInput.value;
+      wordProgressiveAutoSubmitTimer = setTimeout(() => {
+        if (locked || wordMode !== "progressive" || !currentTypingWord || !currentTypingChallenge || typingInput.value !== typed) return;
+        const correct = isProgressiveAnswerCorrect(
+          currentTypingChallenge,
+          typingInput.value,
+          targetDisplay(currentTypingWord),
+          splitAlternatives(currentTypingWord.alternatives || currentTypingWord.alt || ""));
+        if (correct) submitTypingWordAnswer(false);
+        else {
+          typingResult.textContent = "Not quite — use backspace to fix it.";
+          updateTypingActionButtons();
+        }
+      }, 170);
+    }
+
+    function maybeAutoSubmitProgressiveSentence() {
+      if (sentenceMode !== "progressive" || locked || !currentSentence || !currentSentenceData) return;
+      const challenge = currentSentenceData.progressiveChallenge;
+      if (!challenge || !challenge.masked) return;
+      if (!progressiveMissingIsFilled(challenge, currentSentenceData.progressiveAnswer || "")) return;
+      clearTimeout(sentenceProgressiveAutoSubmitTimer);
+      const typed = currentSentenceData.progressiveAnswer || "";
+      sentenceProgressiveAutoSubmitTimer = setTimeout(() => {
+        if (locked || sentenceMode !== "progressive" || !currentSentence || !currentSentenceData) return;
+        if ((currentSentenceData.progressiveAnswer || "") !== typed) return;
+        const correct = isProgressiveAnswerCorrect(
+          currentSentenceData.progressiveChallenge,
+          currentSentenceData.progressiveAnswer || "",
+          currentSentence.target,
+          splitAlternatives(currentSentence.alternatives || currentSentence.alt || ""));
+        if (correct) submitSentenceAnswer(false);
+        else {
+          sentenceResult.textContent = "Not quite — use backspace to fix it.";
+          updateSentenceActionButtons();
+        }
+      }, 170);
+    }
+
     function isProgressiveAnswerCorrect(challenge, typedValue, fullExpected, alternatives = []) {
       if (!challenge || !challenge.masked) {
         return isFullTextAnswerCorrect(fullExpected, typedValue, alternatives);
@@ -2950,39 +3030,78 @@
       }
     }
 
-    const INLINE_KEYPAD_ROWS = ["qwertzuiop", "asdfghjkl", "yxcvbnm", "äöüß"];
-    const INLINE_KEYPAD_PUNCTUATION = [".", ",", "?", "!", "'", "-"];
+    const INLINE_KEYPAD_ORDER = Array.from("qwertzuiopasdfghjklyxcvbnmäöüß");
+    const INLINE_KEYPAD_PUNCTUATION = [".", ",", "?", "!", "'", "-", ":", ";"];
+    const INLINE_KEYPAD_DISTRACTORS = Array.from("etaonisrhlduäöüß");
+
+    function uniqueCharsFrom(text, lettersOnly = true) {
+      const out = [];
+      Array.from(String(text || "")).forEach(ch => {
+        if (lettersOnly && !(/[\p{L}\p{M}]/u.test(ch))) return;
+        const lower = ch.toLocaleLowerCase();
+        if (!out.includes(lower)) out.push(lower);
+      });
+      return out;
+    }
+
+    function sortForInlineKeypad(chars) {
+      const order = new Map(INLINE_KEYPAD_ORDER.map((ch, i) => [ch, i]));
+      return [...chars].sort((a, b) => {
+        const ai = order.has(a) ? order.get(a) : 1000 + a.codePointAt(0);
+        const bi = order.has(b) ? order.get(b) : 1000 + b.codePointAt(0);
+        return ai - bi;
+      });
+    }
+
+    function chunkChars(chars, maxPerRow) {
+      const rows = [];
+      for (let i = 0; i < chars.length; i += maxPerRow) rows.push(chars.slice(i, i + maxPerRow));
+      return rows;
+    }
 
     function inlineKeypadRowsFor(challenge) {
-      const base = INLINE_KEYPAD_ROWS.map(r => Array.from(r));
-      const known = new Set(base.flat().map(ch => ch.toLocaleLowerCase()));
-      const extras = [];
+      if (!challenge) return [];
+      const isMissingOnly = !!challenge.masked;
+      if (isMissingOnly) {
+        const required = uniqueCharsFrom(challenge.missing, true);
+        const fromAnswer = uniqueCharsFrom(challenge.full, true).filter(ch => !required.includes(ch));
+        const targetSize = Math.min(10, Math.max(4, required.length + 4));
+        const chosen = [...required];
+        for (const ch of fromAnswer) {
+          if (chosen.length >= targetSize) break;
+          if (!chosen.includes(ch)) chosen.push(ch);
+        }
+        for (const ch of INLINE_KEYPAD_DISTRACTORS) {
+          if (chosen.length >= targetSize) break;
+          if (!chosen.includes(ch)) chosen.push(ch);
+        }
+        return chunkChars(sortForInlineKeypad(chosen), chosen.length <= 6 ? 6 : 5);
+      }
+
+      const letters = uniqueCharsFrom(challenge.full, true);
       const punctuation = [];
-      const source = `${challenge && challenge.full ? challenge.full : ""}${challenge && challenge.missing ? challenge.missing : ""}`;
-      Array.from(source).forEach(ch => {
-        if (/\p{L}|\p{M}/u.test(ch)) {
-          const lower = ch.toLocaleLowerCase();
-          if (!known.has(lower) && !extras.includes(lower)) extras.push(lower);
-          return;
-        }
-        if (/[^\s]/u.test(ch) && !INLINE_KEYPAD_PUNCTUATION.includes(ch) && !punctuation.includes(ch)) {
-          punctuation.push(ch);
-        }
+      Array.from(String(challenge.full || "")).forEach(ch => {
+        if (/\s/u.test(ch)) return;
+        if (/[\p{L}\p{M}]/u.test(ch)) return;
+        if (!punctuation.includes(ch)) punctuation.push(ch);
       });
-      const rows = extras.length ? [...base, extras] : base;
-      const puncRow = [...INLINE_KEYPAD_PUNCTUATION, ...punctuation].filter((ch, idx, arr) => arr.indexOf(ch) === idx);
-      return challenge && challenge.masked ? rows : [...rows, puncRow];
+      const rows = chunkChars(sortForInlineKeypad(letters), 7);
+      const puncRow = [...INLINE_KEYPAD_PUNCTUATION, ...punctuation].filter((ch, idx, arr) => arr.indexOf(ch) === idx && String(challenge.full || "").includes(ch));
+      if (puncRow.length) rows.push(puncRow);
+      return rows;
     }
 
     function renderInlineMissingKeypad(container, input, challenge, onChange) {
       if (!container || !input) return;
       const enabled = shouldUseInlineMissingKeypad(challenge);
+      const isMissingOnly = !!(challenge && challenge.masked);
       setInlineKeypadInputMode(input, enabled);
+      input.classList.toggle("inline-keypad-input-hidden", !!(enabled && isMissingOnly));
       container.classList.toggle("hidden", !enabled);
+      container.classList.toggle("compact", !!(enabled && isMissingOnly));
       container.innerHTML = "";
       if (!enabled) return;
 
-      const isMissingOnly = !!(challenge && challenge.masked);
       const applyValue = value => {
         let next = String(value || "");
         if (isMissingOnly) {
@@ -3023,7 +3142,7 @@
       tools.className = "inline-keypad-row";
       if (!isMissingOnly) tools.appendChild(makeKey("Space", () => applyValue(input.value + " "), "wide"));
       tools.appendChild(makeKey("⌫", () => applyValue(Array.from(input.value).slice(0, -1).join("")), "wide"));
-      tools.appendChild(makeKey("Clear", () => applyValue(""), "wide"));
+      if (!isMissingOnly) tools.appendChild(makeKey("Clear", () => applyValue(""), "wide"));
       container.appendChild(tools);
     }
 
@@ -3396,6 +3515,8 @@
     let rightOrder = [];
     let currentTypingWord = null;
     let currentTypingChallenge = null;
+    let wordProgressiveAutoSubmitTimer = null;
+    let sentenceProgressiveAutoSubmitTimer = null;
 
     let sentenceQueue = [];
     let sentencePool = [];
@@ -4353,6 +4474,8 @@
       renderInlineMissingKeypad(typingInlineKeypad, typingInput, currentTypingChallenge, value => {
         if (wordMode === "progressive" && currentTypingChallenge && currentTypingChallenge.masked) {
           typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, value);
+          typingResult.textContent = "";
+          maybeAutoSubmitProgressiveWord();
         }
         updateTypingActionButtons();
       });
@@ -4809,6 +4932,8 @@
         inp.addEventListener("input", e => {
           currentSentenceData.progressiveAnswer = e.target.value;
           if (clue) clue.innerHTML = clueHtml(challenge.masked, e.target.value);
+          sentenceResult.textContent = "";
+          maybeAutoSubmitProgressiveSentence();
           updateSentenceActionButtons();
         });
         inp.addEventListener("keydown", async e => {
@@ -4822,6 +4947,8 @@
         renderInlineMissingKeypad(keypad, inp, challenge, value => {
           currentSentenceData.progressiveAnswer = value;
           if (clue) clue.innerHTML = clueHtml(challenge.masked, value);
+          sentenceResult.textContent = "";
+          maybeAutoSubmitProgressiveSentence();
           updateSentenceActionButtons();
         });
         updateSentenceActionButtons();
@@ -5597,6 +5724,8 @@
       // Missing-letters mode: fill typed characters into the pattern live.
       if (wordMode === "progressive" && currentTypingChallenge && currentTypingChallenge.masked) {
         typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, typingInput.value);
+        typingResult.textContent = "";
+        maybeAutoSubmitProgressiveWord();
       }
       updateTypingActionButtons();
     });
