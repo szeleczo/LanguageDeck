@@ -1,326 +1,326 @@
-english,target,article,plural,type,register,tags,note,alternatives,article_prompt,level,example_en,example_target
-person,Person,die,Personen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-man,Mann,der,Männer,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-woman,Frau,die,Frauen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-child,Kind,das,Kinder,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-friend,Freund,der,Freunde,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-female friend,Freundin,die,Freundinnen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-family,Familie,die,Familien,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-house,Haus,das,Häuser,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-apartment,Wohnung,die,Wohnungen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-room,Zimmer,das,Zimmer,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-door,Tür,die,Türen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-window,Fenster,das,Fenster,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-table,Tisch,der,Tische,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-chair,Stuhl,der,Stühle,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-bed,Bett,das,Betten,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-city,Stadt,die,Städte,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-street,Straße,die,Straßen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-station,Bahnhof,der,Bahnhöfe,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-airport,Flughafen,der,Flughäfen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-train,Zug,der,Züge,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-car,Auto,das,Autos,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-bike,Fahrrad,das,Fahrräder,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-ticket,Fahrkarte,die,Fahrkarten,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-money,Geld,das,Gelder,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-card,Karte,die,Karten,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-bill,Rechnung,die,Rechnungen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-food,Essen,das,,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-water,Wasser,das,,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-coffee,Kaffee,der,Kaffees,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-beer,Bier,das,Biere,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-wine,Wein,der,Weine,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-bread,Brot,das,Brote,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-breakfast,Frühstück,das,Frühstücke,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-lunch,Mittagessen,das,,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-dinner,Abendessen,das,,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-day,Tag,der,Tage,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-week,Woche,die,Wochen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-month,Monat,der,Monate,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-year,Jahr,das,Jahre,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-time,Zeit,die,Zeiten,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-moment,Moment,der,Momente,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-question,Frage,die,Fragen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-answer,Antwort,die,Antworten,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-problem,Problem,das,Probleme,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-solution,Lösung,die,Lösungen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-idea,Idee,die,Ideen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-thought,Gedanke,der,Gedanken,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-feeling,Gefühl,das,Gefühle,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-fear,Angst,die,Ängste,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-love,Liebe,die,,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-trust,Vertrauen,das,,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-clarity,Klarheit,die,,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-safety,Sicherheit,die,Sicherheiten,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-boundary,Grenze,die,Grenzen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-decision,Entscheidung,die,Entscheidungen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-responsibility,Verantwortung,die,Verantwortungen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-truth,Wahrheit,die,Wahrheiten,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-conversation,Gespräch,das,Gespräche,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-conflict,Konflikt,der,Konflikte,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-mistake,Fehler,der,Fehler,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-reason,Grund,der,Gründe,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-situation,Situation,die,Situationen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-state / condition,Zustand,der,Zustände,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-direction,Richtung,die,Richtungen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-plan,Plan,der,Pläne,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-work,Arbeit,die,Arbeiten,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-task,Aufgabe,die,Aufgaben,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-project,Projekt,das,Projekte,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-model,Modell,das,Modelle,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-parameter,Parameter,der,Parameter,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-view,Ansicht,die,Ansichten,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-export,Export,der,Exporte,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-structure,Struktur,die,Strukturen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-system,System,das,Systeme,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-process,Prozess,der,Prozesse,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-quality,Qualität,die,Qualitäten,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-risk,Risiko,das,Risiken,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-change,Änderung,die,Änderungen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-date / appointment,Termin,der,Termine,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-deadline,Frist,die,Fristen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-message,Nachricht,die,Nachrichten,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-email,E-Mail,die,E-Mails,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-file,Datei,die,Dateien,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-folder,Ordner,der,Ordner,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-phone,Telefon,das,Telefone,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-computer,Computer,der,Computer,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-app,App,die,Apps,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-language,Sprache,die,Sprachen,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-word,Wort,das,Wörter,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-sentence,Satz,der,Sätze,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-expression,Ausdruck,der,Ausdrücke,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-example,Beispiel,das,Beispiele,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-level,Niveau,das,Niveaus,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-article,Artikel,der,Artikel,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-plural,Plural,der,Plurale,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-grammar,Grammatik,die,Grammatiken,noun,neutral,core;noun;source:german_nouns_articles_core,,,true,A1,,
-I do not want to overthink this.,Ich will mir da nicht zu viele Gedanken machen.,,,sentence,natural,register;thinking;source:german_register_pairs,,Ich möchte das nicht überanalysieren.|Ich möchte mich da nicht reinsteigern.,false,B1,,
-I do not want to force anything.,Ich möchte nichts erzwingen.,,,sentence,neutral,register;boundary;source:german_register_pairs,,Ich will nichts erzwingen.|Ich möchte da keinen Druck machen.,false,A2,,
-That hurt me.,Das hat mich verletzt.,,,sentence,neutral,register;emotion;source:german_register_pairs,,Das hat mich getroffen.|Das tat mir weh.,false,A2,,
-I need clarity.,Ich brauche Klarheit.,,,sentence,neutral,register;boundary;source:german_register_pairs,,"Ich brauche eine klare Aussage.|Ich muss wissen, woran ich bin.",false,B1,,
-I am not blaming you.,Ich mache dir keinen Vorwurf.,,,sentence,neutral,register;communication;source:german_register_pairs,,Ich will dir nichts vorwerfen.|Das ist kein Vorwurf.,false,A2,,
-Do not misunderstand me.,Versteh mich nicht falsch.,,,sentence,natural,register;communication;source:german_register_pairs,,Bitte missversteh mich nicht.|Das meine ich nicht böse.,false,A2,,
-This came across wrong.,Das kam falsch rüber.,,,sentence,natural,register;communication;source:german_register_pairs,,"Das wurde falsch verstanden.|Das ist anders angekommen, als ich es gemeint habe.",false,B1,,
-That does not work for me.,Das funktioniert für mich so nicht.,,,sentence,neutral,register;boundary;source:german_register_pairs,,So geht das für mich nicht.|Damit kann ich so nicht gut umgehen.,false,B1,,
-I need a moment.,Ich brauche einen Moment.,,,sentence,neutral,register;self-regulation;source:german_register_pairs,,Gib mir bitte kurz Zeit.|Ich muss kurz sammeln.,false,A2,,
-I am trying to stay calm.,"Ich versuche, ruhig zu bleiben.",,,sentence,neutral,register;self-regulation;source:german_register_pairs,,"Ich versuche, nicht aus der Emotion zu reagieren.|Ich will jetzt nicht impulsiv reagieren.",false,B1,,
-Let us clarify this calmly.,Lass uns das in Ruhe klären.,,,sentence,natural,register;communication;source:german_register_pairs,,Wir sollten das sachlich klären.|Lass uns da später in Ruhe drüber sprechen.,false,B1,,
-This is too much for me right now.,Das ist mir gerade zu viel.,,,sentence,natural,register;emotion;source:german_register_pairs,,Ich bin damit gerade überfordert.|Das überfordert mich gerade.,false,A2,,
-I want to understand you.,Ich möchte dich verstehen.,,,sentence,neutral,register;relationship;source:german_register_pairs,,"Ich will nachvollziehen, was in dir passiert.|Ich möchte besser verstehen, was du meinst.",false,A2,,
-I cannot read your mind.,Ich kann deine Gedanken nicht lesen.,,,sentence,neutral,register;relationship;source:german_register_pairs,,"Ich kann nicht erraten, was du brauchst.|Ich brauche, dass du es mir sagst.",false,B1,,
-I do not want to chase.,Ich möchte nicht hinterherrennen.,,,sentence,natural,register;boundary;source:german_register_pairs,,Ich will niemandem hinterherlaufen.|Ich möchte nicht in eine Bittstellerrolle gehen.,false,B1,,
-I care about you.,Du bist mir wichtig.,,,sentence,natural,register;relationship;source:german_register_pairs,,Ich habe dich sehr gern.|Du bedeutest mir viel.,false,A2,,
-I want to be honest.,Ich möchte ehrlich sein.,,,sentence,neutral,register;communication;source:german_register_pairs,,Ich sage dir das ganz ehrlich.|Mir ist Ehrlichkeit wichtig.,false,A2,,
-That depends.,Das kommt darauf an.,,,sentence,natural,register;thinking;source:german_register_pairs,,Das hängt davon ab.|Es kommt auf die Situation an.,false,A2,,
-This is not about winning.,Es geht nicht ums Gewinnen.,,,sentence,neutral,register;conflict;source:german_register_pairs,,"Es geht mir nicht darum, recht zu haben.|Ich will keinen Kampf daraus machen.",false,B1,,
-We are on the same side.,Wir stehen auf derselben Seite.,,,sentence,neutral,register;conflict;source:german_register_pairs,,"Wir sind nicht gegeneinander.|Ich will, dass wir zusammen daran arbeiten.",false,B1,,
-I see this differently.,Ich sehe das anders.,,,sentence,natural,register;disagreement;source:german_register_pairs,,Ich habe da eine andere Sicht.|Aus meiner Sicht ist das anders.,false,A2,,
-I partly agree.,Ich stimme dir teilweise zu.,,,sentence,neutral,register;disagreement;source:german_register_pairs,,Da bin ich teilweise bei dir.|Ein Stück weit verstehe ich das.,false,B1,,
-I am not convinced yet.,Ich bin noch nicht überzeugt.,,,sentence,neutral,register;thinking;source:german_register_pairs,,Das überzeugt mich noch nicht ganz.|Ich bin da noch unsicher.,false,B1,,
-This is probably the cleaner solution.,Das ist wahrscheinlich die sauberere Lösung.,,,sentence,technical,register;work;source:german_register_pairs,,Das ist vermutlich der robustere Weg.|Das wäre aus meiner Sicht die stabilere Lösung.,false,B1,,
-Let us not overcomplicate it.,Lass es uns nicht verkomplizieren.,,,sentence,natural,register;work;source:german_register_pairs,,Lass uns das nicht unnötig kompliziert machen.|Wir sollten es einfach halten.,false,B1,,
-This needs a robust solution.,Das braucht eine robuste Lösung.,,,sentence,technical,register;work;source:german_register_pairs,,Wir brauchen hier eine stabile Lösung.|Das sollte sauber gelöst werden.,false,B1,,
-I would start with the structure.,Ich würde mit der Struktur anfangen.,,,sentence,technical,register;work;source:german_register_pairs,,Ich würde zuerst die Struktur klären.|Aus meiner Sicht sollten wir zuerst die Struktur definieren.,false,B1,,
-That is not the root cause.,Das ist nicht die eigentliche Ursache.,,,sentence,technical,register;work;source:german_register_pairs,,Das ist wahrscheinlich nur ein Symptom.|Die Ursache liegt vermutlich woanders.,false,B2,,
-This should not break the existing version.,Das sollte die bestehende Version nicht kaputtmachen.,,,sentence,technical,register;dev;source:german_register_pairs,,Das darf die bestehende Version nicht beschädigen.|Die bestehende Funktionalität muss erhalten bleiben.,false,B2,,
-We should keep it backward-compatible.,Wir sollten es abwärtskompatibel halten.,,,sentence,technical,register;dev;source:german_register_pairs,,Die alte Struktur sollte weiterhin funktionieren.|Die bestehende CSV-Struktur muss weiterhin unterstützt werden.,false,B2,,
-hello / good day,Guten Tag,,,phrase,neutral,a1;survival;greeting;source:german_a1_survival,,Hallo|Guten Morgen|Guten Abend,false,A1,,
-goodbye,Auf Wiedersehen,,,phrase,neutral,a1;survival;greeting;source:german_a1_survival,,Tschüss|Bis später,false,A1,,
-please,bitte,,,phrase,neutral,a1;politeness;source:german_a1_survival,,,false,A1,,
-thank you,danke,,,phrase,neutral,a1;politeness;source:german_a1_survival,,Vielen Dank|Danke schön,false,A1,,
-you are welcome,gern geschehen,,,phrase,neutral,a1;politeness;source:german_a1_survival,,Bitte schön|Kein Problem,false,A1,,
-excuse me / sorry,Entschuldigung,,,phrase,neutral,a1;politeness;source:german_a1_survival,,Tut mir leid,false,A1,,
-yes,ja,,,phrase,neutral,a1;basic;source:german_a1_survival,,,false,A1,,
-no,nein,,,phrase,neutral,a1;basic;source:german_a1_survival,,,false,A1,,
-maybe,vielleicht,,,phrase,neutral,a1;basic;source:german_a1_survival,,,false,A1,,
-I do not understand.,Ich verstehe nicht.,,,sentence,neutral,a1;survival;source:german_a1_survival,,,false,A1,,
-"Could you repeat that, please?",Könnten Sie das bitte wiederholen?,,,sentence,formal,a1;survival;source:german_a1_survival,,Kannst du das bitte wiederholen?,false,A2,,
-Do you speak English?,Sprechen Sie Englisch?,,,sentence,formal,a1;survival;source:german_a1_survival,,Sprichst du Englisch?,false,A1,,
-I speak a little German.,Ich spreche ein bisschen Deutsch.,,,sentence,neutral,a1;survival;source:german_a1_survival,,,false,A1,,
-I am learning German.,Ich lerne Deutsch.,,,sentence,neutral,a1;survival;source:german_a1_survival,,,false,A1,,
-I am from Hungary.,Ich komme aus Ungarn.,,,sentence,neutral,a1;intro;source:german_a1_survival,,,false,A1,,
-My name is Oliver.,Ich heiße Oliver.,,,sentence,neutral,a1;intro;source:german_a1_survival,,,false,A1,,
-Nice to meet you.,Freut mich.,,,phrase,neutral,a1;intro;source:german_a1_survival,,Sehr erfreut,false,A1,,
-How are you?,Wie geht es Ihnen?,,,sentence,formal,a1;smalltalk;source:german_a1_survival,,Wie geht es dir?,false,A1,,
-"I am fine, thanks.","Mir geht es gut, danke.",,,sentence,neutral,a1;smalltalk;source:german_a1_survival,,,false,A1,,
-Where is the station?,Wo ist der Bahnhof?,,,sentence,neutral,a1;travel;source:german_a1_survival,,,false,A1,,
-Where is the toilet?,Wo ist die Toilette?,,,sentence,neutral,a1;travel;source:german_a1_survival,,,false,A1,,
-Where is the exit?,Wo ist der Ausgang?,,,sentence,neutral,a1;travel;source:german_a1_survival,,,false,A1,,
-Where is the entrance?,Wo ist der Eingang?,,,sentence,neutral,a1;travel;source:german_a1_survival,,,false,A1,,
-I am looking for this address.,Ich suche diese Adresse.,,,sentence,neutral,a1;travel;source:german_a1_survival,,,false,A1,,
-Can you help me?,Können Sie mir helfen?,,,sentence,formal,a1;survival;source:german_a1_survival,,Kannst du mir helfen?,false,A1,,
-How much does it cost?,Wie viel kostet das?,,,sentence,neutral,a1;shopping;source:german_a1_survival,,,false,A1,,
-Can I pay by card?,Kann ich mit Karte zahlen?,,,sentence,neutral,a1;shopping;source:german_a1_survival,,,false,A1,,
-Can I pay in cash?,Kann ich bar zahlen?,,,sentence,neutral,a1;shopping;source:german_a1_survival,,,false,A1,,
-I would like a coffee.,Ich hätte gern einen Kaffee.,,,sentence,neutral,a1;food;source:german_a1_survival,,Ich möchte einen Kaffee.,false,A1,,
-I would like a beer.,Ich hätte gern ein Bier.,,,sentence,neutral,a1;food;source:german_a1_survival,,,false,A1,,
-"A table for two, please.","Einen Tisch für zwei, bitte.",,,phrase,neutral,a1;restaurant;source:german_a1_survival,,,false,A1,,
-"The bill, please.","Die Rechnung, bitte.",,,phrase,neutral,a1;restaurant;source:german_a1_survival,,,false,A1,,
-Is this free?,Ist das frei?,,,sentence,neutral,a1;restaurant;travel;source:german_a1_survival,,,false,A1,,
-I have a reservation.,Ich habe eine Reservierung.,,,sentence,neutral,a1;hotel;restaurant;source:german_a1_survival,,,false,A1,,
-I need a ticket.,Ich brauche eine Fahrkarte.,,,sentence,neutral,a1;travel;source:german_a1_survival,,,false,A1,,
-"One ticket to Berlin, please.","Eine Fahrkarte nach Berlin, bitte.",,,phrase,neutral,a1;travel;source:german_a1_survival,,,false,A1,,
-When does the train leave?,Wann fährt der Zug ab?,,,sentence,neutral,a1;travel;source:german_a1_survival,,,false,A1,,
-When does it arrive?,Wann kommt er an?,,,sentence,neutral,a1;travel;source:german_a1_survival,,,false,A1,,
-I am lost.,Ich habe mich verlaufen.,,,sentence,neutral,a1;travel;source:german_a1_survival,,,false,A2,,
-I need a doctor.,Ich brauche einen Arzt.,,,sentence,neutral,a1;emergency;source:german_a1_survival,,Ich brauche eine Ärztin.,false,A1,,
-I do not feel well.,Mir geht es nicht gut.,,,sentence,neutral,a1;health;source:german_a1_survival,,,false,A1,,
-It hurts here.,Es tut hier weh.,,,sentence,neutral,a1;health;source:german_a1_survival,,,false,A1,,
-I am allergic to this.,Ich bin dagegen allergisch.,,,sentence,neutral,a1;health;source:german_a1_survival,,,false,A2,,
-I need water.,Ich brauche Wasser.,,,sentence,neutral,a1;food;health;source:german_a1_survival,,,false,A1,,
-left,links,,,word,neutral,a1;directions;source:german_a1_survival,,,false,A1,,
-right,rechts,,,word,neutral,a1;directions;source:german_a1_survival,,,false,A1,,
-straight ahead,geradeaus,,,word,neutral,a1;directions;source:german_a1_survival,,,false,A1,,
-nearby,in der Nähe,,,phrase,neutral,a1;directions;source:german_a1_survival,,,false,A1,,
-today,heute,,,word,neutral,a1;time;source:german_a1_survival,,,false,A1,,
-tomorrow,morgen,,,word,neutral,a1;time;source:german_a1_survival,,,false,A1,,
-yesterday,gestern,,,word,neutral,a1;time;source:german_a1_survival,,,false,A1,,
-now,jetzt,,,word,neutral,a1;time;source:german_a1_survival,,,false,A1,,
-later,später,,,word,neutral,a1;time;source:german_a1_survival,,,false,A1,,
-I am in a hurry.,Ich habe es eilig.,,,sentence,neutral,a1;time;source:german_a1_survival,,,false,A2,,
-I have time.,Ich habe Zeit.,,,sentence,neutral,a1;time;source:german_a1_survival,,,false,A1,,
-No problem.,Kein Problem.,,,phrase,neutral,a1;reaction;source:german_a1_survival,,,false,A1,,
-That is okay.,Das ist in Ordnung.,,,phrase,neutral,a1;reaction;source:german_a1_survival,,,false,A1,,
-I am sorry.,Es tut mir leid.,,,sentence,neutral,a1;politeness;source:german_a1_survival,,,false,A1,,
-to be,sein,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I am tired.,Ich bin müde.
-to have,haben,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I have time.,Ich habe Zeit.
-to become / to get,werden,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,It is getting better.,Es wird besser.
-to go,gehen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I am going home.,Ich gehe nach Hause.
-to come,kommen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,Are you coming with me?,Kommst du mit?
-to do / to make,machen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,What are you doing?,Was machst du?
-to say,sagen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,What did you say?,Was hast du gesagt?
-to speak,sprechen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,We need to talk.,Wir müssen sprechen.
-to ask,fragen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,Can I ask you something?,Kann ich dich etwas fragen?
-to answer,antworten,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I will answer later.,Ich antworte später.
-to think,denken,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I think about it.,Ich denke darüber nach.
-to know,wissen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I do not know.,Ich weiß es nicht.
-to know a person / place,kennen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I know him.,Ich kenne ihn.
-to understand,verstehen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I understand you.,Ich verstehe dich.
-to mean,meinen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,What do you mean?,Was meinst du?
-to want,wollen,,,verb,neutral,core;modal;source:german_core_verbs,,,false,A1,I do not want to force anything.,Ich will nichts erzwingen.
-would like,möchten,,,verb,polite,core;modal;source:german_core_verbs,,,false,A1,I would like to understand it.,Ich möchte es verstehen.
-can / to be able to,können,,,verb,neutral,core;modal;source:german_core_verbs,,,false,A1,I can do it.,Ich kann das machen.
-must / have to,müssen,,,verb,neutral,core;modal;source:german_core_verbs,,,false,A1,We have to clarify this.,Wir müssen das klären.
-should / supposed to,sollen,,,verb,neutral,core;modal;source:german_core_verbs,,,false,A1,What should I do?,Was soll ich tun?
-may / to be allowed to,dürfen,,,verb,neutral,core;modal;source:german_core_verbs,,,false,A1,May I ask?,Darf ich fragen?
-to need,brauchen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I need clarity.,Ich brauche Klarheit.
-to stay / remain,bleiben,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,Stay here.,Bleib hier.
-to let / leave,lassen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A2,Let it be for now.,Lass es erst mal.
-to give,geben,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,Give me a moment.,Gib mir einen Moment.
-to take,nehmen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I will take this one.,Ich nehme das.
-to find,finden,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I find it difficult.,Ich finde es schwierig.
-to feel,fühlen,,,verb,neutral,core;emotion;source:german_core_verbs,,,false,A1,I feel safe.,Ich fühle mich sicher.
-to notice,merken,,,verb,neutral,core;perception;source:german_core_verbs,,,false,A2,I notice that something is wrong.,"Ich merke, dass etwas nicht stimmt."
-to see,sehen,,,verb,neutral,core;perception;source:german_core_verbs,,,false,A1,I see what you mean.,"Ich sehe, was du meinst."
-to hear,hören,,,verb,neutral,core;perception;source:german_core_verbs,,,false,A1,I heard that differently.,Ich habe das anders gehört.
-to believe / think,glauben,,,verb,neutral,core;thinking;source:german_core_verbs,,,false,A1,I believe you.,Ich glaube dir.
-to hope,hoffen,,,verb,neutral,core;emotion;source:german_core_verbs,,,false,A1,I hope so.,Ich hoffe es.
-to fear / be afraid,sich fürchten,,,verb,neutral,core;emotion;source:german_core_verbs,,,false,A2,I am not afraid of you.,Ich fürchte mich nicht vor dir.
-to be afraid,Angst haben vor,,,expression,neutral,core;emotion;preposition;source:german_core_verbs,vor + dative,,false,A2,I am afraid of losing this.,"Ich habe Angst davor, das zu verlieren."
-to wait for,warten auf,,,expression,neutral,core;verb;preposition;source:german_core_verbs,auf + accusative,,false,A1,I am waiting for you.,Ich warte auf dich.
-to think about,nachdenken über,,,expression,neutral,core;verb;preposition;source:german_core_verbs,über + accusative,,false,A2,I am thinking about it.,Ich denke darüber nach.
-to talk about,sprechen über,,,expression,neutral,core;verb;preposition;source:german_core_verbs,über + accusative,,false,A1,We should talk about it.,Wir sollten darüber sprechen.
-to decide,entscheiden,,,verb,neutral,core;decision;source:german_core_verbs,,,false,A2,I do not want to decide now.,Ich möchte jetzt nicht entscheiden.
-to clarify,klären,,,verb,neutral,core;decision;work;source:german_core_verbs,,,false,A2,Let us clarify this calmly.,Lass uns das in Ruhe klären.
-to explain,erklären,,,verb,neutral,core;communication;source:german_core_verbs,,,false,A2,Can you explain it to me?,Kannst du mir das erklären?
-to try,versuchen,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,I am trying to understand it.,"Ich versuche, es zu verstehen."
-to change,ändern,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A2,That changes the situation.,Das ändert die Situation.
-to happen,passieren,,,verb,neutral,core;verb;source:german_core_verbs,,,false,A1,What happened?,Was ist passiert?
-to work / function,funktionieren,,,verb,neutral,core;work;source:german_core_verbs,,,false,A2,This does not work like this.,Das funktioniert so nicht.
-to need to be,müssen sein,,,pattern,neutral,core;pattern;source:german_core_verbs,,,false,A2,It has to be clear.,Es muss klar sein.
-to make sense,Sinn ergeben,,,expression,neutral,core;thinking;source:german_core_verbs,,,false,A2,That makes sense.,Das ergibt Sinn.
-to fall back into,zurückfallen in,,,expression,neutral,core;relationship;source:german_core_verbs,in + accusative,,false,B1,I do not want to fall back into the same dynamic.,Ich möchte nicht in dieselbe Dynamik zurückfallen.
-That depends.,Das kommt darauf an.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-Let’s see.,Mal sehen.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-No idea.,Keine Ahnung.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-That makes sense.,Das ergibt Sinn.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-That does not make sense.,Das ergibt keinen Sinn.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-I see what you mean.,"Ich verstehe, was du meinst.",,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-I see it differently.,Ich sehe das anders.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-That sounds good.,Das klingt gut.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-That sounds difficult.,Das klingt schwierig.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-Exactly.,Genau.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-Not exactly.,Nicht ganz.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-More or less.,Mehr oder weniger.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-In any case.,Auf jeden Fall.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-Anyway.,Jedenfalls.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-By the way.,Übrigens.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-Actually...,Eigentlich ...,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-To be honest...,Ehrlich gesagt ...,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-Honestly?,Ganz ehrlich?,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-I mean...,Ich meine ...,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-How should I put it?,Wie soll ich sagen?,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-It is hard to say.,Das ist schwer zu sagen.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-It is not that simple.,So einfach ist das nicht.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-That is the point.,Darum geht es.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-That is not the point.,Darum geht es nicht.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-That is the problem.,Das ist das Problem.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-Not necessarily.,Nicht unbedingt.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-Probably.,Wahrscheinlich.,,,word,neutral,native;spoken;source:german_native_chunks,,,false,A1,,
-Apparently.,Anscheinend.,,,word,neutral,native;spoken;source:german_native_chunks,,,false,A2,,
-Of course.,Natürlich.,,,word,neutral,native;spoken;source:german_native_chunks,,,false,A1,,
-Unfortunately.,Leider.,,,word,neutral,native;spoken;source:german_native_chunks,,,false,A1,,
-Luckily.,Zum Glück.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-No worries.,Mach dir keine Sorgen.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-Take your time.,Lass dir Zeit.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-One moment.,Einen Moment.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-Wait a second.,Warte kurz.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-I will be right back.,Ich bin gleich zurück.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-I do not want to overthink it.,Ich will mir da nicht zu viele Gedanken machen.,,,sentence,natural,native;thinking;source:german_native_chunks,,Ich möchte das nicht zerdenken.,false,B1,,
-Do not get me wrong.,Versteh mich nicht falsch.,,,sentence,natural,native;communication;source:german_native_chunks,,,false,A2,,
-That came across wrong.,Das kam falsch rüber.,,,sentence,natural,native;communication;source:german_native_chunks,,,false,B1,,
-I did not mean it like that.,So habe ich das nicht gemeint.,,,sentence,natural,native;communication;source:german_native_chunks,,,false,A2,,
-I need to think about it.,Ich muss darüber nachdenken.,,,sentence,natural,native;thinking;source:german_native_chunks,,,false,A2,,
-Let us not make it too complicated.,Lass es uns nicht zu kompliziert machen.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,B1,,
-It is fine for now.,Für den Moment ist es okay.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-We will manage somehow.,Wir kriegen das schon hin.,,,sentence,colloquial,native;spoken;source:german_native_chunks,,Wir schaffen das schon.,false,B1,,
-It will be alright.,Das wird schon.,,,phrase,natural,native;spoken;source:german_native_chunks,,,false,A2,,
-I am not in the mood.,Ich habe gerade keine Lust.,,,sentence,natural,native;emotion;source:german_native_chunks,,,false,A2,,
-I am tired.,Ich bin müde.,,,sentence,natural,native;state;source:german_native_chunks,,,false,A1,,
-I am exhausted.,Ich bin erschöpft.,,,sentence,natural,native;state;source:german_native_chunks,,,false,A2,,
-I need some air.,Ich brauche kurz frische Luft.,,,sentence,natural,native;state;source:german_native_chunks,,,false,A2,,
-Let’s take a break.,Lass uns eine Pause machen.,,,sentence,natural,native;spoken;source:german_native_chunks,,,false,A1,,
-because I do not know,weil ich es nicht weiß,,,pattern,neutral,grammar;weil;source:german_grammar_chunks,Verb goes to end after weil.,,false,A2,,
-because it is important,weil es wichtig ist,,,pattern,neutral,grammar;weil;source:german_grammar_chunks,,,false,A2,,
-because I need clarity,weil ich Klarheit brauche,,,pattern,neutral,grammar;weil;source:german_grammar_chunks,Related noun article: die.,,false,A2,,
-that I do not understand it,dass ich es nicht verstehe,,,pattern,neutral,grammar;dass;source:german_grammar_chunks,Verb goes to end after dass.,,false,A2,,
-that we should talk,dass wir sprechen sollten,,,pattern,neutral,grammar;dass;modal;source:german_grammar_chunks,,,false,A2,,
-if you have time,wenn du Zeit hast,,,pattern,neutral,grammar;wenn;source:german_grammar_chunks,Related noun article: die.,,false,A1,,
-if something is wrong,wenn etwas nicht stimmt,,,pattern,neutral,grammar;wenn;source:german_grammar_chunks,,,false,A2,,
-although I understand it,obwohl ich es verstehe,,,pattern,neutral,grammar;obwohl;source:german_grammar_chunks,,,false,A2,,
-although it hurts,obwohl es weh tut,,,pattern,neutral,grammar;obwohl;source:german_grammar_chunks,,,false,A2,,
-before I answer,bevor ich antworte,,,pattern,neutral,grammar;bevor;source:german_grammar_chunks,,,false,A2,,
-after we talk,nachdem wir sprechen,,,pattern,neutral,grammar;nachdem;source:german_grammar_chunks,,,false,B1,,
-so that it is clear,damit es klar ist,,,pattern,neutral,grammar;damit;source:german_grammar_chunks,,,false,B1,,
-whether it works,ob es funktioniert,,,pattern,neutral,grammar;ob;source:german_grammar_chunks,,,false,A2,,
-what happened,was passiert ist,,,pattern,neutral,grammar;question;source:german_grammar_chunks,,,false,A2,,
-why it hurts,warum es weh tut,,,pattern,neutral,grammar;question;source:german_grammar_chunks,,,false,A2,,
-how I should say it,wie ich es sagen soll,,,pattern,neutral,grammar;question;modal;source:german_grammar_chunks,,,false,A2,,
-I have to go.,Ich muss gehen.,,,sentence,neutral,grammar;modal;müssen;source:german_grammar_chunks,,,false,A1,,
-I can stay.,Ich kann bleiben.,,,sentence,neutral,grammar;modal;können;source:german_grammar_chunks,,,false,A1,,
-I want to understand it.,Ich will es verstehen.,,,sentence,neutral,grammar;modal;wollen;source:german_grammar_chunks,,,false,A1,,
-I would like to ask something.,Ich möchte etwas fragen.,,,sentence,polite,grammar;modal;möchten;source:german_grammar_chunks,,,false,A1,,
-I should not react now.,Ich sollte jetzt nicht reagieren.,,,sentence,neutral,grammar;modal;sollten;source:german_grammar_chunks,,,false,A2,,
-May I ask you something?,Darf ich dich etwas fragen?,,,sentence,neutral,grammar;modal;dürfen;source:german_grammar_chunks,,,false,A1,,
-I am thinking about it.,Ich denke darüber nach.,,,sentence,neutral,grammar;preposition;nachdenken;source:german_grammar_chunks,über + accusative; da-compound darüber,,false,A2,,
-I am waiting for you.,Ich warte auf dich.,,,sentence,neutral,grammar;preposition;warten;source:german_grammar_chunks,auf + accusative,,false,A1,,
-I am talking about it.,Ich spreche darüber.,,,sentence,neutral,grammar;preposition;sprechen;source:german_grammar_chunks,über + accusative; darüber,,false,A2,,
-I am afraid of it.,Ich habe Angst davor.,,,sentence,neutral,grammar;preposition;angst;source:german_grammar_chunks,vor + dative; davor Related noun article: die.,,false,A2,,
-I am looking forward to it.,Ich freue mich darauf.,,,sentence,neutral,grammar;preposition;freuen;source:german_grammar_chunks,auf + accusative; darauf,,false,A2,,
-It depends on it.,Es hängt davon ab.,,,sentence,neutral,grammar;preposition;abhängen;source:german_grammar_chunks,von + dative; davon,,false,B1,,
-I agree with you.,Ich stimme dir zu.,,,sentence,neutral,grammar;dative;source:german_grammar_chunks,dative object,,false,A2,,
-I believe you.,Ich glaube dir.,,,sentence,neutral,grammar;dative;source:german_grammar_chunks,dative object,,false,A1,,
-I understand you.,Ich verstehe dich.,,,sentence,neutral,grammar;accusative;source:german_grammar_chunks,accusative object,,false,A1,,
-I miss you.,Du fehlst mir.,,,sentence,neutral,grammar;dative;relationship;source:german_grammar_chunks,Literally: you are missing to me.,,false,A2,,
-I like that.,Das gefällt mir.,,,sentence,neutral,grammar;dative;source:german_grammar_chunks,,,false,A1,,
-I feel good.,Mir geht es gut.,,,sentence,neutral,grammar;dative;source:german_grammar_chunks,,,false,A1,,
-I am calling you.,Ich rufe dich an.,,,sentence,neutral,grammar;separable;source:german_grammar_chunks,anrufen is separable,,false,A1,,
-I will come along.,Ich komme mit.,,,sentence,neutral,grammar;separable;source:german_grammar_chunks,mitkommen is separable,,false,A1,,
-I will come back.,Ich komme zurück.,,,sentence,neutral,grammar;separable;source:german_grammar_chunks,zurückkommen is separable,,false,A1,,
-I am starting now.,Ich fange jetzt an.,,,sentence,neutral,grammar;separable;source:german_grammar_chunks,anfangen is separable,,false,A1,,
-I am stopping now.,Ich höre jetzt auf.,,,sentence,neutral,grammar;separable;source:german_grammar_chunks,aufhören is separable,,false,A1,,
-I have misunderstood that.,Ich habe das missverstanden.,,,sentence,neutral,grammar;perfect;source:german_grammar_chunks,Perfect tense with haben,,false,A2,,
-I came back late.,Ich bin spät zurückgekommen.,,,sentence,neutral,grammar;perfect;source:german_grammar_chunks,Movement/change of location often uses sein.,,false,A2,,
-I would say that ...,"Ich würde sagen, dass ...",,,pattern,neutral,grammar;subjunctive;source:german_grammar_chunks,Konjunktiv II polite/softening.,,false,A2,,
-I would rather not do that.,Das würde ich lieber nicht machen.,,,sentence,neutral,grammar;subjunctive;source:german_grammar_chunks,,,false,A2,,
+"english","target","article","type","hint","alternatives"
+"person","Person","die","noun","",""
+"man","Mann","der","noun","",""
+"woman","Frau","die","noun","",""
+"child","Kind","das","noun","",""
+"friend","Freund","der","noun","",""
+"female friend","Freundin","die","noun","",""
+"family","Familie","die","noun","",""
+"house","Haus","das","noun","",""
+"apartment","Wohnung","die","noun","",""
+"room","Zimmer","das","noun","",""
+"door","Tür","die","noun","",""
+"window","Fenster","das","noun","",""
+"table","Tisch","der","noun","",""
+"chair","Stuhl","der","noun","",""
+"bed","Bett","das","noun","",""
+"city","Stadt","die","noun","",""
+"street","Straße","die","noun","",""
+"station","Bahnhof","der","noun","",""
+"airport","Flughafen","der","noun","",""
+"train","Zug","der","noun","",""
+"car","Auto","das","noun","",""
+"bike","Fahrrad","das","noun","",""
+"ticket","Fahrkarte","die","noun","",""
+"money","Geld","das","noun","",""
+"card","Karte","die","noun","",""
+"bill","Rechnung","die","noun","",""
+"food","Essen","das","noun","",""
+"water","Wasser","das","noun","",""
+"coffee","Kaffee","der","noun","",""
+"beer","Bier","das","noun","",""
+"wine","Wein","der","noun","",""
+"bread","Brot","das","noun","",""
+"breakfast","Frühstück","das","noun","",""
+"lunch","Mittagessen","das","noun","",""
+"dinner","Abendessen","das","noun","",""
+"day","Tag","der","noun","",""
+"week","Woche","die","noun","",""
+"month","Monat","der","noun","",""
+"year","Jahr","das","noun","",""
+"time","Zeit","die","noun","",""
+"moment","Moment","der","noun","",""
+"question","Frage","die","noun","",""
+"answer","Antwort","die","noun","",""
+"problem","Problem","das","noun","",""
+"solution","Lösung","die","noun","",""
+"idea","Idee","die","noun","",""
+"thought","Gedanke","der","noun","",""
+"feeling","Gefühl","das","noun","",""
+"fear","Angst","die","noun","",""
+"love","Liebe","die","noun","",""
+"trust","Vertrauen","das","noun","",""
+"clarity","Klarheit","die","noun","",""
+"safety","Sicherheit","die","noun","",""
+"boundary","Grenze","die","noun","",""
+"decision","Entscheidung","die","noun","",""
+"responsibility","Verantwortung","die","noun","",""
+"truth","Wahrheit","die","noun","",""
+"conversation","Gespräch","das","noun","",""
+"conflict","Konflikt","der","noun","",""
+"mistake","Fehler","der","noun","",""
+"reason","Grund","der","noun","",""
+"situation","Situation","die","noun","",""
+"state / condition","Zustand","der","noun","",""
+"direction","Richtung","die","noun","",""
+"plan","Plan","der","noun","",""
+"work","Arbeit","die","noun","",""
+"task","Aufgabe","die","noun","",""
+"project","Projekt","das","noun","",""
+"model","Modell","das","noun","",""
+"parameter","Parameter","der","noun","",""
+"view","Ansicht","die","noun","",""
+"export","Export","der","noun","",""
+"structure","Struktur","die","noun","",""
+"system","System","das","noun","",""
+"process","Prozess","der","noun","",""
+"quality","Qualität","die","noun","",""
+"risk","Risiko","das","noun","",""
+"change","Änderung","die","noun","",""
+"date / appointment","Termin","der","noun","",""
+"deadline","Frist","die","noun","",""
+"message","Nachricht","die","noun","",""
+"email","E-Mail","die","noun","",""
+"file","Datei","die","noun","",""
+"folder","Ordner","der","noun","",""
+"phone","Telefon","das","noun","",""
+"computer","Computer","der","noun","",""
+"app","App","die","noun","",""
+"language","Sprache","die","noun","",""
+"word","Wort","das","noun","",""
+"sentence","Satz","der","noun","",""
+"expression","Ausdruck","der","noun","",""
+"example","Beispiel","das","noun","",""
+"level","Niveau","das","noun","",""
+"article","Artikel","der","noun","",""
+"plural","Plural","der","noun","",""
+"grammar","Grammatik","die","noun","",""
+"I do not want to overthink this.","Ich will mir da nicht zu viele Gedanken machen.","","sentence","","Ich möchte das nicht überanalysieren.|Ich möchte mich da nicht reinsteigern."
+"I do not want to force anything.","Ich möchte nichts erzwingen.","","sentence","","Ich will nichts erzwingen.|Ich möchte da keinen Druck machen."
+"That hurt me.","Das hat mich verletzt.","","sentence","","Das hat mich getroffen.|Das tat mir weh."
+"I need clarity.","Ich brauche Klarheit.","","sentence","","Ich brauche eine klare Aussage.|Ich muss wissen, woran ich bin."
+"I am not blaming you.","Ich mache dir keinen Vorwurf.","","sentence","","Ich will dir nichts vorwerfen.|Das ist kein Vorwurf."
+"Do not misunderstand me.","Versteh mich nicht falsch.","","sentence","","Bitte missversteh mich nicht.|Das meine ich nicht böse."
+"This came across wrong.","Das kam falsch rüber.","","sentence","","Das wurde falsch verstanden.|Das ist anders angekommen, als ich es gemeint habe."
+"That does not work for me.","Das funktioniert für mich so nicht.","","sentence","","So geht das für mich nicht.|Damit kann ich so nicht gut umgehen."
+"I need a moment.","Ich brauche einen Moment.","","sentence","","Gib mir bitte kurz Zeit.|Ich muss kurz sammeln."
+"I am trying to stay calm.","Ich versuche, ruhig zu bleiben.","","sentence","","Ich versuche, nicht aus der Emotion zu reagieren.|Ich will jetzt nicht impulsiv reagieren."
+"Let us clarify this calmly.","Lass uns das in Ruhe klären.","","sentence","","Wir sollten das sachlich klären.|Lass uns da später in Ruhe drüber sprechen."
+"This is too much for me right now.","Das ist mir gerade zu viel.","","sentence","","Ich bin damit gerade überfordert.|Das überfordert mich gerade."
+"I want to understand you.","Ich möchte dich verstehen.","","sentence","","Ich will nachvollziehen, was in dir passiert.|Ich möchte besser verstehen, was du meinst."
+"I cannot read your mind.","Ich kann deine Gedanken nicht lesen.","","sentence","","Ich kann nicht erraten, was du brauchst.|Ich brauche, dass du es mir sagst."
+"I do not want to chase.","Ich möchte nicht hinterherrennen.","","sentence","","Ich will niemandem hinterherlaufen.|Ich möchte nicht in eine Bittstellerrolle gehen."
+"I care about you.","Du bist mir wichtig.","","sentence","","Ich habe dich sehr gern.|Du bedeutest mir viel."
+"I want to be honest.","Ich möchte ehrlich sein.","","sentence","","Ich sage dir das ganz ehrlich.|Mir ist Ehrlichkeit wichtig."
+"That depends.","Das kommt darauf an.","","sentence","","Das hängt davon ab.|Es kommt auf die Situation an."
+"This is not about winning.","Es geht nicht ums Gewinnen.","","sentence","","Es geht mir nicht darum, recht zu haben.|Ich will keinen Kampf daraus machen."
+"We are on the same side.","Wir stehen auf derselben Seite.","","sentence","","Wir sind nicht gegeneinander.|Ich will, dass wir zusammen daran arbeiten."
+"I see this differently.","Ich sehe das anders.","","sentence","","Ich habe da eine andere Sicht.|Aus meiner Sicht ist das anders."
+"I partly agree.","Ich stimme dir teilweise zu.","","sentence","","Da bin ich teilweise bei dir.|Ein Stück weit verstehe ich das."
+"I am not convinced yet.","Ich bin noch nicht überzeugt.","","sentence","","Das überzeugt mich noch nicht ganz.|Ich bin da noch unsicher."
+"This is probably the cleaner solution.","Das ist wahrscheinlich die sauberere Lösung.","","sentence","","Das ist vermutlich der robustere Weg.|Das wäre aus meiner Sicht die stabilere Lösung."
+"Let us not overcomplicate it.","Lass es uns nicht verkomplizieren.","","sentence","","Lass uns das nicht unnötig kompliziert machen.|Wir sollten es einfach halten."
+"This needs a robust solution.","Das braucht eine robuste Lösung.","","sentence","","Wir brauchen hier eine stabile Lösung.|Das sollte sauber gelöst werden."
+"I would start with the structure.","Ich würde mit der Struktur anfangen.","","sentence","","Ich würde zuerst die Struktur klären.|Aus meiner Sicht sollten wir zuerst die Struktur definieren."
+"That is not the root cause.","Das ist nicht die eigentliche Ursache.","","sentence","","Das ist wahrscheinlich nur ein Symptom.|Die Ursache liegt vermutlich woanders."
+"This should not break the existing version.","Das sollte die bestehende Version nicht kaputtmachen.","","sentence","","Das darf die bestehende Version nicht beschädigen.|Die bestehende Funktionalität muss erhalten bleiben."
+"We should keep it backward-compatible.","Wir sollten es abwärtskompatibel halten.","","sentence","","Die alte Struktur sollte weiterhin funktionieren.|Die bestehende CSV-Struktur muss weiterhin unterstützt werden."
+"hello / good day","Guten Tag","","phrase","","Hallo|Guten Morgen|Guten Abend"
+"goodbye","Auf Wiedersehen","","phrase","","Tschüss|Bis später"
+"please","bitte","","phrase","",""
+"thank you","danke","","phrase","","Vielen Dank|Danke schön"
+"you are welcome","gern geschehen","","phrase","","Bitte schön|Kein Problem"
+"excuse me / sorry","Entschuldigung","","phrase","","Tut mir leid"
+"yes","ja","","phrase","",""
+"no","nein","","phrase","",""
+"maybe","vielleicht","","phrase","",""
+"I do not understand.","Ich verstehe nicht.","","sentence","",""
+"Could you repeat that, please?","Könnten Sie das bitte wiederholen?","","sentence","","Kannst du das bitte wiederholen?"
+"Do you speak English?","Sprechen Sie Englisch?","","sentence","","Sprichst du Englisch?"
+"I speak a little German.","Ich spreche ein bisschen Deutsch.","","sentence","",""
+"I am learning German.","Ich lerne Deutsch.","","sentence","",""
+"I am from Hungary.","Ich komme aus Ungarn.","","sentence","",""
+"My name is Oliver.","Ich heiße Oliver.","","sentence","",""
+"Nice to meet you.","Freut mich.","","phrase","","Sehr erfreut"
+"How are you?","Wie geht es Ihnen?","","sentence","","Wie geht es dir?"
+"I am fine, thanks.","Mir geht es gut, danke.","","sentence","",""
+"Where is the station?","Wo ist der Bahnhof?","","sentence","",""
+"Where is the toilet?","Wo ist die Toilette?","","sentence","",""
+"Where is the exit?","Wo ist der Ausgang?","","sentence","",""
+"Where is the entrance?","Wo ist der Eingang?","","sentence","",""
+"I am looking for this address.","Ich suche diese Adresse.","","sentence","",""
+"Can you help me?","Können Sie mir helfen?","","sentence","","Kannst du mir helfen?"
+"How much does it cost?","Wie viel kostet das?","","sentence","",""
+"Can I pay by card?","Kann ich mit Karte zahlen?","","sentence","",""
+"Can I pay in cash?","Kann ich bar zahlen?","","sentence","",""
+"I would like a coffee.","Ich hätte gern einen Kaffee.","","sentence","","Ich möchte einen Kaffee."
+"I would like a beer.","Ich hätte gern ein Bier.","","sentence","",""
+"A table for two, please.","Einen Tisch für zwei, bitte.","","phrase","",""
+"The bill, please.","Die Rechnung, bitte.","","phrase","",""
+"Is this free?","Ist das frei?","","sentence","",""
+"I have a reservation.","Ich habe eine Reservierung.","","sentence","",""
+"I need a ticket.","Ich brauche eine Fahrkarte.","","sentence","",""
+"One ticket to Berlin, please.","Eine Fahrkarte nach Berlin, bitte.","","phrase","",""
+"When does the train leave?","Wann fährt der Zug ab?","","sentence","",""
+"When does it arrive?","Wann kommt er an?","","sentence","",""
+"I am lost.","Ich habe mich verlaufen.","","sentence","",""
+"I need a doctor.","Ich brauche einen Arzt.","","sentence","","Ich brauche eine Ärztin."
+"I do not feel well.","Mir geht es nicht gut.","","sentence","",""
+"It hurts here.","Es tut hier weh.","","sentence","",""
+"I am allergic to this.","Ich bin dagegen allergisch.","","sentence","",""
+"I need water.","Ich brauche Wasser.","","sentence","",""
+"left","links","","word","",""
+"right","rechts","","word","",""
+"straight ahead","geradeaus","","word","",""
+"nearby","in der Nähe","","phrase","",""
+"today","heute","","word","",""
+"tomorrow","morgen","","word","",""
+"yesterday","gestern","","word","",""
+"now","jetzt","","word","",""
+"later","später","","word","",""
+"I am in a hurry.","Ich habe es eilig.","","sentence","",""
+"I have time.","Ich habe Zeit.","","sentence","",""
+"No problem.","Kein Problem.","","phrase","",""
+"That is okay.","Das ist in Ordnung.","","phrase","",""
+"I am sorry.","Es tut mir leid.","","sentence","",""
+"to be","sein","","verb","e.g. I am tired. → Ich bin müde.",""
+"to have","haben","","verb","e.g. I have time. → Ich habe Zeit.",""
+"to become / to get","werden","","verb","e.g. It is getting better. → Es wird besser.",""
+"to go","gehen","","verb","e.g. I am going home. → Ich gehe nach Hause.",""
+"to come","kommen","","verb","e.g. Are you coming with me? → Kommst du mit?",""
+"to do / to make","machen","","verb","e.g. What are you doing? → Was machst du?",""
+"to say","sagen","","verb","e.g. What did you say? → Was hast du gesagt?",""
+"to speak","sprechen","","verb","e.g. We need to talk. → Wir müssen sprechen.",""
+"to ask","fragen","","verb","e.g. Can I ask you something? → Kann ich dich etwas fragen?",""
+"to answer","antworten","","verb","e.g. I will answer later. → Ich antworte später.",""
+"to think","denken","","verb","e.g. I think about it. → Ich denke darüber nach.",""
+"to know","wissen","","verb","e.g. I do not know. → Ich weiß es nicht.",""
+"to know a person / place","kennen","","verb","e.g. I know him. → Ich kenne ihn.",""
+"to understand","verstehen","","verb","e.g. I understand you. → Ich verstehe dich.",""
+"to mean","meinen","","verb","e.g. What do you mean? → Was meinst du?",""
+"to want","wollen","","verb","e.g. I do not want to force anything. → Ich will nichts erzwingen.",""
+"would like","möchten","","verb","e.g. I would like to understand it. → Ich möchte es verstehen.",""
+"can / to be able to","können","","verb","e.g. I can do it. → Ich kann das machen.",""
+"must / have to","müssen","","verb","e.g. We have to clarify this. → Wir müssen das klären.",""
+"should / supposed to","sollen","","verb","e.g. What should I do? → Was soll ich tun?",""
+"may / to be allowed to","dürfen","","verb","e.g. May I ask? → Darf ich fragen?",""
+"to need","brauchen","","verb","e.g. I need clarity. → Ich brauche Klarheit.",""
+"to stay / remain","bleiben","","verb","e.g. Stay here. → Bleib hier.",""
+"to let / leave","lassen","","verb","e.g. Let it be for now. → Lass es erst mal.",""
+"to give","geben","","verb","e.g. Give me a moment. → Gib mir einen Moment.",""
+"to take","nehmen","","verb","e.g. I will take this one. → Ich nehme das.",""
+"to find","finden","","verb","e.g. I find it difficult. → Ich finde es schwierig.",""
+"to feel","fühlen","","verb","e.g. I feel safe. → Ich fühle mich sicher.",""
+"to notice","merken","","verb","e.g. I notice that something is wrong. → Ich merke, dass etwas nicht stimmt.",""
+"to see","sehen","","verb","e.g. I see what you mean. → Ich sehe, was du meinst.",""
+"to hear","hören","","verb","e.g. I heard that differently. → Ich habe das anders gehört.",""
+"to believe / think","glauben","","verb","e.g. I believe you. → Ich glaube dir.",""
+"to hope","hoffen","","verb","e.g. I hope so. → Ich hoffe es.",""
+"to fear / be afraid","sich fürchten","","verb","e.g. I am not afraid of you. → Ich fürchte mich nicht vor dir.",""
+"to be afraid","Angst haben vor","","expression","vor + dative e.g. I am afraid of losing this. → Ich habe Angst davor, das zu verlieren.",""
+"to wait for","warten auf","","expression","auf + accusative e.g. I am waiting for you. → Ich warte auf dich.",""
+"to think about","nachdenken über","","expression","über + accusative e.g. I am thinking about it. → Ich denke darüber nach.",""
+"to talk about","sprechen über","","expression","über + accusative e.g. We should talk about it. → Wir sollten darüber sprechen.",""
+"to decide","entscheiden","","verb","e.g. I do not want to decide now. → Ich möchte jetzt nicht entscheiden.",""
+"to clarify","klären","","verb","e.g. Let us clarify this calmly. → Lass uns das in Ruhe klären.",""
+"to explain","erklären","","verb","e.g. Can you explain it to me? → Kannst du mir das erklären?",""
+"to try","versuchen","","verb","e.g. I am trying to understand it. → Ich versuche, es zu verstehen.",""
+"to change","ändern","","verb","e.g. That changes the situation. → Das ändert die Situation.",""
+"to happen","passieren","","verb","e.g. What happened? → Was ist passiert?",""
+"to work / function","funktionieren","","verb","e.g. This does not work like this. → Das funktioniert so nicht.",""
+"to need to be","müssen sein","","pattern","e.g. It has to be clear. → Es muss klar sein.",""
+"to make sense","Sinn ergeben","","expression","e.g. That makes sense. → Das ergibt Sinn.",""
+"to fall back into","zurückfallen in","","expression","in + accusative e.g. I do not want to fall back into the same dynamic. → Ich möchte nicht in dieselbe Dynamik zurückfallen.",""
+"That depends. (phrase)","Das kommt darauf an.","","phrase","",""
+"Let’s see.","Mal sehen.","","phrase","",""
+"No idea.","Keine Ahnung.","","phrase","",""
+"That makes sense.","Das ergibt Sinn.","","phrase","",""
+"That does not make sense.","Das ergibt keinen Sinn.","","phrase","",""
+"I see what you mean.","Ich verstehe, was du meinst.","","sentence","",""
+"I see it differently.","Ich sehe das anders.","","sentence","",""
+"That sounds good.","Das klingt gut.","","sentence","",""
+"That sounds difficult.","Das klingt schwierig.","","sentence","",""
+"Exactly.","Genau.","","phrase","",""
+"Not exactly.","Nicht ganz.","","phrase","",""
+"More or less.","Mehr oder weniger.","","phrase","",""
+"In any case.","Auf jeden Fall.","","phrase","",""
+"Anyway.","Jedenfalls.","","phrase","",""
+"By the way.","Übrigens.","","phrase","",""
+"Actually...","Eigentlich ...","","phrase","",""
+"To be honest...","Ehrlich gesagt ...","","phrase","",""
+"Honestly?","Ganz ehrlich?","","phrase","",""
+"I mean...","Ich meine ...","","phrase","",""
+"How should I put it?","Wie soll ich sagen?","","phrase","",""
+"It is hard to say.","Das ist schwer zu sagen.","","sentence","",""
+"It is not that simple.","So einfach ist das nicht.","","sentence","",""
+"That is the point.","Darum geht es.","","sentence","",""
+"That is not the point.","Darum geht es nicht.","","sentence","",""
+"That is the problem.","Das ist das Problem.","","sentence","",""
+"Not necessarily.","Nicht unbedingt.","","phrase","",""
+"Probably.","Wahrscheinlich.","","word","",""
+"Apparently.","Anscheinend.","","word","",""
+"Of course.","Natürlich.","","word","",""
+"Unfortunately.","Leider.","","word","",""
+"Luckily.","Zum Glück.","","phrase","",""
+"No worries.","Mach dir keine Sorgen.","","sentence","",""
+"Take your time.","Lass dir Zeit.","","sentence","",""
+"One moment.","Einen Moment.","","phrase","",""
+"Wait a second.","Warte kurz.","","phrase","",""
+"I will be right back.","Ich bin gleich zurück.","","sentence","",""
+"I do not want to overthink it.","Ich will mir da nicht zu viele Gedanken machen.","","sentence","","Ich möchte das nicht zerdenken."
+"Do not get me wrong.","Versteh mich nicht falsch.","","sentence","",""
+"That came across wrong.","Das kam falsch rüber.","","sentence","",""
+"I did not mean it like that.","So habe ich das nicht gemeint.","","sentence","",""
+"I need to think about it.","Ich muss darüber nachdenken.","","sentence","",""
+"Let us not make it too complicated.","Lass es uns nicht zu kompliziert machen.","","sentence","",""
+"It is fine for now.","Für den Moment ist es okay.","","sentence","",""
+"We will manage somehow.","Wir kriegen das schon hin.","","sentence","","Wir schaffen das schon."
+"It will be alright.","Das wird schon.","","phrase","",""
+"I am not in the mood.","Ich habe gerade keine Lust.","","sentence","",""
+"I am tired.","Ich bin müde.","","sentence","",""
+"I am exhausted.","Ich bin erschöpft.","","sentence","",""
+"I need some air.","Ich brauche kurz frische Luft.","","sentence","",""
+"Let’s take a break.","Lass uns eine Pause machen.","","sentence","",""
+"because I do not know","weil ich es nicht weiß","","pattern","Verb goes to end after weil.",""
+"because it is important","weil es wichtig ist","","pattern","",""
+"because I need clarity","weil ich Klarheit brauche","","pattern","Related noun article: die.",""
+"that I do not understand it","dass ich es nicht verstehe","","pattern","Verb goes to end after dass.",""
+"that we should talk","dass wir sprechen sollten","","pattern","",""
+"if you have time","wenn du Zeit hast","","pattern","Related noun article: die.",""
+"if something is wrong","wenn etwas nicht stimmt","","pattern","",""
+"although I understand it","obwohl ich es verstehe","","pattern","",""
+"although it hurts","obwohl es weh tut","","pattern","",""
+"before I answer","bevor ich antworte","","pattern","",""
+"after we talk","nachdem wir sprechen","","pattern","",""
+"so that it is clear","damit es klar ist","","pattern","",""
+"whether it works","ob es funktioniert","","pattern","",""
+"what happened","was passiert ist","","pattern","",""
+"why it hurts","warum es weh tut","","pattern","",""
+"how I should say it","wie ich es sagen soll","","pattern","",""
+"I have to go.","Ich muss gehen.","","sentence","",""
+"I can stay.","Ich kann bleiben.","","sentence","",""
+"I want to understand it.","Ich will es verstehen.","","sentence","",""
+"I would like to ask something.","Ich möchte etwas fragen.","","sentence","",""
+"I should not react now.","Ich sollte jetzt nicht reagieren.","","sentence","",""
+"May I ask you something?","Darf ich dich etwas fragen?","","sentence","",""
+"I am thinking about it.","Ich denke darüber nach.","","sentence","über + accusative; da-compound darüber",""
+"I am waiting for you.","Ich warte auf dich.","","sentence","auf + accusative",""
+"I am talking about it.","Ich spreche darüber.","","sentence","über + accusative; darüber",""
+"I am afraid of it.","Ich habe Angst davor.","","sentence","vor + dative; davor Related noun article: die.",""
+"I am looking forward to it.","Ich freue mich darauf.","","sentence","auf + accusative; darauf",""
+"It depends on it.","Es hängt davon ab.","","sentence","von + dative; davon",""
+"I agree with you.","Ich stimme dir zu.","","sentence","dative object",""
+"I believe you.","Ich glaube dir.","","sentence","dative object",""
+"I understand you.","Ich verstehe dich.","","sentence","accusative object",""
+"I miss you.","Du fehlst mir.","","sentence","Literally: you are missing to me.",""
+"I like that.","Das gefällt mir.","","sentence","",""
+"I feel good.","Mir geht es gut.","","sentence","",""
+"I am calling you.","Ich rufe dich an.","","sentence","anrufen is separable",""
+"I will come along.","Ich komme mit.","","sentence","mitkommen is separable",""
+"I will come back.","Ich komme zurück.","","sentence","zurückkommen is separable",""
+"I am starting now.","Ich fange jetzt an.","","sentence","anfangen is separable",""
+"I am stopping now.","Ich höre jetzt auf.","","sentence","aufhören is separable",""
+"I have misunderstood that.","Ich habe das missverstanden.","","sentence","Perfect tense with haben",""
+"I came back late.","Ich bin spät zurückgekommen.","","sentence","Movement/change of location often uses sein.",""
+"I would say that ...","Ich würde sagen, dass ...","","pattern","Konjunktiv II polite/softening.",""
+"I would rather not do that.","Das würde ich lieber nicht machen.","","sentence","",""
