@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v52-full-keyboard-fit-20260706" />
+  <link rel="manifest" href="manifest.webmanifest?v=v53-keypad-overflow-safe-20260707" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1067,47 +1067,57 @@
     html.keypad-active .typing-result { margin-top: 8px; min-height: 18px; }
     html.keypad-active .progressive-input { min-height: 40px; margin-bottom: 6px; }
     @media (max-height: 760px) {
-      html.keypad-active .inline-keypad-key { min-height: 36px; font-size: 16px; }
+      html.keypad-active .inline-keypad button.inline-keypad-key { min-height: 32px; font-size: 14px; }
       html.keypad-active .typing-word { font-size: 21px; }
       html.keypad-active .typing-clue,
       html.keypad-active .progressive-clue { font-size: 17px; padding: 7px 8px; }
     }
     .inline-keypad-row {
-      display: flex;
-      flex-wrap: nowrap;
+      display: grid;
+      grid-template-columns: repeat(var(--key-count, 1), minmax(0, 1fr));
       justify-content: center;
+      align-items: stretch;
       gap: 5px;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
     }
-    .inline-keypad-key {
+    /* Important: this selector intentionally beats the global button:not(.icon-btn)
+       rule. Without the higher specificity the general blue button styling gives
+       every key large padding/min-height, causing horizontal overflow on phones. */
+    .inline-keypad button.inline-keypad-key {
       appearance: none;
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+      max-width: none;
+      min-height: clamp(30px, 8.2vw, 38px);
+      padding: 0;
       border: 1px solid var(--border);
       border-bottom: 3px solid var(--border-strong);
       background: var(--surface);
       color: var(--text);
       border-radius: 8px;
-      /* System-keyboard ergonomics: keys are taller than wide. 42px height
-         hits comfortably; width flexes so a full 11-key row fits any phone. */
-      flex: 1 1 0;
-      min-width: 0;
-      max-width: 44px;
-      min-height: 42px;
-      padding: 0;
-      font-size: 18px;
+      font-size: clamp(13px, 4.2vw, 18px);
       font-weight: 800;
       line-height: 1;
+      letter-spacing: 0;
       cursor: pointer;
       transition: transform 0.06s ease, border-bottom-width 0.06s ease, margin-top 0.06s ease;
+      touch-action: manipulation;
     }
-    .inline-keypad-key:active {
+    .inline-keypad button.inline-keypad-key:active {
       transform: translateY(2px);
       border-bottom-width: 1px;
       margin-top: 2px;
     }
-    .inline-keypad-key.wide {
-      flex: 2 1 0;
-      max-width: 110px;
-      font-size: 14px;
+    .inline-keypad button.inline-keypad-key.wide {
+      font-size: 13px;
       font-weight: 750;
+    }
+    .inline-keypad-row.tools-row {
+      grid-template-columns: repeat(var(--key-count, 1), minmax(0, min(120px, 34vw)));
     }
 
     .inline-keypad-target {
@@ -1129,13 +1139,12 @@
       .typing-panel { padding: 22px 14px 18px; }
       .inline-keypad { gap: 4px; margin: 2px 0 8px; }
       .inline-keypad-row { gap: 3px; }
-      .inline-keypad-key {
-        max-width: 42px;
-        min-height: 40px;
+      .inline-keypad button.inline-keypad-key {
+        min-height: clamp(28px, 7.8vw, 36px);
         border-radius: 7px;
-        font-size: 17px;
+        font-size: clamp(12px, 3.8vw, 16px);
       }
-      .inline-keypad-key.wide { max-width: 96px; }
+      .inline-keypad button.inline-keypad-key.wide { font-size: 12px; }
       .progressive-input { margin-bottom: 8px; }
     }
     .typing-form { display: grid; gap: 10px; }
@@ -2055,7 +2064,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v52-full-keyboard-fit-20260706</div>
+      <div class="meta" id="appBuildLabel">Build: v53-keypad-overflow-safe-20260707</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2294,7 +2303,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v52-full-keyboard-fit-20260706";
+    const APP_BUILD = "v53-keypad-overflow-safe-20260707";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3161,15 +3170,17 @@
         if (!rowChars.length) return;
         const row = document.createElement("div");
         row.className = "inline-keypad-row";
+        row.style.setProperty("--key-count", String(rowChars.length));
         rowChars.forEach(ch => row.appendChild(makeKey(ch, () => applyValue(input.value + ch))));
         container.appendChild(row);
       });
 
       const tools = document.createElement("div");
-      tools.className = "inline-keypad-row";
+      tools.className = "inline-keypad-row tools-row";
       if (!isMissingOnly) tools.appendChild(makeKey("Space", () => applyValue(input.value + " "), "wide"));
       tools.appendChild(makeKey("⌫", () => applyValue(Array.from(input.value).slice(0, -1).join("")), "wide"));
       if (!isMissingOnly) tools.appendChild(makeKey("Clear", () => applyValue(""), "wide"));
+      tools.style.setProperty("--key-count", String(Math.max(1, tools.children.length)));
       container.appendChild(tools);
     }
 
