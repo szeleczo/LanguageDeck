@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v54-docked-letter-pad-20260707" />
+  <link rel="manifest" href="manifest.webmanifest?v=v55-stable-letter-pad-20260707" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1092,25 +1092,43 @@
       width: 100%;
       min-width: 0;
       max-width: none;
-      min-height: clamp(30px, 8.2vw, 38px);
+      min-height: clamp(32px, 8.8vw, 40px);
       padding: 0;
+      margin: 0;
       border: 1px solid var(--border);
       border-bottom: 3px solid var(--border-strong);
       background: var(--surface);
       color: var(--text);
-      border-radius: 8px;
-      font-size: clamp(13px, 4.2vw, 18px);
-      font-weight: 800;
+      border-radius: 9px;
+      font-size: clamp(14px, 4.35vw, 18px);
+      font-weight: 850;
       line-height: 1;
       letter-spacing: 0;
       cursor: pointer;
-      transition: transform 0.06s ease, border-bottom-width 0.06s ease, margin-top 0.06s ease;
+      transition: background-color 0.08s ease, border-color 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
       touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
     }
-    .inline-keypad button.inline-keypad-key:active {
-      transform: translateY(2px);
-      border-bottom-width: 1px;
-      margin-top: 2px;
+    /* Keep key presses visually stable. The generic app button :active rule adds
+       margin/translation; on a fixed mobile dock that makes the keyboard jump.
+       Use an inset press effect instead, with no geometry change. */
+    .inline-keypad button.inline-keypad-key:active,
+    .inline-keypad button.inline-keypad-key.is-pressing {
+      transform: none !important;
+      margin: 0 !important;
+      border-bottom-width: 3px;
+      background: color-mix(in srgb, var(--surface) 88%, var(--primary) 12%);
+      color: var(--text);
+      box-shadow: inset 0 2px 5px rgba(15, 23, 42, 0.14);
+    }
+    .inline-keypad button.inline-keypad-key:hover:not(:disabled),
+    .inline-keypad button.inline-keypad-key:focus:not(:disabled),
+    .inline-keypad button.inline-keypad-key:focus-visible:not(:disabled) {
+      background: var(--surface) !important;
+      color: var(--text) !important;
+      outline: none;
     }
     .inline-keypad button.inline-keypad-key.wide {
       font-size: 13px;
@@ -1149,15 +1167,15 @@
     }
 
 
-    /* v54: On touch devices the in-app letter pad is not part of the answer
+    /* v55: On touch devices the in-app letter pad is not part of the answer
        field/card anymore. It becomes a bottom input dock, so the answer clue
        can stay readable while the keys use the full viewport width. */
     @media (pointer: coarse) and (hover: none) {
       html.keypad-active {
         --practice-dock-bottom: max(8px, env(safe-area-inset-bottom));
-        --practice-actions-h: 54px;
+        --practice-actions-h: 56px;
         --practice-keypad-bottom: calc(var(--practice-dock-bottom) + var(--practice-actions-h) + 8px);
-        --practice-dock-space: 238px;
+        --practice-dock-space: 272px;
       }
       html.keypad-active body {
         padding-bottom: calc(var(--practice-dock-space) + env(safe-area-inset-bottom));
@@ -1172,14 +1190,14 @@
       }
       html.keypad-active .inline-keypad:not(.hidden) {
         position: fixed;
-        left: max(8px, env(safe-area-inset-left));
-        right: max(8px, env(safe-area-inset-right));
+        left: max(4px, env(safe-area-inset-left));
+        right: max(4px, env(safe-area-inset-right));
         bottom: var(--practice-keypad-bottom);
         z-index: 80;
         display: grid;
-        gap: 5px;
+        gap: 4px;
         margin: 0;
-        padding: 8px 8px 7px;
+        padding: 7px 6px 6px;
         border: 1px solid rgba(148, 163, 184, 0.36);
         border-radius: 18px;
         background: color-mix(in srgb, var(--bg) 92%, white 8%);
@@ -1189,12 +1207,18 @@
         overflow: hidden;
       }
       html.keypad-active .inline-keypad-row {
-        gap: 4px;
+        gap: 3px;
       }
       html.keypad-active .inline-keypad button.inline-keypad-key {
-        min-height: clamp(36px, 9.4vw, 44px);
+        min-height: clamp(40px, 10.4vw, 48px);
         border-radius: 10px;
-        font-size: clamp(14px, 4.3vw, 18px);
+        font-size: clamp(15px, 4.7vw, 19px);
+      }
+      html.keypad-active .inline-keypad button.inline-keypad-key:hover:not(:disabled),
+      html.keypad-active .inline-keypad button.inline-keypad-key:focus:not(:disabled),
+      html.keypad-active .inline-keypad button.inline-keypad-key:focus-visible:not(:disabled) {
+        background: var(--surface) !important;
+        color: var(--text) !important;
       }
       html.keypad-active .inline-keypad-row.tools-row {
         grid-template-columns: repeat(var(--key-count, 1), minmax(0, min(150px, 42vw)));
@@ -1219,6 +1243,14 @@
       html.keypad-active .sentence-actions button {
         min-height: var(--practice-actions-h);
         border-radius: 16px;
+        margin: 0 !important;
+      }
+      html.keypad-active .typing-actions button:active:not(:disabled),
+      html.keypad-active .sentence-actions button:active:not(:disabled) {
+        margin: 0 !important;
+        transform: none !important;
+        border-bottom-width: 4px;
+        filter: brightness(0.96);
       }
       html.keypad-active .typing-result,
       html.keypad-active .sentence-result {
@@ -1227,12 +1259,12 @@
     }
 
     @media (pointer: coarse) and (hover: none) and (max-height: 760px) {
-      html.keypad-active { --practice-dock-space: 214px; --practice-actions-h: 50px; }
-      html.keypad-active .inline-keypad:not(.hidden) { padding: 6px; gap: 4px; border-radius: 16px; }
-      html.keypad-active .inline-keypad-row { gap: 3px; }
+      html.keypad-active { --practice-dock-space: 246px; --practice-actions-h: 52px; }
+      html.keypad-active .inline-keypad:not(.hidden) { padding: 6px 5px 5px; gap: 3px; border-radius: 16px; }
+      html.keypad-active .inline-keypad-row { gap: 2px; }
       html.keypad-active .inline-keypad button.inline-keypad-key {
-        min-height: clamp(32px, 8.2vw, 40px);
-        font-size: clamp(13px, 3.8vw, 16px);
+        min-height: clamp(36px, 9.2vw, 42px);
+        font-size: clamp(14px, 4.1vw, 17px);
       }
       html.keypad-active .typing-actions button,
       html.keypad-active .sentence-actions button { border-radius: 14px; }
@@ -2154,7 +2186,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v54-docked-letter-pad-20260707</div>
+      <div class="meta" id="appBuildLabel">Build: v55-stable-letter-pad-20260707</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2393,7 +2425,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v54-docked-letter-pad-20260707";
+    const APP_BUILD = "v55-stable-letter-pad-20260707";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3247,11 +3279,25 @@
         btn.type = "button";
         btn.className = `inline-keypad-key${extraClass ? " " + extraClass : ""}`;
         btn.textContent = label;
-        btn.addEventListener("pointerdown", e => e.preventDefault());
+        const clearPressed = () => {
+          btn.classList.remove("is-pressing");
+          try { btn.blur(); } catch (_) {}
+        };
+        btn.addEventListener("pointerdown", e => {
+          e.preventDefault();
+          btn.classList.add("is-pressing");
+          try { btn.setPointerCapture(e.pointerId); } catch (_) {}
+        });
+        btn.addEventListener("pointerup", clearPressed);
+        btn.addEventListener("pointercancel", clearPressed);
+        btn.addEventListener("pointerleave", clearPressed);
+        btn.addEventListener("touchend", clearPressed, { passive: true });
         btn.addEventListener("click", e => {
           e.preventDefault();
+          clearPressed();
           if (locked) return;
           action();
+          requestAnimationFrame(clearPressed);
         });
         return btn;
       };
