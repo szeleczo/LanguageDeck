@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v51-qwertz-letter-pad-20260706";
+const CACHE_VERSION = "languagedeck-v52-full-keyboard-fit-20260706";
 const APP_SHELL = [
   "./",
   "./index.html",

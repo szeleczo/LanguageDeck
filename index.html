@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v51-qwertz-letter-pad-20260706" />
+  <link rel="manifest" href="manifest.webmanifest?v=v52-full-keyboard-fit-20260706" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1048,6 +1048,30 @@
       -webkit-user-select: none;
     }
     .inline-keypad.hidden { display: none !important; }
+
+    /* When the in-app keyboard is on screen, the play surface switches to a
+       compact layout so prompt + clue + keyboard + actions fit a phone
+       viewport WITHOUT scrolling. */
+    html.keypad-active .game-area-spacer { display: none; }
+    html.keypad-active .typing-panel { padding: 14px 12px 12px; }
+    html.keypad-active .typing-word { font-size: 24px; margin: 2px 0 4px; }
+    html.keypad-active .level-dots { margin: 0 0 6px; }
+    html.keypad-active .typing-help { font-size: 12px; margin-bottom: 6px; }
+    html.keypad-active .typing-clue,
+    html.keypad-active .progressive-clue {
+      padding: 9px 10px;
+      margin: 0 0 8px;
+      font-size: 19px;
+    }
+    html.keypad-active .sentence-english { font-size: 18px; margin-bottom: 4px; }
+    html.keypad-active .typing-result { margin-top: 8px; min-height: 18px; }
+    html.keypad-active .progressive-input { min-height: 40px; margin-bottom: 6px; }
+    @media (max-height: 760px) {
+      html.keypad-active .inline-keypad-key { min-height: 36px; font-size: 16px; }
+      html.keypad-active .typing-word { font-size: 21px; }
+      html.keypad-active .typing-clue,
+      html.keypad-active .progressive-clue { font-size: 17px; padding: 7px 8px; }
+    }
     .inline-keypad-row {
       display: flex;
       flex-wrap: nowrap;
@@ -1060,16 +1084,15 @@
       border-bottom: 3px solid var(--border-strong);
       background: var(--surface);
       color: var(--text);
-      border-radius: 9px;
-      /* System-keyboard ergonomics: TALL keys with flexible width. Height is
-         what makes a key easy to hit; rows with few keys grow wider up to a
-         cap so the pad never looks like scattered confetti. */
+      border-radius: 8px;
+      /* System-keyboard ergonomics: keys are taller than wide. 42px height
+         hits comfortably; width flexes so a full 11-key row fits any phone. */
       flex: 1 1 0;
-      min-width: 30px;
-      max-width: 52px;
-      min-height: 48px;
+      min-width: 0;
+      max-width: 44px;
+      min-height: 42px;
       padding: 0;
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 800;
       line-height: 1;
       cursor: pointer;
@@ -1086,11 +1109,7 @@
       font-size: 14px;
       font-weight: 750;
     }
-    .inline-keypad.compact .inline-keypad-key {
-      max-width: 58px;
-      min-height: 50px;
-      font-size: 20px;
-    }
+
     .inline-keypad-target {
       caret-color: transparent;
       cursor: default;
@@ -1108,19 +1127,13 @@
     }
     @media (max-width: 480px) {
       .typing-panel { padding: 22px 14px 18px; }
-      .inline-keypad { gap: 5px; margin: 2px 0 10px; }
-      .inline-keypad-row { gap: 4px; }
+      .inline-keypad { gap: 4px; margin: 2px 0 8px; }
+      .inline-keypad-row { gap: 3px; }
       .inline-keypad-key {
-        min-width: 26px;
-        max-width: 48px;
-        min-height: 46px;
-        border-radius: 8px;
-        font-size: 18px;
-      }
-      .inline-keypad.compact .inline-keypad-key {
-        max-width: 54px;
-        min-height: 48px;
-        font-size: 19px;
+        max-width: 42px;
+        min-height: 40px;
+        border-radius: 7px;
+        font-size: 17px;
       }
       .inline-keypad-key.wide { max-width: 96px; }
       .progressive-input { margin-bottom: 8px; }
@@ -2042,7 +2055,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v51-qwertz-letter-pad-20260706</div>
+      <div class="meta" id="appBuildLabel">Build: v52-full-keyboard-fit-20260706</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2281,7 +2294,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v51-qwertz-letter-pad-20260706";
+    const APP_BUILD = "v52-full-keyboard-fit-20260706";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3056,11 +3069,6 @@
       return pos;
     })();
     const INLINE_KEYPAD_PUNCTUATION = [".", ",", "?", "!", "'", "-", ":", ";"];
-    // Distractors follow TARGET-LANGUAGE letter frequency (the old list was
-    // English "etaoin shrdlu" order — wrong alphabet for a German deck).
-    function inlineKeypadDistractors() {
-      return Array.from(currentDeck === "it" ? "eaionlrtscdumpv" : "enisratdhulcgmo");
-    }
 
     /* Bucket a set of letters into the fixed keyboard rows, keeping QWERTZ
        order inside each row; unknown characters fall to the bottom row. */
@@ -3087,33 +3095,26 @@
 
     function inlineKeypadRowsFor(challenge) {
       if (!challenge) return [];
-      const isMissingOnly = !!challenge.masked;
-      if (isMissingOnly) {
-        const required = uniqueCharsFrom(challenge.missing, true);
-        const fromAnswer = uniqueCharsFrom(challenge.full, true).filter(ch => !required.includes(ch));
-        const targetSize = Math.min(12, Math.max(6, required.length + 4));
-        const chosen = [...required];
-        for (const ch of fromAnswer) {
-          if (chosen.length >= targetSize) break;
-          if (!chosen.includes(ch)) chosen.push(ch);
-        }
-        for (const ch of inlineKeypadDistractors()) {
-          if (chosen.length >= targetSize) break;
-          if (!chosen.includes(ch)) chosen.push(ch);
-        }
-        return layoutKeypadRows(chosen);
-      }
+      // FULL keyboard, every time: all base QWERTZ keys plus any accented
+      // letters the current answer needs (slotted next to their base key).
+      // Stable layout builds muscle memory and never leaks which letters the
+      // answer contains.
+      const chars = new Set(INLINE_KEYPAD_ROWS.flat());
+      for (const ch of uniqueCharsFrom(challenge.full, true)) chars.add(ch);
+      const rows = layoutKeypadRows([...chars]);
 
-      const letters = uniqueCharsFrom(challenge.full, true);
-      const punctuation = [];
-      Array.from(String(challenge.full || "")).forEach(ch => {
-        if (/\s/u.test(ch)) return;
-        if (/[\p{L}\p{M}]/u.test(ch)) return;
-        if (!punctuation.includes(ch)) punctuation.push(ch);
-      });
-      const rows = layoutKeypadRows(letters);
-      const puncRow = [...INLINE_KEYPAD_PUNCTUATION, ...punctuation].filter((ch, idx, arr) => arr.indexOf(ch) === idx && String(challenge.full || "").includes(ch));
-      if (puncRow.length) rows.push(puncRow);
+      if (!challenge.masked) {
+        // Full-answer level: punctuation row for characters the answer uses.
+        const punctuation = [];
+        Array.from(String(challenge.full || "")).forEach(ch => {
+          if (/\s/u.test(ch)) return;
+          if (/[\p{L}\p{M}]/u.test(ch)) return;
+          if (!punctuation.includes(ch)) punctuation.push(ch);
+        });
+        const puncRow = [...INLINE_KEYPAD_PUNCTUATION, ...punctuation]
+          .filter((ch, idx, arr) => arr.indexOf(ch) === idx && String(challenge.full || "").includes(ch));
+        if (puncRow.length) rows.push(puncRow);
+      }
       return rows;
     }
 
@@ -3124,7 +3125,7 @@
       setInlineKeypadInputMode(input, enabled);
       input.classList.toggle("inline-keypad-input-hidden", !!(enabled && isMissingOnly));
       container.classList.toggle("hidden", !enabled);
-      container.classList.toggle("compact", !!(enabled && isMissingOnly));
+      document.documentElement.classList.toggle("keypad-active", !!enabled);
       container.innerHTML = "";
       if (!enabled) return;
 
@@ -3905,6 +3906,8 @@
       wordTypingContainer.classList.toggle("hidden", !isWordTyping);
       sentenceContainer.classList.toggle("hidden", isWords);
       document.documentElement.classList.toggle("order-practice-active", !isWords && sentenceMode === "order");
+      const progressiveActive = (isWords && wordMode === "progressive") || (!isWords && sentenceMode === "progressive");
+      if (!progressiveActive) document.documentElement.classList.remove("keypad-active");
       visibleCountSelect.disabled = !isWordMatch;
       sentenceModeSelect.disabled = isWords;
       modeSelect.disabled = !isWords;
