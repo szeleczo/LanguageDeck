@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v53-keypad-overflow-safe-20260707" />
+  <link rel="manifest" href="manifest.webmanifest?v=v54-docked-letter-pad-20260707" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1147,6 +1147,96 @@
       .inline-keypad button.inline-keypad-key.wide { font-size: 12px; }
       .progressive-input { margin-bottom: 8px; }
     }
+
+
+    /* v54: On touch devices the in-app letter pad is not part of the answer
+       field/card anymore. It becomes a bottom input dock, so the answer clue
+       can stay readable while the keys use the full viewport width. */
+    @media (pointer: coarse) and (hover: none) {
+      html.keypad-active {
+        --practice-dock-bottom: max(8px, env(safe-area-inset-bottom));
+        --practice-actions-h: 54px;
+        --practice-keypad-bottom: calc(var(--practice-dock-bottom) + var(--practice-actions-h) + 8px);
+        --practice-dock-space: 238px;
+      }
+      html.keypad-active body {
+        padding-bottom: calc(var(--practice-dock-space) + env(safe-area-inset-bottom));
+      }
+      html.keypad-active .typing-panel,
+      html.keypad-active .sentence-panel {
+        padding-bottom: 14px;
+        margin-bottom: var(--practice-dock-space);
+      }
+      html.keypad-active .typing-form {
+        display: contents;
+      }
+      html.keypad-active .inline-keypad:not(.hidden) {
+        position: fixed;
+        left: max(8px, env(safe-area-inset-left));
+        right: max(8px, env(safe-area-inset-right));
+        bottom: var(--practice-keypad-bottom);
+        z-index: 80;
+        display: grid;
+        gap: 5px;
+        margin: 0;
+        padding: 8px 8px 7px;
+        border: 1px solid rgba(148, 163, 184, 0.36);
+        border-radius: 18px;
+        background: color-mix(in srgb, var(--bg) 92%, white 8%);
+        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.16);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        overflow: hidden;
+      }
+      html.keypad-active .inline-keypad-row {
+        gap: 4px;
+      }
+      html.keypad-active .inline-keypad button.inline-keypad-key {
+        min-height: clamp(36px, 9.4vw, 44px);
+        border-radius: 10px;
+        font-size: clamp(14px, 4.3vw, 18px);
+      }
+      html.keypad-active .inline-keypad-row.tools-row {
+        grid-template-columns: repeat(var(--key-count, 1), minmax(0, min(150px, 42vw)));
+        justify-content: center;
+      }
+      html.keypad-active .typing-actions,
+      html.keypad-active .sentence-actions {
+        position: fixed;
+        left: max(8px, env(safe-area-inset-left));
+        right: max(8px, env(safe-area-inset-right));
+        bottom: var(--practice-dock-bottom);
+        z-index: 81;
+        display: grid !important;
+        grid-auto-flow: column;
+        grid-auto-columns: 1fr;
+        gap: 8px;
+        min-height: var(--practice-actions-h);
+        padding: 0;
+        margin: 0;
+      }
+      html.keypad-active .typing-actions button,
+      html.keypad-active .sentence-actions button {
+        min-height: var(--practice-actions-h);
+        border-radius: 16px;
+      }
+      html.keypad-active .typing-result,
+      html.keypad-active .sentence-result {
+        min-height: 20px;
+      }
+    }
+
+    @media (pointer: coarse) and (hover: none) and (max-height: 760px) {
+      html.keypad-active { --practice-dock-space: 214px; --practice-actions-h: 50px; }
+      html.keypad-active .inline-keypad:not(.hidden) { padding: 6px; gap: 4px; border-radius: 16px; }
+      html.keypad-active .inline-keypad-row { gap: 3px; }
+      html.keypad-active .inline-keypad button.inline-keypad-key {
+        min-height: clamp(32px, 8.2vw, 40px);
+        font-size: clamp(13px, 3.8vw, 16px);
+      }
+      html.keypad-active .typing-actions button,
+      html.keypad-active .sentence-actions button { border-radius: 14px; }
+    }
     .typing-form { display: grid; gap: 10px; }
     .typing-result {
       margin-top: 14px;
@@ -1948,7 +2038,7 @@
       <div class="typing-form">
         <input type="text" id="typingInput" placeholder="Answer" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" />
         <div id="typingInlineKeypad" class="inline-keypad hidden" aria-label="Missing letters keypad"></div>
-        <div style="display:flex;gap:8px;">
+        <div class="typing-actions practice-actions">
           <button id="typingSubmitBtn" style="flex:1;">Check</button>
           <button id="typingRevealBtn" class="ghost">Reveal</button>
         </div>
@@ -2064,7 +2154,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v53-keypad-overflow-safe-20260707</div>
+      <div class="meta" id="appBuildLabel">Build: v54-docked-letter-pad-20260707</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2303,7 +2393,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v53-keypad-overflow-safe-20260707";
+    const APP_BUILD = "v54-docked-letter-pad-20260707";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;

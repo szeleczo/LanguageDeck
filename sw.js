@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v53-keypad-overflow-safe-20260707";
+const CACHE_VERSION = "languagedeck-v54-docked-letter-pad-20260707";
 const APP_SHELL = [
   "./",
   "./index.html",
