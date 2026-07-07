@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v56-spacebar-tools-20260707" />
+  <link rel="manifest" href="manifest.webmanifest?v=v57-feedback-continue-case-safe-20260707" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1202,7 +1202,7 @@
     }
 
 
-    /* v56: On touch devices the in-app letter pad is not part of the answer
+    /* v57: On touch devices the in-app letter pad is not part of the answer
        field/card anymore. It becomes a bottom input dock, so the answer clue
        can stay readable while the keys use the full viewport width. */
     @media (pointer: coarse) and (hover: none) {
@@ -2239,7 +2239,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v56-spacebar-tools-20260707</div>
+      <div class="meta" id="appBuildLabel">Build: v57-feedback-continue-case-safe-20260707</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2478,7 +2478,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v56-spacebar-tools-20260707";
+    const APP_BUILD = "v57-feedback-continue-case-safe-20260707";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2889,6 +2889,9 @@
     function answerNorm(v) {
       return normTxt(v)
         .normalize("NFC")
+        // Case should never be a source of friction in typing practice.
+        // Some mobile keyboards auto-capitalise even when asked not to.
+        .toLocaleLowerCase()
         .replace(/[’‘`´]/g, "'")
         .replace(/\s+([,.!?;:])/g, "$1")
         .replace(/([¿¡])\s+/g, "$1")
@@ -3349,6 +3352,8 @@
           e.preventDefault();
           clearPressed();
           if (locked) return;
+          if ((input === typingInput && wordTypingAwaitingContinue) ||
+              (input !== typingInput && currentSentenceData && currentSentenceData.feedbackAwaitingContinue)) return;
           action();
           requestAnimationFrame(clearPressed);
         });
@@ -3749,6 +3754,7 @@
     let rightOrder = [];
     let currentTypingWord = null;
     let currentTypingChallenge = null;
+    let wordTypingAwaitingContinue = false;
     let wordProgressiveAutoSubmitTimer = null;
     let sentenceProgressiveAutoSubmitTimer = null;
 
@@ -4562,9 +4568,27 @@
 
     function updateTypingActionButtons() {
       if (!typingSubmitBtn || !typingRevealBtn) return;
+      const awaiting = !!wordTypingAwaitingContinue;
       const hasAnswer = hasTypedText(typingInput && typingInput.value);
-      typingSubmitBtn.disabled = !currentTypingWord || locked || !hasAnswer;
+      typingSubmitBtn.textContent = "Check";
+      typingRevealBtn.textContent = awaiting ? "Continue" : "Reveal";
+      typingSubmitBtn.disabled = awaiting || !currentTypingWord || locked || !hasAnswer;
       typingRevealBtn.disabled = !currentTypingWord || locked;
+    }
+
+    async function continueAfterTypingFeedback() {
+      if (!wordTypingAwaitingContinue || locked) return;
+      wordTypingAwaitingContinue = false;
+      locked = true;
+      updateTypingActionButtons();
+      try {
+        await loadNextTypingWord();
+        await refreshStats();
+        await refreshGateInfo();
+      } finally {
+        locked = false;
+        updateTypingActionButtons();
+      }
     }
 
     async function finalizeCorrectWordPair(pairId) {
@@ -4675,6 +4699,8 @@
 
     /* ---------- Word typing ---------- */
     async function loadNextTypingWord() {
+      wordTypingAwaitingContinue = false;
+      clearTimeout(wordProgressiveAutoSubmitTimer);
       await ensureWordQueue(1);
       if (wordQueue.length === 0) {
         currentTypingWord = null;
@@ -4726,7 +4752,13 @@
     }
 
     async function submitTypingWordAnswer(showSolutionOnly = false) {
-      if (!currentTypingWord || locked) return;
+      if (!currentTypingWord) return;
+      if (wordTypingAwaitingContinue) {
+        if (showSolutionOnly) await continueAfterTypingFeedback();
+        else updateTypingActionButtons();
+        return;
+      }
+      if (locked) return;
       if (!showSolutionOnly && !hasTypedText(typingInput && typingInput.value)) {
         updateTypingActionButtons();
         return;
@@ -4735,12 +4767,15 @@
       updateTypingActionButtons();
 
       if (showSolutionOnly) {
+        clearTimeout(wordProgressiveAutoSubmitTimer);
         wrongCount++; updateScore();
         typingResult.textContent = `Solution: ${targetDisplay(currentTypingWord)}`;
         statusEl.textContent = "";
         await saveWordAnswer(currentTypingWord.id, false);
         wordQueue.push(currentTypingWord);
-        setTimeout(async () => { locked = false; await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 1000);
+        wordTypingAwaitingContinue = true;
+        locked = false;
+        updateTypingActionButtons();
         return;
       }
 
@@ -4758,12 +4793,15 @@
         await saveWordAnswer(currentTypingWord.id, true);
         setTimeout(async () => { locked = false; await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 450);
       } else {
+        clearTimeout(wordProgressiveAutoSubmitTimer);
         wrongCount++; updateScore();
         typingResult.textContent = `Wrong. Correct: ${targetDisplay(currentTypingWord)}`;
         statusEl.textContent = "";
         await saveWordAnswer(currentTypingWord.id, false);
         wordQueue.push(currentTypingWord);
-        setTimeout(async () => { locked = false; await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 1000);
+        wordTypingAwaitingContinue = true;
+        locked = false;
+        updateTypingActionButtons();
       }
     }
 
@@ -4860,6 +4898,7 @@
         orderChecked: false,
         orderAwaitingContinue: false,
         orderAutoSubmitting: false,
+        feedbackAwaitingContinue: false,
         orderLayout: null
       };
     }
@@ -5003,24 +5042,46 @@
       locked = true;
       currentSentenceData.orderAwaitingContinue = false;
       currentSentenceData.orderAutoSubmitting = false;
+      updateSentenceActionButtons();
       (async () => {
-        await loadNextSentence();
-        await refreshStats();
-        await refreshGateInfo();
-        locked = false;
+        try {
+          await loadNextSentence();
+          await refreshStats();
+          await refreshGateInfo();
+        } finally {
+          locked = false;
+          updateSentenceActionButtons();
+        }
       })();
     }
 
     function updateSentenceActionButtons() {
       if (!sentenceCheckBtn || !sentenceResetBtn || !sentenceRevealBtn) return;
       const isOrderMode = sentenceMode === "order";
-      const awaiting = isOrderMode && currentSentenceData && currentSentenceData.orderAwaitingContinue;
+      const awaitingOrder = isOrderMode && currentSentenceData && currentSentenceData.orderAwaitingContinue;
+      const awaitingFeedback = currentSentenceData && currentSentenceData.feedbackAwaitingContinue;
+      const awaiting = !!(awaitingOrder || awaitingFeedback);
       sentenceCheckBtn.textContent = "Check";
       sentenceResetBtn.textContent = "Clear";
       sentenceRevealBtn.textContent = awaiting ? "Continue" : "Reveal";
-      sentenceCheckBtn.disabled = !!awaiting || locked || !canSubmitCurrentSentenceAnswer();
-      sentenceResetBtn.disabled = !!awaiting || locked || !hasCurrentSentenceInput();
+      sentenceCheckBtn.disabled = awaiting || locked || !canSubmitCurrentSentenceAnswer();
+      sentenceResetBtn.disabled = awaiting || locked || !hasCurrentSentenceInput();
       sentenceRevealBtn.disabled = locked || !currentSentence;
+    }
+
+    async function continueAfterSentenceFeedback() {
+      if (!currentSentenceData || !currentSentenceData.feedbackAwaitingContinue || locked) return;
+      currentSentenceData.feedbackAwaitingContinue = false;
+      locked = true;
+      updateSentenceActionButtons();
+      try {
+        await loadNextSentence();
+        await refreshStats();
+        await refreshGateInfo();
+      } finally {
+        locked = false;
+        updateSentenceActionButtons();
+      }
     }
 
     function renderSentenceKeepingScroll() {
@@ -5256,6 +5317,7 @@
     }
 
     async function loadNextSentence() {
+      clearTimeout(sentenceProgressiveAutoSubmitTimer);
       await ensureSentenceQueue(1);
       if (sentenceQueue.length === 0) {
         currentSentence = null; currentSentenceData = null;
@@ -5306,11 +5368,18 @@
     async function submitSentenceAnswer(showSolutionOnly = false) {
       if (!currentSentence || !currentSentenceData) return;
 
-      // In sentence order mode, wrong/revealed answers should stay on screen
-      // until the learner explicitly continues. This avoids the card moving on
-      // before the user has had time to read the correction.
+      // Wrong/revealed answers should stay on screen until the learner
+      // explicitly continues. This gives time to read the correction instead
+      // of auto-skipping the card.
+      if (currentSentenceData.feedbackAwaitingContinue) {
+        if (showSolutionOnly) await continueAfterSentenceFeedback();
+        else updateSentenceActionButtons();
+        return;
+      }
+
       if (sentenceMode === "order" && currentSentenceData.orderAwaitingContinue) {
-        continueAfterOrderFeedback();
+        if (showSolutionOnly) continueAfterOrderFeedback();
+        else updateSentenceActionButtons();
         return;
       }
 
@@ -5323,6 +5392,7 @@
       updateSentenceActionButtons();
 
       if (showSolutionOnly) {
+        clearTimeout(sentenceProgressiveAutoSubmitTimer);
         wrongCount++; updateScore();
         statusEl.textContent = "";
         await saveSentenceAnswer(currentSentence.id, false);
@@ -5335,11 +5405,14 @@
           renderSentence();
           sentenceResult.textContent = `Solution: ${currentSentence.target}`;
           locked = false;
+          updateSentenceActionButtons();
           return;
         }
 
         sentenceResult.textContent = `Solution: ${currentSentence.target}`;
-        setTimeout(async () => { locked = false; await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 1200);
+        currentSentenceData.feedbackAwaitingContinue = true;
+        locked = false;
+        updateSentenceActionButtons();
         return;
       }
 
@@ -5355,6 +5428,7 @@
         await saveSentenceAnswer(currentSentence.id, true);
         setTimeout(async () => { locked = false; await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 650);
       } else {
+        clearTimeout(sentenceProgressiveAutoSubmitTimer);
         wrongCount++; updateScore();
         sentenceResult.textContent = `Wrong. Correct: ${currentSentence.target}`;
         statusEl.textContent = "";
@@ -5363,12 +5437,14 @@
 
         if (sentenceMode === "order" && currentSentenceData) {
           currentSentenceData.orderAwaitingContinue = true;
-          updateSentenceActionButtons();
           locked = false;
+          updateSentenceActionButtons();
           return;
         }
 
-        setTimeout(async () => { locked = false; await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 1400);
+        currentSentenceData.feedbackAwaitingContinue = true;
+        locked = false;
+        updateSentenceActionButtons();
       }
     }
 
@@ -5381,6 +5457,8 @@
       currentSentenceData.orderChecked = false;
       currentSentenceData.orderAwaitingContinue = false;
       currentSentenceData.orderAutoSubmitting = false;
+      currentSentenceData.feedbackAwaitingContinue = false;
+      clearTimeout(sentenceProgressiveAutoSubmitTimer);
       activeBlankIndex = 0;
       renderSentence();
     }
