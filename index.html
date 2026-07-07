@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v55-stable-letter-pad-20260707" />
+  <link rel="manifest" href="manifest.webmanifest?v=v56-spacebar-tools-20260707" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1137,6 +1137,41 @@
     .inline-keypad-row.tools-row {
       grid-template-columns: repeat(var(--key-count, 1), minmax(0, min(120px, 34vw)));
     }
+    .inline-keypad-row.tools-row.full-tools-row {
+      grid-template-columns: minmax(52px, 0.9fr) minmax(132px, 3.4fr) minmax(52px, 0.9fr);
+      gap: 6px;
+    }
+    .inline-keypad button.inline-keypad-key.space-key {
+      font-size: 13px;
+      font-weight: 850;
+      letter-spacing: 0.02em;
+    }
+    .inline-keypad button.inline-keypad-key.space-key::before {
+      content: "";
+      display: inline-block;
+      width: min(76px, 30vw);
+      height: 3px;
+      border-radius: 999px;
+      background: currentColor;
+      opacity: 0.72;
+      vertical-align: middle;
+    }
+    .inline-keypad button.inline-keypad-key.space-key span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    .inline-keypad button.inline-keypad-key.backspace-key {
+      font-size: 18px;
+    }
+    .inline-keypad button.inline-keypad-key.clear-key {
+      font-size: 11px;
+      font-weight: 750;
+      opacity: 0.72;
+    }
 
     .inline-keypad-target {
       caret-color: transparent;
@@ -1167,7 +1202,7 @@
     }
 
 
-    /* v55: On touch devices the in-app letter pad is not part of the answer
+    /* v56: On touch devices the in-app letter pad is not part of the answer
        field/card anymore. It becomes a bottom input dock, so the answer clue
        can stay readable while the keys use the full viewport width. */
     @media (pointer: coarse) and (hover: none) {
@@ -1224,6 +1259,17 @@
         grid-template-columns: repeat(var(--key-count, 1), minmax(0, min(150px, 42vw)));
         justify-content: center;
       }
+      html.keypad-active .inline-keypad-row.tools-row.full-tools-row {
+        grid-template-columns: minmax(56px, 0.8fr) minmax(150px, 3.6fr) minmax(56px, 0.8fr);
+        gap: 6px;
+      }
+      html.keypad-active .inline-keypad button.inline-keypad-key.space-key::before {
+        width: min(98px, 36vw);
+        height: 3px;
+      }
+      html.keypad-active .inline-keypad button.inline-keypad-key.clear-key {
+        opacity: 0.62;
+      }
       html.keypad-active .typing-actions,
       html.keypad-active .sentence-actions {
         position: fixed;
@@ -1265,6 +1311,13 @@
       html.keypad-active .inline-keypad button.inline-keypad-key {
         min-height: clamp(36px, 9.2vw, 42px);
         font-size: clamp(14px, 4.1vw, 17px);
+      }
+      html.keypad-active .inline-keypad-row.tools-row.full-tools-row {
+        grid-template-columns: minmax(48px, 0.75fr) minmax(132px, 3.7fr) minmax(48px, 0.75fr);
+        gap: 4px;
+      }
+      html.keypad-active .inline-keypad button.inline-keypad-key.space-key::before {
+        width: min(86px, 34vw);
       }
       html.keypad-active .typing-actions button,
       html.keypad-active .sentence-actions button { border-radius: 14px; }
@@ -2186,7 +2239,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v55-stable-letter-pad-20260707</div>
+      <div class="meta" id="appBuildLabel">Build: v56-spacebar-tools-20260707</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2425,7 +2478,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v55-stable-letter-pad-20260707";
+    const APP_BUILD = "v56-spacebar-tools-20260707";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3312,10 +3365,17 @@
       });
 
       const tools = document.createElement("div");
-      tools.className = "inline-keypad-row tools-row";
-      if (!isMissingOnly) tools.appendChild(makeKey("Space", () => applyValue(input.value + " "), "wide"));
-      tools.appendChild(makeKey("⌫", () => applyValue(Array.from(input.value).slice(0, -1).join("")), "wide"));
-      if (!isMissingOnly) tools.appendChild(makeKey("Clear", () => applyValue(""), "wide"));
+      tools.className = `inline-keypad-row tools-row${!isMissingOnly ? " full-tools-row" : ""}`;
+      if (!isMissingOnly) {
+        tools.appendChild(makeKey("Clear", () => applyValue(""), "wide clear-key"));
+        const spaceKey = makeKey("Space", () => applyValue(input.value + " "), "wide space-key");
+        spaceKey.innerHTML = "<span>Space</span>";
+        spaceKey.setAttribute("aria-label", "Space");
+        tools.appendChild(spaceKey);
+        tools.appendChild(makeKey("⌫", () => applyValue(Array.from(input.value).slice(0, -1).join("")), "wide backspace-key"));
+      } else {
+        tools.appendChild(makeKey("⌫", () => applyValue(Array.from(input.value).slice(0, -1).join("")), "wide backspace-key"));
+      }
       tools.style.setProperty("--key-count", String(Math.max(1, tools.children.length)));
       container.appendChild(tools);
     }
