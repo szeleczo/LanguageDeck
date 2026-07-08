@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v56-spacebar-tools-20260707";
+const CACHE_VERSION = "languagedeck-v58-review-engine-sync-20260707";
 const APP_SHELL = [
   "./",
   "./index.html",

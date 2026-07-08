@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v57-feedback-continue-case-safe-20260707" />
+  <link rel="manifest" href="manifest.webmanifest?v=v58-review-engine-sync-20260707" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1134,6 +1134,13 @@
       font-size: 13px;
       font-weight: 750;
     }
+    .inline-keypad-key.backspace-key {
+      grid-column: span 2;
+      background: var(--surface-2);
+      border-color: var(--border-strong);
+      color: var(--text-faint);
+      font-size: 20px;
+    }
     .inline-keypad-row.tools-row {
       grid-template-columns: repeat(var(--key-count, 1), minmax(0, min(120px, 34vw)));
     }
@@ -2239,7 +2246,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v57-feedback-continue-case-safe-20260707</div>
+      <div class="meta" id="appBuildLabel">Build: v58-review-engine-sync-20260707</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2406,6 +2413,7 @@
           </div>
           <button id="browseBuiltinBtn" class="ghost" style="width:100%;">Browse built-in decks</button>
           <button id="manageDecksBtn" class="ghost" style="width:100%;">Manage installed decks</button>
+          <button id="syncProgressBtn" class="ghost" style="width:100%;">Sync progress between devices</button>
         </div>
       </details>
 
@@ -2444,6 +2452,27 @@
     </div>
   </div>
 
+  <div id="syncModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-title">Sync progress</div>
+      <div style="font-size:12px;color:var(--text-faint);margin-bottom:8px;line-height:1.4;">
+        Create a code on this device, then paste it on the other device and
+        tap Apply. The code carries your learning progress (streaks, review
+        schedule, difficulty levels) for every practiced card. Newer progress
+        wins per card; nothing is deleted.
+      </div>
+      <textarea id="syncCodeArea" spellcheck="false" autocomplete="off"
+        style="width:100%;min-height:110px;resize:vertical;font:12px ui-monospace,Menlo,Consolas,monospace;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);color:var(--text);word-break:break-all;"
+        placeholder="Tap 'Create code' here, or paste a code from your other device."></textarea>
+      <div id="syncStatus" style="font-size:12px;color:var(--text-faint);min-height:16px;margin:6px 0 2px;"></div>
+      <div class="settings-actions" style="display:flex;gap:8px;">
+        <button id="syncCreateBtn" style="flex:1;">Create code</button>
+        <button id="syncApplyBtn" class="secondary" style="flex:1;">Apply code</button>
+        <button id="closeSyncBtn" class="ghost close-btn">Done</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
 
@@ -2478,7 +2507,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v57-feedback-continue-case-safe-20260707";
+    const APP_BUILD = "v58-review-engine-sync-20260707";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3360,29 +3389,49 @@
         return btn;
       };
 
-      inlineKeypadRowsFor(challenge).forEach(rowChars => {
+      const letterRows = [];
+      const allRows = inlineKeypadRowsFor(challenge);
+      const puncRowIdx = !isMissingOnly ? allRows.length - 1 : -1; // punctuation row (full mode) stays as-is
+      allRows.forEach((rowChars, idx) => {
         if (!rowChars.length) return;
         const row = document.createElement("div");
         row.className = "inline-keypad-row";
         row.style.setProperty("--key-count", String(rowChars.length));
         rowChars.forEach(ch => row.appendChild(makeKey(ch, () => applyValue(input.value + ch))));
         container.appendChild(row);
+        if (isMissingOnly || idx !== puncRowIdx || /\p{L}/u.test(rowChars[0])) letterRows.push(row);
       });
 
-      const tools = document.createElement("div");
-      tools.className = `inline-keypad-row tools-row${!isMissingOnly ? " full-tools-row" : ""}`;
+      // Backspace lives where every phone keyboard puts it: at the RIGHT END
+      // of the bottom letter row, double width, visually distinct — not on a
+      // separate anonymous bar that is easy to lose track of.
+      const backspace = makeKey("⌫", () => applyValue(Array.from(input.value).slice(0, -1).join("")), "backspace-key");
+      backspace.setAttribute("aria-label", "Backspace");
+      const lastLetterRow = letterRows.length ? letterRows[letterRows.length - (isMissingOnly ? 1 : (allRows.length > 3 ? 2 : 1))] : null;
+      if (lastLetterRow) {
+        const count = Number(lastLetterRow.style.getPropertyValue("--key-count")) || lastLetterRow.children.length;
+        lastLetterRow.style.setProperty("--key-count", String(count + 2));
+        lastLetterRow.appendChild(backspace);
+      }
+
       if (!isMissingOnly) {
+        const tools = document.createElement("div");
+        tools.className = "inline-keypad-row tools-row full-tools-row";
         tools.appendChild(makeKey("Clear", () => applyValue(""), "wide clear-key"));
         const spaceKey = makeKey("Space", () => applyValue(input.value + " "), "wide space-key");
         spaceKey.innerHTML = "<span>Space</span>";
         spaceKey.setAttribute("aria-label", "Space");
         tools.appendChild(spaceKey);
-        tools.appendChild(makeKey("⌫", () => applyValue(Array.from(input.value).slice(0, -1).join("")), "wide backspace-key"));
-      } else {
-        tools.appendChild(makeKey("⌫", () => applyValue(Array.from(input.value).slice(0, -1).join("")), "wide backspace-key"));
+        tools.style.setProperty("--key-count", String(Math.max(1, tools.children.length)));
+        container.appendChild(tools);
+      } else if (!lastLetterRow) {
+        // Degenerate case (no letter rows): keep backspace reachable.
+        const tools = document.createElement("div");
+        tools.className = "inline-keypad-row tools-row";
+        tools.appendChild(backspace);
+        tools.style.setProperty("--key-count", "1");
+        container.appendChild(tools);
       }
-      tools.style.setProperty("--key-count", String(Math.max(1, tools.children.length)));
-      container.appendChild(tools);
     }
 
     function shuffleArr(array) {
@@ -3605,16 +3654,20 @@
        makes no-gate mode "don't show me new words until the current ones go
        really well". */
     const MAX_LEARNING_POOL = 10;
+    /* An item releases its learning slot (and lets new material in) only
+       after THREE correct answers — "goes really well", not merely "answered
+       twice". Gate unlocking keeps its own, unchanged threshold. */
+    const INTAKE_MASTERY_STREAK = 3;
 
     function countLearning(rows) {
       let n = 0;
       for (const r of rows) {
-        if (r.next_due != null && (r.streak | 0) < GATE_MASTERY_STREAK) n++;
+        if (r.next_due != null && (r.streak | 0) < INTAKE_MASTERY_STREAK) n++;
       }
       return n;
     }
 
-    function selectStudyItems(rows, limit, newRatio, practiceScope, throttleNew = false) {
+    function selectStudyItems(rows, limit, newRatio, practiceScope, throttleNew = false, learningScopeRows = null) {
       let pool = rows;
       if (practiceScope === "wrong") pool = pool.filter(r => (r.times_wrong | 0) > 0);
 
@@ -3649,7 +3702,13 @@
       // used for the count so practice-scope filters can't hide learning load.
       let newBudget = Infinity;
       if (throttleNew) {
-        newBudget = Math.max(0, MAX_LEARNING_POOL - countLearning(rows));
+        // CRITICAL: count learning items on the FULL scope, not on the
+        // session-filtered rows. Items practiced this session live in
+        // sessionLoadedIds and are missing from `rows` — counting there
+        // reported 0 learning after the first pass, so the intake throttle
+        // silently opened and the session became an endless stream of new
+        // sentences with no reviews (fixed only by an app restart).
+        newBudget = Math.max(0, MAX_LEARNING_POOL - countLearning(learningScopeRows || rows));
         newTarget = Math.min(newTarget, newBudget);
       }
 
@@ -4302,11 +4361,11 @@
 
         let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
         let filtered = pool.filter(r => !sessionLoadedIds.has(r.id));
-        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled);
+        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled, pool);
 
         if (forceResetIfEmpty && data.length === 0 && sessionLoadedIds.size > 0) {
           sessionLoadedIds = new Set();
-          data = selectStudyItems(pool, batchSize, newRatio, practiceScope, !gateEnabled);
+          data = selectStudyItems(pool, batchSize, newRatio, practiceScope, !gateEnabled, pool);
         }
         for (const it of data) sessionLoadedIds.add(it.id);
         return data;
@@ -4324,11 +4383,11 @@
 
         let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
         let filtered = pool.filter(r => !sessionLoadedIds.has(r.id));
-        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled);
+        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled, pool);
 
         if (forceResetIfEmpty && data.length === 0 && sessionLoadedIds.size > 0) {
           sessionLoadedIds = new Set();
-          data = selectStudyItems(pool, batchSize, newRatio, practiceScope, !gateEnabled);
+          data = selectStudyItems(pool, batchSize, newRatio, practiceScope, !gateEnabled, pool);
         }
         for (const it of data) sessionLoadedIds.add(it.id);
         return data;
@@ -5621,6 +5680,115 @@
       }
     }
 
+    /* ---------- Progress sync codes (no backend) ----------
+       A sync code is the learner's progress serialized and deflate-
+       compressed: for every practiced card (identified by deck + table +
+       set + english + target, NOT by device-local IDs) it carries streak,
+       schedule, counters and the adaptive level. Applying a code merges by
+       recency: the state with the later last_seen wins per card. */
+    const SYNC_PREFIX_DEFLATE = "LD1.";
+    const SYNC_PREFIX_PLAIN = "LD0.";
+    const SYNC_TABLES = ["word_pairs", "sentence_pairs"];
+    const SYNC_FIELDS = ["streak", "next_due", "times_seen", "times_correct",
+      "times_wrong", "progressive_level", "recovery_progress", "last_seen"];
+
+    function b64urlFromBytes(bytes) {
+      let bin = "";
+      bytes.forEach(b => { bin += String.fromCharCode(b); });
+      return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+    function bytesFromB64url(str) {
+      const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
+      const bin = atob(b64 + "===".slice((b64.length + 3) % 4));
+      const out = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+      return out;
+    }
+    async function pipeThrough(bytes, stream) {
+      const src = new Blob([bytes]).stream().pipeThrough(stream);
+      const buf = await new Response(src).arrayBuffer();
+      return new Uint8Array(buf);
+    }
+
+    function syncKeyOf(tableIdx, deck, setName, english, target) {
+      return `${tableIdx}|${deck}|${normTxt(setName)}|${normTxt(english)}|${normTxt(target)}`;
+    }
+    function syncLooseKeyOf(tableIdx, deck, english, target) {
+      return `${tableIdx}|${deck}|${normTxt(english)}|${normTxt(target)}`;
+    }
+
+    async function collectSyncRows() {
+      const out = [];
+      for (const deck of ["de", "it"]) {
+        for (let t = 0; t < SYNC_TABLES.length; t++) {
+          const rows = await DB.getAll(SYNC_TABLES[t], deck, "__all__");
+          for (const r of rows) out.push({ t, deck, row: r });
+        }
+      }
+      return out;
+    }
+
+    async function createSyncCode() {
+      const practiced = (await collectSyncRows())
+        .filter(({ row }) => row.next_due != null || (row.times_seen | 0) > 0);
+      const items = practiced.map(({ t, deck, row }) => [
+        t, deck, row.set_name || "", row.english || "", row.target || "",
+        ...SYNC_FIELDS.map(f => row[f] === undefined ? null : row[f])
+      ]);
+      const payload = JSON.stringify({ v: 1, exported: nowIso(), items });
+      const bytes = new TextEncoder().encode(payload);
+      if (typeof CompressionStream === "function") {
+        const packed = await pipeThrough(bytes, new CompressionStream("deflate-raw"));
+        return { code: SYNC_PREFIX_DEFLATE + b64urlFromBytes(packed), count: items.length };
+      }
+      return { code: SYNC_PREFIX_PLAIN + b64urlFromBytes(bytes), count: items.length };
+    }
+
+    async function applySyncCode(code) {
+      const trimmed = String(code || "").trim();
+      let bytes;
+      if (trimmed.startsWith(SYNC_PREFIX_DEFLATE)) {
+        if (typeof DecompressionStream !== "function") throw new Error("This browser cannot read compressed codes.");
+        bytes = await pipeThrough(bytesFromB64url(trimmed.slice(SYNC_PREFIX_DEFLATE.length)), new DecompressionStream("deflate-raw"));
+      } else if (trimmed.startsWith(SYNC_PREFIX_PLAIN)) {
+        bytes = bytesFromB64url(trimmed.slice(SYNC_PREFIX_PLAIN.length));
+      } else {
+        throw new Error("Not a LanguageDeck sync code.");
+      }
+      const payload = JSON.parse(new TextDecoder().decode(bytes));
+      if (!payload || payload.v !== 1 || !Array.isArray(payload.items)) throw new Error("Unrecognized code format.");
+
+      // Index local rows by content key (device IDs differ across installs).
+      const local = await collectSyncRows();
+      const byKey = new Map(); const byLoose = new Map();
+      for (const entry of local) {
+        const { t, deck, row } = entry;
+        byKey.set(syncKeyOf(t, deck, row.set_name || "", row.english || "", row.target || ""), entry);
+        const lk = syncLooseKeyOf(t, deck, row.english || "", row.target || "");
+        if (!byLoose.has(lk)) byLoose.set(lk, entry);
+      }
+
+      let updated = 0, skippedOlder = 0, notFound = 0;
+      for (const item of payload.items) {
+        const [t, deck, setName, english, target, ...state] = item;
+        const entry = byKey.get(syncKeyOf(t, deck, setName, english, target)) ||
+                      byLoose.get(syncLooseKeyOf(t, deck, english, target));
+        if (!entry) { notFound++; continue; }
+        const row = entry.row;
+        const incoming = {};
+        SYNC_FIELDS.forEach((f, i) => { incoming[f] = state[i]; });
+        const incomingSeen = incoming.last_seen || incoming.next_due || "";
+        const localSeen = row.last_seen || row.next_due || "";
+        if (localSeen && incomingSeen && incomingSeen <= localSeen) { skippedOlder++; continue; }
+        for (const f of SYNC_FIELDS) {
+          if (incoming[f] !== null && incoming[f] !== undefined) row[f] = incoming[f];
+        }
+        await DB.update(SYNC_TABLES[t], row);
+        updated++;
+      }
+      return { updated, skippedOlder, notFound, total: payload.items.length };
+    }
+
     /* ---------- Manage installed decks (local delete) ---------- */
     /* Lists every imported set across both languages and both card types,
        with item counts and a per-deck Delete button. Deleting removes only
@@ -5857,6 +6025,54 @@
     browseBuiltinBtn.addEventListener("click", () => { builtinModal.classList.add("active"); loadBuiltinList(); });
 
     if (manageDecksBtn) manageDecksBtn.addEventListener("click", () => { manageDecksModal.classList.add("active"); renderManageDecks(); });
+
+    const syncProgressBtn = $("syncProgressBtn");
+    const syncModal = $("syncModal");
+    const syncCodeArea = $("syncCodeArea");
+    const syncStatus = $("syncStatus");
+    if (syncProgressBtn) {
+      syncProgressBtn.addEventListener("click", () => {
+        syncStatus.textContent = "";
+        syncModal.classList.add("active");
+      });
+      $("closeSyncBtn").addEventListener("click", () => syncModal.classList.remove("active"));
+      syncModal.addEventListener("click", e => { if (e.target === syncModal) syncModal.classList.remove("active"); });
+
+      $("syncCreateBtn").addEventListener("click", async () => {
+        syncStatus.textContent = "Creating…";
+        try {
+          const { code, count } = await createSyncCode();
+          syncCodeArea.value = code;
+          syncCodeArea.select();
+          let copied = false;
+          try { await navigator.clipboard.writeText(code); copied = true; } catch (_) {}
+          syncStatus.textContent = `Code for ${count} practiced cards (${Math.round(code.length / 102.4) / 10} KB)${copied ? " — copied to clipboard." : " — select and copy it."}`;
+        } catch (err) {
+          syncStatus.textContent = `Could not create code: ${err.message || err}`;
+        }
+      });
+
+      $("syncApplyBtn").addEventListener("click", async () => {
+        const code = syncCodeArea.value;
+        if (!String(code || "").trim()) { syncStatus.textContent = "Paste a code first."; return; }
+        syncStatus.textContent = "Applying…";
+        try {
+          const res = await applySyncCode(code);
+          syncStatus.textContent = `Updated ${res.updated} of ${res.total} cards` +
+            `${res.skippedOlder ? `, ${res.skippedOlder} kept (local was newer)` : ""}` +
+            `${res.notFound ? `, ${res.notFound} not on this device (import those decks first)` : ""}.`;
+          if (res.updated > 0) {
+            showToast(`Synced ${res.updated} cards.`);
+            await refreshSetOptions();
+            await refreshStats();
+            await refreshGateInfo();
+            await loadCurrentGame(true);
+          }
+        } catch (err) {
+          syncStatus.textContent = `Could not apply code: ${err.message || err}`;
+        }
+      });
+    }
     if (closeManageDecksBtn) closeManageDecksBtn.addEventListener("click", () => manageDecksModal.classList.remove("active"));
     manageDecksModal.addEventListener("click", e => { if (e.target === manageDecksModal) manageDecksModal.classList.remove("active"); });
 
