@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v65-combined-polish-folders-20260708" />
+  <link rel="manifest" href="manifest.webmanifest?v=v66-roomy-progressive-input-20260708" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1066,6 +1066,68 @@
       max-width: none;
       margin: 0 0 14px;
     }
+    /* v66: full-answer progressive tasks can be long phrases or whole
+       sentences. A one-line field hides what the learner has already typed,
+       especially with the in-app keyboard docked on mobile. Full-answer
+       fields/previews therefore get a roomy, wrapping surface. */
+    .progressive-full-input {
+      min-height: 58px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: 0.01em;
+    }
+    textarea.progressive-input {
+      font: inherit;
+      width: 100%;
+      max-width: none;
+      min-height: 104px;
+      max-height: 32vh;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      line-height: 1.45;
+      resize: vertical;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    textarea.progressive-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+    .full-answer-preview {
+      text-align: left;
+      font-family: var(--font-sans);
+      letter-spacing: 0.01em;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      min-height: 58px;
+      max-height: 24vh;
+      overflow-y: auto;
+    }
+    .full-answer-preview.empty {
+      color: var(--text-faint);
+      font-style: italic;
+      font-weight: 600;
+    }
+    .full-answer-input-hidden {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      min-height: 1px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: 0 !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
     .inline-keypad {
       display: grid;
       gap: 6px;
@@ -1093,6 +1155,9 @@
     html.keypad-active .sentence-english { font-size: 18px; margin-bottom: 4px; }
     html.keypad-active .typing-result { margin-top: 8px; min-height: 18px; }
     html.keypad-active .progressive-input { min-height: 40px; margin-bottom: 6px; }
+    html.keypad-active .progressive-full-input { min-height: 64px; font-size: 17px; }
+    html.keypad-active textarea.progressive-full-input { min-height: 112px; max-height: 22vh; }
+    html.keypad-active .full-answer-preview { min-height: 68px; max-height: 22vh; font-size: 16px; }
     @media (max-height: 760px) {
       html.keypad-active .inline-keypad button.inline-keypad-key { min-height: 32px; font-size: 14px; }
       html.keypad-active .typing-word { font-size: 21px; }
@@ -2274,7 +2339,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v65-combined-polish-folders-20260708</div>
+      <div class="meta" id="appBuildLabel">Build: v66-roomy-progressive-input-20260708</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2539,7 +2604,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v65-combined-polish-folders-20260708";
+    const APP_BUILD = "v66-roomy-progressive-input-20260708";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3167,6 +3232,13 @@
         }
       }
       return html;
+    }
+
+    function renderFullAnswerPreview(el, value, placeholder = "Your typed answer will appear here.") {
+      if (!el) return;
+      const text = String(value || "");
+      el.textContent = text || placeholder;
+      el.classList.toggle("empty", !text);
     }
 
     function renderCurrentSentenceProgressiveClue(markErrors = false) {
@@ -5240,7 +5312,11 @@
         typingPrompt.textContent = "Done";
         typingHelp.textContent = gateEnabled ? "No more words in this gate." : "No more words in this deck.";
         typingResult.textContent = "";
-        if (typingClue) typingClue.classList.add("hidden");
+        if (typingClue) {
+          typingClue.classList.add("hidden");
+          typingClue.classList.remove("full-answer-preview", "empty");
+        }
+        if (typingInput) typingInput.classList.remove("progressive-full-input", "full-answer-input-hidden");
         renderInlineMissingKeypad(typingInlineKeypad, typingInput, null, null);
         updateTypingActionButtons();
         return;
@@ -5259,8 +5335,19 @@
         : deckCfg().typingHelp;
       typingLevelDots.classList.toggle("hidden", !isProgressive);
       if (isProgressive) typingLevelDots.innerHTML = levelDotsHtml(currentTypingWord);
-      typingClue.classList.toggle("hidden", !hasMask);
-      typingClue.innerHTML = hasMask ? clueHtml(currentTypingChallenge.masked, "") : "—";
+      const showFullAnswerPreview = !!(isProgressive && currentTypingChallenge && !hasMask && shouldUseInlineMissingKeypad(currentTypingChallenge));
+      typingClue.classList.remove("full-answer-preview", "empty");
+      typingClue.classList.toggle("hidden", !(hasMask || showFullAnswerPreview));
+      if (hasMask) {
+        typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, "");
+      } else if (showFullAnswerPreview) {
+        typingClue.classList.add("full-answer-preview");
+        renderFullAnswerPreview(typingClue, "", "Your typed answer will appear here.");
+      } else {
+        typingClue.innerHTML = "—";
+      }
+      typingInput.classList.toggle("progressive-full-input", !!(isProgressive && currentTypingChallenge && !hasMask));
+      typingInput.classList.toggle("full-answer-input-hidden", showFullAnswerPreview);
       typingInput.placeholder = isProgressive
         ? (hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer"))
         : deckCfg().typingPlaceholder;
@@ -5270,6 +5357,9 @@
           typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, value);
           typingResult.textContent = "";
           maybeAutoSubmitProgressiveWord();
+        } else if (showFullAnswerPreview) {
+          renderFullAnswerPreview(typingClue, value, "Your typed answer will appear here.");
+          typingResult.textContent = "";
         }
         updateTypingActionButtons();
       });
@@ -5743,6 +5833,7 @@
         sentenceResetBtn.classList.add("hidden"); // Clear has no role here
 
         let clue = null;
+        let fullPreview = null;
         if (hasMask) {
           clue = document.createElement("div");
           clue.className = "progressive-clue";
@@ -5753,11 +5844,20 @@
             !!currentSentenceData.showProgressiveErrors
           );
           sentenceTarget.appendChild(clue);
+        } else if (isTouchPrimaryDevice()) {
+          fullPreview = document.createElement("div");
+          fullPreview.className = "progressive-clue full-answer-preview";
+          renderFullAnswerPreview(fullPreview, currentSentenceData.progressiveAnswer || "", "Your typed sentence will appear here.");
+          sentenceTarget.appendChild(fullPreview);
         }
 
-        const inp = document.createElement("input");
-        inp.className = "blank-input progressive-input";
-        inp.type = "text";
+        const inp = document.createElement(hasMask ? "input" : "textarea");
+        inp.className = "blank-input progressive-input" + (!hasMask ? " progressive-full-input" : "");
+        if (hasMask) inp.type = "text";
+        else {
+          inp.rows = 3;
+          inp.setAttribute("aria-label", "Full sentence answer");
+        }
         inp.autocomplete = "off";
         inp.autocapitalize = "off";
         inp.autocorrect = "off";
@@ -5765,10 +5865,12 @@
         inp.enterKeyHint = "done";
         inp.placeholder = hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer");
         inp.value = currentSentenceData.progressiveAnswer || "";
+        inp.classList.toggle("full-answer-input-hidden", !!fullPreview);
         inp.addEventListener("input", e => {
           currentSentenceData.progressiveAnswer = e.target.value;
           currentSentenceData.showProgressiveErrors = false;
           if (clue) clue.innerHTML = clueHtml(challenge.masked, e.target.value, challenge.missing || "", false);
+          if (fullPreview) renderFullAnswerPreview(fullPreview, e.target.value, "Your typed sentence will appear here.");
           sentenceResult.textContent = "";
           maybeAutoSubmitProgressiveSentence();
           updateSentenceActionButtons();
@@ -5785,6 +5887,7 @@
           currentSentenceData.progressiveAnswer = value;
           currentSentenceData.showProgressiveErrors = false;
           if (clue) clue.innerHTML = clueHtml(challenge.masked, value, challenge.missing || "", false);
+          if (fullPreview) renderFullAnswerPreview(fullPreview, value, "Your typed sentence will appear here.");
           sentenceResult.textContent = "";
           maybeAutoSubmitProgressiveSentence();
           updateSentenceActionButtons();
@@ -7015,6 +7118,9 @@
         typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, typingInput.value);
         typingResult.textContent = "";
         maybeAutoSubmitProgressiveWord();
+      } else if (wordMode === "progressive" && currentTypingChallenge && !currentTypingChallenge.masked && typingClue.classList.contains("full-answer-preview")) {
+        renderFullAnswerPreview(typingClue, typingInput.value, "Your typed answer will appear here.");
+        typingResult.textContent = "";
       }
       updateTypingActionButtons();
     });

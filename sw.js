@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v65-combined-polish-folders-20260708";
+const CACHE_VERSION = "languagedeck-v66-roomy-progressive-input-20260708";
 const APP_SHELL = [
   "./",
   "./index.html",
