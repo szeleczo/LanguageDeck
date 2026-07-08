@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v60-desktop-book-decks-20260707";
+const CACHE_VERSION = "languagedeck-v61-sentence-progressive-error-markers-20260708";
 const APP_SHELL = [
   "./",
   "./index.html",

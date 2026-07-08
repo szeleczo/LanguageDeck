@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v60-desktop-book-decks-20260707" />
+  <link rel="manifest" href="manifest.webmanifest?v=v61-sentence-progressive-error-markers-20260708" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1030,6 +1030,12 @@
     }
     .clue-gap { opacity: 0.32; }
     .clue-fill { color: var(--primary); }
+    .clue-fill.clue-wrong {
+      color: var(--danger);
+      background: var(--danger-soft);
+      border-radius: 5px;
+      padding: 0 2px;
+    }
 
     /* Compact difficulty indicator: 5 dots instead of "Level 2/5 · about
        25% hidden" prose. */
@@ -2268,7 +2274,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v60-desktop-book-decks-20260707</div>
+      <div class="meta" id="appBuildLabel">Build: v61-sentence-progressive-error-markers-20260708</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2532,7 +2538,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v60-desktop-book-decks-20260707";
+    const APP_BUILD = "v61-sentence-progressive-error-markers-20260708";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3135,19 +3141,47 @@
     /* Render the pattern with typed characters filled into the gaps, left
        to right. Filled characters are highlighted, remaining gaps dimmed —
        direct visual feedback while typing. Returns HTML. */
-    function clueHtml(masked, typed) {
+    function clueCharNorm(ch) {
+      return answerNorm(ch).replace(/\s+/g, "");
+    }
+
+    function clueHtml(masked, typed, expectedMissing = "", markErrors = false) {
       const m = Array.from(String(masked || ""));
       const t = Array.from(String(typed || "").replace(/\s+/g, ""));
+      const e = Array.from(String(expectedMissing || ""));
       let ti = 0, html = "";
       for (let i = 0; i < m.length; i++) {
         if (m[i] === "_") {
-          if (ti < t.length) html += `<span class="clue-fill">${escapeHtml(t[ti++])}</span>`;
-          else html += `<span class="clue-gap">_</span>`;
+          if (ti < t.length) {
+            const typedChar = t[ti];
+            const expectedChar = e[ti] || "";
+            const wrong = !!(markErrors && expectedChar && clueCharNorm(typedChar) !== clueCharNorm(expectedChar));
+            html += `<span class="clue-fill${wrong ? " clue-wrong" : ""}">${escapeHtml(typedChar)}</span>`;
+            ti++;
+          } else {
+            html += `<span class="clue-gap">_</span>`;
+          }
         } else {
           html += escapeHtml(m[i]);
         }
       }
       return html;
+    }
+
+    function renderCurrentSentenceProgressiveClue(markErrors = false) {
+      if (sentenceMode !== "progressive" || !currentSentenceData) return;
+      const challenge = currentSentenceData.progressiveChallenge;
+      if (!challenge || !challenge.masked) return;
+      currentSentenceData.showProgressiveErrors = !!markErrors;
+      const clue = sentenceTarget ? sentenceTarget.querySelector(".progressive-clue") : null;
+      if (clue) {
+        clue.innerHTML = clueHtml(
+          challenge.masked,
+          currentSentenceData.progressiveAnswer || "",
+          challenge.missing || "",
+          !!markErrors
+        );
+      }
     }
 
     function normalizeMissingLetters(v) {
@@ -3203,6 +3237,8 @@
           splitAlternatives(currentSentence.alternatives || currentSentence.alt || ""));
         if (correct) submitSentenceAnswer(false);
         else {
+          currentSentenceData.showProgressiveErrors = true;
+          renderCurrentSentenceProgressiveClue(true);
           sentenceResult.textContent = "Not quite — use backspace to fix it.";
           updateSentenceActionButtons();
         }
@@ -4977,6 +5013,7 @@
         typingAnswers: new Array(blankIndices.length).fill(""),
         progressiveAnswer: "",
         progressiveChallenge: buildProgressiveChallenge(s.target, s),
+        showProgressiveErrors: false,
         bankWords: buildWordBank(blankAnswers),
         orderWords,
         orderBank: shuffleArr(orderWords),
@@ -5298,7 +5335,12 @@
         if (hasMask) {
           clue = document.createElement("div");
           clue.className = "progressive-clue";
-          clue.innerHTML = clueHtml(challenge.masked, currentSentenceData.progressiveAnswer || "");
+          clue.innerHTML = clueHtml(
+            challenge.masked,
+            currentSentenceData.progressiveAnswer || "",
+            challenge.missing || "",
+            !!currentSentenceData.showProgressiveErrors
+          );
           sentenceTarget.appendChild(clue);
         }
 
@@ -5314,7 +5356,8 @@
         inp.value = currentSentenceData.progressiveAnswer || "";
         inp.addEventListener("input", e => {
           currentSentenceData.progressiveAnswer = e.target.value;
-          if (clue) clue.innerHTML = clueHtml(challenge.masked, e.target.value);
+          currentSentenceData.showProgressiveErrors = false;
+          if (clue) clue.innerHTML = clueHtml(challenge.masked, e.target.value, challenge.missing || "", false);
           sentenceResult.textContent = "";
           maybeAutoSubmitProgressiveSentence();
           updateSentenceActionButtons();
@@ -5329,7 +5372,8 @@
         sentenceTarget.appendChild(keypad);
         renderInlineMissingKeypad(keypad, inp, challenge, value => {
           currentSentenceData.progressiveAnswer = value;
-          if (clue) clue.innerHTML = clueHtml(challenge.masked, value);
+          currentSentenceData.showProgressiveErrors = false;
+          if (clue) clue.innerHTML = clueHtml(challenge.masked, value, challenge.missing || "", false);
           sentenceResult.textContent = "";
           maybeAutoSubmitProgressiveSentence();
           updateSentenceActionButtons();
@@ -5515,6 +5559,10 @@
         setTimeout(async () => { locked = false; await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 650);
       } else {
         clearTimeout(sentenceProgressiveAutoSubmitTimer);
+        if (sentenceMode === "progressive" && currentSentenceData && currentSentenceData.progressiveChallenge && currentSentenceData.progressiveChallenge.masked) {
+          currentSentenceData.showProgressiveErrors = true;
+          renderCurrentSentenceProgressiveClue(true);
+        }
         wrongCount++; updateScore();
         sentenceResult.textContent = `Wrong. Correct: ${currentSentence.target}`;
         statusEl.textContent = "";
@@ -5539,6 +5587,7 @@
       currentSentenceData.choiceAnswers = new Array(currentSentenceData.blankIndices.length).fill("");
       currentSentenceData.typingAnswers = new Array(currentSentenceData.blankIndices.length).fill("");
       currentSentenceData.progressiveAnswer = "";
+      currentSentenceData.showProgressiveErrors = false;
       currentSentenceData.orderPlaced = [];
       currentSentenceData.orderChecked = false;
       currentSentenceData.orderAwaitingContinue = false;
