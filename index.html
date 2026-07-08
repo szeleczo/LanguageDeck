@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v61-sentence-progressive-error-markers-20260708" />
+  <link rel="manifest" href="manifest.webmanifest?v=v62-combined-book-flow-20260708" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -2274,7 +2274,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v61-sentence-progressive-error-markers-20260708</div>
+      <div class="meta" id="appBuildLabel">Build: v62-combined-book-flow-20260708</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2284,6 +2284,7 @@
             <select id="gameSelect">
               <option value="words" selected>Word cards</option>
               <option value="sentences">Sentence completion</option>
+              <option value="combined">Combined book flow</option>
             </select>
           </div>
           <div>
@@ -2538,7 +2539,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v61-sentence-progressive-error-markers-20260708";
+    const APP_BUILD = "v62-combined-book-flow-20260708";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3590,6 +3591,7 @@
       const exampleEnKey = findHeader(headers, ["example_en", "english_example", "example_english"]);
       const exampleTargetKey = findHeader(headers, ["example_target", "example_de", "german_example", "example_german", "example_it", "italian_example"]);
       const alternativesKey = findHeader(headers, ["alternatives", "alt", "accepted", "accepted_answers"]);
+      const sourceKey = findHeader(headers, ["source", "source_sentence", "sentence", "from_sentence"]);
 
       const rows = [];
       for (const it of items) {
@@ -3621,7 +3623,8 @@
           level: optionalCsvValue(it, levelKey),
           example_en: optionalCsvValue(it, exampleEnKey),
           example_target: optionalCsvValue(it, exampleTargetKey),
-          alternatives: optionalCsvValue(it, alternativesKey)
+          alternatives: optionalCsvValue(it, alternativesKey),
+          source: optionalCsvValue(it, sourceKey)
         };
         for (const [k, v] of Object.entries(optionalFields)) if (v) row[k] = v;
 
@@ -3884,6 +3887,12 @@
     let currentSentenceData = null;
     let activeBlankIndex = 0;
 
+    // Combined/book flow state: one selected sentence deck + its paired word deck.
+    let combinedCurrentType = null; // "sentence" | "word"
+    let combinedPair = null;
+    let combinedTurnCounter = 0;
+    let combinedLastTaskKey = "";
+
     let fetchingMore = false;
 
     /* ---------- DOM refs ---------- */
@@ -4080,10 +4089,12 @@
         match: "Match", typing: "Type", progressive: "Adaptive missing letters",
         choice: "Word bank", order: "Reorder"
       };
-      const modeLabel = currentGame === "words" ? "Words" : "Sentences";
-      const variant = currentGame === "words"
-        ? (variantLabels[wordMode] || wordMode)
-        : (variantLabels[sentenceMode] || sentenceMode);
+      const modeLabel = currentGame === "words" ? "Words" : (currentGame === "combined" ? "Combined" : "Sentences");
+      const variant = currentGame === "combined"
+        ? "Book flow"
+        : (currentGame === "words"
+          ? (variantLabels[wordMode] || wordMode)
+          : (variantLabels[sentenceMode] || sentenceMode));
       const setText = currentSetName === "__all__" ? "All decks" : currentSetName;
       const liChip = document.getElementById("liModeChip");
       if (liChip) liChip.innerHTML = `<strong>${escapeHtml(modeLabel)} · ${escapeHtml(variant)}</strong><br>${escapeHtml(setText)}`;
@@ -4130,22 +4141,29 @@
     }
 
     function renderQuickSheet() {
-      // WHAT — word cards vs sentences
+      // WHAT — word cards, sentences, or a combined book-flow orchestrator
       buildSeg(qsModeSeg, [
         { value: "words", label: "Words" },
-        { value: "sentences", label: "Sentences" }
+        { value: "sentences", label: "Sentences" },
+        { value: "combined", label: "Combined" }
       ], currentGame, async (v) => {
         setSelectAndFire(gameSelect, v);
         renderQuickSheet();
       });
 
-      // HOW — variant depends on the chosen mode
+      // HOW — variant depends on the chosen mode. Combined intentionally has
+      // one guided flow: sentence missing letters first, then unlocked word
+      // missing letters from mastered source sentences.
       if (currentGame === "words") {
         buildSeg(qsVariantSeg, [
           { value: "match", label: "Match" },
           { value: "typing", label: "Type" },
           { value: "progressive", label: "Adaptive missing letters" }
         ], wordMode, async (v) => { setSelectAndFire(modeSelect, v); renderQuickSheet(); });
+      } else if (currentGame === "combined") {
+        buildSeg(qsVariantSeg, [
+          { value: "combined", label: "Book flow" }
+        ], "combined", async () => {});
       } else {
         buildSeg(qsVariantSeg, [
           { value: "choice", label: "Word bank" },
@@ -4188,8 +4206,32 @@
     function closeQuickSheet() { quickSheet.classList.remove("active"); saveSettings(); }
 
     async function refreshSetOptions() {
-      const sets = await DB.getSets(currentGame === "words" ? "word_pairs" : "sentence_pairs", currentDeck);
       setSelect.innerHTML = "";
+
+      if (currentGame === "combined") {
+        const pairs = await collectCombinedDeckPairs(currentDeck);
+        if (pairs.length === 0) {
+          const o = document.createElement("option");
+          o.value = "__all__"; o.textContent = "No paired book decks installed";
+          setSelect.appendChild(o);
+          currentSetName = "__all__";
+        } else {
+          for (const pair of pairs) {
+            const o = document.createElement("option");
+            o.value = pair.base;
+            o.textContent = `${pair.base} (${pair.sentenceCount} sentences · ${pair.wordCount} words)`;
+            setSelect.appendChild(o);
+          }
+          const normalizedCurrent = combinedBaseName(currentSetName);
+          const exists = pairs.some(p => p.base === normalizedCurrent);
+          currentSetName = exists ? normalizedCurrent : pairs[0].base;
+        }
+        setSelect.value = currentSetName;
+        updateModeSummary();
+        return;
+      }
+
+      const sets = await DB.getSets(currentGame === "words" ? "word_pairs" : "sentence_pairs", currentDeck);
       const allOpt = document.createElement("option");
       allOpt.value = "__all__"; allOpt.textContent = "All decks";
       setSelect.appendChild(allOpt);
@@ -4235,24 +4277,27 @@
 
     function updateGameUI() {
       const isWords = currentGame === "words";
+      const isCombined = currentGame === "combined";
+      const isSentenceGame = currentGame === "sentences";
       const isWordMatch = isWords && wordMode === "match";
-      const isWordTyping = isWords && (wordMode === "typing" || wordMode === "progressive");
+      const isWordTyping = (isWords && (wordMode === "typing" || wordMode === "progressive")) || (isCombined && combinedCurrentType === "word");
+      const isSentenceVisible = isSentenceGame || (isCombined && combinedCurrentType === "sentence");
       wordMatchContainer.classList.toggle("hidden", !isWordMatch);
       wordTypingContainer.classList.toggle("hidden", !isWordTyping);
-      sentenceContainer.classList.toggle("hidden", isWords);
-      document.documentElement.classList.toggle("order-practice-active", !isWords && sentenceMode === "order");
-      const progressiveActive = (isWords && wordMode === "progressive") || (!isWords && sentenceMode === "progressive");
+      sentenceContainer.classList.toggle("hidden", !isSentenceVisible);
+      document.documentElement.classList.toggle("order-practice-active", isSentenceGame && sentenceMode === "order");
+      const progressiveActive = (isWords && wordMode === "progressive") || ((isSentenceGame || isCombined) && sentenceMode === "progressive") || (isCombined && wordMode === "progressive");
       if (!progressiveActive) document.documentElement.classList.remove("keypad-active");
       visibleCountSelect.disabled = !isWordMatch;
-      sentenceModeSelect.disabled = isWords;
-      modeSelect.disabled = !isWords;
+      sentenceModeSelect.disabled = isWords || isCombined;
+      modeSelect.disabled = !isWords || isCombined;
       updateGateUI();
       updateModeSummary();
     }
     function updateGateUI() {
       // Toggle a class instead of inline style, so @media rules can still
       // override (inline style has higher specificity than @media rules).
-      gatePanel.classList.toggle("gate-disabled", !gateEnabled);
+      gatePanel.classList.toggle("gate-disabled", !gateEnabled || currentGame === "combined");
       // Clear any leftover inline style from previous versions
       gatePanel.style.display = "";
       updateModeSummary();
@@ -4262,8 +4307,16 @@
     // the keyboard hint UI was removed in favor of a cleaner main area.
     // Kept as a no-op so call-sites still work; deck-and-count info now lives in the chip.
     async function refreshStats() {
-      const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
-      const all = await DB.getAll(table, currentDeck, currentSetName);
+      let all = [];
+      let hardestTitleText = currentGame === "words" ? "Most-missed words" : "Most-missed sentences";
+      if (currentGame === "combined") {
+        const bundle = await getCombinedBundle(false);
+        all = bundle ? [...bundle.sentences, ...bundle.words] : [];
+        hardestTitleText = "Most-missed combined items";
+      } else {
+        const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
+        all = await DB.getAll(table, currentDeck, currentSetName);
+      }
       const now = nowIso();
       const total = all.length;
       const newCount = all.filter(r => r.next_due == null).length;
@@ -4278,7 +4331,7 @@
         .sort((a, b) => (b.times_wrong - a.times_wrong) || (a.times_correct - b.times_correct) || (a.id - b.id))
         .slice(0, 5);
 
-      hardestTitle.textContent = currentGame === "words" ? "Most-missed words" : "Most-missed sentences";
+      hardestTitle.textContent = hardestTitleText;
 
       if (hardest.length === 0) { hardestList.textContent = "No data yet."; return; }
       if (currentGame === "words") {
@@ -4293,7 +4346,7 @@
           <div class="hardest-item">
             <div><strong>EN:</strong> ${escapeHtml(item.english)}</div>
             <div><strong>${escapeHtml(deckCfg().targetName)}:</strong> ${escapeHtml(item.target)}</div>
-            <div class="meta">deck: ${escapeHtml(item.set_name || "default")} · wrong: ${item.times_wrong} · right: ${item.times_correct} · streak: ${item.streak}</div>
+            <div class="meta">deck: ${escapeHtml(item.set_name || "default")} · wrong: ${item.times_wrong || 0} · right: ${item.times_correct || 0} · streak: ${item.streak || 0}</div>
           </div>
         `).join("");
       }
@@ -4320,6 +4373,14 @@
     }
 
     async function refreshGateInfo() {
+      if (currentGame === "combined") {
+        totalGates = 0;
+        gatePanel.classList.add("gate-disabled");
+        gateLabel.textContent = "Combined";
+        gateProgressText.textContent = "—";
+        gateProgressFill.style.width = "0%";
+        return { progress: { total: 0, mastered: 0, new: 0, due: 0, percent: 0, is_complete: true }, total_gates: 0, gate_index: 0 };
+      }
       const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
       const all = await DB.getAll(table, currentDeck, currentSetName);
       const useGateSize = currentGame === "words" ? gateSize : Math.min(gateSize, 50);
@@ -4412,6 +4473,209 @@
       await loadCurrentGame(true);
     }
 
+
+    /* ---------- Combined book flow ---------- */
+    function combinedBaseName(name) {
+      return String(name || "")
+        .replace(/\s+[—-]\s+(Sentences|Sentence|Words|Word)\s*$/i, "")
+        .replace(/\s+\((sentences|words)\)\s*$/i, "")
+        .trim();
+    }
+
+    function sentenceSetLooksLikeBook(name) {
+      return /\b(sentences|sentence)\b/i.test(String(name || ""));
+    }
+    function wordSetLooksLikeBook(name) {
+      return /\b(words|word)\b/i.test(String(name || ""));
+    }
+
+    async function collectCombinedDeckPairs(deck = currentDeck) {
+      const [sentenceSets, wordSets] = await Promise.all([
+        DB.getSets("sentence_pairs", deck),
+        DB.getSets("word_pairs", deck)
+      ]);
+      const map = new Map();
+      const ensure = base => {
+        if (!map.has(base)) map.set(base, { base, sentenceSetName: null, wordSetName: null, sentenceCount: 0, wordCount: 0 });
+        return map.get(base);
+      };
+      for (const s of sentenceSets) {
+        if (!s.set_name || s.set_name === "__all__") continue;
+        const base = combinedBaseName(s.set_name);
+        if (!base) continue;
+        const p = ensure(base);
+        if (!p.sentenceSetName || sentenceSetLooksLikeBook(s.set_name)) {
+          p.sentenceSetName = s.set_name;
+          p.sentenceCount = s.item_count;
+        }
+      }
+      for (const s of wordSets) {
+        if (!s.set_name || s.set_name === "__all__") continue;
+        const base = combinedBaseName(s.set_name);
+        if (!base) continue;
+        const p = ensure(base);
+        if (!p.wordSetName || wordSetLooksLikeBook(s.set_name)) {
+          p.wordSetName = s.set_name;
+          p.wordCount = s.item_count;
+        }
+      }
+      return [...map.values()]
+        .filter(p => p.sentenceSetName && p.wordSetName)
+        .sort((a, b) => a.base.localeCompare(b.base));
+    }
+
+    async function getCombinedBundle(allowFallback = true) {
+      const pairs = await collectCombinedDeckPairs(currentDeck);
+      if (pairs.length === 0) return null;
+      const wanted = combinedBaseName(currentSetName);
+      let pair = pairs.find(p => p.base === wanted) || pairs.find(p => p.sentenceSetName === currentSetName || p.wordSetName === currentSetName);
+      if (!pair && allowFallback) pair = pairs[0];
+      if (!pair) return null;
+      combinedPair = pair;
+      currentSetName = pair.base;
+      if (setSelect && setSelect.value !== currentSetName && [...setSelect.options].some(o => o.value === currentSetName)) setSelect.value = currentSetName;
+      const [sentences, words] = await Promise.all([
+        DB.getAll("sentence_pairs", currentDeck, pair.sentenceSetName),
+        DB.getAll("word_pairs", currentDeck, pair.wordSetName)
+      ]);
+      return { pair, sentences, words };
+    }
+
+    function sourceKeyForSentence(sentence) {
+      return normTxt(sentence && sentence.english);
+    }
+    function sourceKeyForWord(word) {
+      return normTxt(word && (word.source || word.source_sentence || word.sentence || ""));
+    }
+
+    function unlockedCombinedWords(words, sentences) {
+      const masteredSources = new Set(sentences
+        .filter(s => (s.streak | 0) >= 3)
+        .map(sourceKeyForSentence)
+        .filter(Boolean));
+      return words.filter(w => {
+        const source = sourceKeyForWord(w);
+        // If a legacy/manual word deck has no source column, do not block it
+        // forever: let it enter once the learner has mastered at least one
+        // sentence in the paired set.
+        if (!source) return masteredSources.size > 0;
+        return masteredSources.has(source);
+      });
+    }
+
+    function pickOneStudyItem(rows, label) {
+      if (!rows || rows.length === 0) return null;
+      const selected = selectStudyItems(rows, Math.min(8, Math.max(1, rows.length)), newRatio, practiceScope, false, rows);
+      if (!selected || selected.length === 0) return null;
+      const avoidKey = combinedLastTaskKey;
+      return selected.find(it => `${label}:${it.id}` !== avoidKey) || selected[0];
+    }
+
+    async function loadCombinedMode(reset = true) {
+      if (reset) {
+        sessionLoadedIds = new Set();
+        combinedTurnCounter = 0;
+        combinedLastTaskKey = "";
+      }
+      wordMode = "progressive";
+      sentenceMode = "progressive";
+      if (modeSelect) modeSelect.value = wordMode;
+      if (sentenceModeSelect) sentenceModeSelect.value = sentenceMode;
+      correctCount = reset ? 0 : correctCount;
+      wrongCount = reset ? 0 : wrongCount;
+      updateScore();
+      await loadNextCombinedTask();
+    }
+
+    async function loadNextCombinedTask() {
+      clearTimeout(wordProgressiveAutoSubmitTimer);
+      clearTimeout(sentenceProgressiveAutoSubmitTimer);
+      const bundle = await getCombinedBundle(true);
+      if (!bundle) {
+        combinedCurrentType = null;
+        wordMatchContainer.classList.add("hidden");
+        wordTypingContainer.classList.add("hidden");
+        sentenceContainer.classList.add("hidden");
+        statusEl.textContent = "No paired book decks installed. Import a Sentences deck and its matching Words deck.";
+        return;
+      }
+
+      const { pair, sentences, words } = bundle;
+      sentencePool = sentences.slice();
+      wordQueue = words.slice();
+      const unlockedWords = unlockedCombinedWords(words, sentences);
+      const sentenceItem = pickOneStudyItem(sentences, "s");
+      const wordItem = pickOneStudyItem(unlockedWords, "w");
+      const sentenceProgress = computeProgress(sentences).percent;
+      const wordEvery = sentenceProgress >= 80 ? 2 : (sentenceProgress >= 40 ? 3 : 4);
+      const preferWord = !!wordItem && (!sentenceItem || (combinedTurnCounter > 0 && combinedTurnCounter % wordEvery === wordEvery - 1));
+
+      if (preferWord) {
+        showCombinedWord(wordItem, unlockedWords.length, pair);
+        combinedLastTaskKey = `w:${wordItem.id}`;
+      } else if (sentenceItem) {
+        showCombinedSentence(sentenceItem, unlockedWords.length, pair);
+        combinedLastTaskKey = `s:${sentenceItem.id}`;
+      } else if (wordItem) {
+        showCombinedWord(wordItem, unlockedWords.length, pair);
+        combinedLastTaskKey = `w:${wordItem.id}`;
+      } else {
+        combinedCurrentType = null;
+        wordMatchContainer.classList.add("hidden");
+        wordTypingContainer.classList.add("hidden");
+        sentenceContainer.classList.add("hidden");
+        statusEl.textContent = `Combined flow: master a few sentences in “${pair.base}” to unlock their words.`;
+        return;
+      }
+      combinedTurnCounter += 1;
+      updateGameUI();
+      updateModeSummary();
+    }
+
+    function showCombinedWord(item, unlockedCount, pair) {
+      combinedCurrentType = "word";
+      currentTypingWord = item;
+      currentTypingChallenge = buildProgressiveChallenge(targetDisplay(currentTypingWord), currentTypingWord);
+      wordTypingAwaitingContinue = false;
+      wordMatchContainer.classList.add("hidden");
+      sentenceContainer.classList.add("hidden");
+      wordTypingContainer.classList.remove("hidden");
+
+      setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
+      const hasMask = !!(currentTypingChallenge && currentTypingChallenge.masked);
+      typingHelp.textContent = `Combined · word from mastered sentences · ${unlockedCount} unlocked`;
+      typingLevelDots.classList.remove("hidden");
+      typingLevelDots.innerHTML = levelDotsHtml(currentTypingWord);
+      typingClue.classList.toggle("hidden", !hasMask);
+      typingClue.innerHTML = hasMask ? clueHtml(currentTypingChallenge.masked, "") : "—";
+      typingInput.placeholder = hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer");
+      typingInput.value = "";
+      typingResult.textContent = "";
+      renderInlineMissingKeypad(typingInlineKeypad, typingInput, currentTypingChallenge, value => {
+        if (currentTypingChallenge && currentTypingChallenge.masked) {
+          typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, value);
+          typingResult.textContent = "";
+          maybeAutoSubmitProgressiveWord();
+        }
+        updateTypingActionButtons();
+      });
+      updateTypingActionButtons();
+      focusPracticeInput(typingInput);
+      statusEl.textContent = `Combined · ${pair.base} · word practice`;
+    }
+
+    function showCombinedSentence(item, unlockedCount, pair) {
+      combinedCurrentType = "sentence";
+      currentSentence = item;
+      currentSentenceData = prepareSentenceData(currentSentence);
+      activeBlankIndex = 0;
+      wordMatchContainer.classList.add("hidden");
+      wordTypingContainer.classList.add("hidden");
+      sentenceContainer.classList.remove("hidden");
+      renderSentence();
+      statusEl.textContent = `Combined · ${pair.base} · sentence first · ${unlockedCount} words unlocked`;
+    }
+
     /* ---------- Fetching items ---------- */
     async function fetchWordItems(forceResetIfEmpty = true) {
       if (fetchingMore) return [];
@@ -4461,6 +4725,7 @@
       if (reset) sessionLoadedIds = new Set();
       await refreshGateInfo();
       if (currentGame === "words") await loadWords(reset);
+      else if (currentGame === "combined") await loadCombinedMode(reset);
       else await loadSentences(reset);
       // Show/hide the empty-state hero whenever data state changes
       if (typeof checkEmptyState === "function") await checkEmptyState();
@@ -4704,7 +4969,8 @@
       locked = true;
       updateTypingActionButtons();
       try {
-        await loadNextTypingWord();
+        if (currentGame === "combined") await loadNextCombinedTask();
+        else await loadNextTypingWord();
         await refreshStats();
         await refreshGateInfo();
       } finally {
@@ -4913,7 +5179,7 @@
         typingResult.textContent = "Correct.";
         statusEl.textContent = "";
         await saveWordAnswer(currentTypingWord.id, true);
-        setTimeout(async () => { locked = false; await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 450);
+        setTimeout(async () => { locked = false; if (currentGame === "combined") await loadNextCombinedTask(); else await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 450);
       } else {
         clearTimeout(wordProgressiveAutoSubmitTimer);
         wrongCount++; updateScore();
@@ -5198,7 +5464,8 @@
       locked = true;
       updateSentenceActionButtons();
       try {
-        await loadNextSentence();
+        if (currentGame === "combined") await loadNextCombinedTask();
+        else await loadNextSentence();
         await refreshStats();
         await refreshGateInfo();
       } finally {
@@ -5556,7 +5823,7 @@
         sentenceResult.textContent = "Correct.";
         statusEl.textContent = "";
         await saveSentenceAnswer(currentSentence.id, true);
-        setTimeout(async () => { locked = false; await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 650);
+        setTimeout(async () => { locked = false; if (currentGame === "combined") await loadNextCombinedTask(); else await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 650);
       } else {
         clearTimeout(sentenceProgressiveAutoSubmitTimer);
         if (sentenceMode === "progressive" && currentSentenceData && currentSentenceData.progressiveChallenge && currentSentenceData.progressiveChallenge.masked) {
@@ -6121,6 +6388,85 @@
       note.textContent = sourceNote;
       builtinList.appendChild(note);
 
+      // Combined/book pairs: one-tap import for sentence + word decks that share
+      // the same base title. This keeps the Combined mode usable without asking
+      // the learner to manually import two separate CSV files in the right order.
+      const pairMap = new Map();
+      decks.forEach(d => {
+        const kind = (d.type || "words") === "sentences" ? "sentences" : "words";
+        const rawName = d.name || d.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, "");
+        const base = combinedBaseName(rawName);
+        if (!base || base === rawName && !/[—-]\s*(Words|Sentences)$/i.test(rawName)) return;
+        const key = `${d.deck || currentDeck}|${base}`;
+        if (!pairMap.has(key)) pairMap.set(key, { deck: d.deck || currentDeck, base, words: null, sentences: null });
+        pairMap.get(key)[kind] = d;
+      });
+      const bookPairs = [...pairMap.values()].filter(p => p.words && p.sentences);
+      if (bookPairs.length > 0) {
+        const header = document.createElement("div");
+        header.style.cssText = "font-size:11px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin:8px 0 4px;";
+        header.textContent = "Combined book pairs";
+        builtinList.appendChild(header);
+        bookPairs.forEach(pair => {
+          const wrap = document.createElement("div");
+          wrap.className = "builtin-item";
+          const title = document.createElement("div");
+          title.innerHTML = `<strong>${escapeHtml(pair.base)}</strong>`;
+          const meta = document.createElement("div");
+          meta.className = "builtin-item-meta";
+          meta.textContent = `${pair.deck.toUpperCase()} · sentences + words`;
+          const btn = document.createElement("button");
+          btn.textContent = "Import pair";
+          btn.style.marginTop = "6px";
+          btn.addEventListener("click", async () => {
+            btn.disabled = true;
+            btn.textContent = "Importing…";
+            try {
+              for (const part of [pair.sentences, pair.words]) {
+                const url = `decks/${part.file}`;
+                const r = await fetch(cacheBustedUrl(url), { cache: "reload" });
+                if (!r.ok) throw new Error(`Could not download ${part.file}`);
+                const text = await r.text();
+                const setName = (part.name || part.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, ""));
+                const table = (part.type || "words") === "sentences" ? "sentence_pairs" : "word_pairs";
+                const existing = (await DB.getSets(table, part.deck || pair.deck)).some(s => s.set_name === setName);
+                if (existing) await DB.clear(table, part.deck || pair.deck, setName);
+                if ((part.type || "words") === "sentences") await importSentencesFromCsv(text, part.deck || pair.deck, setName);
+                else await importWordsFromCsv(text, part.deck || pair.deck, setName);
+              }
+              currentDeck = pair.deck;
+              currentGame = "combined";
+              currentSetName = pair.base;
+              wordMode = "progressive";
+              sentenceMode = "progressive";
+              deckSelect.value = currentDeck;
+              gameSelect.value = currentGame;
+              modeSelect.value = wordMode;
+              sentenceModeSelect.value = sentenceMode;
+              importType = "sentences";
+              importTypeSelect.value = importType;
+              currentGateIndex = 0;
+              sessionLoadedIds = new Set();
+              applyDeckUI();
+              await refreshSetOptions();
+              updateGameUI();
+              await refreshStats();
+              await refreshGateInfo();
+              await loadCurrentGame(true);
+              builtinModal.classList.remove("active");
+              closeSettings();
+              showToast(`Imported combined pair: ${pair.base}.`);
+            } catch (err) {
+              btn.disabled = false;
+              btn.textContent = "Import pair";
+              showToast("Error: " + err.message);
+            }
+          });
+          wrap.appendChild(title); wrap.appendChild(meta); wrap.appendChild(btn);
+          builtinList.appendChild(wrap);
+        });
+      }
+
       // Group by language for cleaner display
       let lastLang = null;
       decks.forEach(d => {
@@ -6401,6 +6747,7 @@
 
     gameSelect.addEventListener("change", async () => {
       currentGame = gameSelect.value; currentGateIndex = 0; sessionLoadedIds = new Set();
+      if (currentGame === "combined") { wordMode = "progressive"; sentenceMode = "progressive"; modeSelect.value = wordMode; sentenceModeSelect.value = sentenceMode; }
       saveSettings();
       await refreshSetOptions(); updateGameUI();
       await refreshStats(); await refreshGateInfo();
@@ -6722,9 +7069,15 @@
      * Called from init and after each import/clear.
      */
     async function checkEmptyState() {
-      const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
-      const all = await DB.getAll(table, currentDeck, "__all__");
-      const isEmpty = all.length === 0;
+      let isEmpty = false;
+      if (currentGame === "combined") {
+        const pairs = await collectCombinedDeckPairs(currentDeck);
+        isEmpty = pairs.length === 0;
+      } else {
+        const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
+        const all = await DB.getAll(table, currentDeck, "__all__");
+        isEmpty = all.length === 0;
+      }
 
       emptyState.classList.toggle("hidden", !isEmpty);
 
@@ -6735,7 +7088,7 @@
         sentenceContainer.classList.add("hidden");
         document.documentElement.classList.remove("order-practice-active");
         gatePanel.classList.add("gate-disabled");
-        statusEl.textContent = "Welcome! Import a deck to start.";
+        statusEl.textContent = currentGame === "combined" ? "Import a matching word + sentence book pair to start." : "Welcome! Import a deck to start.";
       } else {
         // Restore correct game container visibility
         updateGameUI();
