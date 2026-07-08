@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v64-combined-pair-recognition-20260708" />
+  <link rel="manifest" href="manifest.webmanifest?v=v65-combined-polish-folders-20260708" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -2274,7 +2274,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v64-combined-pair-recognition-20260708</div>
+      <div class="meta" id="appBuildLabel">Build: v65-combined-polish-folders-20260708</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2539,7 +2539,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v64-combined-pair-recognition-20260708";
+    const APP_BUILD = "v65-combined-polish-folders-20260708";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3894,11 +3894,10 @@
     // Combined/book flow state: one selected sentence deck + its paired word deck.
     let combinedCurrentType = null; // "sentence" | "word"
     let combinedPair = null;
-    let combinedTurnCounter = 0;
     let combinedLastTaskKey = "";
+    let combinedLastUnlockedCount = 0;
     const COMBINED_SENTENCE_MASTERY_STREAK = 3;
     const COMBINED_SENTENCE_MASTERY_LEVEL = 3;
-    const COMBINED_READING_WORD_BREAK_EVERY = 5;
 
     let fetchingMore = false;
 
@@ -4587,14 +4586,6 @@
         word && word.sentence
       ].map(normTxt).filter(Boolean);
     }
-
-    function sourceKeyForSentence(sentence) {
-      return combinedSentenceSourceKeys(sentence)[0] || "";
-    }
-    function sourceKeyForWord(word) {
-      return combinedWordSourceKeys(word)[0] || "";
-    }
-
     function orderedCombinedSentences(sentences) {
       return (sentences || []).slice().sort((a, b) => (a.id || 0) - (b.id || 0));
     }
@@ -4626,12 +4617,6 @@
       };
     }
 
-    function combinedSentenceMasteryText(sentence) {
-      if (!sentence) return "";
-      const streak = Math.min(COMBINED_SENTENCE_MASTERY_STREAK, Math.max(0, sentence.streak | 0));
-      const level = Math.min(COMBINED_SENTENCE_MASTERY_LEVEL, progressiveLevelIndex(sentence));
-      return `recall ${streak}/${COMBINED_SENTENCE_MASTERY_STREAK} · scaffold ${level}/${COMBINED_SENTENCE_MASTERY_LEVEL}`;
-    }
 
     function unlockedCombinedWords(words, sentences) {
       const masteredSources = new Set();
@@ -4666,7 +4651,7 @@
     async function loadCombinedMode(reset = true) {
       if (reset) {
         sessionLoadedIds = new Set();
-        combinedTurnCounter = 0;
+        combinedLastUnlockedCount = 0;
         combinedLastTaskKey = "";
       }
       wordMode = "progressive";
@@ -4700,23 +4685,47 @@
       const unlockedWords = unlockedCombinedWords(words, reading.ordered);
       const wordItem = pickOneStudyItem(unlockedWords, "w");
 
-      // Reading pass: sentences are NOT randomised. The learner stays on the
-      // first not-yet-mastered sentence until it reaches the stricter Combined
-      // mastery threshold. Word practice is only an occasional break, and only
-      // from sentences that are already mastered.
+      // Toast newly unlocked vocabulary once, instead of a permanent counter
+      // in the UI chrome.
+      if (unlockedWords.length > combinedLastUnlockedCount && combinedLastUnlockedCount >= 0) {
+        const gained = unlockedWords.length - combinedLastUnlockedCount;
+        if (gained > 0 && combinedLastUnlockedCount > 0) showToast(`+${gained} words unlocked.`);
+      }
+      combinedLastUnlockedCount = unlockedWords.length;
+
+      // Reading pass: sentences stay in original order and the story only
+      // advances when the current sentence reaches Combined mastery. BUT the
+      // current sentence is never served twice IN A ROW when an alternative
+      // exists — recalling it across a gap is real recall; typing it three
+      // times back-to-back is short-term echo. The interleave prefers an
+      // unlocked word, falling back to a review of a recently mastered
+      // sentence.
       if (!reading.complete && reading.current) {
-        const canTakeWordBreak = !!wordItem
-          && reading.mastered > 0
-          && combinedTurnCounter > 0
-          && (combinedTurnCounter % COMBINED_READING_WORD_BREAK_EVERY === COMBINED_READING_WORD_BREAK_EVERY - 1);
-        if (canTakeWordBreak) {
-          showCombinedWord(wordItem, unlockedWords.length, pair, reading);
-          combinedLastTaskKey = `w:${wordItem.id}`;
+        const currentKey = `s:${reading.current.id}`;
+        let interleave = null;
+        if (combinedLastTaskKey === currentKey) {
+          if (wordItem) {
+            interleave = { kind: "word", item: wordItem };
+          } else {
+            const recent = reading.ordered
+              .filter(isCombinedSentenceMastered)
+              .slice(-3)
+              .filter(x => `s:${x.id}` !== combinedLastTaskKey);
+            if (recent.length) {
+              interleave = { kind: "sentence", item: recent[Math.floor(Math.random() * recent.length)] };
+            }
+          }
+        }
+        if (interleave && interleave.kind === "word") {
+          showCombinedWord(interleave.item, unlockedWords.length, pair, reading);
+          combinedLastTaskKey = `w:${interleave.item.id}`;
+        } else if (interleave) {
+          showCombinedSentence(interleave.item, unlockedWords.length, pair, reading);
+          combinedLastTaskKey = `s:${interleave.item.id}`;
         } else {
           showCombinedSentence(reading.current, unlockedWords.length, pair, reading);
-          combinedLastTaskKey = `s:${reading.current.id}`;
+          combinedLastTaskKey = currentKey;
         }
-        combinedTurnCounter += 1;
         updateGameUI();
         updateModeSummary();
         return;
@@ -4725,8 +4734,7 @@
       // Review pass: once the story unit has been read/mastered in order, the
       // mode becomes a normal SRS maintenance mix over the same text.
       const reviewSentence = pickCombinedReviewSentence(reading.ordered);
-      const wordEvery = 2;
-      const preferWord = !!wordItem && (!reviewSentence || (combinedTurnCounter > 0 && combinedTurnCounter % wordEvery === wordEvery - 1));
+      const preferWord = !!wordItem && (!reviewSentence || !combinedLastTaskKey.startsWith("w:"));
 
       if (preferWord) {
         showCombinedWord(wordItem, unlockedWords.length, pair, reading);
@@ -4745,8 +4753,6 @@
         statusEl.textContent = `Combined · ${pair.base}: reading complete. Reviews will appear when items are due again.`;
         return;
       }
-
-      combinedTurnCounter += 1;
       updateGameUI();
       updateModeSummary();
     }
@@ -4762,8 +4768,11 @@
 
       setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
       const hasMask = !!(currentTypingChallenge && currentTypingChallenge.masked);
-      const phase = reading && !reading.complete ? "Reading break" : "Review";
-      typingHelp.textContent = `Combined · ${phase} · word from mastered sentences · ${unlockedCount} unlocked`;
+      // Standard instruction in the help slot, like everywhere else. The
+      // combined context lives in the status line, once.
+      typingHelp.textContent = hasMask
+        ? "Type only the missing letters, in order."
+        : "Type the full answer.";
       typingLevelDots.classList.remove("hidden");
       typingLevelDots.innerHTML = levelDotsHtml(currentTypingWord);
       typingClue.classList.toggle("hidden", !hasMask);
@@ -4781,11 +4790,16 @@
       });
       updateTypingActionButtons();
       focusPracticeInput(typingInput);
+      statusEl.textContent = combinedStatusText(pair, reading);
+    }
+
+    /* ONE compact, stable status line for both task types: book · position. */
+    function combinedStatusText(pair, reading) {
       if (reading && !reading.complete) {
-        statusEl.textContent = `Combined · ${pair.base} · Reading ${Math.min(reading.currentIndex + 1, reading.total)}/${reading.total} · ${reading.percent}% read`;
-      } else {
-        statusEl.textContent = `Combined · ${pair.base} · Review pass`;
+        const pos = Math.min(reading.currentIndex + 1, reading.total);
+        return `${pair.base} · ${pos}/${reading.total} (${reading.percent}%)`;
       }
+      return `${pair.base} · Review`;
     }
 
     function showCombinedSentence(item, unlockedCount, pair, reading = null) {
@@ -4798,16 +4812,12 @@
       sentenceContainer.classList.remove("hidden");
       renderSentence();
 
-      if (reading && !reading.complete) {
-        const pos = reading.currentIndex >= 0 ? reading.currentIndex + 1 : reading.total;
-        sentenceHelp.textContent = "Combined Reading · Complete this sentence before the story continues.";
-        sentenceMeta.innerHTML = `<span class="level-dots" style="display:inline-flex;margin:0;vertical-align:middle;">${levelDotsHtml(currentSentence)}</span> · Sentence ${pos}/${reading.total} · ${combinedSentenceMasteryText(currentSentence)}`;
-        statusEl.textContent = `Combined · ${pair.base} · Reading ${pos}/${reading.total} · ${reading.percent}% read · ${unlockedCount} words unlocked`;
-      } else {
-        sentenceHelp.textContent = "Combined Review · Keep the finished text active.";
-        sentenceMeta.innerHTML = `<span class="level-dots" style="display:inline-flex;margin:0;vertical-align:middle;">${levelDotsHtml(currentSentence)}</span> · Review pass · ${unlockedCount} words unlocked`;
-        statusEl.textContent = `Combined · ${pair.base} · Review pass`;
-      }
+      // Standard instruction; the level dots already show the scaffold, the
+      // status line already shows the position — no "recall 2/3 · scaffold
+      // 1/3" jargon repeated on every card.
+      sentenceHelp.textContent = progressiveHelpText(currentSentence, `${deckCfg().targetName} sentence`);
+      sentenceMeta.innerHTML = `<span class="level-dots" style="display:inline-flex;margin:0;vertical-align:middle;">${levelDotsHtml(currentSentence)}</span>`;
+      statusEl.textContent = combinedStatusText(pair, reading);
     }
 
     /* ---------- Fetching items ---------- */
@@ -6126,8 +6136,13 @@
           } catch { return []; }
         }));
         const decks = [];
-        dirs.forEach((d, i) => {
+        // one extra level of recursion: a FOLDER inside a language directory
+        // is a combined book unit (decks/de/sterntaler/{sentences,words}.csv).
+        for (let i = 0; i < dirs.length; i++) {
+          const d = dirs[i];
+          const subdirs = [];
           for (const f of perDir[i]) {
+            if (f.type === "dir") { subdirs.push(f); continue; }
             if (f.type !== "file" || !/\.csv$/i.test(f.name)) continue;
             decks.push({
               name: prettifyDeckName(f.name),
@@ -6137,7 +6152,29 @@
               source: "github"
             });
           }
-        });
+          const perSub = await Promise.all(subdirs.map(async sd => {
+            try {
+              const r = await fetch(`${base}/decks/${encodeURIComponent(d.name)}/${encodeURIComponent(sd.name)}`, opts);
+              if (!r.ok) return [];
+              const files = await r.json();
+              return Array.isArray(files) ? files : [];
+            } catch { return []; }
+          }));
+          subdirs.forEach((sd, j) => {
+            for (const f of perSub[j]) {
+              if (f.type !== "file" || !/\.csv$/i.test(f.name)) continue;
+              decks.push({
+                // "Sterntaler — Sentences": the folder is the book unit, the
+                // file is the role — combined pairing matches on the base.
+                name: `${prettifyDeckName(sd.name)} — ${prettifyDeckName(f.name)}`,
+                file: `${d.name}/${sd.name}/${f.name}`,
+                deck: d.name,
+                type: guessDeckType(f.name),
+                source: "github"
+              });
+            }
+          });
+        }
         githubDeckCache = { at: Date.now(), decks };
         return decks;
       } catch {
@@ -6219,12 +6256,6 @@
     const SYNC_TABLES = ["word_pairs", "sentence_pairs"];
     const SYNC_FIELDS = ["streak", "next_due", "times_seen", "times_correct",
       "times_wrong", "progressive_level", "recovery_progress", "last_seen"];
-
-    function b64urlFromBytes(bytes) {
-      let bin = "";
-      bytes.forEach(b => { bin += String.fromCharCode(b); });
-      return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-    }
     function bytesFromB64url(str) {
       const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
       const bin = atob(b64 + "===".slice((b64.length + 3) % 4));
