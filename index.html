@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v62-combined-book-flow-20260708" />
+  <link rel="manifest" href="manifest.webmanifest?v=v63-combined-reading-flow-20260708" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -2274,7 +2274,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v62-combined-book-flow-20260708</div>
+      <div class="meta" id="appBuildLabel">Build: v63-combined-reading-flow-20260708</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2539,7 +2539,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v62-combined-book-flow-20260708";
+    const APP_BUILD = "v63-combined-reading-flow-20260708";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3892,6 +3892,9 @@
     let combinedPair = null;
     let combinedTurnCounter = 0;
     let combinedLastTaskKey = "";
+    const COMBINED_SENTENCE_MASTERY_STREAK = 3;
+    const COMBINED_SENTENCE_MASTERY_LEVEL = 3;
+    const COMBINED_READING_WORD_BREAK_EVERY = 5;
 
     let fetchingMore = false;
 
@@ -4548,12 +4551,50 @@
       return normTxt(word && (word.source || word.source_sentence || word.sentence || ""));
     }
 
+    function orderedCombinedSentences(sentences) {
+      return (sentences || []).slice().sort((a, b) => (a.id || 0) - (b.id || 0));
+    }
+
+    function isCombinedSentenceMastered(sentence) {
+      if (!sentence) return false;
+      // Combined is deliberately stricter than the normal gate: the learner
+      // must recall the sentence repeatedly, and must also have progressed
+      // through the adaptive missing-letter scaffold far enough that the clue
+      // is no longer just recognition-level.
+      return (sentence.streak | 0) >= COMBINED_SENTENCE_MASTERY_STREAK
+        && progressiveLevelIndex(sentence) >= COMBINED_SENTENCE_MASTERY_LEVEL;
+    }
+
+    function combinedReadingState(sentences) {
+      const ordered = orderedCombinedSentences(sentences);
+      const total = ordered.length;
+      const currentIndex = ordered.findIndex(s => !isCombinedSentenceMastered(s));
+      const complete = total > 0 && currentIndex === -1;
+      const mastered = ordered.filter(isCombinedSentenceMastered).length;
+      return {
+        ordered,
+        total,
+        mastered,
+        complete,
+        currentIndex,
+        current: currentIndex >= 0 ? ordered[currentIndex] : null,
+        percent: total ? Math.round((mastered / total) * 100) : 0
+      };
+    }
+
+    function combinedSentenceMasteryText(sentence) {
+      if (!sentence) return "";
+      const streak = Math.min(COMBINED_SENTENCE_MASTERY_STREAK, Math.max(0, sentence.streak | 0));
+      const level = Math.min(COMBINED_SENTENCE_MASTERY_LEVEL, progressiveLevelIndex(sentence));
+      return `recall ${streak}/${COMBINED_SENTENCE_MASTERY_STREAK} · scaffold ${level}/${COMBINED_SENTENCE_MASTERY_LEVEL}`;
+    }
+
     function unlockedCombinedWords(words, sentences) {
-      const masteredSources = new Set(sentences
-        .filter(s => (s.streak | 0) >= 3)
+      const masteredSources = new Set(orderedCombinedSentences(sentences)
+        .filter(isCombinedSentenceMastered)
         .map(sourceKeyForSentence)
         .filter(Boolean));
-      return words.filter(w => {
+      return (words || []).filter(w => {
         const source = sourceKeyForWord(w);
         // If a legacy/manual word deck has no source column, do not block it
         // forever: let it enter once the learner has mastered at least one
@@ -4569,6 +4610,10 @@
       if (!selected || selected.length === 0) return null;
       const avoidKey = combinedLastTaskKey;
       return selected.find(it => `${label}:${it.id}` !== avoidKey) || selected[0];
+    }
+
+    function pickCombinedReviewSentence(sentences) {
+      return pickOneStudyItem(orderedCombinedSentences(sentences), "s");
     }
 
     async function loadCombinedMode(reset = true) {
@@ -4601,38 +4646,65 @@
       }
 
       const { pair, sentences, words } = bundle;
-      sentencePool = sentences.slice();
+      const reading = combinedReadingState(sentences);
+      sentencePool = reading.ordered.slice();
       wordQueue = words.slice();
-      const unlockedWords = unlockedCombinedWords(words, sentences);
-      const sentenceItem = pickOneStudyItem(sentences, "s");
+
+      const unlockedWords = unlockedCombinedWords(words, reading.ordered);
       const wordItem = pickOneStudyItem(unlockedWords, "w");
-      const sentenceProgress = computeProgress(sentences).percent;
-      const wordEvery = sentenceProgress >= 80 ? 2 : (sentenceProgress >= 40 ? 3 : 4);
-      const preferWord = !!wordItem && (!sentenceItem || (combinedTurnCounter > 0 && combinedTurnCounter % wordEvery === wordEvery - 1));
+
+      // Reading pass: sentences are NOT randomised. The learner stays on the
+      // first not-yet-mastered sentence until it reaches the stricter Combined
+      // mastery threshold. Word practice is only an occasional break, and only
+      // from sentences that are already mastered.
+      if (!reading.complete && reading.current) {
+        const canTakeWordBreak = !!wordItem
+          && reading.mastered > 0
+          && combinedTurnCounter > 0
+          && (combinedTurnCounter % COMBINED_READING_WORD_BREAK_EVERY === COMBINED_READING_WORD_BREAK_EVERY - 1);
+        if (canTakeWordBreak) {
+          showCombinedWord(wordItem, unlockedWords.length, pair, reading);
+          combinedLastTaskKey = `w:${wordItem.id}`;
+        } else {
+          showCombinedSentence(reading.current, unlockedWords.length, pair, reading);
+          combinedLastTaskKey = `s:${reading.current.id}`;
+        }
+        combinedTurnCounter += 1;
+        updateGameUI();
+        updateModeSummary();
+        return;
+      }
+
+      // Review pass: once the story unit has been read/mastered in order, the
+      // mode becomes a normal SRS maintenance mix over the same text.
+      const reviewSentence = pickCombinedReviewSentence(reading.ordered);
+      const wordEvery = 2;
+      const preferWord = !!wordItem && (!reviewSentence || (combinedTurnCounter > 0 && combinedTurnCounter % wordEvery === wordEvery - 1));
 
       if (preferWord) {
-        showCombinedWord(wordItem, unlockedWords.length, pair);
+        showCombinedWord(wordItem, unlockedWords.length, pair, reading);
         combinedLastTaskKey = `w:${wordItem.id}`;
-      } else if (sentenceItem) {
-        showCombinedSentence(sentenceItem, unlockedWords.length, pair);
-        combinedLastTaskKey = `s:${sentenceItem.id}`;
+      } else if (reviewSentence) {
+        showCombinedSentence(reviewSentence, unlockedWords.length, pair, reading);
+        combinedLastTaskKey = `s:${reviewSentence.id}`;
       } else if (wordItem) {
-        showCombinedWord(wordItem, unlockedWords.length, pair);
+        showCombinedWord(wordItem, unlockedWords.length, pair, reading);
         combinedLastTaskKey = `w:${wordItem.id}`;
       } else {
         combinedCurrentType = null;
         wordMatchContainer.classList.add("hidden");
         wordTypingContainer.classList.add("hidden");
         sentenceContainer.classList.add("hidden");
-        statusEl.textContent = `Combined flow: master a few sentences in “${pair.base}” to unlock their words.`;
+        statusEl.textContent = `Combined · ${pair.base}: reading complete. Reviews will appear when items are due again.`;
         return;
       }
+
       combinedTurnCounter += 1;
       updateGameUI();
       updateModeSummary();
     }
 
-    function showCombinedWord(item, unlockedCount, pair) {
+    function showCombinedWord(item, unlockedCount, pair, reading = null) {
       combinedCurrentType = "word";
       currentTypingWord = item;
       currentTypingChallenge = buildProgressiveChallenge(targetDisplay(currentTypingWord), currentTypingWord);
@@ -4643,7 +4715,8 @@
 
       setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
       const hasMask = !!(currentTypingChallenge && currentTypingChallenge.masked);
-      typingHelp.textContent = `Combined · word from mastered sentences · ${unlockedCount} unlocked`;
+      const phase = reading && !reading.complete ? "Reading break" : "Review";
+      typingHelp.textContent = `Combined · ${phase} · word from mastered sentences · ${unlockedCount} unlocked`;
       typingLevelDots.classList.remove("hidden");
       typingLevelDots.innerHTML = levelDotsHtml(currentTypingWord);
       typingClue.classList.toggle("hidden", !hasMask);
@@ -4661,10 +4734,14 @@
       });
       updateTypingActionButtons();
       focusPracticeInput(typingInput);
-      statusEl.textContent = `Combined · ${pair.base} · word practice`;
+      if (reading && !reading.complete) {
+        statusEl.textContent = `Combined · ${pair.base} · Reading ${Math.min(reading.currentIndex + 1, reading.total)}/${reading.total} · ${reading.percent}% read`;
+      } else {
+        statusEl.textContent = `Combined · ${pair.base} · Review pass`;
+      }
     }
 
-    function showCombinedSentence(item, unlockedCount, pair) {
+    function showCombinedSentence(item, unlockedCount, pair, reading = null) {
       combinedCurrentType = "sentence";
       currentSentence = item;
       currentSentenceData = prepareSentenceData(currentSentence);
@@ -4673,7 +4750,17 @@
       wordTypingContainer.classList.add("hidden");
       sentenceContainer.classList.remove("hidden");
       renderSentence();
-      statusEl.textContent = `Combined · ${pair.base} · sentence first · ${unlockedCount} words unlocked`;
+
+      if (reading && !reading.complete) {
+        const pos = reading.currentIndex >= 0 ? reading.currentIndex + 1 : reading.total;
+        sentenceHelp.textContent = "Combined Reading · Complete this sentence before the story continues.";
+        sentenceMeta.innerHTML = `<span class="level-dots" style="display:inline-flex;margin:0;vertical-align:middle;">${levelDotsHtml(currentSentence)}</span> · Sentence ${pos}/${reading.total} · ${combinedSentenceMasteryText(currentSentence)}`;
+        statusEl.textContent = `Combined · ${pair.base} · Reading ${pos}/${reading.total} · ${reading.percent}% read · ${unlockedCount} words unlocked`;
+      } else {
+        sentenceHelp.textContent = "Combined Review · Keep the finished text active.";
+        sentenceMeta.innerHTML = `<span class="level-dots" style="display:inline-flex;margin:0;vertical-align:middle;">${levelDotsHtml(currentSentence)}</span> · Review pass · ${unlockedCount} words unlocked`;
+        statusEl.textContent = `Combined · ${pair.base} · Review pass`;
+      }
     }
 
     /* ---------- Fetching items ---------- */
