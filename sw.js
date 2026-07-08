@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v59-compact-sync-codes-20260707";
+const CACHE_VERSION = "languagedeck-v60-desktop-book-decks-20260707";
 const APP_SHELL = [
   "./",
   "./index.html",

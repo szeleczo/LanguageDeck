@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v59-compact-sync-codes-20260707" />
+  <link rel="manifest" href="manifest.webmanifest?v=v60-desktop-book-decks-20260707" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -737,6 +737,27 @@
         padding: 4px 6px;
         text-align: center;
         min-width: 0;
+      }
+      .landscape-info .li-mode-chip {
+        appearance: none;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-bottom-width: 2px;
+        border-radius: 999px;
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.25;
+        padding: 7px 10px;
+        min-height: 0;
+        width: 100%;
+        text-align: center;
+        cursor: pointer;
+        word-break: break-word;
+      }
+      .landscape-info .li-mode-chip:hover {
+        border-color: var(--border-strong);
+        background: var(--surface-2);
       }
       .landscape-info .li-gate-pct {
         font-family: var(--font-display);
@@ -2101,7 +2122,8 @@
         <!-- Centre info column — only visible in landscape mode.
              Shows compact gate progress, score, and gate navigation arrows
              between the two card columns, so the user doesn't lose context. -->
-        <div class="landscape-info" aria-hidden="true">
+        <div class="landscape-info">
+          <button class="li-mode-chip" id="liModeChip" type="button" aria-label="Switch what you study">—</button>
           <div>
             <div class="li-gate-pct" id="liGatePct">—</div>
             <div class="li-gate-label" id="liGateLabel">—</div>
@@ -2246,7 +2268,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v59-compact-sync-codes-20260707</div>
+      <div class="meta" id="appBuildLabel">Build: v60-desktop-book-decks-20260707</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2510,7 +2532,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v59-compact-sync-codes-20260707";
+    const APP_BUILD = "v60-desktop-book-decks-20260707";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -4027,6 +4049,8 @@
         ? (variantLabels[wordMode] || wordMode)
         : (variantLabels[sentenceMode] || sentenceMode);
       const setText = currentSetName === "__all__" ? "All decks" : currentSetName;
+      const liChip = document.getElementById("liModeChip");
+      if (liChip) liChip.innerHTML = `<strong>${escapeHtml(modeLabel)} · ${escapeHtml(variant)}</strong><br>${escapeHtml(setText)}`;
       modeSummary.innerHTML = `
         <span class="chip-dot"></span>
         <span><strong>${escapeHtml(modeLabel)} · ${escapeHtml(variant)}</strong> · ${escapeHtml(setText)}</span>
@@ -6147,6 +6171,8 @@
     modeSummary.addEventListener("click", openQuickSheet);
     qsDoneBtn.addEventListener("click", closeQuickSheet);
     quickSheet.addEventListener("click", e => { if (e.target === quickSheet) closeQuickSheet(); });
+    const liModeChip = document.getElementById("liModeChip");
+    if (liModeChip) liModeChip.addEventListener("click", openQuickSheet);
 
     statsBtn.addEventListener("click", openStats);
     closeStatsBtn.addEventListener("click", closeStats);
