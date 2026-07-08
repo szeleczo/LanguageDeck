@@ -1,0 +1,272 @@
+word_id,english,target,article,plural,type,level,tags,hint,source_id,source
+w001,smell,Geruch,der,Gerüche,noun,A2,senses,Geruch means smell or odor.,s001,Als Erstes ist da der Geruch von Blut und Kaffee.
+w002,coffee machine,Kaffeemaschine,die,Kaffeemaschinen,noun,A1,objects,Compound noun: Kaffee + Maschine.,s002,"Die Kaffeemaschine steht drüben auf dem Tisch, und das Blut ist in meinen Schuhen."
+w003,honest,ehrlich,,,adjective,A2,speech,Um ehrlich zu sein = to be honest.,s003,"Um ehrlich zu sein, es ist nicht nur Blut."
+w004,older/younger one,Ältere,der,Älteren,noun,B1,people,Substantivized adjective.,s004,"Als der Ältere «vierzehn» gesagt hat, hab ich mir in die Hose gepisst."
+w005,stool,Hocker,der,Hocker,noun,B1,objects,A backless stool.,s005,Ich hab die ganze Zeit schräg auf dem Hocker gehangen und mich nicht gerührt.
+w006,dizzy; dizziness,schwindlig,,,adjective,A2,body,Mir ist schwindlig = I feel dizzy.,s006,Mir war schwindlig.
+w007,fear,Angst,die,Ängste,noun,A2,emotion,vor Angst = from fear.,s007,"Ich hab versucht auszusehen, wie ich gedacht hab, dass Tschick wahrscheinlich aussieht, wenn einer «vierzehn» zu ihm sagt, und dann hab ich mir vor Angst in die Hose gepisst."
+w008,hero,Held,der,Helden,noun,A2,people,"Weak noun: der Held, den Helden.",s008,"Maik Klingenberg, der Held."
+w009,agitation; fuss,Aufregung,die,Aufregungen,noun,B1,emotion,Aufregung can mean excitement or agitation.,s009,"Dabei weiß ich gar nicht, warum jetzt die Aufregung."
+w010,to end,enden,,,verb,A1,time,Regular verb: endet.,s010,"War doch die ganze Zeit klar, dass es so endet."
+w011,certainty; safety,Sicherheit,die,Sicherheiten,noun,B1,abstract,mit Sicherheit = certainly.,s011,Tschick hat sich mit Sicherheit nicht in die Hose gepisst.
+w012,anyway; at all,überhaupt,,,adverb,A2,particles,Used for emphasis in questions.,s012,Wo ist Tschick überhaupt?
+w013,highway; motorway,Autobahn,die,Autobahnen,noun,A2,travel,Auto + Bahn; German motorway.,s013,"Auf der Autobahn hab ich ihn noch gesehen, wie er auf einem Bein ins Gebüsch gehüpft ist, aber ich schätze mal, sie haben ihn auch gekriegt."
+w014,to come,kommen,,,verb,A1,movement,Strong verb pattern.,s014,Mit einem Bein kommt man nicht weit.
+w015,police officer,Polizist,der,Polizisten,noun,A2,people,"Weak noun: der Polizist, den Polizisten.",s015,Fragen kann ich die Polizisten natürlich nicht.
+w016,to see; look,sehen,,,verb,A1,sight,"Strong verb: sieht, sah, gesehen.",s016,"Weil, wenn sie ihn nicht gesehen haben, ist es logisch besser, gar nicht damit anzufangen."
+w017,maybe,vielleicht,,,adverb,A1,particles,Common uncertainty adverb.,s017,Vielleicht haben sie ihn ja nicht gesehen.
+w018,certainty; safety,Sicherheit,die,Sicherheiten,noun,B1,abstract,mit Sicherheit = certainly.,s018,Und von mir erfahren sie’s mit Sicherheit nicht.
+w019,to torture; torture,foltern,,,verb,B2,violence,foltern = to torture.,s019,Da können sie mich foltern.
+w020,to torture; torture,foltern,,,verb,B2,violence,foltern = to torture.,s020,"Obwohl die deutsche Polizei, glaube ich, niemanden foltern darf."
+w021,to see; look,sehen,,,verb,A1,sight,"Strong verb: sieht, sah, gesehen.",s021,Das dürfen die nur im Fernsehen und in der Türkei.
+w022,highway; motorway,Autobahn,die,Autobahnen,noun,A2,travel,Auto + Bahn; German motorway.,s022,Aber vollgeschifft und blutig auf der Station der Autobahnpolizei sitzen und Fragen nach den Eltern beantworten ist auch nicht gerade der ganz große Bringer.
+w023,agitation; fuss,Aufregung,die,Aufregungen,noun,B1,emotion,Aufregung can mean excitement or agitation.,s023,"Vielleicht wäre Foltern sogar ganz angenehm, dann hätte ich wenigstens einen Grund für meine Aufregung."
+w024,to keep your mouth shut,Klappe halten,,,phrase,B1,colloquial,Colloquial fixed phrase.,s024,"Das Beste ist Klappe halten, hat Tschick gesagt."
+w025,to see; look,sehen,,,verb,A1,sight,"Strong verb: sieht, sah, gesehen.",s025,Und das seh ich genauso.
+w026,not important; all the same,egal,,,adjective,A2,emotion,Mir ist egal = I do not care.,s026,"Jetzt, wo eh alles egal ist."
+w027,not important; all the same,egal,,,adjective,A2,emotion,Mir ist egal = I do not care.,s027,Und mir ist alles egal.
+w028,almost everything,fast alles,,,phrase,A1,phrases,fast = almost.,s028,"Na ja, fast alles."
+w029,not important; all the same,egal,,,adjective,A2,emotion,Mir ist egal = I do not care.,s029,Tatjana Cosic zum Beispiel ist mir natürlich nicht egal.
+w030,to think,denken,,,verb,A1,mental,"Strong verb: denkt, dachte, gedacht.",s030,Obwohl ich jetzt schon ziemlich lange nicht mehr an sie gedacht habe.
+w031,coffee machine,Kaffeemaschine,die,Kaffeemaschinen,noun,A1,objects,Compound noun: Kaffee + Maschine.,s031,"Aber wo ich auf diesem Hocker sitze und draußen die Autobahn vorbeirauscht und der ältere Polizist steht seit fünf Minuten an der Kaffeemaschine dahinten und füllt Wasser ein und kippt es wieder aus, drückt auf den Schalter und schaut das Gerät von unten an, während jeder Depp sehen kann, dass der Stecker vom Verlängerungskabel nicht drin ist, da muss ich wieder an Tatjana denken."
+w032,strictly speaking,genau genommen,,,phrase,B1,phrases,Useful qualifying phrase.,s032,"Denn genau genommen wäre ich nicht hier, wenn es Tatjana nicht gäbe."
+w033,although,obwohl,,,conjunction,A2,connectors,Subordinating conjunction; verb goes to the end.,s033,Obwohl sie mit der ganzen Sache nichts zu tun hat.
+w034,unclear,unklar,,,adjective,A2,description,un- makes the opposite.,s034,"Ist das unklar, was ich da rede?"
+w035,sorry,leidtun,,,verb,A2,phrases,tut mir leid = I am sorry.,s035,"Ja, tut mir leid."
+w036,to try,versuchen,,,verb,A2,actions,Regular verb.,s036,Ich versuch’s später nochmal.
+w037,anyway; at all,überhaupt,,,adverb,A2,particles,Used for emphasis in questions.,s037,Tatjana kommt in der ganzen Geschichte überhaupt nicht vor.
+w038,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s038,Das schönste Mädchen der Welt kommt nicht vor.
+w039,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s039,"Auf der ganzen Reise hab ich mir immer vorgestellt, dass sie uns sehen kann."
+w040,cornfield,Kornfeld,das,Kornfelder,noun,B1,nature,Compound: Korn + Feld.,s040,Wie wir oben aus dem Kornfeld rausgucken.
+w041,bundle,Bündel,das,Bündel,noun,B1,objects,Same singular and plural.,s041,Wie wir mit dem Bündel Schläuche auf dem Müllberg stehen wie die letzten Trottel . . .
+w042,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s042,"Ich hab mir immer vorgestellt, Tatjana steht hinter uns und sieht, was wir sehen, und freut sich, wie wir uns freuen."
+w043,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s043,"Aber jetzt bin ich froh, dass ich mir das nur vorgestellt hab."
+w044,police officer,Polizist,der,Polizisten,noun,A2,people,"Weak noun: der Polizist, den Polizisten.",s044,Der Polizist zieht ein grünes Papierhandtuch aus einem Handtuchspender und gibt es mir.
+w045,to be supposed to,sollen,,,verb,A1,modal verbs,Modal verb: ich soll.,s045,Was soll ich damit?
+w046,to wipe up,aufwischen,,,verb,B1,actions,Separable verb: wischt auf.,s046,Den Boden aufwischen?
+w047,to touch; grasp,fassen,,,verb,B1,actions,fassen can mean grasp or touch.,s047,Er fasst mit zwei Fingern an seine Nase und sieht mich an.
+w048,"oh, I see",Ach so,,,phrase,A1,phrases,Everyday reaction phrase.,s048,Ach so.
+w049,to blow one’s nose,schnäuzen,,,verb,B2,body,sich die Nase schnäuzen.,s049,Nase schnäuzen.
+w050,to blow one’s nose,schnäuzen,,,verb,B2,body,sich die Nase schnäuzen.,s050,"Ich schnäuze mir die Nase, er lächelt freundlich."
+w051,to torture; torture,foltern,,,verb,B2,violence,foltern = to torture.,s051,Das mit der Folter kann ich mir wohl abschminken.
+w052,tissue; handkerchief,Taschentuch,das,Taschentücher,noun,A2,objects,Compound: Tasche + Tuch.,s052,Aber wohin jetzt mit dem Taschentuch?
+w053,searchingly,suchend,,,adjective,B1,actions,Participle used adjectivally.,s053,Ich schaue suchend auf dem Boden herum.
+w054,linoleum,Linoleum,das,,noun,B2,materials,Flooring material.,s054,"Die ganze Station ist mit grauem Linoleum ausgelegt, genau das gleiche wie in den Gängen zu unserer Turnhalle."
+w055,to smell,riechen,,,verb,A2,senses,"Strong verb: roch, gerochen.",s055,Es riecht auch ein bisschen so.
+w056,linoleum,Linoleum,das,,noun,B2,materials,Flooring material.,s056,"Pisse, Schweiß und Linoleum."
+w057,tracksuit,Trainingsanzug,der,Trainingsanzüge,noun,B1,clothing,Compound noun.,s057,"Ich sehe Wolkow, unseren Sportlehrer, im Trainingsanzug durch die Gänge federn, siebzig Jahre, durchtrainiert: Auf geht’s, Jungs! Hopp, hopp!"
+w058,giggling,Gekicher,das,,noun,B2,sounds,Ge- nominalization.,s058,"Das Geräusch seiner schmatzenden Schritte auf dem Boden, fernes Gekicher aus der Mädchenumkleide und Wolkows Blick dorthin."
+w059,to do gymnastics,turnen,,,verb,A2,sport,Regular verb.,s059,"Ich sehe die hohen Fenster, die Bänke, die Ringe an der Decke, an denen nie geturnt wurde."
+w060,side entrance,Seiteneingang,der,Seiteneingänge,noun,B2,place,Compound noun.,s060,Ich sehe Natalie und Lena und Kimberley durch den Seiteneingang der Halle kommen.
+w061,tracksuit,Trainingsanzug,der,Trainingsanzüge,noun,B1,clothing,Compound noun.,s061,Und Tatjana in ihrem grünen Trainingsanzug.
+w062,reflection,Spiegelbild,das,Spiegelbilder,noun,B1,sight,Mirror image or reflection.,s062,"Ich sehe ihr verschwommenes Spiegelbild auf dem Hallenboden, die Glitzerhosen, die die Mädchen jetzt immer tragen, die Oberteile."
+w063,to do gymnastics,turnen,,,verb,A2,sport,Regular verb.,s063,"Und dass neuerdings die Hälfte von ihnen in dicken Wollpullovern turnt, und mindestens drei haben immer ein Attest vom Arzt."
+w064,eighth grade,achte Klasse,,,phrase,A2,school,Ordinal number + noun.,s064,"Hagecius-Gymnasium Berlin, achte Klasse."
+w065,police officer,Polizist,der,Polizisten,noun,A2,people,"Weak noun: der Polizist, den Polizisten.",s065,"«Ich dachte, fünfzehn?», sage ich, und der Polizist schüttelt den Kopf."
+w066,fourteen,vierzehn,,,adjective,A1,numbers,Number from vier + zehn.,s066,"«Nee, vierzehn. Vierzehn. Was ist mit dem Kaffee, Horst?»"
+w067,broken,kaputt,,,adjective,A2,condition,Colloquial adjective.,s067,"«Kaffee ist kaputt», sagt Horst."
+w068,lawyer,Anwalt,der,Anwälte,noun,B1,law,Anwalt = lawyer.,s068,Ich möchte meinen Anwalt sprechen.
+w069,to say,sagen,,,verb,A1,speech,Regular verb.,s069,"Das wäre der Satz, den ich jetzt wahrscheinlich sagen müsste."
+w070,to see; look,sehen,,,verb,A1,sight,"Strong verb: sieht, sah, gesehen.",s070,"Das ist der richtige Satz in der richtigen Situation, wie jeder aus dem Fernsehen weiß."
+w071,lawyer,Anwalt,der,Anwälte,noun,B1,law,Anwalt = lawyer.,s071,Aber das sagt sich so leicht: Ich möchte meinen Anwalt sprechen.
+w072,to laugh oneself to death,sich totlachen,,,verb,B2,colloquial,Reflexive colloquial verb.,s072,Würden die sich wahrscheinlich totlachen.
+w073,idea; knowledge,Ahnung,die,Ahnungen,noun,A2,knowledge,keine Ahnung = no idea.,s073,"Das Problem ist: Ich habe keine Ahnung, was dieser Satz bedeutet."
+w074,lawyer,Anwalt,der,Anwälte,noun,B1,law,Anwalt = lawyer.,s074,"Wenn ich sage, ich möchte meinen Anwalt sprechen, und sie fragen: «Wen möchtest du sprechen? Deinen Anwalt?» – was soll ich dann antworten?"
+w075,lawyer,Anwalt,der,Anwälte,noun,B1,law,Anwalt = lawyer.,s075,"Ich hab in meinem Leben noch keinen Anwalt gesehen, und ich weiß auch nicht, wozu ich einen brauche."
+w076,lawyer,Anwalt,der,Anwälte,noun,B1,law,Anwalt = lawyer.,s076,"Ich weiß nicht mal, ob Rechtsanwalt dasselbe ist wie Anwalt."
+w077,lawyer,Anwalt,der,Anwälte,noun,B1,law,Anwalt = lawyer.,s077,Oder Staatsanwalt.
+w078,idea; knowledge,Ahnung,die,Ahnungen,noun,A2,knowledge,keine Ahnung = no idea.,s078,"So was Ähnliches wie ein Richter, nehme ich an, nur dass er auf meiner Seite steht und mehr Ahnung von Gesetzen hat als ich."
+w079,idea; knowledge,Ahnung,die,Ahnungen,noun,A2,knowledge,keine Ahnung = no idea.,s079,"Aber mehr Ahnung von Gesetzen als ich hat hier praktisch jeder, der im Raum ist."
+w080,police officer,Polizist,der,Polizisten,noun,A2,people,"Weak noun: der Polizist, den Polizisten.",s080,Jeder Polizist vor allem.
+w081,to ask; question,fragen,,,verb,A1,speech,fragen = to ask.,s081,Und die könnte ich natürlich fragen.
+w082,older/younger one,Ältere,der,Älteren,noun,B1,people,Substantivized adjective.,s082,"Aber ich wette, wenn ich den Jüngeren frage, ob ich jetzt so eine Art Anwalt brauchen könnte, dann dreht der sich zu seinem Kollegen um und ruft: «Hey, Horst! Horschti! Komm mal her! Unser Held hier will wissen, ob er einen Anwalt braucht! Guck dir das an. Blutet den ganzen Boden voll, pisst sich in die Hosen wie ein Weltmeister und – will seinen Anwalt sprechen!»"
+w083,laughter,Hahaha,,,phrase,A1,sounds,Laughter in writing.,s083,Hahaha.
+w084,broken,kaputt,,,adjective,A2,condition,Colloquial adjective.,s084,Da lachen die sich natürlich kaputt.
+w085,to make a fool of oneself,sich zum Obst machen,,,phrase,C1,idiom,Colloquial idiom.,s085,"Und ich finde, es geht mir schlecht genug, ich muss mich nicht auch noch zum Obst machen."
+w086,to happen,passieren,,,verb,A2,events,Regular verb; also means pass.,s086,"Was passiert ist, ist passiert."
+w087,to come,kommen,,,verb,A1,movement,Strong verb pattern.,s087,Mehr kommt jetzt nicht.
+w088,lawyer,Anwalt,der,Anwälte,noun,B1,law,Anwalt = lawyer.,s088,Da kann auch der Anwalt nichts mehr ändern.
+w089,to mess things up,Mist bauen,,,phrase,B2,colloquial,Literally: build manure.,s089,"Weil, dass wir Mist gebaut haben, könnte nur ein Geisteskranker abzustreiten versuchen."
+w090,to be supposed to,sollen,,,verb,A1,modal verbs,Modal verb: ich soll.,s090,Was soll ich sagen?
+w091,cleaning lady,Putzfrau,die,Putzfrauen,noun,B1,people,Compound noun.,s091,"Dass ich die ganze Woche zu Hause am Pool gelegen hab, fragen Sie die Putzfrau?"
+w092,halves of pigs,Schweinehälfte,die,Schweinehälften,noun,B2,objects,Compound noun.,s092,Dass die Schweinehälften wie Regen vom Himmel gefallen sind?
+w093,much; a lot,viel,,,adverb,A1,quantity,viel = much; viele = many.,s093,Viel kann ich jetzt wirklich nicht mehr tun.
+w094,to pray,beten,,,verb,A2,religion,Regular verb.,s094,"Ich könnte noch gen Mekka beten und mir in die Hosen kacken, sonst sind nicht mehr viele Optionen offen."
+w095,older/younger one,Ältere,der,Älteren,noun,B1,people,Substantivized adjective.,s095,"Der Jüngere, der eigentlich ganz nett aussieht, schüttelt den Kopf und wiederholt: «Fünfzehn ist Quatsch. Vierzehn. Mit vierzehn bist du strafmündig.»"
+w096,honest,ehrlich,,,adjective,A2,speech,Um ehrlich zu sein = to be honest.,s096,"Wahrscheinlich sollte ich jetzt Schuldgefühle haben und Reue und alles, aber, ehrlich gesagt, ich fühle überhaupt nichts."
+w097,dizzy; dizziness,schwindlig,,,adjective,A2,body,Mir ist schwindlig = I feel dizzy.,s097,Mir ist einfach nur wahnsinnig schwindlig.
+w098,calf,Wade,die,Waden,noun,B1,body,Part of the leg.,s098,Ich kratze mich unten an meiner Wade.
+w099,calf,Wade,die,Waden,noun,B1,body,Part of the leg.,s099,"Nur da, wo früher meine Wade war, ist jetzt nichts mehr."
+w100,slime; mucus,Schleim,der,,noun,B2,body,Uncountable in many contexts.,s100,Ein violetter Streifen Schleim bleibt an meiner Hand kleben.
+w101,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s101,"Das ist nicht mein Blut, hatte ich vorhin gesagt, als sie mich gefragt hatten."
+w102,slime; mucus,Schleim,der,,noun,B2,body,Uncountable in many contexts.,s102,"Lag ja genug anderer Schleim auf der Straße, um den man sich kümmern konnte, und ich dachte wirklich, dass das nicht mein Blut ist."
+w103,calf,Wade,die,Waden,noun,B1,body,Part of the leg.,s103,"Aber wenn das nicht mein Blut ist, wo ist denn jetzt meine Wade, frage ich mich?"
+w104,pant leg,Hosenbein,das,Hosenbeine,noun,B1,clothing,Compound noun.,s104,Ich ziehe das Hosenbein hoch und gucke drunter.
+w105,second,Sekunde,die,Sekunden,noun,A1,time,Time unit.,s105,"Dann habe ich noch genau eine Sekunde, um mich zu wundern."
+w106,certainty; safety,Sicherheit,die,Sicherheiten,noun,B1,abstract,mit Sicherheit = certainly.,s106,"Wenn ich das im Film sehen müsste, würde mir mit Sicherheit übel, denke ich, und tatsächlich wird mir jetzt übel, auf dieser Station der Autobahnpolizei, was ja auch irgendwie beruhigend ist."
+w107,linoleum,Linoleum,das,,noun,B2,materials,Flooring material.,s107,"Für einen kurzen Moment sehe ich noch mein Spiegelbild auf dem Linoleum auf mich zukommen, und dann knallt es, und ich bin weg."
+w108,carp,Karpfen,der,Karpfen,noun,B2,animals,A fish.,s108,Der Arzt macht den Mund auf und zu wie ein Karpfen.
+w109,second,Sekunde,die,Sekunden,noun,A1,time,Time unit.,s109,"Es dauert ein paar Sekunden, bis Worte rauskommen."
+w110,to scream,schreien,,,verb,A2,speech,"Strong verb: schreit, schrie, geschrien.",s110,Der Arzt schreit.
+w111,to scream,schreien,,,verb,A2,speech,"Strong verb: schreit, schrie, geschrien.",s111,Warum schreit denn jetzt der Arzt?
+w112,to scream,schreien,,,verb,A2,speech,"Strong verb: schreit, schrie, geschrien.",s112,Er schreit die kleine Frau an.
+w113,uniformed person,Uniformierte,der,Uniformierten,noun,B2,people,Substantivized adjective.,s113,"Dann mischt sich der Uniformierte ein, eine blaue Uniform."
+w114,police officer,Polizist,der,Polizisten,noun,A2,people,"Weak noun: der Polizist, den Polizisten.",s114,"Ein Polizist, den ich noch nicht kenne."
+w115,to reprimand,zurechtweisen,,,verb,C1,speech,Separable verb.,s115,Er weist den Arzt zurecht.
+w116,anyway; at all,überhaupt,,,adverb,A2,particles,Used for emphasis in questions.,s116,"Woher weiß ich überhaupt, dass das ein Arzt ist?"
+w117,coat; smock,Kittel,der,Kittel,noun,B1,clothing,Doctor’s coat.,s117,Er trägt einen weißen Kittel.
+w118,baker,Bäcker,der,Bäcker,noun,A2,jobs,Same singular and plural.,s118,Könnte also auch ein Bäcker sein.
+w119,coat; smock,Kittel,der,Kittel,noun,B1,clothing,Doctor’s coat.,s119,Aber in der Kitteltasche hat er eine Metalltaschenlampe und so ein Horchding.
+w120,baker,Bäcker,der,Bäcker,noun,A2,jobs,Same singular and plural.,s120,"Was soll ein Bäcker mit dem Horchding, Brötchen abhorchen?"
+w121,probably will,schon,,,adverb,B1,particles,schon can soften certainty.,s121,Wird schon ein Arzt sein.
+w122,this,dieser,,,pronoun,A1,demonstratives,Demonstrative pronoun.,s122,Und dieser Arzt zeigt jetzt auf meinen Kopf und brüllt.
+w123,blanket,Bettdecke,die,Bettdecken,noun,A2,objects,Bed cover.,s123,"Ich taste unter der Bettdecke herum, wo meine Beine sind."
+w124,naked,nackt,,,adjective,A2,body,Plain adjective.,s124,Sie sind nackt.
+w125,to feel,fühlen,,,verb,A1,body,sich fühlen = to feel.,s125,Fühlen sich auch nicht mehr bepisst an oder blutig.
+w126,where,wo,,,adverb,A1,questions,Question word for place.,s126,Wo bin ich denn hier?
+w127,to lie,liegen,,,verb,A1,position,Position verb.,s127,Ich liege auf dem Rücken.
+w128,above; up top,oben,,,adverb,A1,place,Opposite of unten.,s128,Oben ist alles gelb.
+w129,glance; look,Blick,der,Blicke,noun,A2,sight,Blick zur Seite = glance to the side.,s129,"Blick zur Seite: große, dunkle Fenster."
+w130,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s130,Andere Seite: weißer Plastikvorhang.
+w131,hospital,Krankenhaus,das,Krankenhäuser,noun,A2,health,Plural has umlaut.,s131,"Krankenhaus, würde ich sagen."
+w132,to fit,passen,,,verb,A2,state,Das passt = that fits.,s132,Das passt ja auch zum Arzt.
+w133,coat; smock,Kittel,der,Kittel,noun,B1,clothing,Doctor’s coat.,s133,"Und klar, die kleine Frau trägt auch einen Kittel und einen Schreibblock."
+w134,maybe,vielleicht,,,adverb,A1,particles,Common uncertainty adverb.,s134,"Und welches Krankenhaus, vielleicht die Charité?"
+w135,idea; knowledge,Ahnung,die,Ahnungen,noun,A2,knowledge,keine Ahnung = no idea.,s135,"Nee, keine Ahnung."
+w136,Berlin,Berlin,das,,noun,A1,place,City name; usually no article in use.,s136,Ich bin ja nicht in Berlin.
+w137,to pay attention to,beachten,,,verb,B1,attention,jemanden beachten.,s137,"Mal fragen, denke ich, aber niemand beachtet mich."
+w138,police officer,Polizist,der,Polizisten,noun,A2,people,"Weak noun: der Polizist, den Polizisten.",s138,"Weil, dem Polizisten gefällt das nämlich nicht, wie er da von dem Arzt angeschrien wird, und er schreit zurück, aber da schreit dann der Arzt noch lauter – und da merkt man interessanterweise, wer hier das Sagen hat."
+w139,police officer,Polizist,der,Polizisten,noun,A2,people,"Weak noun: der Polizist, den Polizisten.",s139,"Das Sagen hat nämlich eindeutig der Arzt und nicht der Polizist, und ich bin so erschöpft und auch irgendwie glücklich und müde, ich bin von innen wie mit Glück ausgepolstert und schlafe wieder ein, ohne ein Wort zu sagen."
+w140,happiness; luck,Glück,das,,noun,A2,emotion,Can mean luck or happiness.,s140,"Das Glück, stellt sich später raus, heißt Valium."
+w141,syringe; injection,Spritze,die,Spritzen,noun,B1,health,Medical noun.,s141,Es wird mit großen Spritzen verteilt.
+w142,next time,nächstes Mal,,,phrase,A2,time,das nächste Mal = next time.,s142,"Als ich das nächste Mal aufwache, ist alles hell."
+w143,large windows,Fenster,das,Fenster,noun,A1,objects,Same singular and plural.,s143,In den großen Fenstern steht die Sonne.
+w144,soles of the feet,Fußsohle,die,Fußsohlen,noun,B2,body,Compound noun.,s144,An meinen Fußsohlen wird herumgekratzt.
+w145,nurse,Krankenschwester,die,Krankenschwestern,noun,A2,health,Traditional word for nurse.,s145,"Aha, schon wieder ein Arzt, ein anderer diesmal, und eine Krankenschwester hat er auch wieder dabei."
+w146,police officer,Polizist,der,Polizisten,noun,A2,people,"Weak noun: der Polizist, den Polizisten.",s146,Keine Polizisten.
+w147,feet,Fuß,der,Füße,noun,A1,body,Plural has umlaut.,s147,"Nur dass der Arzt so an meinen Füßen kratzt, ist nicht angenehm."
+w148,why,warum,,,adverb,A1,questions,Question word for reason.,s148,Warum kratzt der denn so?
+w149,nurse,Krankenschwester,die,Krankenschwestern,noun,A2,health,Traditional word for nurse.,s149,"«Er ist aufgewacht», bemerkt die Krankenschwester."
+w150,witty; clever,geistreich,,,adjective,B2,description,nicht sehr geistreich = not very clever.,s150,Nicht sehr geistreich.
+w151,to go,gehen,,,verb,A1,movement,Very common irregular verb.,s151,"«Ah, aha.» Der Arzt schaut mich an. «Wie geht es dir?»"
+w152,pfff,Pfff,,,phrase,A1,sounds,Nonverbal sound.,s152,"Ich will etwas sagen, aber aus meinem Mund kommt nur: «Pfff.»"
+w153,to go,gehen,,,verb,A1,movement,Very common irregular verb.,s153,"«Wie geht es dir? Weißt du, wie du heißt?»"
+w154,pfff,Pfff,,,phrase,A1,sounds,Nonverbal sound.,s154,«Pfff-fäh?»
+w155,to ask; question,fragen,,,verb,A1,speech,fragen = to ask.,s155,Was ist das denn für eine Frage?
+w156,crazy,meschugge,,,adjective,C1,colloquial,Colloquial loanword.,s156,Halten die mich für meschugge?
+w157,to look,schauen,,,verb,A1,sight,Common verb for looking.,s157,"Ich schaue den Arzt an, und er schaut mich an, und dann beugt er sich über mich und leuchtet mir mit einer Taschenlampe in die Augen."
+w158,interrogation,Verhör,das,Verhöre,noun,B2,law,Official questioning.,s158,Ist das ein Verhör?
+w159,to confess,gestehen,,,verb,B2,law,Strong verb-like pattern.,s159,Soll ich meinen Namen gestehen oder was?
+w160,to torture; torture,foltern,,,verb,B2,violence,foltern = to torture.,s160,Ist das hier das Folterkrankenhaus?
+w161,eyelids,Augenlid,das,Augenlider,noun,B2,body,Compound noun.,s161,"Und wenn, kann er dann bitte mal kurz aufhören, meine Augenlider hochzuziehen, oder wenigstens so tun, als würde er sich für meine Antwort interessieren?"
+w162,however,allerdings,,,adverb,B1,connectors,Signals contrast.,s162,Allerdings antworte ich gar nicht.
+w163,anyway; at all,überhaupt,,,adverb,A2,particles,Used for emphasis in questions.,s163,"Weil, während ich noch überlege, ob ich Maik Klingenberg sagen soll oder einfach nur Maik oder Klinge oder Attila der Hunnenkönig – das sagt mein Vater immer, wenn er Stress hat, wenn er den ganzen Tag wieder nur Hiobsbotschaften gehört hat, dann trinkt er zwei Jägermeister und meldet sich am Telefon mit Attila der Hunnenkönig –, ich meine, während ich noch am Überlegen bin, ob ich überhaupt etwas sagen soll oder ob man sich das nicht letztlich sparen kann in dieser Situation, redet der Arzt schon irgendwas von «vier hiervon» und «drei davon», und ich schlafe wieder ein."
+w164,hospitals,Krankenhaus,das,Krankenhäuser,noun,A2,health,Plural with umlaut.,s164,"Über Krankenhäuser kann man ja viel sagen, aber nicht, dass es da nicht schön ist."
+w165,hospital,Krankenhaus,das,Krankenhäuser,noun,A2,health,Plural has umlaut.,s165,Ich bin immer wahnsinnig gern im Krankenhaus.
+w166,nurse,Krankenschwester,die,Krankenschwestern,noun,A2,health,Traditional word for nurse.,s166,"Man macht den ganzen Tag nichts, und dann kommen die Krankenschwestern."
+w167,to see; look,sehen,,,verb,A1,sight,"Strong verb: sieht, sah, gesehen.",s167,Die Schwestern sind alle sehr jung und superfreundlich.
+w168,coat; smock,Kittel,der,Kittel,noun,B1,clothing,Doctor’s coat.,s168,"Und sie tragen diese dünnen weißen Kittel, die ich so toll finde, wo man immer gleich sieht, was für Unterwäsche sie anhaben."
+w169,why,warum,,,adverb,A1,questions,Question word for reason.,s169,"Warum ich das so toll finde, weiß ich übrigens auch nicht."
+w170,coat; smock,Kittel,der,Kittel,noun,B1,clothing,Doctor’s coat.,s170,"Weil, wenn jemand mit so einem Kittel auf der Straße rumlaufen würde, würde ich das albern finden."
+w171,hospital,Krankenhaus,das,Krankenhäuser,noun,A2,health,Plural has umlaut.,s171,Aber im Krankenhaus ist es toll.
+w172,opinion,Meinung,die,Meinungen,noun,A1,speech,Meine Meinung = my opinion.,s172,Meine Meinung.
+w173,fear,Angst,die,Ängste,noun,A2,emotion,vor Angst = from fear.,s173,"Das ist ein bisschen wie in Mafiafilmen, wo einen die Gangster immer eine Minute schweigend angucken, bevor sie antworten."
+w174,silence,Schweigen,das,,noun,B1,communication,Nominalized verb.,s174,«Hey!» Eine Minute Schweigen. «Sieh mir in die Augen!» Fünf Minuten Schweigen.
+w175,silly,albern,,,adjective,B1,description,Useful everyday adjective.,s175,Im richtigen Leben ist das albern.
+w176,mafia,Mafia,die,,noun,B1,society,Same loanword as English.,s176,"Aber wenn man bei der Mafia ist, eben nicht."
+w177,nurse,Krankenschwester,die,Krankenschwestern,noun,A2,health,Traditional word for nurse.,s177,Meine Lieblingskrankenschwester kommt aus dem Libanon und heißt Hanna.
+w178,underwear,Unterwäsche,die,,noun,A2,clothing,Usually singular mass noun.,s178,Hanna hat kurzes schwarzes Haar und trägt normale Unterwäsche.
+w179,underwear,Unterwäsche,die,,noun,A2,clothing,Usually singular mass noun.,s179,Und das ist auch toll: normale Unterwäsche.
+w180,underwear,Unterwäsche,die,,noun,A2,clothing,Usually singular mass noun.,s180,Diese andere Unterwäsche sieht ja auch immer ein bisschen traurig aus.
+w181,most,meisten,,,pronoun,A2,quantity,bei den meisten = for most people.,s181,Bei den meisten.
+w182,desperate,verzweifelt,,,adjective,B1,emotion,Also past participle.,s182,"Wenn man nicht gerade die Figur von Megan Fox hat, kann das ziemlich verzweifelt aussehen."
+w183,to know,wissen,,,verb,A1,knowledge,"Irregular verb: weiß, wusste.",s183,Ich weiß nicht.
+w184,maybe,vielleicht,,,adverb,A1,particles,Common uncertainty adverb.,s184,Vielleicht bin ich auch pervers: Ich steh auf normale Unterwäsche.
+w185,trainee nurse,Schwesternschülerin,die,Schwesternschülerinnen,noun,C1,jobs,Older term for trainee nurse.,s185,"Hanna ist eigentlich auch erst Schwesternschülerin, also in der Ausbildung oder so, und wenn sie in mein Zimmer kommt, streckt sie immer zuerst den Kopf um die Ecke und klopft dann mit zwei Fingern an den Türrahmen, das finde ich sehr, sehr höflich, und sie denkt sich jeden Tag einen neuen Namen für mich aus."
+w186,good grief,Alter Finne,,,phrase,B2,colloquial,Colloquial exclamation.,s186,"Erst hieß ich Maik, dann Maiki, dann Maikipaiki, wo ich schon dachte: Alter Finne."
+w187,end,Ende,das,Enden,noun,A1,time,das Ende = the end.,s187,Aber das war noch nicht das Ende.
+w188,pig murderer,Schweinemörder,der,Schweinemörder,noun,B2,insult,Compound insult.,s188,"Dann hieß ich Michael Schumacher, dann Attila der Hunnenkönig, dann Schweinemörder und zuletzt sogar der kranke Hase."
+w189,hospital,Krankenhaus,das,Krankenhäuser,noun,A2,health,Plural has umlaut.,s189,Allein deshalb würde ich am liebsten noch ein Jahr in diesem Krankenhaus bleiben.
+w190,bandage,Verband,der,Verbände,noun,B1,health,Plural has umlaut.,s190,Hanna wechselt jeden Tag meinen Verband.
+w191,to see; look,sehen,,,verb,A1,sight,"Strong verb: sieht, sah, gesehen.",s191,"Das tut ziemlich weh, und Hanna tut es auch weh, wie man an ihrem Gesicht sehen kann."
+w192,to marry,heiraten,,,verb,A2,relationships,Regular verb.,s192,"«Hauptsache, dir macht’s Spaß», sagt sie dann immer, wenn sie fertig ist, und ich sage dann immer, dass ich sie später wahrscheinlich einmal heiraten werde oder so was."
+w193,sorry,leidtun,,,verb,A2,phrases,tut mir leid = I am sorry.,s193,Aber leider hat sie schon einen Freund.
+w194,visitor; visit,Besuch,der,Besuche,noun,A2,people,Can mean visit or visitor(s).,s194,"Manchmal kommt sie auch einfach so und setzt sich an mein Bett, weil ich ja sonst praktisch keinen Besuch kriege, und es sind richtig gute Unterhaltungen, die wir da führen."
+w195,conversations,Unterhaltung,die,Unterhaltungen,noun,B1,communication,Also entertainment.,s195,Richtige Erwachsenenunterhaltungen.
+w196,unbelievably,unfassbar,,,adverb,B2,intensity,Literally: ungraspable.,s196,"Mit Frauen wie Hanna ist es immer unfassbar viel leichter, sich zu unterhalten, als mit Mädchen in meinem Alter."
+w197,why,warum,,,adverb,A1,questions,Question word for reason.,s197,"Falls mir jemand erklären kann, warum das so ist, kann er mich übrigens gern anrufen, weil, ich kann es mir nämlich nicht erklären."
+w198,entertaining,unterhaltsam,,,adjective,B1,description,Related to Unterhaltung.,s198,Der Arzt ist weniger unterhaltsam.
+w199,maybe,vielleicht,,,adverb,A1,particles,Common uncertainty adverb.,s199,"«Das ist nur ein Stück Fleisch», sagt er, «Muskel», sagt er, «ist nicht schlimm, das wächst nach. Bleibt vielleicht ’ne kleine Delle oder Narbe», sagt er, «das sieht dann sexy aus», und das sagt er jeden Tag."
+w200,bandage,Verband,der,Verbände,noun,B1,health,Plural has umlaut.,s200,"Jeden Tag guckt er sich den Verband an und erzählt genau das Gleiche, dass da ’ne Narbe bleibt, dass das nicht schlimm ist, dass das später mal aussieht, als wär ich im Krieg gewesen."
+w201,profound,tiefsinnig,,,adjective,B2,abstract,Literally deep-minded.,s201,"«Als wärst du im Krieg gewesen, junger Mann, da stehen die Frauen drauf», sagt er, und es soll wohl irgendwie tiefsinnig sein, aber ich versteh den Tiefsinn nicht, und dann zwinkert er mich an, und meistens zwinker ich zurück, obwohl ich’s nicht verstehe."
+w202,after all,schließlich,,,adverb,B1,connectors,Can mean finally or after all.,s202,"Schließlich hat der Mann mir geholfen, da helfe ich ihm auch."
+w203,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s203,"Später werden unsere Gespräche besser, vor allem, weil sie ernster werden."
+w204,or rather,beziehungsweise,,,conjunction,B2,connectors,Often abbreviated bzw.,s204,"Beziehungsweise, es ist eigentlich nur ein Gespräch."
+w205,to limp,humpeln,,,verb,B1,movement,Regular verb.,s205,"Als ich wieder humpeln kann, holt er mich in sein Zimmer, in dem ausnahmsweise mal ein Schreibtisch steht und kein medizinisches Gerät, und da sitzen wir uns dann gegenüber wie Firmenchefs, die den nächsten Deal eintüten."
+w206,upper body; torso,Oberkörper,der,Oberkörper,noun,B2,body,Compound noun.,s206,"Auf dem Tisch steht ein menschlicher Oberkörper aus Plastik, wo man die Organe rausnehmen kann."
+w207,large intestine,Dickdarm,der,Dickdärme,noun,C1,body,Medical/anatomy term.,s207,"Der Dickdarm sieht aus wie ein Gehirn, und vom Magen blättert die Farbe ab."
+w208,conversation opener,Gesprächsanfang,der,Gesprächsanfänge,noun,B2,communication,Compound noun.,s208,"«Ich muss mal mit dir reden», sagt der Arzt, und das ist logisch der dümmste Gesprächsanfang, den ich kenne."
+w209,sorry,leidtun,,,verb,A2,phrases,tut mir leid = I am sorry.,s209,"Und dann warte ich, dass er mit Reden anfängt, aber das gehört zu diesem Anfang leider dazu, dass man sagt, ich muss mal mir dir reden, und dann erst mal nicht redet."
+w210,cardboard folder,Pappordner,der,Pappordner,noun,B2,objects,Compound noun.,s210,"Der Arzt starrt mich also an, senkt dann seinen Blick und klappt einen grünen Pappordner auf."
+w211,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s211,"Oder klappt ihn nicht auf, sondern öffnet ihn, wie ich mir vorstelle, dass er einem Patienten die Bauchdecke aufschneidet."
+w212,to see; look,sehen,,,verb,A1,sight,"Strong verb: sieht, sah, gesehen.",s212,"Sehr umsichtig, sehr kompliziert, sehr ernst."
+w213,surgeon,Chirurg,der,Chirurgen,noun,B2,jobs,Medical profession.,s213,Der Mann ist Chirurg.
+w214,happiness; luck,Glück,das,,noun,A2,emotion,Can mean luck or happiness.,s214,Glückwunsch.
+w215,to come,kommen,,,verb,A1,movement,Strong verb pattern.,s215,"Was danach kommt, ist schon weniger interessant."
+w216,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s216,"Im Grunde will er nur wissen, wo meine Kopfwunde herkommt, vorne rechts."
+w217,highway; motorway,Autobahn,die,Autobahnen,noun,A2,travel,Auto + Bahn; German motorway.,s217,"Auch wo die anderen Wunden herkommen – von der Autobahn, wie gesagt, okay, das wusste er schon –, aber die Kopfwunde, da bin ich vom Stuhl gefallen, auf der Station der Autobahnpolizei."
+w218,fingertips,Fingerspitze,die,Fingerspitzen,noun,B1,body,Compound noun.,s218,Der Arzt legt die Hände an den Fingerspitzen zusammen.
+w219,report,Bericht,der,Berichte,noun,B1,documents,Official report.,s219,"Ja, so würde das da auch im Bericht drinstehen: vom Stuhl gefallen."
+w220,police station,Polizeistation,die,Polizeistationen,noun,A2,places,Compound noun.,s220,Auf der Polizeistation.
+w221,to nod,nicken,,,verb,A2,body,Regular verb.,s221,Er nickt.
+w222,yes,ja,,,adverb,A1,basics,Basic answer word.,s222,Ja.
+w223,to nod,nicken,,,verb,A2,body,Regular verb.,s223,Ich nicke auch.
+w224,to say,sagen,,,verb,A1,speech,Regular verb.,s224,"«Wir sind hier unter uns», sagt er nach einer Weile."
+w225,certainty; safety,Sicherheit,die,Sicherheiten,noun,B1,abstract,mit Sicherheit = certainly.,s225,"«Ist mir klar», sage ich wie der letzte Blödmann und zwinkere erst dem Arzt zu und dann zur Sicherheit auch nochmal dem Plastikoberkörper."
+w226,duty of confidentiality,Schweigepflicht,die,,noun,C1,law;medicine,Important legal/medical term.,s226,"«Du kannst hier über alles sprechen. Ich bin dein Arzt, und das heißt in diesem Fall, ich habe eine Schweigepflicht.»"
+w227,yes,ja,,,adverb,A1,basics,Basic answer word.,s227,"«Ja, gut», sage ich."
+w228,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s228,"So was Ähnliches hatte er mir vor ein paar Tagen schon mal angedeutet, ich hab’s jetzt begriffen."
+w229,silence,Schweigen,das,,noun,B1,communication,Nominalized verb.,s229,"Der Mann hat eine Schweigepflicht, und er erwartet jetzt, dass ich ihm etwas erzähle, damit er davon schweigen kann."
+w230,but what,aber was,,,phrase,A1,phrases,Short question phrase.,s230,Aber was?
+w231,fear,Angst,die,Ängste,noun,A2,emotion,vor Angst = from fear.,s231,"Wie übertrieben geil es ist, sich vor Angst in die Hose zu pissen?"
+w232,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s232,"«Es ist ja nicht nur die Handlungsweise. Das ist eine Verletzung der Aufsichtspflicht. Die hätten sich nicht auf deine Angaben verlassen dürfen, verstehst du? Die hätten nachgucken und vor allem sofort den Arzt rufen müssen. Weißt du, wie kritisch das war? Und du sagst, du bist vom Stuhl gefallen?»"
+w233,yes,ja,,,adverb,A1,basics,Basic answer word.,s233,«Ja.»
+w234,suspicious,misstrauisch,,,adjective,B2,emotion,Opposite of trusting.,s234,"«Das steht hier auch so drin. Aber wir Ärzte sind misstrauische Menschen. Ich meine, die wollten doch einiges von dir. Als dein behandelnder Arzt . . .»"
+w235,"yes, yes","ja, ja",,,phrase,A1,basics,Repeated affirmation.,s235,"Ja, ja."
+w236,heavens,Himmel,der,,noun,A2,emotion,Exclamation; literally sky/heaven.,s236,Himmel.
+w237,duty of confidentiality,Schweigepflicht,die,,noun,C1,law;medicine,Important legal/medical term.,s237,Schweigepflicht.
+w238,got it,schon klar,,,phrase,A1,phrases,Colloquial: understood.,s238,Schon klar.
+w239,to know,wissen,,,verb,A1,knowledge,"Irregular verb: weiß, wusste.",s239,Aber was will er denn jetzt wissen?
+w240,chair,Stuhl,der,Stühle,noun,A1,objects,Plural has umlaut.,s240,Wie man vom Stuhl fällt?
+w241,plop,plumps,,,adverb,B2,sound,Sound-symbolic word.,s241,Seitlich runter und dann plumps?
+w242,to do; make,machen,,,verb,A1,actions,Very common verb.,s242,"Er schüttelt erst lange den Kopf, dann macht er eine winzige Bewegung mit der Hand – und da erst wird mir klar, worauf er hinauswill."
+w243,God,Gott,der,Götter,noun,A2,religion,Mein Gott = my God.,s243,"Mein Gott, steht bei mir einer auf der Leitung."
+w244,damn embarrassment,Scheißpeinlichkeit,die,Scheißpeinlichkeiten,noun,C1,colloquial,Vulgar intensifying prefix.,s244,Immer diese Scheißpeinlichkeit.
+w245,plain language,Klartext,der,,noun,B2,communication,Klartext reden = speak plainly.,s245,Warum redet er nicht Klartext?
+w246,swarms of flies,Fliegenschwarm,der,Fliegenschwärme,noun,B2,nature,Compound noun.,s246,"«Nee, nee!», rufe ich und winke mit den Händen in der Luft herum, als würde ich riesige Fliegenschwärme abwehren."
+w247,dizzy; dizziness,schwindlig,,,adjective,A2,body,Mir ist schwindlig = I feel dizzy.,s247,"«Alles korrekt! Ich hab auf dem Stuhl gesessen und mein Hosenbein hochgemacht, und dann hab ich das gesehen und dann Schwindel und rums. Keine Fremdeinwirkung.»"
+w248,good word,gutes Wort,,,phrase,A1,phrases,Adjective ending -es with neuter noun.,s248,Gutes Wort.
+w249,crime-scene TV show,Tatort,der,Tatorte,noun,B2,culture,Also means crime scene.,s249,Kenn ich aus dem Tatort.
+w250,"so, sure",also sicher,,,phrase,A2,phrases,also can mean so/well.,s250,«Also sicher?»
+w251,dizzy; dizziness,schwindlig,,,adjective,A2,body,Mir ist schwindlig = I feel dizzy.,s251,«Sicher. Ja. Und die Polizisten total nett. Ich hab sogar ein Wasser gekriegt und ein Taschentuch. Nur eben Schwindel und dann seitlich runter.»
+w252,to appear; occur,vorkommen,,,verb,B1,literature,Separable verb: kommt vor.,s252,Ich richte mich vor dem Schreibtisch auf und lasse mich schauspielerisch hochbegabt zweimal halb nach rechts kippen.
+w253,to say,sagen,,,verb,A1,speech,Regular verb.,s253,"«Gut», sagt der Arzt langsam."
+w254,to scribble,kritzeln,,,verb,B1,writing,Regular verb.,s254,Er kritzelt etwas auf ein Papier.
+w255,blood loss,Blutverlust,der,Blutverluste,noun,B2,health,Compound noun.,s255,«Wollt ich nur wissen. Trotzdem unverantwortlich. Blutverlust . . . hätte man wirklich . . . sieht auch nicht so aus.»
+w256,to close,schließen,,,verb,A2,actions,"Strong verb: schloss, geschlossen.",s256,Er schließt den grünen Ordner und schaut mich lange an.
+w257,maybe,vielleicht,,,adverb,A1,particles,Common uncertainty adverb.,s257,"«Und ich weiß ja nicht, geht mich vielleicht auch nichts an – aber das würde mich jetzt doch mal interessieren. Du musst nicht antworten, wenn du nicht magst. Aber – was wolltet ihr denn da eigentlich? Oder wohin?»"
+w258,idea; knowledge,Ahnung,die,Ahnungen,noun,A2,knowledge,keine Ahnung = no idea.,s258,«Keine Ahnung.»
+w259,out of interest,interessehalber,,,adverb,C1,phrases,halber = for the sake of.,s259,"«Wie gesagt, du musst es nicht sagen. Ich frag nur interessehalber.»"
+w260,to believe,glauben,,,verb,A1,mental,Colloquial ich glaub = ich glaube.,s260,"«Ich würd’s Ihnen sagen. Aber wenn ich’s Ihnen sage, glauben Sie’s eh nicht. Glaube ich.»"
+w261,to believe,glauben,,,verb,A1,mental,Colloquial ich glaub = ich glaube.,s261,«Ich glaub dir alles.»
+w262,to smile,lächeln,,,verb,A1,body,Regular verb.,s262,Er lächelt freundlich.
+w263,mate-like,kumpelhaft,,,adjective,B2,description,From Kumpel = buddy.,s263,Kumpelhaft.
+w264,silly,albern,,,adjective,B1,description,Useful everyday adjective.,s264,«Es ist albern.»
+w265,silly,albern,,,adjective,B1,description,Useful everyday adjective.,s265,«Was ist schon albern?»
+w266,silly,albern,,,adjective,B1,description,Useful everyday adjective.,s266,"«Das ist . . . na ja. Wir wollten eigentlich in die Walachei. Sehen Sie, Sie finden’s doch albern.»"
+w267,silly,albern,,,adjective,B1,description,Useful everyday adjective.,s267,"«Ich find’s nicht albern, ich hab’s nur nicht verstanden. Wohin?»"
+w268,Wallachia,Walachei,die,,noun,B2,place,Place name; also used idiomatically.,s268,«In die Walachei.»
+w269,to be supposed to,sollen,,,verb,A1,modal verbs,Modal verb: ich soll.,s269,"«Wo soll das sein?» Er sieht mich interessiert an, und ich spüre, dass ich rot werde."
+w270,to go into in depth,vertiefen,,,verb,B2,discussion,vertiefen = deepen.,s270,Wir vertiefen das dann nicht weiter.
+w271,duty of confidentiality,Schweigepflicht,die,,noun,C1,law;medicine,Important legal/medical term.,s271,"Zum Schluss geben wir uns noch die Hand wie erwachsene Menschen, und ich bin irgendwie froh, dass ich seine Schweigepflicht nicht überstrapazieren musste."
