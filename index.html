@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v63-combined-reading-flow-20260708" />
+  <link rel="manifest" href="manifest.webmanifest?v=v64-combined-pair-recognition-20260708" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -2274,7 +2274,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v63-combined-reading-flow-20260708</div>
+      <div class="meta" id="appBuildLabel">Build: v64-combined-pair-recognition-20260708</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2539,7 +2539,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v63-combined-reading-flow-20260708";
+    const APP_BUILD = "v64-combined-pair-recognition-20260708";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3592,6 +3592,7 @@
       const exampleTargetKey = findHeader(headers, ["example_target", "example_de", "german_example", "example_german", "example_it", "italian_example"]);
       const alternativesKey = findHeader(headers, ["alternatives", "alt", "accepted", "accepted_answers"]);
       const sourceKey = findHeader(headers, ["source", "source_sentence", "sentence", "from_sentence"]);
+      const sourceIdKey = findHeader(headers, ["source_id", "sentence_id", "source_sentence_id", "from_sentence_id"]);
 
       const rows = [];
       for (const it of items) {
@@ -3624,7 +3625,8 @@
           example_en: optionalCsvValue(it, exampleEnKey),
           example_target: optionalCsvValue(it, exampleTargetKey),
           alternatives: optionalCsvValue(it, alternativesKey),
-          source: optionalCsvValue(it, sourceKey)
+          source: optionalCsvValue(it, sourceKey),
+          source_id: optionalCsvValue(it, sourceIdKey)
         };
         for (const [k, v] of Object.entries(optionalFields)) if (v) row[k] = v;
 
@@ -3652,6 +3654,7 @@
       const noteKey = findHeader(headers, ["note", "notes", "comment", "hint"]);
       const levelKey = findHeader(headers, ["level", "cefr", "difficulty_level"]);
       const alternativesKey = findHeader(headers, ["alternatives", "alt", "accepted", "accepted_answers"]);
+      const sentenceIdKey = findHeader(headers, ["sentence_id", "id", "source_id"]);
 
       const rows = [];
       for (const it of items) {
@@ -3668,7 +3671,8 @@
           tags: optionalCsvValue(it, tagsKey),
           note: optionalCsvValue(it, noteKey),
           level: optionalCsvValue(it, levelKey),
-          alternatives: optionalCsvValue(it, alternativesKey)
+          alternatives: optionalCsvValue(it, alternativesKey),
+          sentence_id: optionalCsvValue(it, sentenceIdKey)
         };
         for (const [k, v] of Object.entries(optionalFields)) if (v) row[k] = v;
         rows.push(row);
@@ -4225,9 +4229,9 @@
             o.textContent = `${pair.base} (${pair.sentenceCount} sentences · ${pair.wordCount} words)`;
             setSelect.appendChild(o);
           }
-          const normalizedCurrent = combinedBaseName(currentSetName);
-          const exists = pairs.some(p => p.base === normalizedCurrent);
-          currentSetName = exists ? normalizedCurrent : pairs[0].base;
+          const normalizedCurrentKey = combinedBaseKey(currentSetName);
+          const currentPair = pairs.find(p => p.key === normalizedCurrentKey);
+          currentSetName = currentPair ? currentPair.base : pairs[0].base;
         }
         setSelect.value = currentSetName;
         updateModeSummary();
@@ -4479,17 +4483,35 @@
 
     /* ---------- Combined book flow ---------- */
     function combinedBaseName(name) {
-      return String(name || "")
-        .replace(/\s+[—-]\s+(Sentences|Sentence|Words|Word)\s*$/i, "")
-        .replace(/\s+\((sentences|words)\)\s*$/i, "")
+      const raw = String(name || "")
+        .trim()
+        // The import UI often receives the original filename as deck name.
+        .replace(/\.(csv|tsv|txt)$/i, "");
+
+      return raw
+        // Existing supported forms:
+        //   "Book — Sentences", "Book - Words", "Book (sentences)"
+        .replace(/\s+[—–-]\s+(Sentences|Sentence|Words|Word|Vocab|Vocabulary)\s*$/i, "")
+        .replace(/\s+\((sentences?|words?|vocab|vocabulary)\)\s*$/i, "")
+        // New robust forms produced by AI/content pipelines:
+        //   "Book_sentences", "Book_words", "Book-sentences", "Book words"
+        .replace(/[\s_—–-]+(sentences?|words?|vocab|vocabulary|sätze|saetze|wörter|woerter)\s*$/i, "")
         .trim();
     }
 
+    function combinedBaseKey(name) {
+      return combinedBaseName(name)
+        .normalize("NFKC")
+        .toLocaleLowerCase()
+        .replace(/[\s_—–-]+/g, "_")
+        .replace(/^_+|_+$/g, "");
+    }
+
     function sentenceSetLooksLikeBook(name) {
-      return /\b(sentences|sentence)\b/i.test(String(name || ""));
+      return /(^|[\s_—–-])(sentences?|sätze|saetze)(\.|$|[\s_—–-])/i.test(String(name || ""));
     }
     function wordSetLooksLikeBook(name) {
-      return /\b(words|word)\b/i.test(String(name || ""));
+      return /(^|[\s_—–-])(words?|vocab|vocabulary|wörter|woerter)(\.|$|[\s_—–-])/i.test(String(name || ""));
     }
 
     async function collectCombinedDeckPairs(deck = currentDeck) {
@@ -4498,15 +4520,16 @@
         DB.getSets("word_pairs", deck)
       ]);
       const map = new Map();
-      const ensure = base => {
-        if (!map.has(base)) map.set(base, { base, sentenceSetName: null, wordSetName: null, sentenceCount: 0, wordCount: 0 });
-        return map.get(base);
+      const ensure = (base, key) => {
+        if (!map.has(key)) map.set(key, { key, base, sentenceSetName: null, wordSetName: null, sentenceCount: 0, wordCount: 0 });
+        return map.get(key);
       };
       for (const s of sentenceSets) {
         if (!s.set_name || s.set_name === "__all__") continue;
         const base = combinedBaseName(s.set_name);
-        if (!base) continue;
-        const p = ensure(base);
+        const key = combinedBaseKey(s.set_name);
+        if (!base || !key) continue;
+        const p = ensure(base, key);
         if (!p.sentenceSetName || sentenceSetLooksLikeBook(s.set_name)) {
           p.sentenceSetName = s.set_name;
           p.sentenceCount = s.item_count;
@@ -4515,8 +4538,9 @@
       for (const s of wordSets) {
         if (!s.set_name || s.set_name === "__all__") continue;
         const base = combinedBaseName(s.set_name);
-        if (!base) continue;
-        const p = ensure(base);
+        const key = combinedBaseKey(s.set_name);
+        if (!base || !key) continue;
+        const p = ensure(base, key);
         if (!p.wordSetName || wordSetLooksLikeBook(s.set_name)) {
           p.wordSetName = s.set_name;
           p.wordCount = s.item_count;
@@ -4530,8 +4554,9 @@
     async function getCombinedBundle(allowFallback = true) {
       const pairs = await collectCombinedDeckPairs(currentDeck);
       if (pairs.length === 0) return null;
-      const wanted = combinedBaseName(currentSetName);
-      let pair = pairs.find(p => p.base === wanted) || pairs.find(p => p.sentenceSetName === currentSetName || p.wordSetName === currentSetName);
+      const wantedKey = combinedBaseKey(currentSetName);
+      let pair = pairs.find(p => p.key === wantedKey)
+        || pairs.find(p => p.sentenceSetName === currentSetName || p.wordSetName === currentSetName);
       if (!pair && allowFallback) pair = pairs[0];
       if (!pair) return null;
       combinedPair = pair;
@@ -4544,11 +4569,30 @@
       return { pair, sentences, words };
     }
 
+    function combinedSentenceSourceKeys(sentence) {
+      return [
+        sentence && sentence.sentence_id,
+        sentence && sentence.source_id,
+        sentence && sentence.target,
+        sentence && sentence.english
+      ].map(normTxt).filter(Boolean);
+    }
+
+    function combinedWordSourceKeys(word) {
+      return [
+        word && word.source_id,
+        word && word.sentence_id,
+        word && word.source,
+        word && word.source_sentence,
+        word && word.sentence
+      ].map(normTxt).filter(Boolean);
+    }
+
     function sourceKeyForSentence(sentence) {
-      return normTxt(sentence && sentence.english);
+      return combinedSentenceSourceKeys(sentence)[0] || "";
     }
     function sourceKeyForWord(word) {
-      return normTxt(word && (word.source || word.source_sentence || word.sentence || ""));
+      return combinedWordSourceKeys(word)[0] || "";
     }
 
     function orderedCombinedSentences(sentences) {
@@ -4590,17 +4634,20 @@
     }
 
     function unlockedCombinedWords(words, sentences) {
-      const masteredSources = new Set(orderedCombinedSentences(sentences)
+      const masteredSources = new Set();
+      orderedCombinedSentences(sentences)
         .filter(isCombinedSentenceMastered)
-        .map(sourceKeyForSentence)
-        .filter(Boolean));
+        .forEach(sentence => {
+          for (const key of combinedSentenceSourceKeys(sentence)) masteredSources.add(key);
+        });
+
       return (words || []).filter(w => {
-        const source = sourceKeyForWord(w);
+        const wordKeys = combinedWordSourceKeys(w);
         // If a legacy/manual word deck has no source column, do not block it
         // forever: let it enter once the learner has mastered at least one
         // sentence in the paired set.
-        if (!source) return masteredSources.size > 0;
-        return masteredSources.has(source);
+        if (!wordKeys.length) return masteredSources.size > 0;
+        return wordKeys.some(key => masteredSources.has(key));
       });
     }
 
