@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v58-review-engine-sync-20260707" />
+  <link rel="manifest" href="manifest.webmanifest?v=v59-compact-sync-codes-20260707" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -2246,7 +2246,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v58-review-engine-sync-20260707</div>
+      <div class="meta" id="appBuildLabel">Build: v59-compact-sync-codes-20260707</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2456,17 +2456,20 @@
     <div class="modal-card">
       <div class="modal-title">Sync progress</div>
       <div style="font-size:12px;color:var(--text-faint);margin-bottom:8px;line-height:1.4;">
-        Create a code on this device, then paste it on the other device and
-        tap Apply. The code carries your learning progress (streaks, review
-        schedule, difficulty levels) for every practiced card. Newer progress
-        wins per card; nothing is deleted.
+        Create a code on this device, then enter it on the other device and
+        tap Apply. The code carries streaks, review schedule and difficulty
+        levels for every practiced card; newer progress wins per card and
+        nothing is deleted. Codes are case-insensitive and dashes are
+        optional. For large collections, "Copy as link" is easier: opening
+        the link on the other device offers to apply it automatically.
       </div>
       <textarea id="syncCodeArea" spellcheck="false" autocomplete="off"
         style="width:100%;min-height:110px;resize:vertical;font:12px ui-monospace,Menlo,Consolas,monospace;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);color:var(--text);word-break:break-all;"
         placeholder="Tap 'Create code' here, or paste a code from your other device."></textarea>
       <div id="syncStatus" style="font-size:12px;color:var(--text-faint);min-height:16px;margin:6px 0 2px;"></div>
-      <div class="settings-actions" style="display:flex;gap:8px;">
+      <div class="settings-actions" style="display:flex;gap:8px;flex-wrap:wrap;">
         <button id="syncCreateBtn" style="flex:1;">Create code</button>
+        <button id="syncLinkBtn" class="secondary" style="flex:1;">Copy as link</button>
         <button id="syncApplyBtn" class="secondary" style="flex:1;">Apply code</button>
         <button id="closeSyncBtn" class="ghost close-btn">Done</button>
       </div>
@@ -2507,7 +2510,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v58-review-engine-sync-20260707";
+    const APP_BUILD = "v59-compact-sync-codes-20260707";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5686,8 +5689,59 @@
        set + english + target, NOT by device-local IDs) it carries streak,
        schedule, counters and the adaptive level. Applying a code merges by
        recency: the state with the later last_seen wins per card. */
+    const SYNC_PREFIX_COMPACT = "LD2.";
     const SYNC_PREFIX_DEFLATE = "LD1.";
     const SYNC_PREFIX_PLAIN = "LD0.";
+
+    /* ---- LD2 compact binary format ----
+       Hand-entry-oriented: Crockford base32 (case-insensitive, no 0/O or
+       1/I/L ambiguity, dashes ignored), and a bit-packed struct-of-arrays
+       payload instead of JSON. Cards are keyed by a 3-byte content hash of
+       deck+type+english+target — no readable text, no device IDs.
+       Per card: 3B hash + 1B streak/level + 2B due + 2B last-seen, then
+       deflate. Counters (times_seen/correct/wrong) are NOT carried: they are
+       statistics, not scheduling state, and dropping them roughly halves the
+       code. */
+    const CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+    function crockfordEncode(bytes) {
+      let bits = 0, value = 0, out = "";
+      for (const b of bytes) {
+        value = (value << 8) | b; bits += 8;
+        while (bits >= 5) { out += CROCKFORD[(value >>> (bits - 5)) & 31]; bits -= 5; }
+      }
+      if (bits > 0) out += CROCKFORD[(value << (5 - bits)) & 31];
+      return out.replace(/(.{4})(?=.)/g, "$1-");
+    }
+    function crockfordDecode(str) {
+      const clean = String(str || "").toUpperCase().replace(/[\s-]/g, "")
+        .replace(/O/g, "0").replace(/[IL]/g, "1");
+      let bits = 0, value = 0; const out = [];
+      for (const ch of clean) {
+        const idx = CROCKFORD.indexOf(ch);
+        if (idx < 0) throw new Error(`Invalid character "${ch}" in code.`);
+        value = (value << 5) | idx; bits += 5;
+        if (bits >= 8) { out.push((value >>> (bits - 8)) & 255); bits -= 8; }
+      }
+      return new Uint8Array(out);
+    }
+
+    function fnv24(str) {
+      let h = 0x811c9dc5;
+      for (let i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 0x01000193);
+      }
+      return (h >>> 8) & 0xffffff; // low collision risk at deck sizes, cheap
+    }
+    function syncHashOf(tableIdx, deck, english, target) {
+      return fnv24(`${tableIdx}|${deck}|${normTxt(english)}|${normTxt(target)}`);
+    }
+
+    const QUARTER_DAY_MS = 6 * 3600 * 1000;
+    function quarterDaysBetween(fromIso, toIso) {
+      const d = (new Date(toIso).getTime() - new Date(fromIso).getTime()) / QUARTER_DAY_MS;
+      return clampInt(Math.round(d), 0, 0xfffe);
+    }
     const SYNC_TABLES = ["word_pairs", "sentence_pairs"];
     const SYNC_FIELDS = ["streak", "next_due", "times_seen", "times_correct",
       "times_wrong", "progressive_level", "recovery_progress", "last_seen"];
@@ -5731,21 +5785,105 @@
     async function createSyncCode() {
       const practiced = (await collectSyncRows())
         .filter(({ row }) => row.next_due != null || (row.times_seen | 0) > 0);
-      const items = practiced.map(({ t, deck, row }) => [
-        t, deck, row.set_name || "", row.english || "", row.target || "",
-        ...SYNC_FIELDS.map(f => row[f] === undefined ? null : row[f])
-      ]);
-      const payload = JSON.stringify({ v: 1, exported: nowIso(), items });
-      const bytes = new TextEncoder().encode(payload);
-      if (typeof CompressionStream === "function") {
-        const packed = await pipeThrough(bytes, new CompressionStream("deflate-raw"));
-        return { code: SYNC_PREFIX_DEFLATE + b64urlFromBytes(packed), count: items.length };
+      const exported = nowIso();
+      const n = practiced.length;
+
+      // struct-of-arrays: like fields adjacent → deflate bites much harder
+      const buf = new Uint8Array(9 + n * 8);
+      const dv = new DataView(buf.buffer);
+      buf[0] = 2; // format version
+      dv.setUint32(1, Math.floor(Date.now() / 60000), false); // export minute
+      dv.setUint32(5, n, false);
+      let o = 9;
+      for (const { t, deck, row } of practiced) {
+        const h = syncHashOf(t, deck, row.english || "", row.target || "");
+        buf[o++] = (h >>> 16) & 255; buf[o++] = (h >>> 8) & 255; buf[o++] = h & 255;
       }
-      return { code: SYNC_PREFIX_PLAIN + b64urlFromBytes(bytes), count: items.length };
+      for (const { row } of practiced) {
+        const streak = clampInt(row.streak | 0, 0, 15);
+        const level = clampInt(row.progressive_level | 0, 0, 7);
+        buf[o++] = (streak << 4) | (level << 1) | (row.next_due != null ? 1 : 0);
+      }
+      for (const { row } of practiced) {
+        const q = row.next_due != null ? quarterDaysBetween(exported, row.next_due) : 0xffff;
+        buf[o++] = (q >>> 8) & 255; buf[o++] = q & 255;
+      }
+      for (const { row } of practiced) {
+        const q = row.last_seen ? quarterDaysBetween(row.last_seen, exported) : 0xffff;
+        buf[o++] = (q >>> 8) & 255; buf[o++] = q & 255;
+      }
+
+      let packed = buf;
+      if (typeof CompressionStream === "function") {
+        packed = await pipeThrough(buf, new CompressionStream("deflate-raw"));
+        if (packed.length >= buf.length) packed = buf; // tiny sets: skip futile deflate
+      }
+      const flag = packed === buf ? "R" : "Z"; // raw vs deflated payload
+      return { code: SYNC_PREFIX_COMPACT + flag + crockfordEncode(packed), count: n };
+    }
+
+    async function applyCompactSyncCode(trimmed) {
+      const body = trimmed.slice(SYNC_PREFIX_COMPACT.length);
+      const flag = body.charAt(0).toUpperCase();
+      let bytes = crockfordDecode(body.slice(1));
+      if (flag === "Z") {
+        if (typeof DecompressionStream !== "function") throw new Error("This browser cannot read compressed codes.");
+        bytes = await pipeThrough(bytes, new DecompressionStream("deflate-raw"));
+      } else if (flag !== "R") {
+        throw new Error("Unrecognized code format.");
+      }
+      if (bytes.length < 9 || bytes[0] !== 2) throw new Error("Unrecognized code format.");
+      const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+      const exportedMs = dv.getUint32(1, false) * 60000;
+      const n = dv.getUint32(5, false);
+      if (bytes.length !== 9 + n * 8) throw new Error("Code is damaged (length mismatch).");
+
+      const hashes = []; let o = 9;
+      for (let i = 0; i < n; i++) { hashes.push((bytes[o] << 16) | (bytes[o + 1] << 8) | bytes[o + 2]); o += 3; }
+      const packedState = bytes.slice(o, o + n); o += n;
+      const dueQ = []; for (let i = 0; i < n; i++) { dueQ.push((bytes[o] << 8) | bytes[o + 1]); o += 2; }
+      const lastQ = []; for (let i = 0; i < n; i++) { lastQ.push((bytes[o] << 8) | bytes[o + 1]); o += 2; }
+
+      // index local rows by content hash (all matches updated on the rare collision)
+      const local = await collectSyncRows();
+      const byHash = new Map();
+      for (const entry of local) {
+        const h = syncHashOf(entry.t, entry.deck, entry.row.english || "", entry.row.target || "");
+        if (!byHash.has(h)) byHash.set(h, []);
+        byHash.get(h).push(entry);
+      }
+
+      let updated = 0, skippedOlder = 0, notFound = 0;
+      for (let i = 0; i < n; i++) {
+        const entries = byHash.get(hashes[i]);
+        if (!entries || !entries.length) { notFound++; continue; }
+        const streak = (packedState[i] >>> 4) & 15;
+        const level = (packedState[i] >>> 1) & 7;
+        const hasDue = (packedState[i] & 1) === 1;
+        const nextDue = hasDue && dueQ[i] !== 0xffff ? new Date(exportedMs + dueQ[i] * QUARTER_DAY_MS).toISOString() : (hasDue ? nowIso() : null);
+        const lastSeen = lastQ[i] !== 0xffff ? new Date(exportedMs - lastQ[i] * QUARTER_DAY_MS).toISOString() : null;
+        let any = false;
+        for (const entry of entries) {
+          const row = entry.row;
+          const localSeen = row.last_seen || row.next_due || "";
+          if (localSeen && lastSeen && lastSeen <= localSeen) { skippedOlder++; continue; }
+          row.streak = streak;
+          row.progressive_level = level;
+          if (nextDue) row.next_due = nextDue;
+          if (lastSeen) row.last_seen = lastSeen;
+          await DB.update(SYNC_TABLES[entry.t], row);
+          any = true;
+        }
+        if (any) updated++;
+      }
+      return { updated, skippedOlder, notFound, total: n };
     }
 
     async function applySyncCode(code) {
       const trimmed = String(code || "").trim();
+      if (trimmed.toUpperCase().startsWith(SYNC_PREFIX_COMPACT)) {
+        return applyCompactSyncCode(trimmed);
+      }
       let bytes;
       if (trimmed.startsWith(SYNC_PREFIX_DEFLATE)) {
         if (typeof DecompressionStream !== "function") throw new Error("This browser cannot read compressed codes.");
@@ -6051,6 +6189,40 @@
           syncStatus.textContent = `Could not create code: ${err.message || err}`;
         }
       });
+
+      $("syncLinkBtn").addEventListener("click", async () => {
+        let code = syncCodeArea.value.trim();
+        if (!code) {
+          syncStatus.textContent = "Creating…";
+          try {
+            const res = await createSyncCode();
+            code = res.code;
+            syncCodeArea.value = code;
+          } catch (err) {
+            syncStatus.textContent = `Could not create code: ${err.message || err}`;
+            return;
+          }
+        }
+        const link = `${location.origin}${location.pathname}#sync=${encodeURIComponent(code)}`;
+        try {
+          await navigator.clipboard.writeText(link);
+          syncStatus.textContent = "Link copied — open it on the other device.";
+        } catch (_) {
+          syncCodeArea.value = link;
+          syncCodeArea.select();
+          syncStatus.textContent = "Copy the link above and open it on the other device.";
+        }
+      });
+
+      // A #sync= link opened on this device prefills the modal for one-tap apply.
+      if (location.hash.startsWith("#sync=")) {
+        try {
+          syncCodeArea.value = decodeURIComponent(location.hash.slice(6));
+          syncStatus.textContent = "Code received from link — tap Apply code.";
+          syncModal.classList.add("active");
+        } catch (_) {}
+        history.replaceState(null, "", location.pathname + location.search);
+      }
 
       $("syncApplyBtn").addEventListener("click", async () => {
         const code = syncCodeArea.value;
