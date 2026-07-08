@@ -104,3 +104,79 @@ Since v37 the deck browser lists whatever CSV files actually exist under
 - Display names are derived from file names (`german_hooks_sentences.csv` →
   "German Hooks Sentences"), type from the name (`sentence`/`pattern` →
   sentences deck).
+
+## 6. The deck filter (every German CSV must pass)
+
+Structural checks:
+- Header contains `english` and `target`; every row has the full column count.
+- No empty english/target pairs.
+- `english` values unique within the deck (case-insensitive) — duplicates
+  break match rounds. Disambiguate polysemy with parentheses.
+- QUOTE_ALL, comma-separated, UTF-8.
+
+Usefulness checks:
+- Word decks: `english,target,article,hint` (flashcard-style decks may add
+  `type` and `alternatives` when they carry gameplay meaning).
+- Sentence decks: `english,target,hint,level`; targets are REAL sentences
+  (≥3 words), natural, not combinatorial templates ("This is the X.",
+  "I would like to VERB." are banned patterns).
+- Hints are learner-facing (hooks, grammar, examples) — provenance notes
+  ("From …", "Generated …") are dead weight and must not be added.
+
+Decks that fail the filter are fixed or removed — they are never stored
+in `decks/de/` as-is.
+
+## 7. Literary text → deck pair (book mode pipeline)
+
+A literary unit (fairy tale, book chapter, page) becomes a DECK PAIR:
+
+- `<work>_<unit>_sentences.csv` — `english,target,hint,level`
+- `<work>_<unit>_words.csv` — `english,target,article,hint,source`
+  where `source` is the exact `english` key of the sentence the word came
+  from (this link powers the combined sentence→word progression).
+
+Naming: `grimm_sterntaler_…`, `maja_k01_…` — filenames containing
+"sentences"/"words" are auto-typed by deck discovery.
+
+Method rules:
+- COPYRIGHT FIRST: only public-domain works (in the EU: author died 70+
+  years ago). For protected works the pipeline may not be used to
+  reproduce the text.
+- Retell, don't transcribe: simplify the original prose to the target
+  level (A2–B1) in FAITHFUL, natural sentences of mostly 6–12 words that
+  follow the story beat by beat. Old orthography is modernized.
+- 25–45 sentences per unit; one story beat per sentence; unique english
+  keys.
+- Word deck: 25–45 KEY words actually used in the sentences (not every
+  word); each row's `source` must exactly match a sentence's english key.
+- Hints: grammar notes on sentences (separable verbs, Präteritum forms,
+  case after prepositions), hooks on words only when genuine.
+
+### Paste-ready prompt
+
+```
+You are generating a LanguageDeck "book mode" deck pair from a German
+literary text. INPUT: the source text below (public domain only — refuse
+protected works). OUTPUT: two CSV code blocks, all fields quoted.
+
+CSV 1 — sentences: "english","target","hint","level"
+- Retell the text faithfully, beat by beat, in N natural German
+  sentences (N = 25–45 depending on text length), simplified to A2–B1.
+- Mostly 6–12 words per sentence; modernize old orthography.
+- hint: a short grammar or vocabulary note (verb forms, word order,
+  case); empty if nothing genuinely helps.
+- level: A2 or B1 per sentence. Unique "english" values.
+
+CSV 2 — words: "english","target","article","hint","source"
+- Extract 25–45 KEY vocabulary items that appear in the sentences.
+- article: der/die/das for nouns, empty otherwise. Lemma in target.
+- hint: only genuine sound/etymology hooks or crucial grammar
+  (separable, dative verbs); otherwise empty.
+- source: the EXACT "english" value of one sentence containing the word.
+
+Before writing, silently check: unique keys, every source matches a
+sentence, QUOTE_ALL, UTF-8.
+
+SOURCE TEXT:
+<paste the public-domain text or chapter here>
+```
