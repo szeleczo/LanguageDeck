@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v66-roomy-progressive-input-20260708" />
+  <link rel="manifest" href="manifest.webmanifest?v=v67-spaced-mastery-reviews-20260709" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -2339,7 +2339,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v66-roomy-progressive-input-20260708</div>
+      <div class="meta" id="appBuildLabel">Build: v67-spaced-mastery-reviews-20260709</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2604,7 +2604,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v66-roomy-progressive-input-20260708";
+    const APP_BUILD = "v67-spaced-mastery-reviews-20260709";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2829,6 +2829,26 @@
       const d = new Date();
       d.setMinutes(d.getMinutes() + minutes);
       return d.toISOString();
+    }
+
+    /* v67: Full-typing progressive recall is a stronger mastery signal than
+       a normal card tap or a low-scaffold missing-letter answer. Once the
+       learner can type the complete word/sentence at the highest scaffold
+       level, the item should rest for longer and must not be pulled back into
+       the queue merely because the current session needs filler cards. */
+    function calcMasteredProgressiveDue(streak, difficulty = 1.0, profile = "normal") {
+      const bonus = profile === "hard" ? 1 : profile === "easy" ? 3 : 2;
+      return calcNextDue(Math.max(1, (streak | 0) + bonus), Math.max(1, difficulty || 1.0), profile);
+    }
+
+    function isFutureDue(row, now = nowIso()) {
+      return !!(row && row.next_due && row.next_due > now);
+    }
+
+    function isRestingMasteredProgressive(row, now = nowIso()) {
+      if (!row || !isFutureDue(row, now)) return false;
+      const maxLevel = Math.max(0, PROGRESSIVE_LEVELS.length - 1);
+      return progressiveLevelIndex(row) >= maxLevel && (row.streak | 0) >= 4;
     }
 
     function normTxt(v) {
@@ -3334,7 +3354,15 @@
       const beforeLevel = progressiveLevelIndex(before);
       const row = await recordAnswer(table, itemId, correct, profile);
       if (!row) return null;
+      const maxLevel = Math.max(0, PROGRESSIVE_LEVELS.length - 1);
       row.progressive_level = nextProgressiveLevel(beforeLevel, correct);
+
+      // Highest-level full typing is not just recognition: it proves recall.
+      // Give it a longer rest immediately, otherwise small decks/combined
+      // sessions can keep pulling the same mastered forms back as filler.
+      if (correct && beforeLevel >= maxLevel) {
+        row.next_due = calcMasteredProgressiveDue(row.streak, row.difficulty || 1.0, profile);
+      }
       await DB.update(table, row);
       return row;
     }
@@ -3827,6 +3855,7 @@
         if (selected.length < limit) {
           const seen = new Set(selected.map(x => x.id));
           for (const it of future) {
+            if (isRestingMasteredProgressive(it, now)) continue;
             if (!seen.has(it.id)) { selected.push(it); seen.add(it.id); }
             if (selected.length >= limit) break;
           }
@@ -3865,6 +3894,7 @@
         // budget — previously remNew was preferred over future, which flooded
         // the session with new words exactly when reviews were scarce.
         for (const it of [...remDue, ...future]) {
+          if (isRestingMasteredProgressive(it, now)) continue;
           if (!seen.has(it.id)) { selected.push(it); seen.add(it.id); }
           if (selected.length >= limit) break;
         }
@@ -5310,7 +5340,7 @@
         currentTypingWord = null;
         currentTypingChallenge = null;
         typingPrompt.textContent = "Done";
-        typingHelp.textContent = gateEnabled ? "No more words in this gate." : "No more words in this deck.";
+        typingHelp.textContent = gateEnabled ? "No more due words in this gate. Mastered items are resting." : "No more due words in this deck. Mastered items are resting.";
         typingResult.textContent = "";
         if (typingClue) {
           typingClue.classList.add("hidden");
