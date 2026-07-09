@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v67-spaced-mastery-reviews-20260709" />
+  <link rel="manifest" href="manifest.webmanifest?v=v69-proportional-review-quota-20260709" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1233,6 +1233,23 @@
       color: var(--text-faint);
       font-size: 20px;
     }
+    /* Punctuation row: keys are small and centred, not stretched across the
+       width, so they can never be mistaken for the space bar. */
+    .inline-keypad-row.punct-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+    .inline-keypad button.inline-keypad-key.punct-key {
+      flex: 0 0 auto;
+      width: 40px;
+      min-width: 40px;
+      max-width: 40px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-faint);
+      background: var(--surface-2);
+    }
     .inline-keypad-row.tools-row {
       grid-template-columns: repeat(var(--key-count, 1), minmax(0, min(120px, 34vw)));
     }
@@ -1376,13 +1393,24 @@
         right: max(8px, env(safe-area-inset-right));
         bottom: var(--practice-dock-bottom);
         z-index: 81;
-        display: grid !important;
-        grid-auto-flow: column;
-        grid-auto-columns: 1fr;
+        display: flex !important;
         gap: 8px;
         min-height: var(--practice-actions-h);
         padding: 0;
         margin: 0;
+      }
+      /* Check dominant and pinned to the bottom-right of the docked bar. */
+      html.keypad-active .typing-actions .primary-action,
+      html.keypad-active .sentence-actions .primary-action {
+        order: 9;
+        flex: 1 1 auto;
+      }
+      html.keypad-active .typing-actions .ghost,
+      html.keypad-active .typing-actions .secondary,
+      html.keypad-active .sentence-actions .ghost,
+      html.keypad-active .sentence-actions .secondary {
+        flex: 0 1 auto;
+        min-width: 84px;
       }
       html.keypad-active .typing-actions button,
       html.keypad-active .sentence-actions button {
@@ -1422,6 +1450,29 @@
       html.keypad-active .sentence-actions button { border-radius: 14px; }
     }
     .typing-form { display: grid; gap: 10px; }
+    /* Check is the primary action: bottom-right, dominant, larger tap area.
+       Reveal (a give-up action) sits left and stays compact. */
+    .typing-actions.practice-actions,
+    .sentence-actions.practice-actions {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+    }
+    .typing-actions.practice-actions .ghost,
+    .sentence-actions.practice-actions .ghost {
+      flex: 0 0 auto;
+    }
+    .typing-actions.practice-actions .primary-action,
+    .sentence-actions.practice-actions .primary-action {
+      flex: 1 1 auto;
+      order: 2;
+      min-height: 56px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .typing-actions.practice-actions .ghost {
+      order: 1;
+    }
     .typing-result {
       margin-top: 14px;
       font-size: 14px;
@@ -2224,8 +2275,8 @@
         <input type="text" id="typingInput" placeholder="Answer" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" />
         <div id="typingInlineKeypad" class="inline-keypad hidden" aria-label="Missing letters keypad"></div>
         <div class="typing-actions practice-actions">
-          <button id="typingSubmitBtn" style="flex:1;">Check</button>
           <button id="typingRevealBtn" class="ghost">Reveal</button>
+          <button id="typingSubmitBtn" class="primary-action">Check</button>
         </div>
       </div>
       <div class="typing-result" id="typingResult"></div>
@@ -2238,10 +2289,10 @@
       <div class="sentence-meta" id="sentenceMeta">—</div>
       <div class="sentence-target" id="sentenceTarget"></div>
       <div class="sentence-bank" id="sentenceBank"></div>
-      <div class="sentence-actions">
-        <button id="sentenceCheckBtn">Check</button>
+      <div class="sentence-actions practice-actions">
         <button id="sentenceResetBtn" class="ghost">Clear</button>
-        <button id="sentenceRevealBtn" class="secondary">Reveal</button>
+        <button id="sentenceRevealBtn" class="ghost">Reveal</button>
+        <button id="sentenceCheckBtn" class="primary-action">Check</button>
       </div>
       <div class="sentence-result" id="sentenceResult"></div>
     </div>
@@ -2339,7 +2390,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v67-spaced-mastery-reviews-20260709</div>
+      <div class="meta" id="appBuildLabel">Build: v69-proportional-review-quota-20260709</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2604,7 +2655,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v67-spaced-mastery-reviews-20260709";
+    const APP_BUILD = "v69-proportional-review-quota-20260709";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2849,6 +2900,72 @@
       if (!row || !isFutureDue(row, now)) return false;
       const maxLevel = Math.max(0, PROGRESSIVE_LEVELS.length - 1);
       return progressiveLevelIndex(row) >= maxLevel && (row.streak | 0) >= 4;
+    }
+
+    /* ---------- Mastery-aware review quota (global, all modes) ----------
+       The core complaint: fully-mastered items kept crowding the queue. The
+       old "resting" filter only hid mastered items while they sat in the
+       FUTURE; the moment their next_due arrived they became "due" and, since
+       they usually have long histories, dominated the due list ahead of the
+       words the learner is actually still trying to learn.
+
+       Fix: an item at or above MASTERY_STREAK is "mastered". Mastered items
+       do NOT compete for the normal due slots. They come back only through a
+       small, separate daily review quota — so a handful reappear each day as
+       genuine spaced checks, but they can never again flood a session while
+       weaker items are waiting. This applies to every mode (words and
+       sentences), not just progressive. */
+    const MASTERY_STREAK = 5;                  // streak at/above which an item is "mastered"
+    const MASTERED_REVIEW_SLOTS_PER_BATCH = 2; // at most this many mastered reviews per batch
+    /* The daily mastered-review quota scales with how much has actually been
+       mastered, instead of being a flat number that is too big for a 30-item
+       deck and too small for a 3000-item one. The target is a spaced-repetition
+       cadence: on average each mastered item should resurface for a check
+       roughly every ~12 days, so the daily quota is about 1/12 of the mastered
+       pool — clamped to a sane floor and ceiling so tiny decks still get an
+       occasional review and huge decks never flood a single day.
+
+       Examples (mastered pool -> daily quota):
+         10  -> 4  (floor)     100 -> ~8        1000 -> ~83
+         30  -> 4  (floor)     300 -> ~25       3000 -> 120 (ceiling) */
+    const MASTERED_REVIEW_DAYS_PER_CYCLE = 12; // aim to revisit each mastered item ~every N days
+    const MASTERED_REVIEW_MIN_PER_DAY = 4;     // tiny decks still get a few checks
+    const MASTERED_REVIEW_MAX_PER_DAY = 120;   // huge decks never dump everything at once
+
+    function masteredDailyQuota(masteredCount) {
+      const n = Math.max(0, masteredCount | 0);
+      if (n === 0) return 0;
+      const scaled = Math.ceil(n / MASTERED_REVIEW_DAYS_PER_CYCLE);
+      return Math.min(MASTERED_REVIEW_MAX_PER_DAY, Math.max(MASTERED_REVIEW_MIN_PER_DAY, scaled));
+    }
+
+    function isMastered(row) {
+      return (row && (row.streak | 0) >= MASTERY_STREAK);
+    }
+
+    function todayKey(now = new Date()) {
+      return now.toISOString().slice(0, 10); // YYYY-MM-DD, device-local enough for daily pacing
+    }
+
+    // Per-day counter of mastered reviews already served, persisted so the
+    // pacing survives reloads within the same day.
+    let masteredReviewLog = { day: "", count: 0 };
+    function loadMasteredReviewLog() {
+      try {
+        const raw = localStorage.getItem("ld_mastered_review_log");
+        if (raw) masteredReviewLog = JSON.parse(raw);
+      } catch (_) { masteredReviewLog = { day: "", count: 0 }; }
+      if (masteredReviewLog.day !== todayKey()) masteredReviewLog = { day: todayKey(), count: 0 };
+    }
+    function masteredReviewsRemainingToday(masteredCount) {
+      if (masteredReviewLog.day !== todayKey()) masteredReviewLog = { day: todayKey(), count: 0 };
+      return Math.max(0, masteredDailyQuota(masteredCount) - (masteredReviewLog.count | 0));
+    }
+    function noteMasteredReviewsServed(n) {
+      if (!n) return;
+      if (masteredReviewLog.day !== todayKey()) masteredReviewLog = { day: todayKey(), count: 0 };
+      masteredReviewLog.count = (masteredReviewLog.count | 0) + n;
+      try { localStorage.setItem("ld_mastered_review_log", JSON.stringify(masteredReviewLog)); } catch (_) {}
     }
 
     function normTxt(v) {
@@ -3556,12 +3673,19 @@
       const puncRowIdx = !isMissingOnly ? allRows.length - 1 : -1; // punctuation row (full mode) stays as-is
       allRows.forEach((rowChars, idx) => {
         if (!rowChars.length) return;
+        const isPunctRow = idx === puncRowIdx && !/\p{L}/u.test(rowChars[0]);
         const row = document.createElement("div");
-        row.className = "inline-keypad-row";
+        row.className = "inline-keypad-row" + (isPunctRow ? " punct-row" : "");
         row.style.setProperty("--key-count", String(rowChars.length));
-        rowChars.forEach(ch => row.appendChild(makeKey(ch, () => applyValue(input.value + ch))));
+        rowChars.forEach(ch => {
+          const key = makeKey(ch, () => applyValue(input.value + ch));
+          // Punctuation keys are narrow and centred, so they never read as a
+          // space bar. They stay grouped in the middle rather than stretching.
+          if (isPunctRow) key.classList.add("punct-key");
+          row.appendChild(key);
+        });
         container.appendChild(row);
-        if (isMissingOnly || idx !== puncRowIdx || /\p{L}/u.test(rowChars[0])) letterRows.push(row);
+        if (!isPunctRow) letterRows.push(row);
       });
 
       // Backspace lives where every phone keyboard puts it: at the RIGHT END
@@ -3840,15 +3964,38 @@
       if (practiceScope === "wrong") pool = pool.filter(r => (r.times_wrong | 0) > 0);
 
       const now = nowIso();
-      const due = []; const fresh = []; const future = [];
+      // Mastered items are held out of the main pools entirely; they return
+      // only via the small daily quota below. This is the fix for "mastered
+      // words keep flooding back": once mastered, an item can no longer win a
+      // normal due slot, whatever its next_due says.
+      const due = []; const fresh = []; const future = []; const masteredDue = [];
+      let masteredTotal = 0;
       for (const r of pool) {
-        if (r.next_due == null) fresh.push(r);
-        else if (r.next_due <= now) due.push(r);
+        if (isMastered(r)) masteredTotal++;
+        if (r.next_due == null) { fresh.push(r); continue; }
+        const isDue = r.next_due <= now;
+        if (isMastered(r)) { if (isDue) masteredDue.push(r); continue; }
+        if (isDue) due.push(r);
         else future.push(r);
       }
       due.sort((a, b) => -((a.times_wrong | 0) - (b.times_wrong | 0)) || (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
       future.sort((a, b) => (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
+      // Oldest-due mastered items first, so reviews cycle rather than repeat.
+      masteredDue.sort((a, b) => (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
       const newItems = shuffleArr(fresh);
+
+      // How many mastered reviews may this batch include: bounded by the
+      // per-batch cap and by what remains of today's quota — and the daily
+      // quota itself scales with the size of the mastered pool (see
+      // masteredDailyQuota), so a 30-item deck and a 3000-item deck both get
+      // a sensible cadence.
+      function takeMasteredReviews(maxSlots) {
+        const budget = Math.min(maxSlots, MASTERED_REVIEW_SLOTS_PER_BATCH, masteredReviewsRemainingToday(masteredTotal), masteredDue.length);
+        if (budget <= 0) return [];
+        const picked = masteredDue.slice(0, budget);
+        noteMasteredReviewsServed(picked.length);
+        return picked;
+      }
 
       if (practiceScope === "wrong") {
         let selected = due.slice(0, limit);
@@ -3887,14 +4034,22 @@
       let newUsed = Math.min(newTarget, newItems.length);
       const remNew = newItems.slice(newTarget);
 
+      // A couple of mastered reviews may ride along in each batch — as spaced
+      // checks, not as filler that displaces active learning. Taken from the
+      // daily quota so they can never dominate.
+      const masteredPicks = takeMasteredReviews(limit - selected.length);
+      selected = selected.concat(masteredPicks);
+
       if (selected.length < limit) {
         const seen = new Set(selected.map(x => x.id));
         // Backfill priority: overflow due items first, then ahead-of-schedule
         // reviews (future). New items come LAST and only within the remaining
         // budget — previously remNew was preferred over future, which flooded
         // the session with new words exactly when reviews were scarce.
+        // Mastered items are NEVER pulled in as backfill (only via the quota
+        // above), so they cannot crowd out weaker items.
         for (const it of [...remDue, ...future]) {
-          if (isRestingMasteredProgressive(it, now)) continue;
+          if (isMastered(it) || isRestingMasteredProgressive(it, now)) continue;
           if (!seen.has(it.id)) { selected.push(it); seen.add(it.id); }
           if (selected.length >= limit) break;
         }
@@ -5449,6 +5604,16 @@
         wrongCount++; updateScore();
         typingResult.textContent = `Wrong. Correct: ${targetDisplay(currentTypingWord)}`;
         statusEl.textContent = "";
+        // Same per-letter feedback as sentence mode: once the answer is
+        // submitted wrong, highlight which typed letters are incorrect.
+        if (wordMode === "progressive" && currentTypingChallenge && currentTypingChallenge.masked) {
+          typingClue.innerHTML = clueHtml(
+            currentTypingChallenge.masked,
+            typingInput.value,
+            currentTypingChallenge.missing || "",
+            true
+          );
+        }
         await saveWordAnswer(currentTypingWord.id, false);
         wordQueue.push(currentTypingWord);
         wordTypingAwaitingContinue = true;
@@ -7346,6 +7511,7 @@
       applyTheme();
       applyColumnOrder();
       applySettingsToUI();
+      loadMasteredReviewLog();
 
       try {
         await DB.open();
