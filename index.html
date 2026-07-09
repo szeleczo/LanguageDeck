@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v69-proportional-review-quota-20260709" />
+  <link rel="manifest" href="manifest.webmanifest?v=v70-learning-doctor-word-markers-20260709" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -2041,6 +2041,42 @@
       border: 1px solid var(--border);
     }
     .hardest-item .meta { color: var(--text-faint); font-size: 12px; margin-top: 4px; }
+    .doctor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .doctor-cell {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      min-width: 0;
+    }
+    .doctor-cell .value {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 850;
+      line-height: 1.1;
+      color: var(--text);
+    }
+    .doctor-cell .label {
+      display: block;
+      margin-top: 3px;
+      font-size: 11px;
+      line-height: 1.25;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .doctor-note {
+      margin: -6px 0 16px;
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--text-muted);
+    }
 
     /* Gate detail modal */
     .gate-detail-row {
@@ -2331,6 +2367,11 @@
         <div class="stat-cell"><span class="stat-value" id="statDue">0</span><span class="stat-label">Due</span></div>
         <div class="stat-cell"><span class="stat-value" id="statStable">0</span><span class="stat-label">Stable</span></div>
       </div>
+      <div class="modal-section-title">Learning Doctor</div>
+      <div class="doctor-grid" id="learningDoctorGrid">
+        <div class="doctor-cell"><span class="value">—</span><span class="label">Loading</span></div>
+      </div>
+      <div class="doctor-note" id="learningDoctorNote">Open this during practice to see what the engine is serving.</div>
       <div class="modal-section-title" id="hardestTitle">Most-missed items</div>
       <div class="hardest-list" id="hardestList">No data yet.</div>
       <div class="settings-actions">
@@ -2390,7 +2431,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v69-proportional-review-quota-20260709</div>
+      <div class="meta" id="appBuildLabel">Build: v70-learning-doctor-word-markers-20260709</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2655,7 +2696,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v69-proportional-review-quota-20260709";
+    const APP_BUILD = "v70-learning-doctor-word-markers-20260709";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -2947,24 +2988,43 @@
       return now.toISOString().slice(0, 10); // YYYY-MM-DD, device-local enough for daily pacing
     }
 
-    // Per-day counter of mastered reviews already served, persisted so the
-    // pacing survives reloads within the same day.
-    let masteredReviewLog = { day: "", count: 0 };
+    // Per-day counter of mastered reviews already served. v70 scopes this by
+    // game + deck + set + gate, so a small grammar deck cannot consume the
+    // mastered-review budget of a separate book deck on the same day.
+    let masteredReviewLog = { day: "", scopes: {} };
+    function masteredReviewScopeKey() {
+      const gatePart = gateEnabled ? `gate:${currentGateIndex}` : "all-gates";
+      return [currentGame || "words", currentDeck || "de", currentSetName || "__all__", gatePart].join("|");
+    }
+    function normalizeMasteredReviewLog(rawLog) {
+      const day = todayKey();
+      if (!rawLog || typeof rawLog !== "object") return { day, scopes: {} };
+      // Migrate v69's flat { day, count } log into the current scope only.
+      if (!rawLog.scopes) {
+        const count = rawLog.day === day ? (rawLog.count | 0) : 0;
+        return { day, scopes: count ? { [masteredReviewScopeKey()]: count } : {} };
+      }
+      return rawLog.day === day ? { day, scopes: rawLog.scopes || {} } : { day, scopes: {} };
+    }
     function loadMasteredReviewLog() {
       try {
         const raw = localStorage.getItem("ld_mastered_review_log");
-        if (raw) masteredReviewLog = JSON.parse(raw);
-      } catch (_) { masteredReviewLog = { day: "", count: 0 }; }
-      if (masteredReviewLog.day !== todayKey()) masteredReviewLog = { day: todayKey(), count: 0 };
+        masteredReviewLog = normalizeMasteredReviewLog(raw ? JSON.parse(raw) : null);
+      } catch (_) { masteredReviewLog = { day: todayKey(), scopes: {} }; }
+    }
+    function currentMasteredReviewCount() {
+      masteredReviewLog = normalizeMasteredReviewLog(masteredReviewLog);
+      return masteredReviewLog.scopes[masteredReviewScopeKey()] | 0;
     }
     function masteredReviewsRemainingToday(masteredCount) {
-      if (masteredReviewLog.day !== todayKey()) masteredReviewLog = { day: todayKey(), count: 0 };
-      return Math.max(0, masteredDailyQuota(masteredCount) - (masteredReviewLog.count | 0));
+      masteredReviewLog = normalizeMasteredReviewLog(masteredReviewLog);
+      return Math.max(0, masteredDailyQuota(masteredCount) - currentMasteredReviewCount());
     }
     function noteMasteredReviewsServed(n) {
       if (!n) return;
-      if (masteredReviewLog.day !== todayKey()) masteredReviewLog = { day: todayKey(), count: 0 };
-      masteredReviewLog.count = (masteredReviewLog.count | 0) + n;
+      masteredReviewLog = normalizeMasteredReviewLog(masteredReviewLog);
+      const key = masteredReviewScopeKey();
+      masteredReviewLog.scopes[key] = (masteredReviewLog.scopes[key] | 0) + n;
       try { localStorage.setItem("ld_mastered_review_log", JSON.stringify(masteredReviewLog)); } catch (_) {}
     }
 
@@ -3424,6 +3484,14 @@
           splitAlternatives(currentTypingWord.alternatives || currentTypingWord.alt || ""));
         if (correct) submitTypingWordAnswer(false);
         else {
+          if (currentTypingChallenge && currentTypingChallenge.masked && typingClue) {
+            typingClue.innerHTML = clueHtml(
+              currentTypingChallenge.masked,
+              typingInput.value,
+              currentTypingChallenge.missing || "",
+              true
+            );
+          }
           typingResult.textContent = "Not quite — use backspace to fix it.";
           updateTypingActionButtons();
         }
@@ -4236,6 +4304,8 @@
     const statStable = $("statStable");
     const hardestTitle = $("hardestTitle");
     const hardestList = $("hardestList");
+    const learningDoctorGrid = $("learningDoctorGrid");
+    const learningDoctorNote = $("learningDoctorNote");
 
     const statsBtn = $("statsBtn");
     const statsModal = $("statsModal");
@@ -4369,7 +4439,7 @@
       if (quickSheet && quickSheet.classList.contains("active")) renderQuickSheet();
     }
 
-    function openStats() { statsModal.classList.add("active"); }
+    function openStats() { statsModal.classList.add("active"); refreshStats(); }
     function closeStats() { statsModal.classList.remove("active"); }
     function openGateDetail() {
       if (!gateEnabled) return;
@@ -4569,6 +4639,35 @@
     // Kept as a no-op so existing call-sites don't break;
     // the keyboard hint UI was removed in favor of a cleaner main area.
     // Kept as a no-op so call-sites still work; deck-and-count info now lives in the chip.
+    function renderLearningDoctor(rows, scopeLabel = "current scope") {
+      if (!learningDoctorGrid || !learningDoctorNote) return;
+      const now = nowIso();
+      const total = rows.length;
+      const fresh = rows.filter(r => r.next_due == null).length;
+      const learning = rows.filter(r => !isMastered(r) && r.next_due != null).length;
+      const learningDue = rows.filter(r => !isMastered(r) && r.next_due != null && r.next_due <= now).length;
+      const mastered = rows.filter(r => isMastered(r)).length;
+      const masteredDue = rows.filter(r => isMastered(r) && r.next_due != null && r.next_due <= now).length;
+      const masteredResting = rows.filter(r => isMastered(r) && r.next_due != null && r.next_due > now).length;
+      const quota = masteredDailyQuota(mastered);
+      const used = currentMasteredReviewCount();
+      const remaining = masteredReviewsRemainingToday(mastered);
+      const cells = [
+        [fresh, "New"],
+        [`${learningDue}/${learning}`, "Learning due"],
+        [mastered, "Mastered pool"],
+        [masteredResting, "Mastered resting"],
+        [masteredDue, "Mastered due"],
+        [`${used}/${quota}`, "Review quota used"]
+      ];
+      learningDoctorGrid.innerHTML = cells.map(([value, label]) => `
+        <div class="doctor-cell"><span class="value">${escapeHtml(value)}</span><span class="label">${escapeHtml(label)}</span></div>
+      `).join("");
+      learningDoctorNote.textContent = total
+        ? `${scopeLabel}: ${total} items. Mastered reviews remaining today: ${remaining}. Current session queue has seen ${sessionLoadedIds.size} unique item ids.`
+        : `${scopeLabel}: no items loaded.`;
+    }
+
     async function refreshStats() {
       let all = [];
       let hardestTitleText = currentGame === "words" ? "Most-missed words" : "Most-missed sentences";
@@ -4585,6 +4684,7 @@
       const newCount = all.filter(r => r.next_due == null).length;
       const due = all.filter(r => r.next_due != null && r.next_due <= now).length;
       const stable = all.filter(r => (r.streak | 0) >= 3).length;
+      renderLearningDoctor(all, currentGame === "combined" ? "combined pair" : "current deck");
       statTotal.textContent = total;
       statNew.textContent = newCount;
       statDue.textContent = due;
