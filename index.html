@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v70-learning-doctor-word-markers-20260709" />
+  <link rel="manifest" href="manifest.webmanifest?v=v71-csv-order-new-items-20260710" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -2431,7 +2431,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v70-learning-doctor-word-markers-20260709</div>
+      <div class="meta" id="appBuildLabel">Build: v71-csv-order-new-items-20260710</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2521,6 +2521,13 @@
               <option value="0.4" selected>40%</option>
               <option value="0.6">60%</option>
               <option value="0.8">80%</option>
+            </select>
+          </div>
+          <div>
+            <label for="newItemOrderSelect">New item order</label>
+            <select id="newItemOrderSelect">
+              <option value="smart" selected>Smart shuffle</option>
+              <option value="csv">CSV order</option>
             </select>
           </div>
           <div>
@@ -2696,7 +2703,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v70-learning-doctor-word-markers-20260709";
+    const APP_BUILD = "v71-csv-order-new-items-20260710";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3797,6 +3804,24 @@
       return copy;
     }
 
+    function csvOrderEnabled() {
+      return newItemOrder === "csv";
+    }
+
+    function byImportOrder(a, b) {
+      return ((a && a.id) || 0) - ((b && b.id) || 0);
+    }
+
+    function orderNewItems(items) {
+      const copy = [...(items || [])];
+      return csvOrderEnabled() ? copy.sort(byImportOrder) : shuffleArr(copy);
+    }
+
+    function orderStudyBatch(items) {
+      const copy = [...(items || [])];
+      return csvOrderEnabled() ? copy : shuffleArr(copy);
+    }
+
     function derangeOrBest(ids) {
       if (ids.length <= 1) return [...ids];
       const original = [...ids];
@@ -4050,7 +4075,7 @@
       future.sort((a, b) => (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
       // Oldest-due mastered items first, so reviews cycle rather than repeat.
       masteredDue.sort((a, b) => (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
-      const newItems = shuffleArr(fresh);
+      const newItems = orderNewItems(fresh);
 
       // How many mastered reviews may this batch include: bounded by the
       // per-batch cap and by what remains of today's quota — and the daily
@@ -4127,7 +4152,7 @@
           if (!seen.has(it.id)) { selected.push(it); seen.add(it.id); newUsed++; }
         }
       }
-      return shuffleArr(selected).slice(0, limit);
+      return orderStudyBatch(selected).slice(0, limit);
     }
 
     /* Number of consecutive correct answers required to clear ONE wrong-strike.
@@ -4179,6 +4204,7 @@
     let practiceScope = "all";
     let repetitionProfile = "normal";
     let newRatio = 0.4;
+    let newItemOrder = "smart"; // "smart" | "csv" — controls only how new items enter
     let visibleCount = 4;
 
     let gateEnabled = true;
@@ -4272,6 +4298,7 @@
     const scopeSelect = $("scopeSelect");
     const profileSelect = $("profileSelect");
     const newRatioSelect = $("newRatioSelect");
+    const newItemOrderSelect = $("newItemOrderSelect");
     const visibleCountSelect = $("visibleCountSelect");
 
     const gateEnabledCheckbox = $("gateEnabledCheckbox");
@@ -4355,7 +4382,7 @@
       const s = {
         currentGame, currentDeck, currentSetName, importType,
         wordMode, sentenceMode, practiceScope, repetitionProfile,
-        newRatio, visibleCount,
+        newRatio, newItemOrder, visibleCount,
         gateEnabled, gateSize, currentGateIndex, strictGate,
         theme, columnOrder
       };
@@ -5242,7 +5269,7 @@
       currentTypingWord = null;
 
       const fresh = await fetchWordItems(false);
-      wordQueue = shuffleArr([...fresh]);
+      wordQueue = orderStudyBatch(fresh);
 
       if (wordQueue.length === 0) {
         renderWordEmptyState();
@@ -5731,7 +5758,7 @@
       sentenceTarget.innerHTML = ""; sentenceBank.innerHTML = "";
 
       const fresh = await fetchSentenceItems(false);
-      sentenceQueue = shuffleArr([...fresh]);
+      sentenceQueue = orderStudyBatch(fresh);
       sentencePool = [...fresh];
       correctCount = 0; wrongCount = 0; updateScore();
 
@@ -7354,6 +7381,14 @@
     newRatioSelect.addEventListener("change", async () => {
       newRatio = parseFloat(newRatioSelect.value); saveSettings(); await loadCurrentGame(true);
     });
+    if (newItemOrderSelect) {
+      newItemOrderSelect.addEventListener("change", async () => {
+        newItemOrder = newItemOrderSelect.value === "csv" ? "csv" : "smart";
+        sessionLoadedIds = new Set();
+        saveSettings();
+        await loadCurrentGame(true);
+      });
+    }
     visibleCountSelect.addEventListener("change", async () => {
       visibleCount = parseInt(visibleCountSelect.value, 10); saveSettings();
       if (currentGame === "words" && wordMode === "match") await loadCurrentGame(true);
@@ -7576,6 +7611,7 @@
       scopeSelect.value = practiceScope;
       profileSelect.value = repetitionProfile;
       newRatioSelect.value = String(newRatio);
+      if (newItemOrderSelect) newItemOrderSelect.value = newItemOrder;
       visibleCountSelect.value = String(visibleCount);
       gateEnabledCheckbox.value = gateEnabled ? "true" : "false";
       gateSizeSelect.value = String(gateSize);
@@ -7599,6 +7635,7 @@
         practiceScope = saved.practiceScope ?? practiceScope;
         repetitionProfile = saved.repetitionProfile ?? repetitionProfile;
         newRatio = saved.newRatio ?? newRatio;
+        newItemOrder = saved.newItemOrder ?? newItemOrder;
         visibleCount = saved.visibleCount ?? visibleCount;
         gateEnabled = saved.gateEnabled ?? gateEnabled;
         gateSize = saved.gateSize ?? gateSize;
