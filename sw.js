@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v73-learning-explanations-tdzfix-20260717";
+const CACHE_VERSION = "languagedeck-v74-compact-learning-help-20260717";
 const APP_SHELL = [
   "./",
   "./index.html",
