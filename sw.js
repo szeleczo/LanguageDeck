@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v74-compact-learning-help-20260717";
+const CACHE_VERSION = "languagedeck-v74-quota-truth-retry-levels-20260717";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -37,8 +37,12 @@ self.addEventListener("fetch", event => {
   if (url.origin !== self.location.origin) return;
 
   // Network-first: online users get the latest deployed files; offline users get cache.
+  // "no-cache" (revalidate) rather than "reload" (force full download): the
+  // browser sends If-None-Match/If-Modified-Since, so unchanged files come back
+  // as an empty 304 instead of re-downloading the ~320KB index.html and every
+  // deck CSV on each launch. Freshness is identical — the server still decides.
   event.respondWith(
-    fetch(req, { cache: "reload" }).then(resp => {
+    fetch(req, { cache: "no-cache" }).then(resp => {
       if (resp.ok) {
         const path = url.pathname.split("/").pop();
         if (

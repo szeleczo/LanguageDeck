@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v74-compact-learning-help-20260717" />
+  <link rel="manifest" href="manifest.webmanifest?v=v74-quota-truth-retry-levels-20260717" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -896,78 +896,10 @@
     }
     .card.disabled { pointer-events: none; opacity: 0.7; }
 
-    /* ---------- Hook / hint peek (hold-to-flip) ----------
-       Cards with a hint carry a faint dot marker. Holding the card for a
-       moment flips it (3D rotateY) and reveals the hint in small, muted
-       text; releasing flips it back. The hint face is pre-rotated 180deg
-       so it reads correctly when the card is flipped. */
-    .card.has-hint::after {
-      content: "";
-      position: absolute;
-      top: 8px; right: 10px;
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--text-faint);
-      opacity: 0.55;
-    }
+    /* Hint faces on match cards are shown by the explicit "?" button (v72);
+       the styling lives in the .card-hint-btn / .hint-open rules below. */
     .card {
-      transform-style: preserve-3d;
       -webkit-touch-callout: none;
-    }
-    .card.hint-peek,
-    .card.hint-peek:active:not(.disabled):not(.correct) {
-      /* !important + explicit :active variant: the flip must beat the
-         "physical button press" translateY effect, which is by definition
-         active during a long press (that rule has higher specificity and
-         was silently winning — the card never visually rotated). */
-      transform: rotateY(180deg) !important;
-      transition: transform 0.22s ease;
-    }
-    .card.has-hint {
-      /* Don't let Android hijack the hold gesture for scrolling/selection —
-         a hijack fires pointercancel and kills the peek timer. */
-      touch-action: none;
-    }
-    .card .card-front,
-    .card .card-hint {
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-    .card .card-hint {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 12px;
-      transform: rotateY(180deg);
-      font-size: 12px;
-      font-weight: 500;
-      font-style: italic;
-      line-height: 1.3;
-      color: var(--text-faint);
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .card.hint-peek .shortcut-badge { opacity: 0; }
-    .card.hint-peek::after { opacity: 0; }
-
-    /* Prompt-style peek (typing word, sentence prompt): text is swapped
-       for the hint while held; styling signals "this is a whisper". */
-    .hint-peek-text {
-      color: var(--text-faint) !important;
-      font-style: italic;
-      font-weight: 500 !important;
-      font-size: 0.82em !important;
-    }
-    .hint-dot {
-      display: inline-block;
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--text-faint);
-      opacity: 0.55;
-      margin-left: 7px;
-      vertical-align: middle;
     }
     #typingPrompt, #sentenceEnglish {
       user-select: none;
@@ -1005,34 +937,11 @@
     }
     .learning-tools .hint-toggle.active,
     .learning-tools .explain-toggle.active {
-      /* Keep the help buttons visually neutral even when open. Mobile browsers
-         otherwise tend to leave the last tapped button looking blue/selected. */
-      background: var(--surface-2);
-      color: var(--text-muted);
-      border-color: var(--border-strong);
-      opacity: 0.92;
+      background: var(--primary-soft);
+      color: var(--primary-deep);
+      border-color: var(--primary);
+      opacity: 1;
     }
-
-    .learning-tools button.hint-toggle:hover:not(:disabled),
-    .learning-tools button.explain-toggle:hover:not(:disabled),
-    .learning-tools button.hint-toggle:focus:not(:disabled),
-    .learning-tools button.explain-toggle:focus:not(:disabled),
-    .learning-tools button.hint-toggle:focus-visible:not(:disabled),
-    .learning-tools button.explain-toggle:focus-visible:not(:disabled),
-    .learning-tools button.hint-toggle.active:hover:not(:disabled),
-    .learning-tools button.explain-toggle.active:hover:not(:disabled) {
-      background: var(--surface-2) !important;
-      color: var(--text-muted) !important;
-      border-color: var(--border-strong) !important;
-      outline: none;
-    }
-    .learning-tools button.hint-toggle:active:not(:disabled),
-    .learning-tools button.explain-toggle:active:not(:disabled) {
-      background: var(--surface-2) !important;
-      color: var(--text-muted) !important;
-      border-color: var(--border-strong) !important;
-    }
-
     .learning-panel {
       flex: 1 1 100%;
       max-width: min(620px, 100%);
@@ -1053,110 +962,6 @@
       color: #7c2d12;
       font-size: 12.5px;
     }
-
-    /* v74: compact learning help. The old full-width Hint/Explain row cost
-       too much vertical space on phones. The controls are now tiny, tap/click
-       affordances; in sentence order mode they float in the top-right of the
-       exercise and their content opens as a small popover, so the word-bank
-       layout and thumb targets do not move. */
-    .learning-tools .hint-toggle {
-      width: 28px;
-      min-width: 28px;
-      height: 28px;
-      min-height: 28px;
-      padding: 0;
-      border-radius: 999px;
-      font-size: 13px;
-      line-height: 1;
-      font-weight: 900;
-    }
-    .learning-tools .explain-toggle {
-      min-height: 28px;
-      padding: 0 9px;
-      border-radius: 999px;
-      font-size: 11px;
-      line-height: 1;
-      font-weight: 800;
-    }
-    .sentence-panel { position: relative; }
-    .sentence-panel.order-mode .sentence-english {
-      padding-right: 74px;
-    }
-    .sentence-panel.order-mode .learning-tools {
-      order: 1;
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      z-index: 28;
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 5px;
-      margin: 0;
-      padding: 0;
-      max-width: calc(100% - 24px);
-    }
-    .sentence-panel.order-mode .learning-tools.hidden { display: none; }
-    .sentence-panel.order-mode .learning-tools .learning-panel {
-      position: absolute;
-      top: 34px;
-      right: 0;
-      width: min(310px, calc(100vw - 42px));
-      max-height: min(42vh, 310px);
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      margin: 0;
-      padding: 10px 12px;
-      border-radius: 14px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
-      background: color-mix(in srgb, var(--surface) 98%, transparent);
-      backdrop-filter: saturate(180%) blur(10px);
-      -webkit-backdrop-filter: saturate(180%) blur(10px);
-    }
-    .sentence-panel.order-mode .learning-tools .learning-panel.explanation {
-      background: color-mix(in srgb, #fff7ed 98%, transparent);
-    }
-    .sentence-panel.order-mode .learning-tools .learning-panel.hidden { display: none; }
-    .sentence-panel.order-mode .sentence-help.hidden + .sentence-meta {
-      margin-top: 0;
-    }
-
-    .typing-panel { position: relative; }
-    .typing-panel .typing-word { padding-right: 36px; }
-    .typing-panel .learning-tools {
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      z-index: 28;
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 5px;
-      margin: 0;
-      padding: 0;
-      max-width: calc(100% - 24px);
-    }
-    .typing-panel .learning-tools.hidden { display: none; }
-    .typing-panel .learning-tools .learning-panel {
-      position: absolute;
-      top: 34px;
-      right: 0;
-      width: min(280px, calc(100vw - 42px));
-      max-height: min(36vh, 250px);
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      margin: 0;
-      padding: 9px 11px;
-      border-radius: 14px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
-      background: color-mix(in srgb, var(--surface) 98%, transparent);
-      backdrop-filter: saturate(180%) blur(10px);
-      -webkit-backdrop-filter: saturate(180%) blur(10px);
-    }
-    .typing-panel .learning-tools .learning-panel.hidden { display: none; }
-
     .card .card-hint-btn {
       position: absolute;
       top: 6px;
@@ -1175,20 +980,10 @@
       box-shadow: none;
     }
     .card .card-hint-btn.active {
-      background: rgba(255,255,255,0.9);
-      color: var(--text-muted);
-      border-color: var(--border-strong);
+      background: var(--primary-soft);
+      color: var(--primary-deep);
+      border-color: var(--primary);
     }
-    .card .card-hint-btn:hover:not(:disabled),
-    .card .card-hint-btn:focus:not(:disabled),
-    .card .card-hint-btn:focus-visible:not(:disabled),
-    .card .card-hint-btn.active:hover:not(:disabled) {
-      background: rgba(255,255,255,0.9) !important;
-      color: var(--text-muted) !important;
-      border-color: var(--border-strong) !important;
-      outline: none;
-    }
-    .card.has-hint::after { display: none; }
     .card.has-hint { touch-action: manipulation; }
     .card .card-front { transition: opacity 0.12s ease; }
     .card .card-hint {
@@ -1216,8 +1011,6 @@
     .card.hint-open .card-front,
     .card.hint-open .shortcut-badge { opacity: 0; }
     .card.hint-open .card-hint { opacity: 1; }
-    .card.hint-peek,
-    .card.hint-peek:active:not(.disabled):not(.correct) { transform: none !important; }
     #typingPrompt, #sentenceEnglish {
       touch-action: manipulation;
       -webkit-touch-callout: default;
@@ -1947,7 +1740,7 @@
       padding-top: 18px;
       padding-bottom: 16px;
     }
-    .sentence-panel.order-mode .sentence-english { order: 1; margin-bottom: 6px; padding-right: 74px; }
+    .sentence-panel.order-mode .sentence-english { order: 1; margin-bottom: 8px; }
     .sentence-panel.order-mode .sentence-help { order: 2; }
     .sentence-panel.order-mode .sentence-target { order: 3; margin-bottom: 8px; }
     .sentence-panel.order-mode .sentence-bank { order: 4; margin-bottom: 8px; }
@@ -2553,7 +2346,7 @@
     <div id="wordTypingContainer" class="typing-panel hidden">
       <div class="typing-word" id="typingPrompt">—</div>
       <div class="learning-tools hidden" id="typingLearningTools">
-        <button id="typingHintBtn" class="hint-toggle" type="button" aria-label="Show hint" title="Hint">?</button>
+        <button id="typingHintBtn" class="hint-toggle" type="button">Hint</button>
         <div id="typingHintPanel" class="learning-panel hidden"></div>
       </div>
       <div class="level-dots hidden" id="typingLevelDots" aria-hidden="true"></div>
@@ -2574,8 +2367,8 @@
     <div id="sentenceContainer" class="sentence-panel hidden">
       <div class="sentence-english" id="sentenceEnglish">—</div>
       <div class="learning-tools hidden" id="sentenceLearningTools">
-        <button id="sentenceHintBtn" class="hint-toggle" type="button" aria-label="Show hint" title="Hint">?</button>
-        <button id="sentenceExplainBtn" class="explain-toggle" type="button" aria-label="Show explanation" title="Explain">Why</button>
+        <button id="sentenceHintBtn" class="hint-toggle" type="button">Hint</button>
+        <button id="sentenceExplainBtn" class="explain-toggle" type="button">Explain</button>
         <div id="sentenceHintPanel" class="learning-panel hidden"></div>
         <div id="sentenceExplanationPanel" class="learning-panel explanation hidden"></div>
       </div>
@@ -2689,7 +2482,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v74-compact-learning-help-20260717</div>
+      <div class="meta" id="appBuildLabel">Build: v74-quota-truth-retry-levels-20260717</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2858,7 +2651,8 @@
             CSV: <code>english,target</code> still works. Word decks should use
             <code>english,target,article,hint</code>. Sentence decks may use
             <code>english,target,hint,explanation</code>; <code>alternatives</code> is optional
-            when there are genuinely accepted alternate answers. Hints open with a tap/click; explanations appear after Reveal or a wrong answer.
+            when there are genuinely accepted alternate answers. Hints open with a tap/click;
+            explanations appear after Reveal or a wrong answer.
           </div>
           <button id="browseBuiltinBtn" class="ghost" style="width:100%;">Browse built-in decks</button>
           <button id="manageDecksBtn" class="ghost" style="width:100%;">Manage installed decks</button>
@@ -2959,7 +2753,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v74-compact-learning-help-20260717";
+    const APP_BUILD = "v74-quota-truth-retry-levels-20260717";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3251,9 +3045,17 @@
       return now.toISOString().slice(0, 10); // YYYY-MM-DD, device-local enough for daily pacing
     }
 
-    // Per-day counter of mastered reviews already served. v70 scopes this by
+    // Per-day record of mastered reviews already served. v70 scopes this by
     // game + deck + set + gate, so a small grammar deck cannot consume the
     // mastered-review budget of a separate book deck on the same day.
+    // v74: the log stores the ITEM KEYS actually served ("table:id"), not a
+    // bare counter. Counting at selection time was a bug: selectStudyItems
+    // runs on every queue refill and on every combined-mode card (via
+    // pickOneStudyItem, which selects up to 8 items but shows ONE), so the
+    // daily budget was consumed by items the learner never saw — two cards
+    // could exhaust a whole day. Recording keys on answer makes the quota
+    // idempotent and truthful: re-selecting the same item costs nothing, and
+    // selecting without showing costs nothing.
     let masteredReviewLog = { day: "", scopes: {} };
     function masteredReviewScopeKey() {
       const gatePart = gateEnabled ? `gate:${currentGateIndex}` : "all-gates";
@@ -3262,12 +3064,16 @@
     function normalizeMasteredReviewLog(rawLog) {
       const day = todayKey();
       if (!rawLog || typeof rawLog !== "object") return { day, scopes: {} };
-      // Migrate v69's flat { day, count } log into the current scope only.
-      if (!rawLog.scopes) {
-        const count = rawLog.day === day ? (rawLog.count | 0) : 0;
-        return { day, scopes: count ? { [masteredReviewScopeKey()]: count } : {} };
+      if (rawLog.day !== day) return { day, scopes: {} };
+      const scopes = {};
+      // Accept both the v74 key-array form and the older numeric-count form
+      // (v70) / flat count (v69). Legacy numeric entries are dropped, which
+      // only ever grants a one-time fresh budget on the upgrade day.
+      const raw = rawLog.scopes && typeof rawLog.scopes === "object" ? rawLog.scopes : {};
+      for (const [k, v] of Object.entries(raw)) {
+        if (Array.isArray(v)) scopes[k] = v.slice(0, MASTERED_REVIEW_MAX_PER_DAY * 4);
       }
-      return rawLog.day === day ? { day, scopes: rawLog.scopes || {} } : { day, scopes: {} };
+      return { day, scopes };
     }
     function loadMasteredReviewLog() {
       try {
@@ -3277,17 +3083,23 @@
     }
     function currentMasteredReviewCount() {
       masteredReviewLog = normalizeMasteredReviewLog(masteredReviewLog);
-      return masteredReviewLog.scopes[masteredReviewScopeKey()] | 0;
+      const served = masteredReviewLog.scopes[masteredReviewScopeKey()];
+      return Array.isArray(served) ? served.length : 0;
     }
     function masteredReviewsRemainingToday(masteredCount) {
       masteredReviewLog = normalizeMasteredReviewLog(masteredReviewLog);
       return Math.max(0, masteredDailyQuota(masteredCount) - currentMasteredReviewCount());
     }
-    function noteMasteredReviewsServed(n) {
-      if (!n) return;
+    /* Called when a mastered item was ACTUALLY answered by the learner.
+       Keyed by table + id, so the same item cannot consume the budget twice
+       in one day, and words/sentences never collide inside combined mode. */
+    function noteMasteredReviewServed(table, itemId) {
       masteredReviewLog = normalizeMasteredReviewLog(masteredReviewLog);
-      const key = masteredReviewScopeKey();
-      masteredReviewLog.scopes[key] = (masteredReviewLog.scopes[key] | 0) + n;
+      const scope = masteredReviewScopeKey();
+      const key = `${table}:${itemId}`;
+      const served = masteredReviewLog.scopes[scope] || (masteredReviewLog.scopes[scope] = []);
+      if (served.includes(key)) return;
+      served.push(key);
       try { localStorage.setItem("ld_mastered_review_log", JSON.stringify(masteredReviewLog)); } catch (_) {}
     }
 
@@ -3457,41 +3269,6 @@
          release, so peeking never accidentally selects a card.
        - Moving the pointer (scrolling) cancels the pending peek. */
     const HINT_HOLD_MS = 350;
-    function attachHoldPeek(el, getHint, onPeek, onUnpeek) {
-      let timer = null, peeking = false, suppressClick = false, startX = 0, startY = 0;
-      const cancelTimer = () => { if (timer) { clearTimeout(timer); timer = null; } };
-      const stop = () => {
-        cancelTimer();
-        if (peeking) {
-          peeking = false;
-          suppressClick = true; // consumed by the click handler (or next pointerdown)
-          onUnpeek();
-        }
-      };
-      el.addEventListener("pointerdown", e => {
-        suppressClick = false;
-        const hint = getHint();
-        if (!hint) return;
-        startX = e.clientX; startY = e.clientY;
-        cancelTimer();
-        timer = setTimeout(() => { peeking = true; onPeek(hint); }, HINT_HOLD_MS);
-      });
-      el.addEventListener("pointermove", e => {
-        if (!timer) return;
-        if (Math.abs(e.clientX - startX) > 10 || Math.abs(e.clientY - startY) > 10) cancelTimer();
-      });
-      el.addEventListener("pointerup", stop);
-      el.addEventListener("pointercancel", stop);
-      el.addEventListener("pointerleave", stop);
-      el.addEventListener("click", e => {
-        if (peeking || suppressClick) {
-          suppressClick = false;
-          e.stopImmediatePropagation(); e.preventDefault();
-        }
-      }, true);
-      el.addEventListener("contextmenu", e => { if (getHint()) e.preventDefault(); });
-    }
-
     function cardTypeOf(pair) {
       return normTxt(pair.type || pair.part_of_speech || pair.kind || "");
     }
@@ -3801,6 +3578,7 @@
               true
             );
           }
+          wordAttemptHadError = true;
           typingResult.textContent = "Not quite — use backspace to fix it.";
           updateTypingActionButtons();
         }
@@ -3825,6 +3603,7 @@
         if (correct) submitSentenceAnswer(false);
         else {
           currentSentenceData.showProgressiveErrors = true;
+          currentSentenceData.hadProgressiveError = true;
           renderCurrentSentenceProgressiveClue(true);
           sentenceResult.textContent = "Not quite — use backspace to fix it.";
           updateSentenceActionButtons();
@@ -3843,18 +3622,28 @@
       return isFullTextAnswerCorrect(fullExpected, typedValue, alternatives);
     }
 
-    async function recordProgressiveAnswer(table, itemId, correct, profile) {
+    /* `clean` = the learner produced the answer without a wrong attempt on
+       this card. A corrected attempt (wrong letters shown in red, then fixed
+       with backspace) is NOT clean: it still counts as a correct answer for
+       the schedule — a mis-tap should not nuke a streak — but it must not
+       reduce the scaffolding, because the learner demonstrably still needed
+       it. Without this, fumbled cards climbed to full typing and were then
+       parked with the long "mastered" rest, silently inflating the mastered
+       pool with items that were never actually recalled. */
+    async function recordProgressiveAnswer(table, itemId, correct, profile, clean = true) {
       const before = await DB.getById(table, itemId);
       const beforeLevel = progressiveLevelIndex(before);
       const row = await recordAnswer(table, itemId, correct, profile);
       if (!row) return null;
       const maxLevel = Math.max(0, PROGRESSIVE_LEVELS.length - 1);
-      row.progressive_level = nextProgressiveLevel(beforeLevel, correct);
+      row.progressive_level = (correct && !clean)
+        ? beforeLevel
+        : nextProgressiveLevel(beforeLevel, correct);
 
       // Highest-level full typing is not just recognition: it proves recall.
       // Give it a longer rest immediately, otherwise small decks/combined
       // sessions can keep pulling the same mastered forms back as filler.
-      if (correct && beforeLevel >= maxLevel) {
+      if (correct && clean && beforeLevel >= maxLevel) {
         row.next_due = calcMasteredProgressiveDue(row.streak, row.difficulty || 1.0, profile);
       }
       await DB.update(table, row);
@@ -4389,13 +4178,12 @@
       // per-batch cap and by what remains of today's quota — and the daily
       // quota itself scales with the size of the mastered pool (see
       // masteredDailyQuota), so a 30-item deck and a 3000-item deck both get
-      // a sensible cadence.
+      // a sensible cadence. NOTE: selection does NOT consume the quota; it is
+      // consumed in recordAnswer when the learner actually answers the item.
       function takeMasteredReviews(maxSlots) {
         const budget = Math.min(maxSlots, MASTERED_REVIEW_SLOTS_PER_BATCH, masteredReviewsRemainingToday(masteredTotal), masteredDue.length);
         if (budget <= 0) return [];
-        const picked = masteredDue.slice(0, budget);
-        noteMasteredReviewsServed(picked.length);
-        return picked;
+        return masteredDue.slice(0, budget);
       }
 
       if (practiceScope === "wrong") {
@@ -4471,6 +4259,11 @@
     async function recordAnswer(table, itemId, correct, profile) {
       const row = await DB.getById(table, itemId);
       if (!row) return null;
+      // The daily mastered-review budget is spent HERE — at the moment the
+      // learner actually answers a mastered item — not when a batch is
+      // assembled. Checked before mutating, since a wrong answer clears the
+      // mastered state.
+      if (isMastered(row)) noteMasteredReviewServed(table, itemId);
       row.times_seen = (row.times_seen | 0) + 1;
       if (correct) {
         row.times_correct = (row.times_correct | 0) + 1;
@@ -4543,6 +4336,9 @@
     let wordTypingAwaitingContinue = false;
     let wordProgressiveAutoSubmitTimer = null;
     let sentenceProgressiveAutoSubmitTimer = null;
+    /* Set when the learner's filled-in answer was wrong on this card and they
+       corrected it. Used to keep the scaffolding level from advancing. */
+    let wordAttemptHadError = false;
 
     let sentenceQueue = [];
     let sentencePool = [];
@@ -4694,23 +4490,16 @@
     // ReferenceError on load and could leave the app stuck on “Loading…”.
     if (typingHintBtn) typingHintBtn.addEventListener("click", () => {
       typingHintVisible = !typingHintVisible;
-      typingHintBtn.blur();
       renderTypingLearningTools();
     });
     if (sentenceHintBtn) sentenceHintBtn.addEventListener("click", () => {
       if (!currentSentenceData) return;
-      const next = !currentSentenceData.showHint;
-      currentSentenceData.showHint = next;
-      if (next) currentSentenceData.showExplanation = false;
-      sentenceHintBtn.blur();
+      currentSentenceData.showHint = !currentSentenceData.showHint;
       renderSentenceLearningTools();
     });
     if (sentenceExplainBtn) sentenceExplainBtn.addEventListener("click", () => {
       if (!currentSentenceData) return;
-      const next = !currentSentenceData.showExplanation;
-      currentSentenceData.showExplanation = next;
-      if (next) currentSentenceData.showHint = false;
-      sentenceExplainBtn.blur();
+      currentSentenceData.showExplanation = !currentSentenceData.showExplanation;
       renderSentenceLearningTools();
     });
 
@@ -5488,6 +5277,7 @@
       currentTypingWord = item;
       currentTypingChallenge = buildProgressiveChallenge(targetDisplay(currentTypingWord), currentTypingWord);
       wordTypingAwaitingContinue = false;
+      wordAttemptHadError = false;
       wordMatchContainer.classList.add("hidden");
       sentenceContainer.classList.add("hidden");
       wordTypingContainer.classList.remove("hidden");
@@ -5715,7 +5505,6 @@
         card.classList.toggle("hint-open", open);
         btn.classList.toggle("active", open);
         btn.setAttribute("aria-label", open ? "Hide hint" : "Show hint");
-        try { btn.blur(); } catch (_) {}
       });
       card.appendChild(btn);
     }
@@ -5830,9 +5619,9 @@
       for (const it of currentWordRoundPairs) apply(it);
     }
 
-    async function saveWordAnswer(wordId, isCorrect) {
+    async function saveWordAnswer(wordId, isCorrect, clean = true) {
       const row = wordMode === "progressive"
-        ? await recordProgressiveAnswer("word_pairs", wordId, isCorrect, repetitionProfile)
+        ? await recordProgressiveAnswer("word_pairs", wordId, isCorrect, repetitionProfile, clean)
         : await recordAnswer("word_pairs", wordId, isCorrect, repetitionProfile);
       syncRowIntoLiveItems(row);
     }
@@ -5947,27 +5736,16 @@
        Holding the prompt swaps its text for the hint (faint, italic);
        releasing restores the original prompt. A small dot marks prompts
        that have a hint available. */
+    /* v72: prompts carry no dot and no long-press. Help is on explicit buttons. */
     function setPromptWithHintDot(el, text, hasHint) {
-      // v72: no dot/long-press on prompts. Help is controlled by explicit buttons.
       el.textContent = text;
-      el.classList.remove("hint-peek-text");
-    }
-    function attachPromptPeek(el, getPair) {
-      attachHoldPeek(el, () => hintTextOf(getPair()),
-        (hint) => {
-          el.dataset.origText = el.textContent;
-          el.textContent = hint;
-          el.classList.add("hint-peek-text");
-        },
-        () => {
-          setPromptWithHintDot(el, el.dataset.origText || "", !!hintTextOf(getPair()));
-        });
     }
     // v72: long-press prompt peek removed. Use the explicit Hint/Explain buttons.
 
     /* ---------- Word typing ---------- */
     async function loadNextTypingWord() {
       wordTypingAwaitingContinue = false;
+      wordAttemptHadError = false;
       clearTimeout(wordProgressiveAutoSubmitTimer);
       await ensureWordQueue(1);
       if (wordQueue.length === 0) {
@@ -6080,7 +5858,7 @@
         correctCount++; updateScore();
         typingResult.textContent = "Correct.";
         statusEl.textContent = "";
-        await saveWordAnswer(currentTypingWord.id, true);
+        await saveWordAnswer(currentTypingWord.id, true, !wordAttemptHadError);
         setTimeout(async () => { locked = false; if (currentGame === "combined") await loadNextCombinedTask(); else await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 450);
       } else {
         clearTimeout(wordProgressiveAutoSubmitTimer);
@@ -6685,9 +6463,9 @@
         normTxt(a) === normTxt(currentSentenceData.typingAnswers[i] || ""));
     }
 
-    async function saveSentenceAnswer(id, isCorrect) {
+    async function saveSentenceAnswer(id, isCorrect, clean = true) {
       const row = sentenceMode === "progressive"
-        ? await recordProgressiveAnswer("sentence_pairs", id, isCorrect, repetitionProfile)
+        ? await recordProgressiveAnswer("sentence_pairs", id, isCorrect, repetitionProfile, clean)
         : await recordAnswer("sentence_pairs", id, isCorrect, repetitionProfile);
       syncRowIntoLiveItems(row);
     }
@@ -6754,7 +6532,7 @@
         correctCount++; updateScore();
         sentenceResult.textContent = "Correct.";
         statusEl.textContent = "";
-        await saveSentenceAnswer(currentSentence.id, true);
+        await saveSentenceAnswer(currentSentence.id, true, !(currentSentenceData && currentSentenceData.hadProgressiveError));
         setTimeout(async () => { locked = false; if (currentGame === "combined") await loadNextCombinedTask(); else await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 650);
       } else {
         clearTimeout(sentenceProgressiveAutoSubmitTimer);
