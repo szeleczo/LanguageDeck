@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v72-learning-explanations-csv-order-20260717" />
+  <link rel="manifest" href="manifest.webmanifest?v=v73-learning-explanations-tdzfix-20260717" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -2553,7 +2553,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v72-learning-explanations-csv-order-20260717</div>
+      <div class="meta" id="appBuildLabel">Build: v73-learning-explanations-tdzfix-20260717</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2824,7 +2824,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v72-learning-explanations-csv-order-20260717";
+    const APP_BUILD = "v73-learning-explanations-tdzfix-20260717";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3308,20 +3308,6 @@
       sentenceExplanationPanel.classList.toggle("hidden", !(explanation && showExplanation));
     }
 
-    if (typingHintBtn) typingHintBtn.addEventListener("click", () => {
-      typingHintVisible = !typingHintVisible;
-      renderTypingLearningTools();
-    });
-    if (sentenceHintBtn) sentenceHintBtn.addEventListener("click", () => {
-      if (!currentSentenceData) return;
-      currentSentenceData.showHint = !currentSentenceData.showHint;
-      renderSentenceLearningTools();
-    });
-    if (sentenceExplainBtn) sentenceExplainBtn.addEventListener("click", () => {
-      if (!currentSentenceData) return;
-      currentSentenceData.showExplanation = !currentSentenceData.showExplanation;
-      renderSentenceLearningTools();
-    });
     function showSentenceExplanationAfterFeedback() {
       if (!currentSentenceData) return;
       if (explanationTextOf(currentSentence)) currentSentenceData.showExplanation = true;
@@ -4566,6 +4552,25 @@
     const sentenceResetBtn = $("sentenceResetBtn");
     const sentenceRevealBtn = $("sentenceRevealBtn");
     const sentenceResult = $("sentenceResult");
+
+    // v73 fix: attach learning-help button handlers only after the DOM
+    // element constants above have been initialized. In v72 these listeners
+    // were registered earlier in the script, which triggered a temporal-dead-zone
+    // ReferenceError on load and could leave the app stuck on “Loading…”.
+    if (typingHintBtn) typingHintBtn.addEventListener("click", () => {
+      typingHintVisible = !typingHintVisible;
+      renderTypingLearningTools();
+    });
+    if (sentenceHintBtn) sentenceHintBtn.addEventListener("click", () => {
+      if (!currentSentenceData) return;
+      currentSentenceData.showHint = !currentSentenceData.showHint;
+      renderSentenceLearningTools();
+    });
+    if (sentenceExplainBtn) sentenceExplainBtn.addEventListener("click", () => {
+      if (!currentSentenceData) return;
+      currentSentenceData.showExplanation = !currentSentenceData.showExplanation;
+      renderSentenceLearningTools();
+    });
 
     const toastEl = $("toast");
     const installBanner = $("installBanner");
