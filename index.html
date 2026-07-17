@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v71-csv-order-new-items-20260710" />
+  <link rel="manifest" href="manifest.webmanifest?v=v72-learning-explanations-csv-order-20260717" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -975,6 +975,118 @@
       -webkit-touch-callout: none;
       touch-action: none;
     }
+
+    /* ---------- v72: explicit learning help ----------
+       Hints and explanations are tap/click controls. Long-press was removed
+       because it hides the text under the user's finger on phones and is
+       not natural on desktop. */
+    .learning-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      align-items: center;
+      margin: 6px 0 10px;
+    }
+    .learning-tools.hidden { display: none; }
+    .learning-tools .hint-toggle,
+    .learning-tools .explain-toggle {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 4px 9px;
+      min-height: 26px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      box-shadow: none;
+      opacity: 0.86;
+    }
+    .learning-tools .hint-toggle.active,
+    .learning-tools .explain-toggle.active {
+      background: var(--primary-soft);
+      color: var(--primary-deep);
+      border-color: var(--primary);
+      opacity: 1;
+    }
+    .learning-panel {
+      flex: 1 1 100%;
+      max-width: min(620px, 100%);
+      margin: 2px auto 0;
+      padding: 9px 11px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface-2);
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.38;
+      text-align: left;
+    }
+    .learning-panel.hidden { display: none; }
+    .learning-panel.explanation {
+      background: #fff7ed;
+      border-color: #fed7aa;
+      color: #7c2d12;
+      font-size: 12.5px;
+    }
+    .card .card-hint-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      z-index: 3;
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.72);
+      color: var(--text-faint);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 20px;
+      box-shadow: none;
+    }
+    .card .card-hint-btn.active {
+      background: var(--primary-soft);
+      color: var(--primary-deep);
+      border-color: var(--primary);
+    }
+    .card.has-hint::after { display: none; }
+    .card.has-hint { touch-action: manipulation; }
+    .card .card-front { transition: opacity 0.12s ease; }
+    .card .card-hint {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 30px 10px 12px;
+      transform: none;
+      opacity: 0;
+      pointer-events: none;
+      font-size: 12px;
+      font-weight: 600;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--text-muted);
+      background: var(--surface);
+      border-radius: inherit;
+      overflow: hidden;
+      transition: opacity 0.12s ease;
+      backface-visibility: visible;
+      -webkit-backface-visibility: visible;
+    }
+    .card.hint-open .card-front,
+    .card.hint-open .shortcut-badge { opacity: 0; }
+    .card.hint-open .card-hint { opacity: 1; }
+    .card.hint-peek,
+    .card.hint-peek:active:not(.disabled):not(.correct) { transform: none !important; }
+    #typingPrompt, #sentenceEnglish {
+      touch-action: manipulation;
+      -webkit-touch-callout: default;
+    }
+
 
     .shortcut-badge {
       position: absolute;
@@ -2304,6 +2416,10 @@
     <!-- Word typing -->
     <div id="wordTypingContainer" class="typing-panel hidden">
       <div class="typing-word" id="typingPrompt">—</div>
+      <div class="learning-tools hidden" id="typingLearningTools">
+        <button id="typingHintBtn" class="hint-toggle" type="button">Hint</button>
+        <div id="typingHintPanel" class="learning-panel hidden"></div>
+      </div>
       <div class="level-dots hidden" id="typingLevelDots" aria-hidden="true"></div>
       <div class="typing-help" id="typingHelp">Type the target-language equivalent.</div>
       <div class="typing-clue hidden" id="typingClue">—</div>
@@ -2321,6 +2437,12 @@
     <!-- Sentence -->
     <div id="sentenceContainer" class="sentence-panel hidden">
       <div class="sentence-english" id="sentenceEnglish">—</div>
+      <div class="learning-tools hidden" id="sentenceLearningTools">
+        <button id="sentenceHintBtn" class="hint-toggle" type="button">Hint</button>
+        <button id="sentenceExplainBtn" class="explain-toggle" type="button">Explain</button>
+        <div id="sentenceHintPanel" class="learning-panel hidden"></div>
+        <div id="sentenceExplanationPanel" class="learning-panel explanation hidden"></div>
+      </div>
       <div class="sentence-help" id="sentenceHelp">Fill in the missing words.</div>
       <div class="sentence-meta" id="sentenceMeta">—</div>
       <div class="sentence-target" id="sentenceTarget"></div>
@@ -2431,7 +2553,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v71-csv-order-new-items-20260710</div>
+      <div class="meta" id="appBuildLabel">Build: v72-learning-explanations-csv-order-20260717</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2597,12 +2719,11 @@
             <button id="urlImportBtn" class="secondary" style="margin-top:8px;width:100%;">Import from URL</button>
           </div>
           <div class="meta" style="font-size:12px;line-height:1.35;">
-            CSV: <code>english,target</code> still works. German decks may also use
-            <code>article</code>, <code>plural</code>, <code>type</code>, <code>register</code>,
-            <code>tags</code>, <code>note</code>/<code>hint</code>, <code>alternatives</code> and
-            <code>article_prompt</code>. Italian imports ignore German article prompts.
-            Cards with a <code>hint</code> show a small dot — press and hold the card
-            (or the prompt in typing/sentence mode) to peek at the hook.
+            CSV: <code>english,target</code> still works. Word decks should use
+            <code>english,target,article,hint</code>. Sentence decks may use
+            <code>english,target,hint,explanation</code>; <code>alternatives</code> is optional
+            when there are genuinely accepted alternate answers. Hints open with a tap/click;
+            explanations appear after Reveal or a wrong answer.
           </div>
           <button id="browseBuiltinBtn" class="ghost" style="width:100%;">Browse built-in decks</button>
           <button id="manageDecksBtn" class="ghost" style="width:100%;">Manage installed decks</button>
@@ -2703,7 +2824,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v71-csv-order-new-items-20260710";
+    const APP_BUILD = "v72-learning-explanations-csv-order-20260717";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3136,16 +3257,76 @@
       return ["target", "translation", "answer"];
     }
 
-    /* ---------- Hook / hint peek ---------- */
-    /* A "hint" is the pair's note field, unless it is a pure provenance
-       note (e.g. "From german_3000." / "Generated verb pattern: ...").
-       Those exist in older decks and carry no learning value, so they are
-       not surfaced as peekable hints. */
+    /* ---------- Learning help: hint + explanation ---------- */
+    /* New decks should use a short `hint` column. `note` stays as a legacy
+       alias so older imported decks still work, but the UI/documentation now
+       treats hint as the primary field. */
+    function cleanLearningText(v) {
+      return String(v || "").replace(/\s+/g, " ").trim();
+    }
+    function isProvenanceNote(text) {
+      return /^(from |generated |imported |source:|article practice|plural practice)/i.test(text || "");
+    }
     function hintTextOf(pair) {
-      const note = String(pair && pair.note || "").trim();
-      if (!note) return "";
-      if (/^(from |generated |imported |source:|article practice|plural practice)/i.test(note)) return "";
+      if (!pair) return "";
+      const hint = cleanLearningText(pair.hint);
+      if (hint) return hint;
+      const note = cleanLearningText(pair.note);
+      if (!note || isProvenanceNote(note)) return "";
       return note;
+    }
+    function explanationTextOf(pair) {
+      if (!pair) return "";
+      return cleanLearningText(pair.explanation || pair.explain || pair.why || pair.grammar_explanation || pair.long_hint);
+    }
+
+    let typingHintVisible = false;
+    function renderTypingLearningTools() {
+      const hint = hintTextOf(currentTypingWord);
+      if (!typingLearningTools || !typingHintBtn || !typingHintPanel) return;
+      typingLearningTools.classList.toggle("hidden", !hint);
+      typingHintBtn.classList.toggle("hidden", !hint);
+      typingHintBtn.classList.toggle("active", !!(hint && typingHintVisible));
+      typingHintPanel.textContent = hint || "";
+      typingHintPanel.classList.toggle("hidden", !(hint && typingHintVisible));
+    }
+
+    function renderSentenceLearningTools() {
+      const hint = hintTextOf(currentSentence);
+      const explanation = explanationTextOf(currentSentence);
+      const showHint = !!(currentSentenceData && currentSentenceData.showHint);
+      const showExplanation = !!(currentSentenceData && currentSentenceData.showExplanation);
+      if (!sentenceLearningTools || !sentenceHintBtn || !sentenceExplainBtn || !sentenceHintPanel || !sentenceExplanationPanel) return;
+      sentenceLearningTools.classList.toggle("hidden", !(hint || explanation));
+      sentenceHintBtn.classList.toggle("hidden", !hint);
+      sentenceHintBtn.classList.toggle("active", !!(hint && showHint));
+      sentenceExplainBtn.classList.toggle("hidden", !explanation);
+      sentenceExplainBtn.classList.toggle("active", !!(explanation && showExplanation));
+      sentenceHintPanel.textContent = hint || "";
+      sentenceHintPanel.classList.toggle("hidden", !(hint && showHint));
+      sentenceExplanationPanel.textContent = explanation || "";
+      sentenceExplanationPanel.classList.toggle("hidden", !(explanation && showExplanation));
+    }
+
+    if (typingHintBtn) typingHintBtn.addEventListener("click", () => {
+      typingHintVisible = !typingHintVisible;
+      renderTypingLearningTools();
+    });
+    if (sentenceHintBtn) sentenceHintBtn.addEventListener("click", () => {
+      if (!currentSentenceData) return;
+      currentSentenceData.showHint = !currentSentenceData.showHint;
+      renderSentenceLearningTools();
+    });
+    if (sentenceExplainBtn) sentenceExplainBtn.addEventListener("click", () => {
+      if (!currentSentenceData) return;
+      currentSentenceData.showExplanation = !currentSentenceData.showExplanation;
+      renderSentenceLearningTools();
+    });
+    function showSentenceExplanationAfterFeedback() {
+      if (!currentSentenceData) return;
+      if (explanationTextOf(currentSentence)) currentSentenceData.showExplanation = true;
+      else if (hintTextOf(currentSentence)) currentSentenceData.showHint = true;
+      renderSentenceLearningTools();
     }
 
     /* Attach hold-to-peek behaviour to an element.
@@ -3902,7 +4083,8 @@
       const typeKey = findHeader(headers, ["type", "kind", "part_of_speech", "pos"]);
       const registerKey = findHeader(headers, ["register", "style", "tone"]);
       const tagsKey = findHeader(headers, ["tags", "tag", "topic", "category"]);
-      const noteKey = findHeader(headers, ["note", "notes", "comment", "hint"]);
+      const hintKey = findHeader(headers, ["hint"]);
+      const noteKey = findHeader(headers, ["note", "notes", "comment"]);
       const articlePromptKey = findHeader(headers, ["article_prompt", "ask_article", "test_article"]);
       const levelKey = findHeader(headers, ["level", "cefr", "difficulty_level"]);
       const exampleEnKey = findHeader(headers, ["example_en", "english_example", "example_english"]);
@@ -3937,6 +4119,7 @@
           type: typeRaw,
           register: optionalCsvValue(it, registerKey),
           tags: optionalCsvValue(it, tagsKey),
+          hint: optionalCsvValue(it, hintKey),
           note: optionalCsvValue(it, noteKey),
           level: optionalCsvValue(it, levelKey),
           example_en: optionalCsvValue(it, exampleEnKey),
@@ -3968,7 +4151,9 @@
       }
       const registerKey = findHeader(headers, ["register", "style", "tone"]);
       const tagsKey = findHeader(headers, ["tags", "tag", "topic", "category"]);
-      const noteKey = findHeader(headers, ["note", "notes", "comment", "hint"]);
+      const hintKey = findHeader(headers, ["hint"]);
+      const noteKey = findHeader(headers, ["note", "notes", "comment"]);
+      const explanationKey = findHeader(headers, ["explanation", "explain", "why", "grammar_explanation", "long_hint"]);
       const levelKey = findHeader(headers, ["level", "cefr", "difficulty_level"]);
       const alternativesKey = findHeader(headers, ["alternatives", "alt", "accepted", "accepted_answers"]);
       const sentenceIdKey = findHeader(headers, ["sentence_id", "id", "source_id"]);
@@ -3986,7 +4171,9 @@
         const optionalFields = {
           register: optionalCsvValue(it, registerKey),
           tags: optionalCsvValue(it, tagsKey),
+          hint: optionalCsvValue(it, hintKey),
           note: optionalCsvValue(it, noteKey),
+          explanation: optionalCsvValue(it, explanationKey),
           level: optionalCsvValue(it, levelKey),
           alternatives: optionalCsvValue(it, alternativesKey),
           sentence_id: optionalCsvValue(it, sentenceIdKey)
@@ -4353,6 +4540,9 @@
     const articleButtons = document.querySelectorAll(".article-btn");
 
     const typingPrompt = $("typingPrompt");
+    const typingLearningTools = $("typingLearningTools");
+    const typingHintBtn = $("typingHintBtn");
+    const typingHintPanel = $("typingHintPanel");
     const typingHelp = $("typingHelp");
     const typingClue = $("typingClue");
     const typingLevelDots = $("typingLevelDots");
@@ -4363,6 +4553,11 @@
     const typingResult = $("typingResult");
 
     const sentenceEnglish = $("sentenceEnglish");
+    const sentenceLearningTools = $("sentenceLearningTools");
+    const sentenceHintBtn = $("sentenceHintBtn");
+    const sentenceExplainBtn = $("sentenceExplainBtn");
+    const sentenceHintPanel = $("sentenceHintPanel");
+    const sentenceExplanationPanel = $("sentenceExplanationPanel");
     const sentenceHelp = $("sentenceHelp");
     const sentenceMeta = $("sentenceMeta");
     const sentenceTarget = $("sentenceTarget");
@@ -5295,6 +5490,8 @@
       typingResult.textContent = "";
       typingInput.value = "";
       if (typingClue) typingClue.classList.add("hidden");
+      typingHintVisible = false;
+      renderTypingLearningTools();
     }
 
     async function ensureWordQueue(min) {
@@ -5344,8 +5541,9 @@
 
     function getCurrentWordPairById(id) { return currentWordRoundPairs.find(p => p.id === id); }
 
-    /* Put the visible text on a "front" face and, when the pair has a hint,
-       add a hidden "hint" face plus hold-to-peek behaviour. */
+    /* Put the visible text on a front face and, when available, expose the
+       hint through a tiny explicit ? button. This avoids long-press hiding the
+       text under the user's finger and works the same on desktop. */
     function buildCardFaces(card, text, pair) {
       const front = document.createElement("span");
       front.className = "card-front";
@@ -5358,9 +5556,20 @@
       back.className = "card-hint";
       back.textContent = hint;
       card.appendChild(back);
-      attachHoldPeek(card, () => hintTextOf(pair),
-        () => card.classList.add("hint-peek"),
-        () => card.classList.remove("hint-peek"));
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "card-hint-btn";
+      btn.textContent = "?";
+      btn.setAttribute("aria-label", "Show hint");
+      btn.addEventListener("click", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        const open = !card.classList.contains("hint-open");
+        card.classList.toggle("hint-open", open);
+        btn.classList.toggle("active", open);
+        btn.setAttribute("aria-label", open ? "Hide hint" : "Show hint");
+      });
+      card.appendChild(btn);
     }
 
     function renderWordMatch() {
@@ -5591,13 +5800,9 @@
        releasing restores the original prompt. A small dot marks prompts
        that have a hint available. */
     function setPromptWithHintDot(el, text, hasHint) {
+      // v72: no dot/long-press on prompts. Help is controlled by explicit buttons.
       el.textContent = text;
       el.classList.remove("hint-peek-text");
-      if (hasHint) {
-        const dot = document.createElement("span");
-        dot.className = "hint-dot";
-        el.appendChild(dot);
-      }
     }
     function attachPromptPeek(el, getPair) {
       attachHoldPeek(el, () => hintTextOf(getPair()),
@@ -5610,8 +5815,7 @@
           setPromptWithHintDot(el, el.dataset.origText || "", !!hintTextOf(getPair()));
         });
     }
-    attachPromptPeek(typingPrompt, () => currentTypingWord);
-    attachPromptPeek(sentenceEnglish, () => currentSentence);
+    // v72: long-press prompt peek removed. Use the explicit Hint/Explain buttons.
 
     /* ---------- Word typing ---------- */
     async function loadNextTypingWord() {
@@ -5630,11 +5834,15 @@
         }
         if (typingInput) typingInput.classList.remove("progressive-full-input", "full-answer-input-hidden");
         renderInlineMissingKeypad(typingInlineKeypad, typingInput, null, null);
+        typingHintVisible = false;
+        renderTypingLearningTools();
         updateTypingActionButtons();
         return;
       }
       currentTypingWord = wordQueue.shift();
+      typingHintVisible = false;
       setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
+      renderTypingLearningTools();
       const isProgressive = wordMode === "progressive";
       currentTypingChallenge = isProgressive
         ? buildProgressiveChallenge(targetDisplay(currentTypingWord), currentTypingWord)
@@ -6048,6 +6256,7 @@
     function renderSentence() {
       if (!currentSentence || !currentSentenceData) return;
       setPromptWithHintDot(sentenceEnglish, currentSentence.english, !!hintTextOf(currentSentence));
+      renderSentenceLearningTools();
 
       // ----- Reorder ("order") sub-mode -----
       const isOrderMode = sentenceMode === "order";
@@ -6291,10 +6500,14 @@
         sentenceHelp.textContent = gateEnabled ? "No more sentences in this gate." : "No more sentences in this deck.";
         sentenceMeta.textContent = ""; sentenceTarget.innerHTML = ""; sentenceBank.innerHTML = "";
         sentenceResult.textContent = "";
+        currentSentenceData = null;
+        renderSentenceLearningTools();
         return;
       }
       currentSentence = sentenceQueue.shift();
       currentSentenceData = prepareSentenceData(currentSentence);
+      currentSentenceData.showHint = false;
+      currentSentenceData.showExplanation = false;
       activeBlankIndex = 0;
       renderSentence();
       statusEl.textContent = currentGame === "sentences" && sentenceMode === "order"
@@ -6369,6 +6582,7 @@
           currentSentenceData.orderChecked = true;
           currentSentenceData.orderAwaitingContinue = true;
           renderSentence();
+          showSentenceExplanationAfterFeedback();
           sentenceResult.textContent = `Solution: ${currentSentence.target}`;
           locked = false;
           updateSentenceActionButtons();
@@ -6377,6 +6591,7 @@
 
         sentenceResult.textContent = `Solution: ${currentSentence.target}`;
         currentSentenceData.feedbackAwaitingContinue = true;
+        showSentenceExplanationAfterFeedback();
         locked = false;
         updateSentenceActionButtons();
         return;
@@ -6401,12 +6616,14 @@
         }
         wrongCount++; updateScore();
         sentenceResult.textContent = `Wrong. Correct: ${currentSentence.target}`;
+        showSentenceExplanationAfterFeedback();
         statusEl.textContent = "";
         await saveSentenceAnswer(currentSentence.id, false);
         sentenceQueue.push(currentSentence);
 
         if (sentenceMode === "order" && currentSentenceData) {
           currentSentenceData.orderAwaitingContinue = true;
+          showSentenceExplanationAfterFeedback();
           locked = false;
           updateSentenceActionButtons();
           return;
@@ -6429,6 +6646,8 @@
       currentSentenceData.orderAwaitingContinue = false;
       currentSentenceData.orderAutoSubmitting = false;
       currentSentenceData.feedbackAwaitingContinue = false;
+      currentSentenceData.showHint = false;
+      currentSentenceData.showExplanation = false;
       clearTimeout(sentenceProgressiveAutoSubmitTimer);
       activeBlankIndex = 0;
       renderSentence();

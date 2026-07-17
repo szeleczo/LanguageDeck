@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v71-csv-order-new-items-20260710";
+const CACHE_VERSION = "languagedeck-v72-learning-explanations-csv-order-20260717";
 const APP_SHELL = [
   "./",
   "./index.html",
