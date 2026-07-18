@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v76-grammar-explanations-20260718" />
+  <link rel="manifest" href="manifest.webmanifest?v=v77-viewport-fit-20260718" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -1606,15 +1606,19 @@
         --practice-dock-bottom: max(8px, env(safe-area-inset-bottom));
         --practice-actions-h: 56px;
         --practice-keypad-bottom: calc(var(--practice-dock-bottom) + var(--practice-actions-h) + 8px);
-        --practice-dock-space: 272px;
-      }
-      html.keypad-active body {
-        padding-bottom: calc(var(--practice-dock-space) + env(safe-area-inset-bottom));
+        /* Space reserved BELOW the exercise so its content never hides under
+           the fixed keypad+actions dock. Reserved in ONE place only (the
+           panel's padding-bottom). The old build reserved it twice — body
+           padding-bottom AND panel margin-bottom — which stacked into ~272px
+           of empty scrollable space under a short card on tall phones
+           (OnePlus 10 Pro). The keypad is position:fixed, so it does not add
+           to scrollHeight itself; only this reservation does. */
+        --practice-dock-space: calc(var(--practice-keypad-bottom) + 152px + 6px);
       }
       html.keypad-active .typing-panel,
       html.keypad-active .sentence-panel {
-        padding-bottom: 14px;
-        margin-bottom: var(--practice-dock-space);
+        padding-bottom: var(--practice-dock-space);
+        margin-bottom: 0;
       }
       html.keypad-active .typing-form {
         display: contents;
@@ -2721,7 +2725,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v76-grammar-explanations-20260718</div>
+      <div class="meta" id="appBuildLabel">Build: v77-viewport-fit-20260718</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2991,7 +2995,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v76-grammar-explanations-20260718";
+    const APP_BUILD = "v77-viewport-fit-20260718";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
