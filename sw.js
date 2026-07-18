@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v74-quota-truth-retry-levels-20260717";
+const CACHE_VERSION = "languagedeck-v75-help-overlay-quota-fixes-20260717";
 const APP_SHELL = [
   "./",
   "./index.html",

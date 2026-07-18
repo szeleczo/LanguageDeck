@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v74-quota-truth-retry-levels-20260717" />
+  <link rel="manifest" href="manifest.webmanifest?v=v75-help-overlay-quota-fixes-20260717" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -896,10 +896,78 @@
     }
     .card.disabled { pointer-events: none; opacity: 0.7; }
 
-    /* Hint faces on match cards are shown by the explicit "?" button (v72);
-       the styling lives in the .card-hint-btn / .hint-open rules below. */
+    /* ---------- Hook / hint peek (hold-to-flip) ----------
+       Cards with a hint carry a faint dot marker. Holding the card for a
+       moment flips it (3D rotateY) and reveals the hint in small, muted
+       text; releasing flips it back. The hint face is pre-rotated 180deg
+       so it reads correctly when the card is flipped. */
+    .card.has-hint::after {
+      content: "";
+      position: absolute;
+      top: 8px; right: 10px;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--text-faint);
+      opacity: 0.55;
+    }
     .card {
+      transform-style: preserve-3d;
       -webkit-touch-callout: none;
+    }
+    .card.hint-peek,
+    .card.hint-peek:active:not(.disabled):not(.correct) {
+      /* !important + explicit :active variant: the flip must beat the
+         "physical button press" translateY effect, which is by definition
+         active during a long press (that rule has higher specificity and
+         was silently winning — the card never visually rotated). */
+      transform: rotateY(180deg) !important;
+      transition: transform 0.22s ease;
+    }
+    .card.has-hint {
+      /* Don't let Android hijack the hold gesture for scrolling/selection —
+         a hijack fires pointercancel and kills the peek timer. */
+      touch-action: none;
+    }
+    .card .card-front,
+    .card .card-hint {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .card .card-hint {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      transform: rotateY(180deg);
+      font-size: 12px;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--text-faint);
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .card.hint-peek .shortcut-badge { opacity: 0; }
+    .card.hint-peek::after { opacity: 0; }
+
+    /* Prompt-style peek (typing word, sentence prompt): text is swapped
+       for the hint while held; styling signals "this is a whisper". */
+    .hint-peek-text {
+      color: var(--text-faint) !important;
+      font-style: italic;
+      font-weight: 500 !important;
+      font-size: 0.82em !important;
+    }
+    .hint-dot {
+      display: inline-block;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--text-faint);
+      opacity: 0.55;
+      margin-left: 7px;
+      vertical-align: middle;
     }
     #typingPrompt, #sentenceEnglish {
       user-select: none;
@@ -913,12 +981,22 @@
        because it hides the text under the user's finger on phones and is
        not natural on desktop. */
     .learning-tools {
+      /* Help controls never take vertical space in the exercise flow: they
+         sit as a compact overlay in the panel's top-right corner and open
+         their content as a popover. This is what keeps the play surface a
+         single screen height on phones (OnePlus 10 Pro etc.). */
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      z-index: 28;
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 5px;
+      justify-content: flex-end;
       align-items: center;
-      margin: 6px 0 10px;
+      margin: 0;
+      padding: 0;
+      max-width: calc(100% - 24px);
     }
     .learning-tools.hidden { display: none; }
     .learning-tools .hint-toggle,
@@ -937,23 +1015,68 @@
     }
     .learning-tools .hint-toggle.active,
     .learning-tools .explain-toggle.active {
-      background: var(--primary-soft);
-      color: var(--primary-deep);
-      border-color: var(--primary);
-      opacity: 1;
-    }
-    .learning-panel {
-      flex: 1 1 100%;
-      max-width: min(620px, 100%);
-      margin: 2px auto 0;
-      padding: 9px 11px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
+      /* Keep the help buttons visually neutral even when open. Mobile browsers
+         otherwise tend to leave the last tapped button looking blue/selected. */
       background: var(--surface-2);
       color: var(--text-muted);
-      font-size: 12px;
-      line-height: 1.38;
+      border-color: var(--border-strong);
+      opacity: 0.92;
+    }
+
+    .learning-tools button.hint-toggle:hover:not(:disabled),
+    .learning-tools button.explain-toggle:hover:not(:disabled),
+    .learning-tools button.hint-toggle:focus:not(:disabled),
+    .learning-tools button.explain-toggle:focus:not(:disabled),
+    .learning-tools button.hint-toggle:focus-visible:not(:disabled),
+    .learning-tools button.explain-toggle:focus-visible:not(:disabled),
+    .learning-tools button.hint-toggle.active:hover:not(:disabled),
+    .learning-tools button.explain-toggle.active:hover:not(:disabled) {
+      background: var(--surface-2) !important;
+      color: var(--text-muted) !important;
+      border-color: var(--border-strong) !important;
+      outline: none;
+    }
+    .learning-tools button.hint-toggle:active:not(:disabled),
+    .learning-tools button.explain-toggle:active:not(:disabled) {
+      background: var(--surface-2) !important;
+      color: var(--text-muted) !important;
+      border-color: var(--border-strong) !important;
+    }
+
+    .learning-panel {
+      /* Popover, not an inline block: absolutely positioned under the toggles
+         so opening a hint/explanation never pushes the exercise down. */
+      position: absolute;
+      top: 34px;
+      right: 0;
+      width: min(320px, calc(100vw - 42px));
+      max-height: min(48vh, 340px);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--surface) 98%, transparent);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
+      color: var(--text-muted);
+      font-size: 12.5px;
+      line-height: 1.4;
       text-align: left;
+      white-space: pre-wrap;
+    }
+    .sentence-panel .sentence-english,
+    .typing-panel .typing-word { padding-right: 74px; }
+    /* Prompts that have a hint/explanation available are tappable to reveal
+       it (single tap, no long-press). A faint dotted underline signals it. */
+    .typing-word.has-help,
+    .sentence-english.has-help {
+      cursor: help;
+      text-decoration: underline dotted var(--border-strong);
+      text-underline-offset: 4px;
+      text-decoration-thickness: 1px;
     }
     .learning-panel.hidden { display: none; }
     .learning-panel.explanation {
@@ -962,6 +1085,110 @@
       color: #7c2d12;
       font-size: 12.5px;
     }
+
+    /* v74: compact learning help. The old full-width Hint/Explain row cost
+       too much vertical space on phones. The controls are now tiny, tap/click
+       affordances; in sentence order mode they float in the top-right of the
+       exercise and their content opens as a small popover, so the word-bank
+       layout and thumb targets do not move. */
+    .learning-tools .hint-toggle {
+      width: 28px;
+      min-width: 28px;
+      height: 28px;
+      min-height: 28px;
+      padding: 0;
+      border-radius: 999px;
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 900;
+    }
+    .learning-tools .explain-toggle {
+      min-height: 28px;
+      padding: 0 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 800;
+    }
+    .sentence-panel { position: relative; }
+    .sentence-panel.order-mode .sentence-english {
+      padding-right: 74px;
+    }
+    .sentence-panel.order-mode .learning-tools {
+      order: 1;
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      z-index: 28;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 5px;
+      margin: 0;
+      padding: 0;
+      max-width: calc(100% - 24px);
+    }
+    .sentence-panel.order-mode .learning-tools.hidden { display: none; }
+    .sentence-panel.order-mode .learning-tools .learning-panel {
+      position: absolute;
+      top: 34px;
+      right: 0;
+      width: min(310px, calc(100vw - 42px));
+      max-height: min(42vh, 310px);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0;
+      padding: 10px 12px;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+      background: color-mix(in srgb, var(--surface) 98%, transparent);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
+    }
+    .sentence-panel.order-mode .learning-tools .learning-panel.explanation {
+      background: color-mix(in srgb, #fff7ed 98%, transparent);
+    }
+    .sentence-panel.order-mode .learning-tools .learning-panel.hidden { display: none; }
+    .sentence-panel.order-mode .sentence-help.hidden + .sentence-meta {
+      margin-top: 0;
+    }
+
+    .typing-panel { position: relative; }
+    .typing-panel .typing-word { padding-right: 36px; }
+    .typing-panel .learning-tools {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      z-index: 28;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 5px;
+      margin: 0;
+      padding: 0;
+      max-width: calc(100% - 24px);
+    }
+    .typing-panel .learning-tools.hidden { display: none; }
+    .typing-panel .learning-tools .learning-panel {
+      position: absolute;
+      top: 34px;
+      right: 0;
+      width: min(280px, calc(100vw - 42px));
+      max-height: min(36vh, 250px);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0;
+      padding: 9px 11px;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
+      background: color-mix(in srgb, var(--surface) 98%, transparent);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
+    }
+    .typing-panel .learning-tools .learning-panel.hidden { display: none; }
+
     .card .card-hint-btn {
       position: absolute;
       top: 6px;
@@ -980,10 +1207,20 @@
       box-shadow: none;
     }
     .card .card-hint-btn.active {
-      background: var(--primary-soft);
-      color: var(--primary-deep);
-      border-color: var(--primary);
+      background: rgba(255,255,255,0.9);
+      color: var(--text-muted);
+      border-color: var(--border-strong);
     }
+    .card .card-hint-btn:hover:not(:disabled),
+    .card .card-hint-btn:focus:not(:disabled),
+    .card .card-hint-btn:focus-visible:not(:disabled),
+    .card .card-hint-btn.active:hover:not(:disabled) {
+      background: rgba(255,255,255,0.9) !important;
+      color: var(--text-muted) !important;
+      border-color: var(--border-strong) !important;
+      outline: none;
+    }
+    .card.has-hint::after { display: none; }
     .card.has-hint { touch-action: manipulation; }
     .card .card-front { transition: opacity 0.12s ease; }
     .card .card-hint {
@@ -1011,6 +1248,8 @@
     .card.hint-open .card-front,
     .card.hint-open .shortcut-badge { opacity: 0; }
     .card.hint-open .card-hint { opacity: 1; }
+    .card.hint-peek,
+    .card.hint-peek:active:not(.disabled):not(.correct) { transform: none !important; }
     #typingPrompt, #sentenceEnglish {
       touch-action: manipulation;
       -webkit-touch-callout: default;
@@ -1740,7 +1979,7 @@
       padding-top: 18px;
       padding-bottom: 16px;
     }
-    .sentence-panel.order-mode .sentence-english { order: 1; margin-bottom: 8px; }
+    .sentence-panel.order-mode .sentence-english { order: 1; margin-bottom: 6px; padding-right: 74px; }
     .sentence-panel.order-mode .sentence-help { order: 2; }
     .sentence-panel.order-mode .sentence-target { order: 3; margin-bottom: 8px; }
     .sentence-panel.order-mode .sentence-bank { order: 4; margin-bottom: 8px; }
@@ -2346,7 +2585,7 @@
     <div id="wordTypingContainer" class="typing-panel hidden">
       <div class="typing-word" id="typingPrompt">—</div>
       <div class="learning-tools hidden" id="typingLearningTools">
-        <button id="typingHintBtn" class="hint-toggle" type="button">Hint</button>
+        <button id="typingHintBtn" class="hint-toggle" type="button" aria-label="Show hint" title="Hint">?</button>
         <div id="typingHintPanel" class="learning-panel hidden"></div>
       </div>
       <div class="level-dots hidden" id="typingLevelDots" aria-hidden="true"></div>
@@ -2367,8 +2606,8 @@
     <div id="sentenceContainer" class="sentence-panel hidden">
       <div class="sentence-english" id="sentenceEnglish">—</div>
       <div class="learning-tools hidden" id="sentenceLearningTools">
-        <button id="sentenceHintBtn" class="hint-toggle" type="button">Hint</button>
-        <button id="sentenceExplainBtn" class="explain-toggle" type="button">Explain</button>
+        <button id="sentenceHintBtn" class="hint-toggle" type="button" aria-label="Show hint" title="Hint">?</button>
+        <button id="sentenceExplainBtn" class="explain-toggle" type="button" aria-label="Show explanation" title="Explain">Why</button>
         <div id="sentenceHintPanel" class="learning-panel hidden"></div>
         <div id="sentenceExplanationPanel" class="learning-panel explanation hidden"></div>
       </div>
@@ -2482,7 +2721,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v74-quota-truth-retry-levels-20260717</div>
+      <div class="meta" id="appBuildLabel">Build: v75-help-overlay-quota-fixes-20260717</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2651,8 +2890,7 @@
             CSV: <code>english,target</code> still works. Word decks should use
             <code>english,target,article,hint</code>. Sentence decks may use
             <code>english,target,hint,explanation</code>; <code>alternatives</code> is optional
-            when there are genuinely accepted alternate answers. Hints open with a tap/click;
-            explanations appear after Reveal or a wrong answer.
+            when there are genuinely accepted alternate answers. Hints open with a tap/click; explanations appear after Reveal or a wrong answer.
           </div>
           <button id="browseBuiltinBtn" class="ghost" style="width:100%;">Browse built-in decks</button>
           <button id="manageDecksBtn" class="ghost" style="width:100%;">Manage installed decks</button>
@@ -2753,7 +2991,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v74-quota-truth-retry-levels-20260717";
+    const APP_BUILD = "v75-help-overlay-quota-fixes-20260717";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3048,14 +3286,13 @@
     // Per-day record of mastered reviews already served. v70 scopes this by
     // game + deck + set + gate, so a small grammar deck cannot consume the
     // mastered-review budget of a separate book deck on the same day.
-    // v74: the log stores the ITEM KEYS actually served ("table:id"), not a
+    // v74fix: the log stores the ITEM KEYS actually served ("table:id"), not a
     // bare counter. Counting at selection time was a bug: selectStudyItems
     // runs on every queue refill and on every combined-mode card (via
     // pickOneStudyItem, which selects up to 8 items but shows ONE), so the
     // daily budget was consumed by items the learner never saw — two cards
     // could exhaust a whole day. Recording keys on answer makes the quota
-    // idempotent and truthful: re-selecting the same item costs nothing, and
-    // selecting without showing costs nothing.
+    // idempotent and truthful.
     let masteredReviewLog = { day: "", scopes: {} };
     function masteredReviewScopeKey() {
       const gatePart = gateEnabled ? `gate:${currentGateIndex}` : "all-gates";
@@ -3066,9 +3303,8 @@
       if (!rawLog || typeof rawLog !== "object") return { day, scopes: {} };
       if (rawLog.day !== day) return { day, scopes: {} };
       const scopes = {};
-      // Accept both the v74 key-array form and the older numeric-count form
-      // (v70) / flat count (v69). Legacy numeric entries are dropped, which
-      // only ever grants a one-time fresh budget on the upgrade day.
+      // Accept the v74 key-array form; drop older numeric-count entries (v69/v70),
+      // which only grants a one-time fresh budget on the upgrade day.
       const raw = rawLog.scopes && typeof rawLog.scopes === "object" ? rawLog.scopes : {};
       for (const [k, v] of Object.entries(raw)) {
         if (Array.isArray(v)) scopes[k] = v.slice(0, MASTERED_REVIEW_MAX_PER_DAY * 4);
@@ -3211,6 +3447,20 @@
     function cleanLearningText(v) {
       return String(v || "").replace(/\s+/g, " ").trim();
     }
+    /* Explanations are multi-paragraph teaching text (sentence frames,
+       Mittelfeld, Satzklammer …). Unlike hints they must KEEP their line
+       breaks — collapsing them to one line (as cleanLearningText does) is
+       what made the imported explanations look flattened and lost. This
+       normalizes newlines and trims trailing space per line, but preserves
+       paragraph and single-line breaks. */
+    function cleanExplanationText(v) {
+      return String(v || "")
+        .replace(/\r\n?/g, "\n")
+        .replace(/[ \t]+/g, " ")
+        .replace(/ *\n */g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+    }
     function isProvenanceNote(text) {
       return /^(from |generated |imported |source:|article practice|plural practice)/i.test(text || "");
     }
@@ -3224,12 +3474,13 @@
     }
     function explanationTextOf(pair) {
       if (!pair) return "";
-      return cleanLearningText(pair.explanation || pair.explain || pair.why || pair.grammar_explanation || pair.long_hint);
+      return cleanExplanationText(pair.explanation || pair.explain || pair.why || pair.grammar_explanation || pair.long_hint);
     }
 
     let typingHintVisible = false;
     function renderTypingLearningTools() {
       const hint = hintTextOf(currentTypingWord);
+      if (typingPrompt) typingPrompt.classList.toggle("has-help", !!hint);
       if (!typingLearningTools || !typingHintBtn || !typingHintPanel) return;
       typingLearningTools.classList.toggle("hidden", !hint);
       typingHintBtn.classList.toggle("hidden", !hint);
@@ -3243,6 +3494,7 @@
       const explanation = explanationTextOf(currentSentence);
       const showHint = !!(currentSentenceData && currentSentenceData.showHint);
       const showExplanation = !!(currentSentenceData && currentSentenceData.showExplanation);
+      if (sentenceEnglish) sentenceEnglish.classList.toggle("has-help", !!(hint || explanation));
       if (!sentenceLearningTools || !sentenceHintBtn || !sentenceExplainBtn || !sentenceHintPanel || !sentenceExplanationPanel) return;
       sentenceLearningTools.classList.toggle("hidden", !(hint || explanation));
       sentenceHintBtn.classList.toggle("hidden", !hint);
@@ -3623,13 +3875,14 @@
     }
 
     /* `clean` = the learner produced the answer without a wrong attempt on
-       this card. A corrected attempt (wrong letters shown in red, then fixed
-       with backspace) is NOT clean: it still counts as a correct answer for
-       the schedule — a mis-tap should not nuke a streak — but it must not
-       reduce the scaffolding, because the learner demonstrably still needed
-       it. Without this, fumbled cards climbed to full typing and were then
-       parked with the long "mastered" rest, silently inflating the mastered
-       pool with items that were never actually recalled. */
+       this card. A corrected attempt (wrong letters shown red, then fixed
+       with backspace) is NOT clean: it still counts as correct for the
+       schedule — a mis-tap should not nuke a streak, since auto-submit fires
+       the instant the field fills — but the scaffolding level is HELD, not
+       advanced, because the learner demonstrably still needed it. Without
+       this, fumbled cards climbed to full typing and were parked with the
+       long "mastered" rest, inflating the mastered pool with items never
+       actually recalled. */
     async function recordProgressiveAnswer(table, itemId, correct, profile, clean = true) {
       const before = await DB.getById(table, itemId);
       const beforeLevel = progressiveLevelIndex(before);
@@ -4178,8 +4431,9 @@
       // per-batch cap and by what remains of today's quota — and the daily
       // quota itself scales with the size of the mastered pool (see
       // masteredDailyQuota), so a 30-item deck and a 3000-item deck both get
-      // a sensible cadence. NOTE: selection does NOT consume the quota; it is
-      // consumed in recordAnswer when the learner actually answers the item.
+      // a sensible cadence.
+      // NOTE: selection does NOT consume the quota; it is spent in
+      // recordAnswer when the learner actually answers the item.
       function takeMasteredReviews(maxSlots) {
         const budget = Math.min(maxSlots, MASTERED_REVIEW_SLOTS_PER_BATCH, masteredReviewsRemainingToday(masteredTotal), masteredDue.length);
         if (budget <= 0) return [];
@@ -4259,10 +4513,9 @@
     async function recordAnswer(table, itemId, correct, profile) {
       const row = await DB.getById(table, itemId);
       if (!row) return null;
-      // The daily mastered-review budget is spent HERE — at the moment the
-      // learner actually answers a mastered item — not when a batch is
-      // assembled. Checked before mutating, since a wrong answer clears the
-      // mastered state.
+      // Spend the daily mastered-review budget HERE — when the learner
+      // actually answers a mastered item — checked before mutating, since a
+      // wrong answer clears the mastered state.
       if (isMastered(row)) noteMasteredReviewServed(table, itemId);
       row.times_seen = (row.times_seen | 0) + 1;
       if (correct) {
@@ -4337,7 +4590,7 @@
     let wordProgressiveAutoSubmitTimer = null;
     let sentenceProgressiveAutoSubmitTimer = null;
     /* Set when the learner's filled-in answer was wrong on this card and they
-       corrected it. Used to keep the scaffolding level from advancing. */
+       corrected it — keeps the scaffolding level from advancing. */
     let wordAttemptHadError = false;
 
     let sentenceQueue = [];
@@ -4490,16 +4743,47 @@
     // ReferenceError on load and could leave the app stuck on “Loading…”.
     if (typingHintBtn) typingHintBtn.addEventListener("click", () => {
       typingHintVisible = !typingHintVisible;
+      typingHintBtn.blur();
       renderTypingLearningTools();
     });
     if (sentenceHintBtn) sentenceHintBtn.addEventListener("click", () => {
       if (!currentSentenceData) return;
-      currentSentenceData.showHint = !currentSentenceData.showHint;
+      const next = !currentSentenceData.showHint;
+      currentSentenceData.showHint = next;
+      if (next) currentSentenceData.showExplanation = false;
+      sentenceHintBtn.blur();
       renderSentenceLearningTools();
     });
     if (sentenceExplainBtn) sentenceExplainBtn.addEventListener("click", () => {
       if (!currentSentenceData) return;
-      currentSentenceData.showExplanation = !currentSentenceData.showExplanation;
+      const next = !currentSentenceData.showExplanation;
+      currentSentenceData.showExplanation = next;
+      if (next) currentSentenceData.showHint = false;
+      sentenceExplainBtn.blur();
+      renderSentenceLearningTools();
+    });
+
+    /* The prompt text is itself a large tap target for help — a single tap
+       (NOT a long-press, which hides the text under the finger) toggles the
+       hint, or the explanation if there is no hint. The small ?/Why buttons
+       remain as an explicit affordance and to pick specifically hint vs why. */
+    if (typingPrompt) typingPrompt.addEventListener("click", () => {
+      if (!currentTypingWord || !hintTextOf(currentTypingWord)) return;
+      typingHintVisible = !typingHintVisible;
+      renderTypingLearningTools();
+    });
+    if (sentenceEnglish) sentenceEnglish.addEventListener("click", () => {
+      if (!currentSentenceData) return;
+      const hasHint = !!hintTextOf(currentSentence);
+      const hasExpl = !!explanationTextOf(currentSentence);
+      if (!hasHint && !hasExpl) return;
+      if (hasHint) {
+        const next = !currentSentenceData.showHint;
+        currentSentenceData.showHint = next;
+        if (next) currentSentenceData.showExplanation = false;
+      } else {
+        currentSentenceData.showExplanation = !currentSentenceData.showExplanation;
+      }
       renderSentenceLearningTools();
     });
 
@@ -5505,6 +5789,7 @@
         card.classList.toggle("hint-open", open);
         btn.classList.toggle("active", open);
         btn.setAttribute("aria-label", open ? "Hide hint" : "Show hint");
+        try { btn.blur(); } catch (_) {}
       });
       card.appendChild(btn);
     }
@@ -5736,9 +6021,10 @@
        Holding the prompt swaps its text for the hint (faint, italic);
        releasing restores the original prompt. A small dot marks prompts
        that have a hint available. */
-    /* v72: prompts carry no dot and no long-press. Help is on explicit buttons. */
     function setPromptWithHintDot(el, text, hasHint) {
+      // v72: no dot/long-press on prompts. Help is controlled by explicit buttons.
       el.textContent = text;
+      el.classList.remove("hint-peek-text");
     }
     // v72: long-press prompt peek removed. Use the explicit Hint/Explain buttons.
 
