@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v77-viewport-fit-20260718" />
+  <link rel="manifest" href="manifest.webmanifest?v=v78-viewport-fit-20260719" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -2725,7 +2725,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v77-viewport-fit-20260718</div>
+      <div class="meta" id="appBuildLabel">Build: v78-viewport-fit-20260719</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2995,7 +2995,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v77-viewport-fit-20260718";
+    const APP_BUILD = "v78-viewport-fit-20260719";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -8012,7 +8012,7 @@
       });
 
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register(cacheBustedUrl("sw.js"), { scope: "./" }).then(reg => {
+        navigator.serviceWorker.register(cacheBustedUrl("sw.js"), { scope: "./", updateViaCache: "none" }).then(reg => {
           reg.update().catch(() => {});
 
           if (reg.waiting) {
