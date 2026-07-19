@@ -6329,11 +6329,38 @@
       // and the bank reserves every original word slot. No internal scrolling, no
       // visible grey used cards. For long sentences, choose a more compact chip
       // density rather than letting taps shift the remaining cards around.
+      //
+      // The budget must reflect the REAL stacked cost, not just build+bank, or
+      // long sentences overflow into a scroll on shorter viewports. Besides
+      // build+bank we must account for: the English prompt (up to two lines) +
+      // the ?/Why row, the build box's own margin-bottom, the under-bank meta
+      // ("Streak N") line, the panel's vertical padding, the fixed action row,
+      // and a comfort gap so nothing sits under the thumb zone.
       const viewport = Math.max(520, window.innerHeight || 720);
-      const panelTop = Math.max(0, Math.round((sentenceContainer && sentenceContainer.getBoundingClientRect().top) || 140));
-      const thumbActionReserve = 86; // fixed action row + breathing room in the lower thumb zone
-      const bottomComfort = Math.max(72, Math.round(viewport * 0.13));
-      const availableForBuildAndBank = Math.max(180, viewport - panelTop - thumbActionReserve - bottomComfort);
+      // The panel's getBoundingClientRect().top is unreliable HERE: this runs
+      // before the panel is at its final position, so it often reports the
+      // fallback (~140) instead of the real offset (~260 with the mode chip +
+      // gate strip above it). Underestimating panelTop made the budget think
+      // there was ~120px more room than exists, so long sentences never
+      // compacted and overflowed into a scroll. Measure from a stable element
+      // that is already laid out (the play area / main), and floor it to a
+      // realistic minimum.
+      const measuredTop = Math.round(
+        (sentenceContainer && sentenceContainer.getBoundingClientRect().top) || 0
+      );
+      const mainEl = document.querySelector(".main");
+      const mainTop = mainEl ? Math.round(mainEl.getBoundingClientRect().top) : 0;
+      // Header (logo bar) + mode chip + gate strip typically occupy ~250–265px
+      // above the panel in order mode; never assume less than that.
+      const panelTop = Math.max(measuredTop, mainTop + 215, 256);
+      const promptReserve = 96;      // two-line English prompt + ?/Why controls
+      const buildMargin = 16;        // .order-build margin-bottom
+      const metaReserve = 30;        // under-bank "Streak N" meta line
+      const panelPadding = 38;       // panel top+bottom padding around the stack
+      const actionRowReserve = 92;   // fixed Clear/Reveal/Check row + its gap
+      const bottomComfort = Math.max(64, Math.round(viewport * 0.06));
+      const chromeReserve = promptReserve + buildMargin + metaReserve + panelPadding + actionRowReserve + bottomComfort;
+      const availableForBuildAndBank = Math.max(150, viewport - panelTop - chromeReserve);
 
       let density = "normal";
       let sizes = estimateOrderLayoutForDensity(data, density);
