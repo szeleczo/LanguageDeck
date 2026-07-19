@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v77-viewport-fit-20260718" />
+  <link rel="manifest" href="manifest.webmanifest?v=v81-order-viewport-engine-20260719" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -210,9 +210,11 @@
       max-height: 8px;
     }
     html.order-practice-active .main {
-      /* Room for the fixed feedback strip plus the fixed Check/Clear/Reveal row,
-         so corrections/solutions are not hidden behind the thumb-zone controls. */
-      padding-bottom: calc(178px + env(safe-area-inset-bottom));
+      /* v79: keep the portrait practice surface inside the viewport.
+         The order actions/feedback are fixed overlays and the order layout
+         budgets for them; adding a large bottom padding here created a
+         scrollable page on phones. */
+      padding-bottom: calc(8px + env(safe-area-inset-bottom));
     }
 
     /* ---------- Buttons ---------- */
@@ -336,14 +338,15 @@
     .context-chip {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
+      gap: 10px;
+      padding: 8px 13px;
       background: var(--surface);
       border: 2px solid var(--border);
-      border-radius: 999px;
+      border-radius: 16px;
       font-size: 13px;
       font-weight: 500;
       color: var(--text-muted);
+      max-width: 100%;
     }
     /* The chip is now the primary entry point for switching what you study. */
     button.context-chip {
@@ -353,13 +356,60 @@
     }
     button.context-chip:hover { border-color: var(--border-strong); background: var(--surface-2); }
     button.context-chip:active { transform: translateY(1px); }
-    .context-chip .chip-caret { margin-left: 2px; color: var(--text-faint); }
+    .context-chip .chip-caret { margin-left: 2px; color: var(--text-faint); flex: 0 0 auto; }
+    .chip-language-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary-deep);
+      font-family: var(--font-display);
+      font-weight: 900;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+    .chip-main {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+      line-height: 1.15;
+    }
+    .chip-main strong {
+      display: block;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-weight: 850;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: min(62vw, 520px);
+    }
+    .chip-main small {
+      display: block;
+      color: var(--text-faint);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: min(62vw, 520px);
+    }
 
     /* ---------- Quick-switch sheet ----------
-       Surfaces the first-order controls — what to study, how, and which deck —
+       Surfaces the first-order controls — language, what to study, how, and deck —
        one tap from the context chip, instead of buried in Settings. */
-    .qs-section { margin-bottom: 18px; }
+    .qs-section { margin-bottom: 16px; }
     .qs-section:last-child { margin-bottom: 4px; }
+    .qs-section.language-first {
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface-2);
+      margin-bottom: 18px;
+    }
     .qs-label {
       font-size: 11px;
       font-weight: 800;
@@ -401,7 +451,7 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      max-height: 38vh;
+      max-height: 34vh;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
@@ -411,7 +461,7 @@
       justify-content: space-between;
       gap: 10px;
       width: 100%;
-      padding: 12px 14px;
+      padding: 11px 13px;
       border: 2px solid var(--border);
       border-radius: 12px;
       background: var(--surface);
@@ -429,25 +479,34 @@
     .qs-decklist .qs-deck .qs-check { color: var(--text); font-weight: 800; opacity: 0; }
     .qs-decklist .qs-deck.on .qs-check { color: var(--surface); opacity: 1; }
     .qs-lang {
-      display: flex; gap: 6px; margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+      gap: 8px;
+      margin-top: 0;
     }
     .qs-lang button {
-      flex: 1; min-height: 40px; border: 2px solid var(--border);
-      border-radius: 10px; background: var(--surface); color: var(--text-muted);
-      font-weight: 700; font-size: 13px;
+      width: 100%;
+      min-height: 58px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 9px 10px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .qs-lang button.on { border-color: var(--text); color: var(--text); }
+    .qs-lang button.on { border-color: var(--text); color: var(--text); box-shadow: inset 0 0 0 1px var(--text); }
+    .qs-lang-flag { font-size: 24px; line-height: 1; }
+    .qs-lang-copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .qs-lang-copy strong { font-family: var(--font-display); color: var(--text); font-size: 15px; }
+    .qs-lang-copy small { font-size: 11px; color: var(--text-faint); font-weight: 700; }
+    .qs-note { margin-top: 8px; font-size: 11px; color: var(--text-faint); line-height: 1.3; }
     /* Controls relocated into the quick sheet / left as functional fallbacks. */
     .relocated { display: none !important; }
-    .context-chip strong {
-      color: var(--text);
-      font-family: var(--font-display);
-      font-weight: 800;
-    }
-    .context-chip .chip-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--primary);
-    }
 
     /* ---------- Status & score ---------- */
     .play-meta {
@@ -1907,15 +1966,38 @@
       --order-chip-padx-build: 7px;
       --order-chip-minh: 30px;
       --order-chip-radius: 10px;
+      --order-build-pad: 7px;
+    }
+    .sentence-panel.order-mode.order-nano {
+      --order-gap: 2px;
+      --order-chip-font: 11px;
+      --order-chip-pady: 4px;
+      --order-chip-padx-bank: 6px;
+      --order-chip-padx-build: 6px;
+      --order-chip-minh: 27px;
+      --order-chip-radius: 9px;
+      --order-build-pad: 6px;
+    }
+    .sentence-panel.order-mode.order-pico {
+      --order-gap: 2px;
+      --order-chip-font: 10px;
+      --order-chip-pady: 3px;
+      --order-chip-padx-bank: 5px;
+      --order-chip-padx-build: 5px;
+      --order-chip-minh: 24px;
+      --order-chip-radius: 8px;
+      --order-build-pad: 5px;
     }
     .order-build {
       display: flex;
       flex-wrap: wrap;
       gap: var(--order-gap);
       align-items: flex-start;
-      min-height: var(--order-build-h, 64px);
-      padding: 10px;
-      margin-bottom: 16px;
+      height: var(--order-build-h, 64px);
+      min-height: 0;
+      max-height: var(--order-build-h, 64px);
+      padding: var(--order-build-pad, 10px);
+      margin-bottom: 10px;
       border: 1px dashed var(--border-strong);
       border-radius: var(--radius-sm);
       background: var(--surface-2);
@@ -1948,8 +2030,11 @@
     }
     .sentence-bank.order-bank {
       align-items: flex-start;
+      align-content: flex-start;
       gap: var(--order-gap);
-      min-height: var(--order-bank-h, 86px);
+      height: var(--order-bank-h, 86px);
+      min-height: 0;
+      max-height: var(--order-bank-h, 86px);
       overflow: hidden;
       overflow-anchor: none;
       contain: layout paint;
@@ -2069,6 +2154,257 @@
       line-height: 1.35;
       pointer-events: none;
     }
+
+    /* v79: portrait phone viewport discipline.
+       The app should feel like a native drill screen: no page-level scrolling
+       during practice on tall phones such as OnePlus 10 Pro / recent iPhone.
+       We compact chrome first, then compact chips/cards only when necessary. */
+    @media (pointer: coarse) and (hover: none) and (max-aspect-ratio: 13/10) {
+      html, body {
+        height: var(--vh, 100dvh);
+        max-height: var(--vh, 100dvh);
+        overflow: hidden;
+      }
+      body {
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .appbar {
+        position: static;
+        flex: 0 0 auto;
+      }
+      .appbar-inner {
+        padding: 5px 10px;
+        gap: 8px;
+      }
+      .brand { font-size: 17px; }
+      .brand svg { width: 23px; height: 23px; }
+      .icon-btn { width: 36px; height: 36px; min-height: 36px; }
+      .main {
+        height: calc(var(--vh, 100dvh) - var(--appbar-h, 48px));
+        max-height: calc(var(--vh, 100dvh) - var(--appbar-h, 48px));
+        flex: 1 1 0;
+        min-height: 0;
+        padding: 6px 10px 8px;
+        overflow: hidden;
+      }
+      .context-strip { margin-bottom: 4px; gap: 6px; }
+      .context-chip {
+        min-height: 34px;
+        padding: 5px 8px;
+        font-size: 12px;
+        border-radius: 12px;
+        gap: 7px;
+      }
+      .chip-language-badge { padding: 4px 7px; font-size: 12px; }
+      .chip-main strong { max-width: min(58vw, 430px); }
+      .chip-main small { max-width: min(58vw, 430px); }
+      .play-meta {
+        margin-bottom: 4px;
+        gap: 6px;
+        font-size: 11px;
+        line-height: 1.2;
+      }
+      .gate-strip {
+        padding: 5px 8px;
+        margin-bottom: 4px;
+        gap: 6px;
+        border-radius: 12px;
+      }
+      .gate-summary-text { font-size: 11px; line-height: 1.2; }
+      .gate-progress-bar { height: 3px; }
+      .game-area-spacer { display: none; }
+
+      #wordMatchContainer,
+      #wordTypingContainer,
+      #sentenceContainer,
+      .empty-state {
+        flex: 1 1 0;
+        min-height: 0;
+        max-height: 100%;
+        overflow: hidden;
+      }
+
+      #wordMatchContainer { display: flex; }
+      #wordMatchContainer .game {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        grid-auto-rows: minmax(0, 1fr);
+        gap: 6px;
+      }
+      #wordMatchContainer .card {
+        min-height: 0;
+        padding: 6px 8px;
+        border-radius: 12px;
+        border-bottom-width: 3px;
+        font-size: clamp(12px, 3.45vw, 16px);
+        line-height: 1.12;
+      }
+      #wordMatchContainer .card:active:not(.disabled):not(.correct) {
+        transform: translateY(1px);
+        border-bottom-width: 2px;
+        margin-bottom: 0;
+      }
+
+      .typing-panel,
+      .sentence-panel {
+        padding: 12px 10px;
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .typing-word {
+        font-size: clamp(20px, 6.2vw, 28px);
+        line-height: 1.12;
+        margin: 2px 0 4px;
+      }
+      .typing-help { margin-bottom: 8px; font-size: 12px; }
+      .typing-clue,
+      .progressive-clue {
+        padding: 8px 9px;
+        margin-bottom: 8px;
+        font-size: clamp(16px, 4.7vw, 19px);
+        line-height: 1.35;
+      }
+      .typing-result { margin-top: 8px; min-height: 18px; font-size: 13px; }
+      .typing-actions.practice-actions,
+      .sentence-actions.practice-actions { gap: 7px; }
+      .typing-actions.practice-actions .primary-action,
+      .sentence-actions.practice-actions .primary-action {
+        min-height: 48px;
+        font-size: 16px;
+      }
+      .typing-actions.practice-actions button,
+      .sentence-actions.practice-actions button {
+        padding: 8px 10px;
+        border-radius: 13px;
+      }
+
+      .sentence-panel {
+        display: flex;
+        flex-direction: column;
+      }
+      .sentence-english {
+        font-size: clamp(15px, 4.4vw, 19px);
+        line-height: 1.24;
+        margin-bottom: 4px;
+      }
+      .sentence-help { margin-bottom: 2px; font-size: 12px; line-height: 1.2; }
+      .sentence-meta { margin-bottom: 8px; font-size: 11px; line-height: 1.15; }
+      .sentence-target {
+        min-height: 0;
+        margin-bottom: 8px;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      .sentence-bank { gap: 4px; margin-bottom: 8px; }
+      .bank-word {
+        min-height: 36px;
+        padding: 6px 10px;
+        border-radius: 12px;
+        border-bottom-width: 3px !important;
+        font-size: 13.5px;
+        line-height: 1.12;
+      }
+      .blank-chip { min-height: 30px; padding: 3px 9px; font-size: 14px; }
+      .blank-input { min-height: 32px; font-size: 15px; }
+
+      html.order-practice-active .main {
+        padding-bottom: 8px;
+      }
+      .sentence-panel.order-mode {
+        height: 100%;
+        max-height: 100%;
+        padding: 10px 10px 8px;
+      }
+      .sentence-panel.order-mode .sentence-english {
+        flex: 0 0 auto;
+        padding-right: 68px;
+        margin-bottom: 4px;
+        font-size: clamp(14px, 4.15vw, 18px);
+      }
+      .sentence-panel.order-mode .sentence-target {
+        flex: 0 0 auto;
+        margin-bottom: 4px;
+      }
+      .sentence-panel.order-mode .sentence-bank {
+        flex: 0 0 auto;
+        margin-bottom: 4px;
+      }
+      .sentence-panel.order-mode .sentence-meta.under-bank {
+        flex: 0 0 auto;
+        margin: -1px 0 3px;
+        min-height: 12px;
+        font-size: 10.5px;
+      }
+      .sentence-panel.order-mode .order-build {
+        height: var(--order-build-h, 54px);
+        min-height: 0;
+        max-height: var(--order-build-h, 54px);
+        padding: var(--order-build-pad, 6px);
+        margin-bottom: 5px;
+        border-radius: 10px;
+      }
+      .sentence-panel.order-mode .sentence-bank.order-bank {
+        height: var(--order-bank-h, 68px);
+        min-height: 0;
+        max-height: var(--order-bank-h, 68px);
+        margin-bottom: 4px;
+      }
+      .sentence-panel.order-mode .order-chip,
+      .sentence-panel.order-mode .sentence-bank.order-bank .bank-word {
+        min-height: var(--order-chip-minh);
+        padding-top: var(--order-chip-pady);
+        padding-bottom: var(--order-chip-pady);
+        font-size: var(--order-chip-font);
+        line-height: 1.08;
+        border-bottom-width: 3px !important;
+        max-width: 100%;
+      }
+      .sentence-panel.order-mode .order-chip:active:not(:disabled),
+      .sentence-panel.order-mode .bank-word:active:not(:disabled):not(.used) {
+        transform: none;
+        border-bottom-width: 3px !important;
+        margin-bottom: 0;
+        filter: brightness(0.97);
+      }
+      .sentence-panel.order-mode .sentence-actions {
+        left: max(10px, env(safe-area-inset-left));
+        right: max(10px, env(safe-area-inset-right));
+        bottom: max(10px, calc(env(safe-area-inset-bottom) + 8px));
+        padding: 5px;
+        min-height: 0;
+        gap: 5px;
+        border-radius: 14px;
+      }
+      .sentence-panel.order-mode .sentence-actions button {
+        min-height: 38px;
+        padding: 7px 8px;
+        font-size: 13px;
+        border-radius: 11px;
+      }
+      .sentence-panel.order-mode .sentence-result:not(:empty) {
+        bottom: max(66px, calc(env(safe-area-inset-bottom) + 62px));
+        padding: 7px 10px;
+        font-size: 12.5px;
+        max-height: 64px;
+        overflow: hidden;
+      }
+    }
+
+    @media (pointer: coarse) and (hover: none) and (max-aspect-ratio: 13/10) and (max-height: 790px) {
+      .appbar-inner { padding-top: 4px; padding-bottom: 4px; }
+      .main { padding-top: 4px; padding-bottom: 6px; }
+      .context-chip { min-height: 32px; padding-top: 4px; padding-bottom: 4px; }
+      .chip-main small { display: none; }
+      .play-meta { display: none; }
+      .gate-strip { padding-top: 4px; padding-bottom: 4px; }
+      .sentence-panel.order-mode .sentence-english { font-size: clamp(13px, 4vw, 17px); line-height: 1.18; }
+      .sentence-panel.order-mode.order-micro .order-chip,
+      .sentence-panel.order-mode.order-micro .sentence-bank.order-bank .bank-word { font-size: 11px; }
+    }
+
     @media (max-width: 420px) {
       .sentence-panel.order-mode .sentence-actions button {
         padding-left: 7px;
@@ -2477,6 +2813,93 @@
       .sentence-english { font-size: 17px; }
     }
 
+
+    /* ---------- v81: stable order-mode viewport engine ----------
+       The reorder task must behave like a one-screen touch game: no page scroll,
+       no hidden last chips, no stretched answer-line gaps, and no Help/Why
+       controls covering the answer/bank area. */
+    .order-build {
+      align-content: flex-start !important;
+      justify-content: flex-start !important;
+      align-items: flex-start !important;
+    }
+    .sentence-panel.order-mode .learning-tools {
+      top: 6px;
+      right: 10px;
+      height: 24px;
+      gap: 4px;
+      z-index: 42;
+    }
+    .sentence-panel.order-mode .learning-tools .hint-toggle,
+    .sentence-panel.order-mode .learning-tools .explain-toggle {
+      min-height: 24px;
+      height: 24px;
+      box-shadow: none !important;
+    }
+    .sentence-panel.order-mode .learning-tools .hint-toggle {
+      width: 24px;
+      min-width: 24px;
+      font-size: 12px;
+    }
+    .sentence-panel.order-mode .learning-tools .explain-toggle {
+      padding: 0 8px;
+      font-size: 10.5px;
+    }
+    .sentence-panel.order-mode .sentence-english {
+      min-height: 28px;
+      padding-right: 82px;
+      margin-bottom: 8px;
+    }
+    .sentence-panel.order-mode .order-build,
+    .sentence-panel.order-mode .sentence-bank.order-bank {
+      width: 100%;
+      max-width: 100%;
+      flex-shrink: 0;
+    }
+    .sentence-panel.order-mode .order-chip,
+    .sentence-panel.order-mode .sentence-bank.order-bank .bank-word {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      line-height: 1.05;
+      box-sizing: border-box;
+    }
+    .sentence-panel.order-mode .sentence-target {
+      line-height: 1.1;
+    }
+    @media (pointer: coarse) and (hover: none) and (max-aspect-ratio: 13/10) {
+      .sentence-panel.order-mode {
+        padding-top: 8px;
+        padding-left: 9px;
+        padding-right: 9px;
+        padding-bottom: 6px;
+      }
+      .sentence-panel.order-mode .sentence-english {
+        font-size: clamp(13px, 3.95vw, 17px);
+        line-height: 1.16;
+        min-height: 27px;
+        margin-bottom: 6px;
+        padding-right: 78px;
+      }
+      .sentence-panel.order-mode .sentence-target {
+        margin-bottom: 4px;
+      }
+      .sentence-panel.order-mode .order-build {
+        padding: var(--order-build-pad, 5px);
+        border-radius: 10px;
+      }
+      .sentence-panel.order-mode .sentence-bank.order-bank {
+        margin-bottom: 3px;
+      }
+      .sentence-panel.order-mode.order-pico .order-chip,
+      .sentence-panel.order-mode.order-pico .sentence-bank.order-bank .bank-word {
+        border-bottom-width: 2px !important;
+      }
+      .sentence-panel.order-mode .sentence-meta.under-bank {
+        margin: -1px 0 2px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2631,7 +3054,7 @@
     <div id="emptyState" class="empty-state hidden">
       <h2>No deck loaded yet</h2>
       <p>Pick a deck of words to start studying.</p>
-      <button id="emptyStateBrowseBtn">Browse built-in decks</button>
+      <button id="emptyStateBrowseBtn">Browse decks for this language</button>
     </div>
   </main>
 
@@ -2699,6 +3122,12 @@
     <div class="modal-card bottom-sheet">
       <div class="modal-title">Study</div>
 
+      <div class="qs-section language-first">
+        <div class="qs-label">Language</div>
+        <div class="qs-lang" id="qsLang"></div>
+        <div class="qs-note" id="qsLangNote"></div>
+      </div>
+
       <div class="qs-section">
         <div class="qs-label">What</div>
         <div class="segmented" id="qsModeSeg"></div>
@@ -2712,7 +3141,6 @@
       <div class="qs-section">
         <div class="qs-label">Deck</div>
         <div class="qs-decklist" id="qsDeckList"></div>
-        <div class="qs-lang" id="qsLang"></div>
       </div>
 
       <div class="settings-actions">
@@ -2725,7 +3153,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v77-viewport-fit-20260718</div>
+      <div class="meta" id="appBuildLabel">Build: v79-touch-viewport-fit-20260719</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -2869,6 +3297,9 @@
       <details class="settings-section">
         <summary>Import deck</summary>
         <div class="settings-section-body">
+          <div class="meta" id="importLanguageLabel" style="font-size:12px;line-height:1.35;">
+            Importing into current language.
+          </div>
           <div>
             <label for="importTypeSelect">Import type</label>
             <select id="importTypeSelect">
@@ -2896,7 +3327,7 @@
             <code>english,target,hint,explanation</code>; <code>alternatives</code> is optional
             when there are genuinely accepted alternate answers. Hints open with a tap/click; explanations appear after Reveal or a wrong answer.
           </div>
-          <button id="browseBuiltinBtn" class="ghost" style="width:100%;">Browse built-in decks</button>
+          <button id="browseBuiltinBtn" class="ghost" style="width:100%;">Browse current-language built-in decks</button>
           <button id="manageDecksBtn" class="ghost" style="width:100%;">Manage installed decks</button>
           <button id="syncProgressBtn" class="ghost" style="width:100%;">Sync progress between devices</button>
         </div>
@@ -2914,7 +3345,7 @@
   <!-- Built-in deck picker modal -->
   <div id="builtinModal" class="modal-backdrop">
     <div class="modal-card">
-      <div class="modal-title">Built-in decks</div>
+      <div class="modal-title" id="builtinTitle">Built-in decks</div>
       <div id="builtinList" style="display:grid;gap:8px;">Loading…</div>
       <div class="settings-actions">
         <button id="closeBuiltinBtn" class="secondary close-btn">Cancel</button>
@@ -2973,29 +3404,39 @@
     /* ---------- DECK CONFIG ---------- */
     const DECK_CONFIG = {
       de: {
+        code: "de",
         label: "English → German",
+        shortLabel: "German",
+        flag: "🇩🇪",
+        sourceName: "English",
         leftTitle: "English",
         rightTitle: "German",
         targetName: "German",
+        deckFolder: "de",
         useArticles: true,
         typingPlaceholder: "e.g. das Haus",
         typingHelp: "Type the German equivalent. Include the article if applicable."
       },
       it: {
+        code: "it",
         label: "English → Italian",
+        shortLabel: "Italian",
+        flag: "🇮🇹",
+        sourceName: "English",
         leftTitle: "English",
         rightTitle: "Italian",
         targetName: "Italian",
+        deckFolder: "it",
         useArticles: false,
         typingPlaceholder: "e.g. casa",
         typingHelp: "Type the Italian equivalent."
       }
     };
 
-    const SUPPORTED_DECKS = new Set(["de", "it"]);
+    const SUPPORTED_DECKS = new Set(Object.keys(DECK_CONFIG));
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v77-viewport-fit-20260718";
+    const APP_BUILD = "v81-order-viewport-engine-20260719";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -4626,6 +5067,7 @@
     const qsVariantSeg = $("qsVariantSeg");
     const qsDeckList = $("qsDeckList");
     const qsLang = $("qsLang");
+    const qsLangNote = $("qsLangNote");
     const qsDoneBtn = $("qsDoneBtn");
 
     const gameSelect = $("gameSelect");
@@ -4648,6 +5090,8 @@
     const closeManageDecksBtn = $("closeManageDecksBtn");
     const builtinModal = $("builtinModal");
     const builtinList = $("builtinList");
+    const builtinTitle = $("builtinTitle");
+    const importLanguageLabel = $("importLanguageLabel");
     const closeBuiltinBtn = $("closeBuiltinBtn");
 
     const restartBtn = $("restartBtn");
@@ -4851,7 +5295,11 @@
     }
 
     /* ---------- UI helpers ---------- */
-    function deckCfg() { return DECK_CONFIG[currentDeck] || DECK_CONFIG.de; }
+    function deckCfg(deck = currentDeck) { return DECK_CONFIG[normalizeDeck(deck)] || DECK_CONFIG.de; }
+    function languageEntries() { return Object.entries(DECK_CONFIG).map(([code, cfg]) => ({ code, cfg })); }
+    function languageName(deck = currentDeck) { return deckCfg(deck).shortLabel || deckCfg(deck).targetName || normalizeDeck(deck).toUpperCase(); }
+    function languageFullLabel(deck = currentDeck) { return deckCfg(deck).label || `${deckCfg(deck).sourceName || "English"} → ${languageName(deck)}`; }
+    function languageFlag(deck = currentDeck) { return deckCfg(deck).flag || "🌐"; }
     function boolFromSelect(el) { return el.value === "true"; }
 
     function showToast(msg, ms = 2400) {
@@ -4862,8 +5310,6 @@
     }
 
     function updateModeSummary() {
-      // The chip is the entry to the quick-switch sheet, so it now reads back
-      // exactly what you're studying: mode · variant · deck.
       const variantLabels = {
         match: "Match", typing: "Type", progressive: "Adaptive missing letters",
         choice: "Word bank", order: "Reorder"
@@ -4875,13 +5321,15 @@
           ? (variantLabels[wordMode] || wordMode)
           : (variantLabels[sentenceMode] || sentenceMode));
       const setText = currentSetName === "__all__" ? "All decks" : currentSetName;
+      const lang = deckCfg();
       const liChip = document.getElementById("liModeChip");
-      if (liChip) liChip.innerHTML = `<strong>${escapeHtml(modeLabel)} · ${escapeHtml(variant)}</strong><br>${escapeHtml(setText)}`;
+      if (liChip) liChip.innerHTML = `<strong>${escapeHtml(languageName())} · ${escapeHtml(modeLabel)}</strong><br>${escapeHtml(setText)}`;
       modeSummary.innerHTML = `
-        <span class="chip-dot"></span>
-        <span><strong>${escapeHtml(modeLabel)} · ${escapeHtml(variant)}</strong> · ${escapeHtml(setText)}</span>
+        <span class="chip-language-badge"><span>${escapeHtml(lang.flag || "🌐")}</span><span>${escapeHtml(lang.shortLabel || lang.targetName || currentDeck.toUpperCase())}</span></span>
+        <span class="chip-main"><strong>${escapeHtml(modeLabel)} · ${escapeHtml(variant)}</strong><small>${escapeHtml(setText)}</small></span>
         <span class="chip-caret" aria-hidden="true">▾</span>
       `;
+      if (importLanguageLabel) importLanguageLabel.textContent = `Current language: ${languageFullLabel()}. Built-in import will show only ${languageName()} decks.`;
       if (quickSheet && quickSheet.classList.contains("active")) renderQuickSheet();
     }
 
@@ -4920,6 +5368,25 @@
     }
 
     function renderQuickSheet() {
+      // LANGUAGE — highest-level choice. It controls which local decks and which
+      // built-in import list are relevant, so it is intentionally first.
+      qsLang.innerHTML = "";
+      languageEntries().forEach(({ code, cfg }) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        if (code === currentDeck) btn.classList.add("on");
+        btn.innerHTML = `
+          <span class="qs-lang-flag">${escapeHtml(cfg.flag || "🌐")}</span>
+          <span class="qs-lang-copy"><strong>${escapeHtml(cfg.shortLabel || cfg.targetName || code.toUpperCase())}</strong><small>${escapeHtml(cfg.label || code)}</small></span>
+        `;
+        btn.addEventListener("click", () => {
+          setSelectAndFire(deckSelect, code);
+          renderQuickSheet();
+        });
+        qsLang.appendChild(btn);
+      });
+      if (qsLangNote) qsLangNote.textContent = `Showing installed ${languageName()} decks below. Built-in import is also filtered to ${languageName()}.`;
+
       // WHAT — word cards, sentences, or a combined book-flow orchestrator
       buildSeg(qsModeSeg, [
         { value: "words", label: "Words" },
@@ -4952,9 +5419,17 @@
         ], sentenceMode, async (v) => { setSelectAndFire(sentenceModeSelect, v); renderQuickSheet(); });
       }
 
-      // DECK — list of sets for the current language, mirrored from setSelect
+      // DECK — list of installed sets for the current language, mirrored from setSelect.
       qsDeckList.innerHTML = "";
-      Array.from(setSelect.options).forEach(opt => {
+      const opts = Array.from(setSelect.options);
+      if (opts.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.style.padding = "10px";
+        empty.textContent = `No ${languageName()} decks installed yet.`;
+        qsDeckList.appendChild(empty);
+      }
+      opts.forEach(opt => {
         const row = document.createElement("button");
         row.type = "button";
         row.className = "qs-deck" + (opt.value === currentSetName ? " on" : "");
@@ -4964,20 +5439,6 @@
           renderQuickSheet();
         });
         qsDeckList.appendChild(row);
-      });
-
-      // LANGUAGE — mirrored from deckSelect
-      qsLang.innerHTML = "";
-      Array.from(deckSelect.options).forEach(opt => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        if (opt.value === currentDeck) btn.classList.add("on");
-        btn.textContent = opt.textContent;
-        btn.addEventListener("click", () => {
-          setSelectAndFire(deckSelect, opt.value);
-          renderQuickSheet();
-        });
-        qsLang.appendChild(btn);
       });
     }
 
@@ -6284,14 +6745,24 @@
       normal:  { charW: 8.5, extraBank: 34, extraBuild: 30, minW: 54, chipH: 42, gap: 6, buildPad: 20, bankPad: 4, minBuild: 64, minBank: 86 },
       compact: { charW: 7.7, extraBank: 28, extraBuild: 26, minW: 48, chipH: 37, gap: 5, buildPad: 18, bankPad: 4, minBuild: 58, minBank: 72 },
       dense:   { charW: 6.9, extraBank: 22, extraBuild: 20, minW: 42, chipH: 33, gap: 4, buildPad: 16, bankPad: 4, minBuild: 52, minBank: 60 },
-      micro:  { charW: 6.2, extraBank: 18, extraBuild: 18, minW: 36, chipH: 30, gap: 3, buildPad: 14, bankPad: 3, minBuild: 46, minBank: 52 }
+      micro:  { charW: 6.0, extraBank: 16, extraBuild: 16, minW: 34, chipH: 28, gap: 3, buildPad: 12, bankPad: 2, minBuild: 40, minBank: 46 },
+      nano:   { charW: 5.6, extraBank: 14, extraBuild: 14, minW: 30, chipH: 26, gap: 2, buildPad: 10, bankPad: 2, minBuild: 36, minBank: 40 },
+      pico:   { charW: 5.0, extraBank: 12, extraBuild: 12, minW: 26, chipH: 23, gap: 2, buildPad: 8, bankPad: 2, minBuild: 30, minBank: 34 }
     };
 
     function estimateChipWrapHeight(items, containerEl, minHeight = 54, densityName = "normal", kind = "bank") {
       const density = ORDER_DENSITY[densityName] || ORDER_DENSITY.normal;
-      const widthSource = containerEl || sentenceContainer || document.body;
-      const rawWidth = widthSource.clientWidth || sentenceContainer.clientWidth || window.innerWidth || 360;
-      const usableWidth = Math.max(190, rawWidth - 26);
+      const touchPortrait = !!(window.matchMedia && window.matchMedia("(pointer: coarse) and (hover: none) and (max-aspect-ratio: 13/10)").matches);
+      const panelWidth = (sentenceContainer && sentenceContainer.clientWidth) || window.innerWidth || 360;
+      const rawWidth = Math.min(
+        panelWidth,
+        (containerEl && containerEl.clientWidth) || panelWidth
+      );
+      // Be deliberately conservative: empty flex containers often report a
+      // wider width than the final padded touch area. Under-estimating height
+      // is worse than choosing a smaller chip density, because it can clip the
+      // final words.
+      const usableWidth = Math.max(touchPortrait ? 150 : 190, rawWidth - (touchPortrait ? 42 : 34));
       let lines = 1;
       let lineWidth = 0;
       const gap = density.gap;
@@ -6299,7 +6770,7 @@
       const extra = kind === "build" ? density.extraBuild : density.extraBank;
       for (const item of items) {
         const raw = String(item && item.raw !== undefined ? item.raw : item || "");
-        const chipWidth = Math.min(Math.max(raw.length * density.charW + extra, density.minW), usableWidth);
+        const chipWidth = Math.min(Math.max(raw.length * density.charW + extra + 4, density.minW), usableWidth);
         if (lineWidth > 0 && lineWidth + gap + chipWidth > usableWidth) {
           lines += 1;
           lineWidth = chipWidth;
@@ -6307,7 +6778,7 @@
           lineWidth += (lineWidth > 0 ? gap : 0) + chipWidth;
         }
       }
-      return Math.max(minHeight, lines * chipHeight + (lines - 1) * gap);
+      return Math.max(minHeight, lines * chipHeight + (lines - 1) * gap + 2);
     }
 
     function estimateOrderLayoutForDensity(data, densityName) {
@@ -6329,11 +6800,34 @@
       // and the bank reserves every original word slot. No internal scrolling, no
       // visible grey used cards. For long sentences, choose a more compact chip
       // density rather than letting taps shift the remaining cards around.
+      //
+      // The budget must reflect the REAL stacked cost, not just build+bank, or
+      // long sentences overflow into a scroll on shorter viewports. Besides
+      // build+bank we must account for: the English prompt (up to two lines) +
+      // the ?/Why row, the build box's own margin-bottom, the under-bank meta
+      // ("Streak N") line, the panel's vertical padding, the fixed action row,
+      // and a comfort gap so nothing sits under the thumb zone.
       const viewport = Math.max(520, window.innerHeight || 720);
-      const panelTop = Math.max(0, Math.round((sentenceContainer && sentenceContainer.getBoundingClientRect().top) || 140));
-      const thumbActionReserve = 86; // fixed action row + breathing room in the lower thumb zone
-      const bottomComfort = Math.max(72, Math.round(viewport * 0.13));
-      const availableForBuildAndBank = Math.max(180, viewport - panelTop - thumbActionReserve - bottomComfort);
+      const touchPortrait = !!(window.matchMedia && window.matchMedia("(pointer: coarse) and (hover: none) and (max-aspect-ratio: 13/10)").matches);
+      const measuredTop = Math.round(
+        (sentenceContainer && sentenceContainer.getBoundingClientRect().top) || 0
+      );
+      const mainEl = document.querySelector(".main");
+      const mainTop = mainEl ? Math.round(mainEl.getBoundingClientRect().top) : 0;
+      // v79: in portrait touch mode the chrome is deliberately compact. The old
+      // fixed 256px floor was from the pre-compact layout and made the algorithm
+      // both over-compact and still misjudge the actual available space.
+      const panelTop = touchPortrait
+        ? Math.max(measuredTop, mainTop + 74, 112)
+        : Math.max(measuredTop, mainTop + 215, 256);
+      const promptReserve = touchPortrait ? 68 : 96;
+      const buildMargin = touchPortrait ? 6 : 16;
+      const metaReserve = touchPortrait ? 16 : 30;
+      const panelPadding = touchPortrait ? 24 : 38;
+      const actionRowReserve = touchPortrait ? 68 : 92;
+      const bottomComfort = touchPortrait ? 44 : Math.max(64, Math.round(viewport * 0.06));
+      const chromeReserve = promptReserve + buildMargin + metaReserve + panelPadding + actionRowReserve + bottomComfort;
+      const availableForBuildAndBank = Math.max(touchPortrait ? 120 : 150, viewport - panelTop - chromeReserve);
 
       let density = "normal";
       let sizes = estimateOrderLayoutForDensity(data, density);
@@ -6347,6 +6841,14 @@
       }
       if (sizes.buildH + sizes.bankH > availableForBuildAndBank) {
         density = "micro";
+        sizes = estimateOrderLayoutForDensity(data, density);
+      }
+      if (sizes.buildH + sizes.bankH > availableForBuildAndBank) {
+        density = "nano";
+        sizes = estimateOrderLayoutForDensity(data, density);
+      }
+      if (sizes.buildH + sizes.bankH > availableForBuildAndBank) {
+        density = "pico";
         sizes = estimateOrderLayoutForDensity(data, density);
       }
       data.orderLayout = { widthKey, heightKey, panelTop, buildH: sizes.buildH, bankH: sizes.bankH, density };
@@ -6478,7 +6980,7 @@
       const isOrderMode = sentenceMode === "order";
       document.documentElement.classList.toggle("order-practice-active", isOrderMode && !sentenceContainer.classList.contains("hidden"));
       sentenceContainer.classList.toggle("order-mode", isOrderMode);
-      sentenceContainer.classList.remove("order-compact", "order-dense", "order-micro");
+      sentenceContainer.classList.remove("order-compact", "order-dense", "order-micro", "order-nano", "order-pico");
       if (isOrderMode) {
         updateSentenceActionButtons();
         sentenceHelp.textContent = "";
@@ -6497,6 +6999,8 @@
         sentenceContainer.classList.toggle("order-compact", layout.density === "compact");
         sentenceContainer.classList.toggle("order-dense", layout.density === "dense");
         sentenceContainer.classList.toggle("order-micro", layout.density === "micro");
+        sentenceContainer.classList.toggle("order-nano", layout.density === "nano");
+        sentenceContainer.classList.toggle("order-pico", layout.density === "pico");
 
         // Build area (placed chips, in sequence). It reserves the estimated final
         // answer height from the start, so adding words does not push the screen down.
@@ -6558,7 +7062,7 @@
         return;
       }
 
-      sentenceContainer.classList.remove("order-mode", "order-compact", "order-dense", "order-micro");
+      sentenceContainer.classList.remove("order-mode", "order-compact", "order-dense", "order-micro", "order-nano", "order-pico");
       document.documentElement.classList.remove("order-practice-active");
       updateSentenceActionButtons();
       sentenceHelp.classList.remove("hidden");
@@ -6798,7 +7302,8 @@
           currentSentenceData.orderChecked = true;
           currentSentenceData.orderAwaitingContinue = true;
           renderSentence();
-          showSentenceExplanationAfterFeedback();
+          // v81: Reveal should show the answer only. Do not auto-open Why;
+          // the learner can tap Why explicitly if they want the explanation.
           sentenceResult.textContent = `Solution: ${currentSentence.target}`;
           locked = false;
           updateSentenceActionButtons();
@@ -6807,7 +7312,7 @@
 
         sentenceResult.textContent = `Solution: ${currentSentence.target}`;
         currentSentenceData.feedbackAwaitingContinue = true;
-        showSentenceExplanationAfterFeedback();
+        // v81: Reveal should not auto-open Why.
         locked = false;
         updateSentenceActionButtons();
         return;
@@ -6951,6 +7456,19 @@
     let githubDeckCache = null; // { at, decks }
     const GITHUB_DECK_CACHE_MS = 5 * 60 * 1000;
 
+    function isListableDeckPath(filePath) {
+      const parts = String(filePath || "").split("/").filter(Boolean);
+      if (!parts.length) return false;
+      // The first segment is the language code and must be a configured language.
+      if (!SUPPORTED_DECKS.has(parts[0])) return false;
+      // Underscore/private files and source/archive folders are not production decks.
+      return !parts.some(part => {
+        const p = part.toLowerCase();
+        return p.startsWith("_") || p === "archive" || p === "archives" ||
+          p === "source" || p === "sources" || p === "draft" || p === "drafts";
+      });
+    }
+
     function detectGitHubRepo() {
       const m = location.hostname.match(/^([^.]+)\.github\.io$/i);
       if (!m) return null;
@@ -6986,7 +7504,7 @@
         if (!res.ok) return null;
         const entries = await res.json();
         if (!Array.isArray(entries)) return null;
-        const dirs = entries.filter(e => e.type === "dir");
+        const dirs = entries.filter(e => e.type === "dir" && SUPPORTED_DECKS.has(e.name) && isListableDeckPath(e.name));
         const perDir = await Promise.all(dirs.map(async d => {
           try {
             const r = await fetch(`${base}/decks/${encodeURIComponent(d.name)}`, opts);
@@ -7002,8 +7520,9 @@
           const d = dirs[i];
           const subdirs = [];
           for (const f of perDir[i]) {
-            if (f.type === "dir") { subdirs.push(f); continue; }
+            if (f.type === "dir") { if (isListableDeckPath(`${d.name}/${f.name}`)) subdirs.push(f); continue; }
             if (f.type !== "file" || !/\.csv$/i.test(f.name)) continue;
+            if (!isListableDeckPath(`${d.name}/${f.name}`)) continue;
             decks.push({
               name: prettifyDeckName(f.name),
               file: `${d.name}/${f.name}`,
@@ -7023,6 +7542,7 @@
           subdirs.forEach((sd, j) => {
             for (const f of perSub[j]) {
               if (f.type !== "file" || !/\.csv$/i.test(f.name)) continue;
+              if (!isListableDeckPath(`${d.name}/${sd.name}/${f.name}`)) continue;
               decks.push({
                 // "Sterntaler — Sentences": the folder is the book unit, the
                 // file is the role — combined pairing matches on the base.
@@ -7048,7 +7568,9 @@
         if (!res.ok) return null;
         const data = await res.json();
         const decks = Array.isArray(data) ? data : (data.decks || []);
-        return decks.map(d => ({ ...d, source: d.source || "json" }));
+        return decks
+          .map(d => ({ ...d, source: d.source || "json" }))
+          .filter(d => isListableDeckPath(d.file || `${d.deck || ""}/${d.name || ""}.csv`));
       } catch (err) {
         return null;
       }
@@ -7138,7 +7660,7 @@
 
     async function collectSyncRows() {
       const out = [];
-      for (const deck of ["de", "it"]) {
+      for (const deck of Object.keys(DECK_CONFIG)) {
         for (let t = 0; t < SYNC_TABLES.length; t++) {
           const rows = await DB.getAll(SYNC_TABLES[t], deck, "__all__");
           for (const r of rows) out.push({ t, deck, row: r });
@@ -7298,7 +7820,7 @@
        the local IndexedDB copy for that (deck, table, set_name). */
     async function collectInstalledDecks() {
       const out = [];
-      for (const deck of ["de", "it"]) {
+      for (const deck of Object.keys(DECK_CONFIG)) {
         for (const [table, kind] of [["word_pairs", "words"], ["sentence_pairs", "sentences"]]) {
           const sets = await DB.getSets(table, deck);
           for (const s of sets) {
@@ -7370,7 +7892,8 @@
     }
 
     async function loadBuiltinList() {
-      builtinList.innerHTML = "Loading…";
+      if (builtinTitle) builtinTitle.textContent = `${languageFlag()} ${languageName()} built-in decks`;
+      builtinList.innerHTML = `Loading ${languageName()} decks…`;
 
       const [ghDecks, jsonDecks] = await Promise.all([
         fetchDecksFromGitHubApi(),
@@ -7386,32 +7909,33 @@
           const m = meta.get(d.file);
           return m ? { ...d, name: m.name || d.name, type: m.type || d.type } : d;
         });
-        sourceNote = "Live list from GitHub — new files appear and deleted files disappear automatically.";
+        sourceNote = `Live list from GitHub, filtered to ${languageName()}.`;
       } else {
         baseDecks = jsonDecks || [];
-        sourceNote = "Offline list from decks/index.json (GitHub not reachable).";
+        sourceNote = `Offline list from decks/index.json, filtered to ${languageName()}.`;
       }
 
-      const decks = baseDecks.sort((a, b) => {
-        if (a.deck !== b.deck) return (a.deck || "").localeCompare(b.deck || "");
-        return (a.name || "").localeCompare(b.name || "");
-      });
-
-      if (decks.length === 0) {
-        builtinList.innerHTML = `
-          <em>No built-in decks found.</em>
-          <p style="font-size:13px;color:var(--text-faint);margin-top:6px;">
-            Put CSV files under <code>decks/&lt;lang&gt;/</code> in the repo —
-            they are discovered automatically.
-          </p>`;
-        return;
-      }
+      const decks = baseDecks
+        .filter(d => normalizeDeck(d.deck || currentDeck) === currentDeck)
+        .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 
       builtinList.innerHTML = "";
       const note = document.createElement("div");
       note.style.cssText = "font-size:11px;color:var(--text-faint);margin-bottom:6px;line-height:1.35;";
       note.textContent = sourceNote;
       builtinList.appendChild(note);
+
+      if (decks.length === 0) {
+        const empty = document.createElement("div");
+        empty.innerHTML = `
+          <em>No ${escapeHtml(languageName())} built-in decks found.</em>
+          <p style="font-size:13px;color:var(--text-faint);margin-top:6px;line-height:1.35;">
+            Add CSV files under <code>decks/${escapeHtml(currentDeck)}/</code>. Files or folders starting with <code>_</code>,
+            or named <code>archive</code>/<code>source</code>, stay hidden.
+          </p>`;
+        builtinList.appendChild(empty);
+        return;
+      }
 
       // Combined/book pairs: one-tap import for sentence + word decks that share
       // the same base title. This keeps the Combined mode usable without asking
@@ -7430,7 +7954,7 @@
       if (bookPairs.length > 0) {
         const header = document.createElement("div");
         header.style.cssText = "font-size:11px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin:8px 0 4px;";
-        header.textContent = "Combined book pairs";
+        header.textContent = "Book pairs";
         builtinList.appendChild(header);
         bookPairs.forEach(pair => {
           const wrap = document.createElement("div");
@@ -7439,7 +7963,7 @@
           title.innerHTML = `<strong>${escapeHtml(pair.base)}</strong>`;
           const meta = document.createElement("div");
           meta.className = "builtin-item-meta";
-          meta.textContent = `${pair.deck.toUpperCase()} · sentences + words`;
+          meta.textContent = `${languageName(pair.deck)} · sentences + words`;
           const btn = document.createElement("button");
           btn.textContent = "Import pair";
           btn.style.marginTop = "6px";
@@ -7492,17 +8016,12 @@
         });
       }
 
-      // Group by language for cleaner display
-      let lastLang = null;
-      decks.forEach(d => {
-        if (d.deck !== lastLang) {
-          const header = document.createElement("div");
-          header.style.cssText = "font-size:11px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin:8px 0 4px;";
-          header.textContent = (d.deck || "??").toUpperCase();
-          builtinList.appendChild(header);
-          lastLang = d.deck;
-        }
+      const singleHeader = document.createElement("div");
+      singleHeader.style.cssText = "font-size:11px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin:8px 0 4px;";
+      singleHeader.textContent = `${languageName()} decks`;
+      builtinList.appendChild(singleHeader);
 
+      decks.forEach(d => {
         const wrap = document.createElement("div");
         wrap.className = "builtin-item";
         const title = document.createElement("div");
@@ -7522,9 +8041,6 @@
             const setName = (d.name || d.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, ""));
             const targetTable = (d.type || "words") === "sentences" ? "sentence_pairs" : "word_pairs";
             const targetDeck = d.deck || currentDeck;
-            // Replace, don't stack: if this set is already installed, clear the
-            // old local copy first so re-importing an updated deck refreshes it
-            // instead of duplicating every row.
             const existing = (await DB.getSets(targetTable, targetDeck))
               .some(s => s.set_name === setName);
             if (existing) {
@@ -7540,8 +8056,6 @@
               showToast(`Imported ${n} words into "${setName}".`);
               importType = "words"; importTypeSelect.value = "words";
             }
-            // Switch active deck to the language we just imported into,
-            // so the user sees their new content immediately.
             if (d.deck) {
               currentDeck = d.deck;
               deckSelect.value = currentDeck;
@@ -7555,7 +8069,6 @@
           } catch (err) { showToast("Error: " + err.message); }
         });
         wrap.appendChild(title); wrap.appendChild(meta); wrap.appendChild(btn);
-        // Mark decks already installed on this device, and offer inline delete.
         (async () => {
           const targetTable = (d.type || "words") === "sentences" ? "sentence_pairs" : "word_pairs";
           const targetDeck = d.deck || currentDeck;
@@ -7579,6 +8092,18 @@
           wrap.appendChild(del);
         })();
         builtinList.appendChild(wrap);
+      });
+    }
+
+    function syncLanguageSelectOptions() {
+      if (!deckSelect) return;
+      deckSelect.innerHTML = "";
+      languageEntries().forEach(({ code, cfg }) => {
+        const opt = document.createElement("option");
+        opt.value = code;
+        opt.textContent = cfg.label || `${cfg.sourceName || "English"} → ${cfg.targetName || code.toUpperCase()}`;
+        if (code === currentDeck) opt.selected = true;
+        deckSelect.appendChild(opt);
       });
     }
 
@@ -7978,6 +8503,10 @@
       if (!keyboardOpen) stableViewportHeight = candidateH;
       document.documentElement.classList.toggle("keyboard-open", !!keyboardOpen);
       document.documentElement.style.setProperty("--vh", (keyboardOpen ? stableViewportHeight : window.innerHeight) + "px");
+      const appbarEl = document.querySelector(".appbar");
+      if (appbarEl) {
+        document.documentElement.style.setProperty("--appbar-h", Math.ceil(appbarEl.getBoundingClientRect().height || 48) + "px");
+      }
     }
     updateVh();
     window.addEventListener("resize", updateVh);
@@ -8012,7 +8541,7 @@
       });
 
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register(cacheBustedUrl("sw.js"), { scope: "./" }).then(reg => {
+        navigator.serviceWorker.register(cacheBustedUrl("sw.js"), { scope: "./", updateViaCache: "none" }).then(reg => {
           reg.update().catch(() => {});
 
           if (reg.waiting) {
@@ -8080,6 +8609,8 @@
         columnOrder = saved.columnOrder ?? columnOrder;
       }
 
+      currentDeck = normalizeDeck(currentDeck);
+      syncLanguageSelectOptions();
       applyTheme();
       applyColumnOrder();
       applySettingsToUI();

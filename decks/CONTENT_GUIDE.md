@@ -1,4 +1,4 @@
-# LanguageDeck — Content Generation Guide (v37)
+# LanguageDeck — Content Generation Guide (v80)
 
 This is the single reference for creating new deck CSVs. Keep every deck as
 simple as possible: the app only *needs* `english` and `target`. Everything
@@ -15,7 +15,7 @@ english,target,article,hint
 - `target` — the German/Italian answer, lemma only (article goes in `article`).
 - `article` — `der` / `die` / `das` for German nouns, empty otherwise.
   A filled article automatically triggers the der/die/das prompt.
-- `hint` — the hook/mnemonic. Shown only on long-press (peek), so it never
+- `hint` — the hook/mnemonic. Shown only when the learner taps/clicks Hint, so it never
   spoils the answer. Format: `Hook: <English anchor>. <one short sentence
   explaining the sound/meaning bridge>.` Leave empty if there is no good hook —
   a weak hook is worse than none.
@@ -33,10 +33,10 @@ Word-form expansion (plurals, verb forms) belongs in NEW ROWS of the same
 ## 2. Sentence decks — schema
 
 ```
-english,target,hint,level
+english,target,hint,explanation
 ```
 
-- One natural sentence per row. `hint` lists the hooks used; `level` is A1–B1.
+- One natural sentence per row. `hint` is a short tap/click helper. `explanation` is a fuller English learning note shown after Reveal or a wrong answer.
 - File name must contain `sentence` or `pattern` so auto-discovery classifies
   it as a sentences deck (e.g. `german_hooks_sentences.csv`).
 
@@ -89,21 +89,37 @@ For word decks, the analogous prompt asks for `"english","target","article","hin
 and the rule: *"only include a hint when there is a genuine sound or etymology
 bridge to English; otherwise leave it empty."*
 
-## 5. Publishing (no index.json editing needed)
+## 5. Publishing and language folders
+
+The app supports multiple target languages through one source of truth in
+`DECK_CONFIG` inside `index.html`. The current production languages are:
+
+- `de` — English → German
+- `it` — English → Italian
+
+Deck files live under `decks/<lang>/`. The built-in browser automatically filters
+to the language selected in the main study chip, so `decks/de/` files are shown
+only while German is active and `decks/it/` files only while Italian is active.
 
 Since v37 the deck browser lists whatever CSV files actually exist under
 `decks/<lang>/` in the GitHub repo, live via the GitHub API:
 
-- **Add a deck**: upload the CSV to `decks/de/` (or `decks/it/`) via the
-  GitHub web UI. Done — it appears in the app automatically.
+- **Add a deck**: upload the CSV to `decks/de/` or `decks/it/`. Done — it
+  appears in the matching language only.
 - **Remove a deck**: delete the file on GitHub. It disappears from the list
   automatically (no ghost decks).
-- `decks/index.json` is now OPTIONAL: it only overrides display names for
+- **Hide a work-in-progress deck**: start the file or folder with `_`, or move
+  it under a folder named `archive`, `source`, `draft`, `archives`, `sources`,
+  or `drafts`. These are ignored by auto-discovery.
+- `decks/index.json` is OPTIONAL: it only overrides display names/types for
   files that exist, and serves as an offline fallback. It never resurrects
   deleted files.
 - Display names are derived from file names (`german_hooks_sentences.csv` →
   "German Hooks Sentences"), type from the name (`sentence`/`pattern` →
   sentences deck).
+
+To add a new target language later: add a language entry to `DECK_CONFIG`, add a
+matching `decks/<lang>/` folder, then upload CSVs using the same simple schemas.
 
 ## 6. The deck filter (every German CSV must pass)
 
@@ -187,3 +203,43 @@ sentence, QUOTE_ALL, UTF-8.
 SOURCE TEXT:
 <paste the public-domain text or chapter here>
 ```
+
+## 8. Rich grammar explanations (Hungarian teaching decks)
+
+Deep grammar decks may carry a multi-part Hungarian explanation. The
+authoring source can keep the parts in separate columns, but the app reads
+ONE `explanation` column, so they are merged into a single formatted field
+at build time.
+
+Source columns (authoring form):
+`mondatvaz`, `szorend_miert`, `kozepmezo_logikaja`, `szavak_es_vonzatok`,
+`gyors_igeelemzes`.
+
+Merge into the app deck's `explanation` column, preserving line breaks, in
+this order and shape (blank line between sections):
+
+```
+Mondatváza:
+`<mondatvaz>`
+
+Szórend – miért így:
+<szorend_miert>
+
+A középmező logikája:
+<kozepmezo_logikaja>
+
+Szavak és vonzatok:
+<szavak_es_vonzatok>
+
+Gyors igeelemzés:
+<gyors_igeelemzes>
+```
+
+Rules:
+- Write the deck as `english,target,hint,explanation,level`, QUOTE_ALL, UTF-8.
+- Explanations MUST keep their newlines — the app renders them with
+  `white-space: pre-wrap`; a single-line collapse (as a plain hint cleaner
+  would do) destroys the Mondatváza/Mittelfeld structure.
+- Sentence frames go in backticks so they read as a unit.
+- Unique `english` keys (disambiguate identical glosses, e.g. weil vs denn
+  variants) — the app keys sentences by english.

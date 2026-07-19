@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v77-viewport-fit-20260718";
+const CACHE_VERSION = "languagedeck-v81-order-viewport-engine-20260719";
 const APP_SHELL = [
   "./",
   "./index.html",

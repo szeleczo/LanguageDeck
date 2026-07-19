@@ -48,27 +48,33 @@
     "type": "sentences"
   },
   {
-    "name": "Sterntaler \u2014 Sentences",
+    "name": "Sterntaler — Sentences",
     "file": "de/sterntaler/sentences.csv",
     "deck": "de",
     "type": "sentences"
   },
   {
-    "name": "Sterntaler \u2014 Words",
+    "name": "Sterntaler — Words",
     "file": "de/sterntaler/words.csv",
     "deck": "de",
     "type": "words"
   },
   {
-    "name": "Maja K01 \u2014 Sentences",
+    "name": "Maja K01 — Sentences",
     "file": "de/maja-k01/sentences.csv",
     "deck": "de",
     "type": "sentences"
   },
   {
-    "name": "Maja K01 \u2014 Words",
+    "name": "Maja K01 — Words",
     "file": "de/maja-k01/words.csv",
     "deck": "de",
     "type": "words"
+  },
+  {
+    "name": "German Grammar Sentences — Learning",
+    "file": "de/german_grammar_sentences_learning.csv",
+    "deck": "de",
+    "type": "sentences"
   }
 ]
