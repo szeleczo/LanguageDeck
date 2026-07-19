@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v79-touch-viewport-fit-20260719" />
+  <link rel="manifest" href="manifest.webmanifest?v=v77-viewport-fit-20260718" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -210,11 +210,9 @@
       max-height: 8px;
     }
     html.order-practice-active .main {
-      /* v79: keep the portrait practice surface inside the viewport.
-         The order actions/feedback are fixed overlays and the order layout
-         budgets for them; adding a large bottom padding here created a
-         scrollable page on phones. */
-      padding-bottom: calc(8px + env(safe-area-inset-bottom));
+      /* Room for the fixed feedback strip plus the fixed Check/Clear/Reveal row,
+         so corrections/solutions are not hidden behind the thumb-zone controls. */
+      padding-bottom: calc(178px + env(safe-area-inset-bottom));
     }
 
     /* ---------- Buttons ---------- */
@@ -1909,28 +1907,15 @@
       --order-chip-padx-build: 7px;
       --order-chip-minh: 30px;
       --order-chip-radius: 10px;
-      --order-build-pad: 7px;
-    }
-    .sentence-panel.order-mode.order-nano {
-      --order-gap: 2px;
-      --order-chip-font: 11px;
-      --order-chip-pady: 4px;
-      --order-chip-padx-bank: 6px;
-      --order-chip-padx-build: 6px;
-      --order-chip-minh: 27px;
-      --order-chip-radius: 9px;
-      --order-build-pad: 6px;
     }
     .order-build {
       display: flex;
       flex-wrap: wrap;
       gap: var(--order-gap);
       align-items: flex-start;
-      height: var(--order-build-h, 64px);
-      min-height: 0;
-      max-height: var(--order-build-h, 64px);
-      padding: var(--order-build-pad, 10px);
-      margin-bottom: 10px;
+      min-height: var(--order-build-h, 64px);
+      padding: 10px;
+      margin-bottom: 16px;
       border: 1px dashed var(--border-strong);
       border-radius: var(--radius-sm);
       background: var(--surface-2);
@@ -1963,11 +1948,8 @@
     }
     .sentence-bank.order-bank {
       align-items: flex-start;
-      align-content: flex-start;
       gap: var(--order-gap);
-      height: var(--order-bank-h, 86px);
-      min-height: 0;
-      max-height: var(--order-bank-h, 86px);
+      min-height: var(--order-bank-h, 86px);
       overflow: hidden;
       overflow-anchor: none;
       contain: layout paint;
@@ -2087,253 +2069,6 @@
       line-height: 1.35;
       pointer-events: none;
     }
-
-    /* v79: portrait phone viewport discipline.
-       The app should feel like a native drill screen: no page-level scrolling
-       during practice on tall phones such as OnePlus 10 Pro / recent iPhone.
-       We compact chrome first, then compact chips/cards only when necessary. */
-    @media (pointer: coarse) and (hover: none) and (max-aspect-ratio: 13/10) {
-      html, body {
-        height: var(--vh, 100dvh);
-        max-height: var(--vh, 100dvh);
-        overflow: hidden;
-      }
-      body {
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
-      }
-      .appbar {
-        position: static;
-        flex: 0 0 auto;
-      }
-      .appbar-inner {
-        padding: 5px 10px;
-        gap: 8px;
-      }
-      .brand { font-size: 17px; }
-      .brand svg { width: 23px; height: 23px; }
-      .icon-btn { width: 36px; height: 36px; min-height: 36px; }
-      .main {
-        height: calc(var(--vh, 100dvh) - var(--appbar-h, 48px));
-        max-height: calc(var(--vh, 100dvh) - var(--appbar-h, 48px));
-        flex: 1 1 0;
-        min-height: 0;
-        padding: 6px 10px 8px;
-        overflow: hidden;
-      }
-      .context-strip { margin-bottom: 4px; gap: 6px; }
-      .context-chip {
-        min-height: 34px;
-        padding: 5px 9px;
-        font-size: 12px;
-        border-radius: 12px;
-      }
-      .context-chip .chip-dot { width: 6px; height: 6px; }
-      .play-meta {
-        margin-bottom: 4px;
-        gap: 6px;
-        font-size: 11px;
-        line-height: 1.2;
-      }
-      .gate-strip {
-        padding: 5px 8px;
-        margin-bottom: 4px;
-        gap: 6px;
-        border-radius: 12px;
-      }
-      .gate-summary-text { font-size: 11px; line-height: 1.2; }
-      .gate-progress-bar { height: 3px; }
-      .game-area-spacer { display: none; }
-
-      #wordMatchContainer,
-      #wordTypingContainer,
-      #sentenceContainer,
-      .empty-state {
-        flex: 1 1 0;
-        min-height: 0;
-        max-height: 100%;
-        overflow: hidden;
-      }
-
-      #wordMatchContainer { display: flex; }
-      #wordMatchContainer .game {
-        width: 100%;
-        height: 100%;
-        min-height: 0;
-        grid-auto-rows: minmax(0, 1fr);
-        gap: 6px;
-      }
-      #wordMatchContainer .card {
-        min-height: 0;
-        padding: 6px 8px;
-        border-radius: 12px;
-        border-bottom-width: 3px;
-        font-size: clamp(12px, 3.45vw, 16px);
-        line-height: 1.12;
-      }
-      #wordMatchContainer .card:active:not(.disabled):not(.correct) {
-        transform: translateY(1px);
-        border-bottom-width: 2px;
-        margin-bottom: 0;
-      }
-
-      .typing-panel,
-      .sentence-panel {
-        padding: 12px 10px;
-        border-radius: 16px;
-        overflow: hidden;
-      }
-      .typing-word {
-        font-size: clamp(20px, 6.2vw, 28px);
-        line-height: 1.12;
-        margin: 2px 0 4px;
-      }
-      .typing-help { margin-bottom: 8px; font-size: 12px; }
-      .typing-clue,
-      .progressive-clue {
-        padding: 8px 9px;
-        margin-bottom: 8px;
-        font-size: clamp(16px, 4.7vw, 19px);
-        line-height: 1.35;
-      }
-      .typing-result { margin-top: 8px; min-height: 18px; font-size: 13px; }
-      .typing-actions.practice-actions,
-      .sentence-actions.practice-actions { gap: 7px; }
-      .typing-actions.practice-actions .primary-action,
-      .sentence-actions.practice-actions .primary-action {
-        min-height: 48px;
-        font-size: 16px;
-      }
-      .typing-actions.practice-actions button,
-      .sentence-actions.practice-actions button {
-        padding: 8px 10px;
-        border-radius: 13px;
-      }
-
-      .sentence-panel {
-        display: flex;
-        flex-direction: column;
-      }
-      .sentence-english {
-        font-size: clamp(15px, 4.4vw, 19px);
-        line-height: 1.24;
-        margin-bottom: 4px;
-      }
-      .sentence-help { margin-bottom: 2px; font-size: 12px; line-height: 1.2; }
-      .sentence-meta { margin-bottom: 8px; font-size: 11px; line-height: 1.15; }
-      .sentence-target {
-        min-height: 0;
-        margin-bottom: 8px;
-        font-size: 15px;
-        line-height: 1.5;
-      }
-      .sentence-bank { gap: 4px; margin-bottom: 8px; }
-      .bank-word {
-        min-height: 36px;
-        padding: 6px 10px;
-        border-radius: 12px;
-        border-bottom-width: 3px !important;
-        font-size: 13.5px;
-        line-height: 1.12;
-      }
-      .blank-chip { min-height: 30px; padding: 3px 9px; font-size: 14px; }
-      .blank-input { min-height: 32px; font-size: 15px; }
-
-      html.order-practice-active .main {
-        padding-bottom: 8px;
-      }
-      .sentence-panel.order-mode {
-        height: 100%;
-        max-height: 100%;
-        padding: 10px 10px 8px;
-      }
-      .sentence-panel.order-mode .sentence-english {
-        flex: 0 0 auto;
-        padding-right: 68px;
-        margin-bottom: 4px;
-        font-size: clamp(14px, 4.15vw, 18px);
-      }
-      .sentence-panel.order-mode .sentence-target {
-        flex: 0 0 auto;
-        margin-bottom: 4px;
-      }
-      .sentence-panel.order-mode .sentence-bank {
-        flex: 0 0 auto;
-        margin-bottom: 4px;
-      }
-      .sentence-panel.order-mode .sentence-meta.under-bank {
-        flex: 0 0 auto;
-        margin: -1px 0 3px;
-        min-height: 12px;
-        font-size: 10.5px;
-      }
-      .sentence-panel.order-mode .order-build {
-        height: var(--order-build-h, 54px);
-        min-height: 0;
-        max-height: var(--order-build-h, 54px);
-        padding: var(--order-build-pad, 6px);
-        margin-bottom: 5px;
-        border-radius: 10px;
-      }
-      .sentence-panel.order-mode .sentence-bank.order-bank {
-        height: var(--order-bank-h, 68px);
-        min-height: 0;
-        max-height: var(--order-bank-h, 68px);
-        margin-bottom: 4px;
-      }
-      .sentence-panel.order-mode .order-chip,
-      .sentence-panel.order-mode .sentence-bank.order-bank .bank-word {
-        min-height: var(--order-chip-minh);
-        padding-top: var(--order-chip-pady);
-        padding-bottom: var(--order-chip-pady);
-        font-size: var(--order-chip-font);
-        line-height: 1.08;
-        border-bottom-width: 3px !important;
-        max-width: 100%;
-      }
-      .sentence-panel.order-mode .order-chip:active:not(:disabled),
-      .sentence-panel.order-mode .bank-word:active:not(:disabled):not(.used) {
-        transform: none;
-        border-bottom-width: 3px !important;
-        margin-bottom: 0;
-        filter: brightness(0.97);
-      }
-      .sentence-panel.order-mode .sentence-actions {
-        left: max(10px, env(safe-area-inset-left));
-        right: max(10px, env(safe-area-inset-right));
-        bottom: max(10px, calc(env(safe-area-inset-bottom) + 8px));
-        padding: 5px;
-        min-height: 0;
-        gap: 5px;
-        border-radius: 14px;
-      }
-      .sentence-panel.order-mode .sentence-actions button {
-        min-height: 38px;
-        padding: 7px 8px;
-        font-size: 13px;
-        border-radius: 11px;
-      }
-      .sentence-panel.order-mode .sentence-result:not(:empty) {
-        bottom: max(66px, calc(env(safe-area-inset-bottom) + 62px));
-        padding: 7px 10px;
-        font-size: 12.5px;
-        max-height: 64px;
-        overflow: hidden;
-      }
-    }
-
-    @media (pointer: coarse) and (hover: none) and (max-aspect-ratio: 13/10) and (max-height: 790px) {
-      .appbar-inner { padding-top: 4px; padding-bottom: 4px; }
-      .main { padding-top: 4px; padding-bottom: 6px; }
-      .context-chip { min-height: 32px; padding-top: 4px; padding-bottom: 4px; }
-      .play-meta { display: none; }
-      .gate-strip { padding-top: 4px; padding-bottom: 4px; }
-      .sentence-panel.order-mode .sentence-english { font-size: clamp(13px, 4vw, 17px); line-height: 1.18; }
-      .sentence-panel.order-mode.order-micro .order-chip,
-      .sentence-panel.order-mode.order-micro .sentence-bank.order-bank .bank-word { font-size: 11px; }
-    }
-
     @media (max-width: 420px) {
       .sentence-panel.order-mode .sentence-actions button {
         padding-left: 7px;
@@ -2990,7 +2725,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v79-touch-viewport-fit-20260719</div>
+      <div class="meta" id="appBuildLabel">Build: v77-viewport-fit-20260718</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -3260,7 +2995,7 @@
     const SUPPORTED_DECKS = new Set(["de", "it"]);
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v79-touch-viewport-fit-20260719";
+    const APP_BUILD = "v77-viewport-fit-20260718";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -6549,8 +6284,7 @@
       normal:  { charW: 8.5, extraBank: 34, extraBuild: 30, minW: 54, chipH: 42, gap: 6, buildPad: 20, bankPad: 4, minBuild: 64, minBank: 86 },
       compact: { charW: 7.7, extraBank: 28, extraBuild: 26, minW: 48, chipH: 37, gap: 5, buildPad: 18, bankPad: 4, minBuild: 58, minBank: 72 },
       dense:   { charW: 6.9, extraBank: 22, extraBuild: 20, minW: 42, chipH: 33, gap: 4, buildPad: 16, bankPad: 4, minBuild: 52, minBank: 60 },
-      micro:  { charW: 6.0, extraBank: 16, extraBuild: 16, minW: 34, chipH: 28, gap: 3, buildPad: 12, bankPad: 2, minBuild: 40, minBank: 46 },
-      nano:   { charW: 5.6, extraBank: 14, extraBuild: 14, minW: 30, chipH: 26, gap: 2, buildPad: 10, bankPad: 2, minBuild: 36, minBank: 40 }
+      micro:  { charW: 6.2, extraBank: 18, extraBuild: 18, minW: 36, chipH: 30, gap: 3, buildPad: 14, bankPad: 3, minBuild: 46, minBank: 52 }
     };
 
     function estimateChipWrapHeight(items, containerEl, minHeight = 54, densityName = "normal", kind = "bank") {
@@ -6595,34 +6329,11 @@
       // and the bank reserves every original word slot. No internal scrolling, no
       // visible grey used cards. For long sentences, choose a more compact chip
       // density rather than letting taps shift the remaining cards around.
-      //
-      // The budget must reflect the REAL stacked cost, not just build+bank, or
-      // long sentences overflow into a scroll on shorter viewports. Besides
-      // build+bank we must account for: the English prompt (up to two lines) +
-      // the ?/Why row, the build box's own margin-bottom, the under-bank meta
-      // ("Streak N") line, the panel's vertical padding, the fixed action row,
-      // and a comfort gap so nothing sits under the thumb zone.
       const viewport = Math.max(520, window.innerHeight || 720);
-      const touchPortrait = !!(window.matchMedia && window.matchMedia("(pointer: coarse) and (hover: none) and (max-aspect-ratio: 13/10)").matches);
-      const measuredTop = Math.round(
-        (sentenceContainer && sentenceContainer.getBoundingClientRect().top) || 0
-      );
-      const mainEl = document.querySelector(".main");
-      const mainTop = mainEl ? Math.round(mainEl.getBoundingClientRect().top) : 0;
-      // v79: in portrait touch mode the chrome is deliberately compact. The old
-      // fixed 256px floor was from the pre-compact layout and made the algorithm
-      // both over-compact and still misjudge the actual available space.
-      const panelTop = touchPortrait
-        ? Math.max(measuredTop, mainTop + 74, 112)
-        : Math.max(measuredTop, mainTop + 215, 256);
-      const promptReserve = touchPortrait ? 68 : 96;
-      const buildMargin = touchPortrait ? 6 : 16;
-      const metaReserve = touchPortrait ? 16 : 30;
-      const panelPadding = touchPortrait ? 24 : 38;
-      const actionRowReserve = touchPortrait ? 68 : 92;
-      const bottomComfort = touchPortrait ? 44 : Math.max(64, Math.round(viewport * 0.06));
-      const chromeReserve = promptReserve + buildMargin + metaReserve + panelPadding + actionRowReserve + bottomComfort;
-      const availableForBuildAndBank = Math.max(touchPortrait ? 120 : 150, viewport - panelTop - chromeReserve);
+      const panelTop = Math.max(0, Math.round((sentenceContainer && sentenceContainer.getBoundingClientRect().top) || 140));
+      const thumbActionReserve = 86; // fixed action row + breathing room in the lower thumb zone
+      const bottomComfort = Math.max(72, Math.round(viewport * 0.13));
+      const availableForBuildAndBank = Math.max(180, viewport - panelTop - thumbActionReserve - bottomComfort);
 
       let density = "normal";
       let sizes = estimateOrderLayoutForDensity(data, density);
@@ -6636,10 +6347,6 @@
       }
       if (sizes.buildH + sizes.bankH > availableForBuildAndBank) {
         density = "micro";
-        sizes = estimateOrderLayoutForDensity(data, density);
-      }
-      if (sizes.buildH + sizes.bankH > availableForBuildAndBank) {
-        density = "nano";
         sizes = estimateOrderLayoutForDensity(data, density);
       }
       data.orderLayout = { widthKey, heightKey, panelTop, buildH: sizes.buildH, bankH: sizes.bankH, density };
@@ -6771,7 +6478,7 @@
       const isOrderMode = sentenceMode === "order";
       document.documentElement.classList.toggle("order-practice-active", isOrderMode && !sentenceContainer.classList.contains("hidden"));
       sentenceContainer.classList.toggle("order-mode", isOrderMode);
-      sentenceContainer.classList.remove("order-compact", "order-dense", "order-micro", "order-nano");
+      sentenceContainer.classList.remove("order-compact", "order-dense", "order-micro");
       if (isOrderMode) {
         updateSentenceActionButtons();
         sentenceHelp.textContent = "";
@@ -6790,7 +6497,6 @@
         sentenceContainer.classList.toggle("order-compact", layout.density === "compact");
         sentenceContainer.classList.toggle("order-dense", layout.density === "dense");
         sentenceContainer.classList.toggle("order-micro", layout.density === "micro");
-        sentenceContainer.classList.toggle("order-nano", layout.density === "nano");
 
         // Build area (placed chips, in sequence). It reserves the estimated final
         // answer height from the start, so adding words does not push the screen down.
@@ -6852,7 +6558,7 @@
         return;
       }
 
-      sentenceContainer.classList.remove("order-mode", "order-compact", "order-dense", "order-micro", "order-nano");
+      sentenceContainer.classList.remove("order-mode", "order-compact", "order-dense", "order-micro");
       document.documentElement.classList.remove("order-practice-active");
       updateSentenceActionButtons();
       sentenceHelp.classList.remove("hidden");
@@ -8272,10 +7978,6 @@
       if (!keyboardOpen) stableViewportHeight = candidateH;
       document.documentElement.classList.toggle("keyboard-open", !!keyboardOpen);
       document.documentElement.style.setProperty("--vh", (keyboardOpen ? stableViewportHeight : window.innerHeight) + "px");
-      const appbarEl = document.querySelector(".appbar");
-      if (appbarEl) {
-        document.documentElement.style.setProperty("--appbar-h", Math.ceil(appbarEl.getBoundingClientRect().height || 48) + "px");
-      }
     }
     updateVh();
     window.addEventListener("resize", updateVh);
@@ -8310,7 +8012,7 @@
       });
 
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register(cacheBustedUrl("sw.js"), { scope: "./", updateViaCache: "none" }).then(reg => {
+        navigator.serviceWorker.register(cacheBustedUrl("sw.js"), { scope: "./" }).then(reg => {
           reg.update().catch(() => {});
 
           if (reg.waiting) {
