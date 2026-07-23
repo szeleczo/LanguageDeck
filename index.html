@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v85.1-mobile-sentence-fit-20260723" />
+  <link rel="manifest" href="manifest.webmanifest?v=v86-story-study-20260723" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -2903,7 +2903,7 @@
   
 
     /* ============================================================
-       v85.1 unified mobile sentence fitting
+       v86 unified mobile sentence fitting
        Long sentence exercises are compressed from the outside in: chrome,
        prompt, chips and gaps. Clipping is never accepted. Internal scrolling
        is an emergency fallback only after the smallest usable density.
@@ -2996,6 +2996,9 @@
     html.text-practice-active .game-area-spacer { display: none !important; }
     .text-mode { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
     .text-mode.hidden { display: none !important; }
+    .story-study-frame { display: none; width: 100%; height: 100%; min-height: 0; flex: 1 1 auto; border: 0; background: var(--bg); }
+    .text-mode.story-study-active > :not(.story-study-frame) { display: none !important; }
+    .text-mode.story-study-active .story-study-frame { display: block; }
     .tx-top { flex: 0 0 auto; padding: 4px 2px 8px; border-bottom: 1px solid var(--border); }
     .tx-topline { display: flex; align-items: baseline; gap: 7px; min-width: 0; }
     .tx-title { font-family: var(--font-display); font-weight: 800; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
@@ -3080,15 +3083,9 @@
       .tx-flow { font-size: 16px; line-height: 1.42; }
     }
 
-    /* v85.1: keep the active Reading sentence fully reachable on compact phones. */
+    /* v86: keep the active Reading sentence fully reachable on compact phones. */
     .tx-stage { scroll-padding-block: 12px; }
-    .tx-flow, .tx-sentence, .tx-task-sentence, .tx-translation {
-      min-width: 0;
-      max-width: 100%;
-      white-space: normal;
-      overflow-wrap: break-word;
-      word-break: normal;
-    }
+    .tx-sentence, .tx-task-sentence, .tx-translation { overflow-wrap: anywhere; }
     @media (pointer: coarse) and (hover: none) and (max-aspect-ratio: 13/10) {
       html.text-practice-active .context-strip { margin-bottom: 3px; }
       .tx-top { padding: 2px 1px 5px; }
@@ -3303,6 +3300,7 @@
         <button type="button" class="tx-secondary" id="txTranslationBtn">Translation</button>
         <button type="button" class="tx-primary" id="txMainBtn">Next</button>
       </div>
+      <iframe id="storyStudyFrame" class="story-study-frame" title="Story Study Text mode" loading="eager"></iframe>
     </div>
 
 
@@ -3413,7 +3411,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v85.1-mobile-sentence-fit-20260723</div>
+      <div class="meta" id="appBuildLabel">Build: v86-story-study-20260723</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -3700,7 +3698,7 @@
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v85.1-mobile-sentence-fit-20260723";
+    const APP_BUILD = "v86-story-study-20260723";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5638,6 +5636,7 @@
     const TEXT_CEILINGS = { comprehension: 2, active: 3, memorization: 4 };
 
     const textModeContainer = $("textModeContainer");
+    const storyStudyFrame = $("storyStudyFrame");
     const txTitle = $("txTitle"), txSubtitle = $("txSubtitle"), txPageLabel = $("txPageLabel"), txBars = $("txBars");
     const txGoals = $("txGoals"), txStage = $("txStage"), txFlow = $("txFlow"), txRail = $("txRail");
     const txReadPane = $("txReadPane"), txCheckpointPane = $("txCheckpointPane"), txRereadPane = $("txRereadPane"), txDonePane = $("txDonePane");
@@ -5651,6 +5650,19 @@
     let textQueue = [], textQueueIndex = 0, textTask = null, textTaskResolved = false;
     let textFreeCount = 0, textCheckpointReason = "page";
     let textTranslationLongPress = null, textTranslationLongPressed = false;
+    let textAutoAdvanceTimer = null;
+    function textCancelAutoAdvance() {
+      if (textAutoAdvanceTimer) { clearTimeout(textAutoAdvanceTimer); textAutoAdvanceTimer = null; }
+      if (txMainBtn) txMainBtn.disabled = false;
+    }
+    function textScheduleAutoAdvance() {
+      textCancelAutoAdvance();
+      txMainBtn.disabled = true;
+      txMainBtn.textContent = "Continuing…";
+      textAutoAdvanceTimer = setTimeout(async () => {
+        textAutoAdvanceTimer = null; txMainBtn.disabled = false; await textAdvanceTask();
+      }, 520);
+    }
 
     function textCeiling() { return TEXT_CEILINGS[textGoal] || 2; }
     function textKey(unitId) { return `${currentDeck}|${unitId}`; }
@@ -5849,8 +5861,20 @@
       updateGameUI();
       if (!entry) {
         textEngine = null;
+        textModeContainer.classList.remove("story-study-active");
         txFlow.innerHTML = `<div class="tx-empty"><strong>No Text unit is available for ${escapeHtml(languageName())}.</strong><br>Add a text entry to the language manifest.</div>`;
         statusEl.textContent = "No Text unit available.";
+        return;
+      }
+      // v86: the accepted Story Study engine is the reference implementation
+      // for the Maja unit. It is isolated in its own document so the stable v81
+      // Words/Grammar/Sentences layout and the generic v84 Text loader remain intact.
+      const useStoryStudy = entry.id === "de-text-maja";
+      textModeContainer.classList.toggle("story-study-active", useStoryStudy);
+      if (useStoryStudy) {
+        textEngine = null;
+        if (storyStudyFrame && !storyStudyFrame.getAttribute("src")) storyStudyFrame.setAttribute("src", "story-study.html");
+        statusEl.textContent = `${entry.name} · Story Study`;
         return;
       }
       if (!reset && textEngine && textEngine.entry.id === entry.id) { textRenderRead(); return; }
@@ -6256,6 +6280,7 @@
       return { answer, choices: textShuffle([answer, ...textShuffle(no).slice(0, 2)]) };
     }
     function textRenderTask() {
+      textCancelAutoAdvance();
       textTask = textQueue[textQueueIndex]; textTaskResolved = false;
       txCheckpointCount.textContent = `${textQueueIndex + 1} / ${textQueue.length}`;
       txAnswerNote.classList.add("hidden"); txAnswerNote.innerHTML = "";
@@ -6329,6 +6354,7 @@
       txAnswerNote.innerHTML = `${answer ? `<strong>${escapeHtml(answer)}</strong><br>` : ""}${escapeHtml(note)}`;
       txMainBtn.textContent = textQueueIndex === textQueue.length - 1 ? "Read the part again" : "Next";
       for (const b of txTask.querySelectorAll("button")) b.disabled = true;
+      if (correct) textScheduleAutoAdvance();
     }
     async function textCheckStuckItem(key, rec, item) {
       const misses = textEngine.progress.itemMisses[key] || 0;
