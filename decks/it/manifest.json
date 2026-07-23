@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "language": "it",
+  "decks": [
+    {
+      "id": "it-core-3000",
+      "name": "Core 3000",
+      "file": "words/core-3000.csv",
+      "primaryMode": "words",
+      "compatibleModes": [
+        "words"
+      ],
+      "practiceModes": [
+        "match",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1",
+        "B2"
+      ],
+      "schema": "word"
+    }
+  ]
+}

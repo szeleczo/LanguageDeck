@@ -1,8 +1,10 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v81-order-viewport-engine-20260719";
+const CACHE_VERSION = "languagedeck-v85-language-pack-reading-builder-20260723";
 const APP_SHELL = [
   "./",
   "./index.html",
+  "./pack-builder.html",
+  "./decks/languages.json",
   "./manifest.webmanifest",
   "./icon-192.png",
   "./icon-512.png",

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "de-sterntaler",
+  "title": "Sterntaler",
+  "subtitle": "Grimm",
+  "language": "de",
+  "learningGoal": "comprehension",
+  "translationMode": "onDemand",
+  "pageSize": 6,
+  "sentenceFile": "sentences.csv",
+  "wordFile": "words.csv",
+  "patternFile": "../../patterns.csv",
+  "glossFallbackDecks": [
+    "../../german_3000.csv",
+    "../../german_hooks.csv"
+  ]
+}

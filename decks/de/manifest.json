@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "language": "de",
+  "lexicon": "lexicon.csv",
+  "patterns": "patterns.csv",
+  "decks": [
+    {
+      "id": "de-core-3000",
+      "name": "Core 3000",
+      "file": "words/core-3000.csv",
+      "primaryMode": "words",
+      "compatibleModes": [
+        "words"
+      ],
+      "practiceModes": [
+        "match",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1",
+        "B2"
+      ],
+      "schema": "word"
+    },
+    {
+      "id": "de-hooks",
+      "name": "Hooks",
+      "file": "words/hooks.csv",
+      "primaryMode": "words",
+      "compatibleModes": [
+        "words"
+      ],
+      "practiceModes": [
+        "match",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1",
+        "B2"
+      ],
+      "schema": "word"
+    },
+    {
+      "id": "de-combined-flashcards",
+      "name": "Combined Flashcards",
+      "file": "words/combined-flashcards.csv",
+      "primaryMode": "words",
+      "compatibleModes": [
+        "words"
+      ],
+      "practiceModes": [
+        "match",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1",
+        "B2"
+      ],
+      "schema": "word"
+    },
+    {
+      "id": "de-grammar-learning",
+      "name": "Grammar Sentences — Learning",
+      "file": "grammar/grammar-sentences-learning.csv",
+      "primaryMode": "grammar",
+      "compatibleModes": [
+        "grammar",
+        "sentences"
+      ],
+      "practiceModes": [
+        "choice",
+        "order",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1",
+        "B2"
+      ],
+      "schema": "sentence"
+    },
+    {
+      "id": "de-sentence-patterns",
+      "name": "Sentence Patterns",
+      "file": "grammar/sentence-patterns.csv",
+      "primaryMode": "grammar",
+      "compatibleModes": [
+        "grammar",
+        "sentences"
+      ],
+      "practiceModes": [
+        "choice",
+        "order",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1",
+        "B2"
+      ],
+      "schema": "sentence"
+    },
+    {
+      "id": "de-sentence-builder",
+      "name": "Sentence Builder",
+      "file": "sentences/sentence-builder.csv",
+      "primaryMode": "sentences",
+      "compatibleModes": [
+        "sentences"
+      ],
+      "practiceModes": [
+        "choice",
+        "order",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1",
+        "B2"
+      ],
+      "schema": "sentence"
+    },
+    {
+      "id": "de-3000-sentences",
+      "name": "Core 3000 Sentences",
+      "file": "sentences/core-3000-sentences.csv",
+      "primaryMode": "sentences",
+      "compatibleModes": [
+        "sentences"
+      ],
+      "practiceModes": [
+        "choice",
+        "order",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1",
+        "B2"
+      ],
+      "schema": "sentence"
+    },
+    {
+      "id": "de-hooks-sentences",
+      "name": "Hooks Sentences",
+      "file": "sentences/hooks-sentences.csv",
+      "primaryMode": "sentences",
+      "compatibleModes": [
+        "sentences"
+      ],
+      "practiceModes": [
+        "choice",
+        "order",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1",
+        "B2"
+      ],
+      "schema": "sentence"
+    },
+    {
+      "id": "de-text-maja",
+      "name": "Die Biene Maja · Kapitel 1",
+      "folder": "texts/maja-k01",
+      "primaryMode": "text",
+      "compatibleModes": [
+        "text"
+      ],
+      "practiceModes": [
+        "reading",
+        "deep",
+        "memorise"
+      ],
+      "level": [
+        "A2",
+        "B1"
+      ],
+      "schema": "text"
+    },
+    {
+      "id": "de-text-sterntaler",
+      "name": "Sterntaler",
+      "folder": "texts/sterntaler",
+      "primaryMode": "text",
+      "compatibleModes": [
+        "text"
+      ],
+      "practiceModes": [
+        "reading",
+        "deep",
+        "memorise"
+      ],
+      "level": [
+        "A2",
+        "B1"
+      ],
+      "schema": "text"
+    }
+  ]
+}

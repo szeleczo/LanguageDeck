@@ -2900,6 +2900,107 @@
         margin: -1px 0 2px;
       }
     }
+  
+    /* ============================================================
+       v84 Reading / Text mode
+       ============================================================ */
+    html.text-practice-active body { overflow: hidden; }
+    html.text-practice-active .main {
+      min-height: 0;
+      height: calc(var(--vh, 100vh) - var(--appbar-h, 61px));
+      padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+      overflow: hidden;
+    }
+    html.text-practice-active .context-strip { flex: 0 0 auto; }
+    html.text-practice-active .play-meta,
+    html.text-practice-active .gate-strip,
+    html.text-practice-active .game-area-spacer { display: none !important; }
+    .text-mode { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+    .text-mode.hidden { display: none !important; }
+    .tx-top { flex: 0 0 auto; padding: 4px 2px 8px; border-bottom: 1px solid var(--border); }
+    .tx-topline { display: flex; align-items: baseline; gap: 7px; min-width: 0; }
+    .tx-title { font-family: var(--font-display); font-weight: 800; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .tx-subtitle, .tx-page { color: var(--text-faint); font-size: 11px; }
+    .tx-page { margin-left: auto; font-variant-numeric: tabular-nums; flex: 0 0 auto; }
+    .tx-bars { display: flex; gap: 3px; margin-top: 6px; }
+    .tx-bar { height: 3px; flex: 1; border-radius: 3px; background: var(--border); }
+    .tx-bar.done { background: var(--primary); }
+    .tx-bar.now { background: var(--primary-soft); }
+    .tx-goals { margin-top: 7px; display: flex; width: fit-content; max-width: 100%; border: 1px solid var(--border); border-radius: 999px; overflow: hidden; }
+    .tx-goals button { min-height: 28px; padding: 4px 11px; border: 0; border-radius: 0; border-bottom: 0; background: transparent; color: var(--text-muted); font-size: 10.5px; box-shadow: none; }
+    .tx-goals button.on { background: var(--primary); color: #fff; }
+    .tx-stage { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 12px 4px 8px; -webkit-overflow-scrolling: touch; }
+    .tx-pane { display: none; }
+    .tx-pane.on { display: block; }
+    .tx-flow { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: clamp(17px, 4.7vw, 20px); line-height: 1.58; letter-spacing: .003em; }
+    .tx-sentence { margin: 0 0 5px; transition: opacity .18s ease, background .18s ease; }
+    .tx-sentence.past { opacity: .42; }
+    .tx-sentence.next { opacity: .16; }
+    .tx-sentence.active { opacity: 1; }
+    .tx-token { border-radius: 3px; padding: 1px .5px; cursor: pointer; }
+    .tx-token.learning { text-decoration: underline dotted var(--border-strong); text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+    .tx-token.opened { background: var(--warning-soft); text-decoration: underline solid var(--warning); text-underline-offset: 4px; }
+    .tx-translation { margin: 7px 0 2px; padding-left: 10px; border-left: 2px solid var(--primary-soft); color: var(--text-muted); font-family: var(--font-sans); font-size: 13px; line-height: 1.4; }
+    .tx-why-link { display: block; margin-top: 5px; padding: 0; min-height: 24px; border: 0 !important; border-bottom: 0 !important; background: transparent !important; color: var(--text-faint) !important; font-size: 11.5px; text-align: left; box-shadow: none !important; }
+    .tx-rail { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+    .tx-gloss, .tx-structure, .tx-note {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 11px;
+      padding: 8px 10px; box-shadow: var(--shadow-sm); font-family: var(--font-sans); font-size: 12.5px; line-height: 1.4;
+    }
+    .tx-gloss { display: flex; align-items: flex-start; gap: 8px; }
+    .tx-gloss strong { font-family: var(--font-display); font-size: 13.5px; }
+    .tx-gloss-copy { color: var(--text-muted); min-width: 0; }
+    .tx-gloss-hint { display: block; color: var(--text-faint); font-size: 11.5px; margin-top: 2px; }
+    .tx-pin { margin-left: auto; flex: 0 0 auto; min-height: 28px !important; padding: 3px 8px !important; border: 1px solid var(--border) !important; border-bottom-width: 2px !important; border-radius: 999px !important; background: var(--surface-2) !important; color: var(--text-muted) !important; font-size: 10.5px !important; }
+    .tx-pin.on { background: var(--primary-soft) !important; color: var(--primary-deep) !important; }
+    .tx-structure { border-left: 3px solid var(--primary); }
+    .tx-chunks { font-family: Georgia, "Iowan Old Style", serif; font-size: 15px; margin-bottom: 7px; }
+    .tx-pattern-name { font-family: var(--font-display); font-weight: 800; color: var(--primary-deep); margin-top: 6px; }
+    .tx-structure-body { color: var(--text-muted); white-space: pre-wrap; }
+    .tx-footer { flex: 0 0 auto; display: flex; gap: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+    .tx-footer button { min-height: 44px; }
+    .tx-footer .tx-secondary { flex: 0 0 auto; background: var(--surface); color: var(--text-muted); border-color: var(--border-strong); border-bottom-color: var(--border-strong); }
+    .tx-footer .tx-secondary.on { background: var(--primary-soft); color: var(--primary-deep); }
+    .tx-footer .tx-primary { flex: 1; }
+    .tx-check-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .tx-kicker { font-family: var(--font-display); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--primary); }
+    .tx-count { margin-left: auto; color: var(--text-faint); font-size: 11px; }
+    .tx-free { margin-bottom: 10px; padding: 7px 9px; border-radius: 8px; background: var(--success-soft); color: var(--success); font-size: 12px; }
+    .tx-task-sentence { font-family: Georgia, "Iowan Old Style", serif; font-size: 18px; line-height: 1.5; margin: 8px 0 5px; }
+    .tx-task-sentence mark { background: var(--warning-soft); color: inherit; border-radius: 3px; padding: 1px 2px; }
+    .tx-task-help { color: var(--text-muted); font-size: 12.5px; margin-bottom: 12px; }
+    .tx-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tx-options button { min-height: 42px; padding: 8px 12px; background: var(--surface); color: var(--text); border-color: var(--border-strong); border-bottom-color: var(--border-strong); }
+    .tx-options button.good { background: var(--success-soft); color: var(--success); border-color: var(--success); }
+    .tx-options button.bad { background: var(--danger-soft); color: var(--danger); border-color: var(--danger); }
+    .tx-options button:disabled { opacity: .66; }
+    .tx-answer-note { margin-top: 12px; padding: 9px 10px; border-radius: 10px; background: var(--surface-2); color: var(--text-muted); font-size: 12px; line-height: 1.4; }
+    .tx-answer-note strong { color: var(--text); }
+    .tx-reorder-build { min-height: 46px; border: 1px dashed var(--border-strong); border-radius: 10px; padding: 7px; margin: 8px 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tx-typing { width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: 10px; background: var(--surface); color: var(--text); font-size: 16px; }
+    .tx-keyboard { margin-top: 8px; display: grid; gap: 5px; }
+    .tx-keyrow { display: flex; justify-content: center; gap: 4px; }
+    .tx-key { min-width: 25px; min-height: 35px !important; padding: 4px 5px !important; border-radius: 7px !important; font-size: 12px !important; }
+    .tx-key.wide { min-width: 50px; }
+    .tx-reread-intro { color: var(--text-muted); font-size: 12.5px; margin: 0 0 12px; }
+    .tx-reread .tx-sentence { opacity: 1; }
+    .tx-reread .tx-token { text-decoration: none !important; background: transparent; }
+    .tx-difficulty { margin-top: 12px; padding: 10px; border-radius: 10px; background: var(--warning-soft); color: var(--warning); font-size: 12px; }
+    .tx-difficulty button { margin-top: 7px; min-height: 34px; padding: 5px 9px; font-size: 11px; }
+    .tx-done-summary { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin: 12px 0; }
+    .tx-done-stat { padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); text-align: center; }
+    .tx-done-stat strong { display: block; font-family: var(--font-display); font-size: 20px; }
+    .tx-done-stat span { color: var(--text-faint); font-size: 10px; }
+    .tx-empty { padding: 20px 8px; text-align: center; color: var(--text-muted); }
+    @media (min-aspect-ratio: 1.05/1) and (max-height: 700px) {
+      html.text-practice-active .main { padding-top: 4px; }
+      .tx-top { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; }
+      .tx-bars { grid-column: 1; }
+      .tx-goals { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; }
+      .tx-stage { padding-top: 7px; }
+      .tx-flow { font-size: 16px; line-height: 1.42; }
+    }
+
   </style>
 </head>
 <body>
@@ -3050,6 +3151,54 @@
       <div class="sentence-result" id="sentenceResult"></div>
     </div>
 
+    <!-- v84 Reading / Text mode -->
+    <div id="textModeContainer" class="text-mode hidden" aria-live="polite">
+      <div class="tx-top">
+        <div class="tx-topline">
+          <span class="tx-title" id="txTitle">Text</span>
+          <span class="tx-subtitle" id="txSubtitle"></span>
+          <span class="tx-page" id="txPageLabel">—</span>
+        </div>
+        <div class="tx-bars" id="txBars"></div>
+        <div class="tx-goals" id="txGoals" aria-label="Learning goal">
+          <button type="button" data-goal="comprehension" class="on">Reading</button>
+          <button type="button" data-goal="active">Deep</button>
+          <button type="button" data-goal="memorization">Memorise</button>
+        </div>
+      </div>
+      <div class="tx-stage" id="txStage">
+        <section class="tx-pane on" id="txReadPane">
+          <div class="tx-flow" id="txFlow"></div>
+          <div class="tx-rail" id="txRail"></div>
+        </section>
+        <section class="tx-pane" id="txCheckpointPane">
+          <div class="tx-check-head"><span class="tx-kicker" id="txCheckpointKicker">Checkpoint</span><span class="tx-count" id="txCheckpointCount"></span></div>
+          <div class="tx-free hidden" id="txFreeNote"></div>
+          <div id="txTask"></div>
+          <div class="tx-answer-note hidden" id="txAnswerNote"></div>
+        </section>
+        <section class="tx-pane tx-reread" id="txRereadPane">
+          <div class="tx-kicker" id="txRereadKicker">Read it again</div>
+          <p class="tx-reread-intro" id="txRereadIntro"></p>
+          <div class="tx-flow" id="txRereadFlow"></div>
+          <div class="tx-rail" id="txRereadRail"></div>
+          <div class="tx-difficulty hidden" id="txDifficulty"></div>
+        </section>
+        <section class="tx-pane" id="txDonePane">
+          <div class="tx-kicker">Unit complete</div>
+          <h2 id="txDoneTitle" style="margin:8px 0 4px;font-family:var(--font-display);">—</h2>
+          <p class="tx-reread-intro">The full text is shown cleanly below. Your word and grammar history remains available to the other study modes.</p>
+          <div class="tx-done-summary" id="txDoneSummary"></div>
+          <div class="tx-flow" id="txDoneFlow"></div>
+        </section>
+      </div>
+      <div class="tx-footer" id="txFooter">
+        <button type="button" class="tx-secondary" id="txTranslationBtn">Translation</button>
+        <button type="button" class="tx-primary" id="txMainBtn">Next</button>
+      </div>
+    </div>
+
+
     <!-- Empty state -->
     <div id="emptyState" class="empty-state hidden">
       <h2>No deck loaded yet</h2>
@@ -3120,8 +3269,9 @@
   <!-- Quick-switch sheet — primary control for what/how/which deck -->
   <div id="quickSheet" class="modal-backdrop">
     <div class="modal-card bottom-sheet">
-      <div class="modal-title">Study</div>
+      <div style="display:flex;align-items:center;gap:8px;"><button id="qsBackBtn" class="ghost hidden" type="button" style="min-height:34px;padding:4px 9px;">←</button><div class="modal-title" id="qsTitle" style="margin:0;">Study</div></div>
 
+      <div id="qsPrimaryPage">
       <div class="qs-section language-first">
         <div class="qs-label">Language</div>
         <div class="qs-lang" id="qsLang"></div>
@@ -3133,6 +3283,8 @@
         <div class="segmented" id="qsModeSeg"></div>
       </div>
 
+      </div>
+      <div id="qsSecondaryPage" class="hidden">
       <div class="qs-section">
         <div class="qs-label">How</div>
         <div class="segmented" id="qsVariantSeg"></div>
@@ -3143,6 +3295,7 @@
         <div class="qs-decklist" id="qsDeckList"></div>
       </div>
 
+      </div>
       <div class="settings-actions">
         <button id="qsDoneBtn" class="secondary close-btn">Done</button>
       </div>
@@ -3153,7 +3306,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v79-touch-viewport-fit-20260719</div>
+      <div class="meta" id="appBuildLabel">Build: v85-language-pack-reading-builder-20260723</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -3161,9 +3314,10 @@
           <div>
             <label for="gameSelect">Mode</label>
             <select id="gameSelect">
-              <option value="words" selected>Word cards</option>
-              <option value="sentences">Sentence completion</option>
-              <option value="combined">Combined book flow</option>
+              <option value="words" selected>Words</option>
+              <option value="grammar">Grammar</option>
+              <option value="sentences">Sentences</option>
+              <option value="text">Text / Reading</option>
             </select>
           </div>
           <div>
@@ -3330,6 +3484,7 @@
           <button id="browseBuiltinBtn" class="ghost" style="width:100%;">Browse current-language built-in decks</button>
           <button id="manageDecksBtn" class="ghost" style="width:100%;">Manage installed decks</button>
           <button id="syncProgressBtn" class="ghost" style="width:100%;">Sync progress between devices</button>
+          <button id="openPackBuilderBtn" class="ghost" style="width:100%;">Language Pack Builder</button>
         </div>
       </details>
 
@@ -3402,7 +3557,7 @@
        ============================================================ */
 
     /* ---------- DECK CONFIG ---------- */
-    const DECK_CONFIG = {
+    let DECK_CONFIG = {
       de: {
         code: "de",
         label: "English → German",
@@ -3433,19 +3588,104 @@
       }
     };
 
-    const SUPPORTED_DECKS = new Set(Object.keys(DECK_CONFIG));
+    let SUPPORTED_DECKS = new Set(Object.keys(DECK_CONFIG));
+    const LANGUAGE_MANIFESTS = new Map();
+    const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v81-order-viewport-engine-20260719";
+    const APP_BUILD = "v85-language-pack-reading-builder-20260723";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
     }
 
+
+    async function fetchOptionalJson(path) {
+      try {
+        const r = await fetch(cacheBustedUrl(path), { cache: "no-cache" });
+        if (!r.ok) return null;
+        return await r.json();
+      } catch (_) { return null; }
+    }
+
+    function languageConfigFromRegistry(entry) {
+      return {
+        code: entry.code,
+        label: entry.label || `${(entry.sourceLanguage || "en").toUpperCase()} → ${entry.name || entry.code.toUpperCase()}`,
+        shortLabel: entry.name || entry.nativeName || entry.code.toUpperCase(),
+        nativeName: entry.nativeName || entry.name || entry.code.toUpperCase(),
+        flag: entry.flag || "🌐",
+        sourceName: entry.sourceName || "English",
+        leftTitle: entry.leftTitle || "English",
+        rightTitle: entry.name || entry.nativeName || entry.code.toUpperCase(),
+        targetName: entry.name || entry.nativeName || entry.code.toUpperCase(),
+        deckFolder: entry.code,
+        manifest: entry.manifest || `${entry.code}/manifest.json`,
+        useArticles: !!entry.useArticles,
+        articles: Array.isArray(entry.articles) ? entry.articles : [],
+        typingPlaceholder: entry.typingPlaceholder || "Answer",
+        typingHelp: entry.typingHelp || `Type the ${entry.name || "target-language"} equivalent.`
+      };
+    }
+
+    async function loadLanguageRegistry() {
+      const registry = await fetchOptionalJson("decks/languages.json");
+      if (registry && Array.isArray(registry.languages)) {
+        for (const entry of registry.languages) {
+          if (!entry || !entry.code) continue;
+          DECK_CONFIG[entry.code] = languageConfigFromRegistry(entry);
+        }
+      }
+      SUPPORTED_DECKS = new Set(Object.keys(DECK_CONFIG));
+      LANGUAGE_MANIFESTS.clear();
+      BUILTIN_DECK_META.clear();
+      await Promise.all(Object.entries(DECK_CONFIG).map(async ([code, cfg]) => {
+        const manifestPath = `decks/${cfg.manifest || `${code}/manifest.json`}`;
+        const manifest = await fetchOptionalJson(manifestPath);
+        if (!manifest) return;
+        LANGUAGE_MANIFESTS.set(code, manifest);
+        for (const d of (manifest.decks || [])) {
+          BUILTIN_DECK_META.set(`${code}|${d.id || d.name}`, d);
+          BUILTIN_DECK_META.set(`${code}|${String(d.name || "").toLowerCase()}`, d);
+        }
+      }));
+    }
+
+    function manifestDeckEntries(language = currentDeck, mode = null) {
+      const manifest = LANGUAGE_MANIFESTS.get(language);
+      const list = manifest && Array.isArray(manifest.decks) ? manifest.decks : [];
+      if (!mode) return list;
+      return list.filter(d => d.primaryMode === mode || (Array.isArray(d.compatibleModes) && d.compatibleModes.includes(mode)));
+    }
+
+    function normalisedSetKey(value) {
+      return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+    }
+
+    function manifestEntryForSet(setName, language = currentDeck) {
+      const key = normalisedSetKey(setName);
+      return manifestDeckEntries(language).find(d => {
+        const names = [d.name, d.id, d.file && d.file.replace(/\.csv$/i, "").split("/").pop()];
+        return names.some(n => normalisedSetKey(n) === key);
+      }) || null;
+    }
+
+    function setSupportsStudyMode(setName, mode = currentGame, language = currentDeck) {
+      if (mode === "words") return true;
+      if (mode === "text") return false;
+      const meta = manifestEntryForSet(setName, language);
+      if (!meta) {
+        const low = String(setName || "").toLowerCase();
+        if (mode === "grammar") return /grammar|pattern|grammatik/.test(low);
+        return !/grammar|pattern|grammatik/.test(low);
+      }
+      return meta.primaryMode === mode || (meta.compatibleModes || []).includes(mode);
+    }
+
     /* ---------- DB layer (IndexedDB) ---------- */
     const DB = (() => {
       const DB_NAME = "languagedeck";
-      const DB_VERSION = 1;
+      const DB_VERSION = 2;
       let dbPromise = null;
       const rowCache = new Map();
 
@@ -3479,6 +3719,12 @@
               const store = db.createObjectStore("sentence_pairs", { keyPath: "id", autoIncrement: true });
               store.createIndex("by_deck", "deck", { unique: false });
               store.createIndex("by_deck_set", ["deck", "set_name"], { unique: false });
+            }
+            if (!db.objectStoreNames.contains("reading_items")) {
+              db.createObjectStore("reading_items", { keyPath: "key" });
+            }
+            if (!db.objectStoreNames.contains("reading_units")) {
+              db.createObjectStore("reading_units", { keyPath: "key" });
             }
           };
           req.onsuccess = () => resolve(req.result);
@@ -3620,7 +3866,35 @@
         return String(a).localeCompare(String(b));
       }
 
-      return { open, getAll, bulkInsert, update, getById, clear, getSets };
+      function getRecord(table, key) {
+        return tx([table]).then(t => new Promise((resolve, reject) => {
+          const r = t.objectStore(table).get(key);
+          r.onsuccess = () => resolve(r.result || null);
+          r.onerror = () => reject(r.error);
+        }));
+      }
+
+      function putRecord(table, row) {
+        return tx([table], "readwrite").then(t => new Promise((resolve, reject) => {
+          const r = t.objectStore(table).put(row);
+          r.onsuccess = () => resolve(row);
+          r.onerror = () => reject(r.error);
+        }));
+      }
+
+      function getAllRecords(table) {
+        return tx([table]).then(t => readAllFromRequest(t.objectStore(table).getAll()));
+      }
+
+      function deleteRecord(table, key) {
+        return tx([table], "readwrite").then(t => new Promise((resolve, reject) => {
+          const r = t.objectStore(table).delete(key);
+          r.onsuccess = () => resolve(true);
+          r.onerror = () => reject(r.error);
+        }));
+      }
+
+      return { open, getAll, bulkInsert, update, getById, clear, getSets, getRecord, putRecord, getAllRecords, deleteRecord };
     })();
 
     /* ---------- Helpers ---------- */
@@ -4993,7 +5267,7 @@
     /* ============================================================
        UI STATE
        ============================================================ */
-    let currentGame = "words";
+    let currentGame = "words"; // words | grammar | sentences | text
     let currentDeck = "de";
     let currentSetName = "__all__";
     let importType = "words";
@@ -5239,13 +5513,898 @@
     const installBanner = $("installBanner");
     const installBtn = $("installBtn");
 
-    /* ---------- Settings persistence ---------- */
+
+    /* ============================================================
+       v84 Reading / Text engine
+       ============================================================ */
+    let textGoal = "comprehension";
+    let textTranslationMode = "onDemand";
+    const TEXT_CFG = Object.freeze({
+      PAGE_SIZE: 6, CHECKPOINT_MAX: 5, FRESH_MAX: 3, OLD_MIN: 2,
+      SOFT_TAPS: 2, STRUCT_MAX_TAPS: 1, MIN_READ_RATIO: 0.35,
+      FREE_DELAY: 2, DUE_NEAR: 2, DUE_FAR: 4,
+      BASE_MS: 800, MS_PER_CHAR: 45, DWELL_ABANDON: 120000,
+      BACKLOG_SOFT: 15, BACKLOG_HARD: 30, CONSECUTIVE_PAGES: 3,
+      STUCK_MISSES: 6, REREAD_MISS_WEIGHT: 2, REPRISE_GAP: 20 * 3600 * 1000,
+      SRS_FIRST_INTERVAL: 24 * 3600 * 1000
+    });
+    const TEXT_CEILINGS = { comprehension: 2, active: 3, memorization: 4 };
+
+    const textModeContainer = $("textModeContainer");
+    const txTitle = $("txTitle"), txSubtitle = $("txSubtitle"), txPageLabel = $("txPageLabel"), txBars = $("txBars");
+    const txGoals = $("txGoals"), txStage = $("txStage"), txFlow = $("txFlow"), txRail = $("txRail");
+    const txReadPane = $("txReadPane"), txCheckpointPane = $("txCheckpointPane"), txRereadPane = $("txRereadPane"), txDonePane = $("txDonePane");
+    const txCheckpointKicker = $("txCheckpointKicker"), txCheckpointCount = $("txCheckpointCount"), txFreeNote = $("txFreeNote"), txTask = $("txTask"), txAnswerNote = $("txAnswerNote");
+    const txRereadKicker = $("txRereadKicker"), txRereadIntro = $("txRereadIntro"), txRereadFlow = $("txRereadFlow"), txRereadRail = $("txRereadRail"), txDifficulty = $("txDifficulty");
+    const txDoneTitle = $("txDoneTitle"), txDoneSummary = $("txDoneSummary"), txDoneFlow = $("txDoneFlow");
+    const txFooter = $("txFooter"), txTranslationBtn = $("txTranslationBtn"), txMainBtn = $("txMainBtn");
+
+    let textEngine = null;
+    let textView = "read";
+    let textQueue = [], textQueueIndex = 0, textTask = null, textTaskResolved = false;
+    let textFreeCount = 0, textCheckpointReason = "page";
+    let textTranslationLongPress = null, textTranslationLongPressed = false;
+
+    function textCeiling() { return TEXT_CEILINGS[textGoal] || 2; }
+    function textKey(unitId) { return `${currentDeck}|${unitId}`; }
+    function textItemStorageKey(key) { return `${currentDeck}|${key}`; }
+    function textNormalize(value) {
+      return String(value || "").toLocaleLowerCase().normalize("NFC")
+        .replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu, "")
+        .replace(/\s+/g, " ").trim();
+    }
+    function textExpectedMs(sentence) { return TEXT_CFG.BASE_MS + String(sentence.target || "").length * TEXT_CFG.MS_PER_CHAR; }
+    function textManifestEntry() {
+      return manifestDeckEntries(currentDeck, "text").find(d => d.id === currentSetName) || manifestDeckEntries(currentDeck, "text")[0] || null;
+    }
+    function textResolveUrl(base, relative) { return new URL(relative, new URL(base, location.href)).toString(); }
+    async function textFetchText(url, required = true) {
+      try {
+        const r = await fetch(cacheBustedUrl(url), { cache: "no-cache" });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return await r.text();
+      } catch (err) {
+        if (required) throw err;
+        return "";
+      }
+    }
+    async function textFetchJson(url, required = true) {
+      const raw = await textFetchText(url, required);
+      if (!raw) return null;
+      try { return JSON.parse(raw); } catch (err) { if (required) throw err; return null; }
+    }
+    function textTokenize(value) {
+      const parts = String(value || "").match(/[\p{L}\p{M}'’\-]+|\s+|[^\s\p{L}\p{M}'’\-]+/gu) || [];
+      return parts.map((text, index) => ({ text, index, wordLike: /^[\p{L}\p{M}'’\-]+$/u.test(text), item: null, tier: 4, span: null }));
+    }
+    function textSplitForms(value) { return String(value || "").split("|").map(x => x.trim()).filter(Boolean); }
+    function textParseCsvObjects(raw) {
+      const parsed = csvToObjects(raw || "");
+      return parsed.items.filter(row => Object.values(row).some(v => String(v || "").trim()));
+    }
+    function textGetPatternMap(rows) {
+      const map = new Map();
+      for (const r of rows || []) if (r.id) map.set(r.id, r);
+      return map;
+    }
+
+    async function textLoadItemRecords(keys) {
+      const all = await DB.getAllRecords("reading_items");
+      const prefix = `${currentDeck}|`;
+      const map = new Map();
+      for (const row of all) if (row.key && row.key.startsWith(prefix)) map.set(row.key.slice(prefix.length), row);
+      for (const key of keys) if (!map.has(key)) map.set(key, {
+        key: textItemStorageKey(key), itemKey: key, language: currentDeck, kind: "word", lvl: 0,
+        dueAt: null, taps: 0, misses: { reading: 0, words: 0, grammar: 0 }, pinned: false,
+        readingStatus: "active", firstMet: null, lastSeen: null
+      });
+      return map;
+    }
+    async function textSaveItem(record) {
+      if (!record) return;
+      record.key = textItemStorageKey(record.itemKey || record.key.replace(`${currentDeck}|`, ""));
+      await DB.putRecord("reading_items", record);
+    }
+    async function textSaveProgress() {
+      if (!textEngine || !textEngine.progress) return;
+      const p = textEngine.progress;
+      p.key = textKey(textEngine.unit.id);
+      p.unitId = textEngine.unit.id;
+      p.language = currentDeck;
+      p.goal = textGoal;
+      p.ceiling = textCeiling();
+      p.translationMode = textTranslationMode;
+      p.lastOpened = Date.now();
+      await DB.putRecord("reading_units", p);
+      saveSettings();
+    }
+
+    function textLexemeBase(row) {
+      return row.lexeme_id || `${currentDeck}.unknown.${textNormalize(row.target).replace(/[^a-z0-9]+/g, "-")}`;
+    }
+
+    function textBuildAnchors(sentences, words, explicitAnchors, lexiconRows) {
+      const wordsById = new Map(words.map(w => [w.id, w]));
+      const formIndex = new Map();
+      for (const w of words) {
+        const forms = [...textSplitForms(w.forms), w.target].filter(Boolean);
+        for (const form of forms) {
+          const norm = textNormalize(form);
+          if (!norm) continue;
+          if (!formIndex.has(norm)) formIndex.set(norm, []);
+          formIndex.get(norm).push(w);
+        }
+      }
+      const lexiconIndex = new Map();
+      for (const l of lexiconRows || []) {
+        const norm = textNormalize(l.target);
+        if (!norm) continue;
+        if (!lexiconIndex.has(norm)) lexiconIndex.set(norm, []);
+        lexiconIndex.get(norm).push(l);
+      }
+      const explicitBySentence = new Map();
+      for (const a of explicitAnchors || []) {
+        if (!explicitBySentence.has(a.sentence_id)) explicitBySentence.set(a.sentence_id, []);
+        explicitBySentence.get(a.sentence_id).push(a);
+      }
+
+      for (const s of sentences) {
+        s.tokens = textTokenize(s.target);
+        const wordPositions = s.tokens.map((t, i) => t.wordLike ? i : -1).filter(i => i >= 0);
+        const wordNorms = wordPositions.map(i => textNormalize(s.tokens[i].text));
+        const bindRange = (startWord, length, item, tier = 1, span = null) => {
+          for (let k = startWord; k < startWord + length; k++) {
+            const ti = wordPositions[k];
+            if (ti == null) continue;
+            s.tokens[ti].item = item; s.tokens[ti].tier = tier; s.tokens[ti].span = span || item.id || item.lexeme_id;
+          }
+        };
+
+        // Explicit surface + occurrence anchors always win.
+        for (const a of explicitBySentence.get(s.id) || []) {
+          const item = wordsById.get(a.item_id); if (!item) continue;
+          const surfaceParts = textNormalize(a.surface).split(" ");
+          let occurrence = 0;
+          for (let i = 0; i <= wordNorms.length - surfaceParts.length; i++) {
+            if (surfaceParts.every((part, j) => wordNorms[i + j] === part)) {
+              occurrence++;
+              if (occurrence === Math.max(1, parseInt(a.occurrence || "1", 10))) {
+                bindRange(i, surfaceParts.length, item, 1, `explicit:${a.item_id}`); break;
+              }
+            }
+          }
+        }
+
+        // Greedy contiguous forms, longest first.
+        const forms = [...formIndex.entries()].sort((a, b) => b[0].split(" ").length - a[0].split(" ").length);
+        for (const [form, candidates] of forms) {
+          const parts = form.split(" ");
+          for (let i = 0; i <= wordNorms.length - parts.length; i++) {
+            if (!parts.every((part, j) => wordNorms[i + j] === part)) continue;
+            const indexes = wordPositions.slice(i, i + parts.length);
+            if (indexes.some(ti => s.tokens[ti].item)) continue;
+            bindRange(i, parts.length, candidates[0], parts.length > 1 || form !== textNormalize(candidates[0].target) ? 2 : 1);
+          }
+        }
+
+        // Discontinuous two-part forms such as hörte ... zu.
+        for (const [form, candidates] of forms) {
+          const parts = form.split(" ");
+          if (parts.length !== 2) continue;
+          const first = wordNorms.indexOf(parts[0]);
+          const second = wordNorms.indexOf(parts[1], first + 1);
+          if (first >= 0 && second > first && second - first <= 12) {
+            const a = wordPositions[first], b = wordPositions[second];
+            if (!s.tokens[a].item && !s.tokens[b].item) {
+              s.tokens[a].item = candidates[0]; s.tokens[b].item = candidates[0];
+              s.tokens[a].tier = 2; s.tokens[b].tier = 2;
+              s.tokens[a].span = s.tokens[b].span = `split:${candidates[0].id}`;
+            }
+          }
+        }
+
+        // Fallback to the language lexicon for exact citation-form matches.
+        for (const ti of wordPositions) {
+          const tok = s.tokens[ti]; if (tok.item) continue;
+          const list = lexiconIndex.get(textNormalize(tok.text));
+          if (list && list.length) {
+            const l = list[0];
+            tok.item = { id: `fallback:${l.lexeme_id}`, lexeme_id: l.lexeme_id, english: l.english, target: l.target, article: l.article, hint: "From the language lexicon.", kind: "word", fallback: true };
+            tok.tier = 3;
+          }
+        }
+      }
+    }
+
+    function textBuildRuntimePages(sentences, unit) {
+      const groups = new Map();
+      for (let i = 0; i < sentences.length; i++) {
+        const s = sentences[i];
+        const scene = String(s.scene || Math.floor(i / (unit.pageSize || TEXT_CFG.PAGE_SIZE)) + 1);
+        if (!groups.has(scene)) groups.set(scene, []);
+        groups.get(scene).push(s);
+      }
+      const pages = [...groups.entries()].map(([scene, list], idx) => ({ id: `${scene}:1`, scene, segment: 1, sentences: list, originalIndex: idx }));
+      if (pages.length > 1 && pages[pages.length - 1].sentences.length === 1) {
+        pages[pages.length - 2].sentences.push(...pages.pop().sentences);
+      }
+      return pages;
+    }
+
+    function textFindStartPage(pages, sentenceId) {
+      if (!sentenceId) return 0;
+      const idx = pages.findIndex(p => p.sentences.some(s => s.id === sentenceId));
+      return idx >= 0 ? idx : 0;
+    }
+
+    async function loadTextMode(reset = true) {
+      const entry = textManifestEntry();
+      updateGameUI();
+      if (!entry) {
+        textEngine = null;
+        txFlow.innerHTML = `<div class="tx-empty"><strong>No Text unit is available for ${escapeHtml(languageName())}.</strong><br>Add a text entry to the language manifest.</div>`;
+        statusEl.textContent = "No Text unit available.";
+        return;
+      }
+      if (!reset && textEngine && textEngine.entry.id === entry.id) { textRenderRead(); return; }
+      statusEl.textContent = `Loading ${entry.name}…`;
+      try {
+        const base = `decks/${currentDeck}/${String(entry.folder || "").replace(/^\/+|\/+$/g, "")}/`;
+        const unit = await textFetchJson(base + "unit.json", false) || {
+          id: entry.id, title: entry.name, subtitle: "", language: currentDeck,
+          learningGoal: "comprehension", translationMode: "onDemand", pageSize: TEXT_CFG.PAGE_SIZE,
+          sentenceFile: "sentences.csv", wordFile: "words.csv", patternFile: "../../patterns.csv"
+        };
+        const sentenceRows = textParseCsvObjects(await textFetchText(textResolveUrl(base, unit.sentenceFile || "sentences.csv")));
+        const wordRaw = await textFetchText(textResolveUrl(base, unit.wordFile || "words.csv"), false);
+        const wordRows = textParseCsvObjects(wordRaw);
+        const anchorsRaw = await textFetchText(textResolveUrl(base, unit.anchorFile || "anchors.csv"), false);
+        const anchorRows = textParseCsvObjects(anchorsRaw);
+        const languageManifest = LANGUAGE_MANIFESTS.get(currentDeck) || {};
+        const patternUrl = textResolveUrl(`decks/${currentDeck}/`, languageManifest.patterns || "patterns.csv");
+        const languagePatterns = textParseCsvObjects(await textFetchText(patternUrl, false));
+        const unitPatternRows = unit.patternFile ? textParseCsvObjects(await textFetchText(textResolveUrl(base, unit.patternFile), false)) : [];
+        const patternMap = textGetPatternMap([...languagePatterns, ...unitPatternRows]);
+        const lexiconUrl = textResolveUrl(`decks/${currentDeck}/`, languageManifest.lexicon || "lexicon.csv");
+        const lexiconRows = textParseCsvObjects(await textFetchText(lexiconUrl, false));
+
+        const sentences = sentenceRows.map((r, i) => ({
+          id: r.id || `s${String(i + 1).padStart(3, "0")}`, seq: +(r.seq || i + 1), scene: r.scene || "",
+          english: r.english || r.en || "", target: r.target || r.german || r.de || "", hint: r.hint || "",
+          explanation: r.explanation || "", chunks: r.chunks || "", patterns: String(r.pattern || "").split("|").map(x => x.trim()).filter(Boolean), level: r.level || ""
+        })).sort((a, b) => a.seq - b.seq);
+        const words = wordRows.map((r, i) => ({
+          id: r.id || `w${String(i + 1).padStart(3, "0")}`, lexeme_id: r.lexeme_id || "", english: r.english || "", target: r.target || "",
+          article: r.article || "", hint: r.hint || "", source_id: r.source_id || r.source || "", forms: r.forms || "", kind: r.kind || "word"
+        }));
+        for (const w of words) w.itemKey = textLexemeBase(w);
+        textBuildAnchors(sentences, words, anchorRows, lexiconRows);
+        const itemKeys = new Set(words.map(w => w.itemKey));
+        for (const s of sentences) for (const p of s.patterns) itemKeys.add(p);
+        for (const s of sentences) for (const t of s.tokens) if (t.item && t.item.lexeme_id) itemKeys.add(t.item.lexeme_id);
+        const itemRecords = await textLoadItemRecords(itemKeys);
+        for (const w of words) {
+          const rec = itemRecords.get(w.itemKey); if (rec) { rec.itemKey = w.itemKey; rec.kind = w.kind === "phrase" ? "phrase" : (w.kind === "name" ? "name" : "word"); }
+        }
+        for (const p of patternMap.keys()) {
+          const rec = itemRecords.get(p); if (rec) { rec.itemKey = p; rec.kind = "pattern"; }
+        }
+        const saved = await DB.getRecord("reading_units", textKey(unit.id));
+        const progress = saved || { key: textKey(unit.id), unitId: unit.id, language: currentDeck, clock: 0, nextSentenceId: sentences[0] && sentences[0].id,
+          schedule: {}, itemMisses: {}, unknownTokens: {}, completedScenes: [], hardBacklogPages: 0, difficultyNoticeShown: false, lastOpened: 0 };
+        textGoal = progress.goal || unit.learningGoal || textGoal || "comprehension";
+        textTranslationMode = progress.translationMode || unit.translationMode || textTranslationMode || "onDemand";
+        let pages = textBuildRuntimePages(sentences, unit);
+        const startPage = reset ? textFindStartPage(pages, progress.nextSentenceId) : 0;
+        textEngine = {
+          entry, base, unit, sentences, words, wordsById: new Map(words.map(w => [w.id, w])), patterns: patternMap,
+          itemRecords, progress, pages, pageIndex: startPage, sentenceIndex: 0, view: "read",
+          openedThisPage: new Set(), openedThisSentence: new Set(), glosses: new Map(), rereadGlosses: new Map(), rereadTouched: new Set(),
+          readEligible: new Set(), sentencePass: new Map(), enteredAt: Date.now(), translationVisible: new Set(), translationOpenedLatch: new Set(),
+          structureOpen: null, currentPageHardSentences: new Set(), freeCount: 0, backlog: 0, resumeAfterReprise: false
+        };
+        const now = Date.now();
+        const needsReprise = progress.lastOpened && now - progress.lastOpened > TEXT_CFG.REPRISE_GAP && startPage > 0;
+        await textSaveProgress();
+        if (needsReprise && textDueCandidateKeys().length) startTextCheckpoint("reprise");
+        else textRenderRead();
+        statusEl.textContent = `${entry.name} · Text`;
+      } catch (err) {
+        console.error(err);
+        txFlow.innerHTML = `<div class="tx-empty"><strong>Could not load this Text unit.</strong><br>${escapeHtml(err.message || String(err))}</div>`;
+        statusEl.textContent = "Text unit error.";
+      }
+    }
+
+    function textCurrentPage() { return textEngine && textEngine.pages[textEngine.pageIndex]; }
+    function textCurrentSentence() { const p = textCurrentPage(); return p && p.sentences[textEngine.sentenceIndex]; }
+    function textSentencePass(sid) {
+      if (!textEngine.sentencePass.has(sid)) textEngine.sentencePass.set(sid, { taps: 0, translationOpened: false, structureOpened: false, dwellMs: 0, readRatio: 0 });
+      return textEngine.sentencePass.get(sid);
+    }
+    function textRecordForItem(item) {
+      if (!item) return null;
+      const key = item.itemKey || item.lexeme_id || item.id;
+      if (!key) return null;
+      if (!textEngine.itemRecords.has(key)) textEngine.itemRecords.set(key, { key: textItemStorageKey(key), itemKey: key, language: currentDeck, kind: item.kind || "word", lvl: 0, dueAt: null, taps: 0, misses: { reading: 0, words: 0, grammar: 0 }, pinned: false, readingStatus: "active", firstMet: null, lastSeen: null });
+      return textEngine.itemRecords.get(key);
+    }
+    function textItemKey(item) { return item && (item.itemKey || item.lexeme_id || item.id); }
+    function textSchedule(key, due = null, sourceSentenceId = null, touchedPage = null) {
+      const p = textEngine.progress;
+      const prev = p.schedule[key] || {};
+      p.schedule[key] = {
+        due: due == null ? p.clock : due,
+        firstDue: prev.firstDue == null ? p.clock : prev.firstDue,
+        sourceSentenceId: sourceSentenceId || prev.sourceSentenceId || "",
+        touchedPage: touchedPage == null ? (prev.touchedPage == null ? -1 : prev.touchedPage) : touchedPage
+      };
+    }
+    function textUnschedule(key) { delete textEngine.progress.schedule[key]; }
+    function textSetPane(name) {
+      textView = name;
+      txReadPane.classList.toggle("on", name === "read");
+      txCheckpointPane.classList.toggle("on", name === "checkpoint");
+      txRereadPane.classList.toggle("on", name === "reread");
+      txDonePane.classList.toggle("on", name === "done");
+      txTranslationBtn.classList.toggle("hidden", name !== "read");
+    }
+    function textRenderChrome() {
+      if (!textEngine) return;
+      const page = textCurrentPage();
+      txTitle.textContent = textEngine.unit.title || textEngine.entry.name;
+      txSubtitle.textContent = textEngine.unit.subtitle || "";
+      txPageLabel.textContent = textView === "done" ? "Complete" : `Part ${Math.min(textEngine.pageIndex + 1, textEngine.pages.length)} / ${textEngine.pages.length}`;
+      txBars.innerHTML = textEngine.pages.map((_, i) => `<span class="tx-bar ${i < textEngine.pageIndex ? "done" : i === textEngine.pageIndex ? "now" : ""}"></span>`).join("");
+      [...txGoals.querySelectorAll("button")].forEach(b => b.classList.toggle("on", b.dataset.goal === textGoal));
+      txTranslationBtn.classList.toggle("on", textTranslationMode === "always" || (page && textCurrentSentence() && textEngine.translationVisible.has(textCurrentSentence().id)));
+      txTranslationBtn.textContent = textTranslationMode === "always" ? "Translation · pinned" : "Translation";
+    }
+    function textTokenClass(token) {
+      if (!token.item) return "tx-token";
+      const rec = textRecordForItem(token.item);
+      const key = textItemKey(token.item);
+      if (textEngine.openedThisPage.has(key)) return "tx-token opened";
+      if (rec && rec.lvl >= 1 && rec.lvl < textCeiling()) return "tx-token learning";
+      return "tx-token";
+    }
+    function textSentenceHtml(s, cls, reread = false) {
+      const body = s.tokens.map((t, i) => {
+        if (!t.wordLike) return escapeHtml(t.text).replace(/ /g, "&nbsp;");
+        const itemKey = t.item ? textItemKey(t.item) : "";
+        return `<span class="${reread ? "tx-token" : textTokenClass(t)}" data-sid="${escapeHtml(s.id)}" data-ti="${i}" ${itemKey ? `data-key="${escapeHtml(itemKey)}"` : ""}>${escapeHtml(t.text)}</span>`;
+      }).join("");
+      return `<p class="tx-sentence ${cls}" data-sentence="${escapeHtml(s.id)}">${body}</p>`;
+    }
+    function textTranslationVisible(s) { return textTranslationMode === "always" || textEngine.translationVisible.has(s.id); }
+    function textStructureAvailable(s) { return !!(s.chunks || s.explanation || s.patterns.length); }
+    function textRenderRail() {
+      const s = textCurrentSentence();
+      let html = "";
+      if (s && textEngine.structureOpen === s.id) html += textStructureHtml(s);
+      for (const [key, g] of textEngine.glosses.entries()) html += textGlossHtml(key, g);
+      txRail.innerHTML = html;
+    }
+    function textGlossHtml(key, g) {
+      if (g.unknown) return `<div class="tx-gloss"><div class="tx-gloss-copy"><strong>${escapeHtml(g.surface)}</strong><span class="tx-gloss-hint">No entry yet. This tap was added to the unit report.</span></div></div>`;
+      const item = g.item;
+      const rec = textRecordForItem(item);
+      const formNote = g.tier === 2 && textNormalize(g.surface) !== textNormalize(item.target) ? `${g.surface} → ${item.target}` : "";
+      return `<div class="tx-gloss"><strong>${escapeHtml(item.article ? item.article + " " + item.target : item.target)}</strong><div class="tx-gloss-copy">${escapeHtml(item.english || "")}${formNote ? `<span class="tx-gloss-hint">${escapeHtml(formNote)}</span>` : ""}${item.hint ? `<span class="tx-gloss-hint">${escapeHtml(item.hint)}</span>` : ""}</div>${item.kind !== "name" ? `<button class="tx-pin ${rec && rec.pinned ? "on" : ""}" data-text-pin="${escapeHtml(key)}">${rec && rec.pinned ? "In Words" : "+ Words"}</button>` : ""}</div>`;
+    }
+    function textStructureHtml(s) {
+      const chunks = escapeHtml(s.chunks || s.target).replaceAll("|", " <span style=\"color:var(--border-strong);padding:0 3px;\">|</span> ");
+      let body = "";
+      for (const pid of s.patterns) {
+        const p = textEngine.patterns.get(pid);
+        body += `<div class="tx-pattern-name">${escapeHtml(p ? p.name : pid)}</div><div class="tx-structure-body">${escapeHtml((p && (p.explanation || p.english)) || "")}</div>`;
+      }
+      if (s.explanation) body += `<div class="tx-structure-body" style="margin-top:7px;">${escapeHtml(s.explanation)}</div>`;
+      if (!body) body = `<div class="tx-structure-body">No authored structural explanation is available for this sentence.</div>`;
+      return `<div class="tx-structure"><div class="tx-chunks">${chunks}</div>${body}</div>`;
+    }
+    function textRenderRead() {
+      if (!textEngine) return;
+      textSetPane("read");
+      const page = textCurrentPage();
+      if (!page) { textRenderDone(); return; }
+      const s = textCurrentSentence();
+      txFlow.innerHTML = page.sentences.map((row, i) => textSentenceHtml(row, i < textEngine.sentenceIndex ? "past" : i === textEngine.sentenceIndex ? "active" : "next")).join("") +
+        (s && textTranslationVisible(s) ? `<div class="tx-translation">${escapeHtml(s.english)}${textStructureAvailable(s) ? `<button class="tx-why-link" data-text-why="${escapeHtml(s.id)}">Why is it built like this? ›</button>` : ""}</div>` : "");
+      textRenderRail();
+      txMainBtn.textContent = textEngine.sentenceIndex === page.sentences.length - 1 ? "Finish part" : "Next";
+      txMainBtn.dataset.action = "advance";
+      textRenderChrome();
+      requestAnimationFrame(() => txFlow.querySelector(".tx-sentence.active")?.scrollIntoView({ block: "center", behavior: "smooth" }));
+    }
+
+    async function textTapItem(s, token, reread = false) {
+      if (!token.wordLike) return;
+      const surface = token.text;
+      if (!token.item) {
+        const norm = textNormalize(surface);
+        textEngine.progress.unknownTokens[norm] = (textEngine.progress.unknownTokens[norm] || 0) + 1;
+        const targetMap = reread ? textEngine.rereadGlosses : textEngine.glosses;
+        targetMap.set(`?${norm}`, { unknown: true, surface });
+        await textSaveProgress();
+        reread ? textRenderRereadRail() : textRenderRail();
+        return;
+      }
+      const item = token.item;
+      if (item.kind === "name") {
+        const targetMap = reread ? textEngine.rereadGlosses : textEngine.glosses;
+        targetMap.set(textItemKey(item), { item, tier: token.tier, surface });
+        reread ? textRenderRereadRail() : textRenderRail();
+        return;
+      }
+      const key = textItemKey(item);
+      const rec = textRecordForItem(item);
+      const now = Date.now();
+      if (reread) {
+        if (!textEngine.rereadTouched.has(key)) {
+          textEngine.rereadTouched.add(key);
+          rec.lvl = Math.max(1, rec.lvl - 1);
+          rec.misses.reading = (rec.misses.reading || 0) + TEXT_CFG.REREAD_MISS_WEIGHT;
+          rec.lastSeen = now;
+          textEngine.progress.itemMisses[key] = (textEngine.progress.itemMisses[key] || 0) + TEXT_CFG.REREAD_MISS_WEIGHT;
+          textSchedule(key, textEngine.progress.clock, s.id, textEngine.pageIndex);
+          await textCheckStuckItem(key, rec, item);
+          await textSaveItem(rec); await textSaveProgress();
+        }
+        textEngine.rereadGlosses.set(key, { item, tier: token.tier, surface });
+        textRenderRereadRail();
+        return;
+      }
+      rec.taps = (rec.taps || 0) + 1;
+      rec.firstMet ||= now;
+      rec.lastSeen = now;
+      if (rec.lvl === 0) rec.lvl = 1;
+      else if (rec.lvl >= 2) { rec.lvl = Math.max(1, rec.lvl - 1); rec.misses.reading = (rec.misses.reading || 0) + 1; }
+      textEngine.progress.itemMisses[key] = textEngine.progress.itemMisses[key] || 0;
+      textEngine.openedThisPage.add(key);
+      textEngine.openedThisSentence.add(key);
+      textEngine.glosses.set(key, { item, tier: token.tier, surface });
+      const pass = textSentencePass(s.id); pass.taps++;
+      textSchedule(key, textEngine.progress.clock, s.id, textEngine.pageIndex);
+      await textSaveItem(rec); await textSaveProgress();
+      textRenderRead();
+    }
+
+    async function textOpenStructure(s) {
+      textEngine.structureOpen = textEngine.structureOpen === s.id ? null : s.id;
+      if (textEngine.structureOpen) {
+        const pass = textSentencePass(s.id); pass.structureOpened = true;
+        for (const pid of s.patterns) {
+          const rec = textRecordForItem({ itemKey: pid, id: pid, kind: "pattern" });
+          rec.kind = "pattern"; rec.lvl = Math.max(1, rec.lvl); rec.misses.grammar = (rec.misses.grammar || 0) + 1;
+          textSchedule(pid, textEngine.progress.clock, s.id, textEngine.pageIndex);
+          await textSaveItem(rec);
+        }
+        await textSaveProgress();
+      }
+      textRenderRead();
+    }
+
+    async function textAdvanceSentence() {
+      const page = textCurrentPage(), s = textCurrentSentence(); if (!page || !s) return;
+      const pass = textSentencePass(s.id);
+      const dwell = Date.now() - textEngine.enteredAt;
+      if (dwell < TEXT_CFG.DWELL_ABANDON) {
+        pass.dwellMs += dwell;
+        pass.readRatio = Math.max(pass.readRatio, dwell / textExpectedMs(s));
+        if (pass.readRatio >= TEXT_CFG.MIN_READ_RATIO) textEngine.readEligible.add(s.id);
+      }
+      if (textEngine.translationOpenedLatch.has(s.id)) pass.translationOpened = true;
+      // Structural suspicion only exists in on-demand translation mode.
+      if (textTranslationMode === "onDemand" && pass.translationOpened && pass.taps <= TEXT_CFG.STRUCT_MAX_TAPS && s.patterns.length) {
+        for (const pid of s.patterns) {
+          const rec = textRecordForItem({ itemKey: pid, id: pid, kind: "pattern" });
+          rec.kind = "pattern"; rec.lvl = Math.max(1, rec.lvl);
+          rec.suspectedSentences = Array.from(new Set([...(rec.suspectedSentences || []), s.id]));
+          if (rec.suspectedSentences.length >= 2 || pass.structureOpened) textSchedule(pid, textEngine.progress.clock, s.id, textEngine.pageIndex);
+          await textSaveItem(rec);
+        }
+      }
+      if (pass.taps > TEXT_CFG.SOFT_TAPS) textEngine.currentPageHardSentences.add(s.id);
+      textEngine.structureOpen = null;
+      textEngine.openedThisSentence = new Set();
+      textEngine.glosses = new Map();
+      textEngine.enteredAt = Date.now();
+      if (textEngine.sentenceIndex < page.sentences.length - 1) {
+        textEngine.sentenceIndex++;
+        await textSaveProgress(); textRenderRead();
+      } else startTextCheckpoint("page");
+    }
+
+    function textItemsAppearingOnEligiblePage() {
+      const keys = new Set();
+      const page = textCurrentPage();
+      for (const s of page.sentences) {
+        if (!textEngine.readEligible.has(s.id)) continue;
+        for (const t of s.tokens) if (t.item && t.item.kind !== "name") keys.add(textItemKey(t.item));
+      }
+      return keys;
+    }
+    function textDueCandidateKeys() {
+      if (!textEngine) return [];
+      const p = textEngine.progress, ceiling = textCeiling();
+      return Object.entries(p.schedule || {}).filter(([key, sch]) => {
+        const rec = textEngine.itemRecords.get(key);
+        return rec && rec.readingStatus !== "handed_off" && rec.lvl >= 1 && rec.lvl < ceiling && sch.due <= p.clock;
+      }).map(([key]) => key);
+    }
+    function textCandidateSort(a, b, fresh = false) {
+      const pa = textEngine.progress.schedule[a], pb = textEngine.progress.schedule[b];
+      const ra = textEngine.itemRecords.get(a), rb = textEngine.itemRecords.get(b);
+      if (fresh) return ((textEngine.progress.itemMisses[b] || 0) - (textEngine.progress.itemMisses[a] || 0)) || ((ra && ra.lvl || 0) - (rb && rb.lvl || 0)) || (pa.firstDue - pb.firstDue);
+      return (pa.firstDue - pb.firstDue) || ((textEngine.progress.itemMisses[b] || 0) - (textEngine.progress.itemMisses[a] || 0));
+    }
+    async function textApplyFreePromotions() {
+      textFreeCount = 0;
+      const appeared = textItemsAppearingOnEligiblePage();
+      for (const key of appeared) {
+        if (textEngine.openedThisPage.has(key)) continue;
+        const rec = textEngine.itemRecords.get(key); if (!rec || rec.lvl < 1 || rec.lvl >= textCeiling()) continue;
+        rec.lvl++;
+        if (rec.lvl >= textCeiling()) {
+          rec.dueAt = Date.now() + TEXT_CFG.SRS_FIRST_INTERVAL; textUnschedule(key);
+        } else textSchedule(key, textEngine.progress.clock + TEXT_CFG.FREE_DELAY, textEngine.progress.schedule[key]?.sourceSentenceId || "", -1);
+        await textSaveItem(rec); textFreeCount++;
+      }
+    }
+    function textSourceItem(key) {
+      return textEngine.words.find(w => w.itemKey === key) || (() => {
+        for (const s of textEngine.sentences) for (const t of s.tokens) if (t.item && textItemKey(t.item) === key) return t.item;
+        return null;
+      })();
+    }
+    function textSourceSentence(key) {
+      const schedule = textEngine.progress.schedule[key];
+      const item = textSourceItem(key);
+      return textEngine.sentences.find(s => s.id === (schedule && schedule.sourceSentenceId)) ||
+        textEngine.sentences.find(s => item && (item.source_id === s.id || item.source_id === s.english)) ||
+        textEngine.sentences.find(s => s.tokens.some(t => t.item && textItemKey(t.item) === key)) || null;
+    }
+    function textMakeQueueItem(key) {
+      const rec = textEngine.itemRecords.get(key);
+      if (!rec) return null;
+      if (rec.kind === "pattern") return { key, kind: "pattern", record: rec, pattern: textEngine.patterns.get(key), sentence: textSourceSentence(key) };
+      const item = textSourceItem(key);
+      return item ? { key, kind: item.kind === "phrase" ? "phrase" : "word", record: rec, item, sentence: textSourceSentence(key) } : null;
+    }
+
+    async function startTextCheckpoint(reason = "page") {
+      if (!textEngine) return;
+      textCheckpointReason = reason;
+      if (reason === "page") {
+        textEngine.progress.clock++;
+        await textApplyFreePromotions();
+      } else textFreeCount = 0;
+      const due = textDueCandidateKeys();
+      const freshAll = due.filter(key => textEngine.progress.schedule[key]?.touchedPage === textEngine.pageIndex).sort((a, b) => textCandidateSort(a, b, true));
+      const oldAll = due.filter(key => !freshAll.includes(key)).sort((a, b) => textCandidateSort(a, b, false));
+      const oldTake = Math.min(oldAll.length, Math.max(TEXT_CFG.OLD_MIN, TEXT_CFG.CHECKPOINT_MAX - freshAll.length));
+      const freshTake = Math.min(freshAll.length, TEXT_CFG.CHECKPOINT_MAX - oldTake);
+      const keys = [...freshAll.slice(0, freshTake), ...oldAll.slice(0, oldTake)];
+      textQueue = keys.map(textMakeQueueItem).filter(Boolean);
+      // At most one sentence task, only above Reading ceiling.
+      if (reason === "page" && textCeiling() >= 3 && textEngine.currentPageHardSentences.size && textQueue.length < TEXT_CFG.CHECKPOINT_MAX) {
+        const sid = [...textEngine.currentPageHardSentences][0];
+        const sentence = textEngine.sentences.find(s => s.id === sid);
+        if (sentence) textQueue.push({ key: `sentence:${sentence.id}`, kind: "sentence", sentence, record: null });
+      }
+      textQueueIndex = 0;
+      textEngine.backlog = due.length;
+      if (reason === "page") {
+        if (textEngine.backlog > TEXT_CFG.BACKLOG_HARD) textEngine.progress.hardBacklogPages = (textEngine.progress.hardBacklogPages || 0) + 1;
+        else textEngine.progress.hardBacklogPages = 0;
+      }
+      await textSaveProgress();
+      if (!textQueue.length) return textStartReread(reason === "page" ? "empty" : "reprise-empty");
+      textSetPane("checkpoint");
+      txCheckpointKicker.textContent = reason === "reprise" ? "Return pass" : "Checkpoint";
+      txFreeNote.classList.toggle("hidden", !textFreeCount);
+      txFreeNote.textContent = textFreeCount ? `${textFreeCount} earlier item${textFreeCount === 1 ? "" : "s"} returned in the text and no longer needed help.` : "";
+      textRenderTask(); textRenderChrome(); txStage.scrollTop = 0;
+    }
+
+    function textHighlightSentence(sentence, key, blank = false) {
+      if (!sentence) return "";
+      return sentence.tokens.map(t => {
+        const matches = t.item && textItemKey(t.item) === key;
+        if (matches && blank) return `<mark>______</mark>`;
+        if (matches) return `<mark>${escapeHtml(t.text)}</mark>`;
+        return escapeHtml(t.text).replace(/ /g, "&nbsp;");
+      }).join("");
+    }
+    function textShuffle(arr) { return arr.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(v => v[1]); }
+    function textWordDistractors(correct, field, count = 3) {
+      const values = [];
+      for (const w of textEngine.words) {
+        if (w.itemKey === correct.itemKey) continue;
+        const value = w[field] || "";
+        if (value && !values.includes(value)) values.push(value);
+      }
+      return textShuffle(values).slice(0, count);
+    }
+    function textPatternChoices(task) {
+      const readIds = new Set();
+      for (let i = 0; i <= textEngine.pageIndex; i++) for (const s of textEngine.pages[i].sentences) readIds.add(s.id);
+      const read = textEngine.sentences.filter(s => readIds.has(s.id));
+      const yes = read.filter(s => s.patterns.includes(task.key));
+      const no = read.filter(s => !s.patterns.includes(task.key) && s.target.split(/\s+/).length >= 4);
+      const answer = task.sentence && task.sentence.patterns.includes(task.key) ? task.sentence : (yes[0] || read[0]);
+      return { answer, choices: textShuffle([answer, ...textShuffle(no).slice(0, 2)]) };
+    }
+    function textRenderTask() {
+      textTask = textQueue[textQueueIndex]; textTaskResolved = false;
+      txCheckpointCount.textContent = `${textQueueIndex + 1} / ${textQueue.length}`;
+      txAnswerNote.classList.add("hidden"); txAnswerNote.innerHTML = "";
+      if (!textTask) return textStartReread();
+      const rec = textTask.record;
+      let html = "";
+      if (textTask.kind === "word" || textTask.kind === "phrase") {
+        const item = textTask.item, sentence = textTask.sentence;
+        if ((rec.lvl || 1) <= 1) {
+          const options = textShuffle([{ value: item.english, correct: true }, ...textWordDistractors(item, "english").map(value => ({ value, correct: false }))]);
+          html = `<div class="tx-task-sentence">${textHighlightSentence(sentence, textTask.key, false)}</div><div class="tx-task-help">What does the highlighted item mean here?</div><div class="tx-options">${options.map(o => `<button data-text-choice="${o.correct ? "1" : "0"}">${escapeHtml(o.value)}</button>`).join("")}</div>`;
+        } else if (rec.lvl === 2) {
+          const options = textShuffle([{ value: item.target, correct: true }, ...textWordDistractors(item, "target").map(value => ({ value, correct: false }))]);
+          html = `<div class="tx-task-sentence">${textHighlightSentence(sentence, textTask.key, true)}</div><div class="tx-task-help">Rebuild the missing form in its sentence.</div><div class="tx-options">${options.map(o => `<button data-text-choice="${o.correct ? "1" : "0"}">${escapeHtml(o.value)}</button>`).join("")}</div>`;
+        } else {
+          html = `<div class="tx-task-sentence">${textHighlightSentence(sentence, textTask.key, true)}</div><div class="tx-task-help">Write the missing item.</div><input id="txTypingInput" class="tx-typing" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="none"><div class="tx-keyboard" id="txKeyboard"></div>`;
+        }
+      } else if (textTask.kind === "pattern") {
+        if (!rec || rec.lvl <= 1) {
+          const { answer, choices } = textPatternChoices(textTask);
+          html = `<div class="tx-task-help"><strong>${escapeHtml((textTask.pattern && textTask.pattern.name) || textTask.key)}</strong><br>Which sentence you have already read uses this structure?</div><div class="tx-options">${choices.map(s => `<button data-text-choice="${s === answer ? "1" : "0"}">${escapeHtml(s.target)}</button>`).join("")}</div>`;
+        } else {
+          html = textReorderTaskHtml(textTask.sentence, textTask.key);
+        }
+      } else html = textReorderTaskHtml(textTask.sentence, textTask.key);
+      txTask.innerHTML = html;
+      txMainBtn.textContent = (textTask.kind === "sentence" || (textTask.kind === "pattern" && rec && rec.lvl >= 2) || (rec && rec.lvl >= 3)) ? "Check" : "Skip";
+      txMainBtn.dataset.action = "task";
+      if ($("txKeyboard")) textBuildKeyboard();
+      textRenderChrome(); txStage.scrollTop = 0;
+    }
+    function textReorderTaskHtml(sentence, key) {
+      const words = String(sentence && sentence.target || "").match(/[\p{L}\p{M}'’\-]+/gu) || [];
+      const shuffled = textShuffle(words.map((w, i) => ({ w, i })));
+      return `<div class="tx-task-help">Rebuild the sentence in its original order.</div><div class="tx-reorder-build" id="txReorderBuild"></div><div class="tx-options" id="txReorderBank">${shuffled.map(x => `<button data-text-chip="${x.i}" data-word="${escapeHtml(x.w)}">${escapeHtml(x.w)}</button>`).join("")}</div>`;
+    }
+    function textBuildKeyboard() {
+      const keyboard = $("txKeyboard"), input = $("txTypingInput"); if (!keyboard || !input) return;
+      const rows = ["QWERTZUIOPÜ", "ASDFGHJKLÖÄ", "YXCVBNMß"];
+      keyboard.innerHTML = rows.map(row => `<div class="tx-keyrow">${[...row].map(k => `<button type="button" class="tx-key" data-text-key="${k.toLowerCase()}">${k}</button>`).join("")}</div>`).join("") + `<div class="tx-keyrow"><button type="button" class="tx-key wide" data-text-key=" ">Space</button><button type="button" class="tx-key wide" data-text-key="backspace">⌫</button></div>`;
+    }
+    function textReorderAnswer() { return [...document.querySelectorAll("#txReorderBuild [data-word]")].map(b => b.dataset.word).join(" "); }
+    function textExpectedTaskAnswer() {
+      if (!textTask) return "";
+      if (textTask.kind === "word" || textTask.kind === "phrase") return textTask.item.target;
+      return String(textTask.sentence && textTask.sentence.target || "").match(/[\p{L}\p{M}'’\-]+/gu)?.join(" ") || "";
+    }
+    async function textGradeTask(correct, explanation = "") {
+      if (textTaskResolved) return;
+      textTaskResolved = true;
+      const task = textTask, rec = task.record;
+      let note = explanation;
+      if (rec) {
+        if (correct) {
+          rec.lvl = Math.min(4, (rec.lvl || 1) + 1);
+          if (rec.lvl >= textCeiling()) { rec.dueAt = Date.now() + TEXT_CFG.SRS_FIRST_INTERVAL; textUnschedule(task.key); }
+          else textSchedule(task.key, textEngine.progress.clock + (rec.lvl >= 3 ? TEXT_CFG.DUE_FAR : TEXT_CFG.DUE_NEAR), textEngine.progress.schedule[task.key]?.sourceSentenceId || "", -1);
+          note ||= `The item stays in its sentence and returns only if the current goal still requires it.`;
+        } else {
+          rec.lvl = Math.max(1, (rec.lvl || 1) - 1);
+          rec.misses.reading = (rec.misses.reading || 0) + 1;
+          textEngine.progress.itemMisses[task.key] = (textEngine.progress.itemMisses[task.key] || 0) + 1;
+          textSchedule(task.key, textEngine.progress.clock + 1, textEngine.progress.schedule[task.key]?.sourceSentenceId || "", -1);
+          const handed = await textCheckStuckItem(task.key, rec, task.item || { kind: task.kind });
+          note ||= handed ? `Moved to targeted practice. Reading will no longer hold the story back for this item.` : `Put aside. It returns at a later checkpoint.`;
+        }
+        await textSaveItem(rec); await textSaveProgress();
+      }
+      txAnswerNote.classList.remove("hidden");
+      const answer = textExpectedTaskAnswer();
+      txAnswerNote.innerHTML = `${answer ? `<strong>${escapeHtml(answer)}</strong><br>` : ""}${escapeHtml(note)}`;
+      txMainBtn.textContent = textQueueIndex === textQueue.length - 1 ? "Read the part again" : "Next";
+      for (const b of txTask.querySelectorAll("button")) b.disabled = true;
+    }
+    async function textCheckStuckItem(key, rec, item) {
+      const misses = textEngine.progress.itemMisses[key] || 0;
+      if (misses < TEXT_CFG.STUCK_MISSES) return false;
+      rec.readingStatus = "handed_off";
+      rec.handoffReason = "stuck_in_reading";
+      rec.needsTargetedPractice = true;
+      rec.pinned = rec.kind !== "pattern";
+      rec.dueAt = Date.now() + TEXT_CFG.SRS_FIRST_INTERVAL;
+      textUnschedule(key);
+      await textSaveItem(rec);
+      return true;
+    }
+    async function textAdvanceTask() {
+      if (!textTaskResolved) {
+        // Skip means no penalty; it remains due for fairness at a later checkpoint.
+        if (textTask && textTask.record) textSchedule(textTask.key, textEngine.progress.clock + 1, textEngine.progress.schedule[textTask.key]?.sourceSentenceId || "", -1);
+        await textSaveProgress();
+      }
+      if (textQueueIndex < textQueue.length - 1) { textQueueIndex++; textRenderTask(); }
+      else textStartReread(textCheckpointReason === "reprise" ? "reprise" : "normal");
+    }
+
+    function textRenderRereadRail() {
+      txRereadRail.innerHTML = [...textEngine.rereadGlosses.entries()].map(([key, g]) => textGlossHtml(key, g)).join("");
+    }
+    function textStartReread(reason = "normal") {
+      textSetPane("reread");
+      const pageIndex = textCheckpointReason === "reprise" ? Math.max(0, textEngine.pageIndex - 1) : textEngine.pageIndex;
+      const page = textEngine.pages[pageIndex];
+      textEngine.rereadPageIndex = pageIndex;
+      textEngine.rereadTouched = new Set(); textEngine.rereadGlosses = new Map();
+      txRereadKicker.textContent = textCheckpointReason === "reprise" ? "Read the previous part again" : "Read it again";
+      txRereadIntro.textContent = reason.includes("empty") ? "Nothing was left over here. Straight through." : "Same text, no marks. A tap can still record a remaining problem, but silence is not graded.";
+      txRereadFlow.innerHTML = page.sentences.map(s => textSentenceHtml(s, "active", true)).join("");
+      textRenderRereadRail();
+      txDifficulty.classList.add("hidden"); txDifficulty.innerHTML = "";
+      if (textCheckpointReason !== "reprise" && textEngine.progress.hardBacklogPages >= TEXT_CFG.CONSECUTIVE_PAGES && !textEngine.progress.difficultyNoticeShown) {
+        textEngine.progress.difficultyNoticeShown = true;
+        txDifficulty.classList.remove("hidden");
+        txDifficulty.innerHTML = textGoal === "comprehension"
+          ? `This text is running ahead of the current vocabulary. You can keep going, or choose an easier Text unit.`
+          : `This text is running ahead of the current goal. <button type="button" data-switch-reading="1">Switch to Reading</button>`;
+        textSaveProgress();
+      }
+      txMainBtn.textContent = textCheckpointReason === "reprise" ? "Resume reading" : (textEngine.pageIndex === textEngine.pages.length - 1 ? "Finish unit" : "Next part");
+      txMainBtn.dataset.action = "reread-next";
+      textRenderChrome(); txStage.scrollTop = 0;
+    }
+    async function textNextPage() {
+      if (textCheckpointReason === "reprise") {
+        textCheckpointReason = "page"; textEngine.sentenceIndex = 0; textEngine.enteredAt = Date.now(); textRenderRead(); return;
+      }
+      if (textEngine.pageIndex >= textEngine.pages.length - 1) return textRenderDone();
+      const nextOriginal = textEngine.pages[textEngine.pageIndex + 1];
+      if (textEngine.backlog > TEXT_CFG.BACKLOG_SOFT && nextOriginal && nextOriginal.sentences.length > 3) {
+        const chunks = [];
+        for (let i = 0; i < nextOriginal.sentences.length; i += 3) chunks.push(nextOriginal.sentences.slice(i, i + 3));
+        const replacement = chunks.map((sentences, i) => ({ ...nextOriginal, id: `${nextOriginal.scene}:${i + 1}`, segment: i + 1, sentences }));
+        textEngine.pages.splice(textEngine.pageIndex + 1, 1, ...replacement);
+      }
+      textEngine.pageIndex++;
+      textEngine.sentenceIndex = 0;
+      textEngine.openedThisPage = new Set(); textEngine.openedThisSentence = new Set(); textEngine.glosses = new Map();
+      textEngine.readEligible = new Set(); textEngine.sentencePass = new Map(); textEngine.translationVisible = new Set(); textEngine.translationOpenedLatch = new Set();
+      textEngine.structureOpen = null; textEngine.currentPageHardSentences = new Set(); textEngine.enteredAt = Date.now();
+      const next = textCurrentSentence(); textEngine.progress.nextSentenceId = next && next.id;
+      await textSaveProgress(); textRenderRead(); txStage.scrollTop = 0;
+    }
+    async function textRenderDone() {
+      textSetPane("done");
+      textEngine.progress.nextSentenceId = textEngine.sentences[0] && textEngine.sentences[0].id;
+      textEngine.progress.completedAt = Date.now();
+      // Remaining open items leave the within-text clock and enter long-term review.
+      for (const key of Object.keys(textEngine.progress.schedule || {})) {
+        const rec = textEngine.itemRecords.get(key); if (!rec) continue;
+        rec.dueAt ||= Date.now() + TEXT_CFG.SRS_FIRST_INTERVAL;
+        await textSaveItem(rec);
+      }
+      textEngine.progress.schedule = {};
+      await textSaveProgress();
+      const records = [...textEngine.itemRecords.values()];
+      const released = records.filter(r => r.lvl >= textCeiling()).length;
+      const handed = records.filter(r => r.readingStatus === "handed_off").length;
+      txDoneTitle.textContent = `${textEngine.unit.title || textEngine.entry.name} · ${textEngine.unit.subtitle || ""}`;
+      txDoneSummary.innerHTML = `<div class="tx-done-stat"><strong>${textEngine.sentences.length}</strong><span>sentences</span></div><div class="tx-done-stat"><strong>${released}</strong><span>released items</span></div><div class="tx-done-stat"><strong>${handed}</strong><span>targeted handoffs</span></div><div class="tx-done-stat"><strong>${Object.keys(textEngine.progress.unknownTokens || {}).length}</strong><span>missing glosses</span></div>`;
+      txDoneFlow.innerHTML = textEngine.sentences.map(s => `<p class="tx-sentence active">${escapeHtml(s.target)}</p>`).join("");
+      txMainBtn.textContent = "Read from the beginning"; txMainBtn.dataset.action = "restart-text";
+      textRenderChrome(); txStage.scrollTop = 0;
+    }
+    async function textRestartUnit() {
+      textEngine.pageIndex = 0; textEngine.sentenceIndex = 0; textEngine.progress.nextSentenceId = textEngine.sentences[0] && textEngine.sentences[0].id;
+      textEngine.openedThisPage = new Set(); textEngine.openedThisSentence = new Set(); textEngine.glosses = new Map(); textEngine.readEligible = new Set(); textEngine.sentencePass = new Map();
+      await textSaveProgress(); textRenderRead();
+    }
+
+    txGoals.addEventListener("click", async e => {
+      const b = e.target.closest("[data-goal]"); if (!b || !textEngine) return;
+      textGoal = b.dataset.goal;
+      await textSaveProgress(); textRenderChrome();
+      if (textView === "read") textRenderRead();
+    });
+    txFlow.addEventListener("click", async e => {
+      const why = e.target.closest("[data-text-why]");
+      if (why) { const s = textEngine.sentences.find(x => x.id === why.dataset.textWhy); if (s) await textOpenStructure(s); return; }
+      const tok = e.target.closest(".tx-sentence.active .tx-token");
+      if (!tok || !textEngine) return;
+      const s = textCurrentSentence(); if (!s || tok.dataset.sid !== s.id) return;
+      await textTapItem(s, s.tokens[+tok.dataset.ti], false);
+    });
+    txRail.addEventListener("click", async e => {
+      const pin = e.target.closest("[data-text-pin]"); if (!pin || !textEngine) return;
+      const rec = textEngine.itemRecords.get(pin.dataset.textPin); if (!rec) return;
+      rec.pinned = !rec.pinned; rec.needsTargetedPractice = rec.pinned;
+      await textSaveItem(rec); textRenderRail(); showToast(rec.pinned ? "Added to targeted Words practice." : "Removed from targeted Words practice.");
+    });
+    txRereadFlow.addEventListener("click", async e => {
+      const tok = e.target.closest(".tx-token"); if (!tok || !textEngine) return;
+      const s = textEngine.sentences.find(x => x.id === tok.dataset.sid); if (!s) return;
+      await textTapItem(s, s.tokens[+tok.dataset.ti], true);
+    });
+    txRereadRail.addEventListener("click", async e => {
+      const pin = e.target.closest("[data-text-pin]"); if (!pin) return;
+      const rec = textEngine.itemRecords.get(pin.dataset.textPin); if (!rec) return;
+      rec.pinned = !rec.pinned; rec.needsTargetedPractice = rec.pinned; await textSaveItem(rec); textRenderRereadRail();
+    });
+    txTask.addEventListener("click", async e => {
+      const choice = e.target.closest("[data-text-choice]");
+      if (choice && !textTaskResolved) {
+        const correct = choice.dataset.textChoice === "1";
+        choice.classList.add(correct ? "good" : "bad");
+        if (!correct) txTask.querySelector('[data-text-choice="1"]')?.classList.add("good");
+        await textGradeTask(correct); return;
+      }
+      const chip = e.target.closest("[data-text-chip]");
+      if (chip && !textTaskResolved) {
+        const bank = $("txReorderBank"), build = $("txReorderBuild");
+        (chip.parentElement === bank ? build : bank).appendChild(chip); return;
+      }
+      const key = e.target.closest("[data-text-key]");
+      if (key) {
+        const input = $("txTypingInput"); if (!input) return;
+        if (key.dataset.textKey === "backspace") input.value = input.value.slice(0, -1); else input.value += key.dataset.textKey;
+      }
+    });
+    txDifficulty.addEventListener("click", async e => {
+      if (!e.target.closest("[data-switch-reading]")) return;
+      textGoal = "comprehension"; await textSaveProgress(); textRenderChrome(); txDifficulty.classList.add("hidden");
+    });
+    txMainBtn.addEventListener("click", async () => {
+      if (!textEngine) return;
+      const action = txMainBtn.dataset.action;
+      if (action === "advance") return textAdvanceSentence();
+      if (action === "task") {
+        if (textTaskResolved) return textAdvanceTask();
+        if (textTask && (textTask.kind === "sentence" || (textTask.kind === "pattern" && textTask.record && textTask.record.lvl >= 2))) {
+          return textGradeTask(textNormalize(textReorderAnswer()) === textNormalize(textExpectedTaskAnswer()));
+        }
+        if (textTask && textTask.record && textTask.record.lvl >= 3) {
+          const input = $("txTypingInput"); return textGradeTask(textNormalize(input && input.value) === textNormalize(textExpectedTaskAnswer()));
+        }
+        return textAdvanceTask();
+      }
+      if (action === "reread-next") return textNextPage();
+      if (action === "restart-text") return textRestartUnit();
+    });
+    txTranslationBtn.addEventListener("pointerdown", () => {
+      textTranslationLongPressed = false;
+      clearTimeout(textTranslationLongPress);
+      textTranslationLongPress = setTimeout(async () => {
+        textTranslationLongPressed = true;
+        textTranslationMode = textTranslationMode === "always" ? "onDemand" : "always";
+        await textSaveProgress(); textRenderRead();
+        showToast(textTranslationMode === "always" ? "Translation pinned for this unit." : "Translation back to on demand.");
+      }, 650);
+    });
+    ["pointerup", "pointercancel", "pointerleave"].forEach(type => txTranslationBtn.addEventListener(type, () => clearTimeout(textTranslationLongPress)));
+    txTranslationBtn.addEventListener("click", async e => {
+      if (textTranslationLongPressed) { textTranslationLongPressed = false; return; }
+      if (!textEngine || textTranslationMode === "always") return;
+      const s = textCurrentSentence(); if (!s) return;
+      if (textEngine.translationVisible.has(s.id)) textEngine.translationVisible.delete(s.id);
+      else { textEngine.translationVisible.add(s.id); textEngine.translationOpenedLatch.add(s.id); textSentencePass(s.id).translationOpened = true; }
+      textRenderRead();
+    });
+
+
+        /* ---------- Settings persistence ---------- */
     const SETTINGS_KEY = "languagedeck_settings_v1";
     function saveSettings() {
       const s = {
         currentGame, currentDeck, currentSetName, importType,
         wordMode, sentenceMode, practiceScope, repetitionProfile,
         newRatio, newItemOrder, visibleCount,
+        textGoal, textTranslationMode,
         gateEnabled, gateSize, currentGateIndex, strictGate,
         theme, columnOrder
       };
@@ -5312,15 +6471,17 @@
     function updateModeSummary() {
       const variantLabels = {
         match: "Match", typing: "Type", progressive: "Adaptive missing letters",
-        choice: "Word bank", order: "Reorder"
+        choice: "Word bank", order: "Reorder",
+        comprehension: "Reading", active: "Deep", memorization: "Memorise"
       };
-      const modeLabel = currentGame === "words" ? "Words" : (currentGame === "combined" ? "Combined" : "Sentences");
-      const variant = currentGame === "combined"
-        ? "Book flow"
-        : (currentGame === "words"
-          ? (variantLabels[wordMode] || wordMode)
-          : (variantLabels[sentenceMode] || sentenceMode));
-      const setText = currentSetName === "__all__" ? "All decks" : currentSetName;
+      const modeLabels = { words: "Words", grammar: "Grammar", sentences: "Sentences", text: "Text" };
+      const modeLabel = modeLabels[currentGame] || "Words";
+      const variant = currentGame === "words"
+        ? (variantLabels[wordMode] || wordMode)
+        : currentGame === "text"
+          ? (variantLabels[textGoal] || "Reading")
+          : (variantLabels[sentenceMode] || sentenceMode);
+      const setText = currentSetName === "__all__" ? (currentGame === "grammar" ? "All grammar decks" : currentGame === "sentences" ? "All sentence decks" : "All decks") : currentSetName;
       const lang = deckCfg();
       const liChip = document.getElementById("liModeChip");
       if (liChip) liChip.innerHTML = `<strong>${escapeHtml(languageName())} · ${escapeHtml(modeLabel)}</strong><br>${escapeHtml(setText)}`;
@@ -5329,7 +6490,7 @@
         <span class="chip-main"><strong>${escapeHtml(modeLabel)} · ${escapeHtml(variant)}</strong><small>${escapeHtml(setText)}</small></span>
         <span class="chip-caret" aria-hidden="true">▾</span>
       `;
-      if (importLanguageLabel) importLanguageLabel.textContent = `Current language: ${languageFullLabel()}. Built-in import will show only ${languageName()} decks.`;
+      if (importLanguageLabel) importLanguageLabel.textContent = `Current language: ${languageFullLabel()}. Built-in import shows compatible ${languageName()} decks.`;
       if (quickSheet && quickSheet.classList.contains("active")) renderQuickSheet();
     }
 
@@ -5367,124 +6528,96 @@
       }
     }
 
+    let quickSheetStep = 1;
+    const qsPrimaryPage = $("qsPrimaryPage"), qsSecondaryPage = $("qsSecondaryPage"), qsBackBtn = $("qsBackBtn"), qsTitle = $("qsTitle");
+
     function renderQuickSheet() {
-      // LANGUAGE — highest-level choice. It controls which local decks and which
-      // built-in import list are relevant, so it is intentionally first.
+      qsPrimaryPage.classList.toggle("hidden", quickSheetStep !== 1);
+      qsSecondaryPage.classList.toggle("hidden", quickSheetStep !== 2);
+      qsBackBtn.classList.toggle("hidden", quickSheetStep !== 2);
+      qsTitle.textContent = quickSheetStep === 1 ? "Study" : `${languageName()} · ${{words:"Words",grammar:"Grammar",sentences:"Sentences",text:"Text"}[currentGame] || "Study"}`;
+
       qsLang.innerHTML = "";
       languageEntries().forEach(({ code, cfg }) => {
         const btn = document.createElement("button");
         btn.type = "button";
         if (code === currentDeck) btn.classList.add("on");
-        btn.innerHTML = `
-          <span class="qs-lang-flag">${escapeHtml(cfg.flag || "🌐")}</span>
-          <span class="qs-lang-copy"><strong>${escapeHtml(cfg.shortLabel || cfg.targetName || code.toUpperCase())}</strong><small>${escapeHtml(cfg.label || code)}</small></span>
-        `;
-        btn.addEventListener("click", () => {
-          setSelectAndFire(deckSelect, code);
-          renderQuickSheet();
-        });
+        btn.innerHTML = `<span class="qs-lang-flag">${escapeHtml(cfg.flag || "🌐")}</span><span class="qs-lang-copy"><strong>${escapeHtml(cfg.shortLabel || cfg.targetName || code.toUpperCase())}</strong><small>${escapeHtml(cfg.label || code)}</small></span>`;
+        btn.addEventListener("click", () => { setSelectAndFire(deckSelect, code); renderQuickSheet(); });
         qsLang.appendChild(btn);
       });
-      if (qsLangNote) qsLangNote.textContent = `Showing installed ${languageName()} decks below. Built-in import is also filtered to ${languageName()}.`;
+      if (qsLangNote) qsLangNote.textContent = `Choose a language, then choose the kind of knowledge you want to practise.`;
 
-      // WHAT — word cards, sentences, or a combined book-flow orchestrator
       buildSeg(qsModeSeg, [
         { value: "words", label: "Words" },
+        { value: "grammar", label: "Grammar" },
         { value: "sentences", label: "Sentences" },
-        { value: "combined", label: "Combined" }
-      ], currentGame, async (v) => {
+        { value: "text", label: "Text" }
+      ], currentGame, async v => {
         setSelectAndFire(gameSelect, v);
+        quickSheetStep = 2;
         renderQuickSheet();
       });
 
-      // HOW — variant depends on the chosen mode. Combined intentionally has
-      // one guided flow: sentence missing letters first, then unlocked word
-      // missing letters from mastered source sentences.
       if (currentGame === "words") {
         buildSeg(qsVariantSeg, [
-          { value: "match", label: "Match" },
-          { value: "typing", label: "Type" },
-          { value: "progressive", label: "Adaptive missing letters" }
-        ], wordMode, async (v) => { setSelectAndFire(modeSelect, v); renderQuickSheet(); });
-      } else if (currentGame === "combined") {
+          { value: "match", label: "Match" }, { value: "typing", label: "Type" }, { value: "progressive", label: "Adaptive" }
+        ], wordMode, async v => { setSelectAndFire(modeSelect, v); renderQuickSheet(); });
+      } else if (currentGame === "text") {
         buildSeg(qsVariantSeg, [
-          { value: "combined", label: "Book flow" }
-        ], "combined", async () => {});
-      } else {
-        buildSeg(qsVariantSeg, [
-          { value: "choice", label: "Word bank" },
-          { value: "order", label: "Reorder" },
-          { value: "typing", label: "Type" },
-          { value: "progressive", label: "Adaptive missing letters" }
-        ], sentenceMode, async (v) => { setSelectAndFire(sentenceModeSelect, v); renderQuickSheet(); });
-      }
-
-      // DECK — list of installed sets for the current language, mirrored from setSelect.
-      qsDeckList.innerHTML = "";
-      const opts = Array.from(setSelect.options);
-      if (opts.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "empty-state";
-        empty.style.padding = "10px";
-        empty.textContent = `No ${languageName()} decks installed yet.`;
-        qsDeckList.appendChild(empty);
-      }
-      opts.forEach(opt => {
-        const row = document.createElement("button");
-        row.type = "button";
-        row.className = "qs-deck" + (opt.value === currentSetName ? " on" : "");
-        row.innerHTML = `<span>${escapeHtml(opt.textContent)}</span><span class="qs-check">✓</span>`;
-        row.addEventListener("click", () => {
-          setSelectAndFire(setSelect, opt.value);
+          { value: "comprehension", label: "Reading" }, { value: "active", label: "Deep" }, { value: "memorization", label: "Memorise" }
+        ], textGoal, async v => {
+          textGoal = v;
+          if (textEngine) await textSaveProgress(); else saveSettings();
+          if (textEngine) { textRenderChrome(); if (textView === "read") textRenderRead(); }
           renderQuickSheet();
         });
+      } else {
+        buildSeg(qsVariantSeg, [
+          { value: "choice", label: "Word bank" }, { value: "order", label: "Reorder" },
+          { value: "typing", label: "Type" }, { value: "progressive", label: "Adaptive" }
+        ], sentenceMode, async v => { setSelectAndFire(sentenceModeSelect, v); renderQuickSheet(); });
+      }
+
+      qsDeckList.innerHTML = "";
+      const opts = Array.from(setSelect.options);
+      if (!opts.length) {
+        const empty = document.createElement("div"); empty.className = "empty-state"; empty.style.padding = "10px";
+        empty.textContent = `No compatible ${languageName()} deck is available.`; qsDeckList.appendChild(empty);
+      }
+      opts.forEach(opt => {
+        const row = document.createElement("button"); row.type = "button"; row.className = "qs-deck" + (opt.value === currentSetName ? " on" : "");
+        row.innerHTML = `<span>${escapeHtml(opt.textContent)}</span><span class="qs-check">✓</span>`;
+        row.addEventListener("click", () => { setSelectAndFire(setSelect, opt.value); renderQuickSheet(); });
         qsDeckList.appendChild(row);
       });
     }
 
-    function openQuickSheet() { renderQuickSheet(); quickSheet.classList.add("active"); }
+    function openQuickSheet() { quickSheetStep = 1; renderQuickSheet(); quickSheet.classList.add("active"); }
     function closeQuickSheet() { quickSheet.classList.remove("active"); saveSettings(); }
+    if (qsBackBtn) qsBackBtn.addEventListener("click", () => { quickSheetStep = 1; renderQuickSheet(); });
 
     async function refreshSetOptions() {
       setSelect.innerHTML = "";
-
-      if (currentGame === "combined") {
-        const pairs = await collectCombinedDeckPairs(currentDeck);
-        if (pairs.length === 0) {
-          const o = document.createElement("option");
-          o.value = "__all__"; o.textContent = "No paired book decks installed";
-          setSelect.appendChild(o);
-          currentSetName = "__all__";
-        } else {
-          for (const pair of pairs) {
-            const o = document.createElement("option");
-            o.value = pair.base;
-            o.textContent = `${pair.base} (${pair.sentenceCount} sentences · ${pair.wordCount} words)`;
-            setSelect.appendChild(o);
-          }
-          const normalizedCurrentKey = combinedBaseKey(currentSetName);
-          const currentPair = pairs.find(p => p.key === normalizedCurrentKey);
-          currentSetName = currentPair ? currentPair.base : pairs[0].base;
+      if (currentGame === "text") {
+        const entries = manifestDeckEntries(currentDeck, "text");
+        for (const d of entries) {
+          const o = document.createElement("option"); o.value = d.id; o.textContent = `${d.name}${d.level ? ` · ${d.level.join("–")}` : ""}`; setSelect.appendChild(o);
         }
-        setSelect.value = currentSetName;
-        updateModeSummary();
-        return;
+        const exists = [...setSelect.options].some(o => o.value === currentSetName);
+        currentSetName = exists ? currentSetName : (entries[0] ? entries[0].id : "__all__");
+        setSelect.value = currentSetName; updateModeSummary(); return;
       }
-
-      const sets = await DB.getSets(currentGame === "words" ? "word_pairs" : "sentence_pairs", currentDeck);
-      const allOpt = document.createElement("option");
-      allOpt.value = "__all__"; allOpt.textContent = "All decks";
+      const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
+      let sets = await DB.getSets(table, currentDeck);
+      if (currentGame === "grammar" || currentGame === "sentences") sets = sets.filter(s => setSupportsStudyMode(s.set_name, currentGame, currentDeck));
+      const allOpt = document.createElement("option"); allOpt.value = "__all__";
+      allOpt.textContent = currentGame === "grammar" ? "All grammar decks" : currentGame === "sentences" ? "All sentence decks" : "All decks";
       setSelect.appendChild(allOpt);
-      for (const s of sets) {
-        const o = document.createElement("option");
-        o.value = s.set_name;
-        o.textContent = `${s.set_name} (${s.item_count})`;
-        setSelect.appendChild(o);
-      }
+      for (const row of sets) { const o = document.createElement("option"); o.value = row.set_name; o.textContent = `${row.set_name} (${row.item_count})`; setSelect.appendChild(o); }
       const exists = [...setSelect.options].some(opt => opt.value === currentSetName);
-      if (!exists) currentSetName = "__all__";
-      setSelect.value = currentSetName;
-      updateModeSummary();
+      if (!exists) currentSetName = sets[0] ? sets[0].set_name : "__all__";
+      setSelect.value = currentSetName; updateModeSummary();
     }
 
     function displayTargetWithoutDuplicateArticle(pair) {
@@ -5517,28 +6650,27 @@
 
     function updateGameUI() {
       const isWords = currentGame === "words";
-      const isCombined = currentGame === "combined";
-      const isSentenceGame = currentGame === "sentences";
+      const isText = currentGame === "text";
+      const isSentenceGame = currentGame === "sentences" || currentGame === "grammar";
       const isWordMatch = isWords && wordMode === "match";
-      const isWordTyping = (isWords && (wordMode === "typing" || wordMode === "progressive")) || (isCombined && combinedCurrentType === "word");
-      const isSentenceVisible = isSentenceGame || (isCombined && combinedCurrentType === "sentence");
+      const isWordTyping = isWords && (wordMode === "typing" || wordMode === "progressive");
       wordMatchContainer.classList.toggle("hidden", !isWordMatch);
       wordTypingContainer.classList.toggle("hidden", !isWordTyping);
-      sentenceContainer.classList.toggle("hidden", !isSentenceVisible);
+      sentenceContainer.classList.toggle("hidden", !isSentenceGame);
+      textModeContainer.classList.toggle("hidden", !isText);
+      document.documentElement.classList.toggle("text-practice-active", isText);
       document.documentElement.classList.toggle("order-practice-active", isSentenceGame && sentenceMode === "order");
-      const progressiveActive = (isWords && wordMode === "progressive") || ((isSentenceGame || isCombined) && sentenceMode === "progressive") || (isCombined && wordMode === "progressive");
+      const progressiveActive = (isWords && wordMode === "progressive") || (isSentenceGame && sentenceMode === "progressive");
       if (!progressiveActive) document.documentElement.classList.remove("keypad-active");
       visibleCountSelect.disabled = !isWordMatch;
-      sentenceModeSelect.disabled = isWords || isCombined;
-      modeSelect.disabled = !isWords || isCombined;
-      updateGateUI();
-      updateModeSummary();
+      sentenceModeSelect.disabled = !isSentenceGame;
+      modeSelect.disabled = !isWords;
+      restartBtn.textContent = isText ? "Restart Text unit" : "Restart session";
+      clearBtn.textContent = isText ? "Reset Text route" : "Clear deck";
+      updateGateUI(); updateModeSummary();
     }
     function updateGateUI() {
-      // Toggle a class instead of inline style, so @media rules can still
-      // override (inline style has higher specificity than @media rules).
-      gatePanel.classList.toggle("gate-disabled", !gateEnabled || currentGame === "combined");
-      // Clear any leftover inline style from previous versions
+      gatePanel.classList.toggle("gate-disabled", !gateEnabled || currentGame === "text");
       gatePanel.style.display = "";
       updateModeSummary();
     }
@@ -5576,50 +6708,35 @@
     }
 
     async function refreshStats() {
-      let all = [];
-      let hardestTitleText = currentGame === "words" ? "Most-missed words" : "Most-missed sentences";
-      if (currentGame === "combined") {
-        const bundle = await getCombinedBundle(false);
-        all = bundle ? [...bundle.sentences, ...bundle.words] : [];
-        hardestTitleText = "Most-missed combined items";
-      } else {
-        const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
-        all = await DB.getAll(table, currentDeck, currentSetName);
+      if (currentGame === "text") {
+        const records = (await DB.getAllRecords("reading_items")).filter(r => r.language === currentDeck || String(r.key || "").startsWith(`${currentDeck}|`));
+        const total = records.length;
+        const newCount = records.filter(r => !r.lvl).length;
+        const due = records.filter(r => r.dueAt && r.dueAt <= Date.now()).length;
+        const stable = records.filter(r => (r.lvl || 0) >= 2).length;
+        statTotal.textContent = total; statNew.textContent = newCount; statDue.textContent = due; statStable.textContent = stable;
+        hardestTitle.textContent = "Reading friction";
+        const hardest = records.filter(r => ((r.misses && r.misses.reading) || 0) > 0).sort((a,b) => ((b.misses?.reading||0)-(a.misses?.reading||0))).slice(0,5);
+        hardestList.innerHTML = hardest.length ? hardest.map(r => `<div class="hardest-item"><strong>${escapeHtml(r.itemKey || String(r.key).split("|").pop())}</strong><div class="meta">reading friction: ${r.misses?.reading || 0} · state: ${escapeHtml(r.readingStatus || "active")}</div></div>`).join("") : "No reading friction yet.";
+        learningDoctorGrid.innerHTML = `<div class="doctor-cell"><span class="value">${total}</span><span class="label">Shared items</span></div><div class="doctor-cell"><span class="value">${stable}</span><span class="label">Recognised+</span></div><div class="doctor-cell"><span class="value">${records.filter(r=>r.needsTargetedPractice).length}</span><span class="label">Targeted handoffs</span></div>`;
+        learningDoctorNote.textContent = "Text mode shares lexeme and grammar-pattern state with the other study directions.";
+        return;
       }
+      let all = [];
+      const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
+      all = await DB.getAll(table, currentDeck, currentSetName);
+      if (currentSetName === "__all__" && (currentGame === "grammar" || currentGame === "sentences")) all = all.filter(r => setSupportsStudyMode(r.set_name, currentGame, currentDeck));
       const now = nowIso();
-      const total = all.length;
-      const newCount = all.filter(r => r.next_due == null).length;
+      const total = all.length, newCount = all.filter(r => r.next_due == null).length;
       const due = all.filter(r => r.next_due != null && r.next_due <= now).length;
       const stable = all.filter(r => (r.streak | 0) >= 3).length;
-      renderLearningDoctor(all, currentGame === "combined" ? "combined pair" : "current deck");
-      statTotal.textContent = total;
-      statNew.textContent = newCount;
-      statDue.textContent = due;
-      statStable.textContent = stable;
-
-      const hardest = all.filter(r => (r.times_wrong | 0) > 0)
-        .sort((a, b) => (b.times_wrong - a.times_wrong) || (a.times_correct - b.times_correct) || (a.id - b.id))
-        .slice(0, 5);
-
-      hardestTitle.textContent = hardestTitleText;
-
-      if (hardest.length === 0) { hardestList.textContent = "No data yet."; return; }
-      if (currentGame === "words") {
-        hardestList.innerHTML = hardest.map(item => `
-          <div class="hardest-item">
-            <strong>${escapeHtml(item.english)}</strong> — ${escapeHtml(targetDisplay(item))}
-            <div class="meta">deck: ${escapeHtml(item.set_name || "default")} · wrong: ${item.times_wrong} · right: ${item.times_correct} · streak: ${item.streak}</div>
-          </div>
-        `).join("");
-      } else {
-        hardestList.innerHTML = hardest.map(item => `
-          <div class="hardest-item">
-            <div><strong>EN:</strong> ${escapeHtml(item.english)}</div>
-            <div><strong>${escapeHtml(deckCfg().targetName)}:</strong> ${escapeHtml(item.target)}</div>
-            <div class="meta">deck: ${escapeHtml(item.set_name || "default")} · wrong: ${item.times_wrong || 0} · right: ${item.times_correct || 0} · streak: ${item.streak || 0}</div>
-          </div>
-        `).join("");
-      }
+      renderLearningDoctor(all, "current deck");
+      statTotal.textContent = total; statNew.textContent = newCount; statDue.textContent = due; statStable.textContent = stable;
+      const hardest = all.filter(r => (r.times_wrong | 0) > 0).sort((a,b)=>(b.times_wrong-a.times_wrong)||(a.times_correct-b.times_correct)||(a.id-b.id)).slice(0,5);
+      hardestTitle.textContent = currentGame === "words" ? "Most-missed words" : currentGame === "grammar" ? "Most-missed grammar sentences" : "Most-missed sentences";
+      if (!hardest.length) { hardestList.textContent = "No data yet."; return; }
+      if (currentGame === "words") hardestList.innerHTML = hardest.map(item => `<div class="hardest-item"><strong>${escapeHtml(item.english)}</strong> — ${escapeHtml(targetDisplay(item))}<div class="meta">deck: ${escapeHtml(item.set_name || "default")} · wrong: ${item.times_wrong} · right: ${item.times_correct} · streak: ${item.streak}</div></div>`).join("");
+      else hardestList.innerHTML = hardest.map(item => `<div class="hardest-item"><div><strong>EN:</strong> ${escapeHtml(item.english)}</div><div><strong>${escapeHtml(deckCfg().targetName)}:</strong> ${escapeHtml(item.target)}</div><div class="meta">deck: ${escapeHtml(item.set_name || "default")} · wrong: ${item.times_wrong || 0} · right: ${item.times_correct || 0} · streak: ${item.streak || 0}</div></div>`).join("");
     }
 
     function rebuildGateSelect() {
@@ -5643,67 +6760,31 @@
     }
 
     async function refreshGateInfo() {
-      if (currentGame === "combined") {
-        totalGates = 0;
-        gatePanel.classList.add("gate-disabled");
-        gateLabel.textContent = "Combined";
-        gateProgressText.textContent = "—";
-        gateProgressFill.style.width = "0%";
-        return { progress: { total: 0, mastered: 0, new: 0, due: 0, percent: 0, is_complete: true }, total_gates: 0, gate_index: 0 };
+      if (currentGame === "text") {
+        totalGates = 0; gatePanel.classList.add("gate-disabled"); gateLabel.textContent = "Text"; gateProgressText.textContent = "—"; gateProgressFill.style.width = "0%";
+        return { progress: { total:0, mastered:0, new:0, due:0, percent:0, is_complete:true }, total_gates:0, gate_index:0 };
       }
       const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
-      const all = await DB.getAll(table, currentDeck, currentSetName);
+      let all = await DB.getAll(table, currentDeck, currentSetName);
+      if (currentSetName === "__all__" && (currentGame === "grammar" || currentGame === "sentences")) all = all.filter(r => setSupportsStudyMode(r.set_name, currentGame, currentDeck));
       const useGateSize = currentGame === "words" ? gateSize : Math.min(gateSize, 50);
-
       let total_gates = 0;
       if (gateEnabled && all.length > 0) total_gates = Math.ceil(all.length / useGateSize);
       else if (!gateEnabled && all.length > 0) total_gates = 1;
       totalGates = total_gates;
-      if (totalGates > 0) currentGateIndex = Math.min(currentGateIndex, totalGates - 1);
-      else currentGateIndex = 0;
-
+      currentGateIndex = totalGates > 0 ? Math.min(currentGateIndex, totalGates - 1) : 0;
       const rowsForProgress = gateEnabled ? fetchGateRows(all, currentGateIndex, useGateSize) : all;
       const progress = computeProgress(rowsForProgress);
-
-      gateLabel.textContent = gateEnabled
-        ? `Gate ${totalGates === 0 ? 0 : currentGateIndex + 1} / ${totalGates}`
-        : "All items";
-      gateProgressText.textContent = `${progress.percent}%`;
-      gateStatsText.textContent = `Mastered: ${progress.mastered} / ${progress.total}`;
-      gateMetaText.textContent = `New: ${progress.new} · Due: ${progress.due} · Unlock at 85% · Streak threshold: 2`;
-      gateProgressFill.style.width = `${progress.percent}%`;
-
-      // Mirror into gate detail modal
-      gateDetailTitle.textContent = gateEnabled
-        ? `Gate ${totalGates === 0 ? 0 : currentGateIndex + 1} of ${totalGates}`
-        : "All items";
-      gdProgress.textContent = `${progress.percent}%`;
-      gdMastered.textContent = `${progress.mastered} / ${progress.total}`;
-      gdNew.textContent = `${progress.new}`;
-      gdDue.textContent = `${progress.due}`;
-
-      prevGateBtn.disabled = !gateEnabled || currentGateIndex <= 0;
-      nextGateBtn.disabled = !gateEnabled || totalGates === 0 || currentGateIndex >= totalGates - 1;
-
-      // Landscape-info column mirror
-      const liPct = document.getElementById("liGatePct");
-      const liLbl = document.getElementById("liGateLabel");
-      const liFill = document.getElementById("liProgressFill");
-      const liPrev = document.getElementById("liPrevGateBtn");
-      const liNext = document.getElementById("liNextGateBtn");
-      const liArrows = document.getElementById("liGateArrows");
-      if (liPct) liPct.textContent = `${progress.percent}%`;
-      if (liLbl) liLbl.textContent = gateEnabled
-        ? `Gate ${totalGates === 0 ? 0 : currentGateIndex + 1} / ${totalGates}`
-        : "All items";
-      if (liFill) liFill.style.width = `${progress.percent}%`;
-      if (liArrows) liArrows.style.display = gateEnabled ? "flex" : "none";
-      if (liPrev) liPrev.disabled = !gateEnabled || currentGateIndex <= 0;
-      if (liNext) liNext.disabled = !gateEnabled || totalGates === 0 || currentGateIndex >= totalGates - 1;
-
+      gateLabel.textContent = gateEnabled ? `Gate ${totalGates === 0 ? 0 : currentGateIndex + 1} / ${totalGates}` : "All items";
+      gateProgressText.textContent = `${progress.percent}%`; gateStatsText.textContent = `Mastered: ${progress.mastered} / ${progress.total}`;
+      gateMetaText.textContent = `New: ${progress.new} · Due: ${progress.due} · Unlock at 85% · Streak threshold: 2`; gateProgressFill.style.width = `${progress.percent}%`;
+      gateDetailTitle.textContent = gateEnabled ? `Gate ${totalGates === 0 ? 0 : currentGateIndex + 1} of ${totalGates}` : "All items";
+      gdProgress.textContent = `${progress.percent}%`; gdMastered.textContent = `${progress.mastered} / ${progress.total}`; gdNew.textContent = `${progress.new}`; gdDue.textContent = `${progress.due}`;
+      prevGateBtn.disabled = !gateEnabled || currentGateIndex <= 0; nextGateBtn.disabled = !gateEnabled || totalGates === 0 || currentGateIndex >= totalGates - 1;
       rebuildGateSelect();
-      updateGateUI();
-      saveSettings();
+      const liPct = $("liGatePct"), liLbl = $("liGateLabel"), liFill = $("liProgressFill"), liPrev = $("liPrevGateBtn"), liNext = $("liNextGateBtn"), liArrows = $("liGateArrows");
+      if (liPct) liPct.textContent = `${progress.percent}%`; if (liLbl) liLbl.textContent = gateEnabled ? `Gate ${totalGates ? currentGateIndex + 1 : 0} / ${totalGates}` : "All items";
+      if (liFill) liFill.style.width = `${progress.percent}%`; if (liPrev) liPrev.disabled = prevGateBtn.disabled; if (liNext) liNext.disabled = nextGateBtn.disabled; if (liArrows) liArrows.classList.toggle("hidden", !gateEnabled);
       return { progress, total_gates, gate_index: currentGateIndex };
     }
 
@@ -6113,14 +7194,15 @@
       fetchingMore = true;
       try {
         const table = "sentence_pairs";
-        const all = await DB.getAll(table, currentDeck, currentSetName);
+        let all = await DB.getAll(table, currentDeck, currentSetName);
+        if (currentSetName === "__all__" && (currentGame === "grammar" || currentGame === "sentences")) {
+          all = all.filter(r => setSupportsStudyMode(r.set_name, currentGame, currentDeck));
+        }
         const useGateSize = Math.min(gateSize, 50);
         const batchSize = gateEnabled ? Math.max(useGateSize, 30) : 50;
-
         let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
         let filtered = pool.filter(r => !sessionLoadedIds.has(r.id));
         let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled, pool);
-
         if (forceResetIfEmpty && data.length === 0 && sessionLoadedIds.size > 0) {
           sessionLoadedIds = new Set();
           data = selectStudyItems(pool, batchSize, newRatio, practiceScope, !gateEnabled, pool);
@@ -6134,9 +7216,8 @@
       if (reset) sessionLoadedIds = new Set();
       await refreshGateInfo();
       if (currentGame === "words") await loadWords(reset);
-      else if (currentGame === "combined") await loadCombinedMode(reset);
+      else if (currentGame === "text") await loadTextMode(reset);
       else await loadSentences(reset);
-      // Show/hide the empty-state hero whenever data state changes
       if (typeof checkEmptyState === "function") await checkEmptyState();
     }
 
@@ -7230,7 +8311,7 @@
       currentSentenceData.showExplanation = false;
       activeBlankIndex = 0;
       renderSentence();
-      statusEl.textContent = currentGame === "sentences" && sentenceMode === "order"
+      statusEl.textContent = (currentGame === "sentences" || currentGame === "grammar") && sentenceMode === "order"
         ? "Build the sentence."
         : (sentenceMode === "progressive" ? "Type only the missing letters." : "Fill in the missing words.");
     }
@@ -7416,7 +8497,7 @@
       }
       if (event.target === typingInput) return;
       if (event.target === urlInput || event.target === newSetNameInput) return;
-      if (currentGame === "sentences" && event.target.classList && event.target.classList.contains("blank-input")) return;
+      if ((currentGame === "sentences" || currentGame === "grammar") && event.target.classList && event.target.classList.contains("blank-input")) return;
 
       if (currentGame === "words") {
         if (pendingArticlePairId !== null) {
@@ -7433,7 +8514,7 @@
         if (selectedLeft === null) selectLeftByIndex(i); else selectRightByIndex(i);
         return;
       }
-      if (currentGame === "sentences" && sentenceMode === "choice") {
+      if ((currentGame === "sentences" || currentGame === "grammar") && sentenceMode === "choice") {
         const i = keyToIndex(event.key);
         if (i !== null) { event.preventDefault(); handleChoiceSentenceKeyboard(i); }
       }
@@ -7893,206 +8974,61 @@
 
     async function loadBuiltinList() {
       if (builtinTitle) builtinTitle.textContent = `${languageFlag()} ${languageName()} built-in decks`;
-      builtinList.innerHTML = `Loading ${languageName()} decks…`;
-
-      const [ghDecks, jsonDecks] = await Promise.all([
-        fetchDecksFromGitHubApi(),
-        fetchDecksFromIndexJson()
-      ]);
-
-      let baseDecks, sourceNote;
-      if (ghDecks && ghDecks.length > 0) {
-        // GitHub listing is the source of truth for WHICH decks exist;
-        // index.json (if present) only improves names/types of matches.
-        const meta = new Map((jsonDecks || []).map(d => [d.file, d]));
-        baseDecks = ghDecks.map(d => {
-          const m = meta.get(d.file);
-          return m ? { ...d, name: m.name || d.name, type: m.type || d.type } : d;
-        });
-        sourceNote = `Live list from GitHub, filtered to ${languageName()}.`;
-      } else {
-        baseDecks = jsonDecks || [];
-        sourceNote = `Offline list from decks/index.json, filtered to ${languageName()}.`;
-      }
-
-      const decks = baseDecks
-        .filter(d => normalizeDeck(d.deck || currentDeck) === currentDeck)
-        .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-
       builtinList.innerHTML = "";
-      const note = document.createElement("div");
-      note.style.cssText = "font-size:11px;color:var(--text-faint);margin-bottom:6px;line-height:1.35;";
-      note.textContent = sourceNote;
-      builtinList.appendChild(note);
-
-      if (decks.length === 0) {
-        const empty = document.createElement("div");
-        empty.innerHTML = `
-          <em>No ${escapeHtml(languageName())} built-in decks found.</em>
-          <p style="font-size:13px;color:var(--text-faint);margin-top:6px;line-height:1.35;">
-            Add CSV files under <code>decks/${escapeHtml(currentDeck)}/</code>. Files or folders starting with <code>_</code>,
-            or named <code>archive</code>/<code>source</code>, stay hidden.
-          </p>`;
-        builtinList.appendChild(empty);
+      if (currentGame === "text") {
+        const units = manifestDeckEntries(currentDeck, "text");
+        const note = document.createElement("div"); note.className = "builtin-item-meta";
+        note.textContent = "Text units are read directly from the language pack; no local import is required."; builtinList.appendChild(note);
+        for (const d of units) {
+          const wrap = document.createElement("div"); wrap.className = "builtin-item";
+          wrap.innerHTML = `<strong>${escapeHtml(d.name)}</strong><div class="builtin-item-meta">${escapeHtml((d.level || []).join("–"))} · Reading / Deep / Memorise</div>`;
+          const btn = document.createElement("button"); btn.textContent = d.id === currentSetName ? "Active" : "Open"; btn.disabled = d.id === currentSetName;
+          btn.addEventListener("click", async () => { currentSetName = d.id; setSelect.value = d.id; saveSettings(); await loadCurrentGame(true); builtinModal.classList.remove("active"); closeSettings(); });
+          wrap.appendChild(btn); builtinList.appendChild(wrap);
+        }
+        if (!units.length) builtinList.innerHTML += `<em>No Text units are declared in decks/${escapeHtml(currentDeck)}/manifest.json.</em>`;
         return;
       }
-
-      // Combined/book pairs: one-tap import for sentence + word decks that share
-      // the same base title. This keeps the Combined mode usable without asking
-      // the learner to manually import two separate CSV files in the right order.
-      const pairMap = new Map();
-      decks.forEach(d => {
-        const kind = (d.type || "words") === "sentences" ? "sentences" : "words";
-        const rawName = d.name || d.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, "");
-        const base = combinedBaseName(rawName);
-        if (!base || base === rawName && !/[—-]\s*(Words|Sentences)$/i.test(rawName)) return;
-        const key = `${d.deck || currentDeck}|${base}`;
-        if (!pairMap.has(key)) pairMap.set(key, { deck: d.deck || currentDeck, base, words: null, sentences: null });
-        pairMap.get(key)[kind] = d;
-      });
-      const bookPairs = [...pairMap.values()].filter(p => p.words && p.sentences);
-      if (bookPairs.length > 0) {
-        const header = document.createElement("div");
-        header.style.cssText = "font-size:11px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin:8px 0 4px;";
-        header.textContent = "Book pairs";
-        builtinList.appendChild(header);
-        bookPairs.forEach(pair => {
-          const wrap = document.createElement("div");
-          wrap.className = "builtin-item";
-          const title = document.createElement("div");
-          title.innerHTML = `<strong>${escapeHtml(pair.base)}</strong>`;
-          const meta = document.createElement("div");
-          meta.className = "builtin-item-meta";
-          meta.textContent = `${languageName(pair.deck)} · sentences + words`;
-          const btn = document.createElement("button");
-          btn.textContent = "Import pair";
-          btn.style.marginTop = "6px";
-          btn.addEventListener("click", async () => {
-            btn.disabled = true;
-            btn.textContent = "Importing…";
-            try {
-              for (const part of [pair.sentences, pair.words]) {
-                const url = `decks/${part.file}`;
-                const r = await fetch(cacheBustedUrl(url), { cache: "reload" });
-                if (!r.ok) throw new Error(`Could not download ${part.file}`);
-                const text = await r.text();
-                const setName = (part.name || part.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, ""));
-                const table = (part.type || "words") === "sentences" ? "sentence_pairs" : "word_pairs";
-                const existing = (await DB.getSets(table, part.deck || pair.deck)).some(s => s.set_name === setName);
-                if (existing) await DB.clear(table, part.deck || pair.deck, setName);
-                if ((part.type || "words") === "sentences") await importSentencesFromCsv(text, part.deck || pair.deck, setName);
-                else await importWordsFromCsv(text, part.deck || pair.deck, setName);
-              }
-              currentDeck = pair.deck;
-              currentGame = "combined";
-              currentSetName = pair.base;
-              wordMode = "progressive";
-              sentenceMode = "progressive";
-              deckSelect.value = currentDeck;
-              gameSelect.value = currentGame;
-              modeSelect.value = wordMode;
-              sentenceModeSelect.value = sentenceMode;
-              importType = "sentences";
-              importTypeSelect.value = importType;
-              currentGateIndex = 0;
-              sessionLoadedIds = new Set();
-              applyDeckUI();
-              await refreshSetOptions();
-              updateGameUI();
-              await refreshStats();
-              await refreshGateInfo();
-              await loadCurrentGame(true);
-              builtinModal.classList.remove("active");
-              closeSettings();
-              showToast(`Imported combined pair: ${pair.base}.`);
-            } catch (err) {
-              btn.disabled = false;
-              btn.textContent = "Import pair";
-              showToast("Error: " + err.message);
-            }
-          });
-          wrap.appendChild(title); wrap.appendChild(meta); wrap.appendChild(btn);
-          builtinList.appendChild(wrap);
-        });
-      }
-
-      const singleHeader = document.createElement("div");
-      singleHeader.style.cssText = "font-size:11px;font-weight:700;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin:8px 0 4px;";
-      singleHeader.textContent = `${languageName()} decks`;
-      builtinList.appendChild(singleHeader);
-
-      decks.forEach(d => {
-        const wrap = document.createElement("div");
-        wrap.className = "builtin-item";
-        const title = document.createElement("div");
-        title.innerHTML = `<strong>${escapeHtml(d.name || d.file)}</strong>`;
-        const meta = document.createElement("div");
-        meta.className = "builtin-item-meta";
-        meta.textContent = `${d.type || "words"} · ${d.file}`;
-        const btn = document.createElement("button");
-        btn.textContent = "Import";
-        btn.style.marginTop = "6px";
+      const [ghDecks, jsonDecks] = await Promise.all([fetchDecksFromGitHubApi(), fetchDecksFromIndexJson()]);
+      const meta = new Map((jsonDecks || []).filter(d => d.file).map(d => [d.file, d]));
+      let base = ghDecks && ghDecks.length ? ghDecks.map(d => ({ ...d, ...(meta.get(d.file) || {}) })) : (jsonDecks || []);
+      const decks = base.filter(d => {
+        if (!d.file || d.type === "text" || normalizeDeck(d.deck || currentDeck) !== currentDeck) return false;
+        const mode = d.mode || ((d.type || "words") === "sentences" ? "sentences" : "words");
+        return mode === currentGame || (Array.isArray(d.compatibleModes) && d.compatibleModes.includes(currentGame));
+      }).sort((a,b)=>(a.name||"").localeCompare(b.name||""));
+      const note = document.createElement("div"); note.style.cssText="font-size:11px;color:var(--text-faint);margin-bottom:6px;line-height:1.35;";
+      note.textContent = `Showing ${currentGame} decks compatible with ${languageName()}.`; builtinList.appendChild(note);
+      if (!decks.length) { builtinList.innerHTML += `<em>No compatible built-in decks found.</em>`; return; }
+      for (const d of decks) {
+        const type = (d.type || "words") === "sentences" ? "sentences" : "words";
+        const setName = d.name || d.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, "");
+        const wrap = document.createElement("div"); wrap.className = "builtin-item";
+        const title = document.createElement("div"); title.innerHTML = `<strong>${escapeHtml(setName)}</strong>`;
+        const sub = document.createElement("div"); sub.className = "builtin-item-meta"; sub.textContent = `${languageName(d.deck || currentDeck)} · ${currentGame} · ${type}`;
+        const btn = document.createElement("button"); btn.textContent = "Import"; btn.style.marginTop = "6px";
+        const table = type === "sentences" ? "sentence_pairs" : "word_pairs";
+        const installed = (await DB.getSets(table, d.deck || currentDeck)).find(x => x.set_name === setName);
+        if (installed) btn.textContent = "Re-import";
         btn.addEventListener("click", async () => {
+          btn.disabled = true; btn.textContent = "Importing…";
           try {
-            const url = `decks/${d.file}`;
-            const r = await fetch(cacheBustedUrl(url), { cache: "reload" });
-            if (!r.ok) throw new Error(`Could not download ${d.file}`);
-            const text = await r.text();
-            const setName = (d.name || d.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, ""));
-            const targetTable = (d.type || "words") === "sentences" ? "sentence_pairs" : "word_pairs";
-            const targetDeck = d.deck || currentDeck;
-            const existing = (await DB.getSets(targetTable, targetDeck))
-              .some(s => s.set_name === setName);
-            if (existing) {
-              const wipe = await DB.clear(targetTable, targetDeck, setName);
-              if (wipe > 0) showToast(`Refreshing "${setName}"…`, 1200);
-            }
-            if ((d.type || "words") === "sentences") {
-              const n = await importSentencesFromCsv(text, d.deck || currentDeck, setName);
-              showToast(`Imported ${n} sentences into "${setName}".`);
-              importType = "sentences"; importTypeSelect.value = "sentences";
-            } else {
-              const n = await importWordsFromCsv(text, d.deck || currentDeck, setName);
-              showToast(`Imported ${n} words into "${setName}".`);
-              importType = "words"; importTypeSelect.value = "words";
-            }
-            if (d.deck) {
-              currentDeck = d.deck;
-              deckSelect.value = currentDeck;
-              applyDeckUI();
-            }
-            currentSetName = setName; currentGateIndex = 0;
-            await refreshSetOptions(); await refreshStats();
-            await loadCurrentGame(true);
-            builtinModal.classList.remove("active");
-            closeSettings();
-          } catch (err) { showToast("Error: " + err.message); }
+            const r = await fetch(cacheBustedUrl(`decks/${d.file}`), { cache: "reload" }); if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            const text = await r.text(); if (installed) await DB.clear(table, d.deck || currentDeck, setName);
+            if (type === "sentences") await importSentencesFromCsv(text, d.deck || currentDeck, setName); else await importWordsFromCsv(text, d.deck || currentDeck, setName);
+            currentDeck = d.deck || currentDeck; currentSetName = setName; deckSelect.value = currentDeck; currentGateIndex = 0;
+            await refreshSetOptions(); setSelect.value = currentSetName; await refreshStats(); await refreshGateInfo(); await loadCurrentGame(true);
+            builtinModal.classList.remove("active"); closeSettings(); showToast(`Imported ${setName}.`);
+          } catch (err) { showToast(`Import failed: ${err.message || err}`); btn.disabled = false; btn.textContent = installed ? "Re-import" : "Import"; }
         });
-        wrap.appendChild(title); wrap.appendChild(meta); wrap.appendChild(btn);
-        (async () => {
-          const targetTable = (d.type || "words") === "sentences" ? "sentence_pairs" : "word_pairs";
-          const targetDeck = d.deck || currentDeck;
-          const setName = (d.name || d.file.replace(/\.csv$/i, "").replace(/^[^/]+\//, ""));
-          const match = (await DB.getSets(targetTable, targetDeck)).find(s => s.set_name === setName);
-          if (!match) return;
-          btn.textContent = "Re-import";
-          const del = document.createElement("button");
-          del.className = "danger";
-          del.textContent = "Delete";
-          del.style.marginTop = "6px";
-          del.style.marginLeft = "6px";
-          del.addEventListener("click", async () => {
-            const ok = confirm(`Delete "${setName}" (${match.item_count} items) from this device? The file on GitHub is not affected.`);
-            if (!ok) return;
-            await deleteInstalledDeck({ deck: targetDeck, table: targetTable, set_name: setName });
-            showToast(`Deleted "${setName}".`);
-            loadBuiltinList();
-          });
-          meta.textContent += " · installed";
+        wrap.appendChild(title); wrap.appendChild(sub); wrap.appendChild(btn);
+        if (installed) {
+          const del = document.createElement("button"); del.className="danger"; del.textContent="Delete"; del.style.margin="6px 0 0 6px";
+          del.addEventListener("click", async () => { if (!confirm(`Delete ${setName} from this device?`)) return; await DB.clear(table, d.deck || currentDeck, setName); await loadBuiltinList(); await refreshSetOptions(); });
           wrap.appendChild(del);
-        })();
+        }
         builtinList.appendChild(wrap);
-      });
+      }
     }
 
     function syncLanguageSelectOptions() {
@@ -8132,6 +9068,8 @@
     closeBuiltinBtn.addEventListener("click", () => builtinModal.classList.remove("active"));
     builtinModal.addEventListener("click", e => { if (e.target === builtinModal) builtinModal.classList.remove("active"); });
     browseBuiltinBtn.addEventListener("click", () => { builtinModal.classList.add("active"); loadBuiltinList(); });
+    const openPackBuilderBtn = $("openPackBuilderBtn");
+    if (openPackBuilderBtn) openPackBuilderBtn.addEventListener("click", () => { location.href = "pack-builder.html"; });
 
     if (manageDecksBtn) manageDecksBtn.addEventListener("click", () => { manageDecksModal.classList.add("active"); renderManageDecks(); });
 
@@ -8278,11 +9216,29 @@
 
     forceUpdateBtn.addEventListener("click", forceAppUpdate);
 
-    restartBtn.addEventListener("click", async () => { await loadCurrentGame(true); closeSettings(); });
+    restartBtn.addEventListener("click", async () => {
+      if (currentGame === "text" && textEngine) await textRestartUnit();
+      else await loadCurrentGame(true);
+      closeSettings();
+    });
 
     clearBtn.addEventListener("click", async () => {
+      if (currentGame === "text") {
+        const entry = textManifestEntry();
+        const unitId = textEngine?.unit?.id || entry?.id;
+        if (!unitId) { showToast("No Text unit is selected."); return; }
+        const ok = confirm("Reset this Text unit's reading position and within-text checkpoint route? Shared word and grammar knowledge will be kept.");
+        if (!ok) return;
+        await DB.deleteRecord("reading_units", textKey(unitId));
+        textEngine = null;
+        await loadTextMode(true);
+        showToast("Text route reset. Shared knowledge was kept.");
+        closeSettings();
+        return;
+      }
       const tt = importType;
-      const ok = confirm(`Really clear ${currentSetName === "__all__" ? "ALL " + currentDeck.toUpperCase() : "deck \"" + currentSetName + "\""} ${tt === "words" ? "words" : "sentences"}? This cannot be undone.`);
+      const scopeLabel = currentSetName === "__all__" ? `ALL ${currentDeck.toUpperCase()}` : `deck ${currentSetName}`;
+      const ok = confirm(`Really clear ${scopeLabel} ${tt === "words" ? "words" : "sentences"}? This cannot be undone.`);
       if (!ok) return;
       const table = tt === "words" ? "word_pairs" : "sentence_pairs";
       const n = await DB.clear(table, currentDeck, currentSetName);
@@ -8297,7 +9253,6 @@
 
     gameSelect.addEventListener("change", async () => {
       currentGame = gameSelect.value; currentGateIndex = 0; sessionLoadedIds = new Set();
-      if (currentGame === "combined") { wordMode = "progressive"; sentenceMode = "progressive"; modeSelect.value = wordMode; sentenceModeSelect.value = sentenceMode; }
       saveSettings();
       await refreshSetOptions(); updateGameUI();
       await refreshStats(); await refreshGateInfo();
@@ -8330,7 +9285,7 @@
     });
     sentenceModeSelect.addEventListener("change", async () => {
       sentenceMode = sentenceModeSelect.value; saveSettings(); updateGameUI();
-      if (currentGame === "sentences") await loadCurrentGame(true);
+      if (currentGame === "sentences" || currentGame === "grammar") await loadCurrentGame(true);
     });
     scopeSelect.addEventListener("change", async () => {
       practiceScope = scopeSelect.value; saveSettings(); await loadCurrentGame(true);
@@ -8596,6 +9551,8 @@
         importType = saved.importType ?? importType;
         wordMode = saved.wordMode ?? wordMode;
         sentenceMode = saved.sentenceMode ?? sentenceMode;
+        textGoal = saved.textGoal ?? textGoal;
+        textTranslationMode = saved.textTranslationMode ?? textTranslationMode;
         practiceScope = saved.practiceScope ?? practiceScope;
         repetitionProfile = saved.repetitionProfile ?? repetitionProfile;
         newRatio = saved.newRatio ?? newRatio;
@@ -8609,6 +9566,9 @@
         columnOrder = saved.columnOrder ?? columnOrder;
       }
 
+      await loadLanguageRegistry();
+      if (currentGame === "combined") currentGame = "text";
+      if (!["words", "grammar", "sentences", "text"].includes(currentGame)) currentGame = "words";
       currentDeck = normalizeDeck(currentDeck);
       syncLanguageSelectOptions();
       applyTheme();
@@ -8640,29 +9600,20 @@
      */
     async function checkEmptyState() {
       let isEmpty = false;
-      if (currentGame === "combined") {
-        const pairs = await collectCombinedDeckPairs(currentDeck);
-        isEmpty = pairs.length === 0;
+      if (currentGame === "text") {
+        isEmpty = manifestDeckEntries(currentDeck, "text").length === 0;
       } else {
         const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
-        const all = await DB.getAll(table, currentDeck, "__all__");
+        let all = await DB.getAll(table, currentDeck, "__all__");
+        if (currentGame === "grammar" || currentGame === "sentences") all = all.filter(r => setSupportsStudyMode(r.set_name, currentGame, currentDeck));
         isEmpty = all.length === 0;
       }
-
       emptyState.classList.toggle("hidden", !isEmpty);
-
       if (isEmpty) {
-        // Hide all game containers and the gate strip
-        wordMatchContainer.classList.add("hidden");
-        wordTypingContainer.classList.add("hidden");
-        sentenceContainer.classList.add("hidden");
-        document.documentElement.classList.remove("order-practice-active");
-        gatePanel.classList.add("gate-disabled");
-        statusEl.textContent = currentGame === "combined" ? "Import a matching word + sentence book pair to start." : "Welcome! Import a deck to start.";
-      } else {
-        // Restore correct game container visibility
-        updateGameUI();
-      }
+        wordMatchContainer.classList.add("hidden"); wordTypingContainer.classList.add("hidden"); sentenceContainer.classList.add("hidden"); textModeContainer.classList.add("hidden");
+        document.documentElement.classList.remove("order-practice-active"); document.documentElement.classList.remove("text-practice-active"); gatePanel.classList.add("gate-disabled");
+        statusEl.textContent = currentGame === "text" ? "Add a Text unit to the language manifest." : "Welcome! Import a compatible deck to start.";
+      } else updateGameUI();
     }
 
     init();

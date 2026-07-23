@@ -1,0 +1,185 @@
+[
+  {
+    "name": "Core 3000",
+    "deck": "de",
+    "type": "words",
+    "mode": "words",
+    "compatibleModes": [
+      "words"
+    ],
+    "practiceModes": [
+      "match",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-core-3000",
+    "file": "de/words/core-3000.csv"
+  },
+  {
+    "name": "Hooks",
+    "deck": "de",
+    "type": "words",
+    "mode": "words",
+    "compatibleModes": [
+      "words"
+    ],
+    "practiceModes": [
+      "match",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-hooks",
+    "file": "de/words/hooks.csv"
+  },
+  {
+    "name": "Combined Flashcards",
+    "deck": "de",
+    "type": "words",
+    "mode": "words",
+    "compatibleModes": [
+      "words"
+    ],
+    "practiceModes": [
+      "match",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-combined-flashcards",
+    "file": "de/words/combined-flashcards.csv"
+  },
+  {
+    "name": "Grammar Sentences — Learning",
+    "deck": "de",
+    "type": "sentences",
+    "mode": "grammar",
+    "compatibleModes": [
+      "grammar",
+      "sentences"
+    ],
+    "practiceModes": [
+      "choice",
+      "order",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-grammar-learning",
+    "file": "de/grammar/grammar-sentences-learning.csv"
+  },
+  {
+    "name": "Sentence Patterns",
+    "deck": "de",
+    "type": "sentences",
+    "mode": "grammar",
+    "compatibleModes": [
+      "grammar",
+      "sentences"
+    ],
+    "practiceModes": [
+      "choice",
+      "order",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-sentence-patterns",
+    "file": "de/grammar/sentence-patterns.csv"
+  },
+  {
+    "name": "Sentence Builder",
+    "deck": "de",
+    "type": "sentences",
+    "mode": "sentences",
+    "compatibleModes": [
+      "sentences"
+    ],
+    "practiceModes": [
+      "choice",
+      "order",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-sentence-builder",
+    "file": "de/sentences/sentence-builder.csv"
+  },
+  {
+    "name": "Core 3000 Sentences",
+    "deck": "de",
+    "type": "sentences",
+    "mode": "sentences",
+    "compatibleModes": [
+      "sentences"
+    ],
+    "practiceModes": [
+      "choice",
+      "order",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-3000-sentences",
+    "file": "de/sentences/core-3000-sentences.csv"
+  },
+  {
+    "name": "Hooks Sentences",
+    "deck": "de",
+    "type": "sentences",
+    "mode": "sentences",
+    "compatibleModes": [
+      "sentences"
+    ],
+    "practiceModes": [
+      "choice",
+      "order",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-hooks-sentences",
+    "file": "de/sentences/hooks-sentences.csv"
+  },
+  {
+    "name": "Die Biene Maja · Kapitel 1",
+    "deck": "de",
+    "type": "text",
+    "mode": "text",
+    "compatibleModes": [
+      "text"
+    ],
+    "practiceModes": [
+      "reading",
+      "deep",
+      "memorise"
+    ],
+    "id": "de-text-maja",
+    "folder": "de/texts/maja-k01"
+  },
+  {
+    "name": "Sterntaler",
+    "deck": "de",
+    "type": "text",
+    "mode": "text",
+    "compatibleModes": [
+      "text"
+    ],
+    "practiceModes": [
+      "reading",
+      "deep",
+      "memorise"
+    ],
+    "id": "de-text-sterntaler",
+    "folder": "de/texts/sterntaler"
+  },
+  {
+    "name": "Core 3000",
+    "deck": "it",
+    "type": "words",
+    "mode": "words",
+    "compatibleModes": [
+      "words"
+    ],
+    "practiceModes": [
+      "match",
+      "typing",
+      "progressive"
+    ],
+    "id": "it-core-3000",
+    "file": "it/words/core-3000.csv"
+  }
+]
