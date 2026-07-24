@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 2,
+  "id": "de-sterntaler",
+  "title": "Sterntaler",
+  "subtitle": "Grimm",
+  "language": "de",
+  "learningGoal": "comprehension",
+  "translationMode": "always",
+  "pageSize": 6,
+  "sentenceFile": "sentences.csv",
+  "wordFile": "words.csv",
+  "patternFile": "../../patterns.csv",
+  "engine": "story-study",
+  "defaultCoverage": "complete",
+  "defaultGoal": "use",
+  "anchorFile": "anchors.csv"
+}

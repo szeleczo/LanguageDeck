@@ -11,7 +11,7 @@
 <body>
 <header><div><a href="index.html">← App</a><span class="title">Language Pack Builder</span><span style="width:44px"></span></div></header>
 <main>
-<h1 style="font-size:22px;margin:0 0 6px">Build a v85 language pack</h1>
+<h1 style="font-size:22px;margin:0 0 6px">Build a v87 language pack</h1>
 <p class="intro">This tool creates the package structure and a staged AI master prompt. It does not fabricate thousands of learning items in the browser: the generated prompt directs an AI to produce them in validated batches, then this page checks the completed folder before it is added to <code>decks/</code>.</p>
 <section class="card">
 <h2>1. Package plan</h2>
@@ -41,25 +41,40 @@
 <p class="small">The prompt requires staged output, reuse of the central lexicon, stable sense-aware IDs, exact surface forms, real scene boundaries and a validation pass. Frequency ranking must come from a supplied or cited frequency list, not from AI memory.</p>
 </section>
 <section class="card">
-<h2>3. Merge generated CSV batches</h2>
+<h2>3. Story Study text unit</h2>
+<p class="small">Create a manifest-driven Story Study unit that can be imported directly into the app. The completed unit must resolve every word-like token in Complete coverage; highlighted “key vocabulary” alone is not sufficient.</p>
+<div class="grid"><div>
+<div class="field"><label>Language code</label><input id="storyLang" value="de" maxlength="8"></div>
+<div class="field"><label>Stable unit id</label><input id="storyId" value="de-new-story" placeholder="de-story-01"></div>
+<div class="field"><label>Title</label><input id="storyTitle" value="New German Story"></div>
+</div><div>
+<div class="field"><label>Subtitle</label><input id="storySubtitle" value="Chapter 1"></div>
+<div class="field"><label>Target level</label><select id="storyLevel"><option>A1–A2</option><option selected>A2–B1</option><option>B1–B2</option></select></div>
+<div class="field"><label>Source / adaptation notes</label><input id="storyNotes" placeholder="public-domain story, own text, dialogue…"></div>
+</div></div>
+<div class="actions"><button id="makeStoryPrompt">Generate Story Study prompt</button><button id="downloadStoryStarter" class="secondary">Download Story Study starter ZIP</button></div>
+<textarea id="storyPrompt" spellcheck="false" style="margin-top:12px;min-height:330px" placeholder="The Story Study generation prompt appears here."></textarea>
+</section>
+<section class="card">
+<h2>4. Merge generated CSV batches</h2>
 <p class="small">Choose batch files with the same header. The merger preserves the first row for each stable key, reports conflicting duplicates, and downloads one RFC-4180 CSV.</p>
 <div class="grid"><div class="field"><label>CSV batches</label><input id="batchFiles" type="file" accept=".csv,text/csv" multiple></div><div class="field"><label>Stable duplicate key</label><select id="mergeKey"><option value="auto">Auto: lexeme_id → id → english</option><option value="lexeme_id">lexeme_id</option><option value="id">id</option><option value="english">english</option></select></div></div>
 <div class="actions"><button id="mergeBatches">Merge batches</button><button id="downloadMerged" class="secondary" disabled>Download merged CSV</button></div>
 <div id="mergeSummary" class="small" style="margin-top:10px"></div>
 </section>
 <section class="card">
-<h2>4. Validate a completed pack folder</h2>
+<h2>5. Validate and package a completed folder</h2>
 <input id="folder" type="file" webkitdirectory directory multiple>
-<div class="actions"><button id="validate">Validate folder</button><button id="downloadReport" class="secondary" disabled>Download report</button></div>
+<div class="actions"><button id="validate">Validate folder</button><button id="downloadReport" class="secondary" disabled>Download report</button><button id="downloadValidatedStory" class="secondary" disabled>Download importable Story ZIP</button></div>
 <div id="summary" class="small" style="margin-top:10px"></div><div id="report" class="report"></div>
 </section>
 </main>
 <script>
-const $=id=>document.getElementById(id);let latestReport=[];
+const $=id=>document.getElementById(id);let latestReport=[],latestValidatedFiles=null;
 function slug(s){return String(s||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'language'}
 function modules(){return [...document.querySelectorAll('[data-module]:checked')].map(x=>x.dataset.module)}
 function plan(){return{source:$('source').value,code:slug($('code').value).slice(0,8),name:$('name').value.trim(),native:$('native').value.trim(),variant:$('variant').value.trim(),level:$('level').value,count:+$('count').value,domain:$('domain').value.trim(),textType:$('textType').value.trim(),articles:$('articles').value,modules:modules()}}
-function masterPrompt(p){return `You are building a complete LanguageDeck v85 language pack.
+function masterPrompt(p){return `You are building a complete LanguageDeck v87 language pack.
 
 PACKAGE PARAMETERS
 - Source language: ${p.source}
@@ -101,13 +116,13 @@ sentences.csv:
 words.csv:
 "id","lexeme_id","english","target","article","hint","source_id","forms","kind"
 - forms MUST list every surface form that actually occurs in this unit, including inflections, strong past forms, plurals, compounds and split separable verbs.
-- kind is word, phrase or name.
+- kind is word, phrase, function or name. In Complete coverage every word-like token must resolve.
 anchors.csv only resolves genuine ambiguity and uses:
 "sentence_id","surface","occurrence","item_id"
 Never use fragile token offsets.
 
 READING ENGINE CONTRACT
-The learner advances regardless of performance. Practice occurs only after a scene/runtime page and is capped at five tasks. Every task remains in its original sentence. Taps mark friction. Re-encounters without taps can strengthen an item only after a minimum reading-time threshold. Grammar patterns are suspected from on-demand translation use and confirmed by repeated evidence or opening the structure explanation. Reading, Deep and Memorise are one engine with ceilings 2, 3 and 4.
+Story Study runs short adaptive blocks: pre-teach → read → Words practice → Sentences practice → clean reread → continue. Complete coverage requires every word-like token to resolve to a word, phrase, function item or name. The learner advances regardless of performance. Known items disappear automatically; difficult sentences return later in easier shapes and can be handed to targeted practice.
 
 MANIFEST
 manifest.json lists every deck with id, name, primaryMode (words|grammar|sentences|text), compatibleModes, practiceModes, level, schema and file or folder. language.json contains the display names, source/target languages, article values and typing hints.
@@ -121,10 +136,77 @@ STAGED WORKFLOW
 
 Do not silently omit a module or reduce the requested size. When output limits are reached, stop at a clean batch boundary and state the exact next batch to request.`}
 function csvHeader(cols){return cols.map(x=>`"${x}"`).join(',')+'\n'}
-function starterFiles(p){const lang={schemaVersion:1,code:p.code,name:p.name,nativeName:p.native,sourceLanguage:p.source.toLowerCase().slice(0,2),targetLanguage:p.code,useArticles:p.articles!=='none',articles:p.articles==='der|die|das'?['der','die','das']:[],typingPlaceholder:'Answer',typingHelp:`Type the ${p.name} equivalent.`};const decks=[];const files={};files[`${p.code}/language.json`]=JSON.stringify(lang,null,2)+'\n';files[`${p.code}/lexicon.csv`]=csvHeader(['lexeme_id','english','target','article','pos','sense','level']);files[`${p.code}/patterns.csv`]=csvHeader(['id','name','english','explanation','example_id','level']);if(p.modules.includes('words')){files[`${p.code}/words/core-${p.count}.csv`]=csvHeader(['id','lexeme_id','english','target','article','hint','level','tags']);decks.push({id:`${p.code}-core-${p.count}`,name:`Core ${p.count}`,file:`words/core-${p.count}.csv`,primaryMode:'words',compatibleModes:['words'],practiceModes:['match','typing','progressive'],level:p.level.split('–'),schema:'word'})}if(p.modules.includes('grammar')){files[`${p.code}/grammar/a1-foundations.csv`]=csvHeader(['id','english','target','hint','explanation','pattern','level','exercise_type','alternatives']);decks.push({id:`${p.code}-grammar-foundations`,name:'Grammar Foundations',file:'grammar/a1-foundations.csv',primaryMode:'grammar',compatibleModes:['grammar','sentences'],practiceModes:['choice','order','typing','progressive'],level:p.level.split('–'),schema:'sentence'})}if(p.modules.includes('sentences')){files[`${p.code}/sentences/a1-a2.csv`]=csvHeader(['id','english','target','hint','explanation','pattern','level','alternatives']);decks.push({id:`${p.code}-sentences-a1-a2`,name:'A1–A2 Sentences',file:'sentences/a1-a2.csv',primaryMode:'sentences',compatibleModes:['sentences'],practiceModes:['choice','order','typing','progressive'],level:['A1','A2'],schema:'sentence'})}if(p.modules.includes('texts')){files[`${p.code}/texts/starter/unit.json`]=JSON.stringify({schemaVersion:1,id:`${p.code}-starter-text`,title:'Starter Text',subtitle:'Unit 1',language:p.code,learningGoal:'comprehension',translationMode:'onDemand',pageSize:6,sentenceFile:'sentences.csv',wordFile:'words.csv',patternFile:'../../patterns.csv',anchorFile:'anchors.csv'},null,2)+'\n';files[`${p.code}/texts/starter/sentences.csv`]=csvHeader(['id','seq','scene','english','target','hint','explanation','chunks','pattern','level']);files[`${p.code}/texts/starter/words.csv`]=csvHeader(['id','lexeme_id','english','target','article','hint','source_id','forms','kind']);files[`${p.code}/texts/starter/anchors.csv`]=csvHeader(['sentence_id','surface','occurrence','item_id']);decks.push({id:`${p.code}-text-starter`,name:'Starter Text',folder:'texts/starter',primaryMode:'text',compatibleModes:['text'],practiceModes:['reading','deep','memorise'],level:p.level.split('–'),schema:'text'})}files[`${p.code}/manifest.json`]=JSON.stringify({schemaVersion:1,language:p.code,lexicon:'lexicon.csv',patterns:'patterns.csv',decks},null,2)+'\n';files[`${p.code}/PACKAGE_PLAN.json`]=JSON.stringify(p,null,2)+'\n';files[`${p.code}/MASTER_PROMPT.md`]=masterPrompt(p)+'\n';return files}
+function starterFiles(p){const lang={schemaVersion:1,code:p.code,name:p.name,nativeName:p.native,sourceLanguage:p.source.toLowerCase().slice(0,2),targetLanguage:p.code,useArticles:p.articles!=='none',articles:p.articles==='der|die|das'?['der','die','das']:[],typingPlaceholder:'Answer',typingHelp:`Type the ${p.name} equivalent.`};const decks=[];const files={};files[`${p.code}/language.json`]=JSON.stringify(lang,null,2)+'\n';files[`${p.code}/lexicon.csv`]=csvHeader(['lexeme_id','english','target','article','pos','sense','level']);files[`${p.code}/patterns.csv`]=csvHeader(['id','name','english','explanation','example_id','level']);if(p.modules.includes('words')){files[`${p.code}/words/core-${p.count}.csv`]=csvHeader(['id','lexeme_id','english','target','article','hint','level','tags']);decks.push({id:`${p.code}-core-${p.count}`,name:`Core ${p.count}`,file:`words/core-${p.count}.csv`,primaryMode:'words',compatibleModes:['words'],practiceModes:['match','typing','progressive'],level:p.level.split('–'),schema:'word'})}if(p.modules.includes('grammar')){files[`${p.code}/grammar/a1-foundations.csv`]=csvHeader(['id','english','target','hint','explanation','pattern','level','exercise_type','alternatives']);decks.push({id:`${p.code}-grammar-foundations`,name:'Grammar Foundations',file:'grammar/a1-foundations.csv',primaryMode:'grammar',compatibleModes:['grammar','sentences'],practiceModes:['choice','order','typing','progressive'],level:p.level.split('–'),schema:'sentence'})}if(p.modules.includes('sentences')){files[`${p.code}/sentences/a1-a2.csv`]=csvHeader(['id','english','target','hint','explanation','pattern','level','alternatives']);decks.push({id:`${p.code}-sentences-a1-a2`,name:'A1–A2 Sentences',file:'sentences/a1-a2.csv',primaryMode:'sentences',compatibleModes:['sentences'],practiceModes:['choice','order','typing','progressive'],level:['A1','A2'],schema:'sentence'})}if(p.modules.includes('texts')){files[`${p.code}/texts/starter/unit.json`]=JSON.stringify({schemaVersion:2,id:`${p.code}-starter-text`,title:'Starter Text',subtitle:'Unit 1',language:p.code,engine:'story-study',defaultCoverage:'complete',defaultGoal:'use',translationMode:'always',pageSize:4,sentenceFile:'sentences.csv',wordFile:'words.csv',patternFile:'../../patterns.csv',anchorFile:'anchors.csv'},null,2)+'\n';files[`${p.code}/texts/starter/sentences.csv`]=csvHeader(['id','seq','scene','english','target','hint','explanation','chunks','pattern','level']);files[`${p.code}/texts/starter/words.csv`]=csvHeader(['id','lexeme_id','english','target','article','hint','source_id','forms','kind']);files[`${p.code}/texts/starter/anchors.csv`]=csvHeader(['sentence_id','surface','occurrence','item_id']);decks.push({id:`${p.code}-text-starter`,name:'Starter Text',folder:'texts/starter',primaryMode:'text',compatibleModes:['text'],practiceModes:['story-study'],engine:'story-study',level:p.level.split('–'),schema:'text-v2'})}files[`${p.code}/manifest.json`]=JSON.stringify({schemaVersion:1,language:p.code,lexicon:'lexicon.csv',patterns:'patterns.csv',decks},null,2)+'\n';files[`${p.code}/PACKAGE_PLAN.json`]=JSON.stringify(p,null,2)+'\n';files[`${p.code}/MASTER_PROMPT.md`]=masterPrompt(p)+'\n';return files}
 function crcTable(){const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;t[n]=c>>>0}return t}const CRC=crcTable();function crc32(bytes){let c=0xffffffff;for(const b of bytes)c=CRC[(c^b)&255]^(c>>>8);return(c^0xffffffff)>>>0}function u16(n){return[n&255,(n>>>8)&255]}function u32(n){return[n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]}function makeZip(files){const enc=new TextEncoder(),local=[],central=[];let offset=0;for(const[name,text]of Object.entries(files)){const nb=enc.encode(name),data=enc.encode(text),crc=crc32(data);const lh=new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(data.length),...u32(data.length),...u16(nb.length),...u16(0),...nb]);local.push(lh,data);const ch=new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(data.length),...u32(data.length),...u16(nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(offset),...nb]);central.push(ch);offset+=lh.length+data.length}const centralSize=central.reduce((n,x)=>n+x.length,0),end=new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(central.length),...u16(central.length),...u32(centralSize),...u32(offset),...u16(0)]);return new Blob([...local,...central,end],{type:'application/zip'})}
+
+function storyPlan(){return{language:slug($('storyLang').value).slice(0,8)||'de',id:$('storyId').value.trim()||'story-unit',title:$('storyTitle').value.trim()||'Story Study',subtitle:$('storySubtitle').value.trim(),level:$('storyLevel').value,notes:$('storyNotes').value.trim()}}
+function storyPromptText(p){return `You are creating a complete LanguageDeck v87 Story Study unit.
+
+UNIT
+- Language: ${p.language}
+- Stable id: ${p.id}
+- Title: ${p.title}
+- Subtitle: ${p.subtitle}
+- Target level: ${p.level}
+- Notes: ${p.notes||'none'}
+
+OUTPUT EXACTLY THESE UTF-8 RFC-4180 FILES
+1. unit.json
+2. sentences.csv
+3. words.csv
+4. anchors.csv
+5. patterns.csv only for pattern ids not already in the language registry
+6. lexicon.csv containing every lexeme_id introduced by this portable unit
+
+LEARNING FLOW
+The app will run: short pre-teach → read 3–6 sentences → Words practice → Sentences practice → clean reread → continue. The text must therefore be authored as connected scenes, not isolated example sentences.
+
+unit.json
+Use schemaVersion 2, engine "story-study", defaultCoverage "complete", defaultGoal "use", translationMode "always", and the standard sentenceFile/wordFile/anchorFile fields.
+
+sentences.csv HEADER
+"id","seq","scene","english","target","hint","explanation","chunks","pattern","level"
+- 24–45 connected sentences, usually 5–12 words.
+- Stable s001… ids and real scene breaks.
+- english is a natural source-language rendering and unique.
+- chunks is REQUIRED for every sentence: 2–5 meaningful structural units separated by |. It powers beginner-friendly sentence reconstruction.
+- pattern contains canonical pipe-separated ids. explanation is concise and contextual when structure is non-obvious.
+
+words.csv HEADER
+"id","lexeme_id","english","target","article","hint","source_id","forms","kind"
+CRITICAL COMPLETE-COVERAGE RULE:
+Every word-like token in every target sentence must resolve to exactly one row, either as a content word, phrase, name, or function item. Do not provide only “important vocabulary”. Articles, pronouns, auxiliaries, conjunctions, inflected adjectives and irregular forms must also resolve. Multi-word and separable units should be one phrase item where pedagogically appropriate.
+- lexeme_id is stable, sense-aware and ASCII: <lang>.<pos>.<lemma>[.<sense>].
+- forms lists EVERY literal surface form used in this unit.
+- kind is word, phrase, function, or name.
+- source_id resolves to a sentence id.
+
+anchors.csv HEADER
+"sentence_id","surface","occurrence","item_id"
+Use anchors for compounds, ambiguity and discontinuous/separable phrases such as “fing ... an”. Surface + occurrence, never token offsets.
+
+BEFORE RETURNING, RUN THESE CHECKS
+- every sentence id and word id is unique;
+- every source_id resolves;
+- every pattern id resolves;
+- every lexeme_id appears in lexicon.csv and distinct meanings never share an id;
+- simulate tokenisation and prove 100% of word-like target tokens are bound;
+- all scenes have 3–8 sentences;
+- every sentence has useful chunks;
+- no non-breaking spaces or embedded HTML.
+
+Return the files in separate fenced code blocks labelled with their filenames. Do not omit function words.`}
+function storyStarterFiles(p){const unit={schemaVersion:2,id:p.id,title:p.title,subtitle:p.subtitle,language:p.language,engine:'story-study',defaultCoverage:'complete',defaultGoal:'use',translationMode:'always',sentenceFile:'sentences.csv',wordFile:'words.csv',anchorFile:'anchors.csv',patternFile:'patterns.csv'};return{
+ 'unit.json':JSON.stringify(unit,null,2)+'\n',
+ 'sentences.csv':'"id","seq","scene","english","target","hint","explanation","chunks","pattern","level"\n',
+ 'words.csv':'"id","lexeme_id","english","target","article","hint","source_id","forms","kind"\n',
+ 'anchors.csv':'"sentence_id","surface","occurrence","item_id"\n',
+ 'patterns.csv':'"id","name","english","explanation","example_id","level"\n',
+ 'lexicon.csv':'"lexeme_id","english","target","article","pos","level"\n',
+ 'STORY_STUDY_PROMPT.md':storyPromptText(p)+'\n'} }
 function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-$('makePrompt').onclick=()=>{$('prompt').value=masterPrompt(plan())};$('copyPrompt').onclick=async()=>{if(!$('prompt').value)$('prompt').value=masterPrompt(plan());await navigator.clipboard.writeText($('prompt').value);$('copyPrompt').textContent='Copied';setTimeout(()=>$('copyPrompt').textContent='Copy prompt',1200)};$('downloadPrompt').onclick=()=>{if(!$('prompt').value)$('prompt').value=masterPrompt(plan());download(new Blob([$('prompt').value],{type:'text/markdown'}),`LanguageDeck_${plan().code}_MASTER_PROMPT.md`)};$('downloadStarter').onclick=()=>{const p=plan();download(makeZip(starterFiles(p)),`languagedeck-${p.code}-starter-v85.zip`)};
+$('makeStoryPrompt').onclick=()=>{$('storyPrompt').value=storyPromptText(storyPlan())};$('downloadStoryStarter').onclick=()=>{const p=storyPlan();download(makeZip(storyStarterFiles(p)),`${p.id}-story-study-starter.zip`)};
+$('makePrompt').onclick=()=>{$('prompt').value=masterPrompt(plan())};$('copyPrompt').onclick=async()=>{if(!$('prompt').value)$('prompt').value=masterPrompt(plan());await navigator.clipboard.writeText($('prompt').value);$('copyPrompt').textContent='Copied';setTimeout(()=>$('copyPrompt').textContent='Copy prompt',1200)};$('downloadPrompt').onclick=()=>{if(!$('prompt').value)$('prompt').value=masterPrompt(plan());download(new Blob([$('prompt').value],{type:'text/markdown'}),`LanguageDeck_${plan().code}_MASTER_PROMPT.md`)};$('downloadStarter').onclick=()=>{const p=plan();download(makeZip(starterFiles(p)),`languagedeck-${p.code}-starter-v87.zip`)};
 function parseCSV(text){if(text.charCodeAt(0)===0xfeff)text=text.slice(1);const rows=[];let row=[],field='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')q=false;else field+=c}else if(c==='"')q=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}if(field||row.length){row.push(field);rows.push(row)}return rows.filter(r=>r.some(x=>x!==''))}function objects(text){const r=parseCSV(text);if(!r.length)return[];return r.slice(1).map(row=>Object.fromEntries(r[0].map((h,i)=>[h.trim(),row[i]??''])))}
 function quoteCSV(v){return `"${String(v??'').replace(/"/g,'""')}"`}
 function rowsToCSV(header,rows){return [header.map(quoteCSV).join(','),...rows.map(r=>header.map(h=>quoteCSV(r[h]??'')).join(','))].join('\r\n')+'\r\n'}
@@ -139,17 +221,20 @@ function idSet(rows,key){return new Set(rows.map(r=>String(r[key]||'').trim()).f
 function duplicateValues(rows,key){const seen=new Set(),dups=new Set();for(const r of rows){const v=String(r[key]||'').trim().toLowerCase();if(!v)continue;if(seen.has(v))dups.add(r[key]);seen.add(v)}return[...dups]}
 function surfaceOccurs(targets,form){const parts=String(form||'').toLowerCase().trim().split(/\s+/).filter(Boolean);if(!parts.length)return false;for(const target of targets){const words=String(target||'').toLowerCase().match(/[\p{L}\p{M}'’\-]+/gu)||[];let pos=-1,ok=true;for(const part of parts){pos=words.indexOf(part,pos+1);if(pos<0){ok=false;break}}if(ok)return true}return false}
 $('validate').onclick=async()=>{
-  latestReport=[];
+  latestReport=[];latestValidatedFiles=null;$('downloadValidatedStory').disabled=true;
   const files=[...$('folder').files];
   if(!files.length){add('bad','Choose a package folder first.');return renderReport()}
   const rawPaths=files.map(f=>(f.webkitRelativePath||f.name).replace(/\\/g,'/'));
   const commonRoot=rawPaths.length&&rawPaths[0].includes('/')?rawPaths[0].split('/')[0]+'/':'';
   const map=new Map();
   for(let i=0;i<files.length;i++){const path=commonRoot&&rawPaths[i].startsWith(commonRoot)?rawPaths[i].slice(commonRoot.length):rawPaths[i];map.set(path,await files[i].text())}
+  latestValidatedFiles=Object.fromEntries(map);
   const languagePath=[...map.keys()].find(x=>/(^|\/)language\.json$/.test(x));
   const manifestPath=[...map.keys()].find(x=>/(^|\/)manifest\.json$/.test(x));
-  if(!languagePath)add('bad','language.json is missing.');
-  if(!manifestPath)add('bad','manifest.json is missing.');
+  const standaloneUnitPath=[...map.keys()].find(x=>/(^|\/)unit\.json$/.test(x));
+  const standalone=!!standaloneUnitPath&&!manifestPath;
+  if(!standalone&&!languagePath)add('bad','language.json is missing.');
+  if(!standalone&&!manifestPath)add('bad','manifest.json is missing.');
   let manifest=null;
   try{if(manifestPath)manifest=JSON.parse(map.get(manifestPath))}catch(e){add('bad','manifest.json is not valid JSON: '+e.message)}
   const base=manifestPath?pathDir(manifestPath):'';
@@ -159,6 +244,26 @@ $('validate').onclick=async()=>{
   const patternRows=map.has(patternPath)?objects(map.get(patternPath)):[];
   const lexemeIds=idSet(lexiconRows,'lexeme_id');
   const patternIds=idSet(patternRows,'id');
+  if(standalone){
+    const ub=pathDir(standaloneUnitPath);let unit={};try{unit=JSON.parse(map.get(standaloneUnitPath))}catch(e){add('bad',`${standaloneUnitPath}: invalid JSON: ${e.message}`)}
+    if(unit.engine!=='story-study')add('bad','Standalone unit.json must declare engine: story-study.');
+    if(+unit.schemaVersion<2)add('bad','Standalone Story Study units require schemaVersion 2.');
+    const sentPath=joinPath(ub,unit.sentenceFile||'sentences.csv'),wordPath=joinPath(ub,unit.wordFile||'words.csv'),anchorPath=joinPath(ub,unit.anchorFile||'anchors.csv'),patPath=joinPath(ub,unit.patternFile||'patterns.csv'),lexPath=joinPath(ub,'lexicon.csv');
+    if(!map.has(sentPath))add('bad',`${sentPath}: required file is missing.`);else{
+      const sentRows=objects(map.get(sentPath)),sentIds=idSet(sentRows,'id');if(!sentRows.length)add('bad',`${sentPath}: no sentences.`);
+      const dups=duplicateValues(sentRows,'english');if(dups.length)add('bad',`${sentPath}: duplicate english values: ${dups.slice(0,5).join(', ')}`);
+      const patternIds=map.has(patPath)?idSet(objects(map.get(patPath)),'id'):new Set(),used=new Set();sentRows.forEach(r=>splitPipe(r.pattern).forEach(x=>used.add(x)));const unresolved=[...used].filter(x=>!patternIds.has(x));if(unresolved.length)add('bad',`Portable Story ZIP must include every used pattern in patterns.csv. Missing: ${unresolved.slice(0,8).join(', ')}`);
+      const noChunks=sentRows.filter(r=>!String(r.chunks||'').includes('|'));if(noChunks.length)add('warn',`${noChunks.length} sentences have no authored chunks.`);
+      if(!map.has(wordPath))add('bad','Complete Story Study requires words.csv.');else{
+        const wordRows=objects(map.get(wordPath)),wordIds=idSet(wordRows,'id'),lexIds=map.has(lexPath)?idSet(objects(map.get(lexPath)),'lexeme_id'):new Set();
+        const badSrc=wordRows.filter(r=>r.source_id&&!sentIds.has(r.source_id));if(badSrc.length)add('bad',`${badSrc.length} words have unresolved source_id values.`);
+        if(map.has(lexPath)){const missing=wordRows.filter(r=>r.lexeme_id&&!lexIds.has(r.lexeme_id));if(missing.length)add('bad',`${missing.length} lexeme_id values are absent from the portable lexicon.csv.`)}else add('warn','Portable lexicon.csv is missing; the app can run, but cross-pack identity cannot be checked before import.');
+        const forms=wordRows.flatMap(r=>[...splitPipe(r.forms),r.target].filter(Boolean));const missing=[];for(const sr of sentRows){for(const token of String(sr.target||'').match(/[\p{L}\p{M}'’\-]+/gu)||[]){const tn=norm(token),ok=forms.some(f=>{const parts=(String(f).match(/[\p{L}\p{M}'’\-]+/gu)||[]).map(norm);return parts.includes(tn)&&surfaceOccurs([sr.target],f)});if(!ok)missing.push(`${sr.id}:${token}`)}}const unique=[...new Set(missing)];if(unique.length)add('bad',`Complete token coverage is not 100%; unresolved: ${unique.slice(0,10).join(', ')}`);else add('ok','Complete Story Study token coverage is 100%.');
+        if(map.has(anchorPath))for(const a of objects(map.get(anchorPath))){if(!sentIds.has(a.sentence_id))add('bad',`${anchorPath}: unknown sentence_id ${a.sentence_id}`);if(!wordIds.has(a.item_id))add('bad',`${anchorPath}: unknown item_id ${a.item_id}`)}
+      }
+    }
+    add('ok',`Standalone Story Study unit loaded: ${unit.title||unit.id||'unnamed'}.`);
+  }
   if(manifest){
     add('ok',`Manifest loaded for ${manifest.language||'unknown language'} with ${(manifest.decks||[]).length} decks.`);
     if(!map.has(lexiconPath))add('warn',`Language lexicon is missing: ${lexiconPath}`);
@@ -190,6 +295,7 @@ $('validate').onclick=async()=>{
           const missingLex=wordRows.filter(r=>r.lexeme_id&&!lexemeIds.has(r.lexeme_id)).map(r=>r.lexeme_id);if(missingLex.length)add('bad',`${wordPath}: lexeme_id values absent from lexicon.csv: ${[...new Set(missingLex)].slice(0,8).join(', ')}`);
           const badSource=wordRows.filter(r=>r.source_id&&!sentIds.has(r.source_id)&&!sentEnglish.has(r.source_id)).map(r=>r.source_id);if(badSource.length)add('bad',`${wordPath}: unresolved source_id values: ${[...new Set(badSource)].slice(0,8).join(', ')}`);
           const targets=sentRows.map(r=>r.target||'');let bound=0;const unbound=[];for(const r of wordRows){const forms=[...splitPipe(r.forms),r.target].filter(Boolean);if(forms.some(f=>surfaceOccurs(targets,f)))bound++;else unbound.push(`${r.id}:${r.target}`)}const pct=wordRows.length?Math.round(bound/wordRows.length*100):100;add(pct>=90?'ok':'warn',`${wordPath}: anchoring coverage ${pct}% (${bound}/${wordRows.length})${unbound.length?`; unbound: ${unbound.slice(0,6).join(', ')}`:''}.`);
+          if(unit.engine==='story-study'&&(unit.defaultCoverage||'complete')==='complete'){const allForms=wordRows.flatMap(r=>[...splitPipe(r.forms),r.target].filter(Boolean));const missingTokens=[];for(const sr of sentRows){const tokens=String(sr.target||'').match(/[\p{L}\p{M}'’\-]+/gu)||[];for(const token of tokens){const tn=norm(token);const covered=allForms.some(f=>{const parts=(String(f).match(/[\p{L}\p{M}'’\-]+/gu)||[]).map(norm);return parts.includes(tn)&&surfaceOccurs([sr.target],f)});if(!covered)missingTokens.push(`${sr.id}:${token}`)}}const uniqueMissing=[...new Set(missingTokens)];if(uniqueMissing.length)add('bad',`${d.id}: Complete Story Study token coverage is not 100%; ${uniqueMissing.length} unresolved tokens, e.g. ${uniqueMissing.slice(0,8).join(', ')}.`);else add('ok',`${d.id}: Complete Story Study token coverage is 100%.`);const noChunks=sentRows.filter(r=>!String(r.chunks||'').includes('|'));if(noChunks.length)add('warn',`${d.id}: ${noChunks.length} sentences have no authored structural chunks.`)}
           if(map.has(anchorPath)){for(const a of objects(map.get(anchorPath))){if(!sentIds.has(a.sentence_id))add('bad',`${anchorPath}: unknown sentence_id ${a.sentence_id}`);if(!wordIds.has(a.item_id))add('bad',`${anchorPath}: unknown item_id ${a.item_id}`);if(!/^\d+$/.test(String(a.occurrence||'')))add('bad',`${anchorPath}: occurrence must be a positive integer.`)}}
         }else add('warn',`${d.id}: words.csv is absent. The Text unit can run, but most taps will use fallback glosses.`);
       }
@@ -199,12 +305,13 @@ $('validate').onclick=async()=>{
     if(!path.endsWith('.csv'))continue;
     const rows=parseCSV(text);if(!rows.length){add('warn',`${path}: empty CSV.`);continue}
     const width=rows[0].length,bad=rows.findIndex((r,i)=>i>0&&r.length!==width);if(bad>=0)add('bad',`${path}: row ${bad+1} has ${rows[bad].length} columns; header has ${width}.`);
-    const hdr=rows[0],objs=objects(text);for(const key of ['id','english','lexeme_id'])if(hdr.includes(key)){const dups=duplicateValues(objs,key);if(dups.length)add('bad',`${path}: duplicate ${key}: ${dups.slice(0,5).join(', ')}`)}
+    const hdr=rows[0],objs=objects(text);for(const key of ['id','lexeme_id',...(path.endsWith('lexicon.csv')?[]:['english'])])if(hdr.includes(key)){const dups=duplicateValues(objs,key);if(dups.length)add('bad',`${path}: duplicate ${key}: ${dups.slice(0,5).join(', ')}`)}
     if(/[ÃÂâ][^\s]{0,3}/.test(text))add('warn',`${path}: possible mojibake sequence detected.`);
   }
   if(!latestReport.some(x=>x.sev==='bad'))add('ok','No blocking package errors found.');
   renderReport();
 };
-function renderReport(){$('report').innerHTML=latestReport.map(x=>`<div class="row ${x.sev}">${x.msg.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}</div>`).join('');const c={ok:0,warn:0,bad:0};latestReport.forEach(x=>c[x.sev]++);$('summary').textContent=`${c.bad} errors · ${c.warn} warnings · ${c.ok} checks`; $('downloadReport').disabled=!latestReport.length}$('downloadReport').onclick=()=>{const html=`<!doctype html><meta charset="utf-8"><title>LanguageDeck validation report</title><h1>LanguageDeck validation report</h1><p>${$('summary').textContent}</p><ul>${latestReport.map(x=>`<li><strong>${x.sev.toUpperCase()}</strong> ${x.msg}</li>`).join('')}</ul>`;download(new Blob([html],{type:'text/html'}),'validation-report.html')};$('makePrompt').click();
+function renderReport(){$('report').innerHTML=latestReport.map(x=>`<div class="row ${x.sev}">${x.msg.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}</div>`).join('');const c={ok:0,warn:0,bad:0};latestReport.forEach(x=>c[x.sev]++);$('summary').textContent=`${c.bad} errors · ${c.warn} warnings · ${c.ok} checks`; $('downloadReport').disabled=!latestReport.length;$('downloadValidatedStory').disabled=!(latestValidatedFiles&&c.bad===0&&Object.keys(latestValidatedFiles).some(k=>/(^|\/)unit\.json$/.test(k)))}$('downloadValidatedStory').onclick=()=>{if(!latestValidatedFiles)return;const cleaned={};for(const[k,v]of Object.entries(latestValidatedFiles)){const parts=k.split('/');const unitAt=parts.lastIndexOf('unit.json');const name=unitAt>=0?parts.slice(unitAt+1).join('/'):parts[parts.length-1];cleaned[name||parts[parts.length-1]]=v}const unitRaw=Object.entries(latestValidatedFiles).find(([k])=>/(^|\/)unit\.json$/.test(k))?.[1];let id='story-study';try{id=JSON.parse(unitRaw).id||id}catch(_){}download(makeZip(cleaned),`${id}-story-study.zip`)};
+$('downloadReport').onclick=()=>{const html=`<!doctype html><meta charset="utf-8"><title>LanguageDeck validation report</title><h1>LanguageDeck validation report</h1><p>${$('summary').textContent}</p><ul>${latestReport.map(x=>`<li><strong>${x.sev.toUpperCase()}</strong> ${x.msg}</li>`).join('')}</ul>`;download(new Blob([html],{type:'text/html'}),'validation-report.html')};$('makePrompt').click();$('makeStoryPrompt').click();
 </script>
 </body></html>

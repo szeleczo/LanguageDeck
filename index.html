@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v86-story-study-20260723" />
+  <link rel="manifest" href="manifest.webmanifest?v=v87-dynamic-story-study-20260723" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -3411,7 +3411,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v86-story-study-20260723</div>
+      <div class="meta" id="appBuildLabel">Build: v87-dynamic-story-study-20260723</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -3422,6 +3422,7 @@
               <option value="words" selected>Words</option>
               <option value="grammar">Grammar</option>
               <option value="sentences">Sentences</option>
+              <option value="story">Story Study ZIP</option>
               <option value="text">Text / Reading</option>
             </select>
           </div>
@@ -3564,6 +3565,7 @@
             <select id="importTypeSelect">
               <option value="words" selected>Words</option>
               <option value="sentences">Sentences</option>
+              <option value="story">Story Study ZIP</option>
             </select>
           </div>
           <div>
@@ -3571,17 +3573,17 @@
             <input type="text" id="newSetNameInput" placeholder="e.g. basic_500 or book_1" />
           </div>
           <div>
-            <label for="fileInput">From file (CSV)</label>
+            <label for="fileInput" id="fileInputLabel">From file (CSV)</label>
             <input type="file" id="fileInput" accept=".csv" />
             <button id="uploadBtn" style="margin-top:8px;width:100%;">Import file</button>
           </div>
           <div>
-            <label for="urlInput">From URL (CSV)</label>
+            <label for="urlInput" id="urlInputLabel">From URL (CSV)</label>
             <input type="url" id="urlInput" placeholder="https://username.github.io/..." />
             <button id="urlImportBtn" class="secondary" style="margin-top:8px;width:100%;">Import from URL</button>
           </div>
           <div class="meta" style="font-size:12px;line-height:1.35;">
-            CSV: <code>english,target</code> still works. Word decks should use
+            CSV: <code>english,target</code> still works. Story Study imports use a validated ZIP containing <code>unit.json</code>, <code>sentences.csv</code>, <code>words.csv</code>, and optional anchors/patterns. Word decks should use
             <code>english,target,article,hint</code>. Sentence decks may use
             <code>english,target,hint,explanation</code>; <code>alternatives</code> is optional
             when there are genuinely accepted alternate answers. Hints open with a tap/click; explanations appear after Reveal or a wrong answer.
@@ -3698,7 +3700,7 @@
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v86-story-study-20260723";
+    const APP_BUILD = "v87-dynamic-story-study-20260723";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3761,6 +3763,25 @@
       const list = manifest && Array.isArray(manifest.decks) ? manifest.decks : [];
       if (!mode) return list;
       return list.filter(d => d.primaryMode === mode || (Array.isArray(d.compatibleModes) && d.compatibleModes.includes(mode)));
+    }
+
+    const STORY_PACK_INDEX_KEY = "ld-story-pack-index-v1";
+    function storyPackIndex() {
+      try { const v = JSON.parse(localStorage.getItem(STORY_PACK_INDEX_KEY) || "[]"); return Array.isArray(v) ? v : []; }
+      catch (_) { return []; }
+    }
+    function writeStoryPackIndex(rows) { localStorage.setItem(STORY_PACK_INDEX_KEY, JSON.stringify(rows)); }
+    function importedStoryEntries(language = currentDeck) {
+      return storyPackIndex().filter(x => x.language === language).map(x => ({
+        id: `local:${x.id}`, localId: x.id, name: x.name || x.id, folder: "", engine: "story-study",
+        primaryMode: "text", compatibleModes: ["text"], practiceModes: ["story-study"],
+        level: x.level || [], schema: "text-v2", imported: true
+      }));
+    }
+    function allTextDeckEntries(language = currentDeck) {
+      const builtIn = manifestDeckEntries(language, "text");
+      const local = importedStoryEntries(language);
+      return [...builtIn, ...local];
     }
 
     function normalisedSetKey(value) {
@@ -5459,8 +5480,10 @@
     const rightColumnTitle = $("rightColumnTitle");
 
     const fileInput = $("fileInput");
+    const fileInputLabel = $("fileInputLabel");
     const uploadBtn = $("uploadBtn");
     const urlInput = $("urlInput");
+    const urlInputLabel = $("urlInputLabel");
     const urlImportBtn = $("urlImportBtn");
     const browseBuiltinBtn = $("browseBuiltinBtn");
     const manageDecksBtn = $("manageDecksBtn");
@@ -5674,7 +5697,7 @@
     }
     function textExpectedMs(sentence) { return TEXT_CFG.BASE_MS + String(sentence.target || "").length * TEXT_CFG.MS_PER_CHAR; }
     function textManifestEntry() {
-      return manifestDeckEntries(currentDeck, "text").find(d => d.id === currentSetName) || manifestDeckEntries(currentDeck, "text")[0] || null;
+      return allTextDeckEntries(currentDeck).find(d => d.id === currentSetName) || allTextDeckEntries(currentDeck)[0] || null;
     }
     function textResolveUrl(base, relative) { return new URL(relative, new URL(base, location.href)).toString(); }
     async function textFetchText(url, required = true) {
@@ -5866,14 +5889,16 @@
         statusEl.textContent = "No Text unit available.";
         return;
       }
-      // v86: the accepted Story Study engine is the reference implementation
-      // for the Maja unit. It is isolated in its own document so the stable v81
-      // Words/Grammar/Sentences layout and the generic v84 Text loader remain intact.
-      const useStoryStudy = entry.id === "de-text-maja";
+      // v87: Story Study is selected by the data contract, never by a deck name.
+      // Built-in and locally imported units use the same manifest-driven engine.
+      const useStoryStudy = entry.engine === "story-study" || entry.schema === "text-v2" || !!entry.localId;
       textModeContainer.classList.toggle("story-study-active", useStoryStudy);
       if (useStoryStudy) {
         textEngine = null;
-        if (storyStudyFrame && !storyStudyFrame.getAttribute("src")) storyStudyFrame.setAttribute("src", "story-study.html");
+        const storyUrl = entry.localId
+          ? `story-study.html?local=${encodeURIComponent(entry.localId)}&v=${encodeURIComponent(APP_BUILD)}`
+          : `story-study.html?lang=${encodeURIComponent(currentDeck)}&folder=${encodeURIComponent(entry.folder || "")}&id=${encodeURIComponent(entry.id)}&v=${encodeURIComponent(APP_BUILD)}`;
+        if (storyStudyFrame && storyStudyFrame.getAttribute("src") !== storyUrl) storyStudyFrame.setAttribute("src", storyUrl);
         statusEl.textContent = `${entry.name} · Story Study`;
         return;
       }
@@ -6745,7 +6770,7 @@
     async function refreshSetOptions() {
       setSelect.innerHTML = "";
       if (currentGame === "text") {
-        const entries = manifestDeckEntries(currentDeck, "text");
+        const entries = allTextDeckEntries(currentDeck);
         for (const d of entries) {
           const o = document.createElement("option"); o.value = d.id; o.textContent = `${d.name}${d.level ? ` · ${d.level.join("–")}` : ""}`; setSelect.appendChild(o);
         }
@@ -9174,15 +9199,21 @@
       if (builtinTitle) builtinTitle.textContent = `${languageFlag()} ${languageName()} built-in decks`;
       builtinList.innerHTML = "";
       if (currentGame === "text") {
-        const units = manifestDeckEntries(currentDeck, "text");
+        const units = allTextDeckEntries(currentDeck);
         const note = document.createElement("div"); note.className = "builtin-item-meta";
-        note.textContent = "Text units are read directly from the language pack; no local import is required."; builtinList.appendChild(note);
+        note.textContent = "Built-in units come from the language pack. Imported Story Study ZIPs are stored only on this device."; builtinList.appendChild(note);
         for (const d of units) {
           const wrap = document.createElement("div"); wrap.className = "builtin-item";
-          wrap.innerHTML = `<strong>${escapeHtml(d.name)}</strong><div class="builtin-item-meta">${escapeHtml((d.level || []).join("–"))} · Reading / Deep / Memorise</div>`;
+          wrap.innerHTML = `<strong>${escapeHtml(d.name)}</strong><div class="builtin-item-meta">${escapeHtml((d.level || []).join("–"))}${d.imported ? " · imported on this device" : " · Story Study"}</div>`;
           const btn = document.createElement("button"); btn.textContent = d.id === currentSetName ? "Active" : "Open"; btn.disabled = d.id === currentSetName;
           btn.addEventListener("click", async () => { currentSetName = d.id; setSelect.value = d.id; saveSettings(); await loadCurrentGame(true); builtinModal.classList.remove("active"); closeSettings(); });
-          wrap.appendChild(btn); builtinList.appendChild(wrap);
+          wrap.appendChild(btn);
+          if (d.localId) {
+            const del = document.createElement("button"); del.className = "danger"; del.textContent = "Delete"; del.style.marginLeft = "6px";
+            del.addEventListener("click", async () => { if (!confirm(`Delete imported text “${d.name}” from this device?`)) return; localStorage.removeItem("ld-story-pack:" + d.localId); writeStoryPackIndex(storyPackIndex().filter(x => x.id !== d.localId)); if (currentSetName === d.id) currentSetName = allTextDeckEntries(currentDeck)[0]?.id || "__all__"; await refreshSetOptions(); await loadBuiltinList(); await loadCurrentGame(true); });
+            wrap.appendChild(del);
+          }
+          builtinList.appendChild(wrap);
         }
         if (!units.length) builtinList.innerHTML += `<em>No Text units are declared in decks/${escapeHtml(currentDeck)}/manifest.json.</em>`;
         return;
@@ -9355,25 +9386,114 @@
     if (closeManageDecksBtn) closeManageDecksBtn.addEventListener("click", () => manageDecksModal.classList.remove("active"));
     manageDecksModal.addEventListener("click", e => { if (e.target === manageDecksModal) manageDecksModal.classList.remove("active"); });
 
+
+    function storyZipU16(view, off) { return view.getUint16(off, true); }
+    function storyZipU32(view, off) { return view.getUint32(off, true); }
+    async function readStoryZip(file) {
+      const buf = await file.arrayBuffer(), view = new DataView(buf), dec = new TextDecoder("utf-8"), files = {};
+      let off = 0;
+      while (off + 30 <= view.byteLength && storyZipU32(view, off) === 0x04034b50) {
+        const flags = storyZipU16(view, off + 6), method = storyZipU16(view, off + 8);
+        const compSize = storyZipU32(view, off + 18), nameLen = storyZipU16(view, off + 26), extraLen = storyZipU16(view, off + 28);
+        if (flags & 0x08) throw new Error("This ZIP uses streaming data descriptors. Re-package it with Language Pack Builder.");
+        const name = dec.decode(new Uint8Array(buf, off + 30, nameLen)).replace(/\\/g, "/");
+        const start = off + 30 + nameLen + extraLen, compressed = new Uint8Array(buf.slice(start, start + compSize));
+        let bytes;
+        if (method === 0) bytes = compressed;
+        else if (method === 8 && typeof DecompressionStream !== "undefined") {
+          const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+          bytes = new Uint8Array(await new Response(stream).arrayBuffer());
+        } else throw new Error(`Unsupported ZIP compression method ${method}. Use the Builder's ZIP output.`);
+        if (name && !name.endsWith("/")) files[name] = dec.decode(bytes);
+        off = start + compSize;
+      }
+      if (!Object.keys(files).length) throw new Error("No files could be read from the ZIP.");
+      return files;
+    }
+    function storyFindFile(files, name) { const key = Object.keys(files).find(k => k === name || k.endsWith("/" + name)); return key ? files[key] : ""; }
+    function storyNorm(value) { return String(value || "").toLocaleLowerCase().normalize("NFC").replace(/[^\p{L}\p{M}'’\-]+/gu, ""); }
+    function storyWordTokens(value) { return String(value || "").match(/[\p{L}\p{M}'’\-]+/gu) || []; }
+    function storyOrderedOccurs(sentence, form) {
+      const words = storyWordTokens(sentence).map(storyNorm), parts = storyWordTokens(form).map(storyNorm); let pos = -1;
+      for (const part of parts) { pos = words.indexOf(part, pos + 1); if (pos < 0) return false; }
+      return parts.length > 0;
+    }
+    function validateStoryPackFiles(files) {
+      const errors = [], warnings = [], unitRaw = storyFindFile(files, "unit.json"), sentRaw = storyFindFile(files, "sentences.csv"), wordRaw = storyFindFile(files, "words.csv");
+      if (!unitRaw) errors.push("unit.json is missing."); if (!sentRaw) errors.push("sentences.csv is missing.");
+      let unit = {}; try { if (unitRaw) unit = JSON.parse(unitRaw); } catch (e) { errors.push("unit.json is invalid JSON: " + e.message); }
+      if (unit.engine !== "story-study") warnings.push("unit.json should declare engine: story-study; it will be set during import.");
+      const sentences = sentRaw ? textParseCsvObjects(sentRaw) : [], words = wordRaw ? textParseCsvObjects(wordRaw) : [];
+      if (!sentences.length) errors.push("sentences.csv contains no usable rows.");
+      const requiredSent = ["id", "english", "target"]; if (sentences.length) for (const k of requiredSent) if (!(k in sentences[0])) errors.push(`sentences.csv is missing ${k}.`);
+      const sentIds = new Set(sentences.map(x => x.id));
+      if (!wordRaw) warnings.push("words.csv is missing; Complete coverage cannot be guaranteed.");
+      const patternRows = textParseCsvObjects(storyFindFile(files, "patterns.csv"));
+      const patternIds = new Set(patternRows.map(x => x.id).filter(Boolean));
+      const usedPatterns = new Set(sentences.flatMap(x => String(x.pattern || "").split("|").map(v => v.trim()).filter(Boolean)));
+      const missingPatterns = [...usedPatterns].filter(x => !patternIds.has(x));
+      if (missingPatterns.length) errors.push(`Portable patterns.csv is missing: ${missingPatterns.slice(0, 8).join(", ")}.`);
+      const lexiconRows = textParseCsvObjects(storyFindFile(files, "lexicon.csv"));
+      const lexemeIds = new Set(lexiconRows.map(x => x.lexeme_id).filter(Boolean));
+      if (!lexiconRows.length) warnings.push("Portable lexicon.csv is missing; cross-pack word identity cannot be verified before import.");
+      if (words.length) {
+        for (const k of ["id", "lexeme_id", "english", "target", "source_id", "forms"]) if (!(k in words[0])) errors.push(`words.csv is missing ${k}.`);
+        if (lexiconRows.length) { const absent = words.filter(w => w.lexeme_id && !lexemeIds.has(w.lexeme_id)); if (absent.length) errors.push(`${absent.length} lexeme_id values are absent from portable lexicon.csv.`); }
+        const forms = words.flatMap(w => [...String(w.forms || "").split("|"), w.target].filter(Boolean).map(f => ({ f, id: w.id })));
+        const uncovered = [];
+        for (const s of sentences) for (const token of storyWordTokens(s.target)) {
+          if (!forms.some(x => storyOrderedOccurs(s.target, x.f) && storyWordTokens(x.f).some(p => storyNorm(p) === storyNorm(token)))) uncovered.push(`${s.id}:${token}`);
+        }
+        const unique = [...new Set(uncovered)]; if (unique.length) errors.push(`Complete token coverage failed for ${unique.length} token occurrences (examples: ${unique.slice(0, 8).join(", ")}).`);
+        const badSource = words.filter(w => w.source_id && !sentIds.has(w.source_id)); if (badSource.length) errors.push(`${badSource.length} words have unresolved source_id values.`);
+      }
+      return { unit, sentences, words, errors, warnings };
+    }
+    async function importStoryZip(file) {
+      const files = await readStoryZip(file), check = validateStoryPackFiles(files);
+      if (check.errors.length) throw new Error(check.errors.join(" "));
+      const unit = { ...check.unit, schemaVersion: 2, engine: "story-study", defaultCoverage: check.unit.defaultCoverage || "complete", defaultGoal: check.unit.defaultGoal || "use" };
+      const unitKey = Object.keys(files).find(k => k === "unit.json" || k.endsWith("/unit.json")); files[unitKey] = JSON.stringify(unit, null, 2) + "\n";
+      const id = String(unit.id || file.name.replace(/\.zip$/i, "")).replace(/[^a-zA-Z0-9._-]+/g, "-");
+      const language = unit.language || currentDeck, name = [unit.title, unit.subtitle].filter(Boolean).join(" · ") || id;
+      if (!SUPPORTED_DECKS.has(language)) throw new Error(`Language “${language}” is not installed. Add its language pack before importing this text.`);
+      const pack = { id, language, name, level: [...new Set(check.sentences.map(x => x.level).filter(Boolean))], importedAt: Date.now(), files };
+      try { localStorage.setItem("ld-story-pack:" + id, JSON.stringify(pack)); }
+      catch (e) { throw new Error("The pack is too large for local device storage."); }
+      const idx = storyPackIndex().filter(x => x.id !== id); idx.push({ id, language, name, level: pack.level, importedAt: pack.importedAt }); writeStoryPackIndex(idx);
+      return { id: `local:${id}`, name, warnings: check.warnings };
+    }
+    function updateImportControls() {
+      const story = importType === "story";
+      fileInput.accept = story ? ".zip,application/zip" : ".csv,text/csv";
+      if (fileInputLabel) fileInputLabel.textContent = story ? "From file (Story Study ZIP)" : "From file (CSV)";
+      if (urlInputLabel) urlInputLabel.textContent = story ? "From URL (ZIP not supported here)" : "From URL (CSV)";
+      urlInput.disabled = story; urlImportBtn.disabled = story; newSetNameInput.disabled = story;
+      uploadBtn.textContent = story ? "Validate and import Story Study ZIP" : "Import file";
+    }
+
     uploadBtn.addEventListener("click", async () => {
       const file = fileInput.files[0];
-      if (!file) { showToast("Pick a CSV file first."); return; }
+      if (!file) { showToast(importType === "story" ? "Pick a Story Study ZIP first." : "Pick a CSV file first."); return; }
       const setName = (newSetNameInput.value || "").trim() || "default";
       try {
+        if (importType === "story") {
+          const result = await importStoryZip(file);
+          currentDeck = storyPackIndex().find(x => `local:${x.id}` === result.id)?.language || currentDeck;
+          currentGame = "text"; currentSetName = result.id; gameSelect.value = "text"; deckSelect.value = currentDeck;
+          fileInput.value = ""; saveSettings(); await refreshSetOptions(); setSelect.value = currentSetName; updateGameUI(); await loadCurrentGame(true); closeSettings();
+          showToast(`Imported ${result.name}.${result.warnings.length ? " " + result.warnings[0] : ""}`); return;
+        }
         const text = await file.text();
-        const n = importType === "words"
-          ? await importWordsFromCsv(text, currentDeck, setName)
-          : await importSentencesFromCsv(text, currentDeck, setName);
+        const n = importType === "words" ? await importWordsFromCsv(text, currentDeck, setName) : await importSentencesFromCsv(text, currentDeck, setName);
         showToast(`Imported ${n} ${importType === "words" ? "words" : "sentences"} into "${setName}".`);
-        fileInput.value = "";
-        currentSetName = setName; currentGateIndex = 0;
-        await refreshSetOptions(); await refreshStats();
-        await loadCurrentGame(true);
-        closeSettings();
+        fileInput.value = ""; currentSetName = setName; currentGateIndex = 0;
+        await refreshSetOptions(); await refreshStats(); await loadCurrentGame(true); closeSettings();
       } catch (err) { showToast("Error: " + err.message); }
     });
 
     urlImportBtn.addEventListener("click", async () => {
+      if (importType === "story") { showToast("Import Story Study ZIPs from a local file."); return; }
       const url = (urlInput.value || "").trim();
       if (!url) { showToast("Paste a CSV URL first."); return; }
       const setName = (newSetNameInput.value || "").trim() || "default";
@@ -9474,7 +9594,7 @@
     });
 
     importTypeSelect.addEventListener("change", () => {
-      importType = importTypeSelect.value; saveSettings(); updateModeSummary();
+      importType = importTypeSelect.value; saveSettings(); updateModeSummary(); updateImportControls();
     });
 
     modeSelect.addEventListener("change", async () => {
@@ -9734,6 +9854,7 @@
       gateSizeSelect.value = String(gateSize);
       strictGateCheckbox.value = strictGate ? "true" : "false";
       importTypeSelect.value = importType;
+      updateImportControls();
       const themeSel = document.getElementById("themeSelect");
       if (themeSel) themeSel.value = theme;
       const colOrderSel = document.getElementById("columnOrderSelect");
@@ -9799,7 +9920,7 @@
     async function checkEmptyState() {
       let isEmpty = false;
       if (currentGame === "text") {
-        isEmpty = manifestDeckEntries(currentDeck, "text").length === 0;
+        isEmpty = allTextDeckEntries(currentDeck).length === 0;
       } else {
         const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
         let all = await DB.getAll(table, currentDeck, "__all__");
@@ -9810,7 +9931,7 @@
       if (isEmpty) {
         wordMatchContainer.classList.add("hidden"); wordTypingContainer.classList.add("hidden"); sentenceContainer.classList.add("hidden"); textModeContainer.classList.add("hidden");
         document.documentElement.classList.remove("order-practice-active"); document.documentElement.classList.remove("text-practice-active"); gatePanel.classList.add("gate-disabled");
-        statusEl.textContent = currentGame === "text" ? "Add a Text unit to the language manifest." : "Welcome! Import a compatible deck to start.";
+        statusEl.textContent = currentGame === "text" ? "Add a Story Study ZIP or a Text unit to the language manifest." : "Welcome! Import a compatible deck to start.";
       } else updateGameUI();
     }
 

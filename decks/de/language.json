@@ -1,0 +1,17 @@
+{
+  "code": "de",
+  "name": "German",
+  "nativeName": "Deutsch",
+  "label": "English → German",
+  "flag": "🇩🇪",
+  "sourceLanguage": "en",
+  "targetLanguage": "de",
+  "useArticles": true,
+  "articles": [
+    "der",
+    "die",
+    "das"
+  ],
+  "typingPlaceholder": "e.g. das Haus",
+  "typingHelp": "Type the German equivalent. Include the article if applicable."
+}

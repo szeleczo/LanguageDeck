@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v86-story-study-auto-advance-20260723";
+const CACHE_VERSION = "languagedeck-v87-dynamic-story-import-20260723";
 const APP_SHELL = [
   "./",
   "./index.html",

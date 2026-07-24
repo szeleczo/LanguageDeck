@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 2,
+  "id": "de-maja-k01",
+  "title": "Die Biene Maja",
+  "subtitle": "Kapitel 1",
+  "language": "de",
+  "learningGoal": "comprehension",
+  "translationMode": "always",
+  "pageSize": 6,
+  "sentenceFile": "sentences.csv",
+  "wordFile": "words.csv",
+  "patternFile": "../../patterns.csv",
+  "anchorFile": "anchors.csv",
+  "ignoreTokens": [
+    "Maja",
+    "Kassandra"
+  ],
+  "engine": "story-study",
+  "defaultCoverage": "complete",
+  "defaultGoal": "use"
+}
