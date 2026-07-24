@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 2,
+  "id": "de-tschick-02",
+  "title": "Tschick1",
+  "subtitle": "Chapter 1",
+  "language": "de",
+  "engine": "story-study",
+  "defaultCoverage": "complete",
+  "defaultGoal": "use",
+  "translationMode": "always",
+  "sentenceFile": "sentences.csv",
+  "wordFile": "words.csv",
+  "anchorFile": "anchors.csv",
+  "patternFile": "patterns.csv",
+  "lexiconFile": "lexicon.csv"
+}
