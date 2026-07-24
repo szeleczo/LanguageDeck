@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v87-dynamic-story-study-20260723" />
+  <link rel="manifest" href="manifest.webmanifest?v=v88-story-menu-match-20260724" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -3105,6 +3105,54 @@
       .tx-options button { min-height: 36px; padding: 6px 9px; font-size: 12px; }
     }
 
+
+
+    /* v88: protect the original physical Match-card appearance from later
+       generic/mobile button rules. The cards remain compact enough to fit,
+       but keep the raised bottom edge, weight and tactile press. */
+    #wordMatchContainer .card {
+      background: linear-gradient(180deg, var(--surface) 0%, #fbfdff 100%);
+      border: 2px solid var(--border);
+      border-bottom: 4px solid var(--border-strong);
+      border-radius: 14px;
+      box-shadow: 0 2px 0 rgba(15,23,42,.035);
+      font-weight: 700;
+    }
+    #wordMatchContainer .card:hover:not(.correct):not(.disabled) {
+      border-color: var(--border-strong);
+      box-shadow: 0 3px 0 rgba(15,23,42,.045);
+    }
+    #wordMatchContainer .card.selected {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      border-bottom-color: var(--primary);
+      color: var(--primary);
+    }
+    #wordMatchContainer .card.correct {
+      background: var(--success-soft);
+      border-color: var(--success);
+      border-bottom-color: var(--success);
+    }
+    #wordMatchContainer .card.wrong {
+      background: var(--danger-soft);
+      border-color: var(--danger);
+      border-bottom-color: var(--danger);
+    }
+    @media (pointer: coarse) and (hover: none) and (max-aspect-ratio: 13/10) {
+      #wordMatchContainer .card {
+        padding: 7px 9px;
+        border-radius: 14px;
+        border-bottom-width: 4px;
+        font-size: clamp(13px, 3.55vw, 16px);
+        line-height: 1.14;
+      }
+      #wordMatchContainer .card:active:not(.disabled):not(.correct) {
+        transform: translateY(2px);
+        border-bottom-width: 2px;
+        margin-bottom: 2px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -3411,7 +3459,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v87-dynamic-story-study-20260723</div>
+      <div class="meta" id="appBuildLabel">Build: v88-story-menu-match-20260724</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -3700,7 +3748,7 @@
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v87-dynamic-story-study-20260723";
+    const APP_BUILD = "v88-story-menu-match-20260724";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -6013,7 +6061,9 @@
       txPageLabel.textContent = textView === "done" ? "Complete" : `Part ${Math.min(textEngine.pageIndex + 1, textEngine.pages.length)} / ${textEngine.pages.length}`;
       txBars.innerHTML = textEngine.pages.map((_, i) => `<span class="tx-bar ${i < textEngine.pageIndex ? "done" : i === textEngine.pageIndex ? "now" : ""}"></span>`).join("");
       [...txGoals.querySelectorAll("button")].forEach(b => b.classList.toggle("on", b.dataset.goal === textGoal));
-      txTranslationBtn.classList.toggle("on", textTranslationMode === "always" || (page && textCurrentSentence() && textEngine.translationVisible.has(textCurrentSentence().id)));
+      const translationActive = textTranslationMode === "always" || (page && textCurrentSentence() && textEngine.translationVisible.has(textCurrentSentence().id));
+      txTranslationBtn.classList.toggle("on", !!translationActive);
+      txTranslationBtn.setAttribute("aria-pressed", translationActive ? "true" : "false");
       txTranslationBtn.textContent = textTranslationMode === "always" ? "Translation · pinned" : "Translation";
     }
     function textTokenClass(token) {
@@ -6163,6 +6213,13 @@
         if (pass.readRatio >= TEXT_CFG.MIN_READ_RATIO) textEngine.readEligible.add(s.id);
       }
       if (textEngine.translationOpenedLatch.has(s.id)) pass.translationOpened = true;
+      // On-demand translation is sentence-local: after Next the button and
+      // visibility return to their neutral state. The latch above keeps the
+      // grammar signal even though the panel is now closed.
+      if (textTranslationMode === "onDemand") textEngine.translationVisible.delete(s.id);
+      txTranslationBtn.classList.remove("on");
+      txTranslationBtn.setAttribute("aria-pressed", "false");
+      txTranslationBtn.blur();
       // Structural suspicion only exists in on-demand translation mode.
       if (textTranslationMode === "onDemand" && pass.translationOpened && pass.taps <= TEXT_CFG.STRUCT_MAX_TAPS && s.patterns.length) {
         for (const pid of s.patterns) {
@@ -6552,7 +6609,7 @@
       textTranslationLongPress = setTimeout(async () => {
         textTranslationLongPressed = true;
         textTranslationMode = textTranslationMode === "always" ? "onDemand" : "always";
-        await textSaveProgress(); textRenderRead();
+        await textSaveProgress(); textRenderRead(); txTranslationBtn.blur();
         showToast(textTranslationMode === "always" ? "Translation pinned for this unit." : "Translation back to on demand.");
       }, 650);
     });
@@ -6563,7 +6620,7 @@
       const s = textCurrentSentence(); if (!s) return;
       if (textEngine.translationVisible.has(s.id)) textEngine.translationVisible.delete(s.id);
       else { textEngine.translationVisible.add(s.id); textEngine.translationOpenedLatch.add(s.id); textSentencePass(s.id).translationOpened = true; }
-      textRenderRead();
+      textRenderRead(); txTranslationBtn.blur();
     });
 
 
