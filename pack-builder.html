@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>LanguageDeck · Story Study Builder</title>
+<title>LanguageDeck · Pack Builder</title>
 <style>
 :root{
   --bg:#f4f6f8;--surface:#fff;--surface-2:#f7f8fa;--text:#151a23;--muted:#586171;
@@ -64,11 +64,19 @@ details{background:var(--surface);border:1px solid var(--line);border-radius:var
 summary{cursor:pointer;padding:15px 17px;font-weight:780;list-style:none}summary::-webkit-details-marker{display:none}summary:after{content:'＋';float:right;color:var(--faint)}details[open] summary:after{content:'−'}details .inside{padding:0 17px 18px;border-top:1px solid var(--line)}
 .checks{display:flex;flex-wrap:wrap;gap:7px}.checks label{display:flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--line);padding:7px 9px;font-size:12px}.checks input{width:auto}
 .small{font-size:11px;color:var(--faint);line-height:1.45}.hidden{display:none!important}code{background:var(--surface-2);padding:1px 4px}
-@media(max-width:700px){main{padding:20px 13px 70px}.topbar-inner{padding:10px 13px}.flow-summary{grid-template-columns:repeat(2,1fr)}.step{grid-template-columns:34px minmax(0,1fr);gap:8px}.step-num{width:28px;height:28px;font-size:12px}.panel-head,.panel-body{padding-left:14px;padding-right:14px}.grid{grid-template-columns:1fr}.file-list{grid-template-columns:repeat(2,1fr)}.final-box{grid-template-columns:1fr}.actions button{flex:1 1 180px}h1{font-size:24px}}
+.choice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.choice{position:relative;display:block}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice span{display:block;height:100%;border:1px solid var(--line-strong);border-radius:10px;background:#fff;padding:11px 12px;font-size:12px;line-height:1.35;color:var(--muted)}
+.choice span b{display:block;color:var(--text);font-size:12.5px;margin-bottom:3px}
+.choice input:checked+span{border-color:var(--primary);background:var(--primary-soft);box-shadow:0 0 0 2px rgba(38,91,197,.08)}
+.choice input:focus-visible+span{outline:3px solid var(--primary-soft)}
+.delivery-list{display:grid;gap:7px;margin-top:10px}.delivery-item{display:flex;gap:9px;align-items:flex-start;padding:9px 10px;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;font-size:12px;line-height:1.4}.delivery-item strong{white-space:nowrap;color:var(--primary-deep)}
+@media(max-width:700px){main{padding:20px 13px 70px}.choice-grid{grid-template-columns:1fr}.topbar-inner{padding:10px 13px}.flow-summary{grid-template-columns:repeat(2,1fr)}.step{grid-template-columns:34px minmax(0,1fr);gap:8px}.step-num{width:28px;height:28px;font-size:12px}.panel-head,.panel-body{padding-left:14px;padding-right:14px}.grid{grid-template-columns:1fr}.file-list{grid-template-columns:repeat(2,1fr)}.final-box{grid-template-columns:1fr}.actions button{flex:1 1 180px}h1{font-size:24px}}
 </style>
 </head>
 <body>
-<header class="topbar"><div class="topbar-inner"><a class="back" href="index.html">← App</a><div class="brand">Story Study Builder</div><div></div></div></header>
+<header class="topbar"><div class="topbar-inner"><a class="back" href="index.html">← App</a><div class="brand">Pack Builder</div><div></div></div></header>
 <main>
   <section class="hero">
     <div class="eyebrow">Új szöveg készítése</div>
@@ -78,8 +86,8 @@ summary{cursor:pointer;padding:15px 17px;font-weight:780;list-style:none}summary
 
   <div class="flow-summary" aria-label="Folyamat áttekintése">
     <div class="flow-chip"><b>1. Add meg a szöveget</b><span>Cím, nyelv, szint és stabil azonosító.</span></div>
-    <div class="flow-chip"><b>2. Készíts AI-promptot</b><span>Másold egy AI-ba a forrásszöveggel együtt.</span></div>
-    <div class="flow-chip"><b>3. Ellenőrizd a fájlokat</b><span>Válaszd ki az AI eredményéből létrehozott mappát.</span></div>
+    <div class="flow-chip"><b>2. Készíts AI-promptot</b><span>Másold egy fájlkészítésre képes AI-ba, és csatold a forrást.</span></div>
+    <div class="flow-chip"><b>3. Ellenőrizd a fájlokat</b><span>A letöltött ZIP-et közvetlenül használhatod, vagy itt újra ellenőrizheted.</span></div>
     <div class="flow-chip"><b>4. Töltsd le és importáld</b><span>A kész ZIP közvetlenül mehet a LanguageDeckbe.</span></div>
   </div>
 
@@ -94,8 +102,25 @@ summary{cursor:pointer;padding:15px 17px;font-weight:780;list-style:none}summary
           <div class="field"><label>Cím</label><input id="storyTitle" value="New German Story"></div>
           <div class="field"><label>Alcím / fejezet</label><input id="storySubtitle" value="Chapter 1"></div>
           <div class="field"><label>Célszint</label><select id="storyLevel"><option>A1–A2</option><option selected>A2–B1</option><option>B1–B2</option></select></div>
-          <div class="field"><label>Forrás vagy megjegyzés</label><input id="storyNotes" placeholder="saját szöveg, közkincs, párbeszéd…"></div>
-          <div class="field wide"><label>Forrásszöveg</label><textarea id="storySourceText" style="min-height:180px;font-family:inherit" placeholder="Másold ide az átdolgozandó történetet vagy szöveget. A Builder automatikusan a generálási prompt végére illeszti."></textarea><small>Hosszú anyagnál egy fejezetet vagy logikus részletet adj meg egyszerre.</small></div>
+          <div class="field"><label>Forrás vagy megjegyzés</label><input id="storyNotes" placeholder="saját szöveg, feltöltött PDF, párbeszéd…"></div>
+          <div class="field wide">
+            <label>Hogyan kapja meg az AI a forrást?</label>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="sourceDelivery" value="attachment" checked><span><b>Csatolt dokumentum</b>A PDF-et vagy más fájlt külön feltöltöd ugyanabba az AI-beszélgetésbe.</span></label>
+              <label class="choice"><input type="radio" name="sourceDelivery" value="pasted"><span><b>Beillesztett szöveg</b>A forrásszöveg közvetlenül bekerül a generált prompt végére.</span></label>
+              <label class="choice"><input type="radio" name="sourceDelivery" value="both"><span><b>Mindkettő</b>Az AI használja a csatolmányt és az itt megadott kiegészítő szöveget is.</span></label>
+            </div>
+          </div>
+          <div class="field wide">
+            <label>Forráslefedettség</label>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="sourceCoverage" value="entire" checked><span><b>Teljes forrás</b>Minden feltöltött oldalt vagy fejezetet feldolgoz, és szükség esetén több unitra bont.</span></label>
+              <label class="choice"><input type="radio" name="sourceCoverage" value="range"><span><b>Kiválasztott rész</b>Csak a megadott oldalakat, fejezeteket vagy szakaszt dolgozza fel.</span></label>
+              <label class="choice"><input type="radio" name="sourceCoverage" value="lesson"><span><b>Egy rövid lecke</b>Egy természetes, rövidebb részletből készít egyetlen unitot.</span></label>
+            </div>
+          </div>
+          <div class="field wide" id="storyRangeField"><label>Kiválasztott oldalak / fejezetek <span style="font-weight:400;color:var(--faint)">(csak ha szükséges)</span></label><input id="storyRange" placeholder="például: 1–4. fejezet, vagy 1–14. oldal"><small>Teljes forrásnál üresen hagyható. A prompt nem használ rögzített összesített mondatszámkorlátot.</small></div>
+          <div class="field wide"><label>Beillesztett forrásszöveg <span style="font-weight:400;color:var(--faint)">(opcionális csatolt dokumentumnál)</span></label><textarea id="storySourceText" style="min-height:180px;font-family:inherit" placeholder="Másold ide a forrást, vagy töltsd fel külön az AI-beszélgetésbe. A Builder a választásodnak megfelelő utasítást készít."></textarea><small>A Builder nem olvassa ki automatikusan a PDF tartalmát; a PDF-et az AI-beszélgetéshez kell csatolni.</small></div>
         </div>
         <div class="actions"><button id="makeStoryPrompt">AI-prompt elkészítése</button></div>
       </div>
@@ -105,18 +130,22 @@ summary{cursor:pointer;padding:15px 17px;font-weight:780;list-style:none}summary
   <section class="step">
     <div class="step-num">2</div>
     <div class="panel">
-      <div class="panel-head"><h2>Generálási prompt</h2><p>A Builder a megadott forrásszöveget is a promptba illeszti. Másold az egészet egy AI-beszélgetésbe.</p></div>
+      <div class="panel-head"><h2>Generálási prompt</h2><p>Másold az egészet egy fájlkészítésre képes AI-beszélgetésbe, és ugyanott csatold a forrásdokumentumot is, ha ezt választottad.</p></div>
       <div class="panel-body">
         <textarea id="storyPrompt" spellcheck="false" placeholder="Először töltsd ki az első lépést, majd készítsd el a promptot."></textarea>
         <div class="actions">
           <button id="storyCopyPrompt">Prompt másolása</button>
           <button id="storyDownloadPrompt" class="secondary">Prompt letöltése (.md)</button>
         </div>
-        <div class="note">Az AI külön fájlblokkokat fog visszaadni: <code>unit.json</code>, <code>sentences.csv</code>, <code>words.csv</code>, <code>anchors.csv</code>, <code>patterns.csv</code> és <code>lexicon.csv</code>. Ezeket azonos nevű fájlokba kell elmenteni egy közös mappában.</div>
+        <div class="note"><b>Az elsődleges kimenet most letölthető ZIP.</b> Az AI-nak app-import ZIP-et és egy <code>decks/&lt;nyelv&gt;/texts/</code> alá másolható repository-csomagot kell készítenie. Kódblokkokat csak akkor adhat, ha a használt környezet tényleg nem tud fájlokat létrehozni.</div>
+        <div class="delivery-list">
+          <div class="delivery-item"><strong>App-import ZIP</strong><span>Közvetlenül a LanguageDeck Import deck menüjében használható.</span></div>
+          <div class="delivery-item"><strong>Repository ZIP</strong><span>A kész unitmappákat a megfelelő <code>decks/&lt;nyelv&gt;/texts/</code> struktúrában és kész manifestbejegyzésekkel tartalmazza.</span></div>
+        </div>
         <details style="margin-top:12px">
           <summary>Opcionális: üres fájlsablon letöltése</summary>
           <div class="inside">
-            <p class="small">Ez nem kész tananyag, csak egy üres mappa ZIP-ben, előre létrehozott fájlnevekkel és fejlécekkel. Nem szükséges használnod, ha kényelmesen létre tudod hozni a fájlokat az AI válaszából.</p>
+            <p class="small">Ez továbbra sem kész tananyag. Csak tartalék megoldás arra az esetre, ha az AI-környezet nem képes valódi ZIP-fájlt létrehozni.</p>
             <button id="downloadStoryStarter" class="tertiary">Üres Story Study sablon ZIP</button>
           </div>
         </details>
@@ -127,7 +156,7 @@ summary{cursor:pointer;padding:15px 17px;font-weight:780;list-style:none}summary
   <section class="step">
     <div class="step-num">3</div>
     <div class="panel">
-      <div class="panel-head"><h2>Az elkészült mappa ellenőrzése</h2><p>Válaszd ki azt a mappát, amelybe az AI által készített fájlokat elmentetted. Önálló Story Study mappát és teljes nyelvicsomagot is elfogad.</p></div>
+      <div class="panel-head"><h2>Opcionális helyi ellenőrzés</h2><p>Ha az AI kész ZIP-et adott, azt közvetlenül importálhatod. Itt a kicsomagolt unit- vagy repository-mappát külön is ellenőrizheted, illetve tartalék esetben importálható ZIP-et készíthetsz belőle.</p></div>
       <div class="panel-body">
         <label class="file-box">
           <strong>Story Study mappa kiválasztása</strong>
@@ -270,64 +299,213 @@ function csvHeader(cols){return cols.map(x=>`"${x}"`).join(',')+'\n'}
 function starterFiles(p){const lang={schemaVersion:1,code:p.code,name:p.name,nativeName:p.native,sourceLanguage:p.source.toLowerCase().slice(0,2),targetLanguage:p.code,useArticles:p.articles!=='none',articles:p.articles==='der|die|das'?['der','die','das']:[],typingPlaceholder:'Answer',typingHelp:`Type the ${p.name} equivalent.`};const decks=[];const files={};files[`${p.code}/language.json`]=JSON.stringify(lang,null,2)+'\n';files[`${p.code}/lexicon.csv`]=csvHeader(['lexeme_id','english','target','article','pos','sense','level']);files[`${p.code}/patterns.csv`]=csvHeader(['id','name','english','explanation','example_id','level']);if(p.modules.includes('words')){files[`${p.code}/words/core-${p.count}.csv`]=csvHeader(['id','lexeme_id','english','target','article','hint','level','tags']);decks.push({id:`${p.code}-core-${p.count}`,name:`Core ${p.count}`,file:`words/core-${p.count}.csv`,primaryMode:'words',compatibleModes:['words'],practiceModes:['match','typing','progressive'],level:p.level.split('–'),schema:'word'})}if(p.modules.includes('grammar')){files[`${p.code}/grammar/a1-foundations.csv`]=csvHeader(['id','english','target','hint','explanation','pattern','level','exercise_type','alternatives']);decks.push({id:`${p.code}-grammar-foundations`,name:'Grammar Foundations',file:'grammar/a1-foundations.csv',primaryMode:'grammar',compatibleModes:['grammar','sentences'],practiceModes:['choice','order','typing','progressive'],level:p.level.split('–'),schema:'sentence'})}if(p.modules.includes('sentences')){files[`${p.code}/sentences/a1-a2.csv`]=csvHeader(['id','english','target','hint','explanation','pattern','level','alternatives']);decks.push({id:`${p.code}-sentences-a1-a2`,name:'A1–A2 Sentences',file:'sentences/a1-a2.csv',primaryMode:'sentences',compatibleModes:['sentences'],practiceModes:['choice','order','typing','progressive'],level:['A1','A2'],schema:'sentence'})}if(p.modules.includes('texts')){files[`${p.code}/texts/starter/unit.json`]=JSON.stringify({schemaVersion:1,id:`${p.code}-starter-text`,title:'Starter Text',subtitle:'Unit 1',language:p.code,learningGoal:'comprehension',translationMode:'onDemand',pageSize:6,sentenceFile:'sentences.csv',wordFile:'words.csv',patternFile:'../../patterns.csv',anchorFile:'anchors.csv'},null,2)+'\n';files[`${p.code}/texts/starter/sentences.csv`]=csvHeader(['id','seq','scene','english','target','hint','explanation','chunks','pattern','level']);files[`${p.code}/texts/starter/words.csv`]=csvHeader(['id','lexeme_id','english','target','article','hint','source_id','forms','kind']);files[`${p.code}/texts/starter/anchors.csv`]=csvHeader(['sentence_id','surface','occurrence','item_id']);decks.push({id:`${p.code}-text-starter`,name:'Starter Text',folder:'texts/starter',primaryMode:'text',compatibleModes:['text'],practiceModes:['reading','deep','memorise'],level:p.level.split('–'),schema:'text'})}files[`${p.code}/manifest.json`]=JSON.stringify({schemaVersion:1,language:p.code,lexicon:'lexicon.csv',patterns:'patterns.csv',decks},null,2)+'\n';files[`${p.code}/PACKAGE_PLAN.json`]=JSON.stringify(p,null,2)+'\n';files[`${p.code}/MASTER_PROMPT.md`]=masterPrompt(p)+'\n';return files}
 function crcTable(){const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;t[n]=c>>>0}return t}const CRC=crcTable();function crc32(bytes){let c=0xffffffff;for(const b of bytes)c=CRC[(c^b)&255]^(c>>>8);return(c^0xffffffff)>>>0}function u16(n){return[n&255,(n>>>8)&255]}function u32(n){return[n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]}function makeZip(files){const enc=new TextEncoder(),local=[],central=[];let offset=0;for(const[name,text]of Object.entries(files)){const nb=enc.encode(name),data=enc.encode(text),crc=crc32(data);const lh=new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(data.length),...u32(data.length),...u16(nb.length),...u16(0),...nb]);local.push(lh,data);const ch=new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(data.length),...u32(data.length),...u16(nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(offset),...nb]);central.push(ch);offset+=lh.length+data.length}const centralSize=central.reduce((n,x)=>n+x.length,0),end=new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(central.length),...u16(central.length),...u32(centralSize),...u32(offset),...u16(0)]);return new Blob([...local,...central,end],{type:'application/zip'})}
 
-function storyPlan(){return{language:slug($('storyLang').value).slice(0,8)||'de',id:$('storyId').value.trim()||'story-unit',title:$('storyTitle').value.trim()||'Story Study',subtitle:$('storySubtitle').value.trim(),level:$('storyLevel').value,notes:$('storyNotes').value.trim(),sourceText:$('storySourceText').value.trim()}}
-function storyPromptText(p){return `You are creating a complete LanguageDeck v87 Story Study unit.
+function checkedValue(name,fallback){return document.querySelector(`input[name="${name}"]:checked`)?.value||fallback}
+function storyPlan(){return{
+  language:slug($('storyLang').value).slice(0,8)||'de',
+  id:slug($('storyId').value.trim()||'story-unit'),
+  title:$('storyTitle').value.trim()||'Story Study',
+  subtitle:$('storySubtitle').value.trim(),
+  level:$('storyLevel').value,
+  notes:$('storyNotes').value.trim(),
+  sourceText:$('storySourceText').value.trim(),
+  sourceDelivery:checkedValue('sourceDelivery','attachment'),
+  sourceCoverage:checkedValue('sourceCoverage','entire'),
+  sourceRange:$('storyRange').value.trim()
+}}
+function sourceInstruction(p){
+  const delivery={
+    attachment:'Use the source document attached to this AI conversation. Do not claim that no source was supplied if an attachment is present.',
+    pasted:'Use the SOURCE TEXT included at the end of this prompt.',
+    both:'Use both the attached source document and the supplementary SOURCE TEXT included at the end. The attachment is authoritative if they overlap.'
+  }[p.sourceDelivery];
+  const coverage={
+    entire:'Process the entire supplied source from beginning to end. Do not stop after a convenient number of sentences and do not omit later pages or chapters.',
+    range:`Process only this selected range: ${p.sourceRange||'<SPECIFY PAGES OR CHAPTERS>'}. Preserve every meaningful narrative beat inside that range.`,
+    lesson:'Select one natural, self-contained short lesson from the supplied source. State exactly which pages, chapter or narrative span was used.'
+  }[p.sourceCoverage];
+  return `${delivery}
+${coverage}`;
+}
+function storyPromptText(p){
+  const pasted=(p.sourceDelivery==='pasted'||p.sourceDelivery==='both')
+    ? `
 
-UNIT
+SUPPLEMENTARY SOURCE TEXT
+${p.sourceText||'<PASTE THE SOURCE TEXT HERE>'}`
+    : '';
+  return `You are creating a complete LanguageDeck Story Study package from user-provided source material.
+
+SOURCE INSTRUCTIONS
+${sourceInstruction(p)}
+
+UNIT FAMILY
 - Language: ${p.language}
-- Stable id: ${p.id}
+- Stable base id: ${p.id}
 - Title: ${p.title}
-- Subtitle: ${p.subtitle}
-- Target level: ${p.level}
+- Subtitle: ${p.subtitle||'derive clear sequential subtitles from the source'}
+- Target learner level: ${p.level}
 - Notes: ${p.notes||'none'}
+- Learning engine: story-study
+- Default coverage: complete
+- Default goal: use
+- Translation mode: always
 
-OUTPUT EXACTLY THESE UTF-8 RFC-4180 FILES
-1. unit.json
-2. sentences.csv
-3. words.csv
-4. anchors.csv
-5. patterns.csv only for pattern ids not already in the language registry
-6. lexicon.csv containing every lexeme_id introduced by this portable unit
+PEDAGOGICAL TRANSFORMATION
+Create a faithful, pedagogically simplified retelling rather than reproducing long passages verbatim. Preserve important narrative events, relationships, causal links, tone, humour and scene transitions. Rewrite naturally at the requested learner level. Do not invent unsupported events.
 
-LEARNING FLOW
-The app will run: short pre-teach → read 3–6 sentences → Words practice → Sentences practice → clean reread → continue. The text must therefore be authored as connected scenes, not isolated example sentences.
+SOURCE-DRIVEN LENGTH
+There is no fixed total sentence limit.
+Create as many connected target-language sentences as are needed to represent the requested source coverage without skipping meaningful narrative beats. Normally use one simplified sentence per narrative beat. Most sentences should contain approximately 5–12 words, but clarity and naturalness take priority.
 
-unit.json
-Use schemaVersion 2, engine "story-study", defaultCoverage "complete", defaultGoal "use", translationMode "always", and the standard sentenceFile/wordFile/anchorFile fields.
+Do not compress a long source into 24–45 sentences merely to fit one answer.
+If the material would become unwieldy as one unit, divide it into as many sequential Story Study units as necessary at real chapter or scene boundaries. Prefer roughly 35–70 learner sentences per unit, but this is a splitting guideline, not a total source limit. Use stable sequential ids:
+- ${p.id}-01
+- ${p.id}-02
+- ${p.id}-03
+Each unit must remain independently importable while preserving the source order.
 
-sentences.csv HEADER
+MANDATORY FILE DELIVERY
+Use your available file-creation tools. Do not merely print CSV and JSON as chat code blocks.
+
+For EACH generated unit create and attach:
+  <unit-id>-story-study-import.zip
+
+The root of every app-import ZIP must contain exactly:
+- unit.json
+- sentences.csv
+- words.csv
+- anchors.csv
+- patterns.csv
+- lexicon.csv
+- VALIDATION_REPORT.md
+
+Also create ONE repository package:
+  ${p.id}-story-study-repository.zip
+
+Repository ZIP structure:
+decks/
+  ${p.language}/
+    texts/
+      <unit-id-1>/
+        unit.json
+        sentences.csv
+        words.csv
+        anchors.csv
+        patterns.csv
+        lexicon.csv
+      <unit-id-2>/
+        ...
+manifest-entries.json
+VALIDATION_REPORT.md
+
+manifest-entries.json must contain one ready-to-merge manifest entry for every generated unit. Its folder value must be texts/<unit-id>.
+
+If the current AI environment genuinely cannot create downloadable files, state that limitation explicitly BEFORE producing any file contents. Only then may you fall back to separate fenced code blocks labelled with exact filenames. Never silently replace the requested ZIP artifacts with code blocks.
+
+UNIT.JSON
+Use schemaVersion 2 and include:
+- id
+- title
+- subtitle
+- language
+- engine: "story-study"
+- defaultCoverage: "complete"
+- defaultGoal: "use"
+- translationMode: "always"
+- sentenceFile: "sentences.csv"
+- wordFile: "words.csv"
+- anchorFile: "anchors.csv"
+- patternFile: "patterns.csv"
+- lexiconFile: "lexicon.csv"
+
+SENTENCES.CSV
+Exact UTF-8 RFC-4180 header:
 "id","seq","scene","english","target","hint","explanation","chunks","pattern","level"
-- 24–45 connected sentences, usually 5–12 words.
-- Stable s001… ids and real scene breaks.
-- english is a natural source-language rendering and unique.
-- chunks is REQUIRED for every sentence: 2–5 meaningful structural units separated by |. It powers beginner-friendly sentence reconstruction.
-- pattern contains canonical pipe-separated ids. explanation is concise and contextual when structure is non-obvious.
 
-words.csv HEADER
+Requirements:
+- Stable s001, s002... ids inside each unit.
+- Preserve narrative order.
+- Use real scene boundaries, normally 3–8 sentences per scene.
+- english is a natural and unique source-language rendering.
+- target is natural learner-level ${p.language}.
+- chunks is REQUIRED for every sentence: 2–5 meaningful structural units separated by |.
+- Chunks must support beginner-friendly reconstruction; do not split articles from nouns or create misleading fragments.
+- pattern contains canonical pipe-separated grammar pattern ids.
+- explanation is concise and contextual where the structure is not obvious.
+- level is assigned per sentence within ${p.level}.
+
+WORDS.CSV
+Exact header:
 "id","lexeme_id","english","target","article","hint","source_id","forms","kind"
-CRITICAL COMPLETE-COVERAGE RULE:
-Every word-like token in every target sentence must resolve to exactly one row, either as a content word, phrase, name, or function item. Do not provide only “important vocabulary”. Articles, pronouns, auxiliaries, conjunctions, inflected adjectives and irregular forms must also resolve. Multi-word and separable units should be one phrase item where pedagogically appropriate.
-- lexeme_id is stable, sense-aware and ASCII: <lang>.<pos>.<lemma>[.<sense>].
-- forms lists EVERY literal surface form used in this unit.
-- kind is word, phrase, function, or name.
-- source_id resolves to a sentence id.
 
-anchors.csv HEADER
+CRITICAL COMPLETE-COVERAGE RULE
+Every word-like token in every target sentence must resolve to exactly one pedagogical item or one explicit phrase span. Do not provide only important vocabulary.
+Coverage includes articles, pronouns, auxiliaries, modals, conjunctions, prepositions, particles, contractions, inflected adjectives, irregular forms, separable verbs, reflexive constructions, names and multi-word expressions.
+
+Use kind values: word, phrase, function, name.
+Where pedagogically appropriate, bind multiple tokens to one phrase or grammar unit rather than teaching misleading fragments.
+
+- lexeme_id is stable, sense-aware, lowercase ASCII: <lang>.<pos>.<lemma>[.<sense>]
+- distinct meanings never share one lexeme_id
+- forms lists EVERY literal surface form used in the generated units
+- source_id resolves to a sentence id containing the item
+
+ANCHORS.CSV
+Exact header:
 "sentence_id","surface","occurrence","item_id"
-Use anchors for compounds, ambiguity and discontinuous/separable phrases such as “fing ... an”. Surface + occurrence, never token offsets.
+Use anchors for compounds, ambiguity, multi-word phrases and discontinuous/separable forms. Use surface text plus 1-based occurrence. Never use token offsets.
 
-BEFORE RETURNING, RUN THESE CHECKS
-- every sentence id and word id is unique;
-- every source_id resolves;
-- every pattern id resolves;
-- every lexeme_id appears in lexicon.csv and distinct meanings never share an id;
-- simulate tokenisation and prove 100% of word-like target tokens are bound;
-- all scenes have 3–8 sentences;
-- every sentence has useful chunks;
-- no non-breaking spaces or embedded HTML.
+PATTERNS.CSV
+Exact header:
+"id","name","english","explanation","example_id","level"
+Include only pattern ids not already present in the standard language registry. If the registry is unavailable, include all used patterns so the portable ZIP remains self-contained.
 
-Return the files in separate fenced code blocks labelled with their filenames. Do not omit function words.\n\nSOURCE TEXT\n${p.sourceText||'<PASTE THE SOURCE TEXT HERE>'}`}
-function storyStarterFiles(p){const unit={schemaVersion:2,id:p.id,title:p.title,subtitle:p.subtitle,language:p.language,engine:'story-study',defaultCoverage:'complete',defaultGoal:'use',translationMode:'always',sentenceFile:'sentences.csv',wordFile:'words.csv',anchorFile:'anchors.csv',patternFile:'patterns.csv'};return{
+LEXICON.CSV
+Exact header:
+"lexeme_id","english","target","article","pos","level"
+Include every lexeme_id introduced by the portable package. Reuse identical canonical metadata when the same lexeme occurs in multiple units.
+
+MANIFEST-ENTRIES.JSON
+Create an array with one entry per unit. Each entry contains:
+- id
+- name
+- folder: texts/<unit-id>
+- primaryMode: "text"
+- compatibleModes: ["text"]
+- practiceModes: ["story-study"]
+- engine: "story-study"
+- schema: "text-v2"
+- level
+
+VALIDATION BEFORE DELIVERY
+Run and record all checks:
+1. Every sentence id is unique inside its unit.
+2. Every word id is unique inside its unit.
+3. Every source_id resolves.
+4. Every pattern id resolves.
+5. Every lexeme_id appears in lexicon.csv.
+6. Distinct meanings do not share a lexeme_id.
+7. Every sentence has useful chunks.
+8. Scenes normally contain 3–8 sentences.
+9. No non-breaking spaces or embedded HTML.
+10. All CSV files are valid UTF-8 RFC-4180 with exact column counts.
+11. Simulate the LanguageDeck tokeniser.
+12. Prove 100% of word-like target tokens resolve to exactly one item or explicit phrase span.
+13. Detect ambiguous and overlapping anchors.
+14. Verify every ZIP opens and contains all required files.
+15. Report unit count, scene count, sentence count, lexeme count and any human-review warnings in VALIDATION_REPORT.md.
+
+Do not mark the package valid if token coverage is below 100%.
+Do not omit later source sections because of response length. Continue through as many generated units as needed.
+
+FINAL RESPONSE
+Return only:
+- a short summary of units, scenes, sentences and lexemes created;
+- attached downloadable file cards or links for every ZIP;
+- any remaining human-review warnings.
+Do not paste full CSV files when downloadable artifacts were successfully created.${pasted}`
+}
+function storyStarterFiles(p){const unit={schemaVersion:2,id:p.id,title:p.title,subtitle:p.subtitle,language:p.language,engine:'story-study',defaultCoverage:'complete',defaultGoal:'use',translationMode:'always',sentenceFile:'sentences.csv',wordFile:'words.csv',anchorFile:'anchors.csv',patternFile:'patterns.csv',lexiconFile:'lexicon.csv'};return{
  'unit.json':JSON.stringify(unit,null,2)+'\n',
  'sentences.csv':'"id","seq","scene","english","target","hint","explanation","chunks","pattern","level"\n',
  'words.csv':'"id","lexeme_id","english","target","article","hint","source_id","forms","kind"\n',
@@ -336,7 +514,9 @@ function storyStarterFiles(p){const unit={schemaVersion:2,id:p.id,title:p.title,
  'lexicon.csv':'"lexeme_id","english","target","article","pos","level"\n',
  'STORY_STUDY_PROMPT.md':storyPromptText(p)+'\n'} }
 function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-$('makeStoryPrompt').onclick=()=>{$('storyPrompt').value=storyPromptText(storyPlan())};$('downloadStoryStarter').onclick=()=>{const p=storyPlan();download(makeZip(storyStarterFiles(p)),`${p.id}-story-study-empty-template.zip`)};
+$('makeStoryPrompt').onclick=()=>{$('storyPrompt').value=storyPromptText(storyPlan())};
+[...document.querySelectorAll('input[name=sourceDelivery],input[name=sourceCoverage]')].forEach(el=>el.addEventListener('change',()=>{$('storyPrompt').value=storyPromptText(storyPlan())}));
+$('downloadStoryStarter').onclick=()=>{const p=storyPlan();download(makeZip(storyStarterFiles(p)),`${p.id}-story-study-empty-template.zip`)};
 $('makePrompt').onclick=()=>{$('prompt').value=masterPrompt(plan())};$('copyPrompt').onclick=async()=>{if(!$('prompt').value)$('prompt').value=masterPrompt(plan());await navigator.clipboard.writeText($('prompt').value);$('copyPrompt').textContent='Copied';setTimeout(()=>$('copyPrompt').textContent='Copy prompt',1200)};$('downloadPrompt').onclick=()=>{if(!$('prompt').value)$('prompt').value=masterPrompt(plan());download(new Blob([$('prompt').value],{type:'text/markdown'}),`LanguageDeck_${plan().code}_MASTER_PROMPT.md`)};$('downloadStarter').onclick=()=>{const p=plan();download(makeZip(starterFiles(p)),`languagedeck-${p.code}-empty-template-v87.zip`)};
 function parseCSV(text){if(text.charCodeAt(0)===0xfeff)text=text.slice(1);const rows=[];let row=[],field='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')q=false;else field+=c}else if(c==='"')q=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}if(field||row.length){row.push(field);rows.push(row)}return rows.filter(r=>r.some(x=>x!==''))}function objects(text){const r=parseCSV(text);if(!r.length)return[];return r.slice(1).map(row=>Object.fromEntries(r[0].map((h,i)=>[h.trim(),row[i]??''])))}
 function quoteCSV(v){return `"${String(v??'').replace(/"/g,'""')}"`}
