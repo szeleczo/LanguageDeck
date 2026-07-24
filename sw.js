@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v88-story-menu-match-20260724";
+const CACHE_VERSION = "languagedeck-v89-github-text-scan-20260724";
 const APP_SHELL = [
   "./",
   "./index.html",
