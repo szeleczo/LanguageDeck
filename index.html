@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v89-github-text-scan-20260724" />
+  <link rel="manifest" href="manifest.webmanifest?v=v90-story-series-order-20260726" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -3459,7 +3459,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v89-github-text-scan-20260724</div>
+      <div class="meta" id="appBuildLabel">Build: v90-story-series-order-20260726</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -3748,7 +3748,7 @@
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v89-github-text-scan-20260724";
+    const APP_BUILD = "v90-story-series-order-20260726";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -3819,12 +3819,87 @@
       catch (_) { return []; }
     }
     function writeStoryPackIndex(rows) { localStorage.setItem(STORY_PACK_INDEX_KEY, JSON.stringify(rows)); }
+    function storyPositiveInt(value) {
+      const n = Number(value);
+      return Number.isInteger(n) && n > 0 ? n : null;
+    }
+    function storyInferredPart(value) {
+      const match = String(value || "").match(/-(\d{2,3})$/);
+      return match ? Number(match[1]) : null;
+    }
+    function storySeriesId(entry) {
+      return String(entry.seriesId || "").trim() || String(entry.id || "").replace(/-\d{2,3}$/, "") || String(entry.id || "");
+    }
+    function storyCleanSeriesTitle(value, partNumber) {
+      let title = String(value || "").trim();
+      if (partNumber) title = title.replace(new RegExp(`\\s*[-–—·:]?\\s*${partNumber}\\s*$`), "").trim();
+      return title;
+    }
+    function storyHasVisiblePart(text) {
+      return /(?:\bpart\s*0*\d+\s*(?:of|\/)\s*0*\d+\b|\b0*\d+\s*\/\s*0*\d+\b|\br[eé]sz\s*0*\d+)/i.test(String(text || ""));
+    }
+    function storyDisplayName(entry) {
+      const title = String(entry.seriesTitle || entry.title || entry.name || entry.id || "Story Study").trim();
+      const subtitle = String(entry.subtitle || "").trim();
+      const partNumber = storyPositiveInt(entry.partNumber || entry.order) || storyInferredPart(entry.id) || storyInferredPart(normaliseTextFolder(entry.folder).split("/").pop());
+      const partCount = storyPositiveInt(entry.partCount);
+      const pieces = [title];
+      if (subtitle && subtitle.toLocaleLowerCase() !== title.toLocaleLowerCase()) pieces.push(subtitle);
+      if (partNumber && partCount && partCount > 1 && !storyHasVisiblePart(pieces.join(" · "))) pieces.push(`${partNumber}/${partCount}`);
+      else if (partNumber && !partCount && !storyHasVisiblePart(pieces.join(" · "))) pieces.push(`Part ${partNumber}`);
+      return pieces.filter(Boolean).join(" · ");
+    }
+    function storyNormaliseAndSortEntries(entries) {
+      const rows = entries.map((raw, index) => {
+        const inferredPart = storyPositiveInt(raw.partNumber || raw.order) || storyInferredPart(raw.id) || storyInferredPart(normaliseTextFolder(raw.folder).split("/").pop());
+        const seriesId = storySeriesId({ ...raw, partNumber: inferredPart });
+        const baseTitle = raw.seriesTitle || raw.title || raw.name || raw.id;
+        const seriesTitle = storyCleanSeriesTitle(baseTitle, inferredPart) || String(baseTitle || "Story Study");
+        return { ...raw, _sourceIndex: index, seriesId, seriesTitle, partNumber: inferredPart, order: storyPositiveInt(raw.order) || inferredPart };
+      });
+      const groups = new Map();
+      rows.forEach(row => { const key = `${row.source || ""}|${row.seriesId}`; if (!groups.has(key)) groups.set(key, []); groups.get(key).push(row); });
+      for (const group of groups.values()) {
+        const maxPart = Math.max(0, ...group.map(x => storyPositiveInt(x.partNumber) || 0));
+        const explicitCount = Math.max(0, ...group.map(x => storyPositiveInt(x.partCount) || 0));
+        const inferredCount = group.length > 1 ? Math.max(group.length, maxPart) : 0;
+        const count = explicitCount || inferredCount || null;
+        group.forEach(row => {
+          row.partCount = storyPositiveInt(row.partCount) || count;
+          row.name = storyDisplayName(row);
+        });
+      }
+      return rows.sort((a, b) => {
+        const series = String(a.seriesTitle || a.name).localeCompare(String(b.seriesTitle || b.name), undefined, { numeric: true, sensitivity: "base" });
+        if (series) return series;
+        const ao = storyPositiveInt(a.order || a.partNumber) || Number.MAX_SAFE_INTEGER;
+        const bo = storyPositiveInt(b.order || b.partNumber) || Number.MAX_SAFE_INTEGER;
+        if (ao !== bo) return ao - bo;
+        return String(a.name || a.id).localeCompare(String(b.name || b.id), undefined, { numeric: true, sensitivity: "base" });
+      }).map(({ _sourceIndex, ...row }) => row);
+    }
     function importedStoryEntries(language = currentDeck) {
-      return storyPackIndex().filter(x => x.language === language).map(x => ({
-        id: `local:${x.id}`, localId: x.id, name: x.name || x.id, folder: "", engine: "story-study",
-        primaryMode: "text", compatibleModes: ["text"], practiceModes: ["story-study"],
-        level: x.level || [], schema: "text-v2", imported: true
-      }));
+      return storyPackIndex().filter(x => x.language === language).map(x => {
+        let unit = {};
+        try {
+          const pack = JSON.parse(localStorage.getItem("ld-story-pack:" + x.id) || "null");
+          const raw = pack && pack.files ? storyFindFile(pack.files, "unit.json") : "";
+          if (raw) unit = JSON.parse(raw);
+        } catch (_) {}
+        return {
+          id: `local:${x.id}`, localId: x.id, folder: "", engine: "story-study",
+          primaryMode: "text", compatibleModes: ["text"], practiceModes: ["story-study"],
+          level: x.level || [], schema: "text-v2", imported: true, source: "local",
+          title: unit.title || x.title || x.name || x.id,
+          subtitle: unit.subtitle || x.subtitle || "",
+          seriesId: unit.seriesId || x.seriesId,
+          seriesTitle: unit.seriesTitle || x.seriesTitle,
+          partNumber: unit.partNumber || x.partNumber,
+          partCount: unit.partCount || x.partCount,
+          order: unit.order || x.order,
+          name: x.name || unit.title || x.id
+        };
+      });
     }
     function discoveredGitHubTextEntries(language = currentDeck) {
       const cached = githubTextDeckCache && githubTextDeckCache.get(language);
@@ -3842,10 +3917,6 @@
       const used = new Set();
       const out = [];
 
-      // Manifest metadata is an optional overlay, not a discovery requirement.
-      // Match on stable unit id first and folder second, then keep any GitHub-only
-      // units so a freshly uploaded decks/<lang>/texts/<unit>/ folder appears
-      // without editing manifest.json.
       for (const declared of builtIn) {
         const idx = discovered.findIndex(found =>
           found.id === declared.id ||
@@ -3853,14 +3924,22 @@
         );
         if (idx >= 0) {
           used.add(idx);
-          out.push({ ...discovered[idx], ...declared, discovered: true });
+          out.push({ ...discovered[idx], ...declared, discovered: true,
+            title: declared.title || discovered[idx].title,
+            subtitle: declared.subtitle || discovered[idx].subtitle,
+            seriesId: declared.seriesId || discovered[idx].seriesId,
+            seriesTitle: declared.seriesTitle || discovered[idx].seriesTitle,
+            partNumber: declared.partNumber || discovered[idx].partNumber,
+            partCount: declared.partCount || discovered[idx].partCount,
+            order: declared.order || discovered[idx].order
+          });
         } else {
           out.push(declared);
         }
       }
       discovered.forEach((entry, idx) => { if (!used.has(idx)) out.push(entry); });
       out.push(...local);
-      return out;
+      return storyNormaliseAndSortEntries(out);
     }
 
     function normalisedSetKey(value) {
@@ -5976,7 +6055,7 @@
         textEngine = null;
         const storyUrl = entry.localId
           ? `story-study.html?local=${encodeURIComponent(entry.localId)}&v=${encodeURIComponent(APP_BUILD)}`
-          : `story-study.html?lang=${encodeURIComponent(currentDeck)}&folder=${encodeURIComponent(entry.folder || "")}&id=${encodeURIComponent(entry.id)}&v=${encodeURIComponent(APP_BUILD)}`;
+          : `story-study.html?lang=${encodeURIComponent(currentDeck)}&folder=${encodeURIComponent(entry.folder || "")}&id=${encodeURIComponent(entry.id)}&seriesTitle=${encodeURIComponent(entry.seriesTitle || entry.title || "")}&part=${encodeURIComponent(entry.partNumber || "")}&parts=${encodeURIComponent(entry.partCount || "")}&v=${encodeURIComponent(APP_BUILD)}`;
         if (storyStudyFrame && storyStudyFrame.getAttribute("src") !== storyUrl) storyStudyFrame.setAttribute("src", storyUrl);
         statusEl.textContent = `${entry.name} · Story Study`;
         return;
@@ -8935,11 +9014,19 @@
         if (!names.has(sentenceFile.toLowerCase())) return;
 
         const id = String(unit.id || `${language}-text-${relativeFolder.replace(/[^a-z0-9]+/gi, "-").replace(/^-+|-+$/g, "").toLowerCase()}`);
+        const inferredPart = storyPositiveInt(unit.partNumber || unit.order) || storyInferredPart(id) || storyInferredPart(relativeFolder.split("/").pop());
         const title = String(unit.title || prettifyDeckName(relativeFolder.split("/").pop()));
         const subtitle = String(unit.subtitle || "").trim();
-        found.push({
+        const entry = {
           id,
-          name: subtitle && !title.toLowerCase().includes(subtitle.toLowerCase()) ? `${title} · ${subtitle}` : title,
+          title,
+          subtitle,
+          seriesId: String(unit.seriesId || id.replace(/-\d{2,3}$/, "")),
+          seriesTitle: String(unit.seriesTitle || storyCleanSeriesTitle(title, inferredPart) || title),
+          partNumber: inferredPart,
+          partCount: storyPositiveInt(unit.partCount),
+          order: storyPositiveInt(unit.order) || inferredPart,
+          sourceSection: String(unit.sourceSection || ""),
           folder: `texts/${relativeFolder}`,
           primaryMode: "text",
           compatibleModes: ["text"],
@@ -8949,7 +9036,9 @@
           engine: unit.engine || "story-study",
           source: "github",
           discovered: true
-        });
+        };
+        entry.name = storyDisplayName(entry);
+        found.push(entry);
       }
 
       try {
@@ -8958,9 +9047,9 @@
           const folders = root.filter(x => x.type === "dir" && isListableDeckPath(`${language}/texts/${x.name}`));
           await Promise.all(folders.map(folder => scanUnitFolder(`decks/${language}/texts/${folder.name}`, folder.name, 0)));
         }
-        found.sort((a, b) => String(a.name).localeCompare(String(b.name)));
-        githubTextDeckCache.set(language, { at: Date.now(), entries: found, error: null });
-        return found;
+        const ordered = storyNormaliseAndSortEntries(found);
+        githubTextDeckCache.set(language, { at: Date.now(), entries: ordered, error: null });
+        return ordered;
       } catch (error) {
         githubTextDeckCache.set(language, { at: Date.now(), entries: cached ? cached.entries : [], error: String(error) });
         return cached ? cached.entries : [];
@@ -9647,12 +9736,18 @@
       const unit = { ...check.unit, schemaVersion: 2, engine: "story-study", defaultCoverage: check.unit.defaultCoverage || "complete", defaultGoal: check.unit.defaultGoal || "use" };
       const unitKey = Object.keys(files).find(k => k === "unit.json" || k.endsWith("/unit.json")); files[unitKey] = JSON.stringify(unit, null, 2) + "\n";
       const id = String(unit.id || file.name.replace(/\.zip$/i, "")).replace(/[^a-zA-Z0-9._-]+/g, "-");
-      const language = unit.language || currentDeck, name = [unit.title, unit.subtitle].filter(Boolean).join(" · ") || id;
+      const language = unit.language || currentDeck;
+      const meta = storyNormaliseAndSortEntries([{
+        id, title: unit.title, subtitle: unit.subtitle, seriesId: unit.seriesId,
+        seriesTitle: unit.seriesTitle, partNumber: unit.partNumber, partCount: unit.partCount,
+        order: unit.order, source: "local"
+      }])[0];
+      const name = meta.name || id;
       if (!SUPPORTED_DECKS.has(language)) throw new Error(`Language “${language}” is not installed. Add its language pack before importing this text.`);
-      const pack = { id, language, name, level: [...new Set(check.sentences.map(x => x.level).filter(Boolean))], importedAt: Date.now(), files };
+      const pack = { id, language, name, title: meta.title, subtitle: meta.subtitle, seriesId: meta.seriesId, seriesTitle: meta.seriesTitle, partNumber: meta.partNumber, partCount: meta.partCount, order: meta.order, level: [...new Set(check.sentences.map(x => x.level).filter(Boolean))], importedAt: Date.now(), files };
       try { localStorage.setItem("ld-story-pack:" + id, JSON.stringify(pack)); }
       catch (e) { throw new Error("The pack is too large for local device storage."); }
-      const idx = storyPackIndex().filter(x => x.id !== id); idx.push({ id, language, name, level: pack.level, importedAt: pack.importedAt }); writeStoryPackIndex(idx);
+      const idx = storyPackIndex().filter(x => x.id !== id); idx.push({ id, language, name, title: pack.title, subtitle: pack.subtitle, seriesId: pack.seriesId, seriesTitle: pack.seriesTitle, partNumber: pack.partNumber, partCount: pack.partCount, order: pack.order, level: pack.level, importedAt: pack.importedAt }); writeStoryPackIndex(idx);
       return { id: `local:${id}`, name, warnings: check.warnings };
     }
     function updateImportControls() {

@@ -114,7 +114,7 @@ summary{cursor:pointer;padding:15px 17px;font-weight:780;list-style:none}summary
           <div class="field wide">
             <label>Forráslefedettség</label>
             <div class="choice-grid">
-              <label class="choice"><input type="radio" name="sourceCoverage" value="entire" checked><span><b>Teljes forrás</b>Minden feltöltött oldalt vagy fejezetet feldolgoz, és szükség esetén több unitra bont.</span></label>
+              <label class="choice"><input type="radio" name="sourceCoverage" value="entire" checked><span><b>Teljes forrás</b>Minden feltöltött oldalt vagy fejezetet feldolgoz, szükség esetén több, láthatóan sorszámozott unitra bont.</span></label>
               <label class="choice"><input type="radio" name="sourceCoverage" value="range"><span><b>Kiválasztott rész</b>Csak a megadott oldalakat, fejezeteket vagy szakaszt dolgozza fel.</span></label>
               <label class="choice"><input type="radio" name="sourceCoverage" value="lesson"><span><b>Egy rövid lecke</b>Egy természetes, rövidebb részletből készít egyetlen unitot.</span></label>
             </div>
@@ -364,6 +364,29 @@ If the material would become unwieldy as one unit, divide it into as many sequen
 - ${p.id}-03
 Each unit must remain independently importable while preserving the source order.
 
+SERIES ORDERING AND VISIBLE NAMES
+When more than one unit is generated, ordering metadata is mandatory. Do not rely only on ZIP or folder names.
+
+Every unit.json in the family must include:
+- seriesId: exactly "${p.id}"
+- seriesTitle: exactly "${p.title}"
+- partNumber: 1-based integer
+- partCount: total number of generated units
+- order: same integer as partNumber
+- sourceSection: concise human-readable source span, chapter or scene range
+
+Use zero-padded ids and folder names (${p.id}-01, ${p.id}-02...), but use human-readable visible metadata:
+- title: exactly "${p.title}" for every part
+- subtitle: start with "${p.subtitle||'a concise source section label'}" and append "Part NN of NN"
+
+Example for four units:
+- id: ${p.id}-01, title: ${p.title}, subtitle: ${(p.subtitle||'Chapter 1')} · Part 01 of 04, partNumber: 1, partCount: 4
+- id: ${p.id}-02, title: ${p.title}, subtitle: ${(p.subtitle||'Chapter 1')} · Part 02 of 04, partNumber: 2, partCount: 4
+
+The app must be able to display and sort the units as ${p.title} · ${(p.subtitle||'Chapter 1')} · 1/4, 2/4, and so on. Never give every generated unit an indistinguishable visible title such as only "Chapter 1".
+
+For a single-unit result, still include seriesId, seriesTitle, partNumber: 1, partCount: 1 and order: 1, but do not append a redundant visible “1/1” unless helpful.
+
 MANDATORY FILE DELIVERY
 Use your available file-creation tools. Do not merely print CSV and JSON as chat code blocks.
 
@@ -405,6 +428,12 @@ If the current AI environment genuinely cannot create downloadable files, state 
 UNIT.JSON
 Use schemaVersion 2 and include:
 - id
+- seriesId
+- seriesTitle
+- partNumber
+- partCount
+- order
+- sourceSection
 - title
 - subtitle
 - language
@@ -468,7 +497,12 @@ Include every lexeme_id introduced by the portable package. Reuse identical cano
 MANIFEST-ENTRIES.JSON
 Create an array with one entry per unit. Each entry contains:
 - id
-- name
+- name: visible and unique, including NN/NN for multi-unit series
+- seriesId
+- seriesTitle
+- partNumber
+- partCount
+- order
 - folder: texts/<unit-id>
 - primaryMode: "text"
 - compatibleModes: ["text"]
@@ -493,7 +527,9 @@ Run and record all checks:
 12. Prove 100% of word-like target tokens resolve to exactly one item or explicit phrase span.
 13. Detect ambiguous and overlapping anchors.
 14. Verify every ZIP opens and contains all required files.
-15. Report unit count, scene count, sentence count, lexeme count and any human-review warnings in VALIDATION_REPORT.md.
+15. For multi-unit output, verify partNumber is contiguous from 1 to partCount, every unit uses the same seriesId and seriesTitle, and no two units have the same order.
+16. Verify every manifest entry carries the same series ordering metadata as its unit.json.
+17. Report unit count, scene count, sentence count, lexeme count, ordered unit list and any human-review warnings in VALIDATION_REPORT.md.
 
 Do not mark the package valid if token coverage is below 100%.
 Do not omit later source sections because of response length. Continue through as many generated units as needed.
@@ -505,7 +541,7 @@ Return only:
 - any remaining human-review warnings.
 Do not paste full CSV files when downloadable artifacts were successfully created.${pasted}`
 }
-function storyStarterFiles(p){const unit={schemaVersion:2,id:p.id,title:p.title,subtitle:p.subtitle,language:p.language,engine:'story-study',defaultCoverage:'complete',defaultGoal:'use',translationMode:'always',sentenceFile:'sentences.csv',wordFile:'words.csv',anchorFile:'anchors.csv',patternFile:'patterns.csv',lexiconFile:'lexicon.csv'};return{
+function storyStarterFiles(p){const unit={schemaVersion:2,id:p.id,seriesId:p.id,seriesTitle:p.title,partNumber:1,partCount:1,order:1,sourceSection:p.subtitle||'Complete selected source',title:p.title,subtitle:p.subtitle,language:p.language,engine:'story-study',defaultCoverage:'complete',defaultGoal:'use',translationMode:'always',sentenceFile:'sentences.csv',wordFile:'words.csv',anchorFile:'anchors.csv',patternFile:'patterns.csv',lexiconFile:'lexicon.csv'};return{
  'unit.json':JSON.stringify(unit,null,2)+'\n',
  'sentences.csv':'"id","seq","scene","english","target","hint","explanation","chunks","pattern","level"\n',
  'words.csv':'"id","lexeme_id","english","target","article","hint","source_id","forms","kind"\n',
@@ -559,6 +595,16 @@ $('validate').onclick=async()=>{
     const localLexiconPath=joinPath(base,unit.lexiconFile||'lexicon.csv');
 
     if(unit.engine!=='story-study')add('warn',`${unitPath}: az engine nem "story-study".`);
+    if(!unit.id)add('bad',`${unitPath}: unit.json id hiányzik.`);
+    const inferredSeriesPart=String(unit.id||'').match(/-(\d{2,3})$/);
+    const isSeriesUnit=Number(unit.partCount)>1||Number(unit.partNumber)>1||!!inferredSeriesPart;
+    if(isSeriesUnit){
+      if(!unit.seriesId)add('warn',`${unit.id||label}: seriesId hiányzik; az app az id-ből próbálja kikövetkeztetni.`);
+      if(!unit.seriesTitle)add('warn',`${unit.id||label}: seriesTitle hiányzik; a látható sorozatnév bizonytalan lehet.`);
+      if(!Number.isInteger(Number(unit.partNumber))||Number(unit.partNumber)<1)add('warn',`${unit.id||label}: partNumber hiányzik vagy nem pozitív egész.`);
+      if(!Number.isInteger(Number(unit.partCount))||Number(unit.partCount)<Number(unit.partNumber||1))add('warn',`${unit.id||label}: partCount hiányzik vagy kisebb a partNumber értékénél.`);
+      if(!Number.isInteger(Number(unit.order))||Number(unit.order)<1)add('warn',`${unit.id||label}: order hiányzik vagy nem pozitív egész.`);
+    }
     if(!map.has(sentPath)){add('bad',`${sentPath}: a sentences.csv kötelező.`);return}
     if(!map.has(wordPath)){add('bad',`${wordPath}: Complete Story Study módhoz a words.csv kötelező.`);return}
 
@@ -667,6 +713,22 @@ $('validate').onclick=async()=>{
           else add('bad',`${d.id||d.name}: unit.json hiányzik.`)
         }
       }
+    }
+  }
+
+  const unitDocs=[...map.entries()].filter(([path])=>/(^|\/)unit\.json$/.test(path)).map(([path,text])=>{try{return{path,unit:JSON.parse(text)}}catch(_){return null}}).filter(Boolean);
+  if(unitDocs.length>1){
+    const groups=new Map();
+    for(const row of unitDocs){const key=row.unit.seriesId||String(row.unit.id||'').replace(/-\d{2,3}$/,'')||'__unknown__';if(!groups.has(key))groups.set(key,[]);groups.get(key).push(row)}
+    for(const [seriesId,rows] of groups){
+      if(rows.length<2)continue;
+      const nums=rows.map(r=>Number(r.unit.partNumber)).filter(Number.isInteger).sort((a,b)=>a-b);
+      const expected=Array.from({length:rows.length},(_,i)=>i+1);
+      const contiguous=nums.length===rows.length&&nums.every((n,i)=>n===expected[i]);
+      if(!contiguous)add('bad',`${seriesId}: a partNumber értékek nem alkotnak folytonos 1–${rows.length} sorozatot.`);else add('ok',`${seriesId}: egységek sorrendje folytonos (1–${rows.length}).`);
+      const counts=new Set(rows.map(r=>Number(r.unit.partCount)));if(counts.size!==1||![...counts][0]||[...counts][0]!==rows.length)add('bad',`${seriesId}: a partCount minden unitban legyen ${rows.length}.`);
+      const orders=rows.map(r=>Number(r.unit.order));if(new Set(orders).size!==rows.length||orders.some(n=>!Number.isInteger(n)))add('bad',`${seriesId}: hiányzó vagy ismétlődő order érték.`);
+      const titles=new Set(rows.map(r=>String(r.unit.seriesTitle||'')));if(titles.size!==1||![...titles][0])add('warn',`${seriesId}: a seriesTitle nem egységes minden unitban.`);
     }
   }
 
