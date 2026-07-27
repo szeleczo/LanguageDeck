@@ -10,14 +10,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v90-story-series-order-20260726" />
+  <link rel="manifest" href="manifest.webmanifest?v=v91.1-unified-shell-20260727" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="167x167" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="152x152" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="120x120" href="icon-192.png" />
-  <title>LanguageDeck — Vocabulary trainer</title>
+  <title>LanguageDeck · Practice</title>
   <style>
     /* ---------- Reset ---------- */
     *, *::before, *::after { box-sizing: border-box; }
@@ -159,6 +159,10 @@
     .brand .brand-name b { color: var(--text); }
     .brand .brand-name span { color: var(--text-muted); font-weight: 700; }
     .appbar-actions { display: flex; gap: 4px; }
+    .brand-link{color:inherit;text-decoration:none}.brand-context{display:block;margin-top:2px;font-family:var(--font-sans);font-size:9px;line-height:1;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+    .shell-bottom-nav{position:fixed;z-index:45;left:0;right:0;bottom:0;padding:7px 12px calc(7px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 94%,transparent);border-top:1px solid var(--border);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.shell-nav-inner{width:min(520px,100%);margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:4px}.shell-nav-link{min-height:45px;border-radius:13px;text-decoration:none;color:var(--text-faint);display:grid;justify-items:center;align-content:center;gap:2px;font-size:10px;font-weight:800}.shell-nav-link svg{width:19px;height:19px}.shell-nav-link.on{color:var(--primary);background:var(--primary-soft)}
+    html.order-practice-active .shell-bottom-nav{display:none}
+    @media(min-aspect-ratio:13/10){.shell-bottom-nav{display:none}}
 
     .icon-btn {
       width: 40px;
@@ -3159,15 +3163,14 @@
   <!-- ---------- Sticky app bar ---------- -->
   <header class="appbar">
     <div class="appbar-inner">
-      <div class="brand">
+      <a class="brand brand-link" href="index.html#course" aria-label="Back to Course">
         <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
           <rect x="20.5" y="20.5" width="59" height="59" rx="7" transform="rotate(45 50 50)" fill="currentColor"/>
           <path fill="var(--surface)" d="M43 68 L43 60 C 38.5 57.8, 35 52.6, 35 46 C 35 37.7, 41.2 31.5, 49 31.5 C 55.8 31.5, 60.6 35.2, 62.7 40.4 C 63.5 42.5, 64.8 43.7, 66.7 44.5 C 68 45.1, 68 46, 66.9 46.9 L 64.1 49 C 63.8 51.5, 62.6 53.2, 60.7 53.9 C 59.8 54.2, 59.4 54.9, 59.4 55.9 L 59.4 68 Z"/>
         </svg>
-        <span class="brand-name"><b>Language</b><span>Deck</span></span>
-      </div>
+        <span class="brand-name"><b>Language</b><span>Deck</span><small class="brand-context">Practice</small></span>
+      </a>
       <div class="appbar-actions">
-        <button class="icon-btn" aria-label="Course" title="Course" onclick="location.href='index.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></button>
         <button id="statsBtn" class="icon-btn" aria-label="Statistics" title="Statistics">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>
         </button>
@@ -3360,6 +3363,7 @@
       <button id="emptyStateBrowseBtn">Browse decks for this language</button>
     </div>
   </main>
+  <nav class="shell-bottom-nav" aria-label="Main navigation"><div class="shell-nav-inner"><a class="shell-nav-link" href="index.html#course"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h5l3 8 4-16 3 8h3"/></svg>Course</a><a class="shell-nav-link" href="index.html#book"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Book</a><a class="shell-nav-link on" href="practice.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M12 4h9"/><path d="M4 9h16"/><path d="M4 15h16"/></svg>Practice</a></div></nav>
 
   <!-- (The floating settings button was removed — the gear icon in the top-right
        app bar is the single source of truth for opening settings.) -->
@@ -3460,7 +3464,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v90-story-series-order-20260726</div>
+      <div class="meta" id="appBuildLabel">Build: v91.1-unified-shell-20260727</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>
@@ -10262,6 +10266,8 @@
         columnOrder = saved.columnOrder ?? columnOrder;
       }
 
+      const requestedMode = new URLSearchParams(location.search).get("mode");
+      if (["words","grammar","sentences","text"].includes(requestedMode)) currentGame = requestedMode;
       await loadLanguageRegistry();
       if (currentGame === "combined") currentGame = "text";
       if (!["words", "grammar", "sentences", "text"].includes(currentGame)) currentGame = "words";

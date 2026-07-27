@@ -1,5 +1,5 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v91-baker-street-course-core-20260727";
+const CACHE_VERSION = "languagedeck-v91-1-unified-shell-20260727";
 const APP_SHELL = [
   "./",
   "./index.html",

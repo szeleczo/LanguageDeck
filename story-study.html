@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
-<title>LanguageDeck · Story Study v2.3</title>
+<title>LanguageDeck · Story Study</title>
+<script>(function(){try{const x=JSON.parse(localStorage.getItem("languagedeck_settings_v1")||"{}");if(x.theme==="light"||x.theme==="dark")document.documentElement.dataset.theme=x.theme;}catch(_){}})();</script>
 <style>
 :root{
   --bg:#f8fafc;--surface:#fff;--surface-2:#f1f5f9;--border:#e2e8f0;--border-strong:#cbd5e1;
@@ -14,6 +15,9 @@
   --display:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --read:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
 }
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]){--bg:#0b1120;--surface:#111827;--surface-2:#0f172a;--border:#1e293b;--border-strong:#334155;--text:#f1f5f9;--muted:#cbd5e1;--faint:#94a3b8;--primary:#7898ff;--primary-soft:#202d58;--primary-deep:#b8c7ff;--success:#5ed0a3;--success-soft:#173a2e;--danger:#ff8f86;--danger-soft:#3b1c20;--warning:#f4bc5b;--warning-soft:#3d2d13;color-scheme:dark}}
+html[data-theme="dark"]{--bg:#0b1120;--surface:#111827;--surface-2:#0f172a;--border:#1e293b;--border-strong:#334155;--text:#f1f5f9;--muted:#cbd5e1;--faint:#94a3b8;--primary:#7898ff;--primary-soft:#202d58;--primary-deep:#b8c7ff;--success:#5ed0a3;--success-soft:#173a2e;--danger:#ff8f86;--danger-soft:#3b1c20;--warning:#f4bc5b;--warning-soft:#3d2d13;color-scheme:dark}
+html[data-theme="light"]{color-scheme:light}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);display:flex;flex-direction:column;overflow:hidden;
