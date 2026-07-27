@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "de-story-baker-street-launchpad",
+  "courseId": "de-course-baker-street",
+  "title": "Baker Street Launchpad",
+  "subtitle": "Drei Fälle für Emil Falk",
+  "language": "de",
+  "kind": "story",
+  "genre": [
+    "mystery",
+    "detective"
+  ],
+  "level": [
+    "A0",
+    "A1"
+  ],
+  "protagonist": "Emil Falk",
+  "defaultGoal": "use",
+  "chapters": [
+    {
+      "id": "ch01",
+      "order": 1,
+      "title": "Der Mann im Nebel",
+      "subtitle": "Baker Street Launchpad · A0.1",
+      "folder": "stories/baker-street-launchpad/ch01",
+      "unitId": "de-baker-nebel-01",
+      "sentences": 29,
+      "sections": 7,
+      "level": [
+        "A0.1"
+      ]
+    },
+    {
+      "id": "ch02",
+      "order": 2,
+      "title": "Der Brief ohne Namen",
+      "subtitle": "Baker Street Launchpad · A0.2",
+      "folder": "stories/baker-street-launchpad/ch02",
+      "unitId": "de-baker-brief-02",
+      "sentences": 31,
+      "sections": 6,
+      "level": [
+        "A0.2"
+      ]
+    },
+    {
+      "id": "ch03",
+      "order": 3,
+      "title": "Die Tür im Hof",
+      "subtitle": "Baker Street Launchpad · A0.3",
+      "folder": "stories/baker-street-launchpad/ch03",
+      "unitId": "de-baker-hof-03",
+      "sentences": 33,
+      "sections": 6,
+      "level": [
+        "A0.3"
+      ]
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 {
-  "name": "LanguageDeck — Vocabulary trainer",
+  "name": "LanguageDeck — guided story course",
   "short_name": "LanguageDeck",
-  "description": "Spaced-repetition vocabulary trainer with word matching, typing, and sentence completion.",
-  "start_url": "./",
+  "description": "Course-first language learning with whole stories, shared vocabulary, chapter preparation and free practice.",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
@@ -28,5 +28,5 @@
       "purpose": "maskable"
     }
   ],
-  "id": "./?app=LanguageDeck"
+  "id": "./?app=LanguageDeck-v91"
 }

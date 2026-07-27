@@ -198,6 +198,72 @@
       ],
       "schema": "text-v2",
       "engine": "story-study"
+    },
+    {
+      "id": "de-baker-nebel-01",
+      "name": "Der Mann im Nebel",
+      "title": "Der Mann im Nebel",
+      "subtitle": "Baker Street Launchpad · A0.1",
+      "folder": "stories/baker-street-launchpad/ch01",
+      "engine": "story-study",
+      "primaryMode": "text",
+      "compatibleModes": [
+        "text"
+      ],
+      "practiceModes": [
+        "story-study"
+      ],
+      "level": [
+        "A0.1"
+      ],
+      "schema": "text-v2",
+      "storyId": "de-story-baker-street-launchpad",
+      "chapterOrder": 1,
+      "chapterCount": 3
+    },
+    {
+      "id": "de-baker-brief-02",
+      "name": "Der Brief ohne Namen",
+      "title": "Der Brief ohne Namen",
+      "subtitle": "Baker Street Launchpad · A0.2",
+      "folder": "stories/baker-street-launchpad/ch02",
+      "engine": "story-study",
+      "primaryMode": "text",
+      "compatibleModes": [
+        "text"
+      ],
+      "practiceModes": [
+        "story-study"
+      ],
+      "level": [
+        "A0.2"
+      ],
+      "schema": "text-v2",
+      "storyId": "de-story-baker-street-launchpad",
+      "chapterOrder": 2,
+      "chapterCount": 3
+    },
+    {
+      "id": "de-baker-hof-03",
+      "name": "Die Tür im Hof",
+      "title": "Die Tür im Hof",
+      "subtitle": "Baker Street Launchpad · A0.3",
+      "folder": "stories/baker-street-launchpad/ch03",
+      "engine": "story-study",
+      "primaryMode": "text",
+      "compatibleModes": [
+        "text"
+      ],
+      "practiceModes": [
+        "story-study"
+      ],
+      "level": [
+        "A0.3"
+      ],
+      "schema": "text-v2",
+      "storyId": "de-story-baker-street-launchpad",
+      "chapterOrder": 3,
+      "chapterCount": 3
     }
   ]
 }

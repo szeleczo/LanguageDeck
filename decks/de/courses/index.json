@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "language": "de",
+  "courses": [
+    {
+      "id": "de-course-baker-street",
+      "title": "Baker Street Launchpad",
+      "subtitle": "Drei Fälle für Emil Falk",
+      "story": "stories/baker-street-launchpad/story.json",
+      "default": true
+    }
+  ]
+}

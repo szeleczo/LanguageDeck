@@ -1,0 +1,170 @@
+<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>LanguageDeck · Story Course Builder</title><style>
+:root{--bg:#f4f5f7;--surface:#fff;--surface2:#f0f2f5;--text:#171c25;--muted:#626b78;--faint:#8a94a2;--line:#dfe3e8;--strong:#c9d0d8;--accent:#315be8;--accent2:#e8eeff;--good:#147d58;--good2:#e7f6ef;--warn:#9b6512;--warn2:#fff4dc;--bad:#b42318;--bad2:#fff0ef;--shadow:0 14px 44px rgba(20,28,43,.09);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}@media(prefers-color-scheme:dark){:root{--bg:#101318;--surface:#171b22;--surface2:#20252d;--text:#f3f5f8;--muted:#a8b0bc;--faint:#7f8997;--line:#2c333d;--strong:#3b4451;--accent:#7898ff;--accent2:#202d58;--good:#5ed0a3;--good2:#173a2e;--warn:#f4bc5b;--warn2:#3d2d13;--bad:#ff8f86;--bad2:#40201e;--shadow:0 18px 50px rgba(0,0,0,.28);color-scheme:dark}}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text)}a,button,input,select,textarea{font:inherit}.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.topin{height:60px;max-width:1060px;margin:auto;padding:0 18px;display:flex;align-items:center;justify-content:space-between}.back{text-decoration:none;color:var(--muted);font-weight:760}.brand{font-weight:850;letter-spacing:-.025em}main{max-width:1060px;margin:auto;padding:28px 18px 80px}.hero{max-width:790px;margin-bottom:24px}.eyebrow{font-size:11px;font-weight:850;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}h1{font-size:clamp(31px,6vw,54px);line-height:1.02;letter-spacing:-.05em;margin:8px 0 10px}.hero p{color:var(--muted);line-height:1.55;margin:0}.steps{display:grid;gap:14px}.step{display:grid;grid-template-columns:46px minmax(0,1fr);gap:12px}.num{width:40px;height:40px;border-radius:14px;background:var(--text);color:var(--bg);display:grid;place-items:center;font-weight:850;margin-top:4px}.panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}.head{padding:17px 19px;border-bottom:1px solid var(--line)}.head h2{font-size:18px;margin:0 0 4px}.head p{font-size:12px;color:var(--muted);margin:0;line-height:1.45}.body{padding:18px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.wide{grid-column:1/-1}.field label{display:block;font-size:11px;font-weight:800;color:var(--muted);margin:0 0 6px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--strong);border-radius:13px;background:var(--surface);color:var(--text);padding:11px 12px;outline:0}.field textarea{min-height:150px;resize:vertical;line-height:1.45}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent2)}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.choice{position:relative}.choice input{position:absolute;opacity:0}.choice span{display:block;height:100%;border:1px solid var(--line);border-radius:14px;padding:11px;background:var(--surface2);font-size:11px;color:var(--muted);line-height:1.4}.choice b{display:block;color:var(--text);font-size:12px;margin-bottom:3px}.choice input:checked+span{border-color:var(--accent);background:var(--accent2)}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}.btn{border:0;border-radius:14px;min-height:45px;padding:10px 15px;font-weight:820}.primary{background:var(--text);color:var(--bg)}.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--line)}.tertiary{background:var(--accent2);color:var(--accent)}textarea.output{min-height:340px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}.note{padding:11px 13px;border-radius:14px;background:var(--accent2);color:var(--muted);font-size:12px;line-height:1.48;margin-top:12px}.pill-list{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.pill{padding:6px 8px;border:1px solid var(--line);border-radius:999px;background:var(--surface2);font-size:11px;color:var(--muted)}.report{display:grid;gap:7px;margin-top:14px}.row{border-radius:12px;padding:9px 11px;font-size:12px;line-height:1.42}.row.ok{background:var(--good2);color:var(--good)}.row.warn{background:var(--warn2);color:var(--warn)}.row.bad{background:var(--bad2);color:var(--bad)}.summary{font-weight:850;margin-top:12px}.hidden{display:none!important}@media(max-width:700px){main{padding:20px 12px 70px}.step{grid-template-columns:1fr}.num{width:34px;height:34px}.grid,.choices{grid-template-columns:1fr}.wide{grid-column:auto}.body,.head{padding-left:14px;padding-right:14px}.actions .btn{flex:1 1 170px}}
+</style></head><body><header class="top"><div class="topin"><a class="back" href="index.html">← Course</a><div class="brand">Story Course Builder</div><a class="back" href="practice.html">Practice</a></div></header><main><section class="hero"><div class="eyebrow">Whole-book workflow</div><h1>Forrásból azonnal használható GitHub-kurzus</h1><p>Nem 35 mondatos kivonatot készít. A teljes művet történet → fejezet → jelenet → adaptív blokk szerkezetbe rendezi, stabil kanonikus lexémaazonosítókkal és számszerű validációval.</p></section><div class="steps">
+<section class="step"><div class="num">1</div><div class="panel"><div class="head"><h2>Kurzus és forrás megadása</h2><p>A Builder ebből készít egy fájlkészítésre képes AI-nak szóló, szigorúan ellenőrizhető feladatot.</p></div><div class="body"><div class="grid"><div class="field"><label>Célnyelv</label><input id="lang" value="de"></div><div class="field"><label>Stabil story ID</label><input id="storyId" value="holmes-bohemia"></div><div class="field"><label>Kurzus / sorozat címe</label><input id="courseTitle" value="Sherlock Holmes"></div><div class="field"><label>Mű címe</label><input id="storyTitle" value="Ein Skandal in Böhmen"></div><div class="field"><label>Feldolgozási szint</label><select id="stage"><option>A0 original micro-mystery</option><option>A1 simplified full story</option><option selected>B1 faithful adapted full story</option><option>B2 lightly abridged original</option><option>C1 unedited original</option></select></div><div class="field"><label>Hangnem</label><input id="tone" value="tense, intelligent, non-graphic mystery"></div><div class="field"><label>Fejezet célméret</label><input id="chapterSize" type="number" value="80" min="30" max="180"></div><div class="field"><label>Max. új lexéma / felkészítési lépés</label><input id="newWords" type="number" value="10" min="4" max="20"></div><div class="field wide"><label>Forrásátadás</label><div class="choices"><label class="choice"><input type="radio" name="delivery" value="attachment" checked><span><b>Csatolt fájl</b>TXT, EPUB-ból kinyert szöveg vagy PDF ugyanabban az AI-beszélgetésben.</span></label><label class="choice"><input type="radio" name="delivery" value="pasted"><span><b>Beillesztett szöveg</b>A forrás közvetlenül a generált prompt végére kerül.</span></label><label class="choice"><input type="radio" name="delivery" value="both"><span><b>Mindkettő</b>A csatolmány az elsődleges, a beillesztett szöveg kiegészítés.</span></label></div></div><div class="field wide"><label>Forrásszöveg / kiegészítés</label><textarea id="source" placeholder="Másold ide a teljes szöveget, vagy hagyd üresen és csatold külön az AI-beszélgetéshez."></textarea></div><div class="field wide"><label>Külön szerzői instrukció</label><textarea id="notes" style="min-height:90px" placeholder="Például: őrizze meg az összes nyomot, a megoldást és a narratív sorrendet; ne legyen véres; ne rövidítse összefoglalóvá."></textarea></div></div><div class="actions"><button class="btn primary" id="makePrompt">Master prompt elkészítése</button><button class="btn tertiary" id="starterZip">Repository-sablon ZIP</button></div></div></div></section>
+<section class="step"><div class="num">2</div><div class="panel"><div class="head"><h2>Generálási szerződés</h2><p>A prompt teljes forráslefedettséget, fejezetenkénti batch-elést, kanonikus ID-kat és GitHubra tölthető ZIP-et kér.</p></div><div class="body"><textarea class="output" id="prompt" spellcheck="false"></textarea><div class="actions"><button class="btn primary" id="copyPrompt">Prompt másolása</button><button class="btn secondary" id="downloadPrompt">Prompt .md letöltése</button></div><div class="note">A generáláskor csatold a repository aktuális <code>decks/de/lexicon.csv</code>, <code>aliases.csv</code> és <code>patterns.csv</code> fájlját is. Az AI ezekhez igazítsa az összes fejezetet, ne készítsen saját párhuzamos szótárat.</div></div></div></section>
+<section class="step"><div class="num">3</div><div class="panel"><div class="head"><h2>Repository-csomag ellenőrzése</h2><p>Válaszd ki a kicsomagolt story-mappát vagy a teljes repository-mappát. A validátor ellenőrzi a story.json-t, a fejezeteket, az ID-kat és az új szókincs terhelését.</p></div><div class="body"><div class="field"><label>Mappa kiválasztása</label><input id="folder" type="file" webkitdirectory directory multiple></div><div class="pill-list"><span class="pill">story.json</span><span class="pill">chXX/unit.json</span><span class="pill">sentences.csv</span><span class="pill">words.csv</span><span class="pill">anchors.csv</span><span class="pill">source-map.csv</span></div><div class="actions"><button class="btn primary" id="validate">Mappa validálása</button><button class="btn secondary" id="downloadValidated" disabled>Validált GitHub ZIP</button><button class="btn secondary" id="downloadReport" disabled>Riport letöltése</button></div><div class="summary" id="summary"></div><div class="report" id="report"></div></div></div></section>
+</div></main><script>
+const $=id=>document.getElementById(id);let REPORT=[],FILES=null,VALIDATED_FILES=null;function slug(s){return String(s||'').toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'story'}function val(name){return document.querySelector(`input[name="${name}"]:checked`)?.value}function esc(s){return String(s||'').replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}function q(s){return `"${String(s??'').replace(/"/g,'""')}"`}function csvHead(cols){return cols.map(q).join(',')+'\n'}
+function plan(){return{lang:slug($('lang').value).slice(0,8),id:slug($('storyId').value),course:$('courseTitle').value.trim(),title:$('storyTitle').value.trim(),stage:$('stage').value,tone:$('tone').value.trim(),chapterSize:+$('chapterSize').value||80,newWords:+$('newWords').value||10,delivery:val('delivery')||'attachment',source:$('source').value.trim(),notes:$('notes').value.trim()}}
+function promptText(p){const sourceRule=p.delivery==='attachment'?'Use the complete source document attached to this conversation.':p.delivery==='pasted'?'Use the complete SOURCE TEXT at the end of this prompt.':'Use the attached document as authoritative and the SOURCE TEXT below as supplementary material.';return `You are producing a complete LanguageDeck v91 Story Course repository package. Create real UTF-8 files and downloadable ZIP archives; do not merely paste illustrative code blocks.
+
+PROJECT
+- Target language: ${p.lang}
+- Course: ${p.course}
+- Story title: ${p.title}
+- Stable story id: ${p.lang}-story-${p.id}
+- Adaptation stage: ${p.stage}
+- Tone: ${p.tone}
+- Target chapter size: around ${p.chapterSize} sentences, but preserve authored chapter and scene boundaries
+- Maximum new lexemes in one preparation step: ${p.newWords}
+- Additional direction: ${p.notes||'Preserve every important clue, event, reversal and the final solution.'}
+
+SOURCE CONTRACT
+${sourceRule}
+Process the complete supplied work from beginning to end. Do not stop after 35–50 sentences. Do not turn the work into a synopsis. Preserve the complete narrative arc. If the source is a novel, retain every source chapter; if a chapter is long, split it into multiple loading chapters only at natural scene boundaries and record the mapping.
+
+NON-NEGOTIABLE REPOSITORY STRUCTURE
+Return one ZIP whose root is:
+decks/${p.lang}/stories/${p.id}/
+  story.json
+  source-map.csv
+  ch01/
+    unit.json
+    sentences.csv
+    words.csv
+    anchors.csv
+    patterns.csv
+  ch02/
+    ...
+
+story.json schema:
+{
+  "schemaVersion": 1,
+  "id": "${p.lang}-story-${p.id}",
+  "courseId": "${p.lang}-course-${slug(p.course)}",
+  "title": "${p.title}",
+  "language": "${p.lang}",
+  "kind": "story",
+  "adaptationStage": "${p.stage}",
+  "sourceWork": {"title":"...","author":"...","edition":"...","rightsNote":"..."},
+  "chapters": [
+    {"id":"ch01","order":1,"title":"...","folder":"stories/${p.id}/ch01","unitId":"${p.lang}-${p.id}-ch01","sentences":80,"sections":5}
+  ]
+}
+Do NOT store learner progress in story.json. Progress is derived from chapter unit states.
+
+EACH CHAPTER IS AN ORDINARY STORY STUDY UNIT
+unit.json remains schemaVersion 2 and engine story-study. It must include storyId, chapterId, chapterTitle, chapterOrder and chapterCount. Every chapter is independently loadable and validatable.
+
+sentences.csv columns:
+"id","seq","scene","english","target","hint","explanation","chunks","pattern","level"
+- scene is an authored narrative section: a place where a reader could naturally pause.
+- Do not split by a fixed sentence count.
+- chunks must be authored and must preserve every target token exactly once.
+- Keep the full story. Simplification changes language, not plot completeness.
+
+words.csv columns:
+"id","lexeme_id","english","target","article","hint","source_id","forms","kind"
+- Reuse the supplied canonical lexicon and aliases.
+- Canonical IDs use de.lex.<lemma>[.<sense>] and never depend on part of speech.
+- The same lexical meaning must use the same ID in every chapter and every Words deck.
+- forms lists every surface form used in this chapter.
+- Proper names use stable name lexemes and kind=name.
+
+anchors.csv columns:
+"sentence_id","surface","occurrence","item_id"
+Use anchors for separable, discontinuous or genuinely ambiguous forms. Never use token offsets.
+
+source-map.csv columns:
+"source_chapter","source_start","source_end","course_chapter","scene","coverage_note"
+It must demonstrate complete, ordered source coverage with no gaps or overlaps.
+
+VALIDATION BEFORE DELIVERY
+1. Every story.json chapter folder exists and order values are unique and continuous.
+2. Every chapter has unit.json, sentences.csv, words.csv and anchors.csv.
+3. Every target word token resolves through words.csv/forms, anchors.csv or the supplied canonical lexicon.
+4. Every lexeme_id resolves through lexicon.csv or aliases.csv.
+5. The same target meaning never receives different IDs in different chapters.
+6. Count first-seen lexemes per scene in chronological order. If a scene exceeds ${p.newWords}, split its preparation into several steps or revise the language; do not silently ignore the limit.
+7. Each chapter is approximately ${p.chapterSize} sentences when natural, but story structure overrides arithmetic.
+8. Every important narrative event and clue in the source map appears in the target text.
+9. Output VALIDATION_REPORT.md with counts, unresolved tokens, ID conflicts, new lexemes per scene and source coverage.
+10. Produce one GitHub-ready ZIP rooted at decks/${p.lang}/stories/${p.id}/.
+
+BATCHING
+First create story.json, source-map.csv and the chapter plan. Then generate one source chapter or 60–100 target sentences per batch. Maintain a persistent character, vocabulary and clue ledger between batches. After the final batch, run cross-chapter validation and create the complete repository ZIP.
+${p.delivery==='pasted'||p.delivery==='both'?`\nSOURCE TEXT\n---\n${p.source}\n---`:''}`}
+function crcTable(){const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>8):c>>>1;t[n]=c>>>0}return t}const CRC=crcTable();function crc32(bytes){let c=0xffffffff;for(const b of bytes)c=CRC[(c^b)&255]^(c>>>8);return(c^0xffffffff)>>>0}function u16(n){return[n&255,(n>>>8)&255]}function u32(n){return[n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]}function zip(files){const e=new TextEncoder(),l=[],c=[];let o=0;for(const[n,t]of Object.entries(files)){const nb=e.encode(n),d=e.encode(t),r=crc32(d),h=new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0),...u32(r),...u32(d.length),...u32(d.length),...u16(nb.length),...u16(0),...nb]);l.push(h,d);c.push(new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0x800),...u16(0),...u16(0),...u16(0),...u32(r),...u32(d.length),...u32(d.length),...u16(nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(o),...nb]));o+=h.length+d.length}const z=c.reduce((a,x)=>a+x.length,0),end=new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(c.length),...u16(c.length),...u32(z),...u32(o),...u16(0)]);return new Blob([...l,...c,end],{type:'application/zip'})}
+function starter(p){const base=`decks/${p.lang}/stories/${p.id}/`,story={schemaVersion:1,id:`${p.lang}-story-${p.id}`,courseId:`${p.lang}-course-${slug(p.course)}`,title:p.title,language:p.lang,kind:'story',adaptationStage:p.stage,sourceWork:{title:'',author:'',edition:'',rightsNote:''},chapters:[{id:'ch01',order:1,title:'Chapter 1',folder:`stories/${p.id}/ch01`,unitId:`${p.lang}-${p.id}-ch01`,sentences:0,sections:0}]},unit={schemaVersion:2,id:`${p.lang}-${p.id}-ch01`,title:'Chapter 1',subtitle:p.title,language:p.lang,engine:'story-study',schema:'text-v2',storyId:story.id,chapterId:'ch01',chapterOrder:1,chapterCount:1,defaultCoverage:'complete',defaultGoal:'use',translationMode:'always',sentenceFile:'sentences.csv',wordFile:'words.csv',anchorFile:'anchors.csv',patternFile:'patterns.csv',lexiconFile:'../../../lexicon.csv',aliasesFile:'../../../aliases.csv'};return{[base+'story.json']:JSON.stringify(story,null,2)+'\n',[base+'source-map.csv']:csvHead(['source_chapter','source_start','source_end','course_chapter','scene','coverage_note']),[base+'ch01/unit.json']:JSON.stringify(unit,null,2)+'\n',[base+'ch01/sentences.csv']:csvHead(['id','seq','scene','english','target','hint','explanation','chunks','pattern','level']),[base+'ch01/words.csv']:csvHead(['id','lexeme_id','english','target','article','hint','source_id','forms','kind']),[base+'ch01/anchors.csv']:csvHead(['sentence_id','surface','occurrence','item_id']),[base+'ch01/patterns.csv']:csvHead(['id','name','english','explanation','example_id','level']),'STORY_COURSE_PROMPT.md':promptText(p)+'\n'}}
+$('makePrompt').onclick=()=>{$('prompt').value=promptText(plan())};$('starterZip').onclick=()=>{const p=plan();dl(zip(starter(p)),`${p.id}-story-course-starter.zip`)};$('copyPrompt').onclick=async()=>{if(!$('prompt').value)$('makePrompt').click();await navigator.clipboard.writeText($('prompt').value)};$('downloadPrompt').onclick=()=>{if(!$('prompt').value)$('makePrompt').click();dl(new Blob([$('prompt').value],{type:'text/markdown;charset=utf-8'}),`${plan().id}-story-course-prompt.md`)};
+function parse(text){const rows=[];let row=[],cell='',quoted=false,s=String(text||'').replace(/^\uFEFF/,'');for(let i=0;i<s.length;i++){const c=s[i];if(quoted){if(c==='"'&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')quoted=false;else cell+=c}else if(c==='"')quoted=true;else if(c===','){row.push(cell);cell=''}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=''}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}function objs(t){const r=parse(t);if(!r.length)return[];const h=r[0];return r.slice(1).filter(x=>x.some(y=>String(y).trim())).map(x=>Object.fromEntries(h.map((k,i)=>[k,x[i]||''])))}function add(sev,msg){REPORT.push({sev,msg})}function render(){const c={ok:0,warn:0,bad:0};REPORT.forEach(x=>c[x.sev]++);$('summary').textContent=`${c.bad} hiba · ${c.warn} figyelmeztetés · ${c.ok} sikeres ellenőrzés`;$('report').innerHTML=REPORT.map(x=>`<div class="row ${x.sev}">${esc(x.msg)}</div>`).join('');$('downloadReport').disabled=!REPORT.length;$('downloadValidated').disabled=!(FILES&&c.bad===0)}function commonRoot(paths){if(!paths.length)return'';const a=paths[0].split('/');let n=a.length;for(const p of paths.slice(1)){const b=p.split('/');n=Math.min(n,b.length);for(let i=0;i<n;i++)if(a[i]!==b[i]){n=i;break}}return a.slice(0,n).join('/')}
+function normKey(v){return String(v||'').toLocaleLowerCase().normalize('NFKC').replace(/[^\p{L}\p{M}\p{N}]+/gu,' ').trim()}
+function glossSet(v){return new Set(normKey(v).replace(/\b(the|a|an|to)\b/g,' ').split(/[\s/;,]+/).filter(x=>x.length>1))}
+function glossOverlap(a,b){const A=glossSet(a),B=glossSet(b);for(const x of A)if(B.has(x))return true;return false}
+$('validate').onclick=async()=>{
+  REPORT=[];FILES={};VALIDATED_FILES=null;
+  const fs=[...$('folder').files];
+  if(!fs.length){add('bad','Nem választottál mappát.');return render()}
+  const raw=fs.map(f=>f.webkitRelativePath||f.name),top=raw.length&&raw.every(x=>x.includes('/')&&x.split('/')[0]===raw[0].split('/')[0])?raw[0].split('/')[0]+'/':'';
+  for(let i=0;i<fs.length;i++){const rel=top&&raw[i].startsWith(top)?raw[i].slice(top.length):raw[i];FILES[rel]=await fs[i].text()}
+  const paths=Object.keys(FILES),storyPath=paths.find(p=>/(^|\/)story\.json$/.test(p));
+  if(!storyPath){add('bad','story.json hiányzik.');return render()}
+  let story;
+  try{story=JSON.parse(FILES[storyPath]);add('ok',`story.json beolvasva: ${story.title||story.id}`)}
+  catch(e){add('bad',`Hibás story.json: ${e.message}`);return render()}
+  const language=story.language||plan().lang;
+  if('progress'in story||'completed'in story)add('bad','A story.json nem tárolhat tanulói előrehaladást.');
+  if(!story.id||!story.title||!language)add('bad','A story.json id, title és language mezője kötelező.');
+  const base=storyPath.slice(0,-'story.json'.length),chs=[...(story.chapters||[])].sort((a,b)=>(+a.order||0)-(+b.order||0));
+  if(!chs.length)add('bad','A story.json chapters tömbje üres.');
+  const orders=chs.map(x=>+x.order);
+  if(new Set(orders).size!==orders.length||orders.some((x,i)=>x!==i+1))add('bad','A fejezetsorrend nem folyamatos 1-től.');else add('ok',`${chs.length} fejezet folyamatos sorrendben.`);
+
+  const lexPath=paths.find(p=>new RegExp(`(^|/)decks/${language}/lexicon\\.csv$`).test(p))||paths.find(p=>new RegExp(`(^|/)${language}/lexicon\\.csv$`).test(p));
+  const aliasPath=paths.find(p=>new RegExp(`(^|/)decks/${language}/aliases\\.csv$`).test(p))||paths.find(p=>new RegExp(`(^|/)${language}/aliases\\.csv$`).test(p));
+  const lexRows=lexPath?objs(FILES[lexPath]):[],lexIds=new Set(lexRows.map(r=>r.lexeme_id).filter(Boolean));
+  const aliasRows=aliasPath?objs(FILES[aliasPath]):[],aliasMap=new Map(aliasRows.filter(r=>r.old_lexeme_id&&r.canonical_lexeme_id).map(r=>[r.old_lexeme_id,r.canonical_lexeme_id]));
+  const canon=id=>{let x=id||'',seen=new Set();while(aliasMap.has(x)&&!seen.has(x)){seen.add(x);x=aliasMap.get(x)}return x};
+  if(lexPath)add('ok',`Globális lexikon ellenőrizhető: ${lexRows.length} bejegyzés.`);else add('warn','A globális lexicon.csv nincs a kiválasztott mappában; az ID-k alakját ellenőrzöm, a feloldhatóságukat nem.');
+  if(aliasPath)add('ok',`Aliasfájl ellenőrizhető: ${aliasRows.length} leképezés.`);else add('warn','Az aliases.csv nincs a kiválasztott mappában. Teljes repository kiválasztásával az aliasfeloldás is ellenőrizhető.');
+  for(const [old,target] of aliasMap){if(canon(old)===old&&target!==old)add('bad',`Alias ciklus vagy hibás lánc: ${old}`);if(lexIds.size&&!lexIds.has(canon(old)))add('bad',`Alias nem létező kanonikus ID-ra mutat: ${old} → ${target}`)}
+
+  const globalSurface=new Map(),seenLex=new Set(),sceneLoad=[],chapterIds=new Set();
+  const idPattern=new RegExp(`^${language.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')}\\.lex\\.[a-z0-9-]+(?:\\.[a-z0-9-]+)*$`);
+  for(const ch of chs){
+    if(chapterIds.has(ch.id))add('bad',`Duplikált chapter id: ${ch.id}`);chapterIds.add(ch.id);
+    const folder=(ch.folder||'').split('/').pop()||ch.id,cbase=base+folder+'/',required=['unit.json','sentences.csv','words.csv','anchors.csv','patterns.csv'];
+    for(const f of required)if(!(cbase+f in FILES))add('bad',`${ch.id}: ${f} hiányzik.`);
+    if(!(cbase+'unit.json'in FILES))continue;
+    let unit;try{unit=JSON.parse(FILES[cbase+'unit.json'])}catch(e){add('bad',`${ch.id}: hibás unit.json: ${e.message}`);continue}
+    if(unit.storyId!==story.id)add('bad',`${ch.id}: unit.storyId nem egyezik a story.json id-jával.`);
+    if(unit.chapterId!==ch.id)add('bad',`${ch.id}: unit.chapterId eltér.`);
+    if(+unit.chapterOrder!==+ch.order)add('bad',`${ch.id}: unit.chapterOrder eltér a story.json sorrendjétől.`);
+    if(+unit.chapterCount!==chs.length)add('bad',`${ch.id}: unit.chapterCount nem ${chs.length}.`);
+    if(unit.engine!=='story-study')add('bad',`${ch.id}: engine csak story-study lehet.`);
+    const ss=objs(FILES[cbase+'sentences.csv']||''),ws=objs(FILES[cbase+'words.csv']||''),anchors=objs(FILES[cbase+'anchors.csv']||''),patterns=objs(FILES[cbase+'patterns.csv']||'');
+    const sentenceIds=new Set(),wordIds=new Set(),patternIds=new Set(patterns.map(x=>x.id).filter(Boolean));
+    for(const row of ss){if(!row.id)add('bad',`${ch.id}: mondat id hiányzik.`);else if(sentenceIds.has(row.id))add('bad',`${ch.id}: duplikált mondat id: ${row.id}`);else sentenceIds.add(row.id);if(!row.target)add('bad',`${ch.id}/${row.id}: target hiányzik.`);if(!row.chunks)add('warn',`${ch.id}/${row.id}: szerzői chunks hiányzik.`);for(const pid of String(row.pattern||'').split('|').filter(Boolean))if(!patternIds.has(pid))add('warn',`${ch.id}/${row.id}: a pattern nincs a fejezet patterns.csv-jében: ${pid}`)}
+    if(!ss.length)add('bad',`${ch.id}: nincs mondat.`);else add('ok',`${ch.id}: ${ss.length} mondat, ${new Set(ss.map(s=>s.scene||'1')).size} jelenet.`);
+    const seqs=ss.map(x=>+x.seq).filter(Number.isFinite);if(seqs.length===ss.length&&seqs.some((x,i)=>x!==i+1))add('warn',`${ch.id}: a seq nem folyamatos 1-től.`);
+    for(const w of ws){
+      if(!w.id)add('bad',`${ch.id}: word item id hiányzik.`);else if(wordIds.has(w.id))add('bad',`${ch.id}: duplikált word item id: ${w.id}`);else wordIds.add(w.id);
+      if(!sentenceIds.has(w.source_id))add('bad',`${ch.id}/${w.id}: source_id nem létező mondatra mutat: ${w.source_id||'hiányzik'}`);
+      if(!idPattern.test(w.lexeme_id||''))add('bad',`${ch.id}/${w.id}: nem v91 kanonikus lexeme_id: ${w.lexeme_id||'hiányzik'}`);
+      const cid=canon(w.lexeme_id);if(lexIds.size&&!lexIds.has(cid))add('bad',`${ch.id}/${w.id}: a lexéma nem oldható fel a globális lexikonban: ${w.lexeme_id}`);
+      const surf=`${normKey(w.target)}|${normKey(w.article)}`,old=globalSurface.get(surf);
+      if(old&&old.id!==cid){if(glossOverlap(old.english,w.english))add('bad',`Könyvszintű ID-ütközés: “${w.target}” (${w.english}) → ${old.id} és ${cid}`);else add('warn',`Azonos felszín, eltérő jelentés/ID — kézi ellenőrzés: “${w.target}” → ${old.id} és ${cid}`)}else if(!old)globalSurface.set(surf,{id:cid,english:w.english});
+    }
+    for(const a of anchors){if(!sentenceIds.has(a.sentence_id))add('bad',`${ch.id}: anchor nem létező mondatra mutat: ${a.sentence_id}`);if(!wordIds.has(a.item_id))add('bad',`${ch.id}: anchor ismeretlen item_id-ra mutat: ${a.item_id}`)}
+    for(const scene of [...new Set(ss.map(s=>s.scene||'1'))]){const sids=new Set(ss.filter(s=>(s.scene||'1')===scene).map(s=>s.id)),fresh=[];for(const w of ws){const cid=canon(w.lexeme_id);if(sids.has(w.source_id)&&!seenLex.has(cid)&&!fresh.some(x=>x.id===cid))fresh.push({id:cid,row:w})}fresh.forEach(x=>seenLex.add(x.id));const batches=Math.max(1,Math.ceil(fresh.length/plan().newWords));sceneLoad.push({chapter:ch.id,scene,count:fresh.length,batches});if(fresh.length>plan().newWords)add('warn',`${ch.id} · scene ${scene}: ${fresh.length} új lexéma — ${batches} darab, legfeljebb ${plan().newWords} elemes felkészítési lépés kell.`)}
+  }
+  const sm=paths.find(p=>/(^|\/)source-map\.csv$/.test(p));
+  if(sm){const rows=objs(FILES[sm]);if(rows.length){add('ok',`source-map.csv: ${rows.length} lefedettségi sor.`);for(const r of rows)if(r.course_chapter&&!chapterIds.has(r.course_chapter))add('bad',`source-map.csv ismeretlen fejezetre mutat: ${r.course_chapter}`)}else add('warn','source-map.csv üres, a teljes forráslefedettség nem bizonyítható.')}else add('warn','source-map.csv hiányzik; teljes könyvnél kötelező.');
+  add('ok',`${seenLex.size} egyedi lexéma; könyvszintű ID-konzisztencia ellenőrizve.`);
+  const heavy=sceneLoad.filter(x=>x.count>plan().newWords);if(heavy.length)add('warn',`${heavy.length} jelenet igényel többlépcsős felkészítést; ez támogatott, de a kész csomagban külön ellenőrizendő.`);
+  const folderFromChapter=String(chs[0]?.folder||'').match(/(?:^|\/)stories\/([^/]+)/)?.[1]||slug(story.id.replace(new RegExp(`^${language}-story-`),'')),targetBase=`decks/${language}/stories/${folderFromChapter}/`;VALIDATED_FILES={};for(const [file,text] of Object.entries(FILES)){if(storyPath.startsWith('decks/')){if(file.startsWith(base))VALIDATED_FILES[file]=text}else{const rel=base&&file.startsWith(base)?file.slice(base.length):file;if(!rel.startsWith('../'))VALIDATED_FILES[targetBase+rel]=text}}VALIDATED_FILES[targetBase+'INSTALL.md']=`# ${story.title||story.id}\n\nCopy the \`decks/\` folder into the LanguageDeck repository. The v91 Course screen discovers this \`story.json\` automatically on GitHub Pages; no manifest edit is required.\n`;add('ok',`GitHub-ready package root: ${targetBase}`);
+  render()
+};
+$('downloadValidated').onclick=()=>{if(!VALIDATED_FILES)return;dl(zip(VALIDATED_FILES),`${plan().id}-github-ready.zip`)};$('downloadReport').onclick=()=>{const txt=['# Story Course validation','',...REPORT.map(x=>`- **${x.sev.toUpperCase()}** ${x.msg}`)].join('\n');dl(new Blob([txt],{type:'text/markdown;charset=utf-8'}),`${plan().id}-validation-report.md`)};$('makePrompt').click();
+</script></body></html>

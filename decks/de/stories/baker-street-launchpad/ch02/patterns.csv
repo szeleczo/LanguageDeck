@@ -1,0 +1,5 @@
+"id","name","english","explanation","example_id","level"
+"de.sep.prefix-split","Separable verb, prefix split off","In a main clause the prefix detaches and travels to the end of the sentence, sometimes many words away from its verb.","In a main clause the prefix detaches and travels to the end of the sentence, sometimes many words away from its verb.","",""
+"de.wordorder.verb-second","Verb in second position","When something other than the subject opens the sentence, the verb still comes second and the subject moves behind it.","When something other than the subject opens the sentence, the verb still comes second and the subject moves behind it.","",""
+"de.imperative","Imperative","The du-form drops the pronoun and usually the -st ending; the verb opens the sentence.","The du-form drops the pronoun and usually the -st ending; the verb opens the sentence.","",""
+"de.case.dat-after-prep","Dative after a preposition","Some prepositions always take dative. The article changes, not the noun.","Some prepositions always take dative. The article changes, not the noun.","",""

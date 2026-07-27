@@ -1,15 +1,42 @@
 /* LanguageDeck service worker — network-first, update-friendly. */
-const CACHE_VERSION = "languagedeck-v90-story-series-order-20260726";
+const CACHE_VERSION = "languagedeck-v91-baker-street-course-core-20260727";
 const APP_SHELL = [
   "./",
   "./index.html",
+  "./practice.html",
   "./story-study.html",
+  "./course-builder.html",
   "./pack-builder.html",
-  "./decks/languages.json",
+  "./reset.html",
   "./manifest.webmanifest",
+  "./icon.svg",
   "./icon-192.png",
   "./icon-512.png",
-  "./icon-maskable-512.png"
+  "./icon-maskable-512.png",
+  "./decks/languages.json",
+  "./decks/de/language.json",
+  "./decks/de/manifest.json",
+  "./decks/de/lexicon.csv",
+  "./decks/de/aliases.csv",
+  "./decks/de/patterns.csv",
+  "./decks/de/courses/index.json",
+  "./decks/de/stories/baker-street-launchpad/story.json",
+  "./decks/de/stories/baker-street-launchpad/source-map.csv",
+  "./decks/de/stories/baker-street-launchpad/ch01/unit.json",
+  "./decks/de/stories/baker-street-launchpad/ch01/sentences.csv",
+  "./decks/de/stories/baker-street-launchpad/ch01/words.csv",
+  "./decks/de/stories/baker-street-launchpad/ch01/anchors.csv",
+  "./decks/de/stories/baker-street-launchpad/ch01/patterns.csv",
+  "./decks/de/stories/baker-street-launchpad/ch02/unit.json",
+  "./decks/de/stories/baker-street-launchpad/ch02/sentences.csv",
+  "./decks/de/stories/baker-street-launchpad/ch02/words.csv",
+  "./decks/de/stories/baker-street-launchpad/ch02/anchors.csv",
+  "./decks/de/stories/baker-street-launchpad/ch02/patterns.csv",
+  "./decks/de/stories/baker-street-launchpad/ch03/unit.json",
+  "./decks/de/stories/baker-street-launchpad/ch03/sentences.csv",
+  "./decks/de/stories/baker-street-launchpad/ch03/words.csv",
+  "./decks/de/stories/baker-street-launchpad/ch03/anchors.csv",
+  "./decks/de/stories/baker-street-launchpad/ch03/patterns.csv"
 ];
 
 self.addEventListener("message", event => {
@@ -42,7 +69,7 @@ self.addEventListener("fetch", event => {
   // Network-first: online users get the latest deployed files; offline users get cache.
   // "no-cache" (revalidate) rather than "reload" (force full download): the
   // browser sends If-None-Match/If-Modified-Since, so unchanged files come back
-  // as an empty 304 instead of re-downloading the ~320KB index.html and every
+  // as an empty 304 instead of re-downloading the practice.html and every
   // deck CSV on each launch. Freshness is identical — the server still decides.
   event.respondWith(
     fetch(req, { cache: "no-cache" }).then(resp => {
