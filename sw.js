@@ -1,5 +1,5 @@
-/* LanguageDeck v92 Delivery 1 — network-first and rollback-safe. */
-const CACHE_VERSION="languagedeck-v92-delivery1-20260728";
+/* LanguageDeck v92 Delivery 2 — all practice engines integrated. */
+const CACHE_VERSION="languagedeck-v92-delivery2-20260728";
 const APP_SHELL=[
   "./",
   "./index.html",

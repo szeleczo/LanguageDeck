@@ -165,21 +165,5 @@
     "folder": "de/texts/sterntaler",
     "engine": "story-study",
     "schema": "text-v2"
-  },
-  {
-    "name": "Core 3000",
-    "deck": "it",
-    "type": "words",
-    "mode": "words",
-    "compatibleModes": [
-      "words"
-    ],
-    "practiceModes": [
-      "match",
-      "typing",
-      "progressive"
-    ],
-    "id": "it-core-3000",
-    "file": "it/words/core-3000.csv"
   }
 ]
