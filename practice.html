@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LanguageDeck" />
-  <link rel="manifest" href="manifest.webmanifest?v=v91.1-unified-shell-20260727" />
+  <link rel="manifest" href="manifest.webmanifest?v=v92.0-delivery1-legacy-safe-20260728" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png" />
@@ -160,11 +160,7 @@
     .brand .brand-name span { color: var(--text-muted); font-weight: 700; }
     .appbar-actions { display: flex; gap: 4px; }
     .brand-link{color:inherit;text-decoration:none}.brand-context{display:block;margin-top:2px;font-family:var(--font-sans);font-size:9px;line-height:1;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
-    .shell-bottom-nav{position:fixed;z-index:45;left:0;right:0;bottom:0;padding:7px 12px calc(7px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 94%,transparent);border-top:1px solid var(--border);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.shell-nav-inner{width:min(520px,100%);margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:4px}.shell-nav-link{min-height:45px;border-radius:13px;text-decoration:none;color:var(--text-faint);display:grid;justify-items:center;align-content:center;gap:2px;font-size:10px;font-weight:800}.shell-nav-link svg{width:19px;height:19px}.shell-nav-link.on{color:var(--primary);background:var(--primary-soft)}
-    html.order-practice-active .shell-bottom-nav{display:none}
-    @media(min-aspect-ratio:13/10){.shell-bottom-nav{display:none}}
-
-    .icon-btn {
+.icon-btn {
       width: 40px;
       height: 40px;
       min-height: 40px;
@@ -3363,9 +3359,7 @@
       <button id="emptyStateBrowseBtn">Browse decks for this language</button>
     </div>
   </main>
-  <nav class="shell-bottom-nav" aria-label="Main navigation"><div class="shell-nav-inner"><a class="shell-nav-link" href="index.html#course"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h5l3 8 4-16 3 8h3"/></svg>Course</a><a class="shell-nav-link" href="index.html#book"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Book</a><a class="shell-nav-link on" href="practice.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M12 4h9"/><path d="M4 9h16"/><path d="M4 15h16"/></svg>Practice</a></div></nav>
-
-  <!-- (The floating settings button was removed — the gear icon in the top-right
+<!-- (The floating settings button was removed — the gear icon in the top-right
        app bar is the single source of truth for opening settings.) -->
 
   <!-- Article modal — uses bottom-sheet styling on phones so the der/die/das
@@ -3464,7 +3458,7 @@
   <div id="settingsModal" class="modal-backdrop">
     <div class="modal-card wide">
       <div class="modal-title">Settings</div>
-      <div class="meta" id="appBuildLabel">Build: v91.1-unified-shell-20260727</div>
+      <div class="meta" id="appBuildLabel">Build: v92.0-delivery1-legacy-safe-20260728</div>
 
       <details class="settings-section relocated">
         <summary>Game</summary>

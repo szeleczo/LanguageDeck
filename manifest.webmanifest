@@ -1,8 +1,8 @@
 {
-  "name": "LanguageDeck — guided story course",
+  "name": "LanguageDeck v92",
   "short_name": "LanguageDeck",
   "description": "Course-first language learning with whole stories, shared vocabulary, chapter preparation and free practice.",
-  "start_url": "./index.html",
+  "start_url": "./index.html#course",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
