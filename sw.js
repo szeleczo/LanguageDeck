@@ -1,5 +1,5 @@
-/* LanguageDeck v92 Delivery 2 — all practice engines integrated. */
-const CACHE_VERSION="languagedeck-v92-1-ein-skandal-20260728";
+/* LanguageDeck v92.2 — review fixes and unified design tokens. */
+const CACHE_VERSION="languagedeck-v92-2-review-fixes-20260728";
 const APP_SHELL=[
   "./",
   "./index.html",
