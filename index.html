@@ -3039,7 +3039,7 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
 <style id="delivery2IntegrationStyles">
 .integrated-practice-host{position:fixed;inset:0;z-index:125;background:var(--bg);color:var(--text);display:flex;flex-direction:column;overflow:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
 .integrated-study-header{flex:0 0 58px;height:58px;display:grid;grid-template-columns:42px minmax(0,1fr) auto auto;gap:7px;align-items:center;padding:7px 11px;background:var(--surface);border-bottom:1px solid var(--line)}
-.integrated-study-header .icon{width:40px;height:40px}.integrated-study-heading{min-width:0}.integrated-study-heading b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-study-heading span{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.integrated-study-header .icon{width:40px;height:40px}.integrated-study-heading{min-width:0}.integrated-study-heading b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-study-heading span{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress{flex:0 0 34px;min-height:34px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:4px 12px;background:var(--surface);border-bottom:1px solid var(--line);font-size:10px;color:var(--muted)}.integrated-practice-progress strong{color:var(--text);font-size:10px;white-space:nowrap}.integrated-practice-progress .practice-progress-counts{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress .practice-progress-score{font-weight:850;white-space:nowrap}.integrated-practice-progress .practice-progress-mini{grid-column:1/-1;height:3px;border-radius:999px;background:var(--surface2);overflow:hidden}.integrated-practice-progress .practice-progress-mini i{display:block;height:100%;width:0;background:var(--accent);border-radius:inherit;transition:width .15s ease}
 #legacyPracticeRoot{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:var(--bg);color:var(--text);overflow:hidden;--integrated-dock-h:64px}
 #legacyPracticeRoot>.appbar,#legacyPracticeRoot>#installBanner,#legacyPracticeRoot>#iosInstallBanner{display:none!important}
 #legacyPracticeRoot>.main{width:min(940px,100%)!important;max-width:940px!important;flex:1 1 auto!important;min-height:0!important;margin:0 auto!important;padding:10px 14px calc(var(--integrated-dock-h) + 16px + env(safe-area-inset-bottom))!important;overflow-y:auto!important;overflow-x:hidden!important}
@@ -3055,7 +3055,7 @@ html.integrated-practice-active #legacyPracticeRoot .typing-panel,html.integrate
 html.integrated-practice-active #settingsBackdrop{z-index:260!important}
 html.integrated-practice-active body{overflow:hidden!important}
 #legacyPracticeRoot .modal-backdrop{z-index:180!important}
-@media (min-aspect-ratio:13/10){.integrated-study-header{height:50px;flex-basis:50px;padding-top:4px;padding-bottom:4px}#legacyPracticeRoot>.main{padding-top:5px!important}.integrated-practice-dock{--integrated-dock-h:58px}}
+@media (min-aspect-ratio:13/10){.integrated-study-header{height:50px;flex-basis:50px;padding-top:4px;padding-bottom:4px}.integrated-practice-progress{flex-basis:27px;min-height:27px;padding:2px 10px}.integrated-practice-progress .practice-progress-mini{display:none}#legacyPracticeRoot>.main{padding-top:5px!important}.integrated-practice-dock{--integrated-dock-h:58px}}
 
     /* Delivery 2: learning help is part of document flow, never a popover. */
     #legacyPracticeRoot .learning-tools,
@@ -3115,6 +3115,12 @@ html.integrated-practice-active body{overflow:hidden!important}
     <button class="icon" id="practiceSetupBtn" aria-label="Session options" title="Session options">⋯</button>
     <button class="icon" id="practiceSettingsBtn" aria-label="App settings" title="App settings">⚙</button>
   </header>
+  <div class="integrated-practice-progress" id="practiceProgressStrip" aria-live="polite">
+    <strong id="practiceProgressScope">Loading…</strong>
+    <span class="practice-progress-counts" id="practiceProgressCounts">Reading practice progress…</span>
+    <span class="practice-progress-score" id="practiceProgressScore">0 ✓ · 0 ✗</span>
+    <div class="practice-progress-mini" aria-hidden="true"><i id="practiceProgressFill"></i></div>
+  </div>
   <div id="legacyPracticeRoot" class="legacy-practice-root"><header class="appbar">
 <div class="appbar-inner">
 <a aria-label="Back to Course" class="brand brand-link" href="index.html#course">
@@ -3699,7 +3705,7 @@ button{font:inherit}
 </div>
 </template>
 <script>
-const APP_BUILD="v92.2.2-practice-order-gate-20260729",LANG="de",COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="v92.2.3-fast-match-progress-20260729",LANG="de",COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function norm(v){return String(v||"").toLocaleLowerCase().normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
 function parseCSV(text){const rows=[];let row=[],cell="",q=false,s=String(text||"").replace(/^\uFEFF/,"");for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')q=false;else cell+=c}else if(c==='"')q=true;else if(c===','){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
@@ -3937,19 +3943,19 @@ function renderCurrentStudySettings(){const box=$('currentStudySettings');if(!AC
 function showSettingsView(which){$('settingsMainView').classList.toggle('hidden',which!=='main');$('dataCheckView').classList.toggle('hidden',which!=='data');if(which==='data')refreshDataCheck()}
 function openSettings(which='main'){applyCourseTheme();$('courseBuildLabel').textContent=`${APP_BUILD}`;$('settingsBackdrop').classList.remove('hidden');renderCurrentStudySettings();renderCurrentPracticeSettings();showSettingsView(which)}
 function closeSettings(){$('settingsBackdrop').classList.add('hidden');showSettingsView('main')}
-async function collectDataCheck(){const [items,patterns,units]=await Promise.all([dbAll('reading_items'),dbAll('reading_patterns'),dbAll('reading_units')]);const langItems=items.filter(r=>r.language===LANG||String(r.key||'').startsWith(LANG+'|')),langPatterns=patterns.filter(r=>r.language===LANG||String(r.key||'').startsWith(LANG+'|'));const known=langItems.filter(r=>Math.max(+(r.lvl||0),+(r.storyState?.lvl||0))>=2).length;let chapter=CURRENT?.ch||null,data=CURRENT?.data||null,state=chapter?unitState(chapter.unitId):{};const live=ACTIVE_STUDY_API?.getSnapshot();let pos=live?.position??(+state.position||0),total=live?.total??(data?.sentences?.length||chapter?.sentences||0),clock=live?.blockClock??(+state.blockClock||0);const dueWords=langItems.filter(r=>{const s=r.storyState||r;return s.collected&&!s.handedOff&&Number.isFinite(+s.due)&&+s.due<=clock&&+(s.lvl||0)<3}).length,duePatterns=langPatterns.filter(r=>{const s=r.storyState||r;return !s.handedOff&&Number.isFinite(+s.due)&&+s.due<=clock}).length;const practice=window.LanguageDeckPractice?.snapshot?.();return{known,due:dueWords+duePatterns,itemRows:langItems.length,patternRows:langPatterns.length,unitRows:units.length,story:live?.title||STORY?.title||'No story',chapter:live?.unit||chapter?.title||'No chapter',position:pos,total,online:navigator.onLine,practice:ACTIVE_PRACTICE_MODE?practice:null}}
-async function refreshDataCheck(){const b=$('dataCheckBody');b.innerHTML='<div class="loading">Reading storage…</div>';try{const x=await collectDataCheck();b.innerHTML=`<div class="data-grid"><div class="data-card"><b>${x.known}</b><span>known lexemes (level 2+)</span></div><div class="data-card"><b>${x.due}</b><span>due learning elements</span></div><div class="data-card"><b>${x.itemRows}</b><span>word knowledge rows</span></div><div class="data-card"><b>${x.patternRows}</b><span>grammar knowledge rows</span></div></div><div class="data-position"><h3>${esc(x.story)}</h3><p>${esc(x.chapter)}<br>Position: ${x.position} / ${x.total} sentences<br>Connection: ${x.online?'online':'offline'} · saved unit rows: ${x.unitRows}${x.practice?`<br>Current practice: ${esc(practiceModeLabel(x.practice.mode))} · ${esc(x.practice.setName||'all decks')} · score ${x.practice.scoreOk||0}/${(x.practice.scoreOk||0)+(x.practice.scoreKo||0)}`:''}</p></div>`}catch(e){b.innerHTML=`<article class="error-state"><h2>Data check failed</h2><p>${esc(e.message||e)}</p></article>`}}
+async function collectDataCheck(){const [items,patterns,units]=await Promise.all([dbAll('reading_items'),dbAll('reading_patterns'),dbAll('reading_units')]);const langItems=items.filter(r=>r.language===LANG||String(r.key||'').startsWith(LANG+'|')),langPatterns=patterns.filter(r=>r.language===LANG||String(r.key||'').startsWith(LANG+'|'));const known=langItems.filter(r=>Math.max(+(r.lvl||0),+(r.storyState?.lvl||0))>=2).length;let chapter=CURRENT?.ch||null,data=CURRENT?.data||null,state=chapter?unitState(chapter.unitId):{};const live=ACTIVE_STUDY_API?.getSnapshot();let pos=live?.position??(+state.position||0),total=live?.total??(data?.sentences?.length||chapter?.sentences||0),clock=live?.blockClock??(+state.blockClock||0);const dueWords=langItems.filter(r=>{const s=r.storyState||r;return s.collected&&!s.handedOff&&Number.isFinite(+s.due)&&+s.due<=clock&&+(s.lvl||0)<3}).length,duePatterns=langPatterns.filter(r=>{const s=r.storyState||r;return !s.handedOff&&Number.isFinite(+s.due)&&+s.due<=clock}).length;let practice=null;try{practice=window.LanguageDeckPractice?.dataCheck?await window.LanguageDeckPractice.dataCheck():window.LanguageDeckPractice?.snapshot?.()}catch(e){console.warn('Free Practice data check failed',e)}return{known,due:dueWords+duePatterns,itemRows:langItems.length,patternRows:langPatterns.length,unitRows:units.length,story:live?.title||STORY?.title||'No story',chapter:live?.unit||chapter?.title||'No chapter',position:pos,total,online:navigator.onLine,practice}}
+async function refreshDataCheck(){const b=$('dataCheckBody');b.innerHTML='<div class="loading">Reading storage…</div>';try{const x=await collectDataCheck(),p=x.practice;b.innerHTML=`<div class="data-grid"><div class="data-card"><b>${x.known}</b><span>known lexemes (level 2+)</span></div><div class="data-card"><b>${x.due}</b><span>due course elements</span></div><div class="data-card"><b>${x.itemRows}</b><span>word knowledge rows</span></div><div class="data-card"><b>${x.patternRows}</b><span>grammar knowledge rows</span></div></div><div class="data-position"><h3>${esc(x.story)}</h3><p>${esc(x.chapter)}<br>Position: ${x.position} / ${x.total} sentences<br>Connection: ${x.online?'online':'offline'} · saved unit rows: ${x.unitRows}</p></div>${p?`<div class="data-position"><h3>Free Practice</h3><p>${esc(practiceModeLabel(p.mode))} · ${esc(p.variant||'')} · ${esc(p.setName||'all decks')}<br>${p.gateEnabled?`Gate ${p.gateIndex+1} / ${p.totalGates}`:'Whole table'} · ${p.order==='csv'?'table order':'shuffle'}<br>Current scope: ${p.progress.mastered} / ${p.progress.total} mastered (${p.progress.percent}%) · ${p.progress.due} due · ${p.progress.new} new<br>Whole deck: ${p.deckMastered} / ${p.deckTotal} mastered · ${p.deckDue} due · ${p.deckNew} new · ${p.wrongMarked} marked wrong<br>Session: ${p.scoreOk} correct · ${p.scoreKo} wrong · ${p.sessionUnique} unique items · ${p.mistakeReturns} targeted returns<br>Pending saves when check opened: ${p.pendingAtOpen} · write errors: ${p.writeErrors}</p></div>`:''}` }catch(e){b.innerHTML=`<article class="error-state"><h2>Data check failed</h2><p>${esc(e.message||e)}</p></article>`}}
 function updateNetworkState(){const off=!navigator.onLine;$('networkPill').classList.toggle('hidden',!off)}
 async function clearAppCache(){if(!('caches'in window))return;for(const k of await caches.keys())await caches.delete(k);if(navigator.serviceWorker?.controller)navigator.serviceWorker.controller.postMessage({type:'SKIP_WAITING'});alert('App cache cleared. Learning data was not changed. Reloading now.');location.reload()}
 async function init(){updateNetworkState();try{const aliasRows=objects(await fetchText(`decks/${LANG}/aliases.csv`,false));ALIASES=new Map(aliasRows.map(r=>[r.old_lexeme_id,r.canonical_lexeme_id]));await loadGlobal();COURSES=await loadCourseCatalog();if(!COURSES.length){renderNoCourse('No story course was found in the course catalog or GitHub stories folder.');showView('course',false);return}const saved=localStorage.getItem(`ld-active-course:${LANG}`),course=COURSES.find(c=>(c.id||c.story)===saved)||COURSES.find(c=>c.default)||COURSES[0];await activateCourse(course);const requested=(location.hash||'#course').slice(1);showView(['course','book','practice'].includes(requested)?requested:'course',false)}catch(e){console.error(e);renderNoCourse(navigator.onLine?String(e.message||e):'The app is offline and the course files are not cached yet.');showView('course',false)}}
 
 let ACTIVE_PRACTICE_MODE=null,PRACTICE_RETURN_VIEW='practice',PRACTICE_DOCK_OBSERVER=null,PRACTICE_PENDING_OPTIONS=null;
 function practiceModeLabel(mode){return({words:'Words',grammar:'Grammar',sentences:'Sentences'})[mode]||'Practice'}
-function updatePracticeShell(detail={}){const mode=detail.mode||ACTIVE_PRACTICE_MODE||'words';$('practiceStudyTitle').textContent=practiceModeLabel(mode);$('practiceStudySub').textContent=[detail.variant,detail.setName].filter(Boolean).join(' · ')||'Real installed deck';$('integratedPracticeSettingsLabel').textContent=`${practiceModeLabel(mode)}${detail.setName?' · '+detail.setName:''}`;if(!$('settingsBackdrop').classList.contains('hidden'))renderCurrentPracticeSettings();syncPracticeDock()}
+function updatePracticeShell(detail={}){const mode=detail.mode||ACTIVE_PRACTICE_MODE||'words',p=detail.progress||{total:0,mastered:0,new:0,due:0,percent:0};$('practiceStudyTitle').textContent=practiceModeLabel(mode);$('practiceStudySub').textContent=[detail.variant,detail.setName].filter(Boolean).join(' · ')||'Real installed deck';$('integratedPracticeSettingsLabel').textContent=`${practiceModeLabel(mode)}${detail.setName?' · '+detail.setName:''}`;$('practiceProgressScope').textContent=detail.gateEnabled===false?'Whole table':`Gate ${(detail.gateIndex||0)+1} / ${detail.totalGates||0}`;$('practiceProgressCounts').textContent=`${p.mastered||0} / ${p.total||0} mastered · ${p.due||0} due · ${p.new||0} new`;$('practiceProgressScore').textContent=`${detail.scoreOk||0} ✓ · ${detail.scoreKo||0} ✗`;$('practiceProgressFill').style.width=`${Math.max(0,Math.min(100,p.percent||0))}%`;if(!$('settingsBackdrop').classList.contains('hidden'))renderCurrentPracticeSettings();syncPracticeDock()}
 function renderCurrentPracticeSettings(){const box=$('integratedPracticeSettings');if(!ACTIVE_PRACTICE_MODE||!window.LanguageDeckPractice){box.classList.add('hidden');PRACTICE_PENDING_OPTIONS=null;return}box.classList.remove('hidden');const live=window.LanguageDeckPractice.snapshot();if(!PRACTICE_PENDING_OPTIONS||PRACTICE_PENDING_OPTIONS.mode!==live.mode)PRACTICE_PENDING_OPTIONS={mode:live.mode,order:live.order||'smart',gateEnabled:live.gateEnabled!==false};document.querySelectorAll('[data-practice-order]').forEach(b=>{b.classList.toggle('on',b.dataset.practiceOrder===PRACTICE_PENDING_OPTIONS.order);b.onclick=()=>{PRACTICE_PENDING_OPTIONS.order=b.dataset.practiceOrder==='csv'?'csv':'smart';renderCurrentPracticeSettings()}});document.querySelectorAll('[data-practice-gate]').forEach(b=>{const value=b.dataset.practiceGate==='true';b.classList.toggle('on',value===PRACTICE_PENDING_OPTIONS.gateEnabled);b.onclick=()=>{PRACTICE_PENDING_OPTIONS.gateEnabled=value;renderCurrentPracticeSettings()}});const changed=PRACTICE_PENDING_OPTIONS.order!==(live.order||'smart')||PRACTICE_PENDING_OPTIONS.gateEnabled!==(live.gateEnabled!==false);$('practiceOptionsNote').textContent=changed?'Restart session to apply these changes.':'Current session uses these settings.'}
 function syncPracticeDock(){const root=$('legacyPracticeRoot'),fallback=$('practiceDockFallback');if(!root||!fallback)return;const actions=root.querySelector('#wordTypingContainer:not(.hidden) .typing-actions, #sentenceContainer:not(.hidden) .sentence-actions');fallback.classList.toggle('hidden',!!actions)}
 async function startIntegratedPractice(mode,returnView='practice'){if(!window.LanguageDeckPractice)throw Error('The integrated practice engine did not initialise.');PRACTICE_RETURN_VIEW=returnView;ACTIVE_PRACTICE_MODE=mode;PRACTICE_PENDING_OPTIONS=null;ACTIVE_STUDY_ENGINE?.destroy?.();ACTIVE_STUDY_ENGINE=null;ACTIVE_STUDY_API=null;$('browseShell').classList.add('hidden');$('studyHost').classList.add('hidden');$('practiceStudyHost').classList.remove('hidden');document.documentElement.classList.add('integrated-practice-active');await window.LanguageDeckPractice.start(mode);updatePracticeShell(window.LanguageDeckPractice.snapshot());PRACTICE_DOCK_OBSERVER?.disconnect();PRACTICE_DOCK_OBSERVER=new MutationObserver(()=>requestAnimationFrame(syncPracticeDock));PRACTICE_DOCK_OBSERVER.observe($('legacyPracticeRoot'),{subtree:true,attributes:true,attributeFilter:['class'],childList:true});syncPracticeDock()}
-async function exitIntegratedPractice(view=PRACTICE_RETURN_VIEW){window.LanguageDeckPractice?.save?.();PRACTICE_DOCK_OBSERVER?.disconnect();PRACTICE_DOCK_OBSERVER=null;PRACTICE_PENDING_OPTIONS=null;document.documentElement.classList.remove('integrated-practice-active','keypad-active','order-practice-active','text-practice-active','keyboard-open');$('practiceStudyHost').classList.add('hidden');$('browseShell').classList.remove('hidden');ACTIVE_PRACTICE_MODE=null;closeSettings();try{await loadGlobal();if(STORY){CURRENT=await chooseCurrent();renderCourse();renderBook()}}catch(e){console.warn(e)}showView(view)}
+async function exitIntegratedPractice(view=PRACTICE_RETURN_VIEW){await window.LanguageDeckPractice?.flush?.();window.LanguageDeckPractice?.save?.();PRACTICE_DOCK_OBSERVER?.disconnect();PRACTICE_DOCK_OBSERVER=null;PRACTICE_PENDING_OPTIONS=null;document.documentElement.classList.remove('integrated-practice-active','keypad-active','order-practice-active','text-practice-active','keyboard-open');$('practiceStudyHost').classList.add('hidden');$('browseShell').classList.remove('hidden');ACTIVE_PRACTICE_MODE=null;closeSettings();try{await loadGlobal();if(STORY){CURRENT=await chooseCurrent();renderCourse();renderBook()}}catch(e){console.warn(e)}showView(view)}
 window.addEventListener('ld-practice-state',e=>updatePracticeShell(e.detail||{}));
 $('practiceBackBtn').onclick=()=>exitIntegratedPractice();$('practiceDockEndBtn').onclick=()=>exitIntegratedPractice();$('practiceSetupBtn').onclick=()=>window.LanguageDeckPractice?.openSetup?.();$('practiceSettingsBtn').onclick=()=>openSettings('main');$('openPracticeSetupBtn').onclick=()=>{PRACTICE_PENDING_OPTIONS=null;closeSettings();window.LanguageDeckPractice?.openSetup?.()};$('restartPracticeBtn').onclick=async()=>{await window.LanguageDeckPractice?.restartWithOptions?.(PRACTICE_PENDING_OPTIONS||{});PRACTICE_PENDING_OPTIONS=null;updatePracticeShell(window.LanguageDeckPractice?.snapshot?.()||{});closeSettings();syncPracticeDock()};
 $('practiceWordsBtn').onclick=()=>startIntegratedPractice('words','practice');$('practiceGrammarBtn').onclick=()=>startIntegratedPractice('grammar','practice');$('practiceSentencesBtn').onclick=()=>startIntegratedPractice('sentences','practice');
@@ -3985,7 +3991,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v92.2.2-practice-order-gate-20260729";
+    const APP_BUILD = "v92.2.3-fast-match-progress-20260729";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5855,6 +5861,47 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     let fetchingMore = false;
 
+    // Match should feel immediate. Visual feedback is deliberately shorter
+    // than a normal tap, while IndexedDB writes stay serialised in the background.
+    const MATCH_CORRECT_FLASH_MS = 120;
+    const MATCH_WRONG_FLASH_MS = 150;
+    const MATCH_ROUND_ADVANCE_MS = 160;
+    const SESSION_MISTAKE_MAX_RETURNS = 2;
+    let practiceWriteChain = Promise.resolve();
+    let practicePendingWrites = 0;
+    let practiceWriteErrors = 0;
+    let sessionMistakeReturns = new Map();
+    let lastPracticeProgress = { total:0, mastered:0, new:0, due:0, percent:0, is_complete:false, totalGates:0, gateIndex:0 };
+
+    function resetSessionMistakes() { sessionMistakeReturns = new Map(); }
+    function queuePracticeWrite(task) {
+      practicePendingWrites++;
+      const run = practiceWriteChain.then(() => task());
+      practiceWriteChain = run.catch(err => {
+        practiceWriteErrors++;
+        console.error("Practice answer save failed", err);
+      }).finally(() => {
+        practicePendingWrites = Math.max(0, practicePendingWrites - 1);
+        dispatchPracticeState();
+      });
+      return practiceWriteChain;
+    }
+    async function flushPracticeWrites() { await practiceWriteChain; }
+    function scheduleMistakeReturn(kind, queue, item) {
+      if (!item || !queue) return false;
+      const key = `${kind}:${item.id}`;
+      const used = sessionMistakeReturns.get(key) || 0;
+      if (used >= SESSION_MISTAKE_MAX_RETURNS || queue.some(x => x && x.id === item.id)) return false;
+      sessionMistakeReturns.set(key, used + 1);
+      const gap = used === 0 ? 3 : 2;
+      queue.splice(Math.min(gap, queue.length), 0, item);
+      dispatchPracticeState();
+      return true;
+    }
+    function scheduleWordMistake(item) { return scheduleMistakeReturn("word", wordQueue, item); }
+    function scheduleSentenceMistake(item) { return scheduleMistakeReturn("sentence", sentenceQueue, item); }
+    function mistakeReturnCount() { return [...sessionMistakeReturns.values()].reduce((n,x)=>n+x,0); }
+
     /* ---------- DOM refs ---------- */
     const $ = id => document.getElementById(id);
 
@@ -7048,6 +7095,26 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       showToast._t = setTimeout(() => toastEl.classList.remove("visible"), ms);
     }
 
+    function currentPracticeStateDetail() {
+      const variantLabels = {
+        match: "Match", typing: "Type", progressive: "Adaptive missing letters",
+        choice: "Word bank", order: "Reorder",
+        comprehension: "Reading", active: "Deep", memorization: "Memorise"
+      };
+      const modeLabels = { words: "Words", grammar: "Grammar", sentences: "Sentences", text: "Text" };
+      const modeLabel = modeLabels[currentGame] || "Words";
+      const variant = currentGame === "words"
+        ? (variantLabels[wordMode] || wordMode)
+        : currentGame === "text"
+          ? (variantLabels[textGoal] || "Reading")
+          : (variantLabels[sentenceMode] || sentenceMode);
+      const setText = currentSetName === "__all__" ? (currentGame === "grammar" ? "All grammar decks" : currentGame === "sentences" ? "All sentence decks" : "All decks") : currentSetName;
+      return { mode:currentGame, modeLabel, variant, deck:currentDeck, setName:setText, wordMode, sentenceMode, order:newItemOrder, gateEnabled, gateIndex:currentGateIndex, totalGates, score:{ok:correctCount,ko:wrongCount}, scoreOk:correctCount, scoreKo:wrongCount, progress:{...lastPracticeProgress}, pendingWrites:practicePendingWrites, writeErrors:practiceWriteErrors, sessionUnique:sessionLoadedIds.size, mistakeReturns:mistakeReturnCount() };
+    }
+    function dispatchPracticeState() {
+      try { window.dispatchEvent(new CustomEvent("ld-practice-state", { detail: currentPracticeStateDetail() })); } catch (_) {}
+    }
+
     function updateModeSummary() {
       const variantLabels = {
         match: "Match", typing: "Type", progressive: "Adaptive missing letters",
@@ -7072,7 +7139,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       `;
       if (importLanguageLabel) importLanguageLabel.textContent = `Current language: ${languageFullLabel()}. Built-in import shows compatible ${languageName()} decks.`;
       if (quickSheet && quickSheet.classList.contains("active")) renderQuickSheet();
-      window.dispatchEvent(new CustomEvent("ld-practice-state", { detail: { mode: currentGame, modeLabel, variant, deck: currentDeck, setName: setText, score: { ok: correctCount, ko: wrongCount } } }));
+      dispatchPracticeState();
     }
 
     function openStats() { statsModal.classList.add("active"); refreshStats(); }
@@ -7344,6 +7411,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function refreshGateInfo() {
       if (currentGame === "text") {
         totalGates = 0; gatePanel.classList.add("gate-disabled"); gateLabel.textContent = "Text"; gateProgressText.textContent = "—"; gateProgressFill.style.width = "0%";
+        lastPracticeProgress = { total:0, mastered:0, new:0, due:0, percent:0, is_complete:true, totalGates:0, gateIndex:0 }; dispatchPracticeState();
         return { progress: { total:0, mastered:0, new:0, due:0, percent:0, is_complete:true }, total_gates:0, gate_index:0 };
       }
       const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
@@ -7367,6 +7435,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const liPct = $("liGatePct"), liLbl = $("liGateLabel"), liFill = $("liProgressFill"), liPrev = $("liPrevGateBtn"), liNext = $("liNextGateBtn"), liArrows = $("liGateArrows");
       if (liPct) liPct.textContent = `${progress.percent}%`; if (liLbl) liLbl.textContent = gateEnabled ? `Gate ${totalGates ? currentGateIndex + 1 : 0} / ${totalGates}` : "All items";
       if (liFill) liFill.style.width = `${progress.percent}%`; if (liPrev) liPrev.disabled = prevGateBtn.disabled; if (liNext) liNext.disabled = nextGateBtn.disabled; if (liArrows) liArrows.classList.toggle("hidden", !gateEnabled);
+      lastPracticeProgress = { ...progress, totalGates:total_gates, gateIndex:currentGateIndex }; dispatchPracticeState();
       return { progress, total_gates, gate_index: currentGateIndex };
     }
 
@@ -7890,7 +7959,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     /* ---------- Word match game ---------- */
     async function loadWords(reset = true) {
-      if (reset) sessionLoadedIds = new Set();
+      if (reset) { sessionLoadedIds = new Set(); resetSessionMistakes(); }
       selectedLeft = null; selectedRight = null;
       matchedIds = new Set();
       pendingArticlePairId = null; hideArticleModal();
@@ -8076,6 +8145,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       // Mirror to landscape-info column (a compact variant)
       const liScore = document.getElementById("liScore");
       if (liScore) liScore.innerHTML = `<span class="ok">${correctCount}</span> ✓ <span class="ko">${wrongCount}</span> ✗`;
+      dispatchPracticeState();
     }
 
     /* Mirror the status text to the landscape-info column too. We wrap
@@ -8122,6 +8192,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         ? await recordProgressiveAnswer("word_pairs", wordId, isCorrect, repetitionProfile, clean)
         : await recordAnswer("word_pairs", wordId, isCorrect, repetitionProfile);
       syncRowIntoLiveItems(row);
+      return row;
     }
 
 
@@ -8154,17 +8225,15 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function finalizeCorrectWordPair(pairId) {
       matchedIds.add(pairId);
       correctCount++; updateScore();
-      await saveWordAnswer(pairId, true);
+      renderWordMatch();
+      queuePracticeWrite(async () => { await saveWordAnswer(pairId, true); await refreshStats(); await refreshGateInfo(); });
       setTimeout(async () => {
         locked = false; renderWordMatch();
         if (allCurrentRoundMatched()) {
           statusEl.textContent = "Round complete — next coming up.";
-          setTimeout(async () => {
-            await loadNextWordRound(); renderWordMatch();
-            await refreshStats(); await refreshGateInfo();
-          }, 450);
-        } else { await refreshStats(); await refreshGateInfo(); }
-      }, 250);
+          setTimeout(async () => { await loadNextWordRound(); renderWordMatch(); }, MATCH_ROUND_ADVANCE_MS);
+        }
+      }, MATCH_CORRECT_FLASH_MS);
     }
 
     async function checkWordMatch() {
@@ -8186,14 +8255,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       } else {
         wrongCount++; updateScore();
         statusEl.textContent = "Wrong match.";
-        const wrongId = selectedLeft;
+        const wrongId = selectedLeft, wrongPair = getCurrentWordPairById(wrongId);
         markWordWrongTemporarily();
-        await saveWordAnswer(wrongId, false);
-        setTimeout(async () => {
+        scheduleWordMistake(wrongPair);
+        queuePracticeWrite(async () => { await saveWordAnswer(wrongId, false); await refreshStats(); await refreshGateInfo(); });
+        setTimeout(() => {
           selectedLeft = null; selectedRight = null;
           locked = false; renderWordMatch();
-          await refreshStats(); await refreshGateInfo();
-        }, 700);
+        }, MATCH_WRONG_FLASH_MS);
       }
     }
 
@@ -8224,9 +8293,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       } else {
         wrongCount++; updateScore();
         statusEl.textContent = `Wrong article. Correct: ${expected}`;
-        await saveWordAnswer(pair.id, false);
+        scheduleWordMistake(pair);
+        queuePracticeWrite(async () => { await saveWordAnswer(pair.id, false); await refreshStats(); await refreshGateInfo(); });
         hideArticleModal();
-        setTimeout(async () => { locked = false; renderWordMatch(); await refreshStats(); await refreshGateInfo(); }, 800);
+        setTimeout(() => { locked = false; renderWordMatch(); }, MATCH_WRONG_FLASH_MS);
       }
     }
 
@@ -8339,7 +8409,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         typingResult.textContent = `Solution: ${targetDisplay(currentTypingWord)}`;
         statusEl.textContent = "";
         await saveWordAnswer(currentTypingWord.id, false);
-        wordQueue.push(currentTypingWord);
+        scheduleWordMistake(currentTypingWord);
         wordTypingAwaitingContinue = true;
         locked = false;
         updateTypingActionButtons();
@@ -8375,7 +8445,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           );
         }
         await saveWordAnswer(currentTypingWord.id, false);
-        wordQueue.push(currentTypingWord);
+        scheduleWordMistake(currentTypingWord);
         wordTypingAwaitingContinue = true;
         locked = false;
         updateTypingActionButtons();
@@ -8384,7 +8454,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     /* ---------- Sentences ---------- */
     async function loadSentences(reset = true) {
-      if (reset) sessionLoadedIds = new Set();
+      if (reset) { sessionLoadedIds = new Set(); resetSessionMistakes(); }
       sentenceQueue = []; sentencePool = [];
       currentSentence = null; currentSentenceData = null; activeBlankIndex = 0;
       sentenceResult.textContent = ""; sentenceEnglish.textContent = "—";
@@ -9085,6 +9155,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         ? await recordProgressiveAnswer("sentence_pairs", id, isCorrect, repetitionProfile, clean)
         : await recordAnswer("sentence_pairs", id, isCorrect, repetitionProfile);
       syncRowIntoLiveItems(row);
+      return row;
     }
 
     async function submitSentenceAnswer(showSolutionOnly = false) {
@@ -9118,7 +9189,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         wrongCount++; updateScore();
         statusEl.textContent = "";
         await saveSentenceAnswer(currentSentence.id, false);
-        sentenceQueue.push(currentSentence);
+        scheduleSentenceMistake(currentSentence);
 
         if (sentenceMode === "order") {
           currentSentenceData.orderPlaced = currentSentenceData.orderWords.slice();
@@ -9163,7 +9234,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         showSentenceExplanationAfterFeedback();
         statusEl.textContent = "";
         await saveSentenceAnswer(currentSentence.id, false);
-        sentenceQueue.push(currentSentence);
+        scheduleSentenceMistake(currentSentence);
 
         if (sentenceMode === "order" && currentSentenceData) {
           currentSentenceData.orderAwaitingContinue = true;
@@ -10349,6 +10420,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       deferredPrompt = null;
     });
     window.addEventListener("appinstalled", () => { installBanner.classList.remove("visible"); });
+    document.addEventListener("visibilitychange", () => { if (document.hidden) flushPracticeWrites(); });
+    window.addEventListener("pagehide", () => { flushPracticeWrites(); });
 
     /* iOS Safari has no `beforeinstallprompt` — show a manual hint when:
        - the device looks like iOS, AND
@@ -10602,8 +10675,18 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       save() { saveSettings(); },
       async restart() { return restartIntegratedPractice({}); },
       async restartWithOptions(options = {}) { return restartIntegratedPractice(options); },
-      snapshot() {
-        return { mode: currentGame, deck: currentDeck, setName: currentSetName, wordMode, sentenceMode, order: newItemOrder, gateEnabled, scoreOk: correctCount, scoreKo: wrongCount };
+      snapshot() { return currentPracticeStateDetail(); },
+      async flush() { await flushPracticeWrites(); },
+      async dataCheck() {
+        const pendingAtOpen = practicePendingWrites;
+        await flushPracticeWrites();
+        const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
+        let all = await DB.getAll(table, currentDeck, currentSetName);
+        if (currentSetName === "__all__" && (currentGame === "grammar" || currentGame === "sentences")) all = all.filter(r => setSupportsStudyMode(r.set_name, currentGame, currentDeck));
+        const useGateSize = currentGame === "words" ? gateSize : Math.min(gateSize, 50);
+        const scopeRows = gateEnabled ? fetchGateRows(all, currentGateIndex, useGateSize) : all;
+        const progress = computeProgress(scopeRows), deckProgress = computeProgress(all), now = nowIso();
+        return { ...currentPracticeStateDetail(), progress, pendingAtOpen, deckTotal:all.length, deckMastered:deckProgress.mastered, deckDue:all.filter(r=>r.next_due!=null&&r.next_due<=now).length, deckNew:all.filter(r=>r.next_due==null).length, wrongMarked:all.filter(r=>(r.times_wrong|0)>0).length, totalGates, gateIndex:currentGateIndex };
       }
     };
   
