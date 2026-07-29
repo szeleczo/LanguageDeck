@@ -1,5 +1,5 @@
-/* LanguageDeck v92.2 — review fixes and unified design tokens. */
-const CACHE_VERSION="languagedeck-v92-2-review-fixes-20260728";
+/* LanguageDeck v92.2.1 — preparation shuffle hotfix. */
+const CACHE_VERSION="languagedeck-v92-2-1-prep-hotfix-20260729";
 const APP_SHELL=[
   "./",
   "./index.html",
