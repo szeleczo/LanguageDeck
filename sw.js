@@ -1,5 +1,5 @@
-/* LanguageDeck v92.2.1 — preparation shuffle hotfix. */
-const CACHE_VERSION="languagedeck-v92-2-1-prep-hotfix-20260729";
+/* LanguageDeck v92.2.2 — Free Practice order, Gate mode and Course icon. */
+const CACHE_VERSION="languagedeck-v92-2-2-practice-order-gate-20260729";
 const APP_SHELL=[
   "./",
   "./index.html",
