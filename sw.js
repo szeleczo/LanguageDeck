@@ -1,5 +1,5 @@
 /* LanguageDeck v92 Delivery 2 — all practice engines integrated. */
-const CACHE_VERSION="languagedeck-v92-delivery2-20260728";
+const CACHE_VERSION="languagedeck-v92-1-ein-skandal-20260728";
 const APP_SHELL=[
   "./",
   "./index.html",
@@ -21,6 +21,24 @@ const APP_SHELL=[
   "./decks/de/sentences/core-3000-sentences.csv",
   "./decks/de/sentences/hooks-sentences.csv",
   "./decks/de/sentences/sentence-builder.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch01/anchors.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch01/patterns.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch01/sentences.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch01/unit.json",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch01/words.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch02/anchors.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch02/patterns.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch02/sentences.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch02/unit.json",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch02/words.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch03/anchors.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch03/patterns.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch03/sentences.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch03/unit.json",
+  "./decks/de/stories/ein-skandal-in-boehmen/ch03/words.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/source-map.csv",
+  "./decks/de/stories/ein-skandal-in-boehmen/source.json",
+  "./decks/de/stories/ein-skandal-in-boehmen/story.json",
   "./decks/de/stories/baker-street-launchpad/ch01/anchors.csv",
   "./decks/de/stories/baker-street-launchpad/ch01/patterns.csv",
   "./decks/de/stories/baker-street-launchpad/ch01/sentences.csv",

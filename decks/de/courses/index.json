@@ -8,6 +8,13 @@
       "subtitle": "Drei Fälle für Emil Falk",
       "story": "stories/baker-street-launchpad/story.json",
       "default": true
+    },
+    {
+      "id": "de-course-ein-skandal-in-boehmen",
+      "title": "Ein Skandal in Böhmen",
+      "subtitle": "Sherlock Holmes · vollständige A1-Adaption",
+      "story": "stories/ein-skandal-in-boehmen/story.json",
+      "default": false
     }
   ]
 }

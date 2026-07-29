@@ -264,6 +264,138 @@
       "storyId": "de-story-baker-street-launchpad",
       "chapterOrder": 3,
       "chapterCount": 3
+    },
+    {
+      "id": "de-holmes-bohemia-ch01-words",
+      "name": "Ein Skandal · Teil 1 · Wörter",
+      "file": "stories/ein-skandal-in-boehmen/ch01/words.csv",
+      "primaryMode": "words",
+      "compatibleModes": [
+        "words"
+      ],
+      "practiceModes": [
+        "match",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1"
+      ],
+      "schema": "word",
+      "courseId": "de-course-ein-skandal-in-boehmen",
+      "storyId": "de-story-ein-skandal-in-boehmen",
+      "chapterId": "ch01"
+    },
+    {
+      "id": "de-holmes-bohemia-ch01-sentences",
+      "name": "Ein Skandal · Teil 1 · Sätze",
+      "file": "stories/ein-skandal-in-boehmen/ch01/sentences.csv",
+      "primaryMode": "sentences",
+      "compatibleModes": [
+        "sentences",
+        "grammar"
+      ],
+      "practiceModes": [
+        "choice",
+        "order",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1"
+      ],
+      "schema": "sentence",
+      "courseId": "de-course-ein-skandal-in-boehmen",
+      "storyId": "de-story-ein-skandal-in-boehmen",
+      "chapterId": "ch01"
+    },
+    {
+      "id": "de-holmes-bohemia-ch02-words",
+      "name": "Ein Skandal · Teil 2 · Wörter",
+      "file": "stories/ein-skandal-in-boehmen/ch02/words.csv",
+      "primaryMode": "words",
+      "compatibleModes": [
+        "words"
+      ],
+      "practiceModes": [
+        "match",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1"
+      ],
+      "schema": "word",
+      "courseId": "de-course-ein-skandal-in-boehmen",
+      "storyId": "de-story-ein-skandal-in-boehmen",
+      "chapterId": "ch02"
+    },
+    {
+      "id": "de-holmes-bohemia-ch02-sentences",
+      "name": "Ein Skandal · Teil 2 · Sätze",
+      "file": "stories/ein-skandal-in-boehmen/ch02/sentences.csv",
+      "primaryMode": "sentences",
+      "compatibleModes": [
+        "sentences",
+        "grammar"
+      ],
+      "practiceModes": [
+        "choice",
+        "order",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1"
+      ],
+      "schema": "sentence",
+      "courseId": "de-course-ein-skandal-in-boehmen",
+      "storyId": "de-story-ein-skandal-in-boehmen",
+      "chapterId": "ch02"
+    },
+    {
+      "id": "de-holmes-bohemia-ch03-words",
+      "name": "Ein Skandal · Teil 3 · Wörter",
+      "file": "stories/ein-skandal-in-boehmen/ch03/words.csv",
+      "primaryMode": "words",
+      "compatibleModes": [
+        "words"
+      ],
+      "practiceModes": [
+        "match",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1"
+      ],
+      "schema": "word",
+      "courseId": "de-course-ein-skandal-in-boehmen",
+      "storyId": "de-story-ein-skandal-in-boehmen",
+      "chapterId": "ch03"
+    },
+    {
+      "id": "de-holmes-bohemia-ch03-sentences",
+      "name": "Ein Skandal · Teil 3 · Sätze",
+      "file": "stories/ein-skandal-in-boehmen/ch03/sentences.csv",
+      "primaryMode": "sentences",
+      "compatibleModes": [
+        "sentences",
+        "grammar"
+      ],
+      "practiceModes": [
+        "choice",
+        "order",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "A1"
+      ],
+      "schema": "sentence",
+      "courseId": "de-course-ein-skandal-in-boehmen",
+      "storyId": "de-story-ein-skandal-in-boehmen",
+      "chapterId": "ch03"
     }
   ]
 }

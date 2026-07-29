@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "id": "de-story-ein-skandal-in-boehmen",
+  "courseId": "de-course-ein-skandal-in-boehmen",
+  "title": "Ein Skandal in Böhmen",
+  "subtitle": "Der erste Fall von Sherlock Holmes und Irene Adler",
+  "language": "de",
+  "kind": "story",
+  "genre": [
+    "mystery",
+    "detective",
+    "classic"
+  ],
+  "level": [
+    "A1"
+  ],
+  "protagonist": "Sherlock Holmes",
+  "defaultGoal": "use",
+  "source": {
+    "title": "A Scandal in Bohemia",
+    "author": "Arthur Conan Doyle",
+    "url": "https://www.gutenberg.org/cache/epub/1661/pg1661.txt",
+    "projectGutenbergId": "1661",
+    "adaptation": "Original German A1 adaptation from the public-domain English text. The attached 2005 German translation was not used as target prose."
+  },
+  "chapters": [
+    {
+      "id": "ch01",
+      "order": 1,
+      "title": "Der König mit der Maske",
+      "subtitle": "Ein Skandal in Böhmen · Teil 1",
+      "folder": "stories/ein-skandal-in-boehmen/ch01",
+      "unitId": "de-holmes-bohemia-ch01",
+      "sentences": 72,
+      "sections": 11,
+      "level": [
+        "A1.1"
+      ]
+    },
+    {
+      "id": "ch02",
+      "order": 2,
+      "title": "Die Hochzeit und der Feueralarm",
+      "subtitle": "Ein Skandal in Böhmen · Teil 2",
+      "folder": "stories/ein-skandal-in-boehmen/ch02",
+      "unitId": "de-holmes-bohemia-ch02",
+      "sentences": 103,
+      "sections": 16,
+      "level": [
+        "A1.2"
+      ]
+    },
+    {
+      "id": "ch03",
+      "order": 3,
+      "title": "Die Frau, die Holmes besiegt",
+      "subtitle": "Ein Skandal in Böhmen · Teil 3",
+      "folder": "stories/ein-skandal-in-boehmen/ch03",
+      "unitId": "de-holmes-bohemia-ch03",
+      "sentences": 62,
+      "sections": 10,
+      "level": [
+        "A1.3"
+      ]
+    }
+  ]
+}
