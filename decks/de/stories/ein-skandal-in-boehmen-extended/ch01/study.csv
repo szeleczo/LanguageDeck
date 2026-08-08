@@ -1,0 +1,35 @@
+kind,ref,role,english,target,article,priority
+word,de.lex.beobachten,memorize,to observe,beobachten,,120
+word,de.lex.folge,memorize,to deduce / infer,Folge,die,119
+word,de.private.bohemia.ext.angelegenheit,memorize,matter / affair,Angelegenheit,die,118
+word,de.private.bohemia.ext.auftrag,memorize,assignment / commission,Auftrag,der,117
+word,de.private.bohemia.ext.raetsel,memorize,mystery / puzzle,Rätsel,das,116
+word,de.lex.spur,memorize,clue / trace,Spur,die,115
+word,de.private.bohemia.ext.zweifel,memorize,doubt,Zweifel,der,114
+word,de.private.bohemia.ext.aufmerksamkeit,memorize,attention,Aufmerksamkeit,die,113
+word,de.private.bohemia.ext.handschrift,memorize,handwriting,Handschrift,die,112
+word,de.private.bohemia.ext.briefpapier,memorize,writing paper,Briefpapier,das,111
+word,de.lex.bedeuten,memorize,importance / meaning,bedeuten,,110
+word,de.private.bohemia.ext.ungewoehnlich,memorize,unusual,ungewöhnlich,,109
+word,de.private.bohemia.ext.core.diskret,memorize,discreet,diskret,,108
+word,de.private.bohemia.ext.skandal,memorize,scandal,Skandal,der,107
+word,de.private.bohemia.ext.photographie,memorize,photograph,Photographie,die,106
+word,de.private.bohemia.ext.majestaet,memorize,Majesty,Majestät,die,105
+word,de.private.bohemia.ext.core.vertraut,memorize,familiar / trusted,vertraut,,104
+expression,ch01-exp01,memorize,to take up / occupy fully,gänzlich in Anspruch nehmen,,103
+expression,ch01-exp02,memorize,to cast doubt on something,etwas in Zweifel ziehen,,102
+expression,ch01-exp03,memorize,to pace up and down,auf und ab gehen,,101
+expression,ch01-exp04,memorize,to have information at hand,Informationen zur Hand haben,,100
+expression,ch01-exp05,memorize,to take offence at something,an etwas Anstoß nehmen,,99
+expression,ch01-exp06,memorize,to have a free hand,freie Hand haben,,98
+pattern,de.subordinate.dass,use,,,,70
+pattern,de.relative.der,use,,,,69
+pattern,de.zu-infinitive,use,,,,68
+pattern,de.konjunktiv2.wuerde,use,,,,67
+pattern,de.konjunktiv2.past,use,,,,66
+sentence,s001,use,,,,50
+sentence,s066,use,,,,49
+sentence,s078,use,,,,48
+sentence,s107,use,,,,47
+sentence,s167,use,,,,46
+sentence,s259,use,,,,45

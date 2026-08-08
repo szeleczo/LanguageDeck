@@ -396,6 +396,222 @@
       "courseId": "de-course-ein-skandal-in-boehmen",
       "storyId": "de-story-ein-skandal-in-boehmen",
       "chapterId": "ch03"
+    },
+    {
+      "id": "de-holmes-bohemia-extended-ch01",
+      "name": "Ein Skandal Extended · Teil 1",
+      "title": "Teil I · Der geheimnisvolle Besucher",
+      "subtitle": "Vollständige Fassung · private",
+      "folder": "stories/ein-skandal-in-boehmen-extended/ch01",
+      "engine": "story-study",
+      "primaryMode": "text",
+      "compatibleModes": [
+        "text"
+      ],
+      "practiceModes": [
+        "story-study"
+      ],
+      "level": [
+        "B2",
+        "C1"
+      ],
+      "schema": "text-v2",
+      "storyId": "de-story-ein-skandal-in-boehmen-extended",
+      "chapterOrder": 1,
+      "chapterCount": 3,
+      "privateUseOnly": true
+    },
+    {
+      "id": "de-holmes-bohemia-extended-ch01-words",
+      "name": "Ein Skandal Extended · Teil 1 · Wörter",
+      "file": "stories/ein-skandal-in-boehmen-extended/ch01/words.csv",
+      "primaryMode": "words",
+      "compatibleModes": [
+        "words"
+      ],
+      "practiceModes": [
+        "match",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "B2",
+        "C1"
+      ],
+      "schema": "word",
+      "courseId": "de-course-ein-skandal-in-boehmen-extended",
+      "storyId": "de-story-ein-skandal-in-boehmen-extended",
+      "chapterId": "ch01",
+      "privateUseOnly": true
+    },
+    {
+      "id": "de-holmes-bohemia-extended-ch01-sentences",
+      "name": "Ein Skandal Extended · Teil 1 · Sätze",
+      "file": "stories/ein-skandal-in-boehmen-extended/ch01/sentences.csv",
+      "primaryMode": "sentences",
+      "compatibleModes": [
+        "sentences",
+        "grammar"
+      ],
+      "practiceModes": [
+        "choice",
+        "order",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "B2",
+        "C1"
+      ],
+      "schema": "sentence",
+      "courseId": "de-course-ein-skandal-in-boehmen-extended",
+      "storyId": "de-story-ein-skandal-in-boehmen-extended",
+      "chapterId": "ch01",
+      "privateUseOnly": true
+    },
+    {
+      "id": "de-holmes-bohemia-extended-ch02",
+      "name": "Ein Skandal Extended · Teil 2",
+      "title": "Teil II · Irene Adler",
+      "subtitle": "Vollständige Fassung · private",
+      "folder": "stories/ein-skandal-in-boehmen-extended/ch02",
+      "engine": "story-study",
+      "primaryMode": "text",
+      "compatibleModes": [
+        "text"
+      ],
+      "practiceModes": [
+        "story-study"
+      ],
+      "level": [
+        "B2",
+        "C1"
+      ],
+      "schema": "text-v2",
+      "storyId": "de-story-ein-skandal-in-boehmen-extended",
+      "chapterOrder": 2,
+      "chapterCount": 3,
+      "privateUseOnly": true
+    },
+    {
+      "id": "de-holmes-bohemia-extended-ch02-words",
+      "name": "Ein Skandal Extended · Teil 2 · Wörter",
+      "file": "stories/ein-skandal-in-boehmen-extended/ch02/words.csv",
+      "primaryMode": "words",
+      "compatibleModes": [
+        "words"
+      ],
+      "practiceModes": [
+        "match",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "B2",
+        "C1"
+      ],
+      "schema": "word",
+      "courseId": "de-course-ein-skandal-in-boehmen-extended",
+      "storyId": "de-story-ein-skandal-in-boehmen-extended",
+      "chapterId": "ch02",
+      "privateUseOnly": true
+    },
+    {
+      "id": "de-holmes-bohemia-extended-ch02-sentences",
+      "name": "Ein Skandal Extended · Teil 2 · Sätze",
+      "file": "stories/ein-skandal-in-boehmen-extended/ch02/sentences.csv",
+      "primaryMode": "sentences",
+      "compatibleModes": [
+        "sentences",
+        "grammar"
+      ],
+      "practiceModes": [
+        "choice",
+        "order",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "B2",
+        "C1"
+      ],
+      "schema": "sentence",
+      "courseId": "de-course-ein-skandal-in-boehmen-extended",
+      "storyId": "de-story-ein-skandal-in-boehmen-extended",
+      "chapterId": "ch02",
+      "privateUseOnly": true
+    },
+    {
+      "id": "de-holmes-bohemia-extended-ch03",
+      "name": "Ein Skandal Extended · Teil 3",
+      "title": "Teil III · Die Frau",
+      "subtitle": "Vollständige Fassung · private",
+      "folder": "stories/ein-skandal-in-boehmen-extended/ch03",
+      "engine": "story-study",
+      "primaryMode": "text",
+      "compatibleModes": [
+        "text"
+      ],
+      "practiceModes": [
+        "story-study"
+      ],
+      "level": [
+        "B2",
+        "C1"
+      ],
+      "schema": "text-v2",
+      "storyId": "de-story-ein-skandal-in-boehmen-extended",
+      "chapterOrder": 3,
+      "chapterCount": 3,
+      "privateUseOnly": true
+    },
+    {
+      "id": "de-holmes-bohemia-extended-ch03-words",
+      "name": "Ein Skandal Extended · Teil 3 · Wörter",
+      "file": "stories/ein-skandal-in-boehmen-extended/ch03/words.csv",
+      "primaryMode": "words",
+      "compatibleModes": [
+        "words"
+      ],
+      "practiceModes": [
+        "match",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "B2",
+        "C1"
+      ],
+      "schema": "word",
+      "courseId": "de-course-ein-skandal-in-boehmen-extended",
+      "storyId": "de-story-ein-skandal-in-boehmen-extended",
+      "chapterId": "ch03",
+      "privateUseOnly": true
+    },
+    {
+      "id": "de-holmes-bohemia-extended-ch03-sentences",
+      "name": "Ein Skandal Extended · Teil 3 · Sätze",
+      "file": "stories/ein-skandal-in-boehmen-extended/ch03/sentences.csv",
+      "primaryMode": "sentences",
+      "compatibleModes": [
+        "sentences",
+        "grammar"
+      ],
+      "practiceModes": [
+        "choice",
+        "order",
+        "typing",
+        "progressive"
+      ],
+      "level": [
+        "B2",
+        "C1"
+      ],
+      "schema": "sentence",
+      "courseId": "de-course-ein-skandal-in-boehmen-extended",
+      "storyId": "de-story-ein-skandal-in-boehmen-extended",
+      "chapterId": "ch03",
+      "privateUseOnly": true
     }
   ]
 }

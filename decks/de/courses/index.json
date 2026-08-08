@@ -15,6 +15,14 @@
       "subtitle": "Sherlock Holmes · vollständige A1-Adaption",
       "story": "stories/ein-skandal-in-boehmen/story.json",
       "default": false
+    },
+    {
+      "id": "de-course-ein-skandal-in-boehmen-extended",
+      "title": "Ein Skandal in Böhmen — Extended",
+      "subtitle": "Vollständige Fassung · private study copy",
+      "story": "stories/ein-skandal-in-boehmen-extended/story.json",
+      "default": false,
+      "privateUseOnly": true
     }
   ]
 }

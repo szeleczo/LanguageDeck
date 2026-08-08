@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "id": "de-story-ein-skandal-in-boehmen-extended",
+  "courseId": "de-course-ein-skandal-in-boehmen-extended",
+  "title": "Ein Skandal in Böhmen",
+  "subtitle": "Extended · Vollständige Fassung",
+  "language": "de",
+  "kind": "story",
+  "genre": [
+    "mystery",
+    "detective",
+    "classic",
+    "authentic"
+  ],
+  "level": [
+    "B2",
+    "C1"
+  ],
+  "protagonist": "Sherlock Holmes",
+  "defaultGoal": "use",
+  "privateUseOnly": true,
+  "source": {
+    "title": "Ein Skandal in Böhmen",
+    "author": "Arthur Conan Doyle",
+    "translator": "Martin Langwaldt",
+    "translationCopyright": "© 2005 Martin Langwaldt",
+    "targetSource": "User-provided EPUB; private personal-use study package.",
+    "englishReference": "Project Gutenberg #1661, A Scandal in Bohemia",
+    "englishUrl": "https://www.gutenberg.org/cache/epub/1661/pg1661.txt",
+    "adaptation": "No simplification. The German target text is preserved from the user-provided EPUB; only sentence, scene, chunk, gloss and study metadata are added."
+  },
+  "chapters": [
+    {
+      "id": "ch01",
+      "order": 1,
+      "title": "Teil I · Der geheimnisvolle Besucher",
+      "subtitle": "Ein Skandal in Böhmen · Extended · Teil 1",
+      "folder": "stories/ein-skandal-in-boehmen-extended/ch01",
+      "unitId": "de-holmes-bohemia-extended-ch01",
+      "sentences": 274,
+      "sections": 11,
+      "level": [
+        "B2",
+        "C1"
+      ]
+    },
+    {
+      "id": "ch02",
+      "order": 2,
+      "title": "Teil II · Irene Adler",
+      "subtitle": "Ein Skandal in Böhmen · Extended · Teil 2",
+      "folder": "stories/ein-skandal-in-boehmen-extended/ch02",
+      "unitId": "de-holmes-bohemia-extended-ch02",
+      "sentences": 279,
+      "sections": 10,
+      "level": [
+        "B2",
+        "C1"
+      ]
+    },
+    {
+      "id": "ch03",
+      "order": 3,
+      "title": "Teil III · Die Frau",
+      "subtitle": "Ein Skandal in Böhmen · Extended · Teil 3",
+      "folder": "stories/ein-skandal-in-boehmen-extended/ch03",
+      "unitId": "de-holmes-bohemia-extended-ch03",
+      "sentences": 100,
+      "sections": 4,
+      "level": [
+        "B2",
+        "C1"
+      ]
+    }
+  ]
+}

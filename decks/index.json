@@ -165,5 +165,107 @@
     "folder": "de/texts/sterntaler",
     "engine": "story-study",
     "schema": "text-v2"
+  },
+  {
+    "name": "Ein Skandal Extended · Teil 1 · Wörter",
+    "deck": "de",
+    "type": "words",
+    "mode": "words",
+    "compatibleModes": [
+      "words"
+    ],
+    "practiceModes": [
+      "match",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-holmes-bohemia-extended-ch01-words",
+    "file": "de/stories/ein-skandal-in-boehmen-extended/ch01/words.csv"
+  },
+  {
+    "name": "Ein Skandal Extended · Teil 1 · Sätze",
+    "deck": "de",
+    "type": "sentences",
+    "mode": "sentences",
+    "compatibleModes": [
+      "sentences",
+      "grammar"
+    ],
+    "practiceModes": [
+      "choice",
+      "order",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-holmes-bohemia-extended-ch01-sentences",
+    "file": "de/stories/ein-skandal-in-boehmen-extended/ch01/sentences.csv"
+  },
+  {
+    "name": "Ein Skandal Extended · Teil 2 · Wörter",
+    "deck": "de",
+    "type": "words",
+    "mode": "words",
+    "compatibleModes": [
+      "words"
+    ],
+    "practiceModes": [
+      "match",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-holmes-bohemia-extended-ch02-words",
+    "file": "de/stories/ein-skandal-in-boehmen-extended/ch02/words.csv"
+  },
+  {
+    "name": "Ein Skandal Extended · Teil 2 · Sätze",
+    "deck": "de",
+    "type": "sentences",
+    "mode": "sentences",
+    "compatibleModes": [
+      "sentences",
+      "grammar"
+    ],
+    "practiceModes": [
+      "choice",
+      "order",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-holmes-bohemia-extended-ch02-sentences",
+    "file": "de/stories/ein-skandal-in-boehmen-extended/ch02/sentences.csv"
+  },
+  {
+    "name": "Ein Skandal Extended · Teil 3 · Wörter",
+    "deck": "de",
+    "type": "words",
+    "mode": "words",
+    "compatibleModes": [
+      "words"
+    ],
+    "practiceModes": [
+      "match",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-holmes-bohemia-extended-ch03-words",
+    "file": "de/stories/ein-skandal-in-boehmen-extended/ch03/words.csv"
+  },
+  {
+    "name": "Ein Skandal Extended · Teil 3 · Sätze",
+    "deck": "de",
+    "type": "sentences",
+    "mode": "sentences",
+    "compatibleModes": [
+      "sentences",
+      "grammar"
+    ],
+    "practiceModes": [
+      "choice",
+      "order",
+      "typing",
+      "progressive"
+    ],
+    "id": "de-holmes-bohemia-extended-ch03-sentences",
+    "file": "de/stories/ein-skandal-in-boehmen-extended/ch03/sentences.csv"
   }
 ]

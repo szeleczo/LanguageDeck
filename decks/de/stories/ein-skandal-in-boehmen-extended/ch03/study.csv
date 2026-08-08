@@ -1,0 +1,25 @@
+kind,ref,role,english,target,article,priority
+word,de.lex.ueberraschung,memorize,to surprise,Überraschung,die,120
+word,de.lex.verlassen,memorize,to leave,verlassen,,119
+word,de.private.bohemia.ext.entschlossen,memorize,determined,entschlossen,,118
+word,de.lex.brief,memorize,letter,Brief,der,117
+word,de.private.bohemia.ext.photographie,memorize,photograph,Photographie,die,116
+word,de.private.bohemia.ext.skandal,memorize,scandal,Skandal,der,115
+word,de.lex.erfolg,memorize,success,Erfolg,der,114
+word,de.lex.koenig,memorize,king,König,der,113
+word,de.private.bohemia.ext.rechtsanwalt,memorize,lawyer / solicitor,Rechtsanwalt,der,112
+expression,ch03-exp01,memorize,to be at ease / reassured,beruhigt sein,,111
+expression,ch03-exp02,memorize,to take precautions,Vorsichtsmaßnahmen treffen,,110
+expression,ch03-exp03,memorize,to leave something behind,etwas zurücklassen,,109
+expression,ch03-exp04,memorize,to be one step ahead,jemandem einen Schritt voraus sein,,108
+expression,ch03-exp05,memorize,to hold someone in high regard,große Achtung vor jemandem haben,,107
+pattern,de.plusquamperfekt,use,,,,70
+pattern,de.konjunktiv2.past,use,,,,69
+pattern,de.relative.der,use,,,,68
+pattern,de.zu-infinitive,use,,,,67
+sentence,s001,use,,,,50
+sentence,s045,use,,,,49
+sentence,s054,use,,,,48
+sentence,s075,use,,,,47
+sentence,s083,use,,,,46
+sentence,s100,use,,,,45

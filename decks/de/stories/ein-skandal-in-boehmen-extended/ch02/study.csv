@@ -1,0 +1,36 @@
+kind,ref,role,english,target,article,priority
+word,de.private.bohemia.ext.ungewoehnlich,memorize,unusual,ungewöhnlich,,120
+word,de.private.bohemia.ext.rechtsanwalt,memorize,lawyer / solicitor,Rechtsanwalt,der,119
+word,de.lex.folgen,memorize,to follow,folgen,,118
+word,de.private.bohemia.ext.core.riskieren,memorize,to risk,riskieren,,117
+word,de.private.bohemia.ext.neutral,memorize,neutral,neutral,,116
+word,de.lex.zeichen,memorize,signal / sign,Zeichen,das,115
+word,de.lex.sich,memorize,oneself,sich,,114
+word,de.lex.verlassen,memorize,to leave / rely on,verlassen,,113
+word,de.private.bohemia.ext.core.weigern,memorize,to refuse,weigern,,112
+word,de.lex.versteck,memorize,to hide,Versteck,das,111
+word,de.lex.suchen,memorize,to search,suchen,,110
+word,de.lex.zeigen,memorize,to show,zeigen,,109
+word,de.private.bohemia.ext.feueralarm,memorize,fire alarm,Feueralarm,der,108
+word,de.private.bohemia.ext.rauferei,memorize,brawl / scuffle,Rauferei,die,107
+word,de.private.bohemia.ext.kutscher,memorize,coachman,Kutscher,der,106
+word,de.lex.vertrauen,memorize,trust,Vertrauen,das,105
+word,de.private.bohemia.ext.entschlossen,memorize,determined,entschlossen,,104
+word,de.private.bohemia.ext.photo,memorize,photograph,Photo,das,103
+expression,ch02-exp01,memorize,to find out / scout out,etwas auskundschaften,,102
+expression,ch02-exp02,memorize,to keep out of everything,sich aus allem heraushalten,,101
+expression,ch02-exp03,memorize,to be able to rely on someone,auf jemanden zählen können,,100
+expression,ch02-exp04,memorize,to keep an eye on someone,jemanden im Auge behalten,,99
+expression,ch02-exp05,memorize,to show something to someone,jemandem etwas zeigen,,98
+expression,ch02-exp06,memorize,to make one’s way / set off,sich auf den Weg machen,,97
+pattern,de.subordinate.als,use,,,,70
+pattern,de.subordinate.wenn,use,,,,69
+pattern,de.modal.infinitive-final,use,,,,68
+pattern,de.um-zu,use,,,,67
+pattern,de.subordinate.ob,use,,,,66
+sentence,s118,use,,,,50
+sentence,s127,use,,,,49
+sentence,s136,use,,,,48
+sentence,s178,use,,,,47
+sentence,s257,use,,,,46
+sentence,s261,use,,,,45
