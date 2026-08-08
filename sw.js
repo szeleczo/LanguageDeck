@@ -1,5 +1,5 @@
-/* LanguageDeck v93.0 — Chapter Study, active recall, clean reread and scheduled review. */
-const CACHE_VERSION="languagedeck-v93-0-chapter-mastery-20260808";
+/* LanguageDeck v93.0.1 — Match no-flicker hotfix on Chapter Mastery. */
+const CACHE_VERSION="languagedeck-v93-0-1-match-no-flicker-20260808";
 const APP_SHELL=[
   "./",
   "./index.html",

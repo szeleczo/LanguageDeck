@@ -3737,7 +3737,7 @@ button{font:inherit}
 </div>
 </template>
 <script>
-const APP_BUILD="v93.0-chapter-mastery-20260808",LANG="de",COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="v93.0.1-match-no-flicker-20260808",LANG="de",COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function norm(v){return String(v||"").toLocaleLowerCase().normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
 function parseCSV(text){const rows=[];let row=[],cell="",q=false,s=String(text||"").replace(/^\uFEFF/,"");for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')q=false;else cell+=c}else if(c==='"')q=true;else if(c===','){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
@@ -4082,7 +4082,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "v93.0-chapter-mastery-20260808";
+    const APP_BUILD = "v93.0.1-match-no-flicker-20260808";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -8167,6 +8167,41 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       card.appendChild(btn);
     }
 
+    /* Match rendering policy (v93.0.1): build the card grid only when the
+       round itself changes. Selection / correct / wrong feedback updates the
+       existing DOM nodes in place. This avoids the visible full-grid flash that
+       came from clearing innerHTML and recreating every card after each tap. */
+    function matchCard(side, id) {
+      if (id === null || id === undefined) return null;
+      return wordMatchContainer.querySelector(`.card[data-side="${side}"][data-id="${String(id)}"]`);
+    }
+    function syncMatchSelection(side, selectedId) {
+      wordMatchContainer.querySelectorAll(`.card[data-side="${side}"]`).forEach(card => {
+        card.classList.toggle("selected", selectedId !== null && String(card.dataset.id) === String(selectedId));
+      });
+    }
+    function clearMatchWrong(leftId, rightId) {
+      const l = matchCard("english", leftId), r = matchCard("target", rightId);
+      if (l) l.classList.remove("wrong");
+      if (r) r.classList.remove("wrong");
+    }
+    function markMatchCorrect(pairId) {
+      for (const side of ["english", "target"]) {
+        const card = matchCard(side, pairId);
+        if (!card) continue;
+        card.classList.remove("selected", "wrong", "word-correct", "disabled");
+        card.classList.add("correct");
+      }
+    }
+    function syncPendingArticleCard(pairId) {
+      wordMatchContainer.querySelectorAll(".card.word-correct").forEach(c => c.classList.remove("word-correct"));
+      if (pairId === null || pairId === undefined) return;
+      for (const side of ["english", "target"]) {
+        const card = matchCard(side, pairId);
+        if (card && !card.classList.contains("correct")) card.classList.add("word-correct");
+      }
+    }
+
     function renderWordMatch() {
       leftColumn.innerHTML = "";
       rightColumn.innerHTML = "";
@@ -8184,12 +8219,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         if (selectedLeft === pair.id) card.classList.add("selected");
         if (matchedIds.has(pair.id)) card.classList.add("correct");
         if (pendingArticlePairId === pair.id) card.classList.add("word-correct");
-        if (locked) card.classList.add("disabled");
         buildCardFaces(card, pair.english, pair);
         card.addEventListener("click", () => {
           if (locked || matchedIds.has(pair.id) || pendingArticlePairId !== null) return;
           selectedLeft = selectedLeft === pair.id ? null : pair.id;
-          renderWordMatch(); checkWordMatch();        });
+          syncMatchSelection("english", selectedLeft);
+          checkWordMatch();
+        });
         leftColumn.appendChild(card);
       });
 
@@ -8209,12 +8245,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         if (selectedRight === pair.id) card.classList.add("selected");
         if (matchedIds.has(pair.id)) card.classList.add("correct");
         if (pendingArticlePairId === pair.id) card.classList.add("word-correct");
-        if (locked) card.classList.add("disabled");
         buildCardFaces(card, targetWordOnly(pair), pair);
         card.addEventListener("click", () => {
           if (locked || matchedIds.has(pair.id) || pendingArticlePairId !== null) return;
           selectedRight = selectedRight === pair.id ? null : pair.id;
-          renderWordMatch(); checkWordMatch();        });
+          syncMatchSelection("target", selectedRight);
+          checkWordMatch();
+        });
         rightColumn.appendChild(card);
       });
     }
@@ -8316,10 +8353,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function finalizeCorrectWordPair(pairId) {
       matchedIds.add(pairId);
       correctCount++; updateScore();
-      renderWordMatch();
+      markMatchCorrect(pairId);
       queuePracticeWrite(async () => { await saveWordAnswer(pairId, true); await refreshStats(); await refreshGateInfo(); });
       setTimeout(async () => {
-        locked = false; renderWordMatch();
+        locked = false;
         if (allCurrentRoundMatched()) {
           statusEl.textContent = "Round complete — next coming up.";
           setTimeout(async () => { await loadNextWordRound(); renderWordMatch(); }, MATCH_ROUND_ADVANCE_MS);
@@ -8334,11 +8371,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         const id = selectedLeft;
         const pair = getCurrentWordPairById(id);
         selectedLeft = null; selectedRight = null;
+        syncMatchSelection("english", null);
+        syncMatchSelection("target", null);
         if (pair && hasArticle(pair)) {
           statusEl.textContent = "Word matched. Now pick the correct article.";
           locked = false;
           showArticleModal(id);
-          renderWordMatch();
+          syncPendingArticleCard(id);
         } else {
           statusEl.textContent = "Correct match.";
           await finalizeCorrectWordPair(id);
@@ -8346,13 +8385,16 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       } else {
         wrongCount++; updateScore();
         statusEl.textContent = "Wrong match.";
-        const wrongId = selectedLeft, wrongPair = getCurrentWordPairById(wrongId);
+        const wrongId = selectedLeft, wrongRightId = selectedRight, wrongPair = getCurrentWordPairById(wrongId);
         markWordWrongTemporarily();
         scheduleWordMistake(wrongPair);
         queuePracticeWrite(async () => { await saveWordAnswer(wrongId, false); await refreshStats(); await refreshGateInfo(); });
         setTimeout(() => {
+          clearMatchWrong(wrongId, wrongRightId);
           selectedLeft = null; selectedRight = null;
-          locked = false; renderWordMatch();
+          syncMatchSelection("english", null);
+          syncMatchSelection("target", null);
+          locked = false;
         }, MATCH_WRONG_FLASH_MS);
       }
     }
@@ -8368,6 +8410,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function hideArticleModal() {
       pendingArticlePairId = null;
       articleModal.classList.remove("active");
+      syncPendingArticleCard(null);
     }
 
     async function handleArticleChoice(chosen) {
@@ -8387,7 +8430,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         scheduleWordMistake(pair);
         queuePracticeWrite(async () => { await saveWordAnswer(pair.id, false); await refreshStats(); await refreshGateInfo(); });
         hideArticleModal();
-        setTimeout(() => { locked = false; renderWordMatch(); }, MATCH_WRONG_FLASH_MS);
+        setTimeout(() => { locked = false; }, MATCH_WRONG_FLASH_MS);
       }
     }
 
@@ -9368,19 +9411,25 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function clearSelections() {
       if (pendingArticlePairId !== null) return;
       selectedLeft = null; selectedRight = null;
-      renderWordMatch();    }
+      syncMatchSelection("english", null);
+      syncMatchSelection("target", null);
+    }
     function selectLeftByIndex(i) {
       if (i === null || i >= currentWordRoundPairs.length) return;
       const pair = currentWordRoundPairs[i];
       if (!pair || matchedIds.has(pair.id) || locked || pendingArticlePairId !== null) return;
       selectedLeft = selectedLeft === pair.id ? null : pair.id;
-      renderWordMatch(); checkWordMatch();    }
+      syncMatchSelection("english", selectedLeft);
+      checkWordMatch();
+    }
     function selectRightByIndex(i) {
       if (i === null || i >= rightOrder.length) return;
       const pair = getCurrentWordPairById(rightOrder[i]);
       if (!pair || matchedIds.has(pair.id) || locked || pendingArticlePairId !== null) return;
       selectedRight = selectedRight === pair.id ? null : pair.id;
-      renderWordMatch(); checkWordMatch();    }
+      syncMatchSelection("target", selectedRight);
+      checkWordMatch();
+    }
     function handleChoiceSentenceKeyboard(i) {
       if (!currentSentenceData || sentenceMode !== "choice") return;
       if (i >= currentSentenceData.bankWords.length) return;
