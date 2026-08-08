@@ -1,5 +1,5 @@
-/* LanguageDeck v93.0.1 — Match no-flicker hotfix on Chapter Mastery. */
-const CACHE_VERSION="languagedeck-v93-0-1-match-no-flicker-20260808";
+/* LanguageDeck 3.0.0 — Guided Learning Core. */
+const CACHE_VERSION="languagedeck-3-0-0-guided-learning-core-20260808";
 const APP_SHELL=[
   "./",
   "./index.html",
