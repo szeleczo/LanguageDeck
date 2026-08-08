@@ -1,0 +1,27 @@
+kind,ref,role,english,target,article,priority
+word,de.lex.verkleidung,memorize,,,,100
+word,de.lex.stallknecht,memorize,,,,99
+word,de.lex.kirche,memorize,,,,98
+word,de.lex.zeuge,memorize,,,,97
+word,de.lex.hochzeit,memorize,,,,96
+word,de.lex.anwalt,memorize,,,,95
+word,de.lex.plan,memorize,,,,94
+word,de.lex.feuer,memorize,,,,93
+word,de.lex.rauch,memorize,,,,92
+word,de.lex.foto,memorize,,,,91
+word,de.lex.versteck,memorize,,,,90
+word,de.lex.kutsche,memorize,,,,89
+word,de.lex.beobachten,memorize,,,,88
+word,de.lex.warnen,memorize,,,,87
+expression,ch02-exp01,memorize,near / in the vicinity of,in der Nähe von,,80
+expression,ch02-exp02,memorize,in a hurry,in Eile,,79
+expression,ch02-exp03,memorize,help as a witness,als Zeuge helfen,,78
+expression,ch02-exp04,memorize,as thanks,zum Dank,,77
+expression,ch02-exp05,memorize,agree immediately,sofort zustimmen,,76
+pattern,de.um-zu,use,,,,60
+pattern,de.zu-infinitive,use,,,,59
+pattern,de.subordinate.weil,use,,,,58
+sentence,s005,use,,,,40
+sentence,s018,use,,,,39
+sentence,s027,use,,,,38
+sentence,s040,use,,,,37

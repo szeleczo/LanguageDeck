@@ -20,5 +20,6 @@
   "wordFile": "words.csv",
   "anchorFile": "anchors.csv",
   "patternFile": "patterns.csv",
-  "lexiconFile": "../../../lexicon.csv"
+  "lexiconFile": "../../../lexicon.csv",
+  "studyFile": "study.csv"
 }

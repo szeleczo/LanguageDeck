@@ -1,0 +1,27 @@
+kind,ref,role,english,target,article,priority
+word,de.lex.versteck,memorize,,,,100
+word,de.lex.schrank,memorize,,,,99
+word,de.lex.schublade,memorize,,,,98
+word,de.lex.wandplatte,memorize,,,,97
+word,de.lex.stimme,memorize,,,,96
+word,de.lex.schauspielerin,memorize,,,,95
+word,de.lex.brief,memorize,,,,94
+word,de.lex.grund,memorize,,,,93
+word,de.lex.schaden,memorize,,,,92
+word,de.lex.warnen,memorize,,,,91
+word,de.lex.foto,memorize,,,,90
+word,de.lex.verkleidung,memorize,,,,89
+word,de.lex.koenig,memorize,,,,88
+word,de.lex.hochzeit,memorize,,,,87
+expression,ch03-exp01,memorize,on the way,auf dem Weg,,80
+expression,ch03-exp02,memorize,have no reason to,"keinen Grund haben, zu",,79
+expression,ch03-exp03,memorize,in great haste,in großer Eile,,78
+expression,ch03-exp04,memorize,wish someone good night,jemandem gute Nacht wünschen,,77
+expression,ch03-exp05,memorize,ask someone for help,jemanden um Hilfe bitten,,76
+pattern,de.konjunktiv2.past,use,,,,60
+pattern,de.plusquamperfekt,use,,,,59
+pattern,de.indirect-question,use,,,,58
+sentence,s011,use,,,,40
+sentence,s031,use,,,,39
+sentence,s035,use,,,,38
+sentence,s038,use,,,,37

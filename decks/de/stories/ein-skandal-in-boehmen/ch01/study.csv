@@ -1,0 +1,27 @@
+kind,ref,role,english,target,article,priority
+word,de.lex.fall,memorize,,,,100
+word,de.lex.spur,memorize,,,,99
+word,de.lex.brief,memorize,,,,98
+word,de.lex.besucher,memorize,,,,97
+word,de.lex.maske,memorize,,,,96
+word,de.lex.papier,memorize,,,,95
+word,de.lex.kutsche,memorize,,,,94
+word,de.lex.koenig,memorize,,,,93
+word,de.lex.adresse,memorize,,,,92
+word,de.lex.beobachten,memorize,,,,91
+word,de.lex.untersuchen,memorize,,,,90
+word,de.lex.helfen,memorize,,,,89
+word,de.lex.bleiben,memorize,,,,88
+word,de.lex.ueberrascht,memorize,,,,87
+expression,ch01-exp01,memorize,have not seen for a long time,lange nicht gesehen,,80
+expression,ch01-exp02,memorize,have a new case,einen neuen Fall haben,,79
+expression,ch01-exp03,memorize,pace back and forth,hin und her gehen,,78
+expression,ch01-exp04,memorize,ask someone to stay,"jemanden bitten, zu bleiben",,77
+expression,ch01-exp05,memorize,guess without facts,ohne Fakten raten,,76
+pattern,de.perfekt.haben,use,,,,60
+pattern,de.subordinate.dass,use,,,,59
+pattern,de.modal.infinitive-final,use,,,,58
+sentence,s008,use,,,,40
+sentence,s019,use,,,,39
+sentence,s027,use,,,,38
+sentence,s039,use,,,,37

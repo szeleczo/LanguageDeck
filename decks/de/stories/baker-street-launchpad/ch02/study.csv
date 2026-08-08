@@ -1,0 +1,20 @@
+kind,ref,role,english,target,article,priority
+word,de.lex.bruecke,memorize,,,,100
+word,de.lex.faden,memorize,,,,99
+word,de.lex.spur,memorize,,,,98
+word,de.lex.schlamm,memorize,,,,97
+word,de.lex.idee,memorize,,,,96
+word,de.lex.mantel,memorize,,,,95
+word,de.lex.stimme,memorize,,,,94
+word,de.lex.antwort.answer,memorize,,,,93
+expression,,memorize,look at the letter,den Brief ansehen,,92
+expression,,memorize,bring the key with you,den Schlüssel mitbringen,,91
+expression,,memorize,have an idea,eine Idee haben,,90
+expression,,memorize,know the answer,die Antwort kennen,,89
+pattern,de.imperative,use,,,,88
+pattern,de.sep.prefix-split,use,,,,87
+pattern,de.wordorder.verb-second,use,,,,86
+sentence,s004,use,,,,85
+sentence,s009,use,,,,84
+sentence,s024,use,,,,83
+sentence,s031,use,,,,82

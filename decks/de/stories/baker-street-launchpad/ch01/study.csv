@@ -1,0 +1,20 @@
+kind,ref,role,english,target,article,priority
+word,de.lex.nebel,memorize,,,,100
+word,de.lex.tuer,memorize,,,,99
+word,de.lex.schluessel,memorize,,,,98
+word,de.lex.brief,memorize,,,,97
+word,de.lex.hoeren,memorize,,,,96
+word,de.lex.schritt,memorize,,,,95
+word,de.lex.nachbar.neighbour,memorize,,,,94
+word,de.lex.fall,memorize,,,,93
+expression,,memorize,stand in front of the door,vor der Tür stehen,,92
+expression,,memorize,wait for a long time,lange warten,,91
+expression,,memorize,go away,weggehen,,90
+expression,,memorize,come out of the house,aus dem Haus kommen,,89
+pattern,de.case.dat-after-prep,use,,,,88
+pattern,de.sep.prefix-split,use,,,,87
+pattern,de.wordorder.verb-second,use,,,,86
+sentence,s003,use,,,,85
+sentence,s010,use,,,,84
+sentence,s021,use,,,,83
+sentence,s029,use,,,,82

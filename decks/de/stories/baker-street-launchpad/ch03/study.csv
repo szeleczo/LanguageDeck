@@ -1,0 +1,20 @@
+kind,ref,role,english,target,article,priority
+word,de.lex.waechter,memorize,,,,100
+word,de.lex.lager,memorize,,,,99
+word,de.lex.kiste,memorize,,,,98
+word,de.lex.besitzer,memorize,,,,97
+word,de.lex.hilfe.help,memorize,,,,96
+word,de.lex.plan,memorize,,,,95
+word,de.lex.polizei,memorize,,,,94
+word,de.lex.detektiv,memorize,,,,93
+expression,,memorize,write the letter,den Brief schreiben,,92
+expression,,memorize,need help,Hilfe brauchen,,91
+expression,,memorize,make a plan,einen Plan machen,,90
+expression,,memorize,call the police,die Polizei rufen,,89
+pattern,de.sub.weil,use,,,,88
+pattern,de.modal.infinitive-final,use,,,,87
+pattern,de.sep.prefix-split,use,,,,86
+sentence,s005,use,,,,85
+sentence,s014,use,,,,84
+sentence,s026,use,,,,83
+sentence,s033,use,,,,82
