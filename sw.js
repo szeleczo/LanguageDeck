@@ -1,5 +1,5 @@
 /* LanguageDeck 3.1.0 — Extended Content (PRIVATE PERSONAL-USE BUILD). */
-const CACHE_VERSION="languagedeck-3-1-0-extended-private-20260808";
+const CACHE_VERSION="languagedeck-3-1-1-book-actions-20260808";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
