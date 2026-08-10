@@ -1,5 +1,5 @@
-/* LanguageDeck 3.1.2 — Extended Preparation Quality (PRIVATE PERSONAL-USE BUILD). */
-const CACHE_VERSION="languagedeck-3-1-2-extended-prep-quality-20260809";
+/* LanguageDeck 3.1.3 — Preparation Resume (PRIVATE PERSONAL-USE BUILD). */
+const CACHE_VERSION="languagedeck-3-1-3-prep-resume-20260810";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
