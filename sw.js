@@ -1,5 +1,5 @@
-/* LanguageDeck 3.1.3 — Preparation Resume (PRIVATE PERSONAL-USE BUILD). */
-const CACHE_VERSION="languagedeck-3-1-3-prep-resume-20260810";
+/* LanguageDeck 3.1.4 — Quiz-safe Glosses (PRIVATE PERSONAL-USE BUILD). */
+const CACHE_VERSION="languagedeck-3-1-4-quiz-safe-glosses-20260810";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
