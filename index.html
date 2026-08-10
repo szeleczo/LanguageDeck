@@ -3749,9 +3749,10 @@ button{font:inherit}
 </div>
 </template>
 <script>
-function ldQuizGloss(value,compact=false){
+function ldLexicalGloss(value,compact=false){
   const s=String(value||'').trim();
-  if(!s||/^context\s*:/i.test(s)||/^meaning not supplied\.?$/i.test(s))return "";
+  // Sentence/context fallbacks are invalid lexical data. Never surface them as word meanings.
+  if(!s||/^(?:context|sentence)\s*:/i.test(s)||/^meaning not supplied\.?$/i.test(s))return "";
   if(compact){
     if(s.length>72)return "";
     const words=s.replace(/[()/]/g,' ').split(/\s+/).filter(Boolean);
@@ -3759,8 +3760,9 @@ function ldQuizGloss(value,compact=false){
   }
   return s;
 }
-function ldQuizSafeEnglish(value,compact=false){return !!ldQuizGloss(value,compact)}
-const APP_BUILD="3.1.4-quiz-safe-glosses-20260810",LANG="de",COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
+function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
+const APP_BUILD="3.1.5-lexicon-cleanup-20260810",LANG="de",COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function norm(v){return String(v||"").toLocaleLowerCase().normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
 function parseCSV(text){const rows=[];let row=[],cell="",q=false,s=String(text||"").replace(/^\uFEFF/,"");for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')q=false;else cell+=c}else if(c==='"')q=true;else if(c===','){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
@@ -3986,7 +3988,7 @@ function beginReading(){view="read";show("readPane");uniqueItems(currentBlock).f
 function paintRead(){const s=currentBlock[readIdx],active=translationPinned||revealed.has(s.id);$("flow").innerHTML=currentBlock.map((x,i)=>sentenceHtml(x,i<readIdx?"past":i===readIdx?"active":"next")).join("");paintRail();paintChrome();$("secondary").classList.remove("hidden");$("secondary").textContent=translationPinned?"Translation · always":"Translation";$("secondary").classList.toggle("on",active);$("secondary").setAttribute("aria-pressed",active?"true":"false");$("secondary").onclick=toggleTranslation;$("main").textContent=readIdx===currentBlock.length-1?"Practise this block":"Next";$("main").onclick=advanceRead;$("flow").querySelector(".sentence.active")?.scrollIntoView({block:"center",behavior:"smooth"})}
 function toggleTranslation(){const s=currentBlock[readIdx];if(settings.translation==="always"){translationPinned=!translationPinned;toast(translationPinned?"Translation shown for every sentence.":"Translation hidden until the next block.")}else{revealed.has(s.id)?revealed.delete(s.id):revealed.add(s.id)}paintRead();$("secondary").blur()}
 function paintRail(){let out="";if(structOpen){const s=currentBlock.find(x=>x.id===structOpen);if(s){const chunks=esc(s.ch||s.de).replace(/\|/g," <span style='color:var(--faint)'>|</span> ");out+=`<div class="structure"><div class="chunks">${chunks}</div>${s.pt.filter(x=>P[x]).map(x=>`<div class="pattern-name">${esc(P[x].name)}</div><div>${esc(P[x].en)}</div>`).join("")||"Plain sentence structure."}</div>`}}
-  out += [...openedSentence].map(id=>{const v=V[id],k=kOf(id);if(!v)return"";const quizSafe=storyQuizEligible(id);return `<div class="gloss"><b>${esc((v.art?v.art+" ":"")+v.de)}</b><span>${esc(v.en)}${v.hint?`<em>${esc(v.hint)}</em>`:""}</span>${v.kind!=="name"?(quizSafe?`<button class="learn-toggle ${k.excluded?"off":""}" data-learn="${id}">${k.excluded?"Ignored":"Learning ✓"}</button>`:`<em>Context help only · not used in quizzes</em>`):""}</div>`}).join("");$("rail").innerHTML=out;$("rail").querySelectorAll("[data-learn]").forEach(b=>b.onclick=()=>{const k=kOf(b.dataset.learn);k.excluded=!k.excluded;if(k.excluded){k.collected=false;toast("Removed from this text's learning queue.")}else{k.collected=true;k.due=blockClock;toast("Returned to the learning queue.")}paintRail();save()})}
+  out += [...openedSentence].map(id=>{const v=V[id],k=kOf(id);if(!v)return"";const gloss=ldLexicalGloss(v.en,false);if(!gloss)return"";const quizSafe=storyQuizEligible(id);return `<div class="gloss"><b>${esc((v.art?v.art+" ":"")+v.de)}</b><span>${esc(gloss)}${v.hint?`<em>${esc(v.hint)}</em>`:""}</span>${v.kind!=="name"&&quizSafe?`<button class="learn-toggle ${k.excluded?"off":""}" data-learn="${id}">${k.excluded?"Ignored":"Learning ✓"}</button>`:""}</div>`}).join("");$("rail").innerHTML=out;$("rail").querySelectorAll("[data-learn]").forEach(b=>b.onclick=()=>{const k=kOf(b.dataset.learn);k.excluded=!k.excluded;if(k.excluded){k.collected=false;toast("Removed from this text's learning queue.")}else{k.collected=true;k.due=blockClock;toast("Returned to the learning queue.")}paintRail();save()})}
 $("flow").onclick=e=>{const link=e.target.closest("[data-struct]");if(link){const sid=link.dataset.struct;structOpen=structOpen===sid?null:sid;if(structOpen){const s=currentBlock.find(x=>x.id===sid);s.pt.forEach(pid=>{const p=pOf(pid);p.lvl=Math.max(1,p.lvl);p.misses++;p.due=blockClock})}paintRail();return}const t=e.target.closest(".tok");if(!t)return;const s=currentBlock[readIdx];if(t.dataset.s!==s.id)return;const tk=s.tk[+t.dataset.i],id=tk.w,v=V[id];if(!id||!v)return;const tapKey=s.id+"|"+id;openedSentence.add(id);if(v.kind!=="name"){const k=kOf(id);if(!tapEventsBlock.has(tapKey)){if(k.lvl===0)k.lvl=1;else if(k.lvl>=2)k.lvl=Math.max(1,k.lvl-1);k.readingMisses++;k.due=blockClock;k.lastTapBlock=blockClock;tapEventsBlock.add(tapKey)}k.collected=true;tappedBlock.add(id)}paintRead();save()}
 function advanceRead(){const s=currentBlock[readIdx],ms=Date.now()-enteredAt,expected=800+s.de.length*45;if(ms>=expected*MIN_READ_RATIO)readEnough.add(s.id);enteredAt=Date.now();if(settings.translation==="ondemand"&&revealed.has(s.id)){const lexical=[...tappedBlock].filter(id=>s.tk.some(t=>t.w===id)).length;if(lexical<=1)s.pt.forEach(pid=>{const p=pOf(pid);p.suspicions++;p.lvl=Math.max(1,p.lvl);if(p.suspicions>=2){p.due=blockClock;p.misses++}})}revealed.delete(s.id);$("secondary").classList.remove("on");$("secondary").setAttribute("aria-pressed","false");$("secondary").blur();structOpen=null;openedSentence=new Set();if(readIdx<currentBlock.length-1){readIdx++;paintRead()}else finishReadingBlock()}
 function finishReadingBlock(){const readItems=new Set();currentBlock.filter(s=>readEnough.has(s.id)).forEach(s=>s.tk.forEach(t=>t.w&&V[t.w]?.kind!=="name"&&readItems.add(t.w)));readItems.forEach(id=>{const k=kOf(id);if(preBlockKnown.has(id)&&!tappedBlock.has(id)&&!k.excluded&&k.lvl<GOALS[settings.goal].ceiling){k.lvl++;k.due=blockClock+2}});buildPracticeQueues();startWordPractice()}
@@ -4129,7 +4131,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "3.1.4-quiz-safe-glosses-20260810";
+    const APP_BUILD = "3.1.5-lexicon-cleanup-20260810";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5692,6 +5694,49 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return rows.length;
     }
 
+    async function refreshExtendedGlossContentV315() {
+      const marker = "ld-content-migration-3.1.5-extended-glosses";
+      if (localStorage.getItem(marker) === "done") return { updated: 0, installed: 0 };
+      const specs = [
+        { setName: "Ein Skandal Extended · Teil 1 · Wörter", file: "stories/ein-skandal-in-boehmen-extended/ch01/words.csv" },
+        { setName: "Ein Skandal Extended · Teil 2 · Wörter", file: "stories/ein-skandal-in-boehmen-extended/ch02/words.csv" },
+        { setName: "Ein Skandal Extended · Teil 3 · Wörter", file: "stories/ein-skandal-in-boehmen-extended/ch03/words.csv" }
+      ];
+      let updated = 0, installed = 0;
+      for (const spec of specs) {
+        const existing = await DB.getAll("word_pairs", "de", spec.setName);
+        if (!existing.length) continue;
+        installed++;
+        const r = await fetch(cacheBustedUrl(`decks/de/${spec.file}`), { cache: "reload" });
+        if (!r.ok) throw new Error(`Extended glossary refresh failed (${r.status}) for ${spec.setName}.`);
+        const { items } = csvToObjects(await r.text());
+        const freshByLexeme = new Map(items.filter(x => x.lexeme_id).map(x => [String(x.lexeme_id).trim(), x]));
+        for (const old of existing) {
+          const fresh = freshByLexeme.get(String(old.lexeme_id || "").trim());
+          if (!fresh) continue;
+          const lexical = ldLexicalGloss(fresh.english, false);
+          if (!lexical) throw new Error(`Extended glossary refresh found a non-lexical meaning for ${fresh.target || old.target}.`);
+          const article = String(fresh.article || "").trim() || null;
+          const merged = {
+            ...old,
+            english: lexical,
+            target: String(fresh.target || old.target || "").trim(),
+            article,
+            hint: String(fresh.hint || "").trim(),
+            source_id: String(fresh.source_id || old.source_id || "").trim(),
+            lexeme_id: String(fresh.lexeme_id || old.lexeme_id || "").trim()
+          };
+          // Preserve every learning field by starting from the installed row and only replacing content metadata.
+          if (merged.english !== old.english || merged.target !== old.target || merged.article !== old.article || merged.hint !== (old.hint || "") || merged.source_id !== (old.source_id || "")) {
+            await DB.update("word_pairs", merged);
+            updated++;
+          }
+        }
+      }
+      localStorage.setItem(marker, "done");
+      return { updated, installed };
+    }
+
     async function importSentencesFromCsv(text, deck, setName) {
       deck = normalizeDeck(deck);
       setName = normalizeSetName(setName);
@@ -6684,8 +6729,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const item = g.item;
       const rec = textRecordForItem(item);
       const formNote = g.tier === 2 && textNormalize(g.surface) !== textNormalize(item.target) ? `${g.surface} → ${item.target}` : "";
-      const quizSafe = ldQuizSafeEnglish(item.english, true);
-      return `<div class="tx-gloss"><strong>${escapeHtml(item.article ? item.article + " " + item.target : item.target)}</strong><div class="tx-gloss-copy">${escapeHtml(item.english || "")}${formNote ? `<span class="tx-gloss-hint">${escapeHtml(formNote)}</span>` : ""}${item.hint ? `<span class="tx-gloss-hint">${escapeHtml(item.hint)}</span>` : ""}</div>${item.kind !== "name" ? (quizSafe ? `<button class="tx-pin ${rec && rec.pinned ? "on" : ""}" data-text-pin="${escapeHtml(key)}">${rec && rec.pinned ? "In Words" : "+ Words"}</button>` : `<span class="tx-gloss-hint">Context help only · not used in quizzes</span>`) : ""}</div>`;
+      const gloss = ldLexicalGloss(item.english, false);
+      if (!gloss) return "";
+      const quizSafe = ldQuizSafeEnglish(gloss, true);
+      return `<div class="tx-gloss"><strong>${escapeHtml(item.article ? item.article + " " + item.target : item.target)}</strong><div class="tx-gloss-copy">${escapeHtml(gloss)}${formNote ? `<span class="tx-gloss-hint">${escapeHtml(formNote)}</span>` : ""}${item.hint ? `<span class="tx-gloss-hint">${escapeHtml(item.hint)}</span>` : ""}</div>${item.kind !== "name" && quizSafe ? `<button class="tx-pin ${rec && rec.pinned ? "on" : ""}" data-text-pin="${escapeHtml(key)}">${rec && rec.pinned ? "In Words" : "+ Words"}</button>` : ""}</div>`;
     }
     function textStructureHtml(s) {
       const chunks = escapeHtml(s.chunks || s.target).replaceAll("|", " <span style=\"color:var(--border-strong);padding:0 3px;\">|</span> ");
@@ -10392,8 +10439,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         }
         const unique = [...new Set(uncovered)]; if (unique.length) errors.push(`Complete token coverage failed for ${unique.length} token occurrences (examples: ${unique.slice(0, 8).join(", ")}).`);
         const badSource = words.filter(w => w.source_id && !sentIds.has(w.source_id)); if (badSource.length) errors.push(`${badSource.length} words have unresolved source_id values.`);
-        const contextOnly = words.filter(w => /^context\s*:/i.test(String(w.english||'').trim()));
-        if (contextOnly.length) warnings.push(`${contextOnly.length} word rows are context-only reading aids; they are excluded from quizzes automatically.`);
+        const nonLexical = words.filter(w => /^(?:context|sentence)\s*:/i.test(String(w.english||'').trim()));
+        if (nonLexical.length) errors.push(`${nonLexical.length} word rows contain sentence/context fallbacks instead of lexical meanings. Replace each with a short word or phrase meaning.`);
       }
       return { unit, sentences, words, errors, warnings };
     }
@@ -10820,6 +10867,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       } catch (err) {
         statusEl.textContent = "Database error: " + err.message;
         return;
+      }
+
+      try {
+        const glossRefresh = await refreshExtendedGlossContentV315();
+        if (glossRefresh.updated) console.info(`LanguageDeck 3.1.5: refreshed ${glossRefresh.updated} Extended word meanings without resetting learning progress.`);
+      } catch (err) {
+        console.warn("LanguageDeck 3.1.5 Extended glossary refresh deferred:", err);
       }
 
       await refreshSetOptions();

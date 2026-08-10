@@ -1,5 +1,5 @@
-/* LanguageDeck 3.1.4 — Quiz-safe Glosses (PRIVATE PERSONAL-USE BUILD). */
-const CACHE_VERSION="languagedeck-3-1-4-quiz-safe-glosses-20260810";
+/* LanguageDeck 3.1.5 — Lexicon Cleanup (PRIVATE PERSONAL-USE BUILD). */
+const CACHE_VERSION="languagedeck-3-1-5-lexicon-cleanup-20260810";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
