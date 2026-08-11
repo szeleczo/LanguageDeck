@@ -1456,6 +1456,11 @@
       font-style: italic;
       font-weight: 600;
     }
+    .full-answer-preview .fixed-punctuation {
+      color: var(--text-faint);
+      opacity: .78;
+      font-weight: 750;
+    }
     .full-answer-input-hidden {
       position: absolute !important;
       width: 1px !important;
@@ -4566,11 +4571,17 @@
       return String(v || "").replace(/[.!?]+$/u, "").trim();
     }
 
+    function optionalRecallPunctuationNorm(v) {
+      return answerNorm(v).replace(/[,\.!?;:]+/gu, "").replace(/\s+/g, " ").trim();
+    }
+
     function isFullTextAnswerCorrect(expected, given, alternatives = []) {
       const g = answerNorm(given);
       const accepted = [expected, ...alternatives].map(a => answerNorm(a));
       if (accepted.includes(g)) return true;
-      return accepted.map(stripTerminalPunctuation).includes(stripTerminalPunctuation(g));
+      if (accepted.map(stripTerminalPunctuation).includes(stripTerminalPunctuation(g))) return true;
+      const optional = optionalRecallPunctuationNorm(g);
+      return accepted.map(optionalRecallPunctuationNorm).includes(optional);
     }
 
     const PROGRESSIVE_LEVELS = [
@@ -4772,10 +4783,25 @@
       return html;
     }
 
-    function renderFullAnswerPreview(el, value, placeholder = "Your typed answer will appear here.") {
+    function renderFullAnswerPreview(el, value, placeholder = "Your typed answer will appear here.", expected = "") {
       if (!el) return;
-      const text = String(value || "");
-      el.textContent = text || placeholder;
+      const text = String(value || "").replace(/[,\.!?;:]+/gu, "");
+      if (!text) el.textContent = placeholder;
+      else {
+        const marks = [], optional = /[,\.!?;:]/u;
+        let contentIndex = 0;
+        for (const ch of Array.from(String(expected || ""))) {
+          if (optional.test(ch)) marks.push({ at:contentIndex, ch });
+          else contentIndex++;
+        }
+        let html = "", i = 0, mi = 0;
+        for (const ch of Array.from(text)) {
+          while (mi < marks.length && marks[mi].at === i) html += `<span class="fixed-punctuation">${escapeHtml(marks[mi++].ch)}</span>`;
+          html += escapeHtml(ch); i++;
+        }
+        while (mi < marks.length && marks[mi].at <= i) html += `<span class="fixed-punctuation">${escapeHtml(marks[mi++].ch)}</span>`;
+        el.innerHTML = html;
+      }
       el.classList.toggle("empty", !text);
     }
 
@@ -4985,7 +5011,7 @@
       }
       return pos;
     })();
-    const INLINE_KEYPAD_PUNCTUATION = [".", ",", "?", "!", "'", "-", ":", ";"];
+    const INLINE_REQUIRED_PUNCTUATION = new Set(["'", "’", "-"]);
 
     /* Bucket a set of letters into the fixed keyboard rows, keeping QWERTZ
        order inside each row; unknown characters fall to the bottom row. */
@@ -5018,21 +5044,12 @@
       // answer contains.
       const chars = new Set(INLINE_KEYPAD_ROWS.flat());
       for (const ch of uniqueCharsFrom(challenge.full, true)) chars.add(ch);
-      const rows = layoutKeypadRows([...chars]);
+      return layoutKeypadRows([...chars]);
+    }
 
-      if (!challenge.masked) {
-        // Full-answer level: punctuation row for characters the answer uses.
-        const punctuation = [];
-        Array.from(String(challenge.full || "")).forEach(ch => {
-          if (/\s/u.test(ch)) return;
-          if (/[\p{L}\p{M}]/u.test(ch)) return;
-          if (!punctuation.includes(ch)) punctuation.push(ch);
-        });
-        const puncRow = [...INLINE_KEYPAD_PUNCTUATION, ...punctuation]
-          .filter((ch, idx, arr) => arr.indexOf(ch) === idx && String(challenge.full || "").includes(ch));
-        if (puncRow.length) rows.push(puncRow);
-      }
-      return rows;
+    function inlineRequiredPunctuationFor(challenge) {
+      if (!challenge || challenge.masked) return [];
+      return Array.from(String(challenge.full || "")).filter((ch,idx,arr)=>INLINE_REQUIRED_PUNCTUATION.has(ch)&&arr.indexOf(ch)===idx);
     }
 
     function renderInlineMissingKeypad(container, input, challenge, onChange) {
@@ -5126,6 +5143,7 @@
         const tools = document.createElement("div");
         tools.className = "inline-keypad-row tools-row full-tools-row";
         tools.appendChild(makeKey("Clear", () => applyValue(""), "wide clear-key"));
+        for (const ch of inlineRequiredPunctuationFor(challenge)) tools.appendChild(makeKey(ch, () => applyValue(input.value + ch)));
         const spaceKey = makeKey("Space", () => applyValue(input.value + " "), "wide space-key");
         spaceKey.innerHTML = "<span>Space</span>";
         spaceKey.setAttribute("aria-label", "Space");
@@ -8030,7 +8048,7 @@
         typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, "");
       } else if (showFullAnswerPreview) {
         typingClue.classList.add("full-answer-preview");
-        renderFullAnswerPreview(typingClue, "", "Your typed answer will appear here.");
+        renderFullAnswerPreview(typingClue, "", "Your typed answer will appear here.", targetDisplay(currentTypingWord));
       } else {
         typingClue.innerHTML = "—";
       }
@@ -8046,7 +8064,7 @@
           typingResult.textContent = "";
           maybeAutoSubmitProgressiveWord();
         } else if (showFullAnswerPreview) {
-          renderFullAnswerPreview(typingClue, value, "Your typed answer will appear here.");
+          renderFullAnswerPreview(typingClue, value, "Your typed answer will appear here.", targetDisplay(currentTypingWord));
           typingResult.textContent = "";
         }
         updateTypingActionButtons();
@@ -8640,7 +8658,7 @@
         } else if (isTouchPrimaryDevice()) {
           fullPreview = document.createElement("div");
           fullPreview.className = "progressive-clue full-answer-preview";
-          renderFullAnswerPreview(fullPreview, currentSentenceData.progressiveAnswer || "", "Your typed sentence will appear here.");
+          renderFullAnswerPreview(fullPreview, currentSentenceData.progressiveAnswer || "", "Your typed sentence will appear here.", currentSentence.target);
           sentenceTarget.appendChild(fullPreview);
         }
 
@@ -8663,7 +8681,7 @@
           currentSentenceData.progressiveAnswer = e.target.value;
           currentSentenceData.showProgressiveErrors = false;
           if (clue) clue.innerHTML = clueHtml(challenge.masked, e.target.value, challenge.missing || "", false);
-          if (fullPreview) renderFullAnswerPreview(fullPreview, e.target.value, "Your typed sentence will appear here.");
+          if (fullPreview) renderFullAnswerPreview(fullPreview, e.target.value, "Your typed sentence will appear here.", currentSentence.target);
           sentenceResult.textContent = "";
           maybeAutoSubmitProgressiveSentence();
           updateSentenceActionButtons();
@@ -8680,7 +8698,7 @@
           currentSentenceData.progressiveAnswer = value;
           currentSentenceData.showProgressiveErrors = false;
           if (clue) clue.innerHTML = clueHtml(challenge.masked, value, challenge.missing || "", false);
-          if (fullPreview) renderFullAnswerPreview(fullPreview, value, "Your typed sentence will appear here.");
+          if (fullPreview) renderFullAnswerPreview(fullPreview, value, "Your typed sentence will appear here.", currentSentence.target);
           sentenceResult.textContent = "";
           maybeAutoSubmitProgressiveSentence();
           updateSentenceActionButtons();
@@ -10041,7 +10059,7 @@
         typingResult.textContent = "";
         maybeAutoSubmitProgressiveWord();
       } else if (wordMode === "progressive" && currentTypingChallenge && !currentTypingChallenge.masked && typingClue.classList.contains("full-answer-preview")) {
-        renderFullAnswerPreview(typingClue, typingInput.value, "Your typed answer will appear here.");
+        renderFullAnswerPreview(typingClue, typingInput.value, "Your typed answer will appear here.", targetDisplay(currentTypingWord));
         typingResult.textContent = "";
       }
       updateTypingActionButtons();

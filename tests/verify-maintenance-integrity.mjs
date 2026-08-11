@@ -38,6 +38,31 @@ assert.match(indexHtml, /function chapterCacheKey\(ch\).*unitId.*folder/, "chapt
 assert.match(indexHtml, /CHAPTER_DATA\.set\(key,x\)/, "chapter writes use the derived cache key");
 assert.ok(!indexHtml.includes("CHAPTER_DATA.get(ch.id)"), "no direct chapter-id cache reads remain");
 assert.ok(!indexHtml.includes("CHAPTER_DATA.set(ch.id"), "no direct chapter-id cache writes remain");
+assert.match(indexHtml, /<aside class="context-rail hidden" id="contextRail">/, "word gloss uses a docked contextual rail");
+assert.match(indexHtml, /activeGlossId=id;openedSentence=new Set\(\[id\]\)/, "a word tap updates only the active gloss");
+assert.match(indexHtml, /k\.explicitUnknownAt=Date\.now\(\);k\.excluded=false;k\.handedOff=false/, "a tapped unknown is locked back into learning");
+assert.match(indexHtml, /explicitUnknownPending\(state\).*priority:1000/s, "explicit unknown words join the chapter learning plan");
+assert.match(indexHtml, /guided_full_recall_at.*explicit_unknown_at/, "guided memorisation requires item-specific full recall evidence");
+assert.match(indexHtml, /guided_attempts.*guided_last_answer_at.*times_wrong/s, "guided selection is ordered by least practice first");
+assert.match(indexHtml, /languagedeck:guided-phase-complete/, "completed guided phases return automatically");
+assert.ok(!indexHtml.includes('const INLINE_KEYPAD_PUNCTUATION = [".", ","'), "optional comma keys no longer create a keypad row");
+
+const optionalRecallNorm = value => String(value || "").toLocaleLowerCase().replace(/[,\.!?;:]+/gu, "").replace(/\s+/g, " ").trim();
+assert.equal(optionalRecallNorm("jemanden bitten, zu bleiben"), optionalRecallNorm("jemanden bitten zu bleiben"), "comma-free recall is accepted");
+assert.notEqual(optionalRecallNorm("kennenlernen"), optionalRecallNorm("kennen lernen"), "punctuation leniency does not collapse word boundaries");
+
+const guidedRows = [
+  { id: 1, streak: 9, guided_attempts: 2 },
+  { id: 2, streak: 5, guided_attempts: 0 },
+  { id: 3, streak: 7, guided_attempts: 1 }
+];
+const guidedDone = row => +(row.guided_full_recall_at || 0) > +(row.explicit_unknown_at || 0);
+assert.equal(guidedRows.filter(guidedDone).length, 0, "legacy streaks cannot silently complete memorisation");
+guidedRows.forEach((row, i) => { row.guided_full_recall_at = 100 + i; });
+assert.equal(guidedRows.filter(guidedDone).length, 3, "every item needs its own full-recall proof");
+guidedRows[1].explicit_unknown_at = 1000;
+assert.equal(guidedDone(guidedRows[1]), false, "a later unknown tap invalidates an older recall proof");
+assert.deepEqual([...guidedRows].sort((a,b)=>(a.guided_attempts|0)-(b.guided_attempts|0)).map(row=>row.id), [2,3,1], "least-practised guided items rotate first");
 
 function chapterCacheKey(ch) {
   if (String(ch.unitId || "").trim()) return `unit:${ch.unitId.trim()}`;
@@ -127,7 +152,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-3-1-6-maintenance-integrity-20260811/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-3-1-7-reading-recall-integrity-20260811/, "service worker cache version is current");
 const shellMatch = serviceWorker.match(/const APP_SHELL=\[([\s\S]*?)\];/);
 assert.ok(shellMatch, "service worker declares an app shell");
 for (const item of shellMatch[1].matchAll(/"([^"]+)"/g)) {
