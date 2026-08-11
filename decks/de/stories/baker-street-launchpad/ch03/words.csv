@@ -47,7 +47,7 @@
 "w046","de.lex.kiste","box / chest","Kiste","die","","s011","Kiste","word"
 "w047","de.lex.liegen","to lie / be located","liegen","","","s012","liegt|liegen","word"
 "w048","de.lex.drei","three","drei","","","s012","drei","word"
-"w049","de.lex.uhr.clock-2","clock / watch","Uhr","die","","s012","Uhr|uhren","word"
+"w049","de.lex.uhr.clock","clock / watch","Uhr","die","","s012","Uhr|uhren","word"
 "w050","de.lex.gehoeren","to belong","gehören","","","s013","gehören|gehört|gehoeren","word"
 "w051","de.lex.besitzer","owner","Besitzer","der","","s013","Besitzer","word"
 "w052","de.lex.der-bestimmte-artikel","of the","der bestimmte Artikel","","","s013","des","function"

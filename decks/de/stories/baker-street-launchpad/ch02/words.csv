@@ -63,7 +63,7 @@
 "w062","de.lex.sein","his","sein","","","s020","seiner|seinem|seinen","function"
 "w063","de.lex.tasche.pocket","pocket / bag","Tasche","die","","s020","Tasche","word"
 "w064","de.lex.klein","small","klein","","","s020","klein|kleine|kleinen|kleiner","word"
-"w065","de.lex.uhr.clock-2","o’clock","Uhr","","","s020","Uhr","word"
+"w065","de.lex.uhr.clock","o’clock","Uhr","","","s020","Uhr","word"
 "w066","de.lex.leer","empty","leer","","","s022","leer|Leer","word"
 "w067","de.lex.dann","then","dann","","","s023","dann|Dann","function"
 "w068","de.lex.hoeren","to hear","hören","","","s023","hört|hören","word"

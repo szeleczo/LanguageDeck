@@ -2,7 +2,7 @@ id,lexeme_id,english,target,article,hint,source_id,forms,kind
 w0001,de.lex.um,around / about / for,um,,,s001,Um|um,function
 w0002,de.lex.punkt,point,Punkt,der,,s001,Punkt|punkt,word
 w0003,de.lex.drei,three,drei,,,s001,drei,word
-w0004,de.lex.uhr.clock-2,clock / watch,Uhr,die,,s001,Uhr,word
+w0004,de.lex.uhr.clock,clock / watch,Uhr,die,,s001,Uhr,word
 w0005,de.lex.sein,to be,sein,,,s001,war|seinem|ist|War|sein|waren|wäre|sind|Ist|gewesen,word
 w0006,de.lex.ich,I,ich,,,s001,ich|Ich|mir,function
 w0007,de.lex.in,in / into,in,,,s001,in|ins|im|Im|In,function

@@ -223,7 +223,7 @@ w0221,de.private.bohemia.ext.surface.lasen,read,lasen,,,s048,lasen,word
 w0222,de.lex.alle,everyone,alle,,,s048,alle,function
 w0223,de.lex.drei,three,drei,,,s048,drei,word
 w0224,de.private.bohemia.ext.surface.gemeinsam,together; jointly,gemeinsam,,,s048,gemeinsam,word
-w0225,de.lex.uhr.clock-2,clock / watch,Uhr,die,,s049,Uhr,word
+w0225,de.lex.uhr.clock,clock / watch,Uhr,die,,s049,Uhr,word
 w0226,de.private.bohemia.ext.surface.letzte,last; latest,letzte,,,s049,letzte,word
 w0227,de.lex.nacht,the night,Nacht,die,,s049,Nacht,word
 w0228,de.private.bohemia.ext.surface.datiert,dated,datiert,,,s049,datiert,word

@@ -116,7 +116,7 @@ w0114,de.lex.uns,to us (dative),uns,,,s013,unsere|unserer|unser|uns|Unser,word
 w0115,de.lex.weg.path,path,Weg,der,,s013,Wege,word
 w0116,de.private.bohemia.ext.getrennt,separate / separated,getrennt,,,s013,getrennt,word
 w0117,de.private.bohemia.ext.surface.vollkommenes,complete; perfect,vollkommenes,,,s014,vollkommenes,word
-w0118,de.lex.glueck.happiness,luck,Glück,das,,s014,Glück,word
+w0118,de.lex.glueck.luck-chance,luck,Glück,das,,s014,Glück,word
 w0119,de.private.bohemia.ext.surface.haeuslichen,domestic; household,häuslichen,,,s014,häuslichen,word
 w0120,de.private.bohemia.ext.surface.angelegenheiten,matters; affairs,Angelegenheiten,,,s014,Angelegenheiten,word
 w0121,de.lex.mann,man,Mann,der,,s014,Mann|Männer,word
@@ -511,7 +511,7 @@ w0509,de.lex.abend,evening,Abend,der,,s072,Abend,word
 w0510,de.lex.um,around / about / for,um,,,s072,um|Um,function
 w0511,de.lex.viertel,district,Viertel,das,,s072,viertel,word
 w0512,de.lex.acht,eight,acht,,,s072,acht,word
-w0513,de.lex.uhr.clock-2,clock / watch,Uhr,die,,s072,Uhr,word
+w0513,de.lex.uhr.clock,clock / watch,Uhr,die,,s072,Uhr,word
 w0514,de.lex.herr,Mr / gentleman,Herr,der,,s072,Herr,word
 w0515,de.private.bohemia.ext.surface.aufsuchen,visit; call on,aufsuchen,,,s072,aufsuchen,word
 w0516,de.private.bohemia.ext.angelegenheit,matter / affair,Angelegenheit,die,,s072,Angelegenheit,word

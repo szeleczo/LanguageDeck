@@ -7334,22 +7334,6 @@
       return pickOneStudyItem(orderedCombinedSentences(sentences), "s");
     }
 
-    async function loadCombinedMode(reset = true) {
-      if (reset) {
-        sessionLoadedIds = new Set();
-        combinedLastUnlockedCount = 0;
-        combinedLastTaskKey = "";
-      }
-      wordMode = "progressive";
-      sentenceMode = "progressive";
-      if (modeSelect) modeSelect.value = wordMode;
-      if (sentenceModeSelect) sentenceModeSelect.value = sentenceMode;
-      correctCount = reset ? 0 : correctCount;
-      wrongCount = reset ? 0 : wrongCount;
-      updateScore();
-      await loadNextCombinedTask();
-    }
-
     async function loadNextCombinedTask() {
       clearTimeout(wordProgressiveAutoSubmitTimer);
       clearTimeout(sentenceProgressiveAutoSubmitTimer);

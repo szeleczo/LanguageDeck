@@ -1,5 +1,5 @@
-/* LanguageDeck 3.1.5 — Lexicon Cleanup (PRIVATE PERSONAL-USE BUILD). */
-const CACHE_VERSION="languagedeck-3-1-5-lexicon-cleanup-20260810";
+/* LanguageDeck 3.1.6 — Maintenance & Integrity (PRIVATE PERSONAL-USE BUILD). */
+const CACHE_VERSION="languagedeck-3-1-6-maintenance-integrity-20260811";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
