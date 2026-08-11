@@ -1474,9 +1474,10 @@
     }
     .inline-keypad {
       display: grid;
-      gap: 6px;
+      gap: 3px;
       margin: 4px 0 12px;
-      touch-action: manipulation;
+      padding-inline: 3px;
+      touch-action: none;
       user-select: none;
       -webkit-user-select: none;
     }
@@ -1503,7 +1504,7 @@
     html.keypad-active textarea.progressive-full-input { min-height: 112px; max-height: 22vh; }
     html.keypad-active .full-answer-preview { min-height: 68px; max-height: 22vh; font-size: 16px; }
     @media (max-height: 760px) {
-      html.keypad-active .inline-keypad button.inline-keypad-key { min-height: 32px; font-size: 14px; }
+      html.keypad-active .inline-keypad button.inline-keypad-key { min-height: 46px; font-size: 14px; }
       html.keypad-active .typing-word { font-size: 21px; }
       html.keypad-active .typing-clue,
       html.keypad-active .progressive-clue { font-size: 17px; padding: 7px 8px; }
@@ -1513,7 +1514,7 @@
       grid-template-columns: repeat(var(--key-count, 1), minmax(0, 1fr));
       justify-content: center;
       align-items: stretch;
-      gap: 5px;
+      gap: 1.5px;
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
@@ -1528,7 +1529,7 @@
       width: 100%;
       min-width: 0;
       max-width: none;
-      min-height: clamp(32px, 8.8vw, 40px);
+      min-height: 46px;
       padding: 0;
       margin: 0;
       border: 1px solid var(--border);
@@ -1542,7 +1543,7 @@
       letter-spacing: 0;
       cursor: pointer;
       transition: background-color 0.08s ease, border-color 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
-      touch-action: manipulation;
+      touch-action: none;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
       -webkit-user-select: none;
@@ -3065,9 +3066,10 @@
     .tx-answer-note strong { color: var(--text); }
     .tx-reorder-build { min-height: 46px; border: 1px dashed var(--border-strong); border-radius: 10px; padding: 7px; margin: 8px 0; display: flex; flex-wrap: wrap; gap: 6px; }
     .tx-typing { width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: 10px; background: var(--surface); color: var(--text); font-size: 16px; }
-    .tx-keyboard { margin-top: 8px; display: grid; gap: 5px; }
-    .tx-keyrow { display: flex; justify-content: center; gap: 4px; }
-    .tx-key { min-width: 25px; min-height: 35px !important; padding: 4px 5px !important; border-radius: 7px !important; font-size: 12px !important; }
+    .tx-keyboard { margin-top:8px; padding-inline:3px; display:grid; gap:3px; touch-action:none; user-select:none; -webkit-user-select:none; }
+    .tx-keyrow { display:grid; grid-template-columns:repeat(var(--key-count, 1),minmax(0,1fr)); justify-content:center; gap:1.5px; }
+    .tx-key { width:100%; min-width:0; min-height:46px !important; padding:4px 2px !important; border-radius:7px !important; font-size:clamp(13px,3.8vw,16px) !important; touch-action:none; }
+    .tx-key.is-pressing { background:color-mix(in srgb,var(--surface) 88%,var(--primary) 12%)!important; box-shadow:inset 0 2px 5px rgba(15,23,42,.14); transform:none!important; }
     .tx-key.wide { min-width: 50px; }
     .tx-reread-intro { color: var(--text-muted); font-size: 12.5px; margin: 0 0 12px; }
     .tx-reread .tx-sentence { opacity: 1; }
@@ -5082,22 +5084,21 @@
         btn.type = "button";
         btn.className = `inline-keypad-key${extraClass ? " " + extraClass : ""}`;
         btn.textContent = label;
-        const clearPressed = () => {
-          btn.classList.remove("is-pressing");
-          try { btn.blur(); } catch (_) {}
-        };
+        btn._keyAction = action;
+        let activeKey = null;
+        const clearPressed = () => { activeKey?.classList.remove("is-pressing"); activeKey = null; try { btn.blur(); } catch (_) {} };
+        const keyAt = e => document.elementFromPoint(e.clientX, e.clientY)?.closest(".inline-keypad-key");
         btn.addEventListener("pointerdown", e => {
           e.preventDefault();
-          btn.classList.add("is-pressing");
+          activeKey = btn; activeKey.classList.add("is-pressing");
           try { btn.setPointerCapture(e.pointerId); } catch (_) {}
         });
-        btn.addEventListener("pointerup", clearPressed);
+        btn.addEventListener("pointermove", e => { if (!activeKey) return; const next = keyAt(e); if (!next || !container.contains(next) || next.disabled || next === activeKey) return; activeKey.classList.remove("is-pressing"); activeKey = next; activeKey.classList.add("is-pressing"); });
+        btn.addEventListener("pointerup", e => { e.preventDefault(); const chosen = activeKey; clearPressed(); if (locked || !chosen) return; if ((input === typingInput && wordTypingAwaitingContinue) || (input !== typingInput && currentSentenceData && currentSentenceData.feedbackAwaitingContinue)) return; chosen._keyAction?.(); });
         btn.addEventListener("pointercancel", clearPressed);
-        btn.addEventListener("pointerleave", clearPressed);
-        btn.addEventListener("touchend", clearPressed, { passive: true });
         btn.addEventListener("click", e => {
           e.preventDefault();
-          clearPressed();
+          if (e.detail !== 0) return;
           if (locked) return;
           if ((input === typingInput && wordTypingAwaitingContinue) ||
               (input !== typingInput && currentSentenceData && currentSentenceData.feedbackAwaitingContinue)) return;
@@ -6533,7 +6534,14 @@
     function textBuildKeyboard() {
       const keyboard = $("txKeyboard"), input = $("txTypingInput"); if (!keyboard || !input) return;
       const rows = ["QWERTZUIOPÜ", "ASDFGHJKLÖÄ", "YXCVBNMß"];
-      keyboard.innerHTML = rows.map(row => `<div class="tx-keyrow">${[...row].map(k => `<button type="button" class="tx-key" data-text-key="${k.toLowerCase()}">${k}</button>`).join("")}</div>`).join("") + `<div class="tx-keyrow"><button type="button" class="tx-key wide" data-text-key=" ">Space</button><button type="button" class="tx-key wide" data-text-key="backspace">⌫</button></div>`;
+      keyboard.innerHTML = rows.map(row => `<div class="tx-keyrow" style="--key-count:${[...row].length}">${[...row].map(k => `<button type="button" class="tx-key" data-text-key="${k.toLowerCase()}">${k}</button>`).join("")}</div>`).join("") + `<div class="tx-keyrow" style="--key-count:2"><button type="button" class="tx-key wide" data-text-key=" ">Space</button><button type="button" class="tx-key wide" data-text-key="backspace">⌫</button></div>`;
+      let activeKey=null;
+      const select=e=>document.elementFromPoint(e.clientX,e.clientY)?.closest("[data-text-key]");
+      const clear=()=>{activeKey?.classList.remove("is-pressing");activeKey=null};
+      keyboard.onpointerdown=e=>{const key=e.target.closest("[data-text-key]");if(!key)return;e.preventDefault();activeKey=key;key.classList.add("is-pressing");try{keyboard.setPointerCapture(e.pointerId)}catch(_){}};
+      keyboard.onpointermove=e=>{if(!activeKey)return;const key=select(e);if(!key||!keyboard.contains(key)||key===activeKey)return;activeKey.classList.remove("is-pressing");activeKey=key;key.classList.add("is-pressing")};
+      keyboard.onpointerup=e=>{e.preventDefault();const key=activeKey;clear();if(!key)return;key.dataset.slideCommit="1";if(key.dataset.textKey==="backspace")input.value=input.value.slice(0,-1);else input.value+=key.dataset.textKey;requestAnimationFrame(()=>delete key.dataset.slideCommit)};
+      keyboard.onpointercancel=clear;
     }
     function textReorderAnswer() { return [...document.querySelectorAll("#txReorderBuild [data-word]")].map(b => b.dataset.word).join(" "); }
     function textExpectedTaskAnswer() {
@@ -6709,6 +6717,7 @@
       }
       const key = e.target.closest("[data-text-key]");
       if (key) {
+        if (key.dataset.slideCommit === "1") return;
         const input = $("txTypingInput"); if (!input) return;
         if (key.dataset.textKey === "backspace") input.value = input.value.slice(0, -1); else input.value += key.dataset.textKey;
       }

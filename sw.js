@@ -1,5 +1,5 @@
-/* LanguageDeck 3.1.7 — Reading & Recall Integrity (PRIVATE PERSONAL-USE BUILD). */
-const CACHE_VERSION="languagedeck-3-1-7-reading-recall-integrity-20260811";
+/* LanguageDeck 3.1.8 — Keyboard Ergonomics (PRIVATE PERSONAL-USE BUILD). */
+const CACHE_VERSION="languagedeck-3-1-8-keyboard-ergonomics-20260811";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

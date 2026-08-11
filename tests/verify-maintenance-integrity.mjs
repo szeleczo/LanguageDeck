@@ -46,6 +46,12 @@ assert.match(indexHtml, /guided_full_recall_at.*explicit_unknown_at/, "guided me
 assert.match(indexHtml, /guided_attempts.*guided_last_answer_at.*times_wrong/s, "guided selection is ordered by least practice first");
 assert.match(indexHtml, /languagedeck:guided-phase-complete/, "completed guided phases return automatically");
 assert.ok(!indexHtml.includes('const INLINE_KEYPAD_PUNCTUATION = [".", ","'), "optional comma keys no longer create a keypad row");
+assert.match(indexHtml, /inline-keypad button\.inline-keypad-key[\s\S]*?min-height:\s*46px/, "main QWERTZ keys keep a 46px touch height");
+assert.match(indexHtml, /gap:\s*1\.5px/, "keyboard gaps leave more width for letter keys");
+assert.match(indexHtml, /document\.elementFromPoint\(e\.clientX,e\.clientY\)/, "drag correction follows the key under the pointer");
+assert.match(indexHtml, /chosen\._keyAction\?\.\(\)/, "main keyboard commits the release-time key");
+assert.match(indexHtml, /data-text-key[\s\S]*?slideCommit/, "Text Study keyboard suppresses duplicate pointer clicks");
+assert.match(indexHtml, /bindLetterBankSlide\(bank\)/, "letter-bank tasks share slide correction");
 
 const optionalRecallNorm = value => String(value || "").toLocaleLowerCase().replace(/[,\.!?;:]+/gu, "").replace(/\s+/g, " ").trim();
 assert.equal(optionalRecallNorm("jemanden bitten, zu bleiben"), optionalRecallNorm("jemanden bitten zu bleiben"), "comma-free recall is accepted");
@@ -152,7 +158,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-3-1-7-reading-recall-integrity-20260811/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-3-1-8-keyboard-ergonomics-20260811/, "service worker cache version is current");
 const shellMatch = serviceWorker.match(/const APP_SHELL=\[([\s\S]*?)\];/);
 assert.ok(shellMatch, "service worker declares an app shell");
 for (const item of shellMatch[1].matchAll(/"([^"]+)"/g)) {
