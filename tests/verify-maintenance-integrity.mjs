@@ -52,6 +52,33 @@ assert.match(indexHtml, /document\.elementFromPoint\(e\.clientX,e\.clientY\)/, "
 assert.match(indexHtml, /chosen\._keyAction\?\.\(\)/, "main keyboard commits the release-time key");
 assert.match(indexHtml, /data-text-key[\s\S]*?slideCommit/, "Text Study keyboard suppresses duplicate pointer clicks");
 assert.match(indexHtml, /bindLetterBankSlide\(bank\)/, "letter-bank tasks share slide correction");
+assert.match(indexHtml, /id="grammarCourseHost"/, "Grammar & Forms has a dedicated curriculum surface");
+assert.match(indexHtml, /practiceGrammarBtn'\)\.onclick=\(\)=>openGrammarCourse/, "Practice Grammar opens the curriculum instead of an unstructured deck");
+assert.match(indexHtml, /\["memorise","grammar_recall"\].*guided_full_recall_at/, "grammar mastery requires item-specific full recall evidence");
+assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
+
+const curriculum = JSON.parse(text(join(deRoot, "grammar", "core-curriculum.json")));
+assert.equal(curriculum.explanationLanguage, "hu", "grammar explanations are Hungarian");
+assert.equal(curriculum.targetLanguage, "de", "grammar production remains German");
+assert.equal(curriculum.units.length, 10, "the first Grammar & Forms curriculum has ten units");
+const requiredUnits = ["praesens-questions", "perfekt", "praeteritum", "past-future", "imperative-negation", "konjunktiv-two", "modal-verbs", "separable-reflexive", "comparison", "passive"];
+assert.deepEqual(curriculum.units.map(unit => unit.id), requiredUnits, "the core curriculum covers the approved A1-B1 sequence");
+const grammarGoalIds = new Set();
+let grammarGoalCount = 0;
+for (const unit of curriculum.units) {
+  assert.ok(unit.rule && unit.examples?.length >= 2, `${unit.id} needs a concise rule and examples`);
+  assert.deepEqual(unit.phases.map(phase => phase.id), ["forms", "sentences"], `${unit.id} needs form and sentence recall`);
+  for (const phase of unit.phases) {
+    assert.equal(phase.rows.length, 5, `${unit.id}/${phase.id} needs five balanced targets`);
+    for (const row of phase.rows) {
+      const key = `${unit.id}:${phase.id}:${row.key}`;
+      assert.ok(!grammarGoalIds.has(key), `duplicate grammar goal ${key}`);
+      grammarGoalIds.add(key); grammarGoalCount++;
+      assert.ok(row.prompt && row.target && row.explanation, `${key} needs prompt, target and explanation`);
+    }
+  }
+}
+assert.equal(grammarGoalCount, 100, "the core curriculum contains 100 active-recall goals");
 
 const optionalRecallNorm = value => String(value || "").toLocaleLowerCase().replace(/[,\.!?;:]+/gu, "").replace(/\s+/g, " ").trim();
 assert.equal(optionalRecallNorm("jemanden bitten, zu bleiben"), optionalRecallNorm("jemanden bitten zu bleiben"), "comma-free recall is accepted");
@@ -158,10 +185,11 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-3-1-8-keyboard-ergonomics-20260811/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-3-1-9-grammar-forms-core-20260813/, "service worker cache version is current");
+assert.match(serviceWorker, /decks\/de\/grammar\/core-curriculum\.json/, "the grammar curriculum is available offline");
 const shellMatch = serviceWorker.match(/const APP_SHELL=\[([\s\S]*?)\];/);
 assert.ok(shellMatch, "service worker declares an app shell");
 for (const item of shellMatch[1].matchAll(/"([^"]+)"/g)) {
   assert.ok(existsSync(join(root, item[1].replace(/^\.\//, ""))), `service worker shell is missing ${item[1]}`);
 }
-console.log(`Integrity verified: ${lexicon.length} canonical lexemes, ${aliases.length} aliases, ${cache.size} isolated ch01 cache entries.`);
+console.log(`Integrity verified: ${lexicon.length} canonical lexemes, ${aliases.length} aliases, ${cache.size} isolated ch01 cache entries, ${grammarGoalCount} grammar goals.`);

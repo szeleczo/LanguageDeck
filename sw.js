@@ -1,10 +1,11 @@
-/* LanguageDeck 3.1.8 — Keyboard Ergonomics (PRIVATE PERSONAL-USE BUILD). */
-const CACHE_VERSION="languagedeck-3-1-8-keyboard-ergonomics-20260811";
+/* LanguageDeck 3.1.9 — Grammar & Forms Core (PRIVATE PERSONAL-USE BUILD). */
+const CACHE_VERSION="languagedeck-3-1-9-grammar-forms-core-20260813";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
   "./decks/de/courses/index.json",
   "./decks/de/grammar/grammar-sentences-learning.csv",
+  "./decks/de/grammar/core-curriculum.json",
   "./decks/de/grammar/sentence-patterns.csv",
   "./decks/de/language.json",
   "./decks/de/lexicon.csv",
