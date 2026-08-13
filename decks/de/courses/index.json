@@ -23,6 +23,14 @@
       "story": "stories/ein-skandal-in-boehmen-extended/story.json",
       "default": false,
       "privateUseOnly": true
+    },
+    {
+      "id": "de-course-tschick",
+      "title": "Tschick",
+      "subtitle": "Four-part private study course",
+      "story": "stories/tschick/story.json",
+      "default": false,
+      "privateUseOnly": true
     }
   ]
 }
