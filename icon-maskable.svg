@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
   <title id="title">LanguageDeck</title>
-  <rect x="32" y="32" width="448" height="448" rx="112" fill="#111827"/>
+  <rect width="512" height="512" fill="#111827"/>
   <path
     d="M168 176v105c0 48 39 87 87 87h2c48 0 87-39 87-87V176"
     fill="none"

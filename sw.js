@@ -1,5 +1,5 @@
-/* LanguageDeck 3.3.1 — optional grammar punctuation fix. */
-const CACHE_VERSION="languagedeck-3-3-1-grammar-punctuation-20260813";
+/* LanguageDeck 3.3.2 — unified brand icon and launch surface. */
+const CACHE_VERSION="languagedeck-3-3-2-brand-icon-20260813";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
@@ -115,6 +115,7 @@ const APP_SHELL=[
   "./icon-192.png",
   "./icon-512.png",
   "./icon-maskable-512.png",
+  "./icon-maskable.svg",
   "./icon.svg",
   "./index.html",
   "./manifest.webmanifest"

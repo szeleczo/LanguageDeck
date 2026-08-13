@@ -16,13 +16,13 @@
 <body>
   <h1>LanguageDeck update reset</h1>
   <p>This page clears the PWA Service Worker and Cache Storage, then reloads the latest app. Your learned deck progress in IndexedDB is not deleted.</p>
-  <p>Reset build: <code>3.3.1-grammar-punctuation-20260813</code></p>
+  <p>Reset build: <code>3.3.2-brand-icon-20260813</code></p>
   <button id="reset" type="button">Reset app cache and reopen</button>
   <p id="status"></p>
   <script>
     async function resetApp() {
       const status = document.getElementById("status");
-      const stamp = "3.3.1-grammar-punctuation-20260813-" + Date.now();
+      const stamp = "3.3.2-brand-icon-20260813-" + Date.now();
       status.textContent = "Clearing app cache…";
       try {
         if ("serviceWorker" in navigator) {

@@ -67,6 +67,14 @@ assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed gr
 
 const languages = JSON.parse(text(join(root, "decks", "languages.json")));
 assert.deepEqual(languages.languages.map(language => language.code), ["de", "it"], "German and Italian remain registered");
+const appManifest = JSON.parse(text(join(root, "manifest.webmanifest")));
+assert.equal(appManifest.theme_color, "#111827", "the native launch surface uses the new dark brand colour");
+assert.equal(appManifest.background_color, "#111827", "the PWA splash background matches the application icon");
+assert.ok(appManifest.icons.some(icon => icon.purpose === "maskable" && icon.src === "icon-maskable-512.png"), "Android receives a dedicated maskable icon");
+assert.match(indexHtml, /rel="apple-touch-icon"/, "Apple home-screen installs receive the same brand icon");
+const appIcon = text(join(root, "icon.svg"));
+assert.match(appIcon, /M168 176v105/, "the current UI U-mark is the canonical application icon");
+assert.ok(!appIcon.includes("C 38.5 57.8"), "the obsolete head silhouette is no longer shipped as the primary icon");
 const italianManifest = JSON.parse(text(join(root, "decks", "it", "manifest.json")));
 assert.deepEqual(italianManifest.catalogPackages[0].actions.map(action => action.variant), ["match", "progressive", "typing"], "Italian words keep every word mode");
 const germanManifest = JSON.parse(text(join(deRoot, "manifest.json")));
@@ -293,13 +301,14 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-3-3-1-grammar-punctuation-20260813/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-3-3-2-brand-icon-20260813/, "service worker cache version is current");
 assert.match(serviceWorker, /decks\/de\/grammar\/core-curriculum\.json/, "the grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/foundations-curriculum\.json/, "pronoun and case foundations are available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/verb-workshop\.json/, "the isolated verb workshop is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/mixed-curriculum\.json/, "graduated mixed review is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
 assert.match(serviceWorker, /decks\/de\/stories\/tschick\/story\.json/, "Tschick course metadata is available offline");
+assert.match(serviceWorker, /icon-maskable\.svg/, "the vector maskable icon is available offline");
 const shellMatch = serviceWorker.match(/const APP_SHELL=\[([\s\S]*?)\];/);
 assert.ok(shellMatch, "service worker declares an app shell");
 for (const item of shellMatch[1].matchAll(/"([^"]+)"/g)) {

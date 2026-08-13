@@ -1,13 +1,13 @@
 {
-  "name": "LanguageDeck 3.3.1",
+  "name": "LanguageDeck 3.3.2",
   "short_name": "LanguageDeck",
   "description": "Course-first language learning with whole stories, shared vocabulary, chapter preparation and free practice.",
   "start_url": "./index.html#course",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "theme_color": "#2563eb",
-  "background_color": "#f3f4f6",
+  "theme_color": "#111827",
+  "background_color": "#111827",
   "icons": [
     {
       "src": "icon-192.png",
@@ -28,5 +28,5 @@
       "purpose": "maskable"
     }
   ],
-  "id": "./?app=LanguageDeck-v3.3.1"
+  "id": "./?app=LanguageDeck-v3.3.2"
 }
