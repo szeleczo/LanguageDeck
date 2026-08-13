@@ -10,8 +10,12 @@
       "level": "A1–B2",
       "deckIds": ["de-core-3000", "de-3000-sentences"],
       "actions": [
-        {"label": "Words", "deckId": "de-core-3000", "mode": "words", "variant": "progressive"},
-        {"label": "Sentences", "deckId": "de-3000-sentences", "mode": "sentences", "variant": "progressive"}
+        {"label": "Word Match", "deckId": "de-core-3000", "mode": "words", "variant": "match"},
+        {"label": "Adaptive words", "deckId": "de-core-3000", "mode": "words", "variant": "progressive"},
+        {"label": "Type words", "deckId": "de-core-3000", "mode": "words", "variant": "typing"},
+        {"label": "Build sentences", "deckId": "de-3000-sentences", "mode": "sentences", "variant": "order"},
+        {"label": "Adaptive sentences", "deckId": "de-3000-sentences", "mode": "sentences", "variant": "progressive"},
+        {"label": "Type sentences", "deckId": "de-3000-sentences", "mode": "sentences", "variant": "typing"}
       ]
     },
     {
@@ -22,8 +26,12 @@
       "level": "A1–B2",
       "deckIds": ["de-hooks", "de-hooks-sentences"],
       "actions": [
-        {"label": "Words", "deckId": "de-hooks", "mode": "words", "variant": "progressive"},
-        {"label": "Sentences", "deckId": "de-hooks-sentences", "mode": "sentences", "variant": "progressive"}
+        {"label": "Word Match", "deckId": "de-hooks", "mode": "words", "variant": "match"},
+        {"label": "Adaptive words", "deckId": "de-hooks", "mode": "words", "variant": "progressive"},
+        {"label": "Type words", "deckId": "de-hooks", "mode": "words", "variant": "typing"},
+        {"label": "Build sentences", "deckId": "de-hooks-sentences", "mode": "sentences", "variant": "order"},
+        {"label": "Adaptive sentences", "deckId": "de-hooks-sentences", "mode": "sentences", "variant": "progressive"},
+        {"label": "Type sentences", "deckId": "de-hooks-sentences", "mode": "sentences", "variant": "typing"}
       ]
     },
     {
@@ -34,7 +42,9 @@
       "level": "A1–B2",
       "deckIds": ["de-combined-flashcards"],
       "actions": [
-        {"label": "Words", "deckId": "de-combined-flashcards", "mode": "words", "variant": "progressive"}
+        {"label": "Word Match", "deckId": "de-combined-flashcards", "mode": "words", "variant": "match"},
+        {"label": "Adaptive", "deckId": "de-combined-flashcards", "mode": "words", "variant": "progressive"},
+        {"label": "Type", "deckId": "de-combined-flashcards", "mode": "words", "variant": "typing"}
       ]
     },
     {
@@ -45,7 +55,10 @@
       "level": "A1–B2",
       "deckIds": ["de-grammar-learning", "de-sentence-patterns"],
       "actions": [
-        {"label": "Grammar sentences", "deckId": "de-grammar-learning", "mode": "grammar", "variant": "progressive"},
+        {"label": "Choose", "deckId": "de-grammar-learning", "mode": "grammar", "variant": "choice"},
+        {"label": "Reorder", "deckId": "de-grammar-learning", "mode": "grammar", "variant": "order"},
+        {"label": "Adaptive", "deckId": "de-grammar-learning", "mode": "grammar", "variant": "progressive"},
+        {"label": "Type", "deckId": "de-grammar-learning", "mode": "grammar", "variant": "typing"},
         {"label": "Patterns", "deckId": "de-sentence-patterns", "mode": "grammar", "variant": "order"}
       ]
     },
@@ -57,7 +70,10 @@
       "level": "A1–B2",
       "deckIds": ["de-sentence-builder"],
       "actions": [
-        {"label": "Sentences", "deckId": "de-sentence-builder", "mode": "sentences", "variant": "order"}
+        {"label": "Choose", "deckId": "de-sentence-builder", "mode": "sentences", "variant": "choice"},
+        {"label": "Reorder", "deckId": "de-sentence-builder", "mode": "sentences", "variant": "order"},
+        {"label": "Adaptive", "deckId": "de-sentence-builder", "mode": "sentences", "variant": "progressive"},
+        {"label": "Type", "deckId": "de-sentence-builder", "mode": "sentences", "variant": "typing"}
       ]
     }
   ],
