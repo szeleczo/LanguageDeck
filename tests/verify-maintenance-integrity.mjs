@@ -226,6 +226,7 @@ for (const item of shellMatch[1].matchAll(/"([^"]+)"/g)) {
 assert.ok(!existsSync(join(root, "practice.html")), "duplicate standalone Practice page was removed");
 assert.ok(!existsSync(join(root, "story-study.html")), "duplicate standalone Story Study page was removed");
 assert.ok(!existsSync(join(root, "index.json")), "orphan root CSV disguised as JSON was removed");
+assert.ok(!existsSync(join(root, "PRIVATE_CONTENT_NOTICE.txt")), "obsolete private-only notice was removed");
 assert.ok(!walk(deRoot).some(file => /texts[\\/]maja-k01[\\/]/i.test(file)), "Maja is not shipped");
 assert.ok(!walk(deRoot).some(file => /texts[\\/]sterntaler[\\/]/i.test(file)), "Sterntaler is not shipped");
 assert.ok(!walk(root).some(file => /RELEASE_NOTES/i.test(file)), "release-note files are not shipped");

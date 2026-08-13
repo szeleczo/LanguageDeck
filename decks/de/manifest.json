@@ -441,7 +441,7 @@
       "id": "de-holmes-bohemia-extended-ch01",
       "name": "Ein Skandal Extended · Teil 1",
       "title": "Teil I · Der geheimnisvolle Besucher",
-      "subtitle": "Vollständige Fassung · private",
+      "subtitle": "Vollständige Fassung",
       "folder": "stories/ein-skandal-in-boehmen-extended/ch01",
       "engine": "story-study",
       "primaryMode": "text",
@@ -458,8 +458,7 @@
       "schema": "text-v2",
       "storyId": "de-story-ein-skandal-in-boehmen-extended",
       "chapterOrder": 1,
-      "chapterCount": 3,
-      "privateUseOnly": true
+      "chapterCount": 3
     },
     {
       "id": "de-holmes-bohemia-extended-ch01-words",
@@ -481,8 +480,7 @@
       "schema": "word",
       "courseId": "de-course-ein-skandal-in-boehmen-extended",
       "storyId": "de-story-ein-skandal-in-boehmen-extended",
-      "chapterId": "ch01",
-      "privateUseOnly": true
+      "chapterId": "ch01"
     },
     {
       "id": "de-holmes-bohemia-extended-ch01-sentences",
@@ -506,14 +504,13 @@
       "schema": "sentence",
       "courseId": "de-course-ein-skandal-in-boehmen-extended",
       "storyId": "de-story-ein-skandal-in-boehmen-extended",
-      "chapterId": "ch01",
-      "privateUseOnly": true
+      "chapterId": "ch01"
     },
     {
       "id": "de-holmes-bohemia-extended-ch02",
       "name": "Ein Skandal Extended · Teil 2",
       "title": "Teil II · Irene Adler",
-      "subtitle": "Vollständige Fassung · private",
+      "subtitle": "Vollständige Fassung",
       "folder": "stories/ein-skandal-in-boehmen-extended/ch02",
       "engine": "story-study",
       "primaryMode": "text",
@@ -530,8 +527,7 @@
       "schema": "text-v2",
       "storyId": "de-story-ein-skandal-in-boehmen-extended",
       "chapterOrder": 2,
-      "chapterCount": 3,
-      "privateUseOnly": true
+      "chapterCount": 3
     },
     {
       "id": "de-holmes-bohemia-extended-ch02-words",
@@ -553,8 +549,7 @@
       "schema": "word",
       "courseId": "de-course-ein-skandal-in-boehmen-extended",
       "storyId": "de-story-ein-skandal-in-boehmen-extended",
-      "chapterId": "ch02",
-      "privateUseOnly": true
+      "chapterId": "ch02"
     },
     {
       "id": "de-holmes-bohemia-extended-ch02-sentences",
@@ -578,14 +573,13 @@
       "schema": "sentence",
       "courseId": "de-course-ein-skandal-in-boehmen-extended",
       "storyId": "de-story-ein-skandal-in-boehmen-extended",
-      "chapterId": "ch02",
-      "privateUseOnly": true
+      "chapterId": "ch02"
     },
     {
       "id": "de-holmes-bohemia-extended-ch03",
       "name": "Ein Skandal Extended · Teil 3",
       "title": "Teil III · Die Frau",
-      "subtitle": "Vollständige Fassung · private",
+      "subtitle": "Vollständige Fassung",
       "folder": "stories/ein-skandal-in-boehmen-extended/ch03",
       "engine": "story-study",
       "primaryMode": "text",
@@ -602,8 +596,7 @@
       "schema": "text-v2",
       "storyId": "de-story-ein-skandal-in-boehmen-extended",
       "chapterOrder": 3,
-      "chapterCount": 3,
-      "privateUseOnly": true
+      "chapterCount": 3
     },
     {
       "id": "de-holmes-bohemia-extended-ch03-words",
@@ -625,8 +618,7 @@
       "schema": "word",
       "courseId": "de-course-ein-skandal-in-boehmen-extended",
       "storyId": "de-story-ein-skandal-in-boehmen-extended",
-      "chapterId": "ch03",
-      "privateUseOnly": true
+      "chapterId": "ch03"
     },
     {
       "id": "de-holmes-bohemia-extended-ch03-sentences",
@@ -650,8 +642,7 @@
       "schema": "sentence",
       "courseId": "de-course-ein-skandal-in-boehmen-extended",
       "storyId": "de-story-ein-skandal-in-boehmen-extended",
-      "chapterId": "ch03",
-      "privateUseOnly": true
+      "chapterId": "ch03"
     }
   ]
 }

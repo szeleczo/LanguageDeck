@@ -19,18 +19,16 @@
     {
       "id": "de-course-ein-skandal-in-boehmen-extended",
       "title": "Ein Skandal in Böhmen — Extended",
-      "subtitle": "Vollständige Fassung · private study copy",
+      "subtitle": "Vollständige Fassung",
       "story": "stories/ein-skandal-in-boehmen-extended/story.json",
-      "default": false,
-      "privateUseOnly": true
+      "default": false
     },
     {
       "id": "de-course-tschick",
       "title": "Tschick",
-      "subtitle": "Four-part private study course",
+      "subtitle": "Four-part study course",
       "story": "stories/tschick/story.json",
-      "default": false,
-      "privateUseOnly": true
+      "default": false
     }
   ]
 }

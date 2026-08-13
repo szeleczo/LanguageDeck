@@ -3,9 +3,8 @@
   "id": "de-story-tschick",
   "courseId": "de-course-tschick",
   "title": "Tschick",
-  "subtitle": "Four-part private study course",
+  "subtitle": "Four-part study course",
   "language": "de",
-  "privateUseOnly": true,
   "chapters": [
     {"id": "ch01", "unitId": "de-tschick-01", "order": 1, "title": "Teil 1", "folder": "texts/de-tschick-01"},
     {"id": "ch02", "unitId": "de-tschick-02", "order": 2, "title": "Teil 2", "folder": "texts/de-tschick-02"},

@@ -18,13 +18,12 @@
   ],
   "protagonist": "Sherlock Holmes",
   "defaultGoal": "use",
-  "privateUseOnly": true,
   "source": {
     "title": "Ein Skandal in Böhmen",
     "author": "Arthur Conan Doyle",
     "translator": "Martin Langwaldt",
     "translationCopyright": "© 2005 Martin Langwaldt",
-    "targetSource": "User-provided EPUB; private personal-use study package.",
+    "targetSource": "User-provided EPUB study package.",
     "englishReference": "Project Gutenberg #1661, A Scandal in Bohemia",
     "englishUrl": "https://www.gutenberg.org/cache/epub/1661/pg1661.txt",
     "adaptation": "No simplification. The German target text is preserved from the user-provided EPUB; only sentence, scene, chunk, gloss and study metadata are added."

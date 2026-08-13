@@ -1,4 +1,4 @@
-/* LanguageDeck 3.2.1 — capability restoration (PRIVATE PERSONAL-USE BUILD). */
+/* LanguageDeck 3.2.1 — capability restoration. */
 const CACHE_VERSION="languagedeck-3-2-1-capability-restoration-20260813";
 const APP_SHELL=[
   "./",
