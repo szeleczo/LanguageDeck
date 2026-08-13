@@ -1,5 +1,5 @@
-/* LanguageDeck 3.3.0 — Grammar & Forms 2.0. */
-const CACHE_VERSION="languagedeck-3-3-0-grammar-forms-20260813";
+/* LanguageDeck 3.3.1 — optional grammar punctuation fix. */
+const CACHE_VERSION="languagedeck-3-3-1-grammar-punctuation-20260813";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

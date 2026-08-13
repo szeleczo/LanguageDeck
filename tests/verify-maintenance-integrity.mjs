@@ -177,9 +177,12 @@ assert.match(indexHtml, /grammarVerbUnits\(workshop\)/, "the app generates one s
 assert.match(indexHtml, /grammarParadigmsHtml\(active\)/, "verb and case paradigms are visible before practice");
 assert.match(indexHtml, /grammar-track-section/, "the curriculum overview separates cases, verbs, structures and mixed review");
 
-const optionalRecallNorm = value => String(value || "").toLocaleLowerCase().replace(/[,\.!?;:]+/gu, "").replace(/\s+/g, " ").trim();
+const optionalRecallNorm = value => String(value || "").toLocaleLowerCase().replace(/\s+[\-‐‑‒–—―−]+\s+/gu, " ").replace(/[,\.!?;:]+/gu, "").replace(/\s+/g, " ").trim();
 assert.equal(optionalRecallNorm("jemanden bitten, zu bleiben"), optionalRecallNorm("jemanden bitten zu bleiben"), "comma-free recall is accepted");
+assert.equal(optionalRecallNorm("sie – sie – ihr"), optionalRecallNorm("sie sie ihr"), "spaced paradigm dashes are optional in recall");
+assert.equal(optionalRecallNorm("er — ihn — ihm"), optionalRecallNorm("er ihn ihm"), "dash variants are optional when they separate paradigm forms");
 assert.notEqual(optionalRecallNorm("kennenlernen"), optionalRecallNorm("kennen lernen"), "punctuation leniency does not collapse word boundaries");
+assert.notEqual(optionalRecallNorm("E-Mail"), optionalRecallNorm("EMail"), "word-internal hyphens remain significant");
 
 const guidedRows = [
   { id: 1, streak: 9, guided_attempts: 2 },
@@ -290,7 +293,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-3-3-0-grammar-forms-20260813/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-3-3-1-grammar-punctuation-20260813/, "service worker cache version is current");
 assert.match(serviceWorker, /decks\/de\/grammar\/core-curriculum\.json/, "the grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/foundations-curriculum\.json/, "pronoun and case foundations are available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/verb-workshop\.json/, "the isolated verb workshop is available offline");
