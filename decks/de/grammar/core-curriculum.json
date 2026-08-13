@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "de-grammar-forms-core-v1",
-  "title": "Nyelvtan és alakok",
-  "subtitle": "Német A1–B1 · alakok, mondatok, aktív felidézés",
+  "id": "de-grammar-forms-core-v2",
+  "title": "Nyelvtan és alakok 2.0",
+  "subtitle": "Német A1–B1 · esetek, igeműhely és mondatok",
   "explanationLanguage": "hu",
   "targetLanguage": "de",
   "units": [
@@ -15,7 +15,7 @@
       "rule": "Kijelentő főmondatban a ragozott ige a második mondatrész. Eldöntendő kérdésben az első, kérdőszavas kérdésben pedig a kérdőszó után következik. Az er/sie/es alakban több gyakori ige töve megváltozik: fahren → fährt, lesen → liest, nehmen → nimmt.",
       "examples": [
         {"de": "Er fährt heute nach Berlin.", "hu": "Ma Berlinbe utazik."},
-        {"de": "Wann nimmt sie den Zug?", "hu": "Mikor száll fel a vonatra?"}
+        {"de": "Wann nimmt sie den Zug?", "hu": "Mikor megy vonattal?"}
       ],
       "phases": [
         {
@@ -35,9 +35,9 @@
           "title": "Mondatok",
           "subtitle": "Kijelentés, eldöntendő és kérdőszavas kérdés.",
           "rows": [
-            {"key": "statement-fahren", "prompt": "Ma Berlinbe utazik.", "target": "Er fährt heute nach Berlin.", "hint": "Kijelentés: az ige a második mondatrész.", "explanation": "Az alany az első, a ragozott fährt a második mondatrész."},
+            {"key": "statement-fahren", "prompt": "Ma Berlinbe utazik. · férfi", "target": "Er fährt heute nach Berlin.", "hint": "Kijelentés: az ige a második mondatrész.", "explanation": "Az alany az első, a ragozott fährt a második mondatrész."},
             {"key": "yesno-lesen", "prompt": "Minden este olvasol?", "target": "Liest du jeden Abend?", "hint": "Eldöntendő kérdés: a ragozott ige kerül előre.", "explanation": "Igen–nem kérdésben nincs külön kérdőszó: a ragozott ige áll az első helyen."},
-            {"key": "wh-nehmen", "prompt": "Mikor száll fel a vonatra?", "target": "Wann nimmt sie den Zug?", "hint": "Kérdőszó + ragozott ige + alany.", "explanation": "A Wann foglalja el az első helyet, utána rögtön a nimmt következik."},
+            {"key": "wh-nehmen", "prompt": "Mikor megy vonattal?", "target": "Wann nimmt sie den Zug?", "hint": "Kérdőszó + ragozott ige + alany.", "explanation": "A Wann foglalja el az első helyet, utána rögtön a nimmt következik. A den Zug a nehmen közvetlen tárgya."},
             {"key": "neg-wissen", "prompt": "Nem tudom a választ.", "target": "Ich weiß die Antwort nicht.", "hint": "A nicht itt a teljes állítást tagadja.", "explanation": "A weiß a második helyen marad; a teljes állítás tagadása a mondat vége felé áll."},
             {"key": "yesno-sprechen", "prompt": "Beszéltek németül?", "target": "Sprecht ihr Deutsch?", "hint": "Az ige legyen az első helyen.", "explanation": "Az ihr személyragja -t: sprecht."}
           ]
@@ -76,8 +76,8 @@
             {"key": "brief", "prompt": "Megírtam a levelet.", "target": "Ich habe den Brief geschrieben.", "hint": "habe … geschrieben", "explanation": "A ragozott habe a második helyen, a Partizip II a mondat végén áll."},
             {"key": "aufstehen", "prompt": "Korán felkeltünk.", "target": "Wir sind früh aufgestanden.", "hint": "aufstehen → aufgestanden; sein", "explanation": "Az elváló auf- a Partizip II-ben a ge- előtt áll: aufgestanden."},
             {"key": "film-question", "prompt": "Láttad a filmet?", "target": "Hast du den Film gesehen?", "hint": "Kérdésben a Hast kerül előre.", "explanation": "Az eldöntendő kérdés első eleme a ragozott segédige."},
-            {"key": "stay", "prompt": "Otthon maradt.", "target": "Sie ist zu Hause geblieben.", "hint": "ist … geblieben", "explanation": "A bleiben segédigéje sein; a geblieben zárja a mondatot."},
-            {"key": "not-found", "prompt": "Nem találta meg a könyvet.", "target": "Er hat das Buch nicht gefunden.", "hint": "hat … nicht gefunden", "explanation": "A nicht a tagadott gefunden előtt áll, a Partizip II zárja a keretet."}
+            {"key": "stay", "prompt": "Otthon maradt. · nő", "target": "Sie ist zu Hause geblieben.", "hint": "ist … geblieben", "explanation": "A bleiben segédigéje sein; a geblieben zárja a mondatot."},
+            {"key": "not-found", "prompt": "Nem találta meg a könyvet. · férfi", "target": "Er hat das Buch nicht gefunden.", "hint": "hat … nicht gefunden", "explanation": "A nicht a tagadott gefunden előtt áll, a Partizip II zárja a keretet."}
           ]
         }
       ]
@@ -113,9 +113,9 @@
           "rows": [
             {"key": "walked", "prompt": "Tegnap gyalog mentem.", "target": "Gestern ging ich zu Fuß.", "hint": "A Gestern után rögtön a ragozott ige jön.", "explanation": "Az időhatározó az első helyen áll, ezért a ging megelőzi az alanyt."},
             {"key": "train", "prompt": "Mikor érkezett meg a vonat?", "target": "Wann kam der Zug an?", "hint": "ankommen → kam … an", "explanation": "Az elváló igekötő a kérdés végére kerül."},
-            {"key": "error", "prompt": "Azonnal meglátta a hibát.", "target": "Sie sah den Fehler sofort.", "hint": "sehen → sah", "explanation": "A sah a főmondat második mondatrésze."},
+            {"key": "error", "prompt": "Azonnal meglátta a hibát. · nő", "target": "Sie sah den Fehler sofort.", "hint": "sehen → sah", "explanation": "A sah a főmondat második mondatrésze."},
             {"key": "knew", "prompt": "Nem tudtuk a választ.", "target": "Wir wussten die Antwort nicht.", "hint": "wissen → wussten", "explanation": "Többes szám első személyben a wusste alak -n végződést kap."},
-            {"key": "place", "prompt": "Elfoglalta a helyemet.", "target": "Er nahm meinen Platz.", "hint": "nehmen → nahm", "explanation": "A nehmen erős múlt alakja nahm."}
+            {"key": "place", "prompt": "Elfoglalta a helyemet. · férfi", "target": "Er nahm meinen Platz.", "hint": "nehmen → nahm", "explanation": "A nehmen erős múlt alakja nahm."}
           ]
         }
       ]
@@ -149,8 +149,8 @@
           "title": "Mondatok",
           "subtitle": "Időviszonyok két tagmondatban.",
           "rows": [
-            {"key": "already-eaten", "prompt": "Már ettem, amikor megérkezett.", "target": "Ich hatte schon gegessen, als er ankam.", "hint": "hatte … gegessen; als … ankam", "explanation": "A korábban lezárult esemény Plusquamperfektben, a későbbi Präteritumban áll."},
-            {"key": "left-before", "prompt": "Elment, mielőtt felhívtam.", "target": "Sie war gegangen, bevor ich anrief.", "hint": "war … gegangen; bevor: ige a végén", "explanation": "A bevor mellékmondatban a ragozott anrief a végére kerül."},
+            {"key": "already-eaten", "prompt": "Már ettem, amikor megérkezett. · férfi", "target": "Ich hatte schon gegessen, als er ankam.", "hint": "hatte … gegessen; als … ankam", "explanation": "A korábban lezárult esemény Plusquamperfektben, a későbbi Präteritumban áll."},
+            {"key": "left-before", "prompt": "Elment, mielőtt felhívtam. · nő", "target": "Sie war gegangen, bevor ich anrief.", "hint": "war … gegangen; bevor: ige a végén", "explanation": "A bevor mellékmondatban a ragozott anrief a végére kerül."},
             {"key": "work-tomorrow", "prompt": "Holnap tovább fogok dolgozni.", "target": "Morgen werde ich länger arbeiten.", "hint": "werde … arbeiten", "explanation": "A Morgen az első helyen, a werde a második mondatrészben áll."},
             {"key": "help-question", "prompt": "Segíteni fogsz nekünk?", "target": "Wirst du uns helfen?", "hint": "Kérdés: Wirst kerül előre.", "explanation": "Eldöntendő kérdésben a ragozott werden alak az első."},
             {"key": "later-see", "prompt": "Ezt majd később meglátjuk.", "target": "Wir werden das später sehen.", "hint": "werden … sehen", "explanation": "A sehen infinitív alakban zárja a Futur I mondatkeretét."}
@@ -266,8 +266,8 @@
             {"key": "not-have-to", "prompt": "Ma nem kell dolgoznod.", "target": "Du musst heute nicht arbeiten.", "hint": "müssen nicht = nem kell", "explanation": "A müssen nicht nem tiltást, hanem a szükségesség hiányát jelenti."},
             {"key": "may-open", "prompt": "Kinyithatom az ablakot?", "target": "Darf ich das Fenster öffnen?", "hint": "Darf kerül előre; öffnen a végére.", "explanation": "A dürfen engedélyt kér, az infinitív zárja a mondatot."},
             {"key": "supposed", "prompt": "Pontosan kell érkeznünk. (ezt várják tőlünk)", "target": "Wir sollen pünktlich kommen.", "hint": "sollen = külső elvárás", "explanation": "A sollen nem belső szükségszerűség, hanem elvárás vagy közvetített utasítás."},
-            {"key": "doctor", "prompt": "Orvos akar lenni.", "target": "Sie will Ärztin werden.", "hint": "will … werden", "explanation": "A wollen szándékot fejez ki; a werden infinitív a végén áll."},
-            {"key": "coffee", "prompt": "Nem szereti a kávét.", "target": "Er mag keinen Kaffee.", "hint": "mögen + Akkusativ; kein", "explanation": "A Kaffee hímnemű Akkusativ alakja keinen Kaffee."}
+            {"key": "doctor", "prompt": "Orvos akar lenni. · nő", "target": "Sie will Ärztin werden.", "hint": "will … werden", "explanation": "A wollen szándékot fejez ki; a werden infinitív a végén áll."},
+            {"key": "coffee", "prompt": "Nem szereti a kávét. · férfi", "target": "Er mag keinen Kaffee.", "hint": "mögen + Akkusativ; kein", "explanation": "A Kaffee hímnemű Akkusativ alakja keinen Kaffee."}
           ]
         }
       ]
@@ -301,11 +301,11 @@
           "title": "Mondatok",
           "subtitle": "Elváló igék valódi mondatkeretben.",
           "rows": [
-            {"key": "gets-up", "prompt": "Minden nap hatkor kel fel.", "target": "Er steht jeden Tag um sechs Uhr auf.", "hint": "steht … auf", "explanation": "A ragozott steht a második helyen, az auf a mondat végén áll."},
+            {"key": "gets-up", "prompt": "Minden nap hatkor kel fel. · férfi", "target": "Er steht jeden Tag um sechs Uhr auf.", "hint": "steht … auf", "explanation": "A ragozott steht a második helyen, az auf a mondat végén áll."},
             {"key": "call-tonight", "prompt": "Ma este felhívlak.", "target": "Ich rufe dich heute Abend an.", "hint": "rufe … an", "explanation": "Az Akkusativ dich a középmezőben, az igekötő a végén áll."},
             {"key": "class-start", "prompt": "Az óra kilenckor kezdődik.", "target": "Der Unterricht fängt um neun Uhr an.", "hint": "fängt … an", "explanation": "Az anfangen tőhangváltása és igekötője egyszerre jelenik meg."},
-            {"key": "remember", "prompt": "Emlékszem a nevére.", "target": "Ich erinnere mich an seinen Namen.", "hint": "sich erinnern an + Akkusativ", "explanation": "A vonzat an + Akkusativ: an seinen Namen."},
-            {"key": "brought", "prompt": "Magával hozta a könyvet.", "target": "Er hat das Buch mitgebracht.", "hint": "hat … mitgebracht", "explanation": "A mitgebracht egy szóban áll a Perfekt mondat végén."}
+            {"key": "remember", "prompt": "Emlékszem a nevére. · férfi", "target": "Ich erinnere mich an seinen Namen.", "hint": "sich erinnern an + Akkusativ", "explanation": "A vonzat an + Akkusativ: an seinen Namen."},
+            {"key": "brought", "prompt": "Magával hozta a könyvet. · férfi", "target": "Er hat das Buch mitgebracht.", "hint": "hat … mitgebracht", "explanation": "A mitgebracht egy szóban áll a Perfekt mondat végén."}
           ]
         }
       ]
@@ -341,7 +341,7 @@
           "rows": [
             {"key": "room", "prompt": "Ez a szoba nagyobb a másiknál.", "target": "Dieses Zimmer ist größer als das andere.", "hint": "größer als", "explanation": "A középfokú összehasonlítás kötőszava als."},
             {"key": "book", "prompt": "Ez a könyv jobb, mint a film.", "target": "Dieses Buch ist besser als der Film.", "hint": "gut → besser; als", "explanation": "A besser rendhagyó középfok, utána als áll."},
-            {"key": "fastest", "prompt": "Ő fut a leggyorsabban.", "target": "Er läuft am schnellsten.", "hint": "am schnellsten", "explanation": "Határozói felsőfok: am schnellsten."},
+            {"key": "fastest", "prompt": "Ő fut a leggyorsabban. · férfi", "target": "Er läuft am schnellsten.", "hint": "am schnellsten", "explanation": "Határozói felsőfok: am schnellsten."},
             {"key": "more-time", "prompt": "Több időre van szükségünk.", "target": "Wir brauchen mehr Zeit.", "hint": "viel → mehr", "explanation": "A viel középfoka több mennyiségnél mehr."},
             {"key": "prefer-home", "prompt": "A legszívesebben otthon maradok.", "target": "Am liebsten bleibe ich zu Hause.", "hint": "gern → am liebsten", "explanation": "Az Am liebsten az első helyen áll, ezért a bleibe közvetlenül utána következik."}
           ]

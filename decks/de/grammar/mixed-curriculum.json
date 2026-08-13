@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "units": [
+    {
+      "id": "mixed-present-foundations",
+      "track": "mixed",
+      "order": 1,
+      "level": "A1",
+      "title": "Első keverés: alapigék",
+      "summary": "Csak a már külön megtanult sein, haben, machen, lernen és arbeiten.",
+      "rule": "Ebben az egységben jelenik meg először több ige egyszerre. Előbb az alanyból válaszd ki a személyt, utána az igéhez tartozó tövet és végződést. Az ige jelentése és a személy két külön döntés.",
+      "examples": [
+        {"de": "Ihr seid bereit.", "hu": "Készen álltok."},
+        {"de": "Du hast Zeit.", "hu": "Van időd."},
+        {"de": "Wir lernen zusammen.", "hu": "Együtt tanulunk."}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakválasztás",
+          "subtitle": "Öt ismert ige, személyenként keverve.",
+          "rows": [
+            {"key": "sein-ihr", "prompt": "sein · ihr · Präsens", "target": "seid", "explanation": "Az ihr sein alakja seid."},
+            {"key": "haben-du", "prompt": "haben · du · Präsens", "target": "hast", "explanation": "A du haben alakja hast."},
+            {"key": "machen-er", "prompt": "machen · er/sie/es · Präsens", "target": "macht", "explanation": "A szabályos harmadik személy -t végződésű."},
+            {"key": "lernen-wir", "prompt": "lernen · wir · Präsens", "target": "lernen", "explanation": "A wir alak megegyezik az infinitívvel."},
+            {"key": "arbeiten-du", "prompt": "arbeiten · du · Präsens", "target": "arbeitest", "explanation": "A -t végű tő miatt betoldott e jelenik meg."},
+            {"key": "sein-ich", "prompt": "sein · ich · Präsens", "target": "bin", "explanation": "A sein ich alakja bin."},
+            {"key": "haben-er", "prompt": "haben · er/sie/es · Präsens", "target": "hat", "explanation": "A haben harmadik személyű alakja hat."},
+            {"key": "arbeiten-ihr", "prompt": "arbeiten · ihr · Präsens", "target": "arbeitet", "explanation": "Az ihr alakban is szükséges a betoldott e."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "A személy és az ige már együtt változik.",
+          "rows": [
+            {"key": "ready", "prompt": "Készen álltok.", "target": "Ihr seid bereit.", "explanation": "ihr + sein → seid."},
+            {"key": "time", "prompt": "Van időd.", "target": "Du hast Zeit.", "explanation": "du + haben → hast."},
+            {"key": "plan", "prompt": "Tervet készít. · férfi", "target": "Er macht einen Plan.", "explanation": "er + machen → macht."},
+            {"key": "together", "prompt": "Együtt tanulunk.", "target": "Wir lernen zusammen.", "explanation": "wir + lernen → lernen."},
+            {"key": "office", "prompt": "Egy irodában dolgozol.", "target": "Du arbeitest in einem Büro.", "explanation": "du + arbeiten → arbeitest."},
+            {"key": "question", "prompt": "Ma dolgoztok?", "target": "Arbeitet ihr heute?", "explanation": "Kérdésben az arbeitet kerül előre; az alany ihr."},
+            {"key": "negative", "prompt": "Nem vagyok fáradt.", "target": "Ich bin nicht müde.", "explanation": "A melléknevet nicht tagadja."},
+            {"key": "what", "prompt": "Mit csinál? · nő", "target": "Was macht sie?", "explanation": "Was + macht + sie."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mixed-stem-changing-verbs",
+      "track": "mixed",
+      "order": 2,
+      "level": "A1–A2",
+      "title": "Második keverés: tőhangváltás",
+      "summary": "fahren, lesen, sehen, nehmen, sprechen, essen, schlafen, helfen és geben.",
+      "rule": "A tőhangváltás csak du és er/sie/es személyben jelenik meg. A wir, ihr és sie/Sie alak visszatér az infinitív tövéhez; az ihr azonban saját -t végződést kap. Ezért fährt er, de fahrt ihr; spricht er, de sprecht ihr.",
+      "examples": [
+        {"de": "Er fährt, aber ihr fahrt.", "hu": "Ő utazik, de ti utaztok."},
+        {"de": "Sie liest, aber wir lesen.", "hu": "Ő olvas, de mi olvasunk."},
+        {"de": "Er hilft ihm.", "hu": "Segít neki."}
+      ],
+      "phases": [
+        {
+          "id": "du-er",
+          "title": "du és er/sie/es",
+          "subtitle": "Csak azok a személyek, amelyekben a tő megváltozik.",
+          "rows": [
+            {"key": "fahren-du", "prompt": "fahren · du", "target": "fährst", "explanation": "a → ä: du fährst."},
+            {"key": "lesen-er", "prompt": "lesen · er/sie/es", "target": "liest", "explanation": "e → ie: er liest."},
+            {"key": "sehen-du", "prompt": "sehen · du", "target": "siehst", "explanation": "e → ie: du siehst."},
+            {"key": "nehmen-er", "prompt": "nehmen · er/sie/es", "target": "nimmt", "explanation": "e → i, nimm- tő: er nimmt."},
+            {"key": "sprechen-du", "prompt": "sprechen · du", "target": "sprichst", "explanation": "e → i: du sprichst."},
+            {"key": "essen-er", "prompt": "essen · er/sie/es", "target": "isst", "explanation": "e → i: er isst."},
+            {"key": "schlafen-du", "prompt": "schlafen · du", "target": "schläfst", "explanation": "a → ä: du schläfst."},
+            {"key": "helfen-er", "prompt": "helfen · er/sie/es", "target": "hilft", "explanation": "e → i: er hilft."},
+            {"key": "geben-du", "prompt": "geben · du", "target": "gibst", "explanation": "e → i: du gibst."}
+          ]
+        },
+        {
+          "id": "ihr-contrast",
+          "title": "Az ihr-kontraszt",
+          "subtitle": "Ti alakban nincs tőhangváltás.",
+          "rows": [
+            {"key": "fahren", "prompt": "fahren · ihr", "target": "fahrt", "explanation": "Az ihr alak fahrt, umlaut nélkül."},
+            {"key": "lesen", "prompt": "lesen · ihr", "target": "lest", "explanation": "Az ihr alak lest, ie nélkül."},
+            {"key": "sehen", "prompt": "sehen · ihr", "target": "seht", "explanation": "Az ihr alak seht, ie nélkül."},
+            {"key": "nehmen", "prompt": "nehmen · ihr", "target": "nehmt", "explanation": "Az ihr alak nehmt, nimm- tő nélkül."},
+            {"key": "sprechen", "prompt": "sprechen · ihr", "target": "sprecht", "explanation": "Az ihr alak sprecht, i nélkül."},
+            {"key": "essen", "prompt": "essen · ihr", "target": "esst", "explanation": "Az ihr alak esst."},
+            {"key": "schlafen", "prompt": "schlafen · ihr", "target": "schlaft", "explanation": "Az ihr alak schlaft, umlaut nélkül."},
+            {"key": "helfen", "prompt": "helfen · ihr", "target": "helft", "explanation": "Az ihr alak helft."},
+            {"key": "geben", "prompt": "geben · ihr", "target": "gebt", "explanation": "Az ihr alak gebt."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Vegyes mondatok",
+          "subtitle": "Ige, személy és eset egyszerre, de csak ismert elemekből.",
+          "rows": [
+            {"key": "travel", "prompt": "Vonattal utazol.", "target": "Du fährst mit dem Zug.", "explanation": "du → fährst; mit + Dativ → dem Zug."},
+            {"key": "read", "prompt": "A szöveget olvassátok.", "target": "Ihr lest den Text.", "explanation": "ihr → lest; hímnemű Akkusativ → den Text."},
+            {"key": "see", "prompt": "Ő látja őt. · mindkettő férfi", "target": "Er sieht ihn.", "explanation": "er → sieht; a látott férfi Akkusativ névmása ihn."},
+            {"key": "take", "prompt": "A vonatot választja. · nő", "target": "Sie nimmt den Zug.", "explanation": "sie → nimmt; hímnemű Akkusativ → den Zug."},
+            {"key": "speak", "prompt": "Beszéltek németül?", "target": "Sprecht ihr Deutsch?", "explanation": "Az alany ihr, ezért az ige sprecht. A pontos magyar személy: beszéltek."},
+            {"key": "eat", "prompt": "Almát eszel.", "target": "Du isst einen Apfel.", "explanation": "du → isst; hímnemű Akkusativ → einen Apfel."},
+            {"key": "sleep", "prompt": "Jól alszik. · nő", "target": "Sie schläft gut.", "explanation": "sie → schläft."},
+            {"key": "help", "prompt": "Segítetek neki. · férfi", "target": "Ihr helft ihm.", "explanation": "ihr → helft; helfen + Dativ → ihm."},
+            {"key": "give", "prompt": "Odaadja neki a könyvet. · nő adja, férfi kapja", "target": "Sie gibt ihm das Buch.", "explanation": "sie → gibt; címzett er → ihm; dolog Akkusativ: das Buch."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mixed-pronouns-articles",
+      "track": "mixed",
+      "order": 3,
+      "level": "A2",
+      "title": "Harmadik keverés: ihn, ihm, den, dem",
+      "summary": "Névmás vagy főnév, Akkusativ vagy Dativ – ugyanazon mondatmintákban.",
+      "rule": "Előbb döntsd el, hogy személyes névmás vagy névelős főnév kell-e. Utána keresd meg az eset kiváltóját. sehen: ihn vagy den Mann; helfen: ihm vagy dem Mann; mit: mit ihm vagy mit dem Mann.",
+      "examples": [
+        {"de": "Ich sehe ihn / den Mann.", "hu": "Látom őt / a férfit."},
+        {"de": "Ich helfe ihm / dem Mann.", "hu": "Segítek neki / a férfinak."},
+        {"de": "Ich fahre mit ihm / dem Mann.", "hu": "Vele / a férfival utazom."}
+      ],
+      "phases": [
+        {
+          "id": "pairs",
+          "title": "Párhuzamos alakok",
+          "subtitle": "Ugyanaz a szerep névmással és főnévvel.",
+          "rows": [
+            {"key": "akk-pronoun", "prompt": "Látom őt. · férfi", "target": "Ich sehe ihn.", "explanation": "sehen + Akkusativ; er → ihn."},
+            {"key": "akk-noun", "prompt": "Látom a férfit.", "target": "Ich sehe den Mann.", "explanation": "sehen + Akkusativ; der Mann → den Mann."},
+            {"key": "dat-pronoun", "prompt": "Segítek neki. · férfi", "target": "Ich helfe ihm.", "explanation": "helfen + Dativ; er → ihm."},
+            {"key": "dat-noun", "prompt": "Segítek a férfinak.", "target": "Ich helfe dem Mann.", "explanation": "helfen + Dativ; der Mann → dem Mann."},
+            {"key": "mit-pronoun", "prompt": "Vele beszélek. · férfi", "target": "Ich spreche mit ihm.", "explanation": "mit + Dativ; er → ihm."},
+            {"key": "mit-noun", "prompt": "A férfival beszélek.", "target": "Ich spreche mit dem Mann.", "explanation": "mit + Dativ; der Mann → dem Mann."},
+            {"key": "fuer-pronoun", "prompt": "Ezt neki vettem. · férfi", "target": "Ich habe das für ihn gekauft.", "explanation": "für + Akkusativ; er → ihn."},
+            {"key": "fuer-noun", "prompt": "Ezt a férfinak vettem.", "target": "Ich habe das für den Mann gekauft.", "explanation": "für + Akkusativ; der Mann → den Mann."}
+          ]
+        },
+        {
+          "id": "two-objects",
+          "title": "Két tárgy egy mondatban",
+          "subtitle": "A személy címzett, a dolog közvetlen tárgy.",
+          "rows": [
+            {"key": "give-him-book", "prompt": "Odaadom neki a könyvet. · férfi", "target": "Ich gebe ihm das Buch.", "explanation": "Címzett: ihm; átadott dolog: das Buch."},
+            {"key": "give-man-book", "prompt": "Odaadom a férfinak a könyvet.", "target": "Ich gebe dem Mann das Buch.", "explanation": "Címzett: dem Mann; dolog: das Buch."},
+            {"key": "show-her-house", "prompt": "Megmutatom neki a házat. · nő", "target": "Ich zeige ihr das Haus.", "explanation": "Címzett: ihr; dolog: das Haus."},
+            {"key": "show-woman-house", "prompt": "Megmutatom a nőnek a házat.", "target": "Ich zeige der Frau das Haus.", "explanation": "Címzett: der Frau; dolog: das Haus."},
+            {"key": "send-them-message", "prompt": "Üzenetet küldök nekik.", "target": "Ich schicke ihnen eine Nachricht.", "explanation": "Címzett többes Dativ: ihnen."},
+            {"key": "send-children-message", "prompt": "Üzenetet küldök a gyerekeknek.", "target": "Ich schicke den Kindern eine Nachricht.", "explanation": "Többes Dativ: den Kindern."},
+            {"key": "ask-him-question", "prompt": "Felteszek neki egy kérdést. · férfi", "target": "Ich stelle ihm eine Frage.", "explanation": "A kérdés címzettje ihm, maga a kérdés eine Frage."},
+            {"key": "ask-teacher-question", "prompt": "Felteszek a tanárnak egy kérdést.", "target": "Ich stelle dem Lehrer eine Frage.", "explanation": "A címzett Dativ: dem Lehrer."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mixed-time-and-mood",
+      "track": "mixed",
+      "order": 4,
+      "level": "A2–B1",
+      "title": "Negyedik keverés: idő és mód",
+      "summary": "Präsens, Perfekt, Präteritum, Imperativ és Konjunktiv II ismert igékkel.",
+      "rule": "Az ige felismerése után külön döntsd el az időt vagy módot. A Perfekt segédigét és Partizip II-t, a Präteritum egyetlen múlt alakot, a Konjunktiv II önálló alakot vagy würde + infinitívet használ.",
+      "examples": [
+        {"de": "Er fährt. Er ist gefahren. Er fuhr.", "hu": "Utazik. Utazott. Utazott."},
+        {"de": "Hilf ihm!", "hu": "Segíts neki!"},
+        {"de": "Ich würde kommen.", "hu": "Eljönnék."}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakok",
+          "subtitle": "Az ige és a kért idő vagy mód együtt változik.",
+          "rows": [
+            {"key": "fahren-perf", "prompt": "fahren · er · Perfekt", "target": "ist gefahren", "explanation": "Helyváltoztatás: ist gefahren."},
+            {"key": "lesen-praet", "prompt": "lesen · er · Präteritum", "target": "las", "explanation": "Erős múlt: las."},
+            {"key": "sehen-perf", "prompt": "sehen · ich · Perfekt", "target": "habe gesehen", "explanation": "haben + gesehen."},
+            {"key": "nehmen-praet", "prompt": "nehmen · er · Präteritum", "target": "nahm", "explanation": "Erős múlt: nahm."},
+            {"key": "sprechen-perf", "prompt": "sprechen · wir · Perfekt", "target": "haben gesprochen", "explanation": "wir haben gesprochen."},
+            {"key": "sein-konj", "prompt": "sein · ich · Konjunktiv II", "target": "wäre", "explanation": "Önálló feltételes alak: wäre."},
+            {"key": "haben-konj", "prompt": "haben · ich · Konjunktiv II", "target": "hätte", "explanation": "Önálló feltételes alak: hätte."},
+            {"key": "koennen-konj", "prompt": "können · du · Konjunktiv II", "target": "könntest", "explanation": "Udvarias második személy: könntest."},
+            {"key": "helfen-imp", "prompt": "helfen · du · Imperativ", "target": "Hilf!", "explanation": "Tőváltós Imperativ: Hilf!"},
+            {"key": "geben-imp", "prompt": "geben · du · Imperativ", "target": "Gib!", "explanation": "Tőváltós Imperativ: Gib!"}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "Az idő, mód, személy és eset együtt jelenik meg.",
+          "rows": [
+            {"key": "travelled", "prompt": "Vonattal utazott. · férfi; Perfekt", "target": "Er ist mit dem Zug gefahren.", "explanation": "fahren helyváltoztatáskor sein; mit + Dativ."},
+            {"key": "read-past", "prompt": "Tegnap a levelet olvasta. · nő; Präteritum", "target": "Sie las gestern den Brief.", "explanation": "lesen → las; der Brief Akkusativban den Brief."},
+            {"key": "saw-him", "prompt": "Láttam őt. · férfi", "target": "Ich habe ihn gesehen.", "explanation": "er → ihn; Perfekt: habe gesehen."},
+            {"key": "help-command", "prompt": "Segíts neki! · férfi", "target": "Hilf ihm!", "explanation": "Imperativ Hilf!; helfen + Dativ → ihm."},
+            {"key": "give-command", "prompt": "Add oda neki a könyvet! · nő", "target": "Gib ihr das Buch!", "explanation": "Imperativ Gib!; sie → ihr."},
+            {"key": "would-come", "prompt": "Eljönnék, ha lenne időm.", "target": "Ich würde kommen, wenn ich Zeit hätte.", "explanation": "Főmondat würde kommen; wenn-mondat végén hätte."},
+            {"key": "could-help", "prompt": "Tudnál nekem segíteni?", "target": "Könntest du mir helfen?", "explanation": "Könntest + du; ich Dativ alakja mir."},
+            {"key": "not-have-to", "prompt": "Ma nem kell dolgoznotok.", "target": "Ihr müsst heute nicht arbeiten.", "explanation": "ihr → müsst; nicht müssen = nem kell."},
+            {"key": "were-home", "prompt": "Szívesen lennénk otthon.", "target": "Wir wären gern zu Hause.", "explanation": "sein Konjunktiv II, wir: wären."},
+            {"key": "had-time", "prompt": "Ha lenne időnk, többet olvasnánk.", "target": "Wenn wir Zeit hätten, würden wir mehr lesen.", "explanation": "wenn-mondat: hätten; főmondat: würden lesen."}
+          ]
+        }
+      ]
+    }
+  ]
+}

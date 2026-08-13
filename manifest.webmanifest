@@ -1,5 +1,5 @@
 {
-  "name": "LanguageDeck 3.2.1",
+  "name": "LanguageDeck 3.3.0",
   "short_name": "LanguageDeck",
   "description": "Course-first language learning with whole stories, shared vocabulary, chapter preparation and free practice.",
   "start_url": "./index.html#course",
@@ -28,5 +28,5 @@
       "purpose": "maskable"
     }
   ],
-  "id": "./?app=LanguageDeck-v3.2.1"
+  "id": "./?app=LanguageDeck-v3.3.0"
 }

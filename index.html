@@ -3140,7 +3140,10 @@ html.integrated-practice-active body{overflow:hidden!important}
     .grammar-unit button{min-height:40px;border:1px solid var(--line);border-radius:13px;background:var(--surface2);color:var(--text);font-size:12px;font-weight:780;padding:8px 11px}.grammar-unit.current button{background:var(--accent);border-color:var(--accent);color:#fff}
     .grammar-concept{max-width:720px;margin:0 auto 12px;padding:17px;border:1px solid var(--line);border-radius:21px;background:var(--surface);box-shadow:var(--shadow)}.grammar-concept h2{font-family:var(--display);font-size:clamp(25px,6vw,36px);letter-spacing:-.035em;margin:0 0 8px}.grammar-concept>p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
     .grammar-examples{display:grid;gap:7px;margin-top:13px}.grammar-example{padding:10px 12px;border-radius:14px;background:var(--surface2)}.grammar-example b{display:block;font-size:14px;line-height:1.4}.grammar-example span{display:block;margin-top:3px;color:var(--muted);font-size:11.5px}
-    @media(max-width:430px){.grammar-unit{grid-template-columns:38px minmax(0,1fr);padding:11px}.grammar-unit>button{grid-column:2;width:100%}.grammar-unit-no{width:35px;height:35px}.grammar-concept{padding:15px}}
+    .grammar-track-section{max-width:720px;margin:18px auto 0}.grammar-track-section:first-of-type{margin-top:10px}.grammar-track-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:0 2px 9px}.grammar-track-head h3{font-size:15px;margin:0}.grammar-track-head p{font-size:11px;color:var(--muted);line-height:1.35;margin:3px 0 0}.grammar-track-head span{font-size:10.5px;color:var(--accent);font-weight:800;white-space:nowrap}
+    .grammar-paradigms{display:grid;gap:10px;margin:13px 0 0}.grammar-paradigm{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--surface2)}.grammar-paradigm h3{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0;padding:10px 11px 7px}.grammar-table-wrap{overflow-x:auto}.grammar-paradigm table{border-collapse:collapse;width:100%;min-width:440px}.grammar-paradigm th,.grammar-paradigm td{padding:8px 10px;text-align:left;border-top:1px solid var(--line);font-size:12px;line-height:1.35;white-space:nowrap}.grammar-paradigm th{color:var(--muted);font-size:10.5px;background:color-mix(in srgb,var(--surface2) 82%,var(--surface));font-weight:800}.grammar-paradigm td:nth-child(2){font-weight:800;color:var(--text)}
+    .grammar-verb-badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;background:var(--accent2);color:var(--accent);font-size:10.5px;font-weight:850;padding:5px 8px;margin:0 0 9px}
+    @media(max-width:430px){.grammar-unit{grid-template-columns:38px minmax(0,1fr);padding:11px}.grammar-unit>button{grid-column:2;width:100%}.grammar-unit-no{width:35px;height:35px}.grammar-concept{padding:15px}.grammar-track-head{align-items:flex-start}.grammar-track-head span{padding-top:2px}}
 
     /* LanguageDeck 3.0: Chapter Study is an orchestrator, not a second
        hand-written exercise engine. The cards below launch the proven
@@ -3798,7 +3801,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="3.2.1-capability-restoration-20260813",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="3.3.0-grammar-forms-20260813",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function norm(v){return String(v||"").toLocaleLowerCase().normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
 function parseCSV(text){const rows=[];let row=[],cell="",q=false,s=String(text||"").replace(/^\uFEFF/,"");for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')q=false;else cell+=c}else if(c==='"')q=true;else if(c===','){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
@@ -4171,9 +4174,23 @@ $('chapterStudyBack').onclick=()=>exitChapterStudy('course');$('chapterStudySett
 
 let GRAMMAR_CURRICULUM=null;
 let GRAMMAR_COURSE_SESSION={unitId:null,returnView:'practice'};
+function grammarVerbUnits(workshop){
+  const subjects=workshop.subjects||[];
+  return(workshop.verbs||[]).map(verb=>{
+    if(!Array.isArray(verb.present)||verb.present.length!==subjects.length)throw Error(`Invalid Präsens paradigm: ${verb.id}`);
+    const forms=subjects.map((subject,index)=>({key:`present-${subject.id}`,prompt:`${verb.infinitive} · ${subject.de} · Präsens`,target:verb.present[index],hint:index===1||index===2?verb.note:'Figyeld meg a személyragot.',explanation:`${subject.de} + ${verb.infinitive}: ${subject.de} ${verb.present[index]}. ${verb.note}`}));
+    const sentences=(verb.sentences||[]).map((row,index)=>({...row,hint:row.hint||`${subjects[index]?.de||''} + ${verb.present[index]||verb.infinitive}`,explanation:row.explanation||`A ${subjects[index]?.de||'kért'} személyhez a ${verb.present[index]||verb.infinitive} alak tartozik.`}));
+    const sentenceTypes=(verb.sentenceTypes||[]).map(row=>({...row,explanation:row.explanation||`A mondat minden ragozott alakja a ${verb.infinitive} igéhez tartozik.`}));
+    const otherForms=(verb.otherForms||[]).map(row=>({...row,hint:row.hint||verb.note}));
+    return{id:`verb-${verb.id}`,track:'verbs',order:verb.order,level:verb.level,title:`${verb.infinitive} · ${verb.meaning}`,summary:`${verb.group}. ${verb.note}`,rule:verb.note,verb,examples:(verb.sentences||[]).slice(0,3).map(row=>({de:row.target,hu:row.prompt.replace(/\s*·.*$/,'')})),paradigms:[{title:`${verb.infinitive} · Präsens`,columns:['Személy','Igealak','Példamondat'],rows:subjects.map((subject,index)=>[subject.de,verb.present[index],verb.sentences?.[index]?.target||''])}],phases:[{id:'present-forms',title:'Präsens alakok',subtitle:'Egyetlen ige mind a hat személyben; más ige még nem jelenik meg.',rows:forms},{id:'present-sentences',title:'Személyek mondatokban',subtitle:'Ugyanaz az ige, mind a hat személy teljes mondatában.',rows:sentences},{id:'sentence-types',title:'Kérdés és tagadás',subtitle:'Csak ez az ige, de már eltérő mondattípusokban.',rows:sentenceTypes},{id:'time-and-mood',title:'Idő és mód',subtitle:'Perfekt, Präteritum, feltételes vagy felszólító alak – továbbra is egyetlen igével.',rows:otherForms}]}
+  })
+}
 async function loadGrammarCurriculum(){
   if(GRAMMAR_CURRICULUM)return GRAMMAR_CURRICULUM;
-  const data=await fetchJSON(`decks/${LANG}/grammar/core-curriculum.json`);
+  const [core,foundations,workshop,mixed]=await Promise.all([fetchJSON(`decks/${LANG}/grammar/core-curriculum.json`),fetchJSON(`decks/${LANG}/grammar/foundations-curriculum.json`),fetchJSON(`decks/${LANG}/grammar/verb-workshop.json`),fetchJSON(`decks/${LANG}/grammar/mixed-curriculum.json`)]);
+  const tracks=[...(foundations.tracks||[])].sort((a,b)=>(a.order||0)-(b.order||0)),trackOrder=new Map(tracks.map((track,index)=>[track.id,track.order||index+1]));
+  const units=[...(foundations.units||[]).map(unit=>({...unit,curriculumSource:'foundations'})),...grammarVerbUnits(workshop).map(unit=>({...unit,curriculumSource:'verbs'})),...(core.units||[]).map(unit=>({...unit,track:'structures',curriculumSource:'core'})),...(mixed.units||[]).map(unit=>({...unit,curriculumSource:'mixed'}))];
+  const data={...core,id:'de-grammar-forms-v2',title:'Nyelvtan és alakok 2.0',subtitle:'Német A1–B1 · esetek, igeműhely és mondatok',tracks,units};
   if(!data||!Array.isArray(data.units)||!data.units.length)throw Error('The Grammar & Forms curriculum is empty.');
   const unitIds=new Set(),goalIds=new Set();
   for(const unit of data.units){
@@ -4181,22 +4198,24 @@ async function loadGrammarCurriculum(){
     if(!Array.isArray(unit.phases)||!unit.phases.length)throw Error(`Grammar unit has no phases: ${unit.id}`);
     for(const phase of unit.phases){for(const row of phase.rows||[]){const key=`${unit.id}:${phase.id}:${row.key}`;if(!row.key||goalIds.has(key)||!row.prompt||!row.target)throw Error(`Invalid grammar goal: ${key}`);goalIds.add(key)}}
   }
-  GRAMMAR_CURRICULUM={...data,units:[...data.units].sort((a,b)=>(a.order||0)-(b.order||0))};
+  GRAMMAR_CURRICULUM={...data,units:[...data.units].sort((a,b)=>(trackOrder.get(a.track)||99)-(trackOrder.get(b.track)||99)||(a.order||0)-(b.order||0))};
   return GRAMMAR_CURRICULUM;
 }
 function grammarUnitById(id){return GRAMMAR_CURRICULUM?.units?.find(unit=>unit.id===id)||null}
+function grammarTrackById(id){return GRAMMAR_CURRICULUM?.tracks?.find(track=>track.id===id)||{id,title:'További nyelvtan',summary:''}}
 function grammarPhaseSpec(unit,phase){
   const rows=(phase.rows||[]).map(row=>({
-    guided_key:`grammar-core:${unit.id}:${phase.id}:${row.key}`,
+    guided_key:`${unit.curriculumSource==='core'?'grammar-core':'grammar-v2'}:${unit.id}:${phase.id}:${row.key}`,
     english:row.prompt,
     target:row.target,
     hint:row.hint||'',
     explanation:row.explanation||unit.rule||'',
     alternatives:row.alternatives||'',
-    sentence_id:`grammar-core:${unit.id}:${phase.id}:${row.key}`,
-    tags:`grammar-core|unit:${unit.id}|phase:${phase.id}|level:${unit.level||''}`
+    sentence_id:`${unit.curriculumSource==='core'?'grammar-core':'grammar-v2'}:${unit.id}:${phase.id}:${row.key}`,
+    tags:`grammar-forms|track:${unit.track||'structures'}|unit:${unit.id}|phase:${phase.id}|level:${unit.level||''}`
   }));
-  return{deck:LANG,setName:`Grammar Core · ${unit.order||0} · ${unit.id} · ${phase.id}`,mode:'grammar',variant:'progressive',target:'grammar_recall',label:`${unit.title} · ${phase.title}`,rows}
+  const setName=unit.curriculumSource==='core'?`Grammar Core · ${unit.order||0} · ${unit.id} · ${phase.id}`:`Grammar Lab · ${unit.track||'forms'} · ${unit.order||0} · ${unit.id} · ${phase.id}`;
+  return{deck:LANG,setName,mode:phase.mode||'grammar',variant:phase.variant||'progressive',target:'grammar_recall',label:`${unit.title} · ${phase.title}`,rows}
 }
 async function grammarPhaseStatuses(unit){
   const out=[];
@@ -4219,25 +4238,27 @@ async function openGrammarCourse(unitId=null,returnView='practice'){
 function closeGrammarCourse(view=GRAMMAR_COURSE_SESSION.returnView||'practice'){
   $('grammarCourseHost').classList.add('hidden');$('browseShell').classList.remove('hidden');GRAMMAR_COURSE_SESSION.unitId=null;showView(['course','book','practice'].includes(view)?view:'practice')
 }
+function grammarParadigmsHtml(unit){return(unit.paradigms||[]).length?`<div class="grammar-paradigms">${unit.paradigms.map(table=>`<section class="grammar-paradigm"><h3>${esc(table.title||'Alaktábla')}</h3><div class="grammar-table-wrap"><table><thead><tr>${(table.columns||[]).map(cell=>`<th>${esc(cell)}</th>`).join('')}</tr></thead><tbody>${(table.rows||[]).map(row=>`<tr>${row.map(cell=>`<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`).join('')}</div>`:''}
 async function renderGrammarCourse(){
   const data=await loadGrammarCurriculum(),body=$('grammarCourseBody'),main=$('grammarCourseMain'),secondary=$('grammarCourseSecondary'),active=grammarUnitById(GRAMMAR_COURSE_SESSION.unitId);
   body.innerHTML='<div class="loading">A haladás ellenőrzése…</div>';
   if(!active){
     const statuses=await grammarCourseStatuses(),total=statuses.reduce((n,x)=>n+x.total,0),mastered=statuses.reduce((n,x)=>n+x.mastered,0),pct=total?Math.round(mastered/total*100):100,next=statuses.find(x=>!x.complete)||statuses[0];
     $('grammarCourseTitle').textContent=data.title;$('grammarCourseSub').textContent=`${data.subtitle} · ${mastered}/${total} cél`;
-    body.innerHTML=`<div class="guided-study-intro"><div class="chapter-study-kicker">Szabály → alak → mondat</div><h2>${esc(data.title)}</h2><p>Rövid magyar magyarázat után minden alakot és mondatot segítség nélkül is fel kell idézned. Egy nehéz tétel gyakrabban tér vissza, de nem szoríthatja ki a többit.</p></div><div class="grammar-course-progress"><div class="grammar-course-progress-top"><b>Teljes tanterv</b><span>${mastered}/${total} · ${pct}%</span></div><div class="grammar-course-track"><i style="width:${pct}%"></i></div></div><div class="grammar-unit-list">${statuses.map((x,i)=>`<article class="grammar-unit ${x.complete?'done':x===next?'current':''}"><div class="grammar-unit-no">${x.complete?'✓':x.unit.order||i+1}</div><div class="grammar-unit-copy"><b>${esc(x.unit.title)}</b><span>${esc(x.unit.summary)}</span><small>${esc(x.unit.level||'')} · ${x.mastered}/${x.total} cél</small></div><button data-grammar-unit="${esc(x.unit.id)}">${x.complete?'Ismétlés':x.mastered?'Folytatás':'Kezdés'}</button></article>`).join('')}</div>`;
+    const sections=(data.tracks||[]).map(track=>{const rows=statuses.filter(status=>status.unit.track===track.id),trackTotal=rows.reduce((n,x)=>n+x.total,0),trackMastered=rows.reduce((n,x)=>n+x.mastered,0);if(!rows.length)return'';return`<section class="grammar-track-section"><div class="grammar-track-head"><div><h3>${esc(track.title)}</h3><p>${esc(track.summary||'')}</p></div><span>${trackMastered}/${trackTotal} cél</span></div><div class="grammar-unit-list">${rows.map((x,i)=>`<article class="grammar-unit ${x.complete?'done':x===next?'current':''}"><div class="grammar-unit-no">${x.complete?'✓':x.unit.order||i+1}</div><div class="grammar-unit-copy"><b>${esc(x.unit.title)}</b><span>${esc(x.unit.summary)}</span><small>${esc(x.unit.level||'')} · ${x.mastered}/${x.total} cél</small></div><button data-grammar-unit="${esc(x.unit.id)}">${x.complete?'Ismétlés':x.mastered?'Folytatás':'Kezdés'}</button></article>`).join('')}</div></section>`}).join('');
+    body.innerHTML=`<div class="guided-study-intro"><div class="chapter-study-kicker">Megértés → egy alakrendszer → fokozatos keverés</div><h2>${esc(data.title)}</h2><p>Először egyetlen névmást, esetet vagy igét jársz végig. A vegyes feladatok csak külön, a tanulási út végén jelennek meg. A magyar mondat személye mindig egyezik a német alannyal.</p></div><div class="grammar-course-progress"><div class="grammar-course-progress-top"><b>Teljes tanterv</b><span>${mastered}/${total} · ${pct}%</span></div><div class="grammar-course-track"><i style="width:${pct}%"></i></div></div>${sections}`;
     body.querySelectorAll('[data-grammar-unit]').forEach(button=>button.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=button.dataset.grammarUnit;renderGrammarCourse()});
     secondary.textContent='Vissza a Practice oldalra';secondary.onclick=()=>closeGrammarCourse();main.textContent=next?(next.mastered?'Folytatás':'Első lecke'):'Ismétlés';main.disabled=!next;main.onclick=()=>{if(next){GRAMMAR_COURSE_SESSION.unitId=next.unit.id;renderGrammarCourse()}};return;
   }
   const status=await grammarUnitStatus(active),next=status.phases.find(p=>!p.status.complete),units=data.units,nextUnit=units[units.findIndex(u=>u.id===active.id)+1]||null;
-  $('grammarCourseTitle').textContent=active.title;$('grammarCourseSub').textContent=`${active.level} · ${status.mastered}/${status.total} cél`;
-  body.innerHTML=`<article class="grammar-concept"><div class="chapter-study-kicker">${esc(active.level)} · ${active.order}. egység</div><h2>${esc(active.title)}</h2><p>${esc(active.rule)}</p><div class="grammar-examples">${(active.examples||[]).map(example=>`<div class="grammar-example"><b>${esc(example.de)}</b><span>${esc(example.hu)}</span></div>`).join('')}</div></article><div class="guided-phase-list">${status.phases.map((phase,i)=>`<div class="guided-phase ${phase.status.complete?'done':phase===next?'current':''}"><div class="guided-phase-no">${phase.status.complete?'✓':i+1}</div><div class="guided-phase-copy"><b>${esc(phase.title)}</b><span>${esc(phase.subtitle)} · ${phase.status.mastered}/${phase.status.total}</span><div class="guided-phase-progress"><i style="width:${phase.status.percent||0}%"></i></div></div><button data-grammar-phase="${esc(phase.id)}">${phase.status.complete?'Ismétlés':phase===next?'Kezdés':'Megnyitás'}</button></div>`).join('')}</div><div class="guided-study-note">A segítséggel javított válasz gyakorlásnak számít, de nem teljes felidézésnek. A fázis csak akkor kész, amikor minden cél önállóan is sikerült.</div>`;
+  const track=grammarTrackById(active.track);$('grammarCourseTitle').textContent=active.title;$('grammarCourseSub').textContent=`${track.title} · ${active.level} · ${status.mastered}/${status.total} cél`;
+  body.innerHTML=`<article class="grammar-concept"><div class="chapter-study-kicker">${esc(track.title)} · ${esc(active.level)} · ${active.order}. egység</div>${active.verb?`<div class="grammar-verb-badge">${esc(active.verb.group)} · ${esc(active.verb.meaning)}</div>`:''}<h2>${esc(active.title)}</h2><p>${esc(active.rule)}</p><div class="grammar-examples">${(active.examples||[]).map(example=>`<div class="grammar-example"><b>${esc(example.de)}</b><span>${esc(example.hu)}</span></div>`).join('')}</div>${grammarParadigmsHtml(active)}</article><div class="guided-phase-list">${status.phases.map((phase,i)=>`<div class="guided-phase ${phase.status.complete?'done':phase===next?'current':''}"><div class="guided-phase-no">${phase.status.complete?'✓':i+1}</div><div class="guided-phase-copy"><b>${esc(phase.title)}</b><span>${esc(phase.subtitle)} · ${phase.status.mastered}/${phase.status.total}</span><div class="guided-phase-progress"><i style="width:${phase.status.percent||0}%"></i></div></div><button data-grammar-phase="${esc(phase.id)}">${phase.status.complete?'Ismétlés':phase===next?'Kezdés':'Megnyitás'}</button></div>`).join('')}</div><div class="guided-study-note">A segítséggel javított válasz gyakorlásnak számít, de nem teljes felidézésnek. Az egység előbb ugyanazon rendszer alakjait tartja együtt; a keverés külön tanulási szakasz.</div>`;
   body.querySelectorAll('[data-grammar-phase]').forEach(button=>button.onclick=()=>startGrammarPhase(button.dataset.grammarPhase));
   secondary.textContent='Összes egység';secondary.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=null;renderGrammarCourse()};main.disabled=false;if(next){main.textContent=`Folytatás · ${next.title}`;main.onclick=()=>startGrammarPhase(next.id)}else if(nextUnit){main.textContent='Következő egység';main.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=nextUnit.id;renderGrammarCourse()}}else{main.textContent='Tanterv áttekintése';main.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=null;renderGrammarCourse()}}
 }
 async function startGrammarPhase(id){
   const unit=grammarUnitById(GRAMMAR_COURSE_SESSION.unitId),phase=unit?.phases?.find(p=>p.id===id);if(!unit||!phase)return;
-  $('grammarCourseHost').classList.add('hidden');await startIntegratedPractice('grammar','grammar-course',grammarPhaseSpec(unit,phase))
+  const spec=grammarPhaseSpec(unit,phase);$('grammarCourseHost').classList.add('hidden');await startIntegratedPractice(spec.mode,'grammar-course',spec)
 }
 $('grammarCourseBack').onclick=()=>{if(GRAMMAR_COURSE_SESSION.unitId){GRAMMAR_COURSE_SESSION.unitId=null;renderGrammarCourse()}else closeGrammarCourse()};
 $('grammarCourseSecondary').onclick=()=>closeGrammarCourse();$('grammarCourseSettings').onclick=()=>openSettings('main');
@@ -4285,7 +4306,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "3.2.1-capability-restoration-20260813";
+    const APP_BUILD = "3.3.0-grammar-forms-20260813";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -4494,7 +4515,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     function setSupportsStudyMode(setName, mode = currentGame, language = currentDeck) {
-      const internal=/^(?:Course ·|Grammar Core ·|Internal ·)/.test(String(setName||""));
+      const internal=/^(?:Course ·|Grammar Core ·|Grammar Lab ·|Internal ·)/.test(String(setName||""));
       if(internal&&(!guidedPractice||normalizeSetName(setName)!==guidedPractice.setName))return false;
       if (mode === "words") return true;
       if (mode === "text") return false;
@@ -5994,6 +6015,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       for (const w of wanted) {
         const old = byKey.get(w.guided_key); if (!old) continue;
         const merged = { ...old, ...w, id:old.id, times_seen:old.times_seen||0, times_correct:old.times_correct||0, times_wrong:old.times_wrong||0, streak:Math.max(old.streak||0,w.seed_streak||0), last_seen:old.last_seen||null, next_due:old.next_due??null, progressive_level:old.progressive_level, recovery_progress:old.recovery_progress };
+        const contentFields=["english","target","hint","explanation","alternatives","article","tags","sentence_id","guided_key","set_name","deck"];
+        if(contentFields.every(field=>JSON.stringify(old[field]??null)===JSON.stringify(merged[field]??null)))continue;
         await DB.update(table, merged);
       }
     }
@@ -7701,7 +7724,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       }
       const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
       let sets = await DB.getSets(table, currentDeck);
-      sets=sets.filter(s=>!(/^(?:Course ·|Grammar Core ·|Internal ·)/.test(String(s.set_name||"")))||(guidedPractice&&s.set_name===guidedPractice.setName));
+      sets=sets.filter(s=>!(/^(?:Course ·|Grammar Core ·|Grammar Lab ·|Internal ·)/.test(String(s.set_name||"")))||(guidedPractice&&s.set_name===guidedPractice.setName));
       if (currentGame === "grammar" || currentGame === "sentences") sets = sets.filter(s => setSupportsStudyMode(s.set_name, currentGame, currentDeck));
       const allOpt = document.createElement("option"); allOpt.value = "__all__";
       allOpt.textContent = currentGame === "grammar" ? "All grammar decks" : currentGame === "sentences" ? "All sentence decks" : "All decks";
@@ -10324,7 +10347,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         for (const [table, kind] of [["word_pairs", "words"], ["sentence_pairs", "sentences"]]) {
           const sets = await DB.getSets(table, deck);
           for (const s of sets) {
-            if (s.set_name === "__all__") continue;
+            if (s.set_name === "__all__" || /^(?:Course ·|Grammar Core ·|Grammar Lab ·|Internal ·)/.test(String(s.set_name || ""))) continue;
             out.push({ deck, table, kind, set_name: s.set_name, count: s.item_count });
           }
         }

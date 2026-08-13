@@ -1,0 +1,594 @@
+{
+  "schemaVersion": 1,
+  "title": "Igeműhely",
+  "subjects": [
+    {"id": "ich", "de": "ich", "hu": "én"},
+    {"id": "du", "de": "du", "hu": "te"},
+    {"id": "er", "de": "er/sie/es", "hu": "ő"},
+    {"id": "wir", "de": "wir", "hu": "mi"},
+    {"id": "ihr", "de": "ihr", "hu": "ti"},
+    {"id": "sie", "de": "sie/Sie", "hu": "ők/Ön"}
+  ],
+  "verbs": [
+    {
+      "id": "sein",
+      "order": 1,
+      "level": "A1",
+      "infinitive": "sein",
+      "meaning": "lenni",
+      "group": "rendhagyó alapige",
+      "note": "A sein minden egyes számú alakja rendhagyó. Először a hat Präsens alakot tanuld meg egyetlen sorként: bin, bist, ist, sind, seid, sind.",
+      "present": ["bin", "bist", "ist", "sind", "seid", "sind"],
+      "sentences": [
+        {"key": "ich", "prompt": "Fáradt vagyok.", "target": "Ich bin müde."},
+        {"key": "du", "prompt": "Pontos vagy.", "target": "Du bist pünktlich."},
+        {"key": "er", "prompt": "Otthon van. · férfi", "target": "Er ist zu Hause."},
+        {"key": "wir", "prompt": "Készen állunk.", "target": "Wir sind bereit."},
+        {"key": "ihr", "prompt": "Nagyon barátságosak vagytok.", "target": "Ihr seid sehr freundlich."},
+        {"key": "sie", "prompt": "Az irodában vannak.", "target": "Sie sind im Büro."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Készen álltok?", "target": "Seid ihr bereit?", "hint": "Eldöntendő kérdés: Seid + ihr."},
+        {"key": "negative", "prompt": "Ma nem vagyok fáradt.", "target": "Ich bin heute nicht müde.", "hint": "A müde melléknevet nicht tagadja."},
+        {"key": "wh", "prompt": "Hol van? · férfi", "target": "Wo ist er?", "hint": "Wo + ist + er."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "sein · ich · Perfekt", "target": "bin gewesen", "explanation": "A sein Perfekt alakja sein segédigével: ich bin gewesen."},
+        {"key": "praeteritum", "prompt": "sein · er/sie/es · Präteritum", "target": "war", "explanation": "Az egyes szám első és harmadik személyű Präteritum alak war."},
+        {"key": "konjunktiv", "prompt": "sein · ich · Konjunktiv II", "target": "wäre", "explanation": "A sein Konjunktiv II alakja wäre."},
+        {"key": "imperativ", "prompt": "sein · du · Imperativ", "target": "Sei!", "explanation": "A sein du felszólító alakja rendhagyó: Sei!"}
+      ]
+    },
+    {
+      "id": "haben",
+      "order": 2,
+      "level": "A1",
+      "infinitive": "haben",
+      "meaning": "birtokolni; valamije van",
+      "group": "rendhagyó alapige",
+      "note": "A du és er/sie/es alakban kiesik a b: du hast, er hat. A többes alakok szabályosak.",
+      "present": ["habe", "hast", "hat", "haben", "habt", "haben"],
+      "sentences": [
+        {"key": "ich", "prompt": "Van időm.", "target": "Ich habe Zeit."},
+        {"key": "du", "prompt": "Éhes vagy.", "target": "Du hast Hunger."},
+        {"key": "er", "prompt": "Van egy autója. · férfi", "target": "Er hat ein Auto."},
+        {"key": "wir", "prompt": "Van egy kérdésünk.", "target": "Wir haben eine Frage."},
+        {"key": "ihr", "prompt": "Ma van órátok.", "target": "Ihr habt heute Unterricht."},
+        {"key": "sie", "prompt": "Két gyermekük van.", "target": "Sie haben zwei Kinder."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Van időtök?", "target": "Habt ihr Zeit?", "hint": "Habt + ihr."},
+        {"key": "negative", "prompt": "Nincs autóm.", "target": "Ich habe kein Auto.", "hint": "A főnevet kein tagadja."},
+        {"key": "wh", "prompt": "Miért nincs ideje? · nő", "target": "Warum hat sie keine Zeit?", "hint": "Warum + hat + sie."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "haben · ich · Perfekt", "target": "habe gehabt", "explanation": "A haben Perfekt alakja habe gehabt."},
+        {"key": "praeteritum", "prompt": "haben · er/sie/es · Präteritum", "target": "hatte", "explanation": "A haben Präteritum alakja hatte."},
+        {"key": "konjunktiv", "prompt": "haben · ich · Konjunktiv II", "target": "hätte", "explanation": "A feltételes alak hätte."},
+        {"key": "imperativ", "prompt": "haben · du · Imperativ", "target": "Hab!", "alternatives": "Habe!", "explanation": "A du felszólító alak Hab!; a Habe! is helyes."}
+      ]
+    },
+    {
+      "id": "werden",
+      "order": 3,
+      "level": "A1–A2",
+      "infinitive": "werden",
+      "meaning": "válni valamivé; lesz",
+      "group": "rendhagyó alapige",
+      "note": "A du és er/sie/es alakban e → i tőváltás történik: wirst, wird. A werden önállóan változást, segédigeként jövőt vagy szenvedő szerkezetet fejezhet ki.",
+      "present": ["werde", "wirst", "wird", "werden", "werdet", "werden"],
+      "sentences": [
+        {"key": "ich", "prompt": "Lassan elfáradok.", "target": "Ich werde langsam müde."},
+        {"key": "du", "prompt": "Egyre nyugodtabb leszel.", "target": "Du wirst immer ruhiger."},
+        {"key": "er", "prompt": "Orvos lesz. · férfi", "target": "Er wird Arzt."},
+        {"key": "wir", "prompt": "Egyre jobbak leszünk.", "target": "Wir werden immer besser."},
+        {"key": "ihr", "prompt": "Hamarosan készen lesztek.", "target": "Ihr werdet bald fertig."},
+        {"key": "sie", "prompt": "Türelmetlenné válnak.", "target": "Sie werden ungeduldig."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Kezdtek elfáradni?", "target": "Werdet ihr müde?", "hint": "Werdet + ihr."},
+        {"key": "negative", "prompt": "Nem lesz mérges. · férfi", "target": "Er wird nicht böse.", "hint": "A böse melléknevet nicht tagadja."},
+        {"key": "wh", "prompt": "Miért lesz szomorú? · nő", "target": "Warum wird sie traurig?", "hint": "Warum + wird + sie."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "werden · ich · Perfekt · valamivé válik", "target": "bin geworden", "explanation": "Az önálló werden Perfekt alakja bin geworden."},
+        {"key": "praeteritum", "prompt": "werden · er/sie/es · Präteritum", "target": "wurde", "explanation": "Az egyszerű múlt alak wurde."},
+        {"key": "konjunktiv", "prompt": "werden · ich · Konjunktiv II", "target": "würde", "explanation": "A Konjunktiv II alak würde."},
+        {"key": "imperativ", "prompt": "werden · du · Imperativ", "target": "Werde!", "explanation": "A du felszólító alak Werde!"}
+      ]
+    },
+    {
+      "id": "machen",
+      "order": 4,
+      "level": "A1",
+      "infinitive": "machen",
+      "meaning": "csinálni",
+      "group": "szabályos ige",
+      "note": "Szabályos Präsens: mach-e, mach-st, mach-t, mach-en, mach-t, mach-en. Ez lesz az alapminta sok más igéhez.",
+      "present": ["mache", "machst", "macht", "machen", "macht", "machen"],
+      "sentences": [
+        {"key": "ich", "prompt": "Megcsinálom a házi feladatot.", "target": "Ich mache die Hausaufgaben."},
+        {"key": "du", "prompt": "Kávét készítesz.", "target": "Du machst Kaffee."},
+        {"key": "er", "prompt": "Szünetet tart. · férfi", "target": "Er macht eine Pause."},
+        {"key": "wir", "prompt": "Tervet készítünk.", "target": "Wir machen einen Plan."},
+        {"key": "ihr", "prompt": "Ti sok hibát követtek el.", "target": "Ihr macht viele Fehler."},
+        {"key": "sie", "prompt": "Sportolnak.", "target": "Sie machen Sport."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Mit csináltok?", "target": "Was macht ihr?", "hint": "Was + macht + ihr."},
+        {"key": "negative", "prompt": "Ma nem csinálom meg a házi feladatot.", "target": "Ich mache heute nicht die Hausaufgaben.", "hint": "A cselekvést nicht tagadja."},
+        {"key": "wh", "prompt": "Mikor tart szünetet? · férfi", "target": "Wann macht er eine Pause?", "hint": "Wann + macht + er."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "machen · ich · Perfekt", "target": "habe gemacht", "explanation": "Szabályos Partizip II: gemacht."},
+        {"key": "praeteritum", "prompt": "machen · er/sie/es · Präteritum", "target": "machte", "explanation": "Szabályos Präteritum: machte."},
+        {"key": "konjunktiv", "prompt": "machen · ich · würde-szerkezet", "target": "würde machen", "explanation": "A hétköznapi Konjunktiv II: würde machen."},
+        {"key": "imperativ", "prompt": "machen · du · Imperativ", "target": "Mach!", "explanation": "A du felszólító alak Mach!"}
+      ]
+    },
+    {
+      "id": "lernen",
+      "order": 5,
+      "level": "A1",
+      "infinitive": "lernen",
+      "meaning": "tanulni",
+      "group": "szabályos ige",
+      "note": "A lernen szabályos. Figyeld meg különösen az ihr alakot: ihr lernt, nem ihr lernen.",
+      "present": ["lerne", "lernst", "lernt", "lernen", "lernt", "lernen"],
+      "sentences": [
+        {"key": "ich", "prompt": "Németül tanulok.", "target": "Ich lerne Deutsch."},
+        {"key": "du", "prompt": "Gyorsan tanulsz.", "target": "Du lernst schnell."},
+        {"key": "er", "prompt": "Új szavakat tanul. · nő", "target": "Sie lernt neue Wörter."},
+        {"key": "wir", "prompt": "Együtt tanulunk.", "target": "Wir lernen zusammen."},
+        {"key": "ihr", "prompt": "Minden nap tanultok.", "target": "Ihr lernt jeden Tag."},
+        {"key": "sie", "prompt": "Sokat tanulnak.", "target": "Sie lernen viel."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Németül tanultok?", "target": "Lernt ihr Deutsch?", "hint": "Lernt + ihr."},
+        {"key": "negative", "prompt": "Ma nem tanulok.", "target": "Ich lerne heute nicht.", "hint": "A teljes cselekvést nicht tagadja."},
+        {"key": "wh", "prompt": "Mit tanul? · nő", "target": "Was lernt sie?", "hint": "Was + lernt + sie."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "lernen · ich · Perfekt", "target": "habe gelernt", "explanation": "Szabályos Partizip II: gelernt."},
+        {"key": "praeteritum", "prompt": "lernen · er/sie/es · Präteritum", "target": "lernte", "explanation": "Szabályos Präteritum: lernte."},
+        {"key": "konjunktiv", "prompt": "lernen · ich · würde-szerkezet", "target": "würde lernen", "explanation": "A hétköznapi feltételes alak würde lernen."},
+        {"key": "imperativ", "prompt": "lernen · du · Imperativ", "target": "Lern!", "alternatives": "Lerne!", "explanation": "A Lern! és Lerne! is helyes du felszólítás."}
+      ]
+    },
+    {
+      "id": "arbeiten",
+      "order": 6,
+      "level": "A1",
+      "infinitive": "arbeiten",
+      "meaning": "dolgozni",
+      "group": "szabályos ige · betoldott e",
+      "note": "A -t vagy -d hangra végződő igető után du, er/sie/es és ihr alakban ejtést segítő e jelenik meg: arbeitest, arbeitet.",
+      "present": ["arbeite", "arbeitest", "arbeitet", "arbeiten", "arbeitet", "arbeiten"],
+      "sentences": [
+        {"key": "ich", "prompt": "Otthon dolgozom.", "target": "Ich arbeite zu Hause."},
+        {"key": "du", "prompt": "Sokat dolgozol.", "target": "Du arbeitest viel."},
+        {"key": "er", "prompt": "Egy irodában dolgozik. · férfi", "target": "Er arbeitet in einem Büro."},
+        {"key": "wir", "prompt": "Együtt dolgozunk.", "target": "Wir arbeiten zusammen."},
+        {"key": "ihr", "prompt": "Ma későig dolgoztok.", "target": "Ihr arbeitet heute bis spät."},
+        {"key": "sie", "prompt": "Berlinben dolgoznak.", "target": "Sie arbeiten in Berlin."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Ma dolgoztok?", "target": "Arbeitet ihr heute?", "hint": "Arbeitet + ihr."},
+        {"key": "negative", "prompt": "Vasárnap nem dolgozom.", "target": "Ich arbeite am Sonntag nicht.", "hint": "A cselekvést nicht tagadja."},
+        {"key": "wh", "prompt": "Hol dolgozik? · férfi", "target": "Wo arbeitet er?", "hint": "Wo + arbeitet + er."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "arbeiten · ich · Perfekt", "target": "habe gearbeitet", "explanation": "A Partizip II gearbeitet, szintén betoldott e-vel."},
+        {"key": "praeteritum", "prompt": "arbeiten · er/sie/es · Präteritum", "target": "arbeitete", "explanation": "Szabályos múlt betoldott e-vel: arbeitete."},
+        {"key": "konjunktiv", "prompt": "arbeiten · ich · würde-szerkezet", "target": "würde arbeiten", "explanation": "Feltételes szerkezet: würde arbeiten."},
+        {"key": "imperativ", "prompt": "arbeiten · du · Imperativ", "target": "Arbeite!", "explanation": "A kiejthetőség miatt az e megmarad: Arbeite!"}
+      ]
+    },
+    {
+      "id": "gehen",
+      "order": 7,
+      "level": "A1",
+      "infinitive": "gehen",
+      "meaning": "menni",
+      "group": "erős ige",
+      "note": "Präsensben szabályos végződéseket kap. Perfektben sein a segédigéje: ist gegangen; Präteritumban ging.",
+      "present": ["gehe", "gehst", "geht", "gehen", "geht", "gehen"],
+      "sentences": [
+        {"key": "ich", "prompt": "Hazamegyek.", "target": "Ich gehe nach Hause."},
+        {"key": "du", "prompt": "Gyalog mész.", "target": "Du gehst zu Fuß."},
+        {"key": "er", "prompt": "Iskolába megy. · nő", "target": "Sie geht in die Schule."},
+        {"key": "wir", "prompt": "A parkba megyünk.", "target": "Wir gehen in den Park."},
+        {"key": "ihr", "prompt": "Ti moziba mentek.", "target": "Ihr geht ins Kino."},
+        {"key": "sie", "prompt": "Most elmennek.", "target": "Sie gehen jetzt."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Hazafelé mentek?", "target": "Geht ihr nach Hause?", "hint": "Geht + ihr."},
+        {"key": "negative", "prompt": "Ma nem megyek dolgozni.", "target": "Ich gehe heute nicht zur Arbeit.", "hint": "nicht zur Arbeit"},
+        {"key": "wh", "prompt": "Hová megy? · nő", "target": "Wohin geht sie?", "hint": "Wohin + geht + sie."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "gehen · ich · Perfekt", "target": "bin gegangen", "explanation": "Helyváltoztatás: sein + gegangen."},
+        {"key": "praeteritum", "prompt": "gehen · er/sie/es · Präteritum", "target": "ging", "explanation": "Az erős múlt alak ging."},
+        {"key": "konjunktiv", "prompt": "gehen · ich · würde-szerkezet", "target": "würde gehen", "explanation": "Feltételes szerkezet: würde gehen."},
+        {"key": "imperativ", "prompt": "gehen · du · Imperativ", "target": "Geh!", "explanation": "A du felszólító alak Geh!"}
+      ]
+    },
+    {
+      "id": "kommen",
+      "order": 8,
+      "level": "A1",
+      "infinitive": "kommen",
+      "meaning": "jönni",
+      "group": "erős ige",
+      "note": "Präsensben szabályos. Perfekt: ist gekommen; Präteritum: kam.",
+      "present": ["komme", "kommst", "kommt", "kommen", "kommt", "kommen"],
+      "sentences": [
+        {"key": "ich", "prompt": "Magyarországról jövök.", "target": "Ich komme aus Ungarn."},
+        {"key": "du", "prompt": "Későn jössz.", "target": "Du kommst spät."},
+        {"key": "er", "prompt": "Ma jön. · férfi", "target": "Er kommt heute."},
+        {"key": "wir", "prompt": "Mindjárt jövünk.", "target": "Wir kommen gleich."},
+        {"key": "ihr", "prompt": "Busszal jöttök.", "target": "Ihr kommt mit dem Bus."},
+        {"key": "sie", "prompt": "Berlinből jönnek.", "target": "Sie kommen aus Berlin."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Velünk jöttök?", "target": "Kommt ihr mit uns?", "hint": "Kommt + ihr; mit + Dativ."},
+        {"key": "negative", "prompt": "Ma nem jövök.", "target": "Ich komme heute nicht."},
+        {"key": "wh", "prompt": "Mikor jön? · férfi", "target": "Wann kommt er?", "hint": "Wann + kommt + er."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "kommen · ich · Perfekt", "target": "bin gekommen", "explanation": "Helyváltoztatás: sein + gekommen."},
+        {"key": "praeteritum", "prompt": "kommen · er/sie/es · Präteritum", "target": "kam", "explanation": "Az erős múlt alak kam."},
+        {"key": "konjunktiv", "prompt": "kommen · ich · würde-szerkezet", "target": "würde kommen", "explanation": "Feltételes szerkezet: würde kommen."},
+        {"key": "imperativ", "prompt": "kommen · du · Imperativ", "target": "Komm!", "explanation": "A du felszólító alak Komm!"}
+      ]
+    },
+    {
+      "id": "fahren",
+      "order": 9,
+      "level": "A1",
+      "infinitive": "fahren",
+      "meaning": "utazni; járművel menni",
+      "group": "tőhangváltós erős ige",
+      "note": "A du és er/sie/es alakban a → ä: fährst, fährt. Többes számban visszatér a fahr- tő.",
+      "present": ["fahre", "fährst", "fährt", "fahren", "fahrt", "fahren"],
+      "sentences": [
+        {"key": "ich", "prompt": "Berlinbe utazom.", "target": "Ich fahre nach Berlin."},
+        {"key": "du", "prompt": "Vonattal utazol.", "target": "Du fährst mit dem Zug."},
+        {"key": "er", "prompt": "Autóval jár dolgozni. · férfi", "target": "Er fährt mit dem Auto zur Arbeit."},
+        {"key": "wir", "prompt": "Holnap Münchenbe utazunk.", "target": "Wir fahren morgen nach München."},
+        {"key": "ihr", "prompt": "Túl gyorsan hajtotok.", "target": "Ihr fahrt zu schnell."},
+        {"key": "sie", "prompt": "Busszal utaznak.", "target": "Sie fahren mit dem Bus."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Vonattal utaztok?", "target": "Fahrt ihr mit dem Zug?", "hint": "Az ihr alak fahrt, umlaut nélkül."},
+        {"key": "negative", "prompt": "Ma nem utazom autóval.", "target": "Ich fahre heute nicht mit dem Auto."},
+        {"key": "wh", "prompt": "Hová utazik? · férfi", "target": "Wohin fährt er?", "hint": "er → fährt."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "fahren · ich · Perfekt · helyváltoztatás", "target": "bin gefahren", "explanation": "Helyváltoztatáskor a fahren segédigéje sein."},
+        {"key": "praeteritum", "prompt": "fahren · er/sie/es · Präteritum", "target": "fuhr", "explanation": "Az erős múlt alak fuhr."},
+        {"key": "konjunktiv", "prompt": "fahren · ich · würde-szerkezet", "target": "würde fahren", "explanation": "Feltételes szerkezet: würde fahren."},
+        {"key": "imperativ", "prompt": "fahren · du · Imperativ", "target": "Fahr!", "explanation": "Az Imperativban nincs umlaut: Fahr!"}
+      ]
+    },
+    {
+      "id": "lesen",
+      "order": 10,
+      "level": "A1",
+      "infinitive": "lesen",
+      "meaning": "olvasni",
+      "group": "tőhangváltós erős ige",
+      "note": "A du és er/sie/es alakban e → ie: liest. Az ihr alak lest, tőváltás nélkül.",
+      "present": ["lese", "liest", "liest", "lesen", "lest", "lesen"],
+      "sentences": [
+        {"key": "ich", "prompt": "Egy könyvet olvasok.", "target": "Ich lese ein Buch."},
+        {"key": "du", "prompt": "Az újságot olvasod.", "target": "Du liest die Zeitung."},
+        {"key": "er", "prompt": "Minden este olvas. · nő", "target": "Sie liest jeden Abend."},
+        {"key": "wir", "prompt": "Egy történetet olvasunk.", "target": "Wir lesen eine Geschichte."},
+        {"key": "ihr", "prompt": "A szöveget olvassátok.", "target": "Ihr lest den Text."},
+        {"key": "sie", "prompt": "Sokat olvasnak.", "target": "Sie lesen viel."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Olvassátok a könyvet?", "target": "Lest ihr das Buch?", "hint": "ihr → lest."},
+        {"key": "negative", "prompt": "Nem olvasom az újságot.", "target": "Ich lese die Zeitung nicht."},
+        {"key": "wh", "prompt": "Mit olvas? · nő", "target": "Was liest sie?", "hint": "sie → liest."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "lesen · ich · Perfekt", "target": "habe gelesen", "explanation": "Partizip II: gelesen."},
+        {"key": "praeteritum", "prompt": "lesen · er/sie/es · Präteritum", "target": "las", "explanation": "Az erős múlt alak las."},
+        {"key": "konjunktiv", "prompt": "lesen · ich · würde-szerkezet", "target": "würde lesen", "explanation": "Feltételes szerkezet: würde lesen."},
+        {"key": "imperativ", "prompt": "lesen · du · Imperativ", "target": "Lies!", "explanation": "A tőváltás az Imperativban is megmarad: Lies!"}
+      ]
+    },
+    {
+      "id": "sehen",
+      "order": 11,
+      "level": "A1",
+      "infinitive": "sehen",
+      "meaning": "látni",
+      "group": "tőhangváltós erős ige",
+      "note": "A du és er/sie/es alakban e → ie: siehst, sieht. A sehen Akkusativ tárgyat kér.",
+      "present": ["sehe", "siehst", "sieht", "sehen", "seht", "sehen"],
+      "sentences": [
+        {"key": "ich", "prompt": "Látom a házat.", "target": "Ich sehe das Haus."},
+        {"key": "du", "prompt": "Látod a hegyeket.", "target": "Du siehst die Berge."},
+        {"key": "er", "prompt": "Látja a vonatot. · férfi", "target": "Er sieht den Zug."},
+        {"key": "wir", "prompt": "Látjuk a problémát.", "target": "Wir sehen das Problem."},
+        {"key": "ihr", "prompt": "Látjátok a folyót.", "target": "Ihr seht den Fluss."},
+        {"key": "sie", "prompt": "Látják a gyerekeket.", "target": "Sie sehen die Kinder."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Látjátok a vonatot?", "target": "Seht ihr den Zug?", "hint": "ihr → seht."},
+        {"key": "negative", "prompt": "Nem látom őt. · férfi", "target": "Ich sehe ihn nicht.", "hint": "er → ihn."},
+        {"key": "wh", "prompt": "Kit lát? · férfi", "target": "Wen sieht er?", "hint": "Wen = kit; er → sieht."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "sehen · ich · Perfekt", "target": "habe gesehen", "explanation": "Partizip II: gesehen."},
+        {"key": "praeteritum", "prompt": "sehen · er/sie/es · Präteritum", "target": "sah", "explanation": "Az erős múlt alak sah."},
+        {"key": "konjunktiv", "prompt": "sehen · ich · würde-szerkezet", "target": "würde sehen", "explanation": "Feltételes szerkezet: würde sehen."},
+        {"key": "imperativ", "prompt": "sehen · du · Imperativ", "target": "Sieh!", "explanation": "A du felszólító alak Sieh!"}
+      ]
+    },
+    {
+      "id": "nehmen",
+      "order": 12,
+      "level": "A1",
+      "infinitive": "nehmen",
+      "meaning": "venni; választani; elvenni",
+      "group": "tőhangváltós erős ige",
+      "note": "A du és er/sie/es alakban e → i, és a tő nimm- lesz: nimmst, nimmt.",
+      "present": ["nehme", "nimmst", "nimmt", "nehmen", "nehmt", "nehmen"],
+      "sentences": [
+        {"key": "ich", "prompt": "A vonatot választom.", "target": "Ich nehme den Zug."},
+        {"key": "du", "prompt": "Egy kávét kérsz.", "target": "Du nimmst einen Kaffee."},
+        {"key": "er", "prompt": "Magához veszi a kulcsot. · nő", "target": "Sie nimmt den Schlüssel."},
+        {"key": "wir", "prompt": "Taxit fogunk.", "target": "Wir nehmen ein Taxi."},
+        {"key": "ihr", "prompt": "A piros buszt választjátok.", "target": "Ihr nehmt den roten Bus."},
+        {"key": "sie", "prompt": "Két jegyet kérnek.", "target": "Sie nehmen zwei Fahrkarten."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "A vonatot választjátok?", "target": "Nehmt ihr den Zug?", "hint": "ihr → nehmt, tőváltás nélkül."},
+        {"key": "negative", "prompt": "Nem kérek cukrot.", "target": "Ich nehme keinen Zucker."},
+        {"key": "wh", "prompt": "Mit visz magával? · nő", "target": "Was nimmt sie mit?", "hint": "mitnehmen → nimmt … mit."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "nehmen · ich · Perfekt", "target": "habe genommen", "explanation": "Partizip II: genommen."},
+        {"key": "praeteritum", "prompt": "nehmen · er/sie/es · Präteritum", "target": "nahm", "explanation": "Az erős múlt alak nahm."},
+        {"key": "konjunktiv", "prompt": "nehmen · ich · würde-szerkezet", "target": "würde nehmen", "explanation": "Feltételes szerkezet: würde nehmen."},
+        {"key": "imperativ", "prompt": "nehmen · du · Imperativ", "target": "Nimm!", "explanation": "A du felszólító alak Nimm!"}
+      ]
+    },
+    {
+      "id": "sprechen",
+      "order": 13,
+      "level": "A1",
+      "infinitive": "sprechen",
+      "meaning": "beszélni",
+      "group": "tőhangváltós erős ige",
+      "note": "A du és er/sie/es alakban e → i: sprichst, spricht. Az ihr alak sprecht.",
+      "present": ["spreche", "sprichst", "spricht", "sprechen", "sprecht", "sprechen"],
+      "sentences": [
+        {"key": "ich", "prompt": "Németül beszélek.", "target": "Ich spreche Deutsch."},
+        {"key": "du", "prompt": "Nagyon gyorsan beszélsz.", "target": "Du sprichst sehr schnell."},
+        {"key": "er", "prompt": "A tanárral beszél. · férfi", "target": "Er spricht mit dem Lehrer."},
+        {"key": "wir", "prompt": "A problémáról beszélünk.", "target": "Wir sprechen über das Problem."},
+        {"key": "ihr", "prompt": "Halkan beszéltek.", "target": "Ihr sprecht leise."},
+        {"key": "sie", "prompt": "Három nyelven beszélnek.", "target": "Sie sprechen drei Sprachen."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Beszéltek németül?", "target": "Sprecht ihr Deutsch?", "hint": "Sprecht = ti beszéltek; ihr = ti."},
+        {"key": "negative", "prompt": "Nem beszélek franciául.", "target": "Ich spreche kein Französisch.", "hint": "A nyelv neve itt kein alakot kap."},
+        {"key": "wh", "prompt": "Kivel beszél? · férfi", "target": "Mit wem spricht er?", "hint": "mit + Dativ; er → spricht."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "sprechen · ich · Perfekt", "target": "habe gesprochen", "explanation": "Partizip II: gesprochen."},
+        {"key": "praeteritum", "prompt": "sprechen · er/sie/es · Präteritum", "target": "sprach", "explanation": "Az erős múlt alak sprach."},
+        {"key": "konjunktiv", "prompt": "sprechen · ich · würde-szerkezet", "target": "würde sprechen", "explanation": "Feltételes szerkezet: würde sprechen."},
+        {"key": "imperativ", "prompt": "sprechen · du · Imperativ", "target": "Sprich!", "explanation": "A du felszólító alak Sprich!"}
+      ]
+    },
+    {
+      "id": "schreiben",
+      "order": 14,
+      "level": "A1",
+      "infinitive": "schreiben",
+      "meaning": "írni",
+      "group": "erős ige",
+      "note": "Präsensben a tő nem változik. Perfekt: geschrieben; Präteritum: schrieb.",
+      "present": ["schreibe", "schreibst", "schreibt", "schreiben", "schreibt", "schreiben"],
+      "sentences": [
+        {"key": "ich", "prompt": "Levelet írok.", "target": "Ich schreibe einen Brief."},
+        {"key": "du", "prompt": "Üzenetet írsz.", "target": "Du schreibst eine Nachricht."},
+        {"key": "er", "prompt": "Könyvet ír. · nő", "target": "Sie schreibt ein Buch."},
+        {"key": "wir", "prompt": "Egy e-mailt írunk.", "target": "Wir schreiben eine E-Mail."},
+        {"key": "ihr", "prompt": "Sok jegyzetet írtok.", "target": "Ihr schreibt viele Notizen."},
+        {"key": "sie", "prompt": "Jelentést írnak.", "target": "Sie schreiben einen Bericht."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Levelet írtok?", "target": "Schreibt ihr einen Brief?", "hint": "Schreibt + ihr."},
+        {"key": "negative", "prompt": "Ma nem írok e-mailt.", "target": "Ich schreibe heute keine E-Mail."},
+        {"key": "wh", "prompt": "Kinek ír? · nő", "target": "Wem schreibt sie?", "hint": "Wem = kinek."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "schreiben · ich · Perfekt", "target": "habe geschrieben", "explanation": "Partizip II: geschrieben."},
+        {"key": "praeteritum", "prompt": "schreiben · er/sie/es · Präteritum", "target": "schrieb", "explanation": "Az erős múlt alak schrieb."},
+        {"key": "konjunktiv", "prompt": "schreiben · ich · würde-szerkezet", "target": "würde schreiben", "explanation": "Feltételes szerkezet: würde schreiben."},
+        {"key": "imperativ", "prompt": "schreiben · du · Imperativ", "target": "Schreib!", "explanation": "A du felszólító alak Schreib!"}
+      ]
+    },
+    {
+      "id": "essen",
+      "order": 15,
+      "level": "A1",
+      "infinitive": "essen",
+      "meaning": "enni",
+      "group": "tőhangváltós erős ige",
+      "note": "A du és er/sie/es alakban e → i: isst. A du és er alak írásképe azonos.",
+      "present": ["esse", "isst", "isst", "essen", "esst", "essen"],
+      "sentences": [
+        {"key": "ich", "prompt": "Egy almát eszem.", "target": "Ich esse einen Apfel."},
+        {"key": "du", "prompt": "Levest eszel.", "target": "Du isst eine Suppe."},
+        {"key": "er", "prompt": "Kenyeret eszik. · férfi", "target": "Er isst Brot."},
+        {"key": "wir", "prompt": "Együtt eszünk.", "target": "Wir essen zusammen."},
+        {"key": "ihr", "prompt": "Túl gyorsan esztek.", "target": "Ihr esst zu schnell."},
+        {"key": "sie", "prompt": "Sok zöldséget esznek.", "target": "Sie essen viel Gemüse."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Együtt esztek?", "target": "Esst ihr zusammen?", "hint": "ihr → esst."},
+        {"key": "negative", "prompt": "Nem eszem húst.", "target": "Ich esse kein Fleisch."},
+        {"key": "wh", "prompt": "Mit eszik? · férfi", "target": "Was isst er?", "hint": "er → isst."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "essen · ich · Perfekt", "target": "habe gegessen", "explanation": "Partizip II: gegessen."},
+        {"key": "praeteritum", "prompt": "essen · er/sie/es · Präteritum", "target": "aß", "explanation": "Az erős múlt alak aß."},
+        {"key": "konjunktiv", "prompt": "essen · ich · würde-szerkezet", "target": "würde essen", "explanation": "Feltételes szerkezet: würde essen."},
+        {"key": "imperativ", "prompt": "essen · du · Imperativ", "target": "Iss!", "explanation": "A du felszólító alak Iss!"}
+      ]
+    },
+    {
+      "id": "schlafen",
+      "order": 16,
+      "level": "A1",
+      "infinitive": "schlafen",
+      "meaning": "aludni",
+      "group": "tőhangváltós erős ige",
+      "note": "A du és er/sie/es alakban a → ä: schläfst, schläft. Az ihr alak schlaft, umlaut nélkül.",
+      "present": ["schlafe", "schläfst", "schläft", "schlafen", "schlaft", "schlafen"],
+      "sentences": [
+        {"key": "ich", "prompt": "Jól alszom.", "target": "Ich schlafe gut."},
+        {"key": "du", "prompt": "Túl keveset alszol.", "target": "Du schläfst zu wenig."},
+        {"key": "er", "prompt": "Már alszik. · nő", "target": "Sie schläft schon."},
+        {"key": "wir", "prompt": "Nyolc órát alszunk.", "target": "Wir schlafen acht Stunden."},
+        {"key": "ihr", "prompt": "Sokáig alszotok.", "target": "Ihr schlaft lange."},
+        {"key": "sie", "prompt": "Nyitott ablaknál alszanak.", "target": "Sie schlafen bei offenem Fenster."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Jól alszotok?", "target": "Schlaft ihr gut?", "hint": "ihr → schlaft, umlaut nélkül."},
+        {"key": "negative", "prompt": "Nem alszom jól.", "target": "Ich schlafe nicht gut."},
+        {"key": "wh", "prompt": "Meddig alszik? · nő", "target": "Wie lange schläft sie?", "hint": "sie → schläft."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "schlafen · ich · Perfekt", "target": "habe geschlafen", "explanation": "Partizip II: geschlafen."},
+        {"key": "praeteritum", "prompt": "schlafen · er/sie/es · Präteritum", "target": "schlief", "explanation": "Az erős múlt alak schlief."},
+        {"key": "konjunktiv", "prompt": "schlafen · ich · würde-szerkezet", "target": "würde schlafen", "explanation": "Feltételes szerkezet: würde schlafen."},
+        {"key": "imperativ", "prompt": "schlafen · du · Imperativ", "target": "Schlaf!", "explanation": "Az Imperativban nincs umlaut: Schlaf!"}
+      ]
+    },
+    {
+      "id": "helfen",
+      "order": 17,
+      "level": "A1–A2",
+      "infinitive": "helfen",
+      "meaning": "segíteni",
+      "group": "tőhangváltós erős ige · Dativ",
+      "note": "A du és er/sie/es alakban e → i: hilfst, hilft. A helfen Dativot vonz: ich helfe ihm, nem ich helfe ihn.",
+      "present": ["helfe", "hilfst", "hilft", "helfen", "helft", "helfen"],
+      "sentences": [
+        {"key": "ich", "prompt": "Segítek neked.", "target": "Ich helfe dir."},
+        {"key": "du", "prompt": "Segítesz nekem.", "target": "Du hilfst mir."},
+        {"key": "er", "prompt": "Segít a nőnek. · férfi", "target": "Er hilft der Frau."},
+        {"key": "wir", "prompt": "Segítünk a gyermeknek.", "target": "Wir helfen dem Kind."},
+        {"key": "ihr", "prompt": "Segítetek a szomszédnak.", "target": "Ihr helft dem Nachbarn."},
+        {"key": "sie", "prompt": "Segítenek a gyerekeknek.", "target": "Sie helfen den Kindern."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Segítetek neki? · férfi", "target": "Helft ihr ihm?", "hint": "ihr → helft; er → ihm."},
+        {"key": "negative", "prompt": "Nem segítek neki. · nő", "target": "Ich helfe ihr nicht.", "hint": "sie → ihr."},
+        {"key": "wh", "prompt": "Kinek segít? · férfi", "target": "Wem hilft er?", "hint": "Wem = kinek; er → hilft."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "helfen · ich · Perfekt", "target": "habe geholfen", "explanation": "Partizip II: geholfen."},
+        {"key": "praeteritum", "prompt": "helfen · er/sie/es · Präteritum", "target": "half", "explanation": "Az erős múlt alak half."},
+        {"key": "konjunktiv", "prompt": "helfen · ich · würde-szerkezet", "target": "würde helfen", "explanation": "Feltételes szerkezet: würde helfen."},
+        {"key": "imperativ", "prompt": "helfen · du · Imperativ", "target": "Hilf!", "explanation": "A du felszólító alak Hilf!"}
+      ]
+    },
+    {
+      "id": "geben",
+      "order": 18,
+      "level": "A1–A2",
+      "infinitive": "geben",
+      "meaning": "adni",
+      "group": "tőhangváltós erős ige · Dativ + Akkusativ",
+      "note": "A du és er/sie/es alakban e → i: gibst, gibt. A személy rendszerint Dativ, az átadott dolog Akkusativ: Ich gebe ihm das Buch.",
+      "present": ["gebe", "gibst", "gibt", "geben", "gebt", "geben"],
+      "sentences": [
+        {"key": "ich", "prompt": "Odaadom neked a könyvet.", "target": "Ich gebe dir das Buch."},
+        {"key": "du", "prompt": "Adsz nekem egy almát.", "target": "Du gibst mir einen Apfel."},
+        {"key": "er", "prompt": "Odaadja a nőnek a kulcsot. · férfi", "target": "Er gibt der Frau den Schlüssel."},
+        {"key": "wir", "prompt": "Időt adunk neki. · nő", "target": "Wir geben ihr Zeit."},
+        {"key": "ihr", "prompt": "Tanácsot adtok a férfinak.", "target": "Ihr gebt dem Mann einen Rat."},
+        {"key": "sie", "prompt": "Ajándékot adnak a gyerekeknek.", "target": "Sie geben den Kindern ein Geschenk."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Odaadjátok neki a könyvet? · férfi", "target": "Gebt ihr ihm das Buch?", "hint": "ihr → gebt; er → ihm."},
+        {"key": "negative", "prompt": "Nem adom oda neki a kulcsot. · nő", "target": "Ich gebe ihr den Schlüssel nicht.", "hint": "sie → ihr; der Schlüssel → den Schlüssel."},
+        {"key": "wh", "prompt": "Kinek adja a könyvet? · férfi", "target": "Wem gibt er das Buch?", "hint": "Wem = kinek; er → gibt."}
+      ],
+      "otherForms": [
+        {"key": "perfekt", "prompt": "geben · ich · Perfekt", "target": "habe gegeben", "explanation": "Partizip II: gegeben."},
+        {"key": "praeteritum", "prompt": "geben · er/sie/es · Präteritum", "target": "gab", "explanation": "Az erős múlt alak gab."},
+        {"key": "konjunktiv", "prompt": "geben · ich · würde-szerkezet", "target": "würde geben", "explanation": "Feltételes szerkezet: würde geben."},
+        {"key": "imperativ", "prompt": "geben · du · Imperativ", "target": "Gib!", "explanation": "A du felszólító alak Gib!"}
+      ]
+    },
+    {
+      "id": "koennen",
+      "order": 19,
+      "level": "A1–A2",
+      "infinitive": "können",
+      "meaning": "tudni; képesnek lenni",
+      "group": "módbeli segédige",
+      "note": "Egyes számban ö → a, és ich/er alakban nincs személyrag: kann, kannst, kann. A főige infinitívként a mondat végére kerül.",
+      "present": ["kann", "kannst", "kann", "können", "könnt", "können"],
+      "sentences": [
+        {"key": "ich", "prompt": "Tudok úszni.", "target": "Ich kann schwimmen."},
+        {"key": "du", "prompt": "Jól tudsz főzni.", "target": "Du kannst gut kochen."},
+        {"key": "er", "prompt": "Ma el tud jönni. · nő", "target": "Sie kann heute kommen."},
+        {"key": "wir", "prompt": "Tudunk segíteni.", "target": "Wir können helfen."},
+        {"key": "ihr", "prompt": "Itt tudtok várni.", "target": "Ihr könnt hier warten."},
+        {"key": "sie", "prompt": "Beszélnek németül. · képesek rá", "target": "Sie können Deutsch sprechen."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Tudtok nekem segíteni?", "target": "Könnt ihr mir helfen?", "hint": "Könnt + ihr; ich → mir."},
+        {"key": "negative", "prompt": "Ma nem tudok eljönni.", "target": "Ich kann heute nicht kommen."},
+        {"key": "wh", "prompt": "Mit tud megcsinálni? · nő", "target": "Was kann sie machen?", "hint": "A machen infinitívként a végén áll."}
+      ],
+      "otherForms": [
+        {"key": "praeteritum-ich", "prompt": "können · ich · Präteritum", "target": "konnte", "explanation": "Präteritum: konnte, umlaut nélkül."},
+        {"key": "praeteritum-wir", "prompt": "können · wir · Präteritum", "target": "konnten", "explanation": "Többes Präteritum: konnten."},
+        {"key": "konjunktiv-ich", "prompt": "können · ich · Konjunktiv II", "target": "könnte", "explanation": "Udvarias vagy feltételes alak: könnte."},
+        {"key": "konjunktiv-du", "prompt": "können · du · Konjunktiv II", "target": "könntest", "explanation": "Második személyű udvarias alak: könntest."}
+      ]
+    },
+    {
+      "id": "muessen",
+      "order": 20,
+      "level": "A1–A2",
+      "infinitive": "müssen",
+      "meaning": "kell; szükséges",
+      "group": "módbeli segédige",
+      "note": "Egyes számban ü → u, és ich/er alakban nincs személyrag: muss, musst, muss. A főige infinitívként a mondat végén áll. nicht müssen jelentése: nem kell, nem pedig tilos.",
+      "present": ["muss", "musst", "muss", "müssen", "müsst", "müssen"],
+      "sentences": [
+        {"key": "ich", "prompt": "Dolgoznom kell.", "target": "Ich muss arbeiten."},
+        {"key": "du", "prompt": "Korán kell felkelned.", "target": "Du musst früh aufstehen."},
+        {"key": "er", "prompt": "Most haza kell mennie. · férfi", "target": "Er muss jetzt nach Hause gehen."},
+        {"key": "wir", "prompt": "Várnunk kell.", "target": "Wir müssen warten."},
+        {"key": "ihr", "prompt": "Többet kell tanulnotok.", "target": "Ihr müsst mehr lernen."},
+        {"key": "sie", "prompt": "Ma sokáig kell dolgozniuk.", "target": "Sie müssen heute lange arbeiten."}
+      ],
+      "sentenceTypes": [
+        {"key": "question", "prompt": "Ma dolgoznotok kell?", "target": "Müsst ihr heute arbeiten?", "hint": "Müsst + ihr."},
+        {"key": "negative", "prompt": "Ma nem kell dolgoznom.", "target": "Ich muss heute nicht arbeiten.", "hint": "nicht müssen = nem kell."},
+        {"key": "wh", "prompt": "Miért kell elmennie? · nő", "target": "Warum muss sie gehen?", "hint": "A gehen infinitívként a végén áll."}
+      ],
+      "otherForms": [
+        {"key": "praeteritum-ich", "prompt": "müssen · ich · Präteritum", "target": "musste", "explanation": "Präteritum: musste, umlaut nélkül."},
+        {"key": "praeteritum-wir", "prompt": "müssen · wir · Präteritum", "target": "mussten", "explanation": "Többes Präteritum: mussten."},
+        {"key": "konjunktiv-ich", "prompt": "müssen · ich · Konjunktiv II", "target": "müsste", "explanation": "Feltételes alak: müsste."},
+        {"key": "konjunktiv-du", "prompt": "müssen · du · Konjunktiv II", "target": "müsstest", "explanation": "Második személyű feltételes alak: müsstest."}
+      ]
+    }
+  ]
+}

@@ -1,12 +1,15 @@
-/* LanguageDeck 3.2.1 — capability restoration. */
-const CACHE_VERSION="languagedeck-3-2-1-capability-restoration-20260813";
+/* LanguageDeck 3.3.0 — Grammar & Forms 2.0. */
+const CACHE_VERSION="languagedeck-3-3-0-grammar-forms-20260813";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
   "./decks/de/courses/index.json",
   "./decks/de/grammar/grammar-sentences-learning.csv",
   "./decks/de/grammar/core-curriculum.json",
+  "./decks/de/grammar/foundations-curriculum.json",
+  "./decks/de/grammar/mixed-curriculum.json",
   "./decks/de/grammar/sentence-patterns.csv",
+  "./decks/de/grammar/verb-workshop.json",
   "./decks/de/language.json",
   "./decks/de/lexicon.csv",
   "./decks/de/manifest.json",
