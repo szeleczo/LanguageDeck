@@ -1,0 +1,390 @@
+{
+  "schemaVersion": 1,
+  "id": "de-grammar-forms-core-v1",
+  "title": "Nyelvtan és alakok",
+  "subtitle": "Német A1–B1 · alakok, mondatok, aktív felidézés",
+  "explanationLanguage": "hu",
+  "targetLanguage": "de",
+  "units": [
+    {
+      "id": "praesens-questions",
+      "order": 1,
+      "level": "A1",
+      "title": "Präsens és kérdések",
+      "summary": "Jelen idejű, rendhagyó tőváltásos igék és a kérdő mondatok szórendje.",
+      "rule": "Kijelentő főmondatban a ragozott ige a második mondatrész. Eldöntendő kérdésben az első, kérdőszavas kérdésben pedig a kérdőszó után következik. Az er/sie/es alakban több gyakori ige töve megváltozik: fahren → fährt, lesen → liest, nehmen → nimmt.",
+      "examples": [
+        {"de": "Er fährt heute nach Berlin.", "hu": "Ma Berlinbe utazik."},
+        {"de": "Wann nimmt sie den Zug?", "hu": "Mikor száll fel a vonatra?"}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakok",
+          "subtitle": "Öt gyakori tőváltásos ige önálló felidézése.",
+          "rows": [
+            {"key": "fahren-er", "prompt": "fahren · er/sie/es · Präsens", "target": "fährt", "hint": "a → ä", "explanation": "A fahren egyes szám második és harmadik személyében a tőhang a → ä."},
+            {"key": "lesen-er", "prompt": "lesen · er/sie/es · Präsens", "target": "liest", "hint": "e → ie", "explanation": "A lesen tőhangja er/sie/es alakban ie lesz."},
+            {"key": "nehmen-er", "prompt": "nehmen · er/sie/es · Präsens", "target": "nimmt", "hint": "e → i", "explanation": "A nehmen tőhangja i-re változik, a kettős mássalhangzó megmarad."},
+            {"key": "sprechen-er", "prompt": "sprechen · er/sie/es · Präsens", "target": "spricht", "hint": "e → i", "explanation": "A sprechen er/sie/es alakja spricht."},
+            {"key": "wissen-ich", "prompt": "wissen · ich · Präsens", "target": "weiß", "hint": "Rendhagyó egyes szám.", "explanation": "A wissen egyes szám első és harmadik személyű alakja weiß."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "Kijelentés, eldöntendő és kérdőszavas kérdés.",
+          "rows": [
+            {"key": "statement-fahren", "prompt": "Ma Berlinbe utazik.", "target": "Er fährt heute nach Berlin.", "hint": "Kijelentés: az ige a második mondatrész.", "explanation": "Az alany az első, a ragozott fährt a második mondatrész."},
+            {"key": "yesno-lesen", "prompt": "Minden este olvasol?", "target": "Liest du jeden Abend?", "hint": "Eldöntendő kérdés: a ragozott ige kerül előre.", "explanation": "Igen–nem kérdésben nincs külön kérdőszó: a ragozott ige áll az első helyen."},
+            {"key": "wh-nehmen", "prompt": "Mikor száll fel a vonatra?", "target": "Wann nimmt sie den Zug?", "hint": "Kérdőszó + ragozott ige + alany.", "explanation": "A Wann foglalja el az első helyet, utána rögtön a nimmt következik."},
+            {"key": "neg-wissen", "prompt": "Nem tudom a választ.", "target": "Ich weiß die Antwort nicht.", "hint": "A nicht itt a teljes állítást tagadja.", "explanation": "A weiß a második helyen marad; a teljes állítás tagadása a mondat vége felé áll."},
+            {"key": "yesno-sprechen", "prompt": "Beszéltek németül?", "target": "Sprecht ihr Deutsch?", "hint": "Az ige legyen az első helyen.", "explanation": "Az ihr személyragja -t: sprecht."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "perfekt",
+      "order": 2,
+      "level": "A1–A2",
+      "title": "Perfekt",
+      "summary": "Befejezett múlt haben vagy sein segédigével és Partizip II-vel.",
+      "rule": "A Perfekt kerete: ragozott haben/sein a második helyen, Partizip II a mondat végén. Helyváltoztatást vagy állapotváltozást kifejező több ige sein segédigét használ. Az elváló igekötő és az igető közé kerül a ge-: aufstehen → aufgestanden.",
+      "examples": [
+        {"de": "Ich habe den Brief geschrieben.", "hu": "Megírtam a levelet."},
+        {"de": "Wir sind früh aufgestanden.", "hu": "Korán felkeltünk."}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakok",
+          "subtitle": "Segédige és Partizip II együtt.",
+          "rows": [
+            {"key": "gehen-er", "prompt": "gehen · er · Perfekt", "target": "ist gegangen", "hint": "Helyváltoztatás: sein.", "explanation": "A gehen Perfekt alakja sein segédigével készül: ist gegangen."},
+            {"key": "sehen-er", "prompt": "sehen · er · Perfekt", "target": "hat gesehen", "hint": "sehen → gesehen", "explanation": "A sehen Partizip II alakja gesehen, segédigéje haben."},
+            {"key": "nehmen-er", "prompt": "nehmen · er · Perfekt", "target": "hat genommen", "hint": "nehmen → genommen", "explanation": "A nehmen erős ige: genommen."},
+            {"key": "bleiben-sie", "prompt": "bleiben · sie · Perfekt", "target": "ist geblieben", "hint": "Állapot fennmaradása: sein.", "explanation": "A bleiben a köznyelvi standardban sein segédigét használ."},
+            {"key": "schreiben-ich", "prompt": "schreiben · ich · Perfekt", "target": "habe geschrieben", "hint": "schreiben → geschrieben", "explanation": "A schreiben erős Partizip II alakja geschrieben."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "A Perfekt mondatkeretének használata.",
+          "rows": [
+            {"key": "brief", "prompt": "Megírtam a levelet.", "target": "Ich habe den Brief geschrieben.", "hint": "habe … geschrieben", "explanation": "A ragozott habe a második helyen, a Partizip II a mondat végén áll."},
+            {"key": "aufstehen", "prompt": "Korán felkeltünk.", "target": "Wir sind früh aufgestanden.", "hint": "aufstehen → aufgestanden; sein", "explanation": "Az elváló auf- a Partizip II-ben a ge- előtt áll: aufgestanden."},
+            {"key": "film-question", "prompt": "Láttad a filmet?", "target": "Hast du den Film gesehen?", "hint": "Kérdésben a Hast kerül előre.", "explanation": "Az eldöntendő kérdés első eleme a ragozott segédige."},
+            {"key": "stay", "prompt": "Otthon maradt.", "target": "Sie ist zu Hause geblieben.", "hint": "ist … geblieben", "explanation": "A bleiben segédigéje sein; a geblieben zárja a mondatot."},
+            {"key": "not-found", "prompt": "Nem találta meg a könyvet.", "target": "Er hat das Buch nicht gefunden.", "hint": "hat … nicht gefunden", "explanation": "A nicht a tagadott gefunden előtt áll, a Partizip II zárja a keretet."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "praeteritum",
+      "order": 3,
+      "level": "A2",
+      "title": "Präteritum és erős igék",
+      "summary": "Egyszerű múlt gyakori rendhagyó alakokkal.",
+      "rule": "A Präteritum egyetlen ragozott igealakkal fejezi ki a múltat. Írott elbeszélésben általános, a sein, haben és a módbeli igék beszédben is gyakoriak. Az erős igék tőhangja sokszor megváltozik: gehen → ging, kommen → kam, sehen → sah.",
+      "examples": [
+        {"de": "Gestern ging ich zu Fuß.", "hu": "Tegnap gyalog mentem."},
+        {"de": "Wir wussten die Antwort nicht.", "hu": "Nem tudtuk a választ."}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakok",
+          "subtitle": "Öt nélkülözhetetlen múlt idejű tőalak.",
+          "rows": [
+            {"key": "gehen", "prompt": "gehen · ich/er · Präteritum", "target": "ging", "hint": "e → i", "explanation": "A gehen Präteritum tőalakja ging."},
+            {"key": "kommen", "prompt": "kommen · ich/er · Präteritum", "target": "kam", "hint": "o → a", "explanation": "A kommen egyszerű múltú alakja kam."},
+            {"key": "sehen", "prompt": "sehen · ich/er · Präteritum", "target": "sah", "hint": "e → a", "explanation": "A sehen egyszerű múltú alakja sah."},
+            {"key": "nehmen", "prompt": "nehmen · ich/er · Präteritum", "target": "nahm", "hint": "e → a", "explanation": "A nehmen egyszerű múltú alakja nahm."},
+            {"key": "wissen", "prompt": "wissen · ich/er · Präteritum", "target": "wusste", "hint": "Vegyes ige.", "explanation": "A wissen vegyes ragozású Präteritum alakja wusste."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "Präteritum elbeszélésben és kérdésekben.",
+          "rows": [
+            {"key": "walked", "prompt": "Tegnap gyalog mentem.", "target": "Gestern ging ich zu Fuß.", "hint": "A Gestern után rögtön a ragozott ige jön.", "explanation": "Az időhatározó az első helyen áll, ezért a ging megelőzi az alanyt."},
+            {"key": "train", "prompt": "Mikor érkezett meg a vonat?", "target": "Wann kam der Zug an?", "hint": "ankommen → kam … an", "explanation": "Az elváló igekötő a kérdés végére kerül."},
+            {"key": "error", "prompt": "Azonnal meglátta a hibát.", "target": "Sie sah den Fehler sofort.", "hint": "sehen → sah", "explanation": "A sah a főmondat második mondatrésze."},
+            {"key": "knew", "prompt": "Nem tudtuk a választ.", "target": "Wir wussten die Antwort nicht.", "hint": "wissen → wussten", "explanation": "Többes szám első személyben a wusste alak -n végződést kap."},
+            {"key": "place", "prompt": "Elfoglalta a helyemet.", "target": "Er nahm meinen Platz.", "hint": "nehmen → nahm", "explanation": "A nehmen erős múlt alakja nahm."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "past-future",
+      "order": 4,
+      "level": "A2–B1",
+      "title": "Plusquamperfekt és Futur I",
+      "summary": "Előidejű múlt és jövő idejű mondatkeret.",
+      "rule": "A Plusquamperfekt a Perfektet egy lépéssel korábbra tolja: hatte/war + Partizip II. A Futur I alakja werden + infinitív. A hétköznapi német gyakran Präsenssel fejezi ki a jövőt, ha az időhatározó egyértelmű; a Futur I erősebb szándékot vagy jóslatot is jelezhet.",
+      "examples": [
+        {"de": "Ich hatte schon gegessen, als er ankam.", "hu": "Már ettem, amikor megérkezett."},
+        {"de": "Morgen werde ich länger arbeiten.", "hu": "Holnap tovább fogok dolgozni."}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakok",
+          "subtitle": "Előidejű múlt és jövő segédigés alakjai.",
+          "rows": [
+            {"key": "read-pluperfect", "prompt": "lesen · ich · Plusquamperfekt", "target": "hatte gelesen", "hint": "hatte + Partizip II", "explanation": "A lesen haben segédigéjének múlt alakját használja: hatte gelesen."},
+            {"key": "gone-pluperfect", "prompt": "gehen · er · Plusquamperfekt", "target": "war gegangen", "hint": "war + Partizip II", "explanation": "Mivel a gehen Perfektje sein, a Plusquamperfekt alak war gegangen."},
+            {"key": "forgot-pluperfect", "prompt": "vergessen · sie · Plusquamperfekt", "target": "hatte vergessen", "hint": "hatte + vergessen", "explanation": "A vergessen haben segédigével áll."},
+            {"key": "come-future", "prompt": "kommen · er · Futur I", "target": "wird kommen", "hint": "werden + infinitív", "explanation": "A Futur I ragozott része wird, a főige infinitívje kommen."},
+            {"key": "see-future", "prompt": "sehen · wir · Futur I", "target": "werden sehen", "hint": "wir werden", "explanation": "Többes szám első személy: werden sehen."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "Időviszonyok két tagmondatban.",
+          "rows": [
+            {"key": "already-eaten", "prompt": "Már ettem, amikor megérkezett.", "target": "Ich hatte schon gegessen, als er ankam.", "hint": "hatte … gegessen; als … ankam", "explanation": "A korábban lezárult esemény Plusquamperfektben, a későbbi Präteritumban áll."},
+            {"key": "left-before", "prompt": "Elment, mielőtt felhívtam.", "target": "Sie war gegangen, bevor ich anrief.", "hint": "war … gegangen; bevor: ige a végén", "explanation": "A bevor mellékmondatban a ragozott anrief a végére kerül."},
+            {"key": "work-tomorrow", "prompt": "Holnap tovább fogok dolgozni.", "target": "Morgen werde ich länger arbeiten.", "hint": "werde … arbeiten", "explanation": "A Morgen az első helyen, a werde a második mondatrészben áll."},
+            {"key": "help-question", "prompt": "Segíteni fogsz nekünk?", "target": "Wirst du uns helfen?", "hint": "Kérdés: Wirst kerül előre.", "explanation": "Eldöntendő kérdésben a ragozott werden alak az első."},
+            {"key": "later-see", "prompt": "Ezt majd később meglátjuk.", "target": "Wir werden das später sehen.", "hint": "werden … sehen", "explanation": "A sehen infinitív alakban zárja a Futur I mondatkeretét."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "imperative-negation",
+      "order": 5,
+      "level": "A1–A2",
+      "title": "Felszólítás, kérdés és tagadás",
+      "summary": "Imperativ du/ihr/Sie alakok, kérdések és a nicht/kein megkülönböztetése.",
+      "rule": "A du felszólító alak gyakran személyes névmás és -st nélkül áll. Az ihr alak megegyezik a kijelentő mód jelen idejével, az udvarias alak pedig ige + Sie. A kein főnevet tagad, a nicht igét, melléknevet vagy teljes állítást.",
+      "examples": [
+        {"de": "Ruf mich morgen an!", "hu": "Hívj fel holnap!"},
+        {"de": "Hast du keinen Hunger?", "hu": "Nem vagy éhes?"}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakok",
+          "subtitle": "Felszólító alakok különböző megszólításokkal.",
+          "rows": [
+            {"key": "kommen-du", "prompt": "kommen · du · Imperativ", "target": "Komm!", "hint": "Nincs du és nincs -st.", "explanation": "A du felszólító alak: Komm!"},
+            {"key": "nehmen-ihr", "prompt": "nehmen · ihr · Imperativ", "target": "Nehmt!", "hint": "Az ihr jelen idejű alakja.", "explanation": "Az ihr felszólító alak megegyezik a nehmt jelen idejű alakkal."},
+            {"key": "sein-sie", "prompt": "sein · Sie · Imperativ", "target": "Seien Sie!", "hint": "Rendhagyó udvarias alak.", "explanation": "A sein udvarias felszólító alakja Seien Sie!"},
+            {"key": "lesen-du", "prompt": "lesen · du · Imperativ", "target": "Lies!", "hint": "e → ie", "explanation": "A lesen du felszólító alakjában megmarad a tőváltás: Lies!"},
+            {"key": "fahren-neg", "prompt": "fahren · du · tagadó Imperativ", "target": "Fahr nicht!", "hint": "Fahr + nicht", "explanation": "Az igei cselekvés tagadására nicht kerül a felszólításba."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "Udvarias és közvetlen felszólítás, valamint tagadó kérdés.",
+          "rows": [
+            {"key": "come-in", "prompt": "Gyere be, kérlek!", "target": "Komm bitte herein!", "hint": "Komm … herein", "explanation": "Az igekötő a felszólító mondat végén áll."},
+            {"key": "call", "prompt": "Hívj fel holnap!", "target": "Ruf mich morgen an!", "hint": "anrufen → Ruf … an", "explanation": "Az anrufen du felszólító alakja Ruf … an!"},
+            {"key": "why-not", "prompt": "Miért nem jössz velünk?", "target": "Warum kommst du nicht mit?", "hint": "Warum + ige + alany; mit a végén", "explanation": "A kérdőszó után a kommst áll, az elváló mit zárja a mondatot."},
+            {"key": "no-hunger", "prompt": "Nem vagy éhes?", "target": "Hast du keinen Hunger?", "hint": "A Hunger főnevet kein tagadja.", "explanation": "A keinen az Akkusativ hímnemű Hunger névelőtagadása."},
+            {"key": "careful", "prompt": "Legyen óvatos, kérem!", "target": "Seien Sie bitte vorsichtig!", "hint": "Seien Sie …", "explanation": "Az udvarias Imperativ sorrendje: Seien Sie."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "konjunktiv-two",
+      "order": 6,
+      "level": "A2–B1",
+      "title": "Konjunktiv II",
+      "summary": "Feltétel, udvarias kérés, kívánság és irreális helyzet.",
+      "rule": "A gyakori segéd- és módbeli igéknek önálló Konjunktiv II alakjuk van: hätte, wäre, könnte, müsste. Más igéknél a würde + infinitív szerkezet gyakori. A wenn mellékmondatban a ragozott ige a végére kerül.",
+      "examples": [
+        {"de": "Wenn ich Zeit hätte, würde ich kommen.", "hu": "Ha lenne időm, eljönnék."},
+        {"de": "Könntest du mir bitte helfen?", "hu": "Tudnál nekem segíteni?"}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakok",
+          "subtitle": "A legfontosabb feltételes igealakok.",
+          "rows": [
+            {"key": "haben-ich", "prompt": "haben · ich · Konjunktiv II", "target": "hätte", "hint": "a → ä", "explanation": "A haben Konjunktiv II alakja hätte."},
+            {"key": "sein-ich", "prompt": "sein · ich · Konjunktiv II", "target": "wäre", "hint": "Rendhagyó alak.", "explanation": "A sein Konjunktiv II alakja wäre."},
+            {"key": "koennen-ich", "prompt": "können · ich · Konjunktiv II", "target": "könnte", "hint": "konnte → könnte", "explanation": "A können feltételes alakja könnte."},
+            {"key": "muessen-ich", "prompt": "müssen · ich · Konjunktiv II", "target": "müsste", "hint": "musste → müsste", "explanation": "A müssen feltételes alakja müsste."},
+            {"key": "gehen-ich", "prompt": "gehen · ich · würde-szerkezet", "target": "würde gehen", "hint": "würde + infinitív", "explanation": "A würde ragozódik, a gehen infinitívként marad."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "Feltétel, kívánság és udvarias kérés.",
+          "rows": [
+            {"key": "if-time", "prompt": "Ha lenne időm, eljönnék.", "target": "Wenn ich Zeit hätte, würde ich kommen.", "hint": "wenn … hätte; würde … kommen", "explanation": "A wenn tagmondatban a hätte a végén áll; a főmondatban a würde a második helyen."},
+            {"key": "polite-help", "prompt": "Tudnál nekem segíteni?", "target": "Könntest du mir bitte helfen?", "hint": "Könntest kerül előre.", "explanation": "Az udvarias eldöntendő kérdés első eleme a Könntest."},
+            {"key": "your-place", "prompt": "A helyedben várnék.", "target": "An deiner Stelle würde ich warten.", "hint": "An deiner Stelle + würde … warten", "explanation": "A kiemelt elöljárós kifejezés után a würde áll a második mondatrészben."},
+            {"key": "home", "prompt": "Most szívesen lennék otthon.", "target": "Ich wäre jetzt gern zu Hause.", "hint": "wäre + gern", "explanation": "A wäre önálló Konjunktiv II alak; nincs szükség würde szerkezetre."},
+            {"key": "what-do", "prompt": "Te mit tennél?", "target": "Was würdest du tun?", "hint": "Was + würdest + du + tun", "explanation": "Kérdőszó után a ragozott würdest következik, az infinitív a végén áll."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "modal-verbs",
+      "order": 7,
+      "level": "A1–A2",
+      "title": "Módbeli segédigék",
+      "summary": "dürfen, müssen, sollen, wollen és mögen jelentése és rendhagyó ragozása.",
+      "rule": "A módbeli segédige ragozódik, a jelentéshordozó főige infinitívként a mondat végén áll. Egyes szám első és harmadik személyben több módbeli ige rag nélküli, és a tőhangja is eltérhet: ich darf, er muss, sie will.",
+      "examples": [
+        {"de": "Du musst heute nicht arbeiten.", "hu": "Ma nem kell dolgoznod."},
+        {"de": "Darf ich das Fenster öffnen?", "hu": "Kinyithatom az ablakot?"}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakok",
+          "subtitle": "Rendhagyó egyes számú módbeli alakok.",
+          "rows": [
+            {"key": "duerfen-ich", "prompt": "dürfen · ich · Präsens", "target": "darf", "hint": "Nincs személyrag.", "explanation": "Egyes szám első személyben: ich darf."},
+            {"key": "muessen-er", "prompt": "müssen · er · Präsens", "target": "muss", "hint": "ü → u; nincs személyrag", "explanation": "Egyes szám harmadik személyben: er muss."},
+            {"key": "sollen-du", "prompt": "sollen · du · Präsens", "target": "sollst", "hint": "Tő + -st", "explanation": "Második személyben a sollen alakja sollst."},
+            {"key": "wollen-sie", "prompt": "wollen · sie (egyes szám) · Präsens", "target": "will", "hint": "o → i; nincs személyrag", "explanation": "Egyes szám harmadik személyben: sie will."},
+            {"key": "moegen-er", "prompt": "mögen · er · Präsens", "target": "mag", "hint": "ö → a", "explanation": "A mögen egyes szám harmadik személyű alakja mag."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "Jelentéskülönbségek és mondatkeret.",
+          "rows": [
+            {"key": "not-have-to", "prompt": "Ma nem kell dolgoznod.", "target": "Du musst heute nicht arbeiten.", "hint": "müssen nicht = nem kell", "explanation": "A müssen nicht nem tiltást, hanem a szükségesség hiányát jelenti."},
+            {"key": "may-open", "prompt": "Kinyithatom az ablakot?", "target": "Darf ich das Fenster öffnen?", "hint": "Darf kerül előre; öffnen a végére.", "explanation": "A dürfen engedélyt kér, az infinitív zárja a mondatot."},
+            {"key": "supposed", "prompt": "Pontosan kell érkeznünk. (ezt várják tőlünk)", "target": "Wir sollen pünktlich kommen.", "hint": "sollen = külső elvárás", "explanation": "A sollen nem belső szükségszerűség, hanem elvárás vagy közvetített utasítás."},
+            {"key": "doctor", "prompt": "Orvos akar lenni.", "target": "Sie will Ärztin werden.", "hint": "will … werden", "explanation": "A wollen szándékot fejez ki; a werden infinitív a végén áll."},
+            {"key": "coffee", "prompt": "Nem szereti a kávét.", "target": "Er mag keinen Kaffee.", "hint": "mögen + Akkusativ; kein", "explanation": "A Kaffee hímnemű Akkusativ alakja keinen Kaffee."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "separable-reflexive",
+      "order": 8,
+      "level": "A1–A2",
+      "title": "Elváló és visszaható igék",
+      "summary": "Mondatkeret igekötővel, valamint sich névmási alakokkal.",
+      "rule": "Főmondatban az elváló igekötő a mondat végére kerül: anrufen → Ich rufe dich an. Perfektben rendszerint az igekötő és az igető közé kerül a ge-. A visszaható névmás személy szerint változik: mich, dich, sich, uns, euch, sich.",
+      "examples": [
+        {"de": "Der Unterricht fängt um neun Uhr an.", "hu": "Az óra kilenckor kezdődik."},
+        {"de": "Ich erinnere mich an seinen Namen.", "hu": "Emlékszem a nevére."}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakok",
+          "subtitle": "Igekötő és visszaható névmás együtt.",
+          "rows": [
+            {"key": "aufstehen-er", "prompt": "aufstehen · er · Präsens", "target": "steht auf", "hint": "stehen ragozódik, auf elválik", "explanation": "A ragozott steht és a mondatzáró auf alkotja a keretet."},
+            {"key": "anrufen-er", "prompt": "anrufen · er · Präsens", "target": "ruft an", "hint": "rufen → ruft; an elválik", "explanation": "Az an- elváló igekötő."},
+            {"key": "anfangen-es", "prompt": "anfangen · es · Präsens", "target": "fängt an", "hint": "a → ä; an elválik", "explanation": "Az anfangen tőváltásos: fängt … an."},
+            {"key": "erinnern-ich", "prompt": "sich erinnern · ich · Präsens", "target": "erinnere mich", "hint": "ich → mich", "explanation": "Első személyben a visszaható névmás mich."},
+            {"key": "mitbringen-er", "prompt": "mitbringen · er · Perfekt", "target": "hat mitgebracht", "hint": "mit + ge + bracht", "explanation": "Az elváló mit- után kerül a ge-: mitgebracht."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "Elváló igék valódi mondatkeretben.",
+          "rows": [
+            {"key": "gets-up", "prompt": "Minden nap hatkor kel fel.", "target": "Er steht jeden Tag um sechs Uhr auf.", "hint": "steht … auf", "explanation": "A ragozott steht a második helyen, az auf a mondat végén áll."},
+            {"key": "call-tonight", "prompt": "Ma este felhívlak.", "target": "Ich rufe dich heute Abend an.", "hint": "rufe … an", "explanation": "Az Akkusativ dich a középmezőben, az igekötő a végén áll."},
+            {"key": "class-start", "prompt": "Az óra kilenckor kezdődik.", "target": "Der Unterricht fängt um neun Uhr an.", "hint": "fängt … an", "explanation": "Az anfangen tőhangváltása és igekötője egyszerre jelenik meg."},
+            {"key": "remember", "prompt": "Emlékszem a nevére.", "target": "Ich erinnere mich an seinen Namen.", "hint": "sich erinnern an + Akkusativ", "explanation": "A vonzat an + Akkusativ: an seinen Namen."},
+            {"key": "brought", "prompt": "Magával hozta a könyvet.", "target": "Er hat das Buch mitgebracht.", "hint": "hat … mitgebracht", "explanation": "A mitgebracht egy szóban áll a Perfekt mondat végén."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "comparison",
+      "order": 9,
+      "level": "A1–A2",
+      "title": "Fokozás",
+      "summary": "Komparativ, Superlativ és a legfontosabb rendhagyó alakok.",
+      "rule": "A középfok rendszerint -er, a felsőfok am …-sten alakú. Összehasonlításkor az als köt össze: größer als. Néhány nagyon gyakori szó rendhagyó: gut → besser → am besten; viel → mehr → am meisten; gern → lieber → am liebsten.",
+      "examples": [
+        {"de": "Dieses Zimmer ist größer als das andere.", "hu": "Ez a szoba nagyobb a másiknál."},
+        {"de": "Am liebsten bleibe ich zu Hause.", "hu": "A legszívesebben otthon maradok."}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakok",
+          "subtitle": "Szabályos és rendhagyó fokozott alakok.",
+          "rows": [
+            {"key": "good-comp", "prompt": "gut · Komparativ", "target": "besser", "hint": "Rendhagyó.", "explanation": "A gut középfoka besser."},
+            {"key": "good-super", "prompt": "gut · Superlativ", "target": "am besten", "hint": "Rendhagyó.", "explanation": "A gut felsőfoka am besten."},
+            {"key": "big-comp", "prompt": "groß · Komparativ", "target": "größer", "hint": "Umlaut + -er", "explanation": "A groß középfokban umlautot kap: größer."},
+            {"key": "high-super", "prompt": "hoch · Superlativ", "target": "am höchsten", "hint": "hoch → höchst-", "explanation": "A hoch felsőfokú töve höchst-."},
+            {"key": "glad-comp", "prompt": "gern · Komparativ", "target": "lieber", "hint": "Rendhagyó.", "explanation": "A gern középfoka lieber: szívesebben."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "Összehasonlítás als kötőszóval és felsőfok.",
+          "rows": [
+            {"key": "room", "prompt": "Ez a szoba nagyobb a másiknál.", "target": "Dieses Zimmer ist größer als das andere.", "hint": "größer als", "explanation": "A középfokú összehasonlítás kötőszava als."},
+            {"key": "book", "prompt": "Ez a könyv jobb, mint a film.", "target": "Dieses Buch ist besser als der Film.", "hint": "gut → besser; als", "explanation": "A besser rendhagyó középfok, utána als áll."},
+            {"key": "fastest", "prompt": "Ő fut a leggyorsabban.", "target": "Er läuft am schnellsten.", "hint": "am schnellsten", "explanation": "Határozói felsőfok: am schnellsten."},
+            {"key": "more-time", "prompt": "Több időre van szükségünk.", "target": "Wir brauchen mehr Zeit.", "hint": "viel → mehr", "explanation": "A viel középfoka több mennyiségnél mehr."},
+            {"key": "prefer-home", "prompt": "A legszívesebben otthon maradok.", "target": "Am liebsten bleibe ich zu Hause.", "hint": "gern → am liebsten", "explanation": "Az Am liebsten az első helyen áll, ezért a bleibe közvetlenül utána következik."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "passive",
+      "order": 10,
+      "level": "B1",
+      "title": "Passiv",
+      "summary": "Folyamatpasszív jelenben, múltban és módbeli segédigével.",
+      "rule": "A folyamatpasszív werden + Partizip II szerkezettel készül. Jelenben wird gebaut, Präteritumban wurde gebaut, Perfektben ist gebaut worden. Módbeli segédigével a werden infinitív a mondat végére kerül: muss gemacht werden.",
+      "examples": [
+        {"de": "Die Straße wird repariert.", "hu": "Az utat javítják."},
+        {"de": "Das muss heute gemacht werden.", "hu": "Ezt ma meg kell csinálni."}
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakok",
+          "subtitle": "A passzív igei keret különböző igeidőkben.",
+          "rows": [
+            {"key": "build-present", "prompt": "bauen · er/sie/es · Passiv Präsens", "target": "wird gebaut", "hint": "wird + Partizip II", "explanation": "Jelen idejű folyamatpasszív: wird gebaut."},
+            {"key": "open-past", "prompt": "öffnen · er/sie/es · Passiv Präteritum", "target": "wurde geöffnet", "hint": "wurde + Partizip II", "explanation": "Präteritum passzív: wurde geöffnet."},
+            {"key": "repair-perfect", "prompt": "reparieren · er/sie/es · Passiv Perfekt", "target": "ist repariert worden", "hint": "ist + Partizip II + worden", "explanation": "A passzív Perfektben a werden Partizip II alakja worden, nem geworden."},
+            {"key": "must-do", "prompt": "machen · müssen · Passiv", "target": "muss gemacht werden", "hint": "modal + Partizip II + werden", "explanation": "A módbeli segédige ragozódik, a gemacht werden a mondat végén áll."},
+            {"key": "change-conditional", "prompt": "ändern · er/sie/es · Passiv Konjunktiv II", "target": "würde geändert werden", "hint": "würde + Partizip II + werden", "explanation": "Feltételes passzív: würde geändert werden."}
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Mondatok",
+          "subtitle": "A cselekvés előtérben, a cselekvő nélkül.",
+          "rows": [
+            {"key": "road", "prompt": "Az utat javítják.", "target": "Die Straße wird repariert.", "hint": "wird repariert", "explanation": "A tárgy kerül a passzív mondat alanyi helyére."},
+            {"key": "door", "prompt": "Az ajtót tegnap kinyitották.", "target": "Die Tür wurde gestern geöffnet.", "hint": "wurde … geöffnet", "explanation": "A wurde a második helyen, a geöffnet a mondat végén áll."},
+            {"key": "car-perfect", "prompt": "Az autót már megjavították.", "target": "Das Auto ist schon repariert worden.", "hint": "ist … repariert worden", "explanation": "A passzív Perfekt igei zárása repariert worden."},
+            {"key": "today", "prompt": "Ezt ma meg kell csinálni.", "target": "Das muss heute gemacht werden.", "hint": "muss … gemacht werden", "explanation": "A passzív infinitív a Partizip II + werden szerkezet."},
+            {"key": "could-change", "prompt": "A szabályt meg lehetne változtatni.", "target": "Die Regel könnte geändert werden.", "hint": "könnte … geändert werden", "explanation": "A könnte lehetőséget fejez ki, a passzív szerkezet a mondat végén áll."}
+          ]
+        }
+      ]
+    }
+  ]
+}
