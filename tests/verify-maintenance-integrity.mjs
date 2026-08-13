@@ -53,9 +53,30 @@ assert.match(indexHtml, /chosen\._keyAction\?\.\(\)/, "main keyboard commits the
 assert.match(indexHtml, /data-text-key[\s\S]*?slideCommit/, "Text Study keyboard suppresses duplicate pointer clicks");
 assert.match(indexHtml, /bindLetterBankSlide\(bank\)/, "letter-bank tasks share slide correction");
 assert.match(indexHtml, /id="grammarCourseHost"/, "Grammar & Forms has a dedicated curriculum surface");
-assert.match(indexHtml, /practiceGrammarBtn'\)\.onclick=\(\)=>openGrammarCourse/, "Practice Grammar opens the curriculum instead of an unstructured deck");
+assert.match(indexHtml, /data-grammar-course.*openGrammarCourse/s, "Practice Grammar opens the curriculum instead of an unstructured deck");
+assert.match(indexHtml, /data-story-variant="match"/, "story vocabulary exposes Word Match");
+assert.match(indexHtml, /data-story-variant="typing"/, "story vocabulary exposes typed recall");
+assert.match(indexHtml, /data-practice-tool="import"/, "My library exposes imports in Practice");
+assert.match(indexHtml, /data-practice-tool="manage"/, "My library exposes installed deck management");
+assert.match(indexHtml, /data-practice-tool="sync"/, "My library exposes progress sync");
+assert.match(indexHtml, /morePracticeOptionsBtn/, "advanced controls remain reachable from session settings");
+assert.match(indexHtml, /p === "stories" \|\| p === "texts"/, "course and book files stay out of the standalone deck browser");
+assert.match(indexHtml, /unit\.lexiconFile.*unitLexicon.*lexicon:/s, "story units can load their own isolated lexicon");
 assert.match(indexHtml, /\["memorise","grammar_recall"\].*guided_full_recall_at/, "grammar mastery requires item-specific full recall evidence");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
+
+const languages = JSON.parse(text(join(root, "decks", "languages.json")));
+assert.deepEqual(languages.languages.map(language => language.code), ["de", "it"], "German and Italian remain registered");
+const italianManifest = JSON.parse(text(join(root, "decks", "it", "manifest.json")));
+assert.deepEqual(italianManifest.catalogPackages[0].actions.map(action => action.variant), ["match", "progressive", "typing"], "Italian words keep every word mode");
+const germanManifest = JSON.parse(text(join(deRoot, "manifest.json")));
+const wordVariants = new Set(germanManifest.catalogPackages.flatMap(pack => pack.actions).filter(action => action.mode === "words").map(action => action.variant));
+const sentenceVariants = new Set(germanManifest.catalogPackages.flatMap(pack => pack.actions).filter(action => ["grammar", "sentences"].includes(action.mode)).map(action => action.variant));
+assert.deepEqual([...wordVariants].sort(), ["match", "progressive", "typing"], "German word packages keep Match, Adaptive and Type");
+assert.deepEqual([...sentenceVariants].sort(), ["choice", "order", "progressive", "typing"], "sentence engines keep Choice, Reorder, Adaptive and Type");
+const standaloneIndex = JSON.parse(text(join(root, "decks", "index.json")));
+assert.equal(standaloneIndex.length, 8, "the standalone browser contains only independent practice decks");
+assert.ok(standaloneIndex.every(deck => !/[\\/]stories[\\/]|[\\/]texts[\\/]/.test(deck.file || "")), "story files never leak into the standalone browser");
 
 const curriculum = JSON.parse(text(join(deRoot, "grammar", "core-curriculum.json")));
 assert.equal(curriculum.explanationLanguage, "hu", "grammar explanations are Hungarian");
@@ -116,13 +137,15 @@ function loadChapterCount(chapter, cache) {
 const stories = [
   "stories/ein-skandal-in-boehmen-extended/story.json",
   "stories/baker-street-launchpad/story.json",
-  "stories/ein-skandal-in-boehmen/story.json"
+  "stories/ein-skandal-in-boehmen/story.json",
+  "stories/tschick/story.json"
 ].map(file => JSON.parse(text(join(deRoot, file))));
 const firstChapters = stories.map(story => story.chapters.find(chapter => chapter.id === "ch01"));
 const cache = new Map();
 const counts = firstChapters.map(chapter => loadChapterCount(chapter, cache));
-assert.deepEqual(counts, [274, 29, 72], "same-named chapters retain their own sentence data");
-assert.equal(cache.size, 3, "same-named chapters receive distinct cache entries");
+assert.deepEqual(counts, [274, 29, 72, 71], "same-named chapters retain their own sentence data");
+assert.equal(cache.size, 4, "same-named chapters receive distinct cache entries");
+assert.equal(stories[3].chapters.length, 4, "Tschick is a four-part isolated course");
 
 const lexicon = parseCsv(text(join(deRoot, "lexicon.csv")));
 const canonicalIds = new Set(lexicon.map(row => row.lexeme_id));
@@ -177,19 +200,33 @@ for (const [oldId, newId] of expectedMigrations) {
 }
 
 for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.endsWith("aliases.csv"))) {
+  const localUnit = file.match(/^(.*[\\/]texts[\\/]de-tschick-\d+)[\\/]/);
+  const allowedIds = new Set(canonicalIds);
+  if (localUnit) {
+    const localLexicon = join(localUnit[1], "lexicon.csv");
+    if (existsSync(localLexicon)) for (const row of parseCsv(text(localLexicon))) if (row.lexeme_id) allowedIds.add(row.lexeme_id);
+  }
   for (const row of parseCsv(text(file))) {
     if (!row.lexeme_id || row.lexeme_id.startsWith("de.private.")) continue;
     const resolved = canonical(row.lexeme_id);
-    assert.ok(canonicalIds.has(resolved), `${relative(root, file)} references missing lexeme ${row.lexeme_id}`);
+    assert.ok(allowedIds.has(resolved), `${relative(root, file)} references missing lexeme ${row.lexeme_id}`);
   }
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-3-1-9-grammar-forms-core-20260813/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-3-2-1-capability-restoration-20260813/, "service worker cache version is current");
 assert.match(serviceWorker, /decks\/de\/grammar\/core-curriculum\.json/, "the grammar curriculum is available offline");
+assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
+assert.match(serviceWorker, /decks\/de\/stories\/tschick\/story\.json/, "Tschick course metadata is available offline");
 const shellMatch = serviceWorker.match(/const APP_SHELL=\[([\s\S]*?)\];/);
 assert.ok(shellMatch, "service worker declares an app shell");
 for (const item of shellMatch[1].matchAll(/"([^"]+)"/g)) {
   assert.ok(existsSync(join(root, item[1].replace(/^\.\//, ""))), `service worker shell is missing ${item[1]}`);
 }
+assert.ok(!existsSync(join(root, "practice.html")), "duplicate standalone Practice page was removed");
+assert.ok(!existsSync(join(root, "story-study.html")), "duplicate standalone Story Study page was removed");
+assert.ok(!existsSync(join(root, "index.json")), "orphan root CSV disguised as JSON was removed");
+assert.ok(!walk(deRoot).some(file => /texts[\\/]maja-k01[\\/]/i.test(file)), "Maja is not shipped");
+assert.ok(!walk(deRoot).some(file => /texts[\\/]sterntaler[\\/]/i.test(file)), "Sterntaler is not shipped");
+assert.ok(!walk(root).some(file => /RELEASE_NOTES/i.test(file)), "release-note files are not shipped");
 console.log(`Integrity verified: ${lexicon.length} canonical lexemes, ${aliases.length} aliases, ${cache.size} isolated ch01 cache entries, ${grammarGoalCount} grammar goals.`);
