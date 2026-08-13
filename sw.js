@@ -1,5 +1,5 @@
-/* LanguageDeck 3.1.9 — Grammar & Forms Core (PRIVATE PERSONAL-USE BUILD). */
-const CACHE_VERSION="languagedeck-3-1-9-grammar-forms-core-20260813";
+/* LanguageDeck 3.2.0 — scoped content architecture (PRIVATE PERSONAL-USE BUILD). */
+const CACHE_VERSION="languagedeck-3-2-0-content-architecture-20260813";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
@@ -76,14 +76,6 @@ const APP_SHELL=[
   "./decks/de/stories/ein-skandal-in-boehmen-extended/source-map.csv",
   "./decks/de/stories/ein-skandal-in-boehmen-extended/source.json",
   "./decks/de/stories/ein-skandal-in-boehmen-extended/story.json",
-  "./decks/de/texts/maja-k01/anchors.csv",
-  "./decks/de/texts/maja-k01/sentences.csv",
-  "./decks/de/texts/maja-k01/unit.json",
-  "./decks/de/texts/maja-k01/words.csv",
-  "./decks/de/texts/sterntaler/anchors.csv",
-  "./decks/de/texts/sterntaler/sentences.csv",
-  "./decks/de/texts/sterntaler/unit.json",
-  "./decks/de/texts/sterntaler/words.csv",
   "./decks/de/words/combined-flashcards.csv",
   "./decks/de/words/core-3000.csv",
   "./decks/de/words/hooks.csv",
@@ -94,9 +86,7 @@ const APP_SHELL=[
   "./icon-maskable-512.png",
   "./icon.svg",
   "./index.html",
-  "./manifest.webmanifest",
-  "./practice.html",
-  "./story-study.html"
+  "./manifest.webmanifest"
 ];
 self.addEventListener("message",e=>{if(e.data&&e.data.type==="SKIP_WAITING")self.skipWaiting()});
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE_VERSION).then(c=>c.addAll(APP_SHELL)));self.skipWaiting()});

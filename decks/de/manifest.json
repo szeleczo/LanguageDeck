@@ -1,6 +1,66 @@
 {
   "schemaVersion": 1,
   "language": "de",
+  "catalogPackages": [
+    {
+      "id": "de-pack-core-3000",
+      "kind": "standalone",
+      "title": "Core 3000",
+      "description": "High-frequency vocabulary with matching sentence practice.",
+      "level": "A1–B2",
+      "deckIds": ["de-core-3000", "de-3000-sentences"],
+      "actions": [
+        {"label": "Words", "deckId": "de-core-3000", "mode": "words", "variant": "progressive"},
+        {"label": "Sentences", "deckId": "de-3000-sentences", "mode": "sentences", "variant": "progressive"}
+      ]
+    },
+    {
+      "id": "de-pack-hooks",
+      "kind": "standalone",
+      "title": "Hooks",
+      "description": "Memorable vocabulary hooks with companion sentences.",
+      "level": "A1–B2",
+      "deckIds": ["de-hooks", "de-hooks-sentences"],
+      "actions": [
+        {"label": "Words", "deckId": "de-hooks", "mode": "words", "variant": "progressive"},
+        {"label": "Sentences", "deckId": "de-hooks-sentences", "mode": "sentences", "variant": "progressive"}
+      ]
+    },
+    {
+      "id": "de-pack-combined-flashcards",
+      "kind": "standalone",
+      "title": "Combined Flashcards",
+      "description": "A broad independent vocabulary collection for free recall.",
+      "level": "A1–B2",
+      "deckIds": ["de-combined-flashcards"],
+      "actions": [
+        {"label": "Words", "deckId": "de-combined-flashcards", "mode": "words", "variant": "progressive"}
+      ]
+    },
+    {
+      "id": "de-pack-grammar-lab",
+      "kind": "standalone",
+      "title": "Grammar Sentence Lab",
+      "description": "Independent grammar sentences and reusable sentence patterns.",
+      "level": "A1–B2",
+      "deckIds": ["de-grammar-learning", "de-sentence-patterns"],
+      "actions": [
+        {"label": "Grammar sentences", "deckId": "de-grammar-learning", "mode": "grammar", "variant": "progressive"},
+        {"label": "Patterns", "deckId": "de-sentence-patterns", "mode": "grammar", "variant": "order"}
+      ]
+    },
+    {
+      "id": "de-pack-sentence-builder",
+      "kind": "standalone",
+      "title": "Sentence Builder",
+      "description": "Independent sentence construction and typed recall.",
+      "level": "A1–B2",
+      "deckIds": ["de-sentence-builder"],
+      "actions": [
+        {"label": "Sentences", "deckId": "de-sentence-builder", "mode": "sentences", "variant": "order"}
+      ]
+    }
+  ],
   "lexicon": "lexicon.csv",
   "patterns": "patterns.csv",
   "decks": [
@@ -162,42 +222,6 @@
         "B2"
       ],
       "schema": "sentence"
-    },
-    {
-      "id": "de-text-maja",
-      "name": "Die Biene Maja · Kapitel 1",
-      "folder": "texts/maja-k01",
-      "primaryMode": "text",
-      "compatibleModes": [
-        "text"
-      ],
-      "practiceModes": [
-        "story-study"
-      ],
-      "level": [
-        "A2",
-        "B1"
-      ],
-      "schema": "text-v2",
-      "engine": "story-study"
-    },
-    {
-      "id": "de-text-sterntaler",
-      "name": "Sterntaler",
-      "folder": "texts/sterntaler",
-      "primaryMode": "text",
-      "compatibleModes": [
-        "text"
-      ],
-      "practiceModes": [
-        "story-study"
-      ],
-      "level": [
-        "A2",
-        "B1"
-      ],
-      "schema": "text-v2",
-      "engine": "story-study"
     },
     {
       "id": "de-baker-nebel-01",

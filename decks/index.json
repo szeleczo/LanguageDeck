@@ -135,38 +135,6 @@
     "file": "de/sentences/hooks-sentences.csv"
   },
   {
-    "name": "Die Biene Maja · Kapitel 1",
-    "deck": "de",
-    "type": "text",
-    "mode": "text",
-    "compatibleModes": [
-      "text"
-    ],
-    "practiceModes": [
-      "story-study"
-    ],
-    "id": "de-text-maja",
-    "folder": "de/texts/maja-k01",
-    "engine": "story-study",
-    "schema": "text-v2"
-  },
-  {
-    "name": "Sterntaler",
-    "deck": "de",
-    "type": "text",
-    "mode": "text",
-    "compatibleModes": [
-      "text"
-    ],
-    "practiceModes": [
-      "story-study"
-    ],
-    "id": "de-text-sterntaler",
-    "folder": "de/texts/sterntaler",
-    "engine": "story-study",
-    "schema": "text-v2"
-  },
-  {
     "name": "Ein Skandal Extended · Teil 1 · Wörter",
     "deck": "de",
     "type": "words",
