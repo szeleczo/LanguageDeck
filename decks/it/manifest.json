@@ -1,6 +1,21 @@
 {
   "schemaVersion": 1,
   "language": "it",
+  "catalogPackages": [
+    {
+      "id": "it-pack-core-3000",
+      "kind": "standalone",
+      "title": "Core 3000",
+      "description": "High-frequency Italian vocabulary for recognition and active recall.",
+      "level": "A1–B2",
+      "deckIds": ["it-core-3000"],
+      "actions": [
+        {"label": "Word Match", "deckId": "it-core-3000", "mode": "words", "variant": "match"},
+        {"label": "Adaptive", "deckId": "it-core-3000", "mode": "words", "variant": "progressive"},
+        {"label": "Type", "deckId": "it-core-3000", "mode": "words", "variant": "typing"}
+      ]
+    }
+  ],
   "decks": [
     {
       "id": "it-core-3000",

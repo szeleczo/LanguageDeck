@@ -154,7 +154,7 @@ decks/de/<unit>/sentences.csv   — english,target,hint,level
 decks/de/<unit>/words.csv       — english,target,article,hint,source
 ```
 
-e.g. `decks/de/sterntaler/`, `decks/de/maja-k01/`. `source` is the exact
+e.g. `decks/de/public-domain-story-01/`. `source` is the exact
 `english` key of the sentence the word came from (this link powers the
 combined sentence→word progression). Deck discovery names them
 "<Unit> — Sentences" / "<Unit> — Words"; combined mode pairs them by the
