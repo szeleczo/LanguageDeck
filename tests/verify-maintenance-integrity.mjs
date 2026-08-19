@@ -68,6 +68,8 @@ assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed gr
 const languages = JSON.parse(text(join(root, "decks", "languages.json")));
 assert.deepEqual(languages.languages.map(language => language.code), ["de", "it"], "German and Italian remain registered");
 const appManifest = JSON.parse(text(join(root, "manifest.webmanifest")));
+assert.equal(appManifest.name, "LanguageDeck", "the install name stays stable across releases");
+assert.equal(appManifest.id, "./?app=LanguageDeck-v3.3.2", "the established PWA identity stays stable so updates retain progress");
 assert.equal(appManifest.theme_color, "#111827", "the native launch surface uses the new dark brand colour");
 assert.equal(appManifest.background_color, "#111827", "the PWA splash background matches the application icon");
 assert.ok(appManifest.icons.some(icon => icon.purpose === "maskable" && icon.src === "icon-maskable-512.png"), "Android receives a dedicated maskable icon");
@@ -126,6 +128,38 @@ assert.deepEqual(articleUnit.paradigms[0].rows.map(row => row[1]), ["der Zug", "
 const foundationGoalCount = foundations.units.flatMap(unit => unit.phases.flatMap(phase => phase.rows)).length;
 assert.equal(foundationGoalCount, 86, "pronoun and case foundations contain 86 active-recall goals");
 
+const caseLab = JSON.parse(text(join(deRoot, "grammar", "case-lab.json")));
+const expectedCaseLabIds = [
+  "case-mental-map", "case-pronoun-contrast", "case-definite-articles", "case-determiners",
+  "case-akk-verbs", "case-dat-verbs", "case-transfer-verbs", "case-object-order",
+  "case-akk-prepositions", "case-dat-prepositions", "case-two-way", "case-questions-negation",
+  "case-time-mood", "case-diagnostic"
+];
+assert.deepEqual(caseLab.units.map(unit => unit.id), expectedCaseLabIds, "the case lab follows the approved fourteen-unit learning path");
+const caseLabGoalIds = new Set();
+let caseLabGoalCount = 0;
+for (const unit of caseLab.units) {
+  assert.equal(unit.track, "cases", `${unit.id} remains inside the cases learning domain`);
+  assert.ok(unit.memoryHook?.title && unit.memoryHook.lines?.length >= 2, `${unit.id} needs an explicit mental hook`);
+  assert.ok(unit.rule && unit.examples?.length >= 2 && unit.paradigms?.length, `${unit.id} needs explanation, examples and a visible reference table`);
+  for (const phase of unit.phases) for (const row of phase.rows) {
+    const key = `${unit.id}:${phase.id}:${row.key}`;
+    assert.ok(!caseLabGoalIds.has(key), `duplicate case-lab goal ${key}`);
+    caseLabGoalIds.add(key); caseLabGoalCount++;
+    assert.ok(row.prompt && row.target && row.hint && row.explanation, `${key} needs complete bilingual teaching content`);
+  }
+}
+assert.equal(caseLabGoalCount, 445, "the expanded case lab contains 445 active-recall goals");
+const caseLabText = text(join(deRoot, "grammar", "case-lab.json"));
+const caseLabTargets = caseLab.units.flatMap(unit => unit.phases.flatMap(phase => phase.rows.map(row => row.target)));
+assert.ok(!caseLabTargets.some(target => /\bmit mich\b/i.test(target)), "no accepted answer teaches the reported mit + Akkusativ error");
+assert.ok(!caseLabText.includes("Nach meiner Meinung"), "the natural Meiner Meinung nach form is used");
+assert.match(caseLabText, /Meiner Meinung nach ist das richtig\./, "the postposed nach construction is explicitly practised");
+assert.match(caseLabText, /mich = engem \| mir = nekem/, "the central mich/mir memory hook is present");
+assert.match(caseLabText, /der – den – dem/, "the masculine article rhythm is present");
+assert.match(caseLabText, /nem pusztán: mozog vagy áll/, "two-way prepositions are not reduced to the misleading movement-versus-stillness rule");
+assert.match(caseLabText, /meinen Freunden/, "plural Dativ marking is practised");
+
 const workshop = JSON.parse(text(join(deRoot, "grammar", "verb-workshop.json")));
 const expectedVerbIds = ["sein", "haben", "werden", "machen", "lernen", "arbeiten", "gehen", "kommen", "fahren", "lesen", "sehen", "nehmen", "sprechen", "schreiben", "essen", "schlafen", "helfen", "geben", "koennen", "muessen"];
 assert.deepEqual(workshop.verbs.map(verb => verb.id), expectedVerbIds, "the first verb workshop contains twenty high-frequency verbs in a stable order");
@@ -180,9 +214,12 @@ const mixedCurriculum = JSON.parse(text(join(deRoot, "grammar", "mixed-curriculu
 assert.equal(mixedCurriculum.units.length, 4, "mixing is deferred to four explicit review units");
 const mixedGoalCount = mixedCurriculum.units.flatMap(unit => unit.phases.flatMap(phase => phase.rows)).length;
 assert.equal(mixedGoalCount, 79, "graduated mixed review contains 79 goals");
-assert.equal(grammarGoalCount + foundationGoalCount + workshopGoalCount + mixedGoalCount, 645, "Grammar & Forms 2.0 contains 645 active-recall goals");
+assert.equal(grammarGoalCount + foundationGoalCount + workshopGoalCount + mixedGoalCount, 645, "the existing Grammar & Forms curriculum retains all 645 goals");
+assert.equal(grammarGoalCount + foundationGoalCount + caseLabGoalCount + workshopGoalCount + mixedGoalCount, 1090, "Grammar & Forms 3.0 contains 1,090 active-recall goals");
 assert.match(indexHtml, /grammarVerbUnits\(workshop\)/, "the app generates one self-contained course unit per verb");
+assert.match(indexHtml, /grammar\/case-lab\.json/, "the app loads the expanded case lab");
 assert.match(indexHtml, /grammarParadigmsHtml\(active\)/, "verb and case paradigms are visible before practice");
+assert.match(indexHtml, /grammarMemoryHookHtml\(active\)/, "each case lesson can show its mental hook before practice");
 assert.match(indexHtml, /grammar-track-section/, "the curriculum overview separates cases, verbs, structures and mixed review");
 
 const optionalRecallNorm = value => String(value || "").toLocaleLowerCase().replace(/\s+[\-‐‑‒–—―−]+\s+/gu, " ").replace(/[,\.!?;:]+/gu, "").replace(/\s+/g, " ").trim();
@@ -301,8 +338,9 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-3-3-2-brand-icon-20260813/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-3-4-0-case-lab-20260818/, "service worker cache version is current");
 assert.match(serviceWorker, /decks\/de\/grammar\/core-curriculum\.json/, "the grammar curriculum is available offline");
+assert.match(serviceWorker, /decks\/de\/grammar\/case-lab\.json/, "the expanded case lab is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/foundations-curriculum\.json/, "pronoun and case foundations are available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/verb-workshop\.json/, "the isolated verb workshop is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/mixed-curriculum\.json/, "graduated mixed review is available offline");
@@ -321,4 +359,4 @@ assert.ok(!existsSync(join(root, "PRIVATE_CONTENT_NOTICE.txt")), "obsolete priva
 assert.ok(!walk(deRoot).some(file => /texts[\\/]maja-k01[\\/]/i.test(file)), "Maja is not shipped");
 assert.ok(!walk(deRoot).some(file => /texts[\\/]sterntaler[\\/]/i.test(file)), "Sterntaler is not shipped");
 assert.ok(!walk(root).some(file => /RELEASE_NOTES/i.test(file)), "release-note files are not shipped");
-console.log(`Integrity verified: ${lexicon.length} canonical lexemes, ${aliases.length} aliases, ${cache.size} isolated ch01 cache entries, ${grammarGoalCount + foundationGoalCount + workshopGoalCount + mixedGoalCount} grammar goals.`);
+console.log(`Integrity verified: ${lexicon.length} canonical lexemes, ${aliases.length} aliases, ${cache.size} isolated ch01 cache entries, ${grammarGoalCount + foundationGoalCount + caseLabGoalCount + workshopGoalCount + mixedGoalCount} grammar goals.`);

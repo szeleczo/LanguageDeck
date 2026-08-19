@@ -1,11 +1,12 @@
-/* LanguageDeck 3.3.2 — unified brand icon and launch surface. */
-const CACHE_VERSION="languagedeck-3-3-2-brand-icon-20260813";
+/* LanguageDeck 3.4.0 — expanded German case laboratory. */
+const CACHE_VERSION="languagedeck-3-4-0-case-lab-20260818";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
   "./decks/de/courses/index.json",
   "./decks/de/grammar/grammar-sentences-learning.csv",
   "./decks/de/grammar/core-curriculum.json",
+  "./decks/de/grammar/case-lab.json",
   "./decks/de/grammar/foundations-curriculum.json",
   "./decks/de/grammar/mixed-curriculum.json",
   "./decks/de/grammar/sentence-patterns.csv",

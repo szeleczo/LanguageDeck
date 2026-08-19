@@ -1,0 +1,4119 @@
+{
+  "schemaVersion": 1,
+  "id": "de-case-lab-v1",
+  "title": "Akkusativ–Dativ labor",
+  "goalCount": 445,
+  "units": [
+    {
+      "id": "case-mental-map",
+      "track": "cases",
+      "order": 5,
+      "level": "A1",
+      "title": "A cselekvés célpontja és címzettje",
+      "summary": "Mit mozgat a cselekvés, és kihez jut el?",
+      "rule": "Az Akkusativ gyakran a cselekvés közvetlen célpontja vagy az átadott dolog. A Dativ gyakran a címzett vagy érintett személy. Ez erős kezdő kapaszkodó, de az ige és az elöljáró rögzített vonzata mindig elsőbbséget élvez.",
+      "memoryHook": {
+        "title": "Mentális kép",
+        "lines": [
+          "ÉN → DOLGOT → CÍMZETT",
+          "dolog: Akkusativ",
+          "címzett: Dativ"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Ich gebe dem Mann den Schlüssel.",
+          "hu": "A férfinak adom a kulcsot."
+        },
+        {
+          "de": "Sie zeigt mir das Foto.",
+          "hu": "Megmutatja nekem a fényképet."
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Döntési sorrend",
+          "columns": [
+            "Kérdés",
+            "Szerep",
+            "Eset"
+          ],
+          "rows": [
+            [
+              "Mit?",
+              "átadott vagy közvetlenül érintett dolog",
+              "Akkusativ"
+            ],
+            [
+              "Kinek?",
+              "címzett vagy érintett személy",
+              "Dativ"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "roles",
+          "title": "Kinek és mit?",
+          "subtitle": "Először csak a két mondatrészt azonosítsd.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "give-man-key-dat",
+              "prompt": "A férfinak adom a kulcsot. · Kinek?",
+              "target": "dem Mann",
+              "hint": "A címzett Dativ.",
+              "explanation": "Ich gebe dem Mann den Schlüssel. A dolog a címzetthez jut: dem Mann Dativ."
+            },
+            {
+              "key": "give-man-key-akk",
+              "prompt": "A férfinak adom a kulcsot. · Mit?",
+              "target": "den Schlüssel",
+              "hint": "A mozgatott vagy átadott dolog Akkusativ.",
+              "explanation": "Ich gebe dem Mann den Schlüssel. A közvetlenül átadott dolog: den Schlüssel Akkusativ."
+            },
+            {
+              "key": "show-woman-photo-dat",
+              "prompt": "Megmutatja a nőnek a fényképet. · nő · Kinek?",
+              "target": "der Frau",
+              "hint": "A címzett Dativ.",
+              "explanation": "Sie zeigt der Frau das Foto. A dolog a címzetthez jut: der Frau Dativ."
+            },
+            {
+              "key": "show-woman-photo-akk",
+              "prompt": "Megmutatja a nőnek a fényképet. · nő · Mit?",
+              "target": "das Foto",
+              "hint": "A mozgatott vagy átadott dolog Akkusativ.",
+              "explanation": "Sie zeigt der Frau das Foto. A közvetlenül átadott dolog: das Foto Akkusativ."
+            },
+            {
+              "key": "bring-child-apple-dat",
+              "prompt": "Egy almát viszünk a gyermeknek. · Kinek?",
+              "target": "dem Kind",
+              "hint": "A címzett Dativ.",
+              "explanation": "Wir bringen dem Kind einen Apfel. A dolog a címzetthez jut: dem Kind Dativ."
+            },
+            {
+              "key": "bring-child-apple-akk",
+              "prompt": "Egy almát viszünk a gyermeknek. · Mit?",
+              "target": "einen Apfel",
+              "hint": "A mozgatott vagy átadott dolog Akkusativ.",
+              "explanation": "Wir bringen dem Kind einen Apfel. A közvetlenül átadott dolog: einen Apfel Akkusativ."
+            },
+            {
+              "key": "send-friend-message-dat",
+              "prompt": "Üzenetet küld a barátnőjének. · férfi · Kinek?",
+              "target": "seiner Freundin",
+              "hint": "A címzett Dativ.",
+              "explanation": "Er schickt seiner Freundin eine Nachricht. A dolog a címzetthez jut: seiner Freundin Dativ."
+            },
+            {
+              "key": "send-friend-message-akk",
+              "prompt": "Üzenetet küld a barátnőjének. · férfi · Mit?",
+              "target": "eine Nachricht",
+              "hint": "A mozgatott vagy átadott dolog Akkusativ.",
+              "explanation": "Er schickt seiner Freundin eine Nachricht. A közvetlenül átadott dolog: eine Nachricht Akkusativ."
+            },
+            {
+              "key": "lend-brother-bike-dat",
+              "prompt": "Kölcsönadod a testvérednek a kerékpárt. · fiútestvér · Kinek?",
+              "target": "deinem Bruder",
+              "hint": "A címzett Dativ.",
+              "explanation": "Du leihst deinem Bruder das Fahrrad. A dolog a címzetthez jut: deinem Bruder Dativ."
+            },
+            {
+              "key": "lend-brother-bike-akk",
+              "prompt": "Kölcsönadod a testvérednek a kerékpárt. · fiútestvér · Mit?",
+              "target": "das Fahrrad",
+              "hint": "A mozgatott vagy átadott dolog Akkusativ.",
+              "explanation": "Du leihst deinem Bruder das Fahrrad. A közvetlenül átadott dolog: das Fahrrad Akkusativ."
+            },
+            {
+              "key": "gift-children-books-dat",
+              "prompt": "Könyveket ajándékoztok a gyerekeknek. · Kinek?",
+              "target": "den Kindern",
+              "hint": "A címzett Dativ.",
+              "explanation": "Ihr schenkt den Kindern Bücher. A dolog a címzetthez jut: den Kindern Dativ."
+            },
+            {
+              "key": "gift-children-books-akk",
+              "prompt": "Könyveket ajándékoztok a gyerekeknek. · Mit?",
+              "target": "Bücher",
+              "hint": "A mozgatott vagy átadott dolog Akkusativ.",
+              "explanation": "Ihr schenkt den Kindern Bücher. A közvetlenül átadott dolog: Bücher Akkusativ."
+            },
+            {
+              "key": "explain-student-rule-dat",
+              "prompt": "Elmagyarázom a diáknak a szabályt. · fiú · Kinek?",
+              "target": "dem Schüler",
+              "hint": "A címzett Dativ.",
+              "explanation": "Ich erkläre dem Schüler die Regel. A dolog a címzetthez jut: dem Schüler Dativ."
+            },
+            {
+              "key": "explain-student-rule-akk",
+              "prompt": "Elmagyarázom a diáknak a szabályt. · fiú · Mit?",
+              "target": "die Regel",
+              "hint": "A mozgatott vagy átadott dolog Akkusativ.",
+              "explanation": "Ich erkläre dem Schüler die Regel. A közvetlenül átadott dolog: die Regel Akkusativ."
+            },
+            {
+              "key": "tell-mother-story-dat",
+              "prompt": "Elmeséli az édesanyjának a történetet. · nő · Kinek?",
+              "target": "ihrer Mutter",
+              "hint": "A címzett Dativ.",
+              "explanation": "Sie erzählt ihrer Mutter die Geschichte. A dolog a címzetthez jut: ihrer Mutter Dativ."
+            },
+            {
+              "key": "tell-mother-story-akk",
+              "prompt": "Elmeséli az édesanyjának a történetet. · nő · Mit?",
+              "target": "die Geschichte",
+              "hint": "A mozgatott vagy átadott dolog Akkusativ.",
+              "explanation": "Sie erzählt ihrer Mutter die Geschichte. A közvetlenül átadott dolog: die Geschichte Akkusativ."
+            },
+            {
+              "key": "waiter-guest-coffee-dat",
+              "prompt": "A pincér kávét visz a vendégnek. · Kinek?",
+              "target": "dem Gast",
+              "hint": "A címzett Dativ.",
+              "explanation": "Der Kellner bringt dem Gast einen Kaffee. A dolog a címzetthez jut: dem Gast Dativ."
+            },
+            {
+              "key": "waiter-guest-coffee-akk",
+              "prompt": "A pincér kávét visz a vendégnek. · Mit?",
+              "target": "einen Kaffee",
+              "hint": "A mozgatott vagy átadott dolog Akkusativ.",
+              "explanation": "Der Kellner bringt dem Gast einen Kaffee. A közvetlenül átadott dolog: einen Kaffee Akkusativ."
+            },
+            {
+              "key": "teacher-tasks-dat",
+              "prompt": "A tanárnő odaadja a feladatokat a diákoknak. · Kinek?",
+              "target": "den Schülern",
+              "hint": "A címzett Dativ.",
+              "explanation": "Die Lehrerin gibt den Schülern die Aufgaben. A dolog a címzetthez jut: den Schülern Dativ."
+            },
+            {
+              "key": "teacher-tasks-akk",
+              "prompt": "A tanárnő odaadja a feladatokat a diákoknak. · Mit?",
+              "target": "die Aufgaben",
+              "hint": "A mozgatott vagy átadott dolog Akkusativ.",
+              "explanation": "Die Lehrerin gibt den Schülern die Aufgaben. A közvetlenül átadott dolog: die Aufgaben Akkusativ."
+            }
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Teljes átadási mondatok",
+          "subtitle": "Tíz különböző ige és élethelyzet.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "give-man-key",
+              "prompt": "A férfinak adom a kulcsot.",
+              "target": "Ich gebe dem Mann den Schlüssel.",
+              "hint": "Előbb a címzettet, majd a dolgot keresd.",
+              "explanation": "Kinek? dem Mann → Dativ. Mit? den Schlüssel → Akkusativ."
+            },
+            {
+              "key": "show-woman-photo",
+              "prompt": "Megmutatja a nőnek a fényképet. · nő",
+              "target": "Sie zeigt der Frau das Foto.",
+              "hint": "Előbb a címzettet, majd a dolgot keresd.",
+              "explanation": "Kinek? der Frau → Dativ. Mit? das Foto → Akkusativ."
+            },
+            {
+              "key": "bring-child-apple",
+              "prompt": "Egy almát viszünk a gyermeknek.",
+              "target": "Wir bringen dem Kind einen Apfel.",
+              "hint": "Előbb a címzettet, majd a dolgot keresd.",
+              "explanation": "Kinek? dem Kind → Dativ. Mit? einen Apfel → Akkusativ."
+            },
+            {
+              "key": "send-friend-message",
+              "prompt": "Üzenetet küld a barátnőjének. · férfi",
+              "target": "Er schickt seiner Freundin eine Nachricht.",
+              "hint": "Előbb a címzettet, majd a dolgot keresd.",
+              "explanation": "Kinek? seiner Freundin → Dativ. Mit? eine Nachricht → Akkusativ."
+            },
+            {
+              "key": "lend-brother-bike",
+              "prompt": "Kölcsönadod a testvérednek a kerékpárt. · fiútestvér",
+              "target": "Du leihst deinem Bruder das Fahrrad.",
+              "hint": "Előbb a címzettet, majd a dolgot keresd.",
+              "explanation": "Kinek? deinem Bruder → Dativ. Mit? das Fahrrad → Akkusativ."
+            },
+            {
+              "key": "gift-children-books",
+              "prompt": "Könyveket ajándékoztok a gyerekeknek.",
+              "target": "Ihr schenkt den Kindern Bücher.",
+              "hint": "Előbb a címzettet, majd a dolgot keresd.",
+              "explanation": "Kinek? den Kindern → Dativ. Mit? Bücher → Akkusativ."
+            },
+            {
+              "key": "explain-student-rule",
+              "prompt": "Elmagyarázom a diáknak a szabályt. · fiú",
+              "target": "Ich erkläre dem Schüler die Regel.",
+              "hint": "Előbb a címzettet, majd a dolgot keresd.",
+              "explanation": "Kinek? dem Schüler → Dativ. Mit? die Regel → Akkusativ."
+            },
+            {
+              "key": "tell-mother-story",
+              "prompt": "Elmeséli az édesanyjának a történetet. · nő",
+              "target": "Sie erzählt ihrer Mutter die Geschichte.",
+              "hint": "Előbb a címzettet, majd a dolgot keresd.",
+              "explanation": "Kinek? ihrer Mutter → Dativ. Mit? die Geschichte → Akkusativ."
+            },
+            {
+              "key": "waiter-guest-coffee",
+              "prompt": "A pincér kávét visz a vendégnek.",
+              "target": "Der Kellner bringt dem Gast einen Kaffee.",
+              "hint": "Előbb a címzettet, majd a dolgot keresd.",
+              "explanation": "Kinek? dem Gast → Dativ. Mit? einen Kaffee → Akkusativ."
+            },
+            {
+              "key": "teacher-tasks",
+              "prompt": "A tanárnő odaadja a feladatokat a diákoknak.",
+              "target": "Die Lehrerin gibt den Schülern die Aufgaben.",
+              "hint": "Előbb a címzettet, majd a dolgot keresd.",
+              "explanation": "Kinek? den Schülern → Dativ. Mit? die Aufgaben → Akkusativ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-pronoun-contrast",
+      "track": "cases",
+      "order": 6,
+      "level": "A1",
+      "title": "mich vagy mir? – minden személy",
+      "summary": "Akkusativ és Dativ névmások teljes rendszere.",
+      "rule": "A névmás alakja a mondatbeli szereptől függ. mich = engem, mir = nekem; dich = téged, dir = neked; ihn = őt, ihm = neki. Az uns és euch alak mindkét esetben azonos, ezért ott az ige és a jelentés dönt.",
+      "memoryHook": {
+        "title": "Gyors kontraszt",
+        "lines": [
+          "mich = engem | mir = nekem",
+          "dich = téged | dir = neked",
+          "ihn = őt | ihm = neki"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Sie sieht mich.",
+          "hu": "Lát engem."
+        },
+        {
+          "de": "Sie hilft mir.",
+          "hu": "Segít nekem."
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Személyes névmások",
+          "columns": [
+            "Alany",
+            "Akkusativ",
+            "Dativ"
+          ],
+          "rows": [
+            [
+              "ich",
+              "mich",
+              "mir"
+            ],
+            [
+              "du",
+              "dich",
+              "dir"
+            ],
+            [
+              "er",
+              "ihn",
+              "ihm"
+            ],
+            [
+              "sie",
+              "sie",
+              "ihr"
+            ],
+            [
+              "es",
+              "es",
+              "ihm"
+            ],
+            [
+              "wir",
+              "uns",
+              "uns"
+            ],
+            [
+              "ihr",
+              "euch",
+              "euch"
+            ],
+            [
+              "sie",
+              "sie",
+              "ihnen"
+            ],
+            [
+              "Sie",
+              "Sie",
+              "Ihnen"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Alakpárok",
+          "subtitle": "Minden személy külön.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "ich-akk",
+              "prompt": "engem · Akkusativ",
+              "target": "mich",
+              "hint": "Kit/mit ér közvetlenül a cselekvés?",
+              "explanation": "ich Akkusativ alakja: mich."
+            },
+            {
+              "key": "ich-dat",
+              "prompt": "nekem · Dativ",
+              "target": "mir",
+              "hint": "Kinek/minek szól vagy jut valami?",
+              "explanation": "ich Dativ alakja: mir."
+            },
+            {
+              "key": "du-akk",
+              "prompt": "téged · Akkusativ",
+              "target": "dich",
+              "hint": "Kit/mit ér közvetlenül a cselekvés?",
+              "explanation": "du Akkusativ alakja: dich."
+            },
+            {
+              "key": "du-dat",
+              "prompt": "neked · Dativ",
+              "target": "dir",
+              "hint": "Kinek/minek szól vagy jut valami?",
+              "explanation": "du Dativ alakja: dir."
+            },
+            {
+              "key": "er-akk",
+              "prompt": "őt · férfi · Akkusativ",
+              "target": "ihn",
+              "hint": "Kit/mit ér közvetlenül a cselekvés?",
+              "explanation": "er Akkusativ alakja: ihn."
+            },
+            {
+              "key": "er-dat",
+              "prompt": "neki · férfi · Dativ",
+              "target": "ihm",
+              "hint": "Kinek/minek szól vagy jut valami?",
+              "explanation": "er Dativ alakja: ihm."
+            },
+            {
+              "key": "sie-sg-akk",
+              "prompt": "őt · nő · Akkusativ",
+              "target": "sie",
+              "hint": "Kit/mit ér közvetlenül a cselekvés?",
+              "explanation": "sie-sg Akkusativ alakja: sie."
+            },
+            {
+              "key": "sie-sg-dat",
+              "prompt": "neki · nő · Dativ",
+              "target": "ihr",
+              "hint": "Kinek/minek szól vagy jut valami?",
+              "explanation": "sie-sg Dativ alakja: ihr."
+            },
+            {
+              "key": "es-akk",
+              "prompt": "azt · semlegesnem · Akkusativ",
+              "target": "es",
+              "hint": "Kit/mit ér közvetlenül a cselekvés?",
+              "explanation": "es Akkusativ alakja: es."
+            },
+            {
+              "key": "es-dat",
+              "prompt": "annak · semlegesnem · Dativ",
+              "target": "ihm",
+              "hint": "Kinek/minek szól vagy jut valami?",
+              "explanation": "es Dativ alakja: ihm."
+            },
+            {
+              "key": "wir-akk",
+              "prompt": "minket · Akkusativ",
+              "target": "uns",
+              "hint": "Kit/mit ér közvetlenül a cselekvés?",
+              "explanation": "wir Akkusativ alakja: uns."
+            },
+            {
+              "key": "wir-dat",
+              "prompt": "nekünk · Dativ",
+              "target": "uns",
+              "hint": "Kinek/minek szól vagy jut valami?",
+              "explanation": "wir Dativ alakja: uns."
+            },
+            {
+              "key": "ihr-akk",
+              "prompt": "benneteket · Akkusativ",
+              "target": "euch",
+              "hint": "Kit/mit ér közvetlenül a cselekvés?",
+              "explanation": "ihr Akkusativ alakja: euch."
+            },
+            {
+              "key": "ihr-dat",
+              "prompt": "nektek · Dativ",
+              "target": "euch",
+              "hint": "Kinek/minek szól vagy jut valami?",
+              "explanation": "ihr Dativ alakja: euch."
+            },
+            {
+              "key": "sie-pl-akk",
+              "prompt": "őket · Akkusativ",
+              "target": "sie",
+              "hint": "Kit/mit ér közvetlenül a cselekvés?",
+              "explanation": "sie-pl Akkusativ alakja: sie."
+            },
+            {
+              "key": "sie-pl-dat",
+              "prompt": "nekik · Dativ",
+              "target": "ihnen",
+              "hint": "Kinek/minek szól vagy jut valami?",
+              "explanation": "sie-pl Dativ alakja: ihnen."
+            },
+            {
+              "key": "formal-akk",
+              "prompt": "Önt/Önöket · Akkusativ",
+              "target": "Sie",
+              "hint": "Kit/mit ér közvetlenül a cselekvés?",
+              "explanation": "formal Akkusativ alakja: Sie."
+            },
+            {
+              "key": "formal-dat",
+              "prompt": "Önnek/Önöknek · Dativ",
+              "target": "Ihnen",
+              "hint": "Kinek/minek szól vagy jut valami?",
+              "explanation": "formal Dativ alakja: Ihnen."
+            }
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Kontrasztmondatok",
+          "subtitle": "sehen vagy helfen jelzi az esetet.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "ich-sentence-akk",
+              "prompt": "Lát engem. · férfi",
+              "target": "Er sieht mich.",
+              "hint": "sehen + Akkusativ",
+              "explanation": "A sehen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "ich-sentence-dat",
+              "prompt": "Segít nekem. · férfi",
+              "target": "Er hilft mir.",
+              "hint": "helfen + Dativ",
+              "explanation": "A helfen Dativot vonz."
+            },
+            {
+              "key": "du-sentence-akk",
+              "prompt": "Lát téged. · nő",
+              "target": "Sie sieht dich.",
+              "hint": "sehen + Akkusativ",
+              "explanation": "A sehen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "du-sentence-dat",
+              "prompt": "Segít neked. · nő",
+              "target": "Sie hilft dir.",
+              "hint": "helfen + Dativ",
+              "explanation": "A helfen Dativot vonz."
+            },
+            {
+              "key": "er-sentence-akk",
+              "prompt": "Látom őt. · férfi",
+              "target": "Ich sehe ihn.",
+              "hint": "sehen + Akkusativ",
+              "explanation": "A sehen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "er-sentence-dat",
+              "prompt": "Segítek neki. · férfi",
+              "target": "Ich helfe ihm.",
+              "hint": "helfen + Dativ",
+              "explanation": "A helfen Dativot vonz."
+            },
+            {
+              "key": "sie-sg-sentence-akk",
+              "prompt": "Látjuk őt. · nő",
+              "target": "Wir sehen sie.",
+              "hint": "sehen + Akkusativ",
+              "explanation": "A sehen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "sie-sg-sentence-dat",
+              "prompt": "Segítünk neki. · nő",
+              "target": "Wir helfen ihr.",
+              "hint": "helfen + Dativ",
+              "explanation": "A helfen Dativot vonz."
+            },
+            {
+              "key": "es-sentence-akk",
+              "prompt": "Látom azt. · semlegesnemű dolog",
+              "target": "Ich sehe es.",
+              "hint": "sehen + Akkusativ",
+              "explanation": "A sehen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "es-sentence-dat",
+              "prompt": "Segítek neki. · semlegesnemű főnévvel jelölt élőlény",
+              "target": "Ich helfe ihm.",
+              "hint": "helfen + Dativ",
+              "explanation": "A helfen Dativot vonz."
+            },
+            {
+              "key": "wir-sentence-akk",
+              "prompt": "Lát minket. · férfi",
+              "target": "Er sieht uns.",
+              "hint": "sehen + Akkusativ",
+              "explanation": "A sehen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "wir-sentence-dat",
+              "prompt": "Segít nekünk. · férfi",
+              "target": "Er hilft uns.",
+              "hint": "helfen + Dativ",
+              "explanation": "A helfen Dativot vonz."
+            },
+            {
+              "key": "ihr-sentence-akk",
+              "prompt": "Lát benneteket. · nő",
+              "target": "Sie sieht euch.",
+              "hint": "sehen + Akkusativ",
+              "explanation": "A sehen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "ihr-sentence-dat",
+              "prompt": "Segít nektek. · nő",
+              "target": "Sie hilft euch.",
+              "hint": "helfen + Dativ",
+              "explanation": "A helfen Dativot vonz."
+            },
+            {
+              "key": "sie-pl-sentence-akk",
+              "prompt": "Látom őket.",
+              "target": "Ich sehe sie.",
+              "hint": "sehen + Akkusativ",
+              "explanation": "A sehen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "sie-pl-sentence-dat",
+              "prompt": "Segítek nekik.",
+              "target": "Ich helfe ihnen.",
+              "hint": "helfen + Dativ",
+              "explanation": "A helfen Dativot vonz."
+            },
+            {
+              "key": "formal-sentence-akk",
+              "prompt": "Látom Önt/Önöket.",
+              "target": "Ich sehe Sie.",
+              "hint": "sehen + Akkusativ",
+              "explanation": "A sehen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "formal-sentence-dat",
+              "prompt": "Segítek Önnek/Önöknek.",
+              "target": "Ich helfe Ihnen.",
+              "hint": "helfen + Dativ",
+              "explanation": "A helfen Dativot vonz."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-definite-articles",
+      "track": "cases",
+      "order": 7,
+      "level": "A1",
+      "title": "der–den–dem minden nemben",
+      "summary": "Tizenkét főnév hím-, nő-, semlegesnemben és többes számban.",
+      "rule": "A hímnem mutatja leglátványosabban a váltást: der → den → dem. Nőnemben die → die → der, semlegesnemben das → das → dem. Többes Dativban den áll, és a főnév rendszerint -n végződést kap.",
+      "memoryHook": {
+        "title": "Ritmus",
+        "lines": [
+          "der – den – dem",
+          "die – die – der",
+          "das – das – dem",
+          "die – die – den + n"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Ich sehe den Arzt.",
+          "hu": "Látom az orvost."
+        },
+        {
+          "de": "Ich helfe dem Arzt.",
+          "hu": "Segítek az orvosnak."
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Határozott névelő",
+          "columns": [
+            "Nem/szám",
+            "Nominativ",
+            "Akkusativ",
+            "Dativ"
+          ],
+          "rows": [
+            [
+              "hímnem",
+              "der",
+              "den",
+              "dem"
+            ],
+            [
+              "nőnem",
+              "die",
+              "die",
+              "der"
+            ],
+            [
+              "semleges",
+              "das",
+              "das",
+              "dem"
+            ],
+            [
+              "többes",
+              "die",
+              "die",
+              "den + többnyire -n"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Tizenkét alaksor",
+          "subtitle": "Ugyanaz a főnév három esetben.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "mann-forms",
+              "prompt": "Mann · Nominativ → Akkusativ → Dativ",
+              "target": "der Mann – den Mann – dem Mann",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "der Mann; közvetlen tárgyként den Mann; Dativban dem Mann."
+            },
+            {
+              "key": "arzt-forms",
+              "prompt": "Arzt · Nominativ → Akkusativ → Dativ",
+              "target": "der Arzt – den Arzt – dem Arzt",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "der Arzt; közvetlen tárgyként den Arzt; Dativban dem Arzt."
+            },
+            {
+              "key": "lehrer-forms",
+              "prompt": "Lehrer · Nominativ → Akkusativ → Dativ",
+              "target": "der Lehrer – den Lehrer – dem Lehrer",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "der Lehrer; közvetlen tárgyként den Lehrer; Dativban dem Lehrer."
+            },
+            {
+              "key": "frau-forms",
+              "prompt": "Frau · Nominativ → Akkusativ → Dativ",
+              "target": "die Frau – die Frau – der Frau",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "die Frau; közvetlen tárgyként die Frau; Dativban der Frau."
+            },
+            {
+              "key": "mutter-forms",
+              "prompt": "Mutter · Nominativ → Akkusativ → Dativ",
+              "target": "die Mutter – die Mutter – der Mutter",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "die Mutter; közvetlen tárgyként die Mutter; Dativban der Mutter."
+            },
+            {
+              "key": "kollegin-forms",
+              "prompt": "Kollegin · Nominativ → Akkusativ → Dativ",
+              "target": "die Kollegin – die Kollegin – der Kollegin",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "die Kollegin; közvetlen tárgyként die Kollegin; Dativban der Kollegin."
+            },
+            {
+              "key": "kind-forms",
+              "prompt": "Kind · Nominativ → Akkusativ → Dativ",
+              "target": "das Kind – das Kind – dem Kind",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "das Kind; közvetlen tárgyként das Kind; Dativban dem Kind."
+            },
+            {
+              "key": "auto-forms",
+              "prompt": "Auto · Nominativ → Akkusativ → Dativ",
+              "target": "das Auto – das Auto – dem Auto",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "das Auto; közvetlen tárgyként das Auto; Dativban dem Auto."
+            },
+            {
+              "key": "buch-forms",
+              "prompt": "Buch · Nominativ → Akkusativ → Dativ",
+              "target": "das Buch – das Buch – dem Buch",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "das Buch; közvetlen tárgyként das Buch; Dativban dem Buch."
+            },
+            {
+              "key": "kinder-forms",
+              "prompt": "Kinder · Nominativ → Akkusativ → Dativ",
+              "target": "die Kinder – die Kinder – den Kindern",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "die Kinder; közvetlen tárgyként die Kinder; Dativban den Kindern."
+            },
+            {
+              "key": "freunde-forms",
+              "prompt": "Freunde · Nominativ → Akkusativ → Dativ",
+              "target": "die Freunde – die Freunde – den Freunden",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "die Freunde; közvetlen tárgyként die Freunde; Dativban den Freunden."
+            },
+            {
+              "key": "gaeste-forms",
+              "prompt": "Gäste · Nominativ → Akkusativ → Dativ",
+              "target": "die Gäste – die Gäste – den Gästen",
+              "hint": "Figyeld a névelőt és többes Dativban a főnév végét.",
+              "explanation": "die Gäste; közvetlen tárgyként die Gäste; Dativban den Gästen."
+            }
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Akkusativ vagy Dativ",
+          "subtitle": "Minden főnév két eltérő mondatban.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "mann-akk",
+              "prompt": "Látom a férfit.",
+              "target": "Ich sehe den Mann.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich sehe den Mann. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "mann-dat",
+              "prompt": "Segítek a férfinak.",
+              "target": "Ich helfe dem Mann.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich helfe dem Mann. Az érintett mondatrész Dativ."
+            },
+            {
+              "key": "arzt-akk",
+              "prompt": "Megkérdezem az orvost.",
+              "target": "Ich frage den Arzt.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich frage den Arzt. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "arzt-dat",
+              "prompt": "Válaszolok az orvosnak.",
+              "target": "Ich antworte dem Arzt.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich antworte dem Arzt. Az érintett mondatrész Dativ."
+            },
+            {
+              "key": "lehrer-akk",
+              "prompt": "Meglátogatom a tanárt.",
+              "target": "Ich besuche den Lehrer.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich besuche den Lehrer. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "lehrer-dat",
+              "prompt": "Köszönetet mondok a tanárnak.",
+              "target": "Ich danke dem Lehrer.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich danke dem Lehrer. Az érintett mondatrész Dativ."
+            },
+            {
+              "key": "frau-akk",
+              "prompt": "Látom a nőt.",
+              "target": "Ich sehe die Frau.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich sehe die Frau. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "frau-dat",
+              "prompt": "Segítek a nőnek.",
+              "target": "Ich helfe der Frau.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich helfe der Frau. Az érintett mondatrész Dativ."
+            },
+            {
+              "key": "mutter-akk",
+              "prompt": "Felhívom az édesanyát.",
+              "target": "Ich rufe die Mutter an.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich rufe die Mutter an. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "mutter-dat",
+              "prompt": "Köszönetet mondok az édesanyának.",
+              "target": "Ich danke der Mutter.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich danke der Mutter. Az érintett mondatrész Dativ."
+            },
+            {
+              "key": "kollegin-akk",
+              "prompt": "Meglátogatom a kolléganőt.",
+              "target": "Ich besuche die Kollegin.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich besuche die Kollegin. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "kollegin-dat",
+              "prompt": "Válaszolok a kolléganőnek.",
+              "target": "Ich antworte der Kollegin.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich antworte der Kollegin. Az érintett mondatrész Dativ."
+            },
+            {
+              "key": "kind-akk",
+              "prompt": "Látom a gyermeket.",
+              "target": "Ich sehe das Kind.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich sehe das Kind. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "kind-dat",
+              "prompt": "Segítek a gyermeknek.",
+              "target": "Ich helfe dem Kind.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich helfe dem Kind. Az érintett mondatrész Dativ."
+            },
+            {
+              "key": "auto-akk",
+              "prompt": "Megveszem az autót.",
+              "target": "Ich kaufe das Auto.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich kaufe das Auto. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "auto-dat",
+              "prompt": "Odamegyek az autóhoz.",
+              "target": "Ich gehe zum Auto.",
+              "alternatives": "Ich gehe zu dem Auto.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich gehe zum Auto. Az érintett mondatrész Dativ."
+            },
+            {
+              "key": "buch-akk",
+              "prompt": "Keresem a könyvet.",
+              "target": "Ich suche das Buch.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich suche das Buch. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "buch-dat",
+              "prompt": "A könyv mellett ülök.",
+              "target": "Ich sitze neben dem Buch.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich sitze neben dem Buch. Az érintett mondatrész Dativ."
+            },
+            {
+              "key": "kinder-akk",
+              "prompt": "Látom a gyerekeket.",
+              "target": "Ich sehe die Kinder.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich sehe die Kinder. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "kinder-dat",
+              "prompt": "Segítek a gyerekeknek.",
+              "target": "Ich helfe den Kindern.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich helfe den Kindern. Az érintett mondatrész Dativ."
+            },
+            {
+              "key": "freunde-akk",
+              "prompt": "Meglátogatom a barátokat.",
+              "target": "Ich besuche die Freunde.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich besuche die Freunde. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "freunde-dat",
+              "prompt": "Köszönetet mondok a barátoknak.",
+              "target": "Ich danke den Freunden.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich danke den Freunden. Az érintett mondatrész Dativ."
+            },
+            {
+              "key": "gaeste-akk",
+              "prompt": "Üdvözlöm a vendégeket.",
+              "target": "Ich begrüße die Gäste.",
+              "hint": "Közvetlen tárgy vagy Akkusativ-ige.",
+              "explanation": "Ich begrüße die Gäste. Az érintett mondatrész Akkusativ. "
+            },
+            {
+              "key": "gaeste-dat",
+              "prompt": "Kávét kínálok a vendégeknek.",
+              "target": "Ich biete den Gästen Kaffee an.",
+              "hint": "Címzett, Dativ-ige vagy Dativ-elöljáró.",
+              "explanation": "Ich biete den Gästen Kaffee an. Az érintett mondatrész Dativ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-determiners",
+      "track": "cases",
+      "order": 8,
+      "level": "A1–A2",
+      "title": "ein, kein, mein, dieser",
+      "summary": "Névelőszók és birtokos alakok több nemben.",
+      "rule": "Az ein-típusú és dieser-típusú szavak végződése mutatja az esetet. Hímnemű Akkusativban -en, hím- és semleges Dativban -em, nőnemű Dativban -er, többes Dativban -en jelenik meg.",
+      "memoryHook": {
+        "title": "Végződések",
+        "lines": [
+          "hím Akk: -en",
+          "hím/semleges Dat: -em",
+          "nőnem Dat: -er",
+          "többes Dat: -en"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Ich sehe meinen Bruder.",
+          "hu": "Látom a fiútestvéremet."
+        },
+        {
+          "de": "Ich helfe meinem Bruder.",
+          "hu": "Segítek a fiútestvéremnek."
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Példasor",
+          "columns": [
+            "Nominativ",
+            "Akkusativ",
+            "Dativ"
+          ],
+          "rows": [
+            [
+              "mein Bruder",
+              "meinen Bruder",
+              "meinem Bruder"
+            ],
+            [
+              "eine Frau",
+              "eine Frau",
+              "einer Frau"
+            ],
+            [
+              "dieses Kind",
+              "dieses Kind",
+              "diesem Kind"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Névelőszói alaksorok",
+          "subtitle": "Tizenkét különböző névelő és főnév.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "ein-mann-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "ein Mann – einen Mann – einem Mann",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: ein Mann, einen Mann, einem Mann."
+            },
+            {
+              "key": "kein-mann-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "kein Mann – keinen Mann – keinem Mann",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: kein Mann, keinen Mann, keinem Mann."
+            },
+            {
+              "key": "mein-bruder-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "mein Bruder – meinen Bruder – meinem Bruder",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: mein Bruder, meinen Bruder, meinem Bruder."
+            },
+            {
+              "key": "dein-vater-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "dein Vater – deinen Vater – deinem Vater",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: dein Vater, deinen Vater, deinem Vater."
+            },
+            {
+              "key": "eine-frau-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "eine Frau – eine Frau – einer Frau",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: eine Frau, eine Frau, einer Frau."
+            },
+            {
+              "key": "meine-freundin-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "meine Freundin – meine Freundin – meiner Freundin",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: meine Freundin, meine Freundin, meiner Freundin."
+            },
+            {
+              "key": "ein-kind-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "ein Kind – ein Kind – einem Kind",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: ein Kind, ein Kind, einem Kind."
+            },
+            {
+              "key": "mein-auto-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "mein Auto – mein Auto – meinem Auto",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: mein Auto, mein Auto, meinem Auto."
+            },
+            {
+              "key": "dieser-mann-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "dieser Mann – diesen Mann – diesem Mann",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: dieser Mann, diesen Mann, diesem Mann."
+            },
+            {
+              "key": "diese-frau-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "diese Frau – diese Frau – dieser Frau",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: diese Frau, diese Frau, dieser Frau."
+            },
+            {
+              "key": "dieses-kind-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "dieses Kind – dieses Kind – diesem Kind",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: dieses Kind, dieses Kind, diesem Kind."
+            },
+            {
+              "key": "meine-freunde-forms",
+              "prompt": "Nominativ → Akkusativ → Dativ",
+              "target": "meine Freunde – meine Freunde – meinen Freunden",
+              "hint": "A névelőszó végződése jelzi az esetet.",
+              "explanation": "A három alak: meine Freunde, meine Freunde, meinen Freunden."
+            }
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Alakok mondatban",
+          "subtitle": "A forma mellett az igevonzat is dönt.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "ein-mann-akk",
+              "prompt": "Látok egy férfit.",
+              "target": "Ich sehe einen Mann.",
+              "hint": "Akkusativ",
+              "explanation": "Ich sehe einen Mann. A tárgy Akkusativ."
+            },
+            {
+              "key": "ein-mann-dat",
+              "prompt": "Segítek egy férfinak.",
+              "target": "Ich helfe einem Mann.",
+              "hint": "Dativ",
+              "explanation": "Ich helfe einem Mann. A mondat Dativot kér."
+            },
+            {
+              "key": "kein-mann-akk",
+              "prompt": "Nem látok férfit.",
+              "target": "Ich sehe keinen Mann.",
+              "hint": "Akkusativ",
+              "explanation": "Ich sehe keinen Mann. A tárgy Akkusativ."
+            },
+            {
+              "key": "kein-mann-dat",
+              "prompt": "Egyetlen férfinak sem segítek.",
+              "target": "Ich helfe keinem Mann.",
+              "hint": "Dativ",
+              "explanation": "Ich helfe keinem Mann. A mondat Dativot kér."
+            },
+            {
+              "key": "mein-bruder-akk",
+              "prompt": "Felhívom a fiútestvéremet.",
+              "target": "Ich rufe meinen Bruder an.",
+              "hint": "Akkusativ",
+              "explanation": "Ich rufe meinen Bruder an. A tárgy Akkusativ."
+            },
+            {
+              "key": "mein-bruder-dat",
+              "prompt": "Üzenetet írok a fiútestvéremnek.",
+              "target": "Ich schreibe meinem Bruder eine Nachricht.",
+              "hint": "Dativ",
+              "explanation": "Ich schreibe meinem Bruder eine Nachricht. A mondat Dativot kér."
+            },
+            {
+              "key": "dein-vater-akk",
+              "prompt": "Ismerem az édesapádat.",
+              "target": "Ich kenne deinen Vater.",
+              "hint": "Akkusativ",
+              "explanation": "Ich kenne deinen Vater. A tárgy Akkusativ."
+            },
+            {
+              "key": "dein-vater-dat",
+              "prompt": "Köszönetet mondok az édesapádnak.",
+              "target": "Ich danke deinem Vater.",
+              "hint": "Dativ",
+              "explanation": "Ich danke deinem Vater. A mondat Dativot kér."
+            },
+            {
+              "key": "eine-frau-akk",
+              "prompt": "Látok egy nőt.",
+              "target": "Ich sehe eine Frau.",
+              "hint": "Akkusativ",
+              "explanation": "Ich sehe eine Frau. A tárgy Akkusativ."
+            },
+            {
+              "key": "eine-frau-dat",
+              "prompt": "Segítek egy nőnek.",
+              "target": "Ich helfe einer Frau.",
+              "hint": "Dativ",
+              "explanation": "Ich helfe einer Frau. A mondat Dativot kér."
+            },
+            {
+              "key": "meine-freundin-akk",
+              "prompt": "Meglátogatom a barátnőmet.",
+              "target": "Ich besuche meine Freundin.",
+              "hint": "Akkusativ",
+              "explanation": "Ich besuche meine Freundin. A tárgy Akkusativ."
+            },
+            {
+              "key": "meine-freundin-dat",
+              "prompt": "Üzenetet írok a barátnőmnek.",
+              "target": "Ich schreibe meiner Freundin eine Nachricht.",
+              "hint": "Dativ",
+              "explanation": "Ich schreibe meiner Freundin eine Nachricht. A mondat Dativot kér."
+            },
+            {
+              "key": "ein-kind-akk",
+              "prompt": "Látok egy gyermeket.",
+              "target": "Ich sehe ein Kind.",
+              "hint": "Akkusativ",
+              "explanation": "Ich sehe ein Kind. A tárgy Akkusativ."
+            },
+            {
+              "key": "ein-kind-dat",
+              "prompt": "Segítek egy gyermeknek.",
+              "target": "Ich helfe einem Kind.",
+              "hint": "Dativ",
+              "explanation": "Ich helfe einem Kind. A mondat Dativot kér."
+            },
+            {
+              "key": "mein-auto-akk",
+              "prompt": "Eladom az autómat.",
+              "target": "Ich verkaufe mein Auto.",
+              "hint": "Akkusativ",
+              "explanation": "Ich verkaufe mein Auto. A tárgy Akkusativ."
+            },
+            {
+              "key": "mein-auto-dat",
+              "prompt": "Az autóm mellett állok.",
+              "target": "Ich stehe neben meinem Auto.",
+              "hint": "Dativ",
+              "explanation": "Ich stehe neben meinem Auto. A mondat Dativot kér."
+            },
+            {
+              "key": "dieser-mann-akk",
+              "prompt": "Ezt a férfit keresem.",
+              "target": "Ich suche diesen Mann.",
+              "hint": "Akkusativ",
+              "explanation": "Ich suche diesen Mann. A tárgy Akkusativ."
+            },
+            {
+              "key": "dieser-mann-dat",
+              "prompt": "Ennek a férfinak hiszek.",
+              "target": "Ich glaube diesem Mann.",
+              "hint": "Dativ",
+              "explanation": "Ich glaube diesem Mann. A mondat Dativot kér."
+            },
+            {
+              "key": "diese-frau-akk",
+              "prompt": "Ezt a nőt kérdezem meg.",
+              "target": "Ich frage diese Frau.",
+              "hint": "Akkusativ",
+              "explanation": "Ich frage diese Frau. A tárgy Akkusativ."
+            },
+            {
+              "key": "diese-frau-dat",
+              "prompt": "Ennek a nőnek válaszolok.",
+              "target": "Ich antworte dieser Frau.",
+              "hint": "Dativ",
+              "explanation": "Ich antworte dieser Frau. A mondat Dativot kér."
+            },
+            {
+              "key": "dieses-kind-akk",
+              "prompt": "Ezt a gyermeket hallom.",
+              "target": "Ich höre dieses Kind.",
+              "hint": "Akkusativ",
+              "explanation": "Ich höre dieses Kind. A tárgy Akkusativ."
+            },
+            {
+              "key": "dieses-kind-dat",
+              "prompt": "Ennek a gyermeknek segítek.",
+              "target": "Ich helfe diesem Kind.",
+              "hint": "Dativ",
+              "explanation": "Ich helfe diesem Kind. A mondat Dativot kér."
+            },
+            {
+              "key": "meine-freunde-akk",
+              "prompt": "Meghívom a barátaimat.",
+              "target": "Ich lade meine Freunde ein.",
+              "hint": "Akkusativ",
+              "explanation": "Ich lade meine Freunde ein. A tárgy Akkusativ."
+            },
+            {
+              "key": "meine-freunde-dat",
+              "prompt": "A barátaimnak mesélek a kirándulásról.",
+              "target": "Ich erzähle meinen Freunden von der Reise.",
+              "hint": "Dativ",
+              "explanation": "Ich erzähle meinen Freunden von der Reise. A mondat Dativot kér."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-akk-verbs",
+      "track": "cases",
+      "order": 9,
+      "level": "A1–A2",
+      "title": "Akkusativot kérő igék",
+      "summary": "Tizenhat gyakori igét a vonzatával együtt tanulsz.",
+      "rule": "Ne csak az ige magyar jelentését tárold. Tanuld együtt a mintát: jemanden sehen, jemanden fragen, etwas brauchen. Ezekben a személy vagy dolog Akkusativban áll.",
+      "memoryHook": {
+        "title": "Tárolási minta",
+        "lines": [
+          "sehen → jemanden sehen",
+          "fragen → jemanden fragen",
+          "brauchen → etwas brauchen"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Ich frage den Lehrer.",
+          "hu": "Megkérdezem a tanárt."
+        },
+        {
+          "de": "Wir suchen den Bahnhof.",
+          "hu": "A pályaudvart keressük."
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Igevonzat",
+          "columns": [
+            "Ige",
+            "Minta"
+          ],
+          "rows": [
+            [
+              "sehen",
+              "jemanden/etwas sehen"
+            ],
+            [
+              "hören",
+              "jemanden/etwas hören"
+            ],
+            [
+              "kennen",
+              "jemanden/etwas kennen"
+            ],
+            [
+              "lieben",
+              "jemanden/etwas lieben"
+            ],
+            [
+              "fragen",
+              "jemanden fragen"
+            ],
+            [
+              "besuchen",
+              "jemanden/etwas besuchen"
+            ],
+            [
+              "treffen",
+              "jemanden treffen"
+            ],
+            [
+              "kaufen",
+              "etwas kaufen"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "chunks",
+          "title": "Ige és vonzat",
+          "subtitle": "Először egyetlen egységként.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "sehen-chunk",
+              "prompt": "sehen · vonzat",
+              "target": "jemanden/etwas sehen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden/etwas sehen."
+            },
+            {
+              "key": "hoeren-chunk",
+              "prompt": "hören · vonzat",
+              "target": "jemanden/etwas hören",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden/etwas hören."
+            },
+            {
+              "key": "kennen-chunk",
+              "prompt": "kennen · vonzat",
+              "target": "jemanden/etwas kennen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden/etwas kennen."
+            },
+            {
+              "key": "lieben-chunk",
+              "prompt": "lieben · vonzat",
+              "target": "jemanden/etwas lieben",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden/etwas lieben."
+            },
+            {
+              "key": "fragen-chunk",
+              "prompt": "fragen · vonzat",
+              "target": "jemanden fragen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden fragen."
+            },
+            {
+              "key": "besuchen-chunk",
+              "prompt": "besuchen · vonzat",
+              "target": "jemanden/etwas besuchen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden/etwas besuchen."
+            },
+            {
+              "key": "treffen-chunk",
+              "prompt": "treffen · vonzat",
+              "target": "jemanden treffen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden treffen."
+            },
+            {
+              "key": "kaufen-chunk",
+              "prompt": "kaufen · vonzat",
+              "target": "etwas kaufen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: etwas kaufen."
+            },
+            {
+              "key": "brauchen-chunk",
+              "prompt": "brauchen · vonzat",
+              "target": "jemanden/etwas brauchen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden/etwas brauchen."
+            },
+            {
+              "key": "suchen-chunk",
+              "prompt": "suchen · vonzat",
+              "target": "jemanden/etwas suchen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden/etwas suchen."
+            },
+            {
+              "key": "nehmen-chunk",
+              "prompt": "nehmen · vonzat",
+              "target": "etwas nehmen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: etwas nehmen."
+            },
+            {
+              "key": "lesen-chunk",
+              "prompt": "lesen · vonzat",
+              "target": "etwas lesen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: etwas lesen."
+            },
+            {
+              "key": "verstehen-chunk",
+              "prompt": "verstehen · vonzat",
+              "target": "jemanden/etwas verstehen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden/etwas verstehen."
+            },
+            {
+              "key": "vergessen-chunk",
+              "prompt": "vergessen · vonzat",
+              "target": "jemanden/etwas vergessen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden/etwas vergessen."
+            },
+            {
+              "key": "anrufen-chunk",
+              "prompt": "anrufen · vonzat",
+              "target": "jemanden anrufen",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden anrufen."
+            },
+            {
+              "key": "bitten-chunk",
+              "prompt": "bitten · vonzat",
+              "target": "jemanden um etwas bitten",
+              "hint": "A személy vagy dolog Akkusativ.",
+              "explanation": "Ezt az igét a tárggyal együtt tárold: jemanden um etwas bitten."
+            }
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Akkusativ-igék mondatokban",
+          "subtitle": "Személyek, dolgok, nemek és igeidők változnak.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "sehen-sentence",
+              "prompt": "Látom a szomszédot.",
+              "target": "Ich sehe den Nachbarn.",
+              "hint": "sehen + Akkusativ",
+              "explanation": "A sehen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "hoeren-sentence",
+              "prompt": "Hallom a zenét.",
+              "target": "Ich höre die Musik.",
+              "hint": "hören + Akkusativ",
+              "explanation": "A hören közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "kennen-sentence",
+              "prompt": "Ismerjük ezt a várost.",
+              "target": "Wir kennen diese Stadt.",
+              "hint": "kennen + Akkusativ",
+              "explanation": "A kennen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "lieben-sentence",
+              "prompt": "Szereti a családját. · nő",
+              "target": "Sie liebt ihre Familie.",
+              "hint": "lieben + Akkusativ",
+              "explanation": "A lieben közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "fragen-sentence",
+              "prompt": "Megkérdezem a tanárt.",
+              "target": "Ich frage den Lehrer.",
+              "hint": "fragen + Akkusativ",
+              "explanation": "A fragen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "besuchen-sentence",
+              "prompt": "Meglátogatjátok a nagymamátokat.",
+              "target": "Ihr besucht eure Großmutter.",
+              "hint": "besuchen + Akkusativ",
+              "explanation": "A besuchen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "treffen-sentence",
+              "prompt": "Ma találkozom egy kollégával.",
+              "target": "Ich treffe heute einen Kollegen.",
+              "hint": "treffen + Akkusativ",
+              "explanation": "A treffen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "kaufen-sentence",
+              "prompt": "Vesz egy új telefont. · férfi",
+              "target": "Er kauft ein neues Handy.",
+              "hint": "kaufen + Akkusativ",
+              "explanation": "A kaufen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "brauchen-sentence",
+              "prompt": "Szükségem van a kulcsra.",
+              "target": "Ich brauche den Schlüssel.",
+              "hint": "brauchen + Akkusativ",
+              "explanation": "A brauchen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "suchen-sentence",
+              "prompt": "A pályaudvart keressük.",
+              "target": "Wir suchen den Bahnhof.",
+              "hint": "suchen + Akkusativ",
+              "explanation": "A suchen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "nehmen-sentence",
+              "prompt": "A korábbi vonatot választjátok.",
+              "target": "Ihr nehmt den früheren Zug.",
+              "hint": "nehmen + Akkusativ",
+              "explanation": "A nehmen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "lesen-sentence",
+              "prompt": "Olvassa az üzenetet. · nő",
+              "target": "Sie liest die Nachricht.",
+              "hint": "lesen + Akkusativ",
+              "explanation": "A lesen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "verstehen-sentence",
+              "prompt": "Nem értem ezt a kérdést.",
+              "target": "Ich verstehe diese Frage nicht.",
+              "hint": "verstehen + Akkusativ",
+              "explanation": "A verstehen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "vergessen-sentence",
+              "prompt": "Elfelejtette a találkozót. · férfi",
+              "target": "Er hat den Termin vergessen.",
+              "hint": "vergessen + Akkusativ",
+              "explanation": "A vergessen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "anrufen-sentence",
+              "prompt": "Este felhívlak.",
+              "target": "Ich rufe dich am Abend an.",
+              "hint": "anrufen + Akkusativ",
+              "explanation": "A anrufen közvetlen tárgya Akkusativ."
+            },
+            {
+              "key": "bitten-sentence",
+              "prompt": "Segítséget kérek tőle. · nő",
+              "target": "Ich bitte sie um Hilfe.",
+              "hint": "bitten + Akkusativ",
+              "explanation": "A bitten közvetlen tárgya Akkusativ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-dat-verbs",
+      "track": "cases",
+      "order": 10,
+      "level": "A1–B1",
+      "title": "Dativot kérő igék",
+      "summary": "Tizenhat gyakori Dativ-ige különböző környezetben.",
+      "rule": "A magyar kérdés jó kapaszkodó lehet, de a biztos tudás az igevonzat: jemandem helfen, jemandem danken, jemandem vertrauen. A gefallen típusnál az, ami tetszik, az alany; akinek tetszik, Dativ.",
+      "memoryHook": {
+        "title": "Tárolási minta",
+        "lines": [
+          "helfen → jemandem helfen",
+          "danken → jemandem danken",
+          "gefallen → jemandem gefallen"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Diese Jacke gefällt mir.",
+          "hu": "Tetszik nekem ez a kabát."
+        },
+        {
+          "de": "Ich vertraue dem Arzt.",
+          "hu": "Bízom az orvosban."
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Igevonzat",
+          "columns": [
+            "Ige",
+            "Minta"
+          ],
+          "rows": [
+            [
+              "helfen",
+              "jemandem helfen"
+            ],
+            [
+              "danken",
+              "jemandem danken"
+            ],
+            [
+              "antworten",
+              "jemandem antworten"
+            ],
+            [
+              "folgen",
+              "jemandem folgen"
+            ],
+            [
+              "zuhören",
+              "jemandem zuhören"
+            ],
+            [
+              "gefallen",
+              "jemandem gefallen"
+            ],
+            [
+              "fehlen",
+              "jemandem fehlen"
+            ],
+            [
+              "vertrauen",
+              "jemandem vertrauen"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "chunks",
+          "title": "Ige és Dativ-vonzat",
+          "subtitle": "Az igét a jemandem alakkal együtt tárold.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "helfen-chunk",
+              "prompt": "helfen · vonzat",
+              "target": "jemandem helfen",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem helfen."
+            },
+            {
+              "key": "danken-chunk",
+              "prompt": "danken · vonzat",
+              "target": "jemandem danken",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem danken."
+            },
+            {
+              "key": "antworten-chunk",
+              "prompt": "antworten · vonzat",
+              "target": "jemandem antworten",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem antworten."
+            },
+            {
+              "key": "folgen-chunk",
+              "prompt": "folgen · vonzat",
+              "target": "jemandem folgen",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem folgen."
+            },
+            {
+              "key": "zuhoeren-chunk",
+              "prompt": "zuhören · vonzat",
+              "target": "jemandem zuhören",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem zuhören."
+            },
+            {
+              "key": "gefallen-chunk",
+              "prompt": "gefallen · vonzat",
+              "target": "jemandem gefallen",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem gefallen."
+            },
+            {
+              "key": "fehlen-chunk",
+              "prompt": "fehlen · vonzat",
+              "target": "jemandem fehlen",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem fehlen."
+            },
+            {
+              "key": "vertrauen-chunk",
+              "prompt": "vertrauen · vonzat",
+              "target": "jemandem vertrauen",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem vertrauen."
+            },
+            {
+              "key": "begegnen-chunk",
+              "prompt": "begegnen · vonzat",
+              "target": "jemandem begegnen",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem begegnen."
+            },
+            {
+              "key": "gratulieren-chunk",
+              "prompt": "gratulieren · vonzat",
+              "target": "jemandem gratulieren",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem gratulieren."
+            },
+            {
+              "key": "glauben-chunk",
+              "prompt": "glauben · vonzat",
+              "target": "jemandem glauben",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem glauben."
+            },
+            {
+              "key": "gehoeren-chunk",
+              "prompt": "gehören · vonzat",
+              "target": "jemandem gehören",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem gehören."
+            },
+            {
+              "key": "schmecken-chunk",
+              "prompt": "schmecken · vonzat",
+              "target": "jemandem schmecken",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem schmecken."
+            },
+            {
+              "key": "passen-chunk",
+              "prompt": "passen · vonzat",
+              "target": "jemandem passen",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem passen."
+            },
+            {
+              "key": "widersprechen-chunk",
+              "prompt": "widersprechen · vonzat",
+              "target": "jemandem widersprechen",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem widersprechen."
+            },
+            {
+              "key": "verzeihen-chunk",
+              "prompt": "verzeihen · vonzat",
+              "target": "jemandem verzeihen",
+              "hint": "A személy Dativ.",
+              "explanation": "Ezt az igét a vonzatával együtt tárold: jemandem verzeihen."
+            }
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Dativ-igék mondatokban",
+          "subtitle": "Névmások és főnevek minden nemben.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "helfen-sentence",
+              "prompt": "Segítek a szomszédomnak.",
+              "target": "Ich helfe meinem Nachbarn.",
+              "hint": "helfen + Dativ",
+              "explanation": "A helfen Dativot vonz."
+            },
+            {
+              "key": "danken-sentence",
+              "prompt": "Köszönetet mondunk a tanárnőnek.",
+              "target": "Wir danken der Lehrerin.",
+              "hint": "danken + Dativ",
+              "explanation": "A danken Dativot vonz."
+            },
+            {
+              "key": "antworten-sentence",
+              "prompt": "Válaszol neki. · nő válaszol férfinak",
+              "target": "Sie antwortet ihm.",
+              "hint": "antworten + Dativ",
+              "explanation": "A antworten Dativot vonz."
+            },
+            {
+              "key": "folgen-sentence",
+              "prompt": "A kutya követi a gazdáját. · férfi gazda",
+              "target": "Der Hund folgt seinem Besitzer.",
+              "hint": "folgen + Dativ",
+              "explanation": "A folgen Dativot vonz."
+            },
+            {
+              "key": "zuhoeren-sentence",
+              "prompt": "Figyelmesen hallgatlak.",
+              "target": "Ich höre dir aufmerksam zu.",
+              "hint": "zuhören + Dativ",
+              "explanation": "A zuhören Dativot vonz."
+            },
+            {
+              "key": "gefallen-sentence",
+              "prompt": "Tetszik nekem ez a kabát.",
+              "target": "Diese Jacke gefällt mir.",
+              "hint": "gefallen + Dativ",
+              "explanation": "A gefallen Dativot vonz."
+            },
+            {
+              "key": "fehlen-sentence",
+              "prompt": "Hiányoznak neki a barátai. · nő",
+              "target": "Ihre Freunde fehlen ihr.",
+              "hint": "fehlen + Dativ",
+              "explanation": "A fehlen Dativot vonz."
+            },
+            {
+              "key": "vertrauen-sentence",
+              "prompt": "Bízom az orvosban.",
+              "target": "Ich vertraue dem Arzt.",
+              "hint": "vertrauen + Dativ",
+              "explanation": "A vertrauen Dativot vonz."
+            },
+            {
+              "key": "begegnen-sentence",
+              "prompt": "Találkoztunk egy régi ismerőssel.",
+              "target": "Wir sind einem alten Bekannten begegnet.",
+              "hint": "begegnen + Dativ",
+              "explanation": "A begegnen Dativot vonz."
+            },
+            {
+              "key": "gratulieren-sentence",
+              "prompt": "Gratulálok neked a születésnapodhoz.",
+              "target": "Ich gratuliere dir zum Geburtstag.",
+              "hint": "gratulieren + Dativ",
+              "explanation": "A gratulieren Dativot vonz."
+            },
+            {
+              "key": "glauben-sentence",
+              "prompt": "Nem hiszünk ennek az embernek.",
+              "target": "Wir glauben diesem Mann nicht.",
+              "hint": "glauben + Dativ",
+              "explanation": "A glauben Dativot vonz."
+            },
+            {
+              "key": "gehoeren-sentence",
+              "prompt": "Ez a kerékpár a gyermekhez tartozik.",
+              "target": "Dieses Fahrrad gehört dem Kind.",
+              "hint": "gehören + Dativ",
+              "explanation": "A gehören Dativot vonz."
+            },
+            {
+              "key": "schmecken-sentence",
+              "prompt": "Ízlik nektek a leves?",
+              "target": "Schmeckt euch die Suppe?",
+              "hint": "schmecken + Dativ",
+              "explanation": "A schmecken Dativot vonz."
+            },
+            {
+              "key": "passen-sentence",
+              "prompt": "Jól áll neki a ruha. · nő",
+              "target": "Das Kleid passt ihr gut.",
+              "hint": "passen + Dativ",
+              "explanation": "A passen Dativot vonz."
+            },
+            {
+              "key": "widersprechen-sentence",
+              "prompt": "Nem akarok ellentmondani Önnek.",
+              "target": "Ich möchte Ihnen nicht widersprechen.",
+              "hint": "widersprechen + Dativ",
+              "explanation": "A widersprechen Dativot vonz."
+            },
+            {
+              "key": "verzeihen-sentence",
+              "prompt": "Megbocsátok a barátomnak.",
+              "target": "Ich verzeihe meinem Freund.",
+              "hint": "verzeihen + Dativ",
+              "explanation": "A verzeihen Dativot vonz."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-transfer-verbs",
+      "track": "cases",
+      "order": 11,
+      "level": "A1–B1",
+      "title": "Valakinek valamit",
+      "summary": "Húsz átadási, közlési és felajánlási szerkezet.",
+      "rule": "Két tárgynál előbb azonosítsd a címzettet, majd a dolgot. A címzett rendszerint Dativ, a közvetlenül átadott, megmutatott vagy közölt dolog Akkusativ.",
+      "memoryHook": {
+        "title": "Váz",
+        "lines": [
+          "jemandem etwas geben",
+          "jemandem etwas zeigen",
+          "jemandem etwas erklären"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Ich empfehle dir diesen Film.",
+          "hu": "Ezt a filmet ajánlom neked."
+        },
+        {
+          "de": "Sie liest dem Kind eine Geschichte vor.",
+          "hu": "Felolvas a gyermeknek egy történetet."
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Szerepek",
+          "columns": [
+            "Elem",
+            "Kérdés",
+            "Eset"
+          ],
+          "rows": [
+            [
+              "címzett",
+              "kinek?",
+              "Dativ"
+            ],
+            [
+              "dolog/tartalom",
+              "mit?",
+              "Akkusativ"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "roles",
+          "title": "Címzett és dolog",
+          "subtitle": "Húsz mondat részeinek azonosítása.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "give-book-roles",
+              "prompt": "Odaadom neki a könyvet. · férfi · Dativ | Akkusativ",
+              "target": "ihm | das Buch",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Ich gebe ihm das Buch. Címzett: ihm; dolog: das Buch."
+            },
+            {
+              "key": "show-map-roles",
+              "prompt": "Megmutatod nekem a térképet. · Dativ | Akkusativ",
+              "target": "mir | die Karte",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Du zeigst mir die Karte. Címzett: mir; dolog: die Karte."
+            },
+            {
+              "key": "send-mail-roles",
+              "prompt": "E-mailt küldünk a főnöknek. · Dativ | Akkusativ",
+              "target": "dem Chef | eine E-Mail",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Wir schicken dem Chef eine E-Mail. Címzett: dem Chef; dolog: eine E-Mail."
+            },
+            {
+              "key": "bring-tea-roles",
+              "prompt": "Teát visztek a vendégnek. · Dativ | Akkusativ",
+              "target": "dem Gast | einen Tee",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Ihr bringt dem Gast einen Tee. Címzett: dem Gast; dolog: einen Tee."
+            },
+            {
+              "key": "gift-flowers-roles",
+              "prompt": "Virágot ajándékoz a barátnőjének. · férfi · Dativ | Akkusativ",
+              "target": "seiner Freundin | Blumen",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Er schenkt seiner Freundin Blumen. Címzett: seiner Freundin; dolog: Blumen."
+            },
+            {
+              "key": "lend-pen-roles",
+              "prompt": "Kölcsönad nekem egy tollat. · nő · Dativ | Akkusativ",
+              "target": "mir | einen Stift",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Sie leiht mir einen Stift. Címzett: mir; dolog: einen Stift."
+            },
+            {
+              "key": "explain-way-roles",
+              "prompt": "Elmagyarázzák nekünk az utat. · Dativ | Akkusativ",
+              "target": "uns | den Weg",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Sie erklären uns den Weg. Címzett: uns; dolog: den Weg."
+            },
+            {
+              "key": "tell-news-roles",
+              "prompt": "Elmesélem nektek a hírt. · Dativ | Akkusativ",
+              "target": "euch | die Nachricht",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Ich erzähle euch die Nachricht. Címzett: euch; dolog: die Nachricht."
+            },
+            {
+              "key": "recommend-film-roles",
+              "prompt": "Ezt a filmet ajánlom neked. · Dativ | Akkusativ",
+              "target": "dir | diesen Film",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Ich empfehle dir diesen Film. Címzett: dir; dolog: diesen Film."
+            },
+            {
+              "key": "offer-seat-roles",
+              "prompt": "Felajánlja az idős hölgynek a helyét. · férfi · Dativ | Akkusativ",
+              "target": "der älteren Dame | seinen Platz",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Er bietet der älteren Dame seinen Platz an. Címzett: der älteren Dame; dolog: seinen Platz."
+            },
+            {
+              "key": "write-friend-roles",
+              "prompt": "Levelet írok a barátomnak. · Dativ | Akkusativ",
+              "target": "meinem Freund | einen Brief",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Ich schreibe meinem Freund einen Brief. Címzett: meinem Freund; dolog: einen Brief."
+            },
+            {
+              "key": "read-child-roles",
+              "prompt": "Felolvas a gyermeknek egy történetet. · nő · Dativ | Akkusativ",
+              "target": "dem Kind | eine Geschichte",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Sie liest dem Kind eine Geschichte vor. Címzett: dem Kind; dolog: eine Geschichte."
+            },
+            {
+              "key": "buy-son-roles",
+              "prompt": "A fiának vesz egy kabátot. · nő · Dativ | Akkusativ",
+              "target": "ihrem Sohn | eine Jacke",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Sie kauft ihrem Sohn eine Jacke. Címzett: ihrem Sohn; dolog: eine Jacke."
+            },
+            {
+              "key": "cook-family-roles",
+              "prompt": "Vacsorát főzünk a családnak. · Dativ | Akkusativ",
+              "target": "der Familie | das Abendessen",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Wir kochen der Familie das Abendessen. Címzett: der Familie; dolog: das Abendessen."
+            },
+            {
+              "key": "reserve-guests-roles",
+              "prompt": "Szobát foglalok a vendégeimnek. · Dativ | Akkusativ",
+              "target": "meinen Gästen | ein Zimmer",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Ich reserviere meinen Gästen ein Zimmer. Címzett: meinen Gästen; dolog: ein Zimmer."
+            },
+            {
+              "key": "promise-daughter-roles",
+              "prompt": "Kirándulást ígér a lányának. · férfi · Dativ | Akkusativ",
+              "target": "seiner Tochter | einen Ausflug",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Er verspricht seiner Tochter einen Ausflug. Címzett: seiner Tochter; dolog: einen Ausflug."
+            },
+            {
+              "key": "hand-customer-roles",
+              "prompt": "A pénztáros odaadja a vevőnek a nyugtát. · Dativ | Akkusativ",
+              "target": "dem Kunden | den Kassenzettel",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Die Kassiererin gibt dem Kunden den Kassenzettel. Címzett: dem Kunden; dolog: den Kassenzettel."
+            },
+            {
+              "key": "serve-children-roles",
+              "prompt": "A gyerekeknek levest szolgálnak fel. · Dativ | Akkusativ",
+              "target": "den Kindern | eine Suppe",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Sie servieren den Kindern eine Suppe. Címzett: den Kindern; dolog: eine Suppe."
+            },
+            {
+              "key": "teach-students-roles",
+              "prompt": "A tanár új nyelvtani szabályt tanít a diákoknak. · Dativ | Akkusativ",
+              "target": "den Schülern | eine neue Grammatikregel",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Der Lehrer bringt den Schülern eine neue Grammatikregel bei. Címzett: den Schülern; dolog: eine neue Grammatikregel."
+            },
+            {
+              "key": "owe-colleague-roles",
+              "prompt": "Tíz euróval tartozom a kollégámnak. · Dativ | Akkusativ",
+              "target": "meinem Kollegen | zehn Euro",
+              "hint": "Kinek? | Mit?",
+              "explanation": "Ich schulde meinem Kollegen zehn Euro. Címzett: meinem Kollegen; dolog: zehn Euro."
+            }
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Teljes mondatok",
+          "subtitle": "Húsz ige és élethelyzet.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "give-book-sentence",
+              "prompt": "Odaadom neki a könyvet. · férfi",
+              "target": "Ich gebe ihm das Buch.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "ihm Dativ; das Buch Akkusativ."
+            },
+            {
+              "key": "show-map-sentence",
+              "prompt": "Megmutatod nekem a térképet.",
+              "target": "Du zeigst mir die Karte.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "mir Dativ; die Karte Akkusativ."
+            },
+            {
+              "key": "send-mail-sentence",
+              "prompt": "E-mailt küldünk a főnöknek.",
+              "target": "Wir schicken dem Chef eine E-Mail.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "dem Chef Dativ; eine E-Mail Akkusativ."
+            },
+            {
+              "key": "bring-tea-sentence",
+              "prompt": "Teát visztek a vendégnek.",
+              "target": "Ihr bringt dem Gast einen Tee.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "dem Gast Dativ; einen Tee Akkusativ."
+            },
+            {
+              "key": "gift-flowers-sentence",
+              "prompt": "Virágot ajándékoz a barátnőjének. · férfi",
+              "target": "Er schenkt seiner Freundin Blumen.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "seiner Freundin Dativ; Blumen Akkusativ."
+            },
+            {
+              "key": "lend-pen-sentence",
+              "prompt": "Kölcsönad nekem egy tollat. · nő",
+              "target": "Sie leiht mir einen Stift.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "mir Dativ; einen Stift Akkusativ."
+            },
+            {
+              "key": "explain-way-sentence",
+              "prompt": "Elmagyarázzák nekünk az utat.",
+              "target": "Sie erklären uns den Weg.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "uns Dativ; den Weg Akkusativ."
+            },
+            {
+              "key": "tell-news-sentence",
+              "prompt": "Elmesélem nektek a hírt.",
+              "target": "Ich erzähle euch die Nachricht.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "euch Dativ; die Nachricht Akkusativ."
+            },
+            {
+              "key": "recommend-film-sentence",
+              "prompt": "Ezt a filmet ajánlom neked.",
+              "target": "Ich empfehle dir diesen Film.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "dir Dativ; diesen Film Akkusativ."
+            },
+            {
+              "key": "offer-seat-sentence",
+              "prompt": "Felajánlja az idős hölgynek a helyét. · férfi",
+              "target": "Er bietet der älteren Dame seinen Platz an.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "der älteren Dame Dativ; seinen Platz Akkusativ."
+            },
+            {
+              "key": "write-friend-sentence",
+              "prompt": "Levelet írok a barátomnak.",
+              "target": "Ich schreibe meinem Freund einen Brief.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "meinem Freund Dativ; einen Brief Akkusativ."
+            },
+            {
+              "key": "read-child-sentence",
+              "prompt": "Felolvas a gyermeknek egy történetet. · nő",
+              "target": "Sie liest dem Kind eine Geschichte vor.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "dem Kind Dativ; eine Geschichte Akkusativ."
+            },
+            {
+              "key": "buy-son-sentence",
+              "prompt": "A fiának vesz egy kabátot. · nő",
+              "target": "Sie kauft ihrem Sohn eine Jacke.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "ihrem Sohn Dativ; eine Jacke Akkusativ."
+            },
+            {
+              "key": "cook-family-sentence",
+              "prompt": "Vacsorát főzünk a családnak.",
+              "target": "Wir kochen der Familie das Abendessen.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "der Familie Dativ; das Abendessen Akkusativ."
+            },
+            {
+              "key": "reserve-guests-sentence",
+              "prompt": "Szobát foglalok a vendégeimnek.",
+              "target": "Ich reserviere meinen Gästen ein Zimmer.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "meinen Gästen Dativ; ein Zimmer Akkusativ."
+            },
+            {
+              "key": "promise-daughter-sentence",
+              "prompt": "Kirándulást ígér a lányának. · férfi",
+              "target": "Er verspricht seiner Tochter einen Ausflug.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "seiner Tochter Dativ; einen Ausflug Akkusativ."
+            },
+            {
+              "key": "hand-customer-sentence",
+              "prompt": "A pénztáros odaadja a vevőnek a nyugtát.",
+              "target": "Die Kassiererin gibt dem Kunden den Kassenzettel.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "dem Kunden Dativ; den Kassenzettel Akkusativ."
+            },
+            {
+              "key": "serve-children-sentence",
+              "prompt": "A gyerekeknek levest szolgálnak fel.",
+              "target": "Sie servieren den Kindern eine Suppe.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "den Kindern Dativ; eine Suppe Akkusativ."
+            },
+            {
+              "key": "teach-students-sentence",
+              "prompt": "A tanár új nyelvtani szabályt tanít a diákoknak.",
+              "target": "Der Lehrer bringt den Schülern eine neue Grammatikregel bei.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "den Schülern Dativ; eine neue Grammatikregel Akkusativ."
+            },
+            {
+              "key": "owe-colleague-sentence",
+              "prompt": "Tíz euróval tartozom a kollégámnak.",
+              "target": "Ich schulde meinem Kollegen zehn Euro.",
+              "hint": "Dativ címzett + Akkusativ dolog",
+              "explanation": "meinem Kollegen Dativ; zehn Euro Akkusativ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-object-order",
+      "track": "cases",
+      "order": 12,
+      "level": "A2–B1",
+      "title": "Tárgyak és névmások szórendje",
+      "summary": "Főnevek, névmások, kérdések, kiemelés és mellékmondatok.",
+      "rule": "Két főnévi tárgynál a Dativ rendszerint megelőzi az Akkusativot. Ha az egyik névmás, a névmás többnyire előrébb kerül. Két névmásnál az Akkusativ rendszerint a Dativ előtt áll: Ich gebe es ihm.",
+      "memoryHook": {
+        "title": "Három alapminta",
+        "lines": [
+          "dem Mann das Buch",
+          "ihm das Buch | es dem Mann",
+          "es ihm"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Ich gebe dem Mann das Buch.",
+          "hu": "A férfinak adom a könyvet."
+        },
+        {
+          "de": "Ich gebe es ihm.",
+          "hu": "Odaadom neki."
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Semleges alapszórend",
+          "columns": [
+            "Tárgyak",
+            "Minta"
+          ],
+          "rows": [
+            [
+              "két főnév",
+              "Dativ + Akkusativ"
+            ],
+            [
+              "névmás + főnév",
+              "névmás előbb"
+            ],
+            [
+              "két névmás",
+              "Akkusativ + Dativ"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "patterns",
+          "title": "Szórendi minták",
+          "subtitle": "Huszonnyolc eltérő mondatszerkezet.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "noun-noun-give",
+              "prompt": "A férfinak adom a könyvet.",
+              "target": "Ich gebe dem Mann das Buch.",
+              "hint": "Két főnév: rendszerint Dativ az Akkusativ előtt.",
+              "explanation": "dem Mann → Dativ; das Buch → Akkusativ."
+            },
+            {
+              "key": "noun-noun-show",
+              "prompt": "A nőnek mutatja a fényképet. · férfi",
+              "target": "Er zeigt der Frau das Foto.",
+              "hint": "Dativ + Akkusativ",
+              "explanation": "Két főnévi tárgynál a címzett rendszerint előbb áll."
+            },
+            {
+              "key": "noun-noun-send",
+              "prompt": "A gyerekeknek küldjük a csomagot.",
+              "target": "Wir schicken den Kindern das Paket.",
+              "hint": "Dativ + Akkusativ",
+              "explanation": "den Kindern a címzett, das Paket a dolog."
+            },
+            {
+              "key": "dat-pronoun",
+              "prompt": "Neki adom a könyvet. · férfi",
+              "target": "Ich gebe ihm das Buch.",
+              "hint": "A névmás a főnévi tárgy előtt áll.",
+              "explanation": "ihm Dativ névmás; das Buch főnévi Akkusativ."
+            },
+            {
+              "key": "akk-pronoun",
+              "prompt": "Odaadom azt a férfinak.",
+              "target": "Ich gebe es dem Mann.",
+              "hint": "A névmás a főnévi tárgy előtt áll.",
+              "explanation": "es Akkusativ névmás; dem Mann főnévi Dativ."
+            },
+            {
+              "key": "two-pronouns",
+              "prompt": "Odaadom neki. · semlegesnemű dolog férfinak",
+              "target": "Ich gebe es ihm.",
+              "hint": "Két névmás: Akkusativ többnyire Dativ előtt.",
+              "explanation": "es → Akkusativ; ihm → Dativ."
+            },
+            {
+              "key": "two-pronouns-female",
+              "prompt": "Elküldöm neki. · semlegesnemű dolog nőnek",
+              "target": "Ich schicke es ihr.",
+              "hint": "Akkusativ névmás + Dativ névmás",
+              "explanation": "es áll előbb, utána ihr."
+            },
+            {
+              "key": "two-pronouns-us",
+              "prompt": "Megmutatja nekünk. · semlegesnemű dolog; nő",
+              "target": "Sie zeigt es uns.",
+              "hint": "es + uns",
+              "explanation": "es Akkusativ, uns Dativ."
+            },
+            {
+              "key": "question-wem",
+              "prompt": "Kinek adod a kulcsot?",
+              "target": "Wem gibst du den Schlüssel?",
+              "hint": "Wem? → Dativ",
+              "explanation": "A címzettre a wem kérdez rá."
+            },
+            {
+              "key": "question-was",
+              "prompt": "Mit adsz a férfinak?",
+              "target": "Was gibst du dem Mann?",
+              "hint": "Was? → Akkusativ dolog",
+              "explanation": "A dologra was, a címzettre dem Mann utal."
+            },
+            {
+              "key": "front-dat",
+              "prompt": "A gyermeknek adom a labdát.",
+              "target": "Dem Kind gebe ich den Ball.",
+              "hint": "A Dativ mondatrész kerülhet az első helyre.",
+              "explanation": "Az ige ettől még a második mondatrész: gebe."
+            },
+            {
+              "key": "front-akk",
+              "prompt": "A labdát a gyermeknek adom.",
+              "target": "Den Ball gebe ich dem Kind.",
+              "hint": "Az Akkusativ mondatrész is kiemelhető.",
+              "explanation": "Den Ball Akkusativ, dem Kind Dativ."
+            },
+            {
+              "key": "time-first",
+              "prompt": "Ma adom oda neki a könyvet. · férfi",
+              "target": "Heute gebe ich ihm das Buch.",
+              "hint": "Időhatározó után az ige, majd az alany jön.",
+              "explanation": "Heute az első elem, gebe a második; ihm Dativ."
+            },
+            {
+              "key": "modal",
+              "prompt": "Oda tudod adni nekem a tollat?",
+              "target": "Kannst du mir den Stift geben?",
+              "hint": "A ragozott módbeli segédige elöl, az infinitív a végén.",
+              "explanation": "mir Dativ; den Stift Akkusativ."
+            },
+            {
+              "key": "perfect",
+              "prompt": "Odaadtam neki a könyvet. · nő",
+              "target": "Ich habe ihr das Buch gegeben.",
+              "hint": "Perfekt keret: habe … gegeben",
+              "explanation": "ihr Dativ, das Buch Akkusativ."
+            },
+            {
+              "key": "subordinate",
+              "prompt": "Tudom, hogy odaadja neki a kulcsot. · férfi adja nőnek",
+              "target": "Ich weiß, dass er ihr den Schlüssel gibt.",
+              "hint": "dass után a ragozott ige a végére kerül.",
+              "explanation": "ihr Dativ, den Schlüssel Akkusativ."
+            },
+            {
+              "key": "imperative",
+              "prompt": "Add oda neki a kulcsot! · férfi",
+              "target": "Gib ihm den Schlüssel!",
+              "hint": "Felszólítás: Gib!",
+              "explanation": "ihm Dativ; den Schlüssel Akkusativ."
+            },
+            {
+              "key": "formal",
+              "prompt": "Odaadná nekem a számlát?",
+              "target": "Würden Sie mir die Rechnung geben?",
+              "hint": "Udvarias kérés",
+              "explanation": "mir Dativ, die Rechnung Akkusativ."
+            },
+            {
+              "key": "neg-object",
+              "prompt": "Nem adok neki pénzt. · férfi",
+              "target": "Ich gebe ihm kein Geld.",
+              "hint": "kein tagadja a főnevet.",
+              "explanation": "ihm Dativ; kein Geld Akkusativ."
+            },
+            {
+              "key": "neg-action",
+              "prompt": "Nem adom oda neki a pénzt. · nő",
+              "target": "Ich gebe ihr das Geld nicht.",
+              "hint": "nicht a cselekvést tagadja.",
+              "explanation": "ihr Dativ; das Geld Akkusativ."
+            },
+            {
+              "key": "plural-dat",
+              "prompt": "A barátaimnak mutatom meg a lakást.",
+              "target": "Ich zeige meinen Freunden die Wohnung.",
+              "hint": "Többes Dativ: meinen Freunden",
+              "explanation": "meinen Freunden Dativ; die Wohnung Akkusativ."
+            },
+            {
+              "key": "reflexive",
+              "prompt": "Veszek magamnak egy kávét.",
+              "target": "Ich kaufe mir einen Kaffee.",
+              "hint": "mir = magamnak, Dativ",
+              "explanation": "mir Dativ; einen Kaffee Akkusativ."
+            },
+            {
+              "key": "reflexive-you",
+              "prompt": "Veszel magadnak egy jegyet.",
+              "target": "Du kaufst dir eine Fahrkarte.",
+              "hint": "dir = magadnak",
+              "explanation": "dir Dativ; eine Fahrkarte Akkusativ."
+            },
+            {
+              "key": "reflexive-us",
+              "prompt": "Foglalunk magunknak egy asztalt.",
+              "target": "Wir reservieren uns einen Tisch.",
+              "hint": "uns = magunknak",
+              "explanation": "uns Dativ; einen Tisch Akkusativ."
+            },
+            {
+              "key": "name-recipient",
+              "prompt": "Odaadom Annának a könyvet.",
+              "target": "Ich gebe Anna das Buch.",
+              "hint": "A tulajdonnév névelő nélkül is lehet Dativ.",
+              "explanation": "Anna a címzett, das Buch a dolog."
+            },
+            {
+              "key": "name-pronoun",
+              "prompt": "Odaadom neki a könyvet. · Anna",
+              "target": "Ich gebe ihr das Buch.",
+              "hint": "Anna → sie → ihr",
+              "explanation": "A nőnemű Dativ névmás ihr."
+            },
+            {
+              "key": "relative",
+              "prompt": "Ez az a férfi, akinek a könyvet adom.",
+              "target": "Das ist der Mann, dem ich das Buch gebe.",
+              "hint": "vonatkozó Dativ: dem",
+              "explanation": "A dem a Mann-ra utal, és a mellékmondatban Dativ."
+            },
+            {
+              "key": "relative-akk",
+              "prompt": "Ez az a férfi, akit látok.",
+              "target": "Das ist der Mann, den ich sehe.",
+              "hint": "vonatkozó Akkusativ: den",
+              "explanation": "A den a Mann-ra utal, és a sehen tárgya."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-akk-prepositions",
+      "track": "cases",
+      "order": 13,
+      "level": "A1–A2",
+      "title": "für, um, durch, ohne, gegen",
+      "summary": "Öt mindig Akkusativot kérő elöljáró, harminc mondatban.",
+      "rule": "A für, um, durch, ohne és gegen mindig Akkusativot kér. A FUDOG csak emlékeztető; a biztos tudást a teljes kifejezések adják: für mich, ohne dich, durch den Park.",
+      "memoryHook": {
+        "title": "FUDOG",
+        "lines": [
+          "für · um · durch · ohne · gegen",
+          "mindig Akkusativ"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Wir gehen durch den Park.",
+          "hu": "Átmegyünk a parkon."
+        },
+        {
+          "de": "Ich gehe ohne dich.",
+          "hu": "Nélküled megyek."
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Rögzített eset",
+          "columns": [
+            "Elöljáró",
+            "Eset"
+          ],
+          "rows": [
+            [
+              "für",
+              "Akkusativ"
+            ],
+            [
+              "um",
+              "Akkusativ"
+            ],
+            [
+              "durch",
+              "Akkusativ"
+            ],
+            [
+              "ohne",
+              "Akkusativ"
+            ],
+            [
+              "gegen",
+              "Akkusativ"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "sentences",
+          "title": "Harminc Akkusativ-kifejezés",
+          "subtitle": "Minden elöljáró hat különböző helyzetben.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "für-1",
+              "prompt": "Számodra hoztam ezt.",
+              "target": "Ich habe das für dich gebracht.",
+              "hint": "für + Akkusativ",
+              "explanation": "A für mindig Akkusativot kér."
+            },
+            {
+              "key": "für-2",
+              "prompt": "Ez a gyermeknek szól.",
+              "target": "Das ist für das Kind.",
+              "hint": "für + Akkusativ",
+              "explanation": "A für mindig Akkusativot kér."
+            },
+            {
+              "key": "für-3",
+              "prompt": "Ajándékot veszünk a tanárnak.",
+              "target": "Wir kaufen ein Geschenk für den Lehrer.",
+              "hint": "für + Akkusativ",
+              "explanation": "A für mindig Akkusativot kér."
+            },
+            {
+              "key": "für-4",
+              "prompt": "A családjáért dolgozik. · nő",
+              "target": "Sie arbeitet für ihre Familie.",
+              "hint": "für + Akkusativ",
+              "explanation": "A für mindig Akkusativot kér."
+            },
+            {
+              "key": "für-5",
+              "prompt": "Köszönöm a segítséget.",
+              "target": "Danke für die Hilfe.",
+              "hint": "für + Akkusativ",
+              "explanation": "A für mindig Akkusativot kér."
+            },
+            {
+              "key": "für-6",
+              "prompt": "Ez fontos nekem.",
+              "target": "Das ist wichtig für mich.",
+              "hint": "für + Akkusativ",
+              "explanation": "A für mindig Akkusativot kér."
+            },
+            {
+              "key": "um-1",
+              "prompt": "Az asztal körül ülünk.",
+              "target": "Wir sitzen um den Tisch.",
+              "hint": "um + Akkusativ",
+              "explanation": "A um mindig Akkusativot kér."
+            },
+            {
+              "key": "um-2",
+              "prompt": "A ház körül fut.",
+              "target": "Er läuft um das Haus.",
+              "hint": "um + Akkusativ",
+              "explanation": "A um mindig Akkusativot kér."
+            },
+            {
+              "key": "um-3",
+              "prompt": "Tíz órakor kezdődik.",
+              "target": "Es beginnt um zehn Uhr.",
+              "hint": "um + Akkusativ",
+              "explanation": "A um mindig Akkusativot kér."
+            },
+            {
+              "key": "um-4",
+              "prompt": "Egy állásról van szó.",
+              "target": "Es geht um eine Stelle.",
+              "hint": "um + Akkusativ",
+              "explanation": "A um mindig Akkusativot kér."
+            },
+            {
+              "key": "um-5",
+              "prompt": "Segítséget kér. · nő",
+              "target": "Sie bittet um Hilfe.",
+              "hint": "um + Akkusativ",
+              "explanation": "A um mindig Akkusativot kér."
+            },
+            {
+              "key": "um-6",
+              "prompt": "A sarkon megyünk.",
+              "target": "Wir gehen um die Ecke.",
+              "hint": "um + Akkusativ",
+              "explanation": "A um mindig Akkusativot kér."
+            },
+            {
+              "key": "durch-1",
+              "prompt": "Átmegyünk a parkon.",
+              "target": "Wir gehen durch den Park.",
+              "hint": "durch + Akkusativ",
+              "explanation": "A durch mindig Akkusativot kér."
+            },
+            {
+              "key": "durch-2",
+              "prompt": "Áthajtanak a városon.",
+              "target": "Sie fahren durch die Stadt.",
+              "hint": "durch + Akkusativ",
+              "explanation": "A durch mindig Akkusativot kér."
+            },
+            {
+              "key": "durch-3",
+              "prompt": "Az ablakon keresztül néz ki. · nő",
+              "target": "Sie schaut durch das Fenster.",
+              "hint": "durch + Akkusativ",
+              "explanation": "A durch mindig Akkusativot kér."
+            },
+            {
+              "key": "durch-4",
+              "prompt": "Az erdőn át vezet az út.",
+              "target": "Der Weg führt durch den Wald.",
+              "hint": "durch + Akkusativ",
+              "explanation": "A durch mindig Akkusativot kér."
+            },
+            {
+              "key": "durch-5",
+              "prompt": "A bejáraton át megyek be.",
+              "target": "Ich gehe durch den Eingang hinein.",
+              "hint": "durch + Akkusativ",
+              "explanation": "A durch mindig Akkusativot kér."
+            },
+            {
+              "key": "durch-6",
+              "prompt": "A hibáinkon keresztül tanulunk.",
+              "target": "Wir lernen durch unsere Fehler.",
+              "hint": "durch + Akkusativ",
+              "explanation": "A durch mindig Akkusativot kér."
+            },
+            {
+              "key": "ohne-1",
+              "prompt": "Nélküled megyek.",
+              "target": "Ich gehe ohne dich.",
+              "hint": "ohne + Akkusativ",
+              "explanation": "A ohne mindig Akkusativot kér."
+            },
+            {
+              "key": "ohne-2",
+              "prompt": "Cukor nélkül issza a kávét. · férfi",
+              "target": "Er trinkt den Kaffee ohne Zucker.",
+              "hint": "ohne + Akkusativ",
+              "explanation": "A ohne mindig Akkusativot kér."
+            },
+            {
+              "key": "ohne-3",
+              "prompt": "Kulcs nélkül nem tudunk bemenni.",
+              "target": "Wir können ohne den Schlüssel nicht hinein.",
+              "hint": "ohne + Akkusativ",
+              "explanation": "A ohne mindig Akkusativot kér."
+            },
+            {
+              "key": "ohne-4",
+              "prompt": "A gyerekek nélkül utaztok.",
+              "target": "Ihr reist ohne die Kinder.",
+              "hint": "ohne + Akkusativ",
+              "explanation": "A ohne mindig Akkusativot kér."
+            },
+            {
+              "key": "ohne-5",
+              "prompt": "Nem hoz döntést segítség nélkül. · nő",
+              "target": "Sie trifft keine Entscheidung ohne Hilfe.",
+              "hint": "ohne + Akkusativ",
+              "explanation": "A ohne mindig Akkusativot kér."
+            },
+            {
+              "key": "ohne-6",
+              "prompt": "Kabát nélkül van kint. · férfi",
+              "target": "Er ist ohne Mantel draußen.",
+              "hint": "ohne + Akkusativ",
+              "explanation": "A ohne mindig Akkusativot kér."
+            },
+            {
+              "key": "gegen-1",
+              "prompt": "A terv ellen szavazok.",
+              "target": "Ich stimme gegen den Plan.",
+              "hint": "gegen + Akkusativ",
+              "explanation": "A gegen mindig Akkusativot kér."
+            },
+            {
+              "key": "gegen-2",
+              "prompt": "A falnak támasztja a kerékpárt. · nő",
+              "target": "Sie lehnt das Fahrrad gegen die Wand.",
+              "hint": "gegen + Akkusativ",
+              "explanation": "A gegen mindig Akkusativot kér."
+            },
+            {
+              "key": "gegen-3",
+              "prompt": "A csapatunk ellen játszanak.",
+              "target": "Sie spielen gegen unsere Mannschaft.",
+              "hint": "gegen + Akkusativ",
+              "explanation": "A gegen mindig Akkusativot kér."
+            },
+            {
+              "key": "gegen-4",
+              "prompt": "Gyógyszert szed a fájdalomra. · férfi",
+              "target": "Er nimmt ein Mittel gegen die Schmerzen.",
+              "hint": "gegen + Akkusativ",
+              "explanation": "A gegen mindig Akkusativot kér."
+            },
+            {
+              "key": "gegen-5",
+              "prompt": "Öt óra körül érkezünk.",
+              "target": "Wir kommen gegen fünf Uhr.",
+              "hint": "gegen + Akkusativ",
+              "explanation": "A gegen mindig Akkusativot kér."
+            },
+            {
+              "key": "gegen-6",
+              "prompt": "Nem tehetünk semmit az időjárás ellen.",
+              "target": "Wir können nichts gegen das Wetter tun.",
+              "hint": "gegen + Akkusativ",
+              "explanation": "A gegen mindig Akkusativot kér."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-dat-prepositions",
+      "track": "cases",
+      "order": 14,
+      "level": "A1–A2",
+      "title": "mit, nach, aus, zu, von, bei, seit",
+      "summary": "Hét mindig Dativot kérő elöljáró, harmincöt mondatban.",
+      "rule": "A mit, nach, aus, zu, von, bei és seit Dativot kér. Tanuld a gyakori összevonásokat is: zu dem → zum, zu der → zur, von dem → vom, bei dem → beim.",
+      "memoryHook": {
+        "title": "Riasztó",
+        "lines": [
+          "mit mich ✗",
+          "mit mir ✓",
+          "mit + mindig Dativ"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Kommst du mit mir?",
+          "hu": "Velem jössz?"
+        },
+        {
+          "de": "Ich gehe zum Arzt.",
+          "hu": "Az orvoshoz megyek."
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Gyakori összevonások",
+          "columns": [
+            "Teljes alak",
+            "Összevonás"
+          ],
+          "rows": [
+            [
+              "zu dem",
+              "zum"
+            ],
+            [
+              "zu der",
+              "zur"
+            ],
+            [
+              "von dem",
+              "vom"
+            ],
+            [
+              "bei dem",
+              "beim"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "sentences",
+          "title": "Harmincöt Dativ-kifejezés",
+          "subtitle": "Minden elöljáró öt különböző helyzetben.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "mit-1",
+              "prompt": "Velem jössz?",
+              "target": "Kommst du mit mir?",
+              "hint": "mit + Dativ",
+              "explanation": "A mit Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "mit-2",
+              "prompt": "Vonattal utazunk.",
+              "target": "Wir fahren mit dem Zug.",
+              "hint": "mit + Dativ",
+              "explanation": "A mit Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "mit-3",
+              "prompt": "A nővérével beszél. · férfi",
+              "target": "Er spricht mit seiner Schwester.",
+              "hint": "mit + Dativ",
+              "explanation": "A mit Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "mit-4",
+              "prompt": "A gyerekekkel játszanak.",
+              "target": "Sie spielen mit den Kindern.",
+              "hint": "mit + Dativ",
+              "explanation": "A mit Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "mit-5",
+              "prompt": "Késsel vágja fel a kenyeret. · nő",
+              "target": "Sie schneidet das Brot mit einem Messer.",
+              "hint": "mit + Dativ",
+              "explanation": "A mit Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "nach-1",
+              "prompt": "Munka után hazamegyek.",
+              "target": "Nach der Arbeit gehe ich nach Hause.",
+              "hint": "nach + Dativ",
+              "explanation": "A nach Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "nach-2",
+              "prompt": "Vacsora után sétálunk.",
+              "target": "Nach dem Abendessen gehen wir spazieren.",
+              "hint": "nach + Dativ",
+              "explanation": "A nach Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "nach-3",
+              "prompt": "Érdeklődik a menetrend felől. · nő",
+              "target": "Sie fragt nach dem Fahrplan.",
+              "hint": "nach + Dativ",
+              "explanation": "A nach Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "nach-4",
+              "prompt": "Berlinbe utaznak.",
+              "target": "Sie fahren nach Berlin.",
+              "hint": "nach + Dativ",
+              "explanation": "A nach Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "nach-5",
+              "prompt": "Véleményem szerint ez helyes.",
+              "target": "Meiner Meinung nach ist das richtig.",
+              "hint": "nach + Dativ",
+              "explanation": "A nach Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "aus-1",
+              "prompt": "Magyarországról jövök.",
+              "target": "Ich komme aus Ungarn.",
+              "hint": "aus + Dativ",
+              "explanation": "A aus Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "aus-2",
+              "prompt": "Kiveszi a könyvet a táskából. · férfi",
+              "target": "Er nimmt das Buch aus der Tasche.",
+              "hint": "aus + Dativ",
+              "explanation": "A aus Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "aus-3",
+              "prompt": "Fából készült az asztal.",
+              "target": "Der Tisch ist aus Holz.",
+              "hint": "aus + Dativ",
+              "explanation": "A aus Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "aus-4",
+              "prompt": "Kimegyünk a házból.",
+              "target": "Wir gehen aus dem Haus.",
+              "hint": "aus + Dativ",
+              "explanation": "A aus Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "aus-5",
+              "prompt": "Szeretetből teszi. · nő",
+              "target": "Sie tut es aus Liebe.",
+              "hint": "aus + Dativ",
+              "explanation": "A aus Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "zu-1",
+              "prompt": "Az orvoshoz megyek.",
+              "target": "Ich gehe zum Arzt.",
+              "hint": "zu + Dativ",
+              "explanation": "A zu Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "zu-2",
+              "prompt": "A barátnőjéhez megy. · nő",
+              "target": "Sie geht zu ihrer Freundin.",
+              "hint": "zu + Dativ",
+              "explanation": "A zu Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "zu-3",
+              "prompt": "Odamegyünk a gyerekekhez.",
+              "target": "Wir gehen zu den Kindern.",
+              "hint": "zu + Dativ",
+              "explanation": "A zu Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "zu-4",
+              "prompt": "Gyere hozzám!",
+              "target": "Komm zu mir!",
+              "hint": "zu + Dativ",
+              "explanation": "A zu Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "zu-5",
+              "prompt": "Túl későn érkeztek az órára.",
+              "target": "Ihr kommt zu spät zum Unterricht.",
+              "hint": "zu + Dativ",
+              "explanation": "A zu Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "von-1",
+              "prompt": "Tőle kaptam a levelet. · férfi",
+              "target": "Ich habe den Brief von ihm bekommen.",
+              "hint": "von + Dativ",
+              "explanation": "A von Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "von-2",
+              "prompt": "A pályaudvarról jövünk.",
+              "target": "Wir kommen vom Bahnhof.",
+              "hint": "von + Dativ",
+              "explanation": "A von Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "von-3",
+              "prompt": "A tanárnőtől tanul sokat. · férfi",
+              "target": "Er lernt viel von der Lehrerin.",
+              "hint": "von + Dativ",
+              "explanation": "A von Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "von-4",
+              "prompt": "A barátairól beszél. · nő",
+              "target": "Sie spricht von ihren Freunden.",
+              "hint": "von + Dativ",
+              "explanation": "A von Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "von-5",
+              "prompt": "Ezt a könyvet a gyermektől kaptam.",
+              "target": "Ich habe dieses Buch vom Kind bekommen.",
+              "hint": "von + Dativ",
+              "explanation": "A von Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "bei-1",
+              "prompt": "Nálam maradsz.",
+              "target": "Du bleibst bei mir.",
+              "hint": "bei + Dativ",
+              "explanation": "A bei Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "bei-2",
+              "prompt": "A szüleinél lakik. · nő",
+              "target": "Sie wohnt bei ihren Eltern.",
+              "hint": "bei + Dativ",
+              "explanation": "A bei Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "bei-3",
+              "prompt": "Munka közben zenét hallgatok.",
+              "target": "Bei der Arbeit höre ich Musik.",
+              "hint": "bei + Dativ",
+              "explanation": "A bei Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "bei-4",
+              "prompt": "Az orvosnál várunk.",
+              "target": "Wir warten beim Arzt.",
+              "hint": "bei + Dativ",
+              "explanation": "A bei Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "bei-5",
+              "prompt": "Esőben otthon maradnak.",
+              "target": "Bei Regen bleiben sie zu Hause.",
+              "hint": "bei + Dativ",
+              "explanation": "A bei Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "seit-1",
+              "prompt": "Egy hete itt vagyok.",
+              "target": "Ich bin seit einer Woche hier.",
+              "hint": "seit + Dativ",
+              "explanation": "A seit Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "seit-2",
+              "prompt": "Hétfő óta dolgozik. · férfi",
+              "target": "Er arbeitet seit Montag.",
+              "hint": "seit + Dativ",
+              "explanation": "A seit Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "seit-3",
+              "prompt": "Gyermekkora óta ismeri őt. · nő ismer férfit",
+              "target": "Sie kennt ihn seit ihrer Kindheit.",
+              "hint": "seit + Dativ",
+              "explanation": "A seit Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "seit-4",
+              "prompt": "Két hónapja tanulunk németül.",
+              "target": "Wir lernen seit zwei Monaten Deutsch.",
+              "hint": "seit + Dativ",
+              "explanation": "A seit Dativot kér. A rögzült összevonásokat is figyeld."
+            },
+            {
+              "key": "seit-5",
+              "prompt": "Reggel óta esik.",
+              "target": "Seit dem Morgen regnet es.",
+              "hint": "seit + Dativ",
+              "explanation": "A seit Dativot kér. A rögzült összevonásokat is figyeld."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-two-way",
+      "track": "cases",
+      "order": 15,
+      "level": "A1–B1",
+      "title": "Hely vagy célhely?",
+      "summary": "Kilenc kétirányú elöljáró, párosított mondatokkal.",
+      "rule": "A kétirányú elöljáróknál ne egyszerűen mozgást keress. Ha valami új célhelyre kerül, Akkusativ áll. Ha a mondat azt mondja meg, hol van vagy hol történik valami, Dativ áll. Ich fahre in der Stadt ezért Dativ: a városon belüli helyet jelöli.",
+      "memoryHook": {
+        "title": "Pontos kapaszkodó",
+        "lines": [
+          "hová kerül? → Akkusativ",
+          "hol van/történik? → Dativ",
+          "nem pusztán: mozog vagy áll"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Ich lege das Buch auf den Tisch.",
+          "hu": "Az asztalra teszem a könyvet."
+        },
+        {
+          "de": "Das Buch liegt auf dem Tisch.",
+          "hu": "A könyv az asztalon fekszik."
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Kilenc kétirányú elöljáró",
+          "columns": [
+            "an",
+            "auf",
+            "hinter",
+            "in",
+            "neben",
+            "über",
+            "unter",
+            "vor",
+            "zwischen"
+          ],
+          "rows": [
+            [
+              "Akk/Dat",
+              "Akk/Dat",
+              "Akk/Dat",
+              "Akk/Dat",
+              "Akk/Dat",
+              "Akk/Dat",
+              "Akk/Dat",
+              "Akk/Dat",
+              "Akk/Dat"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "forms",
+          "title": "Célhely és hely kifejezései",
+          "subtitle": "Ugyanaz a főnév két esetben.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "in-kitchen-goal",
+              "prompt": "Küche · célhely / hová kerül?",
+              "target": "in die Küche",
+              "hint": "Célhely → Akkusativ",
+              "explanation": "A tárgy vagy személy új célhelyre kerül: in die Küche."
+            },
+            {
+              "key": "in-kitchen-place",
+              "prompt": "Küche · hely / hol van?",
+              "target": "in der Küche",
+              "hint": "Hely → Dativ",
+              "explanation": "A mondat meglévő helyet ír le: in der Küche."
+            },
+            {
+              "key": "auf-table-goal",
+              "prompt": "Tisch · célhely / hová kerül?",
+              "target": "auf den Tisch",
+              "hint": "Célhely → Akkusativ",
+              "explanation": "A tárgy vagy személy új célhelyre kerül: auf den Tisch."
+            },
+            {
+              "key": "auf-table-place",
+              "prompt": "Tisch · hely / hol van?",
+              "target": "auf dem Tisch",
+              "hint": "Hely → Dativ",
+              "explanation": "A mondat meglévő helyet ír le: auf dem Tisch."
+            },
+            {
+              "key": "an-wall-goal",
+              "prompt": "Wand · célhely / hová kerül?",
+              "target": "an die Wand",
+              "hint": "Célhely → Akkusativ",
+              "explanation": "A tárgy vagy személy új célhelyre kerül: an die Wand."
+            },
+            {
+              "key": "an-wall-place",
+              "prompt": "Wand · hely / hol van?",
+              "target": "an der Wand",
+              "hint": "Hely → Dativ",
+              "explanation": "A mondat meglévő helyet ír le: an der Wand."
+            },
+            {
+              "key": "unter-bed-goal",
+              "prompt": "Bett · célhely / hová kerül?",
+              "target": "unter das Bett",
+              "hint": "Célhely → Akkusativ",
+              "explanation": "A tárgy vagy személy új célhelyre kerül: unter das Bett."
+            },
+            {
+              "key": "unter-bed-place",
+              "prompt": "Bett · hely / hol van?",
+              "target": "unter dem Bett",
+              "hint": "Hely → Dativ",
+              "explanation": "A mondat meglévő helyet ír le: unter dem Bett."
+            },
+            {
+              "key": "ueber-sofa-goal",
+              "prompt": "Sofa · célhely / hová kerül?",
+              "target": "über das Sofa",
+              "hint": "Célhely → Akkusativ",
+              "explanation": "A tárgy vagy személy új célhelyre kerül: über das Sofa."
+            },
+            {
+              "key": "ueber-sofa-place",
+              "prompt": "Sofa · hely / hol van?",
+              "target": "über dem Sofa",
+              "hint": "Hely → Dativ",
+              "explanation": "A mondat meglévő helyet ír le: über dem Sofa."
+            },
+            {
+              "key": "vor-house-goal",
+              "prompt": "Haus · célhely / hová kerül?",
+              "target": "vor das Haus",
+              "hint": "Célhely → Akkusativ",
+              "explanation": "A tárgy vagy személy új célhelyre kerül: vor das Haus."
+            },
+            {
+              "key": "vor-house-place",
+              "prompt": "Haus · hely / hol van?",
+              "target": "vor dem Haus",
+              "hint": "Hely → Dativ",
+              "explanation": "A mondat meglévő helyet ír le: vor dem Haus."
+            },
+            {
+              "key": "hinter-door-goal",
+              "prompt": "Tür · célhely / hová kerül?",
+              "target": "hinter die Tür",
+              "hint": "Célhely → Akkusativ",
+              "explanation": "A tárgy vagy személy új célhelyre kerül: hinter die Tür."
+            },
+            {
+              "key": "hinter-door-place",
+              "prompt": "Tür · hely / hol van?",
+              "target": "hinter der Tür",
+              "hint": "Hely → Dativ",
+              "explanation": "A mondat meglévő helyet ír le: hinter der Tür."
+            },
+            {
+              "key": "neben-chair-goal",
+              "prompt": "Stuhl · célhely / hová kerül?",
+              "target": "neben den Stuhl",
+              "hint": "Célhely → Akkusativ",
+              "explanation": "A tárgy vagy személy új célhelyre kerül: neben den Stuhl."
+            },
+            {
+              "key": "neben-chair-place",
+              "prompt": "Stuhl · hely / hol van?",
+              "target": "neben dem Stuhl",
+              "hint": "Hely → Dativ",
+              "explanation": "A mondat meglévő helyet ír le: neben dem Stuhl."
+            },
+            {
+              "key": "between-chairs-goal",
+              "prompt": "Stühle · célhely / hová kerül?",
+              "target": "zwischen die Stühle",
+              "hint": "Célhely → Akkusativ",
+              "explanation": "A tárgy vagy személy új célhelyre kerül: zwischen die Stühle."
+            },
+            {
+              "key": "between-chairs-place",
+              "prompt": "Stühle · hely / hol van?",
+              "target": "zwischen den Stühlen",
+              "hint": "Hely → Dativ",
+              "explanation": "A mondat meglévő helyet ír le: zwischen den Stühlen."
+            }
+          ]
+        },
+        {
+          "id": "sentences",
+          "title": "Párosított mondatok",
+          "subtitle": "stellen–stehen, legen–liegen és hängen.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "in-kitchen-goal-sentence",
+              "prompt": "Bemegyek a konyhába.",
+              "target": "Ich gehe in die Küche.",
+              "hint": "Hová kerül? → Akkusativ",
+              "explanation": "Nem a mozgás puszta ténye számít, hanem az új célhely."
+            },
+            {
+              "key": "in-kitchen-place-sentence",
+              "prompt": "A konyhában vagyok.",
+              "target": "Ich bin in der Küche.",
+              "hint": "Hol van/történik? → Dativ",
+              "explanation": "A mondat helyet ír le, ezért Dativ."
+            },
+            {
+              "key": "auf-table-goal-sentence",
+              "prompt": "Az asztalra teszem a könyvet.",
+              "target": "Ich lege das Buch auf den Tisch.",
+              "hint": "Hová kerül? → Akkusativ",
+              "explanation": "Nem a mozgás puszta ténye számít, hanem az új célhely."
+            },
+            {
+              "key": "auf-table-place-sentence",
+              "prompt": "A könyv az asztalon fekszik.",
+              "target": "Das Buch liegt auf dem Tisch.",
+              "hint": "Hol van/történik? → Dativ",
+              "explanation": "A mondat helyet ír le, ezért Dativ."
+            },
+            {
+              "key": "an-wall-goal-sentence",
+              "prompt": "A falra akasztja a képet. · nő",
+              "target": "Sie hängt das Bild an die Wand.",
+              "hint": "Hová kerül? → Akkusativ",
+              "explanation": "Nem a mozgás puszta ténye számít, hanem az új célhely."
+            },
+            {
+              "key": "an-wall-place-sentence",
+              "prompt": "A kép a falon lóg.",
+              "target": "Das Bild hängt an der Wand.",
+              "hint": "Hol van/történik? → Dativ",
+              "explanation": "A mondat helyet ír le, ezért Dativ."
+            },
+            {
+              "key": "unter-bed-goal-sentence",
+              "prompt": "Az ágy alá teszi a dobozt. · férfi",
+              "target": "Er stellt die Kiste unter das Bett.",
+              "hint": "Hová kerül? → Akkusativ",
+              "explanation": "Nem a mozgás puszta ténye számít, hanem az új célhely."
+            },
+            {
+              "key": "unter-bed-place-sentence",
+              "prompt": "A doboz az ágy alatt áll.",
+              "target": "Die Kiste steht unter dem Bett.",
+              "hint": "Hol van/történik? → Dativ",
+              "explanation": "A mondat helyet ír le, ezért Dativ."
+            },
+            {
+              "key": "ueber-sofa-goal-sentence",
+              "prompt": "A kanapé fölé akasztjuk a lámpát.",
+              "target": "Wir hängen die Lampe über das Sofa.",
+              "hint": "Hová kerül? → Akkusativ",
+              "explanation": "Nem a mozgás puszta ténye számít, hanem az új célhely."
+            },
+            {
+              "key": "ueber-sofa-place-sentence",
+              "prompt": "A lámpa a kanapé fölött lóg.",
+              "target": "Die Lampe hängt über dem Sofa.",
+              "hint": "Hol van/történik? → Dativ",
+              "explanation": "A mondat helyet ír le, ezért Dativ."
+            },
+            {
+              "key": "vor-house-goal-sentence",
+              "prompt": "A ház elé állítjátok az autót.",
+              "target": "Ihr stellt das Auto vor das Haus.",
+              "hint": "Hová kerül? → Akkusativ",
+              "explanation": "Nem a mozgás puszta ténye számít, hanem az új célhely."
+            },
+            {
+              "key": "vor-house-place-sentence",
+              "prompt": "Az autó a ház előtt áll.",
+              "target": "Das Auto steht vor dem Haus.",
+              "hint": "Hol van/történik? → Dativ",
+              "explanation": "A mondat helyet ír le, ezért Dativ."
+            },
+            {
+              "key": "hinter-door-goal-sentence",
+              "prompt": "Az ajtó mögé teszem a táskát.",
+              "target": "Ich stelle die Tasche hinter die Tür.",
+              "hint": "Hová kerül? → Akkusativ",
+              "explanation": "Nem a mozgás puszta ténye számít, hanem az új célhely."
+            },
+            {
+              "key": "hinter-door-place-sentence",
+              "prompt": "A táska az ajtó mögött van.",
+              "target": "Die Tasche steht hinter der Tür.",
+              "hint": "Hol van/történik? → Dativ",
+              "explanation": "A mondat helyet ír le, ezért Dativ."
+            },
+            {
+              "key": "neben-chair-goal-sentence",
+              "prompt": "A szék mellé teszi az asztalt. · nő",
+              "target": "Sie stellt den Tisch neben den Stuhl.",
+              "hint": "Hová kerül? → Akkusativ",
+              "explanation": "Nem a mozgás puszta ténye számít, hanem az új célhely."
+            },
+            {
+              "key": "neben-chair-place-sentence",
+              "prompt": "Az asztal a szék mellett áll.",
+              "target": "Der Tisch steht neben dem Stuhl.",
+              "hint": "Hol van/történik? → Dativ",
+              "explanation": "A mondat helyet ír le, ezért Dativ."
+            },
+            {
+              "key": "between-chairs-goal-sentence",
+              "prompt": "A székek közé teszi a táskát. · férfi",
+              "target": "Er stellt die Tasche zwischen die Stühle.",
+              "hint": "Hová kerül? → Akkusativ",
+              "explanation": "Nem a mozgás puszta ténye számít, hanem az új célhely."
+            },
+            {
+              "key": "between-chairs-place-sentence",
+              "prompt": "A táska a székek között van.",
+              "target": "Die Tasche steht zwischen den Stühlen.",
+              "hint": "Hol van/történik? → Dativ",
+              "explanation": "A mondat helyet ír le, ezért Dativ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-questions-negation",
+      "track": "cases",
+      "order": 16,
+      "level": "A1–B1",
+      "title": "wer, wen, wem és tagadás",
+      "summary": "Kérdőszavak, kein/nicht és welcher-alakok.",
+      "rule": "A wer az alanyra, a wen az Akkusativ személyre, a wem a Dativ személyre kérdez. A kein egy főnevet tagad és ragozódik; a nicht a cselekvést vagy más mondatrészt tagadja.",
+      "memoryHook": {
+        "title": "Kérdéshármas",
+        "lines": [
+          "wer? → Nominativ",
+          "wen? → Akkusativ",
+          "wem? → Dativ"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Wen siehst du?",
+          "hu": "Kit látsz?"
+        },
+        {
+          "de": "Wem hilfst du?",
+          "hu": "Kinek segítesz?"
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Kérdőszavak",
+          "columns": [
+            "Nominativ",
+            "Akkusativ",
+            "Dativ"
+          ],
+          "rows": [
+            [
+              "wer?",
+              "wen?",
+              "wem?"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "sentences",
+          "title": "Kérdés és tagadás",
+          "subtitle": "Huszonnégy eltérő feladat.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "wen-see",
+              "prompt": "Kit látsz?",
+              "target": "Wen siehst du?",
+              "hint": "wen → Akkusativ",
+              "explanation": "A személy közvetlen tárgyára wen kérdez."
+            },
+            {
+              "key": "wem-help",
+              "prompt": "Kinek segítesz?",
+              "target": "Wem hilfst du?",
+              "hint": "wem → Dativ",
+              "explanation": "A helfen Dativjára wem kérdez."
+            },
+            {
+              "key": "what-buy",
+              "prompt": "Mit vesz? · nő",
+              "target": "Was kauft sie?",
+              "hint": "was → tárgy",
+              "explanation": "A megvett dolog Akkusativ."
+            },
+            {
+              "key": "whom-answer",
+              "prompt": "Kinek válaszol? · férfi",
+              "target": "Wem antwortet er?",
+              "hint": "antworten + Dativ",
+              "explanation": "A címzett Dativ."
+            },
+            {
+              "key": "who-sees",
+              "prompt": "Ki látja a férfit?",
+              "target": "Wer sieht den Mann?",
+              "hint": "wer → Nominativ",
+              "explanation": "Wer az alanyra, den Mann az Akkusativ tárgyra kérdez."
+            },
+            {
+              "key": "who-help",
+              "prompt": "Ki segít a nőnek?",
+              "target": "Wer hilft der Frau?",
+              "hint": "wer + Dativ-vonzat",
+              "explanation": "Wer Nominativ; der Frau Dativ."
+            },
+            {
+              "key": "give-who-what",
+              "prompt": "Kinek mit adsz?",
+              "target": "Wem gibst du was?",
+              "hint": "wem | was",
+              "explanation": "Wem Dativ, was Akkusativ."
+            },
+            {
+              "key": "show-what-who",
+              "prompt": "Mit mutat neki? · nő mutat férfinak",
+              "target": "Was zeigt sie ihm?",
+              "hint": "was + ihm",
+              "explanation": "Was Akkusativ; ihm Dativ."
+            },
+            {
+              "key": "no-man",
+              "prompt": "Nem látok férfit.",
+              "target": "Ich sehe keinen Mann.",
+              "hint": "kein + hímnemű Akkusativ",
+              "explanation": "kein Mann → keinen Mann."
+            },
+            {
+              "key": "no-woman",
+              "prompt": "Nem látok nőt.",
+              "target": "Ich sehe keine Frau.",
+              "hint": "nőnemű Akkusativ: keine",
+              "explanation": "A nőnemű alak Akkusativban nem változik."
+            },
+            {
+              "key": "no-child",
+              "prompt": "Nem látok gyermeket.",
+              "target": "Ich sehe kein Kind.",
+              "hint": "semleges Akkusativ: kein",
+              "explanation": "A semleges alak Akkusativban nem változik."
+            },
+            {
+              "key": "help-no-man",
+              "prompt": "Egyetlen férfinak sem segítek.",
+              "target": "Ich helfe keinem Mann.",
+              "hint": "kein + hímnemű Dativ",
+              "explanation": "keinem Mann Dativ."
+            },
+            {
+              "key": "help-no-woman",
+              "prompt": "Egyetlen nőnek sem segítek.",
+              "target": "Ich helfe keiner Frau.",
+              "hint": "nőnemű Dativ: keiner",
+              "explanation": "keiner Frau Dativ."
+            },
+            {
+              "key": "help-no-child",
+              "prompt": "Egyetlen gyermeknek sem segítek.",
+              "target": "Ich helfe keinem Kind.",
+              "hint": "semleges Dativ: keinem",
+              "explanation": "keinem Kind Dativ."
+            },
+            {
+              "key": "not-see-him",
+              "prompt": "Nem látom őt. · férfi",
+              "target": "Ich sehe ihn nicht.",
+              "hint": "ihn + nicht",
+              "explanation": "ihn Akkusativ; nicht a látást tagadja."
+            },
+            {
+              "key": "not-help-him",
+              "prompt": "Nem segítek neki. · férfi",
+              "target": "Ich helfe ihm nicht.",
+              "hint": "ihm + nicht",
+              "explanation": "ihm Dativ; nicht a cselekvést tagadja."
+            },
+            {
+              "key": "not-give-book",
+              "prompt": "Nem adom oda neki a könyvet. · nő",
+              "target": "Ich gebe ihr das Buch nicht.",
+              "hint": "ihr + das Buch + nicht",
+              "explanation": "ihr Dativ, das Buch Akkusativ."
+            },
+            {
+              "key": "give-no-book",
+              "prompt": "Nem adok neki könyvet. · nő",
+              "target": "Ich gebe ihr kein Buch.",
+              "hint": "kein Buch",
+              "explanation": "ihr Dativ; kein Buch Akkusativ."
+            },
+            {
+              "key": "which-man",
+              "prompt": "Melyik férfit ismered?",
+              "target": "Welchen Mann kennst du?",
+              "hint": "welcher → welchen",
+              "explanation": "Hímnemű Akkusativ: welchen Mann."
+            },
+            {
+              "key": "which-man-dat",
+              "prompt": "Melyik férfinak hiszel?",
+              "target": "Welchem Mann glaubst du?",
+              "hint": "welcher → welchem",
+              "explanation": "Hímnemű Dativ: welchem Mann."
+            },
+            {
+              "key": "whose-child",
+              "prompt": "Melyik gyermeknek segítetek?",
+              "target": "Welchem Kind helft ihr?",
+              "hint": "welchem Kind",
+              "explanation": "Semleges Dativ: welchem Kind."
+            },
+            {
+              "key": "which-friends",
+              "prompt": "Melyik barátokat hívjátok meg?",
+              "target": "Welche Freunde ladet ihr ein?",
+              "hint": "többes Akkusativ: welche",
+              "explanation": "A többes Akkusativ alak welche."
+            },
+            {
+              "key": "which-friends-dat",
+              "prompt": "Melyik barátoknak írtok?",
+              "target": "Welchen Freunden schreibt ihr?",
+              "hint": "többes Dativ: welchen + -n",
+              "explanation": "welchen Freunden Dativ."
+            },
+            {
+              "key": "formal-question",
+              "prompt": "Kinek adja oda a dokumentumot? · Ön",
+              "target": "Wem geben Sie das Dokument?",
+              "hint": "Sie alany, wem Dativ",
+              "explanation": "Wem kérdez a címzettre; das Dokument Akkusativ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-time-mood",
+      "track": "cases",
+      "order": 17,
+      "level": "A2–B1",
+      "title": "Az eset igeidőkben és módokban",
+      "summary": "Präsens, Perfekt, Präteritum, modalitás, feltételes mód és felszólítás.",
+      "rule": "Az ige alakja és a szórend változhat, de a vonzat megmarad. helfen Perfektben is Dativot, sehen módbeli segédigével is Akkusativot, geben pedig továbbra is Dativ címzettet és Akkusativ dolgot kér.",
+      "memoryHook": {
+        "title": "Állandó mag",
+        "lines": [
+          "igeidő változik",
+          "szórend változhat",
+          "esetvonzat megmarad"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Ich habe ihm geholfen.",
+          "hu": "Segítettem neki."
+        },
+        {
+          "de": "Könnten Sie mir helfen?",
+          "hu": "Tudna nekem segíteni?"
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Átalakítás",
+          "columns": [
+            "Változhat",
+            "Megmarad"
+          ],
+          "rows": [
+            [
+              "igeidő, mód, szórend",
+              "az ige esetvonzata"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "sentences",
+          "title": "Alapmondat és átalakítás",
+          "subtitle": "Tizennégy szerkezet két-két változatban.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "help-base",
+              "prompt": "Segítek neki. · férfi",
+              "target": "Ich helfe ihm.",
+              "hint": "Alapszerkezet",
+              "explanation": "helfen + Dativ minden igeidőben"
+            },
+            {
+              "key": "help-changed",
+              "prompt": "Segítettem neki. · férfi",
+              "target": "Ich habe ihm geholfen.",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "helfen + Dativ minden igeidőben"
+            },
+            {
+              "key": "see-base",
+              "prompt": "Látom őt. · nő",
+              "target": "Ich sehe sie.",
+              "hint": "Alapszerkezet",
+              "explanation": "sehen + Akkusativ"
+            },
+            {
+              "key": "see-changed",
+              "prompt": "Láttam őt. · nő",
+              "target": "Ich habe sie gesehen.",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "sehen + Akkusativ"
+            },
+            {
+              "key": "give-base",
+              "prompt": "Odaadom neki a könyvet. · férfi",
+              "target": "Ich gebe ihm das Buch.",
+              "hint": "Alapszerkezet",
+              "explanation": "Dativ + Akkusativ Perfektben is"
+            },
+            {
+              "key": "give-changed",
+              "prompt": "Odaadtam neki a könyvet. · férfi",
+              "target": "Ich habe ihm das Buch gegeben.",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "Dativ + Akkusativ Perfektben is"
+            },
+            {
+              "key": "thank-base",
+              "prompt": "Köszönetet mondunk neki. · nő",
+              "target": "Wir danken ihr.",
+              "hint": "Alapszerkezet",
+              "explanation": "danken + Dativ"
+            },
+            {
+              "key": "thank-changed",
+              "prompt": "Köszönetet mondtunk neki. · nő",
+              "target": "Wir haben ihr gedankt.",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "danken + Dativ"
+            },
+            {
+              "key": "visit-base",
+              "prompt": "Meglátogatjuk a tanárt.",
+              "target": "Wir besuchen den Lehrer.",
+              "hint": "Alapszerkezet",
+              "explanation": "besuchen + Akkusativ"
+            },
+            {
+              "key": "visit-changed",
+              "prompt": "Meglátogattuk a tanárt.",
+              "target": "Wir haben den Lehrer besucht.",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "besuchen + Akkusativ"
+            },
+            {
+              "key": "send-base",
+              "prompt": "Üzenetet küld neki. · nő küld férfinak",
+              "target": "Sie schickt ihm eine Nachricht.",
+              "hint": "Alapszerkezet",
+              "explanation": "ihm Dativ, eine Nachricht Akkusativ"
+            },
+            {
+              "key": "send-changed",
+              "prompt": "Üzenetet küldött neki. · nő küldött férfinak",
+              "target": "Sie hat ihm eine Nachricht geschickt.",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "ihm Dativ, eine Nachricht Akkusativ"
+            },
+            {
+              "key": "explain-base",
+              "prompt": "Elmagyarázom nektek a szabályt.",
+              "target": "Ich erkläre euch die Regel.",
+              "hint": "Alapszerkezet",
+              "explanation": "euch Dativ"
+            },
+            {
+              "key": "explain-changed",
+              "prompt": "Elmagyaráztam nektek a szabályt.",
+              "target": "Ich habe euch die Regel erklärt.",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "euch Dativ"
+            },
+            {
+              "key": "can-help-base",
+              "prompt": "Segíthetek Önnek?",
+              "target": "Kann ich Ihnen helfen?",
+              "hint": "Alapszerkezet",
+              "explanation": "A módbeli segédige nem változtatja meg a Dativot."
+            },
+            {
+              "key": "can-help-changed",
+              "prompt": "Tudna nekem segíteni?",
+              "target": "Könnten Sie mir helfen?",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "A módbeli segédige nem változtatja meg a Dativot."
+            },
+            {
+              "key": "must-see-base",
+              "prompt": "Látnom kell az orvost.",
+              "target": "Ich muss den Arzt sehen.",
+              "hint": "Alapszerkezet",
+              "explanation": "sehen + Akkusativ a módbeli szerkezetben is"
+            },
+            {
+              "key": "must-see-changed",
+              "prompt": "Látnom kellett az orvost.",
+              "target": "Ich musste den Arzt sehen.",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "sehen + Akkusativ a módbeli szerkezetben is"
+            },
+            {
+              "key": "would-give-base",
+              "prompt": "Odaadja nekem a kulcsot. · nő",
+              "target": "Sie gibt mir den Schlüssel.",
+              "hint": "Alapszerkezet",
+              "explanation": "mir Dativ, den Schlüssel Akkusativ"
+            },
+            {
+              "key": "would-give-changed",
+              "prompt": "Odaadná nekem a kulcsot. · nő",
+              "target": "Sie würde mir den Schlüssel geben.",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "mir Dativ, den Schlüssel Akkusativ"
+            },
+            {
+              "key": "imperative-help-base",
+              "prompt": "Segítesz a gyermeknek.",
+              "target": "Du hilfst dem Kind.",
+              "hint": "Alapszerkezet",
+              "explanation": "helfen felszólításban is Dativ"
+            },
+            {
+              "key": "imperative-help-changed",
+              "prompt": "Segíts a gyermeknek!",
+              "target": "Hilf dem Kind!",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "helfen felszólításban is Dativ"
+            },
+            {
+              "key": "imperative-give-base",
+              "prompt": "Odaadod neki a jegyet. · nő",
+              "target": "Du gibst ihr die Fahrkarte.",
+              "hint": "Alapszerkezet",
+              "explanation": "ihr Dativ, die Fahrkarte Akkusativ"
+            },
+            {
+              "key": "imperative-give-changed",
+              "prompt": "Add oda neki a jegyet! · nő",
+              "target": "Gib ihr die Fahrkarte!",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "ihr Dativ, die Fahrkarte Akkusativ"
+            },
+            {
+              "key": "future-send-base",
+              "prompt": "Elküldjük nekik a csomagot.",
+              "target": "Wir schicken ihnen das Paket.",
+              "hint": "Alapszerkezet",
+              "explanation": "Futur I-ben is ihnen Dativ"
+            },
+            {
+              "key": "future-send-changed",
+              "prompt": "El fogjuk küldeni nekik a csomagot.",
+              "target": "Wir werden ihnen das Paket schicken.",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "Futur I-ben is ihnen Dativ"
+            },
+            {
+              "key": "subordinate-tell-base",
+              "prompt": "Elmeséli nekem a történetet. · férfi",
+              "target": "Er erzählt mir die Geschichte.",
+              "hint": "Alapszerkezet",
+              "explanation": "Mellékmondatban az ige kerül a végére, az eset nem változik."
+            },
+            {
+              "key": "subordinate-tell-changed",
+              "prompt": "Tudom, hogy elmeséli nekem a történetet. · férfi",
+              "target": "Ich weiß, dass er mir die Geschichte erzählt.",
+              "hint": "Az igeidő vagy mód változik; az esetvonzat marad.",
+              "explanation": "Mellékmondatban az ige kerül a végére, az eset nem változik."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-diagnostic",
+      "track": "cases",
+      "order": 18,
+      "level": "A2–B1",
+      "title": "Akk vagy Dat? – vegyes diagnózis",
+      "summary": "A teljes rendszer keverve, de minden válasz után konkrét döntési útvonallal.",
+      "rule": "Itt már nem egyetlen kategória jelzi a választ. Előbb keresd az igét vagy elöljárót, utána a mondatrészt, végül válaszd ki a nemnek és számnak megfelelő alakot.",
+      "memoryHook": {
+        "title": "Döntési sorrend",
+        "lines": [
+          "1. ige vagy elöljáró",
+          "2. szerep: alany, tárgy, címzett, hely/célhely",
+          "3. nem, szám és névelőalak"
+        ]
+      },
+      "examples": [
+        {
+          "de": "Vertraust du mir?",
+          "hu": "Bízol bennem?"
+        },
+        {
+          "de": "Liebst du mich?",
+          "hu": "Szeretsz engem?"
+        }
+      ],
+      "paradigms": [
+        {
+          "title": "Három ellenőrzés",
+          "columns": [
+            "1",
+            "2",
+            "3"
+          ],
+          "rows": [
+            [
+              "vonzat",
+              "mondatszerep",
+              "helyes alak"
+            ]
+          ]
+        }
+      ],
+      "phases": [
+        {
+          "id": "sentences",
+          "title": "Vegyes diagnózis",
+          "subtitle": "Huszonkét gondosan kevert feladat.",
+          "mode": "grammar",
+          "rows": [
+            {
+              "key": "d1",
+              "prompt": "A férfit látom, nem a nőt.",
+              "target": "Ich sehe den Mann, nicht die Frau.",
+              "hint": "sehen + Akkusativ",
+              "explanation": "den Mann és die Frau Akkusativ."
+            },
+            {
+              "key": "d2",
+              "prompt": "A férfinak segítek, nem a nőnek.",
+              "target": "Ich helfe dem Mann, nicht der Frau.",
+              "hint": "helfen + Dativ",
+              "explanation": "dem Mann és der Frau Dativ."
+            },
+            {
+              "key": "d3",
+              "prompt": "Odaadja neki. · a könyvet férfinak",
+              "target": "Sie gibt es ihm.",
+              "hint": "két névmás: es + ihm",
+              "explanation": "es Akkusativ, ihm Dativ."
+            },
+            {
+              "key": "d4",
+              "prompt": "Megmutatod nekik a lakást.",
+              "target": "Du zeigst ihnen die Wohnung.",
+              "hint": "címzett + dolog",
+              "explanation": "ihnen Dativ, die Wohnung Akkusativ."
+            },
+            {
+              "key": "d5",
+              "prompt": "A tanár nélkül tanulunk.",
+              "target": "Wir lernen ohne den Lehrer.",
+              "hint": "ohne + Akkusativ",
+              "explanation": "den Lehrer hímnemű Akkusativ."
+            },
+            {
+              "key": "d6",
+              "prompt": "A tanárral tanulunk.",
+              "target": "Wir lernen mit dem Lehrer.",
+              "hint": "mit + Dativ",
+              "explanation": "dem Lehrer hímnemű Dativ."
+            },
+            {
+              "key": "d7",
+              "prompt": "A szobába teszi a széket. · férfi",
+              "target": "Er stellt den Stuhl in das Zimmer.",
+              "alternatives": "Er stellt den Stuhl ins Zimmer.",
+              "hint": "célhely: in + Akkusativ",
+              "explanation": "den Stuhl tárgy; in das Zimmer célhely."
+            },
+            {
+              "key": "d8",
+              "prompt": "A szék a szobában áll.",
+              "target": "Der Stuhl steht in dem Zimmer.",
+              "alternatives": "Der Stuhl steht im Zimmer.",
+              "hint": "hely: in + Dativ",
+              "explanation": "in dem Zimmer helyet jelöl."
+            },
+            {
+              "key": "d9",
+              "prompt": "Kinek adtátok oda a kulcsot?",
+              "target": "Wem habt ihr den Schlüssel gegeben?",
+              "hint": "wem + Perfekt",
+              "explanation": "wem Dativ, den Schlüssel Akkusativ."
+            },
+            {
+              "key": "d10",
+              "prompt": "Kit kérdeztetek meg?",
+              "target": "Wen habt ihr gefragt?",
+              "hint": "wen + fragen",
+              "explanation": "fragen + Akkusativ."
+            },
+            {
+              "key": "d11",
+              "prompt": "Ennek a gyermeknek írok egy levelet.",
+              "target": "Ich schreibe diesem Kind einen Brief.",
+              "hint": "diesem Kind + einen Brief",
+              "explanation": "diesem Kind Dativ, einen Brief Akkusativ."
+            },
+            {
+              "key": "d12",
+              "prompt": "Ezt a gyermeket ismerem.",
+              "target": "Ich kenne dieses Kind.",
+              "hint": "dieses Kind Akkusativ",
+              "explanation": "Semleges Nominativ és Akkusativ azonos alakú."
+            },
+            {
+              "key": "d13",
+              "prompt": "A barátaimnak veszek jegyeket.",
+              "target": "Ich kaufe meinen Freunden Fahrkarten.",
+              "hint": "meinen Freunden",
+              "explanation": "Többes Dativban -n: Freunden."
+            },
+            {
+              "key": "d14",
+              "prompt": "A barátaimat meghívom.",
+              "target": "Ich lade meine Freunde ein.",
+              "hint": "meine Freunde Akkusativ",
+              "explanation": "Többes Akkusativban nincs -n toldalék."
+            },
+            {
+              "key": "d15",
+              "prompt": "Ez a zene tetszik nekünk.",
+              "target": "Diese Musik gefällt uns.",
+              "hint": "gefallen + Dativ",
+              "explanation": "A zene az alany; uns a Dativban álló tapasztaló."
+            },
+            {
+              "key": "d16",
+              "prompt": "Szükségünk van erre a zenére.",
+              "target": "Wir brauchen diese Musik.",
+              "hint": "brauchen + Akkusativ",
+              "explanation": "diese Musik Akkusativ."
+            },
+            {
+              "key": "d17",
+              "prompt": "A könyvet a nőnek adom.",
+              "target": "Das Buch gebe ich der Frau.",
+              "hint": "kiemelt Akkusativ az első helyen",
+              "explanation": "das Buch Akkusativ, der Frau Dativ."
+            },
+            {
+              "key": "d18",
+              "prompt": "A nőnek adom a könyvet.",
+              "target": "Der Frau gebe ich das Buch.",
+              "hint": "kiemelt Dativ az első helyen",
+              "explanation": "der Frau Dativ, das Buch Akkusativ."
+            },
+            {
+              "key": "d19",
+              "prompt": "Bízol bennem?",
+              "target": "Vertraust du mir?",
+              "hint": "vertrauen + Dativ",
+              "explanation": "ich → mir."
+            },
+            {
+              "key": "d20",
+              "prompt": "Szeretsz engem?",
+              "target": "Liebst du mich?",
+              "hint": "lieben + Akkusativ",
+              "explanation": "ich → mich."
+            },
+            {
+              "key": "d21",
+              "prompt": "Azt mondja, hogy segít nekik. · nő",
+              "target": "Sie sagt, dass sie ihnen hilft.",
+              "hint": "dass + helfen + Dativ",
+              "explanation": "ihnen Dativ; hilft a mellékmondat végén."
+            },
+            {
+              "key": "d22",
+              "prompt": "Azt mondja, hogy látja őket. · nő",
+              "target": "Sie sagt, dass sie sie sieht.",
+              "hint": "dass + sehen + Akkusativ",
+              "explanation": "Az első sie az alany, a második sie Akkusativ; sieht a végén áll."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
