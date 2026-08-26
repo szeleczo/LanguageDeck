@@ -1,11 +1,12 @@
-/* LanguageDeck 4.0.0 — skill-based German grammar curriculum. */
-const CACHE_VERSION="languagedeck-4-0-0-grammar-curriculum-20260825";
+/* LanguageDeck 4.1.0 — Hungarian Grammar & Forms, controlled variation and B2. */
+const CACHE_VERSION="languagedeck-4-1-0-grammar-b2-variation-20260826";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
   "./decks/de/courses/index.json",
   "./decks/de/grammar/grammar-sentences-learning.csv",
   "./decks/de/grammar/curriculum-v4.json",
+  "./decks/de/grammar/variation-bank-hu-v1.json",
   "./decks/de/grammar/sentence-patterns.csv",
   "./decks/de/language.json",
   "./decks/de/lexicon.csv",

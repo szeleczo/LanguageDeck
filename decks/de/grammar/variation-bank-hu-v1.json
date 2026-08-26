@@ -1,0 +1,1280 @@
+{
+  "schemaVersion": 1,
+  "id": "de-grammar-variation-bank-hu-v1",
+  "sourceLanguage": "hu",
+  "targetLanguage": "de",
+  "policy": "Csak ellenőrzött magyar jelentéssel és szükséges alaktani adattal rendelkező lexémák kerülhetnek nyelvtani variációba.",
+  "entries": [
+    {
+      "lexemeId": "de.lex.mann",
+      "de": "Mann",
+      "hu": "férfi",
+      "article": "der",
+      "plural": "Männer",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.frau",
+      "de": "Frau",
+      "hu": "nő",
+      "article": "die",
+      "plural": "Frauen",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.kind",
+      "de": "Kind",
+      "hu": "gyermek",
+      "article": "das",
+      "plural": "Kinder",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.freund",
+      "de": "Freund",
+      "hu": "barát",
+      "article": "der",
+      "plural": "Freunde",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.freundin.female-friend",
+      "de": "Freundin",
+      "hu": "barátnő",
+      "article": "die",
+      "plural": "Freundinnen",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.familie",
+      "de": "Familie",
+      "hu": "család",
+      "article": "die",
+      "plural": "Familien",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.lehrer",
+      "de": "Lehrer",
+      "hu": "tanár",
+      "article": "der",
+      "plural": "Lehrer",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.aerztin",
+      "de": "Ärztin",
+      "hu": "orvosnő",
+      "article": "die",
+      "plural": "Ärztinnen",
+      "pos": "noun",
+      "level": "A2",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.gast",
+      "de": "Gast",
+      "hu": "vendég",
+      "article": "der",
+      "plural": "Gäste",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.nachbar.neighbor",
+      "de": "Nachbar",
+      "hu": "szomszéd",
+      "article": "der",
+      "plural": "Nachbarn",
+      "pos": "noun",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.kollege",
+      "de": "Kollege",
+      "hu": "kolléga",
+      "article": "der",
+      "plural": "Kollegen",
+      "pos": "noun",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.chef",
+      "de": "Chef",
+      "hu": "főnök",
+      "article": "der",
+      "plural": "Chefs",
+      "pos": "noun",
+      "level": "A2",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.hund",
+      "de": "Hund",
+      "hu": "kutya",
+      "article": "der",
+      "plural": "Hunde",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.katze",
+      "de": "Katze",
+      "hu": "macska",
+      "article": "die",
+      "plural": "Katzen",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.buch",
+      "de": "Buch",
+      "hu": "könyv",
+      "article": "das",
+      "plural": "Bücher",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.brief",
+      "de": "Brief",
+      "hu": "levél",
+      "article": "der",
+      "plural": "Briefe",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.nachricht",
+      "de": "Nachricht",
+      "hu": "üzenet",
+      "article": "die",
+      "plural": "Nachrichten",
+      "pos": "noun",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.schluessel",
+      "de": "Schlüssel",
+      "hu": "kulcs",
+      "article": "der",
+      "plural": "Schlüssel",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.karte",
+      "de": "Karte",
+      "hu": "jegy; térkép",
+      "article": "die",
+      "plural": "Karten",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.foto",
+      "de": "Foto",
+      "hu": "fénykép",
+      "article": "das",
+      "plural": "Fotos",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.grammar.bridge.geschenk",
+      "de": "Geschenk",
+      "hu": "ajándék",
+      "article": "das",
+      "plural": "Geschenke",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "grammar-core"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.kaffee",
+      "de": "Kaffee",
+      "hu": "kávé",
+      "article": "der",
+      "plural": "Kaffees",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.wasser",
+      "de": "Wasser",
+      "hu": "víz",
+      "article": "das",
+      "plural": "Wasser",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.brot",
+      "de": "Brot",
+      "hu": "kenyér",
+      "article": "das",
+      "plural": "Brote",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.apfel",
+      "de": "Apfel",
+      "hu": "alma",
+      "article": "der",
+      "plural": "Äpfel",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.kuchen",
+      "de": "Kuchen",
+      "hu": "sütemény",
+      "article": "der",
+      "plural": "Kuchen",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.zug",
+      "de": "Zug",
+      "hu": "vonat",
+      "article": "der",
+      "plural": "Züge",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.bus",
+      "de": "Bus",
+      "hu": "busz",
+      "article": "der",
+      "plural": "Busse",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.auto",
+      "de": "Auto",
+      "hu": "autó",
+      "article": "das",
+      "plural": "Autos",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.fahrrad.bicycle",
+      "de": "Fahrrad",
+      "hu": "kerékpár",
+      "article": "das",
+      "plural": "Fahrräder",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.strasse.road",
+      "de": "Straße",
+      "hu": "utca",
+      "article": "die",
+      "plural": "Straßen",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.bahnhof.station",
+      "de": "Bahnhof",
+      "hu": "pályaudvar",
+      "article": "der",
+      "plural": "Bahnhöfe",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.markt",
+      "de": "Markt",
+      "hu": "piac",
+      "article": "der",
+      "plural": "Märkte",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.park",
+      "de": "Park",
+      "hu": "park",
+      "article": "der",
+      "plural": "Parks",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.museum",
+      "de": "Museum",
+      "hu": "múzeum",
+      "article": "das",
+      "plural": "Museen",
+      "pos": "noun",
+      "level": "A2",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.kino",
+      "de": "Kino",
+      "hu": "mozi",
+      "article": "das",
+      "plural": "Kinos",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.schule",
+      "de": "Schule",
+      "hu": "iskola",
+      "article": "die",
+      "plural": "Schulen",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.universitaet",
+      "de": "Universität",
+      "hu": "egyetem",
+      "article": "die",
+      "plural": "Universitäten",
+      "pos": "noun",
+      "level": "A2",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.buero",
+      "de": "Büro",
+      "hu": "iroda",
+      "article": "das",
+      "plural": "Büros",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.firma",
+      "de": "Firma",
+      "hu": "cég",
+      "article": "die",
+      "plural": "Firmen",
+      "pos": "noun",
+      "level": "A2",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.wohnung",
+      "de": "Wohnung",
+      "hu": "lakás",
+      "article": "die",
+      "plural": "Wohnungen",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.haus",
+      "de": "Haus",
+      "hu": "ház",
+      "article": "das",
+      "plural": "Häuser",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.zimmer",
+      "de": "Zimmer",
+      "hu": "szoba",
+      "article": "das",
+      "plural": "Zimmer",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.kueche",
+      "de": "Küche",
+      "hu": "konyha",
+      "article": "die",
+      "plural": "Küchen",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.garten",
+      "de": "Garten",
+      "hu": "kert",
+      "article": "der",
+      "plural": "Gärten",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.tisch",
+      "de": "Tisch",
+      "hu": "asztal",
+      "article": "der",
+      "plural": "Tische",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.stuhl",
+      "de": "Stuhl",
+      "hu": "szék",
+      "article": "der",
+      "plural": "Stühle",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.fenster",
+      "de": "Fenster",
+      "hu": "ablak",
+      "article": "das",
+      "plural": "Fenster",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.tuer",
+      "de": "Tür",
+      "hu": "ajtó",
+      "article": "die",
+      "plural": "Türen",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.tasche.bag",
+      "de": "Tasche",
+      "hu": "táska",
+      "article": "die",
+      "plural": "Taschen",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.termin",
+      "de": "Termin",
+      "hu": "időpont",
+      "article": "der",
+      "plural": "Termine",
+      "pos": "noun",
+      "level": "A2",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.problem",
+      "de": "Problem",
+      "hu": "probléma",
+      "article": "das",
+      "plural": "Probleme",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.frage",
+      "de": "Frage",
+      "hu": "kérdés",
+      "article": "die",
+      "plural": "Fragen",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.antwort.answer",
+      "de": "Antwort",
+      "hu": "válasz",
+      "article": "die",
+      "plural": "Antworten",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.arbeit",
+      "de": "Arbeit",
+      "hu": "munka",
+      "article": "die",
+      "plural": "Arbeiten",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.zeit",
+      "de": "Zeit",
+      "hu": "idő",
+      "article": "die",
+      "plural": "Zeiten",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.geld",
+      "de": "Geld",
+      "hu": "pénz",
+      "article": "das",
+      "plural": "Gelder",
+      "pos": "noun",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.plan",
+      "de": "Plan",
+      "hu": "terv",
+      "article": "der",
+      "plural": "Pläne",
+      "pos": "noun",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.idee",
+      "de": "Idee",
+      "hu": "ötlet",
+      "article": "die",
+      "plural": "Ideen",
+      "pos": "noun",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.entscheidung",
+      "de": "Entscheidung",
+      "hu": "döntés",
+      "article": "die",
+      "plural": "Entscheidungen",
+      "pos": "noun",
+      "level": "B1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.erfahrung",
+      "de": "Erfahrung",
+      "hu": "tapasztalat",
+      "article": "die",
+      "plural": "Erfahrungen",
+      "pos": "noun",
+      "level": "B1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.moeglichkeit",
+      "de": "Möglichkeit",
+      "hu": "lehetőség",
+      "article": "die",
+      "plural": "Möglichkeiten",
+      "pos": "noun",
+      "level": "B1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.sehen",
+      "de": "sehen",
+      "hu": "látni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.kaufen",
+      "de": "kaufen",
+      "hu": "venni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.brauchen",
+      "de": "brauchen",
+      "hu": "szüksége van valamire",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.finden",
+      "de": "finden",
+      "hu": "találni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.geben",
+      "de": "geben",
+      "hu": "adni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.zeigen",
+      "de": "zeigen",
+      "hu": "mutatni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.schicken",
+      "de": "schicken",
+      "hu": "küldeni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.bringen",
+      "de": "bringen",
+      "hu": "hozni; vinni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.helfen",
+      "de": "helfen",
+      "hu": "segíteni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.danken",
+      "de": "danken",
+      "hu": "megköszönni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.grammar.bridge.gefallen",
+      "de": "gefallen",
+      "hu": "tetszeni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.antworten",
+      "de": "antworten",
+      "hu": "válaszolni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.gehen.go",
+      "de": "gehen",
+      "hu": "menni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.kommen",
+      "de": "kommen",
+      "hu": "jönni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.fahren",
+      "de": "fahren",
+      "hu": "utazni; járművet vezetni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.bleiben",
+      "de": "bleiben",
+      "hu": "maradni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.legen",
+      "de": "legen",
+      "hu": "fektetni; tenni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.stellen",
+      "de": "stellen",
+      "hu": "állítani; tenni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.liegen",
+      "de": "liegen",
+      "hu": "feküdni; található",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.stehen",
+      "de": "stehen",
+      "hu": "állni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.lesen.read",
+      "de": "lesen",
+      "hu": "olvasni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.schreiben",
+      "de": "schreiben",
+      "hu": "írni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.sprechen",
+      "de": "sprechen",
+      "hu": "beszélni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.fragen",
+      "de": "fragen",
+      "hu": "kérdezni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.essen.eat",
+      "de": "essen",
+      "hu": "enni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.trinken",
+      "de": "trinken",
+      "hu": "inni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.schlafen",
+      "de": "schlafen",
+      "hu": "aludni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.arbeiten",
+      "de": "arbeiten",
+      "hu": "dolgozni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.lernen",
+      "de": "lernen",
+      "hu": "tanulni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.verstehen",
+      "de": "verstehen",
+      "hu": "megérteni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A1",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.wissen.know",
+      "de": "wissen",
+      "hu": "tudni egy tényt",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.kennen.know",
+      "de": "kennen",
+      "hu": "ismerni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.denken",
+      "de": "denken",
+      "hu": "gondolni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.treffen",
+      "de": "treffen",
+      "hu": "találkozni; találni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.tragen",
+      "de": "tragen",
+      "hu": "viselni; hordani",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    },
+    {
+      "lexemeId": "de.lex.laufen.run",
+      "de": "laufen",
+      "hu": "futni; járni",
+      "article": "",
+      "plural": "",
+      "pos": "verb",
+      "level": "A2",
+      "sources": [
+        "core-3000",
+        "course",
+        "book"
+      ]
+    }
+  ]
+}

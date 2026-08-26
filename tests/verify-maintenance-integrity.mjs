@@ -92,11 +92,14 @@ const curriculum = JSON.parse(text(join(deRoot, "grammar", "curriculum-v4.json")
 assert.equal(curriculum.schemaVersion, 4, "Grammar & Forms uses the v4 curriculum schema");
 assert.equal(curriculum.explanationLanguage, "hu", "grammar explanations are Hungarian");
 assert.equal(curriculum.targetLanguage, "de", "grammar production remains German");
-assert.deepEqual(curriculum.tracks.map(track => track.id), ["a1-foundation", "a1-expansion", "a2-connection", "b1-expression"], "the curriculum spirals through four CEFR stage bands");
-assert.equal(curriculum.units.length, 33, "the v4 curriculum contains thirty-three focused units");
-assert.deepEqual(curriculum.units.map(unit => unit.order), Array.from({length:33}, (_, i) => i + 1), "unit order is stable and contiguous");
+assert.deepEqual(curriculum.tracks.map(track => track.id), ["a1-foundation", "a1-expansion", "a2-connection", "b1-expression", "b2-precision"], "the curriculum spirals through five CEFR stage bands up to B2");
+assert.equal(curriculum.units.length, 57, "Grammar 4.1 contains fifty-seven focused units");
+assert.deepEqual(curriculum.units.map(unit => unit.order), Array.from({length:57}, (_, i) => i + 1), "unit order is stable and contiguous");
 const requiredUnits = ["sentence-core", "noun-gender-plural", "nouns-nominative-accusative", "dative-recipient", "perfect-foundation", "two-way-prepositions", "fixed-prepositions", "modal-system", "verb-government", "object-order", "subordinate-clauses", "preterite-narration", "adjective-system", "reflexive-and-nicht", "konjunktiv-two", "relative-clauses", "infinitive-clauses", "passive", "prepositional-verbs", "past-sequence", "genitive", "final-transfer"];
 for (const id of requiredUnits) assert.ok(curriculum.units.some(unit => unit.id === id), `curriculum is missing ${id}`);
+const requiredB2Units = ["b2-complex-connectors", "b2-indirect-speech", "b2-advanced-passive", "b2-relative-precision", "b2-nominalisation", "b2-participial-adjectives", "b2-word-order-focus", "b2-register-modality", "b2-final-transfer"];
+for (const id of requiredB2Units) assert.ok(curriculum.units.some(unit => unit.id === id), `B2 curriculum is missing ${id}`);
+assert.equal(curriculum.units.filter(unit => unit.progressSetName?.startsWith("Grammar 4 ·") && !unit.progressSetName.includes("v4.1")).length, 33, "all 4.0 units retain their exact legacy progress set identity");
 const grammarGoalIds = new Set();
 const skillIds = new Set();
 let grammarGoalCount = 0;
@@ -118,10 +121,11 @@ for (const unit of curriculum.units) {
     }
   }
 }
-assert.equal(grammarGoalCount, 435, "v4 contains 435 varied evidence rows");
-assert.equal(skillIds.size, 190, "v4 measures 190 reusable grammar skills instead of memorised strings");
+assert.equal(grammarGoalCount, 771, "Grammar 4.1 contains 771 varied evidence rows");
+assert.equal(skillIds.size, 329, "Grammar 4.1 measures 329 reusable grammar skills instead of memorised strings");
 const verbUnits = curriculum.units.filter(unit => unit.verb);
-assert.deepEqual(verbUnits.map(unit => unit.id), ["verb-sein", "verb-haben", "verb-gehen", "verb-geben", "verb-nehmen", "verb-helfen", "verb-sprechen", "verb-werden"], "eight high-value verbs retain isolated workshops before mixing");
+assert.equal(verbUnits.length, 20, "Igeműhely 2.0 provides twenty isolated high-value verb workshops");
+for (const id of ["verb-sein", "verb-haben", "verb-gehen", "verb-geben", "verb-nehmen", "verb-helfen", "verb-sprechen", "verb-werden", "verb-kommen", "verb-fahren", "verb-lesen", "verb-sehen", "verb-essen", "verb-schlafen", "verb-tragen", "verb-treffen", "verb-wissen", "verb-bleiben", "verb-bringen", "verb-schreiben"]) assert.ok(verbUnits.some(unit => unit.id === id), `verb workshop is missing ${id}`);
 for (const verb of verbUnits) {
   assert.equal(verb.paradigms[0].rows.length, 6, `${verb.id} shows all six present-person slots`);
   assert.equal(verb.phases[0].rows.length, 6, `${verb.id} drills the full present paradigm in order`);
@@ -140,6 +144,24 @@ assert.match(indexHtml, /curriculum-v4\.json/, "the app loads only the unified v
 assert.match(indexHtml, /grammarParadigmsHtml\(active\)/, "verb and case paradigms are visible before practice");
 assert.match(indexHtml, /grammarMemoryHookHtml\(active\)/, "lessons can show a mental hook before practice");
 assert.match(indexHtml, /grammar-track-section/, "the curriculum overview separates CEFR spiral stages");
+assert.match(indexHtml, /grammarRecommendation/, "the curriculum explains its next recommended unit");
+assert.match(indexHtml, /grammarStatusMeta/, "the curriculum exposes new, building and stable states");
+assert.match(indexHtml, /grammarPracticeHu/, "Grammar & Forms practice controls have a Hungarian UI scope");
+assert.match(indexHtml, /4\.1\.0-grammar-b2-variation-20260826/, "the application build marker includes Grammar 4.1");
+
+const variationBank = JSON.parse(text(join(deRoot, "grammar", "variation-bank-hu-v1.json")));
+assert.equal(variationBank.sourceLanguage, "hu", "the controlled variation bridge uses Hungarian source meanings");
+assert.equal(variationBank.entries.length, 98, "the controlled bridge contains ninety-eight reviewed lexemes");
+assert.ok(variationBank.entries.filter(entry => entry.sources.includes("core-3000")).length >= 90, "the Core 3000 supplies the broad frequency base");
+assert.ok(variationBank.entries.filter(entry => entry.sources.includes("course")).length >= 60, "course vocabulary is woven into grammar practice");
+assert.ok(variationBank.entries.filter(entry => entry.sources.includes("book")).length >= 25, "book vocabulary is woven into grammar practice");
+const bridgeIds = new Set(variationBank.entries.map(entry => entry.lexemeId));
+for (const unit of curriculum.units) for (const phase of unit.phases) for (const row of phase.rows) for (const id of row.lexemeRefs || []) assert.ok(bridgeIds.has(id), `${unit.id}/${phase.id}/${row.key} references a lexeme outside the controlled Hungarian bridge: ${id}`);
+for (const id of ["variation-article-cases", "variation-verb-frames", "variation-location"]) {
+  const variation = curriculum.units.find(unit => unit.id === id);
+  assert.ok(variation?.variation?.dimensions?.length >= 4, `${id} needs explicit controlled variation dimensions`);
+  assert.deepEqual(variation.vocabularySources, ["Core 3000", "Course", "Book"], `${id} must expose all three vocabulary sources`);
+}
 
 const optionalRecallNorm = value => String(value || "").toLocaleLowerCase().replace(/\s+[\-‐‑‒–—―−]+\s+/gu, " ").replace(/[,\.!?;:]+/gu, "").replace(/\s+/g, " ").trim();
 assert.equal(optionalRecallNorm("jemanden bitten, zu bleiben"), optionalRecallNorm("jemanden bitten zu bleiben"), "comma-free recall is accepted");
@@ -257,7 +279,8 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-0-0-grammar-curriculum-20260825/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-1-0-grammar-b2-variation-20260826/, "service worker cache version is current");
+assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
 assert.match(serviceWorker, /decks\/de\/stories\/tschick\/story\.json/, "Tschick course metadata is available offline");
