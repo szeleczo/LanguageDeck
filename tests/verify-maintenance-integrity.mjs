@@ -62,7 +62,7 @@ assert.match(indexHtml, /data-practice-tool="sync"/, "My library exposes progres
 assert.match(indexHtml, /morePracticeOptionsBtn/, "advanced controls remain reachable from session settings");
 assert.match(indexHtml, /p === "stories" \|\| p === "texts"/, "course and book files stay out of the standalone deck browser");
 assert.match(indexHtml, /unit\.lexiconFile.*unitLexicon.*lexicon:/s, "story units can load their own isolated lexicon");
-assert.match(indexHtml, /\["memorise","grammar_recall"\].*guided_full_recall_at/, "grammar mastery requires item-specific full recall evidence");
+assert.match(indexHtml, /spec\.target === "grammar_skill"[\s\S]*guidedSkillDone/, "grammar mastery is calculated from skill evidence");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 
 const languages = JSON.parse(text(join(root, "decks", "languages.json")));
@@ -88,139 +88,58 @@ const standaloneIndex = JSON.parse(text(join(root, "decks", "index.json")));
 assert.equal(standaloneIndex.length, 8, "the standalone browser contains only independent practice decks");
 assert.ok(standaloneIndex.every(deck => !/[\\/]stories[\\/]|[\\/]texts[\\/]/.test(deck.file || "")), "story files never leak into the standalone browser");
 
-const curriculum = JSON.parse(text(join(deRoot, "grammar", "core-curriculum.json")));
+const curriculum = JSON.parse(text(join(deRoot, "grammar", "curriculum-v4.json")));
+assert.equal(curriculum.schemaVersion, 4, "Grammar & Forms uses the v4 curriculum schema");
 assert.equal(curriculum.explanationLanguage, "hu", "grammar explanations are Hungarian");
 assert.equal(curriculum.targetLanguage, "de", "grammar production remains German");
-assert.equal(curriculum.units.length, 10, "the first Grammar & Forms curriculum has ten units");
-const requiredUnits = ["praesens-questions", "perfekt", "praeteritum", "past-future", "imperative-negation", "konjunktiv-two", "modal-verbs", "separable-reflexive", "comparison", "passive"];
-assert.deepEqual(curriculum.units.map(unit => unit.id), requiredUnits, "the core curriculum covers the approved A1-B1 sequence");
+assert.deepEqual(curriculum.tracks.map(track => track.id), ["a1-foundation", "a1-expansion", "a2-connection", "b1-expression"], "the curriculum spirals through four CEFR stage bands");
+assert.equal(curriculum.units.length, 33, "the v4 curriculum contains thirty-three focused units");
+assert.deepEqual(curriculum.units.map(unit => unit.order), Array.from({length:33}, (_, i) => i + 1), "unit order is stable and contiguous");
+const requiredUnits = ["sentence-core", "noun-gender-plural", "nouns-nominative-accusative", "dative-recipient", "perfect-foundation", "two-way-prepositions", "fixed-prepositions", "modal-system", "verb-government", "object-order", "subordinate-clauses", "preterite-narration", "adjective-system", "reflexive-and-nicht", "konjunktiv-two", "relative-clauses", "infinitive-clauses", "passive", "prepositional-verbs", "past-sequence", "genitive", "final-transfer"];
+for (const id of requiredUnits) assert.ok(curriculum.units.some(unit => unit.id === id), `curriculum is missing ${id}`);
 const grammarGoalIds = new Set();
+const skillIds = new Set();
 let grammarGoalCount = 0;
 for (const unit of curriculum.units) {
-  assert.ok(unit.rule && unit.examples?.length >= 2, `${unit.id} needs a concise rule and examples`);
-  assert.deepEqual(unit.phases.map(phase => phase.id), ["forms", "sentences"], `${unit.id} needs form and sentence recall`);
+  assert.ok(unit.rule && unit.examples?.length >= 2, `${unit.id} needs a rule and contrasted examples`);
+  assert.equal(unit.phases.length, 3, `${unit.id} needs recognition/control/transfer progression`);
   for (const phase of unit.phases) {
-    assert.equal(phase.rows.length, 5, `${unit.id}/${phase.id} needs five balanced targets`);
+    assert.ok(["choice", "typing", "order", "progressive"].includes(phase.variant), `${unit.id}/${phase.id} uses an approved task engine`);
+    if (phase.sequence === false) assert.equal(phase.id, "production", `${unit.id}/${phase.id} may shuffle only in final production`);
+    else assert.equal(phase.sequence, true, `${unit.id}/${phase.id} keeps pedagogical order`);
     for (const row of phase.rows) {
       const key = `${unit.id}:${phase.id}:${row.key}`;
       assert.ok(!grammarGoalIds.has(key), `duplicate grammar goal ${key}`);
-      grammarGoalIds.add(key); grammarGoalCount++;
-      assert.ok(row.prompt && row.target && row.explanation, `${key} needs prompt, target and explanation`);
+      grammarGoalIds.add(key); grammarGoalCount++; skillIds.add(row.skillId);
+      assert.ok(row.skillId && row.prompt && row.target && row.explanation, `${key} needs skill, prompt, target and explanation`);
+      assert.ok(!/[\/|]/.test(row.target), `${key} cannot require a mobile-unavailable slash or pipe`);
+      if (phase.variant === "choice") assert.ok(row.options?.length >= 2, `${key} needs explicit, targeted choices`);
+      if (phase.variant === "typing") assert.ok(row.focus, `${key} must focus typing on the grammar-bearing form`);
     }
   }
 }
-assert.equal(grammarGoalCount, 100, "the core curriculum contains 100 active-recall goals");
-
-const foundations = JSON.parse(text(join(deRoot, "grammar", "foundations-curriculum.json")));
-assert.deepEqual(foundations.tracks.map(track => track.id), ["cases", "verbs", "structures", "mixed"], "Grammar & Forms 2.0 has four clearly separated learning tracks");
-assert.equal(foundations.units.length, 4, "cases and pronouns begin with four focused units");
-const pronounUnit = foundations.units.find(unit => unit.id === "personal-pronouns");
-assert.ok(pronounUnit, "personal pronouns have a dedicated unit");
-assert.deepEqual(pronounUnit.paradigms[0].rows.slice(0, 4), [
-  ["én", "ich", "mich", "mir"],
-  ["te", "du", "dich", "dir"],
-  ["ő – hímnem", "er", "ihn", "ihm"],
-  ["ő – nőnem", "sie", "sie", "ihr"]
-], "pronoun case rows remain explicit and correct");
-const articleUnit = foundations.units.find(unit => unit.id === "definite-articles");
-assert.ok(articleUnit, "definite articles have a dedicated unit");
-assert.deepEqual(articleUnit.paradigms[0].rows.map(row => row[1]), ["der Zug", "den Zug", "dem Zug"], "the same masculine noun is shown through Nominativ, Akkusativ and Dativ");
-const foundationGoalCount = foundations.units.flatMap(unit => unit.phases.flatMap(phase => phase.rows)).length;
-assert.equal(foundationGoalCount, 86, "pronoun and case foundations contain 86 active-recall goals");
-
-const caseLab = JSON.parse(text(join(deRoot, "grammar", "case-lab.json")));
-const expectedCaseLabIds = [
-  "case-mental-map", "case-pronoun-contrast", "case-definite-articles", "case-determiners",
-  "case-akk-verbs", "case-dat-verbs", "case-transfer-verbs", "case-object-order",
-  "case-akk-prepositions", "case-dat-prepositions", "case-two-way", "case-questions-negation",
-  "case-time-mood", "case-diagnostic"
-];
-assert.deepEqual(caseLab.units.map(unit => unit.id), expectedCaseLabIds, "the case lab follows the approved fourteen-unit learning path");
-const caseLabGoalIds = new Set();
-let caseLabGoalCount = 0;
-for (const unit of caseLab.units) {
-  assert.equal(unit.track, "cases", `${unit.id} remains inside the cases learning domain`);
-  assert.ok(unit.memoryHook?.title && unit.memoryHook.lines?.length >= 2, `${unit.id} needs an explicit mental hook`);
-  assert.ok(unit.rule && unit.examples?.length >= 2 && unit.paradigms?.length, `${unit.id} needs explanation, examples and a visible reference table`);
-  for (const phase of unit.phases) for (const row of phase.rows) {
-    const key = `${unit.id}:${phase.id}:${row.key}`;
-    assert.ok(!caseLabGoalIds.has(key), `duplicate case-lab goal ${key}`);
-    caseLabGoalIds.add(key); caseLabGoalCount++;
-    assert.ok(row.prompt && row.target && row.hint && row.explanation, `${key} needs complete bilingual teaching content`);
-  }
+assert.equal(grammarGoalCount, 435, "v4 contains 435 varied evidence rows");
+assert.equal(skillIds.size, 190, "v4 measures 190 reusable grammar skills instead of memorised strings");
+const verbUnits = curriculum.units.filter(unit => unit.verb);
+assert.deepEqual(verbUnits.map(unit => unit.id), ["verb-sein", "verb-haben", "verb-gehen", "verb-geben", "verb-nehmen", "verb-helfen", "verb-sprechen", "verb-werden"], "eight high-value verbs retain isolated workshops before mixing");
+for (const verb of verbUnits) {
+  assert.equal(verb.paradigms[0].rows.length, 6, `${verb.id} shows all six present-person slots`);
+  assert.equal(verb.phases[0].rows.length, 6, `${verb.id} drills the full present paradigm in order`);
+  assert.equal(verb.phases[1].rows.length, 6, `${verb.id} varies all persons in sentences`);
 }
-assert.equal(caseLabGoalCount, 445, "the expanded case lab contains 445 active-recall goals");
-const caseLabText = text(join(deRoot, "grammar", "case-lab.json"));
-const caseLabTargets = caseLab.units.flatMap(unit => unit.phases.flatMap(phase => phase.rows.map(row => row.target)));
-assert.ok(!caseLabTargets.some(target => /\bmit mich\b/i.test(target)), "no accepted answer teaches the reported mit + Akkusativ error");
-assert.ok(!caseLabText.includes("Nach meiner Meinung"), "the natural Meiner Meinung nach form is used");
-assert.match(caseLabText, /Meiner Meinung nach ist das richtig\./, "the postposed nach construction is explicitly practised");
-assert.match(caseLabText, /mich = engem \| mir = nekem/, "the central mich/mir memory hook is present");
-assert.match(caseLabText, /der – den – dem/, "the masculine article rhythm is present");
-assert.match(caseLabText, /nem pusztán: mozog vagy áll/, "two-way prepositions are not reduced to the misleading movement-versus-stillness rule");
-assert.match(caseLabText, /meinen Freunden/, "plural Dativ marking is practised");
-
-const workshop = JSON.parse(text(join(deRoot, "grammar", "verb-workshop.json")));
-const expectedVerbIds = ["sein", "haben", "werden", "machen", "lernen", "arbeiten", "gehen", "kommen", "fahren", "lesen", "sehen", "nehmen", "sprechen", "schreiben", "essen", "schlafen", "helfen", "geben", "koennen", "muessen"];
-assert.deepEqual(workshop.verbs.map(verb => verb.id), expectedVerbIds, "the first verb workshop contains twenty high-frequency verbs in a stable order");
-for (const verb of workshop.verbs) {
-  assert.equal(verb.present.length, 6, `${verb.id} needs all six present-person slots`);
-  assert.equal(verb.sentences.length, 6, `${verb.id} needs one present sentence for every person slot`);
-  assert.equal(verb.sentenceTypes.length, 3, `${verb.id} needs question, negation and wh-question practice`);
-  assert.equal(verb.otherForms.length, 4, `${verb.id} needs four later tense or mood forms`);
-  assert.match(verb.sentences[0].target, /^Ich\b/, `${verb.id} sentence row 1 must be ich`);
-  assert.match(verb.sentences[1].target, /^Du\b/, `${verb.id} sentence row 2 must be du`);
-  assert.match(verb.sentences[3].target, /^Wir\b/, `${verb.id} sentence row 4 must be wir`);
-  assert.match(verb.sentences[4].target, /^Ihr\b/, `${verb.id} sentence row 5 must be ihr`);
-  assert.match(verb.sentenceTypes[0].target, /\bihr\b/, `${verb.id} first question must deliberately practise ihr`);
-}
-const workshopGoalCount = workshop.verbs.reduce((total, verb) => total + verb.present.length + verb.sentences.length + verb.sentenceTypes.length + verb.otherForms.length, 0);
-assert.equal(workshopGoalCount, 380, "twenty isolated verb workshops contain 380 goals before mixing");
-const expectedIhrQuestions = new Map([
-  ["sein", ["Készen álltok?", "Seid ihr bereit?"]],
-  ["haben", ["Van időtök?", "Habt ihr Zeit?"]],
-  ["werden", ["Kezdtek elfáradni?", "Werdet ihr müde?"]],
-  ["machen", ["Mit csináltok?", "Was macht ihr?"]],
-  ["lernen", ["Németül tanultok?", "Lernt ihr Deutsch?"]],
-  ["arbeiten", ["Ma dolgoztok?", "Arbeitet ihr heute?"]],
-  ["gehen", ["Hazafelé mentek?", "Geht ihr nach Hause?"]],
-  ["kommen", ["Velünk jöttök?", "Kommt ihr mit uns?"]],
-  ["fahren", ["Vonattal utaztok?", "Fahrt ihr mit dem Zug?"]],
-  ["lesen", ["Olvassátok a könyvet?", "Lest ihr das Buch?"]],
-  ["sehen", ["Látjátok a vonatot?", "Seht ihr den Zug?"]],
-  ["nehmen", ["A vonatot választjátok?", "Nehmt ihr den Zug?"]],
-  ["sprechen", ["Beszéltek németül?", "Sprecht ihr Deutsch?"]],
-  ["schreiben", ["Levelet írtok?", "Schreibt ihr einen Brief?"]],
-  ["essen", ["Együtt esztek?", "Esst ihr zusammen?"]],
-  ["schlafen", ["Jól alszotok?", "Schlaft ihr gut?"]],
-  ["helfen", ["Segítetek neki? · férfi", "Helft ihr ihm?"]],
-  ["geben", ["Odaadjátok neki a könyvet? · férfi", "Gebt ihr ihm das Buch?"]],
-  ["koennen", ["Tudtok nekem segíteni?", "Könnt ihr mir helfen?"]],
-  ["muessen", ["Ma dolgoznotok kell?", "Müsst ihr heute arbeiten?"]]
-]);
-for (const verb of workshop.verbs) {
-  const row = verb.sentenceTypes[0], expected = expectedIhrQuestions.get(verb.id);
-  assert.deepEqual([row.prompt, row.target], expected, `${verb.id} ihr question needs an audited second-person-plural Hungarian translation`);
-}
-assert.ok(!text(join(deRoot, "grammar", "verb-workshop.json")).includes("Beszélek németül?"), "Sprecht ihr Deutsch is never mistranslated as first-person singular");
-const sprechenQuestion = workshop.verbs.find(verb => verb.id === "sprechen").sentenceTypes[0];
-assert.deepEqual(
-  [sprechenQuestion.prompt, sprechenQuestion.target],
-  ["Beszéltek németül?", "Sprecht ihr Deutsch?"],
-  "the reported sprechen translation regression remains fixed"
-);
-
-const mixedCurriculum = JSON.parse(text(join(deRoot, "grammar", "mixed-curriculum.json")));
-assert.equal(mixedCurriculum.units.length, 4, "mixing is deferred to four explicit review units");
-const mixedGoalCount = mixedCurriculum.units.flatMap(unit => unit.phases.flatMap(phase => phase.rows)).length;
-assert.equal(mixedGoalCount, 79, "graduated mixed review contains 79 goals");
-assert.equal(grammarGoalCount + foundationGoalCount + workshopGoalCount + mixedGoalCount, 645, "the existing Grammar & Forms curriculum retains all 645 goals");
-assert.equal(grammarGoalCount + foundationGoalCount + caseLabGoalCount + workshopGoalCount + mixedGoalCount, 1090, "Grammar & Forms 3.0 contains 1,090 active-recall goals");
-assert.match(indexHtml, /grammarVerbUnits\(workshop\)/, "the app generates one self-contained course unit per verb");
-assert.match(indexHtml, /grammar\/case-lab\.json/, "the app loads the expanded case lab");
+const sprechenQuestion = verbUnits.find(unit => unit.id === "verb-sprechen").phases[2].rows.find(row => row.target === "Sprecht ihr Deutsch?");
+assert.deepEqual([sprechenQuestion.prompt, sprechenQuestion.target], ["Beszéltek németül?", "Sprecht ihr Deutsch?"], "the reported ihr translation remains exact");
+const twoWay = curriculum.units.find(unit => unit.id === "two-way-prepositions");
+assert.match(twoWay.rule, /mozgás önmagában nem elég/, "two-way prepositions reject the misleading movement-only shortcut");
+assert.ok(new Set(twoWay.phases.flatMap(phase => phase.rows.flatMap(row => row.target.match(/[A-ZÄÖÜ][a-zäöüß]+/g) || []))).size >= 10, "the two-way lesson rotates a broad noun vocabulary");
+assert.ok(twoWay.phases[0].rows.some(row => row.prompt.includes("Wo?")) && twoWay.phases[0].rows.some(row => row.prompt.includes("Wohin?")), "Wo/Wohin contrasts stay explicit");
+assert.match(indexHtml, /grammarFocusTerms/, "typing blanks can target the grammar-bearing token");
+assert.match(indexHtml, /newItemOrder=spec\.sequence\?"csv":"smart"/, "guided contrast pairs preserve CSV order");
+assert.match(indexHtml, /guided_success_at/, "a clean answer records reusable skill evidence");
+assert.match(indexHtml, /curriculum-v4\.json/, "the app loads only the unified v4 curriculum");
 assert.match(indexHtml, /grammarParadigmsHtml\(active\)/, "verb and case paradigms are visible before practice");
-assert.match(indexHtml, /grammarMemoryHookHtml\(active\)/, "each case lesson can show its mental hook before practice");
-assert.match(indexHtml, /grammar-track-section/, "the curriculum overview separates cases, verbs, structures and mixed review");
+assert.match(indexHtml, /grammarMemoryHookHtml\(active\)/, "lessons can show a mental hook before practice");
+assert.match(indexHtml, /grammar-track-section/, "the curriculum overview separates CEFR spiral stages");
 
 const optionalRecallNorm = value => String(value || "").toLocaleLowerCase().replace(/\s+[\-‐‑‒–—―−]+\s+/gu, " ").replace(/[,\.!?;:]+/gu, "").replace(/\s+/g, " ").trim();
 assert.equal(optionalRecallNorm("jemanden bitten, zu bleiben"), optionalRecallNorm("jemanden bitten zu bleiben"), "comma-free recall is accepted");
@@ -338,12 +257,8 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-3-4-0-case-lab-20260818/, "service worker cache version is current");
-assert.match(serviceWorker, /decks\/de\/grammar\/core-curriculum\.json/, "the grammar curriculum is available offline");
-assert.match(serviceWorker, /decks\/de\/grammar\/case-lab\.json/, "the expanded case lab is available offline");
-assert.match(serviceWorker, /decks\/de\/grammar\/foundations-curriculum\.json/, "pronoun and case foundations are available offline");
-assert.match(serviceWorker, /decks\/de\/grammar\/verb-workshop\.json/, "the isolated verb workshop is available offline");
-assert.match(serviceWorker, /decks\/de\/grammar\/mixed-curriculum\.json/, "graduated mixed review is available offline");
+assert.match(serviceWorker, /languagedeck-4-0-0-grammar-curriculum-20260825/, "service worker cache version is current");
+assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
 assert.match(serviceWorker, /decks\/de\/stories\/tschick\/story\.json/, "Tschick course metadata is available offline");
 assert.match(serviceWorker, /icon-maskable\.svg/, "the vector maskable icon is available offline");
@@ -359,4 +274,4 @@ assert.ok(!existsSync(join(root, "PRIVATE_CONTENT_NOTICE.txt")), "obsolete priva
 assert.ok(!walk(deRoot).some(file => /texts[\\/]maja-k01[\\/]/i.test(file)), "Maja is not shipped");
 assert.ok(!walk(deRoot).some(file => /texts[\\/]sterntaler[\\/]/i.test(file)), "Sterntaler is not shipped");
 assert.ok(!walk(root).some(file => /RELEASE_NOTES/i.test(file)), "release-note files are not shipped");
-console.log(`Integrity verified: ${lexicon.length} canonical lexemes, ${aliases.length} aliases, ${cache.size} isolated ch01 cache entries, ${grammarGoalCount + foundationGoalCount + caseLabGoalCount + workshopGoalCount + mixedGoalCount} grammar goals.`);
+console.log(`Integrity verified: ${lexicon.length} canonical lexemes, ${aliases.length} aliases, ${cache.size} isolated ch01 cache entries, ${grammarGoalCount} grammar evidence rows across ${skillIds.size} skills.`);

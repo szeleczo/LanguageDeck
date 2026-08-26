@@ -3802,7 +3802,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="3.4.0-case-lab-20260818",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.0.0-grammar-curriculum-20260825",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function norm(v){return String(v||"").toLocaleLowerCase().normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
 function parseCSV(text){const rows=[];let row=[],cell="",q=false,s=String(text||"").replace(/^\uFEFF/,"");for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')q=false;else cell+=c}else if(c==='"')q=true;else if(c===','){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
@@ -4175,59 +4175,50 @@ $('chapterStudyBack').onclick=()=>exitChapterStudy('course');$('chapterStudySett
 
 let GRAMMAR_CURRICULUM=null;
 let GRAMMAR_COURSE_SESSION={unitId:null,returnView:'practice'};
-function grammarVerbUnits(workshop){
-  const subjects=workshop.subjects||[];
-  return(workshop.verbs||[]).map(verb=>{
-    if(!Array.isArray(verb.present)||verb.present.length!==subjects.length)throw Error(`Invalid Präsens paradigm: ${verb.id}`);
-    const forms=subjects.map((subject,index)=>({key:`present-${subject.id}`,prompt:`${verb.infinitive} · ${subject.de} · Präsens`,target:verb.present[index],hint:index===1||index===2?verb.note:'Figyeld meg a személyragot.',explanation:`${subject.de} + ${verb.infinitive}: ${subject.de} ${verb.present[index]}. ${verb.note}`}));
-    const sentences=(verb.sentences||[]).map((row,index)=>({...row,hint:row.hint||`${subjects[index]?.de||''} + ${verb.present[index]||verb.infinitive}`,explanation:row.explanation||`A ${subjects[index]?.de||'kért'} személyhez a ${verb.present[index]||verb.infinitive} alak tartozik.`}));
-    const sentenceTypes=(verb.sentenceTypes||[]).map(row=>({...row,explanation:row.explanation||`A mondat minden ragozott alakja a ${verb.infinitive} igéhez tartozik.`}));
-    const otherForms=(verb.otherForms||[]).map(row=>({...row,hint:row.hint||verb.note}));
-    return{id:`verb-${verb.id}`,track:'verbs',order:verb.order,level:verb.level,title:`${verb.infinitive} · ${verb.meaning}`,summary:`${verb.group}. ${verb.note}`,rule:verb.note,verb,examples:(verb.sentences||[]).slice(0,3).map(row=>({de:row.target,hu:row.prompt.replace(/\s*·.*$/,'')})),paradigms:[{title:`${verb.infinitive} · Präsens`,columns:['Személy','Igealak','Példamondat'],rows:subjects.map((subject,index)=>[subject.de,verb.present[index],verb.sentences?.[index]?.target||''])}],phases:[{id:'present-forms',title:'Präsens alakok',subtitle:'Egyetlen ige mind a hat személyben; más ige még nem jelenik meg.',rows:forms},{id:'present-sentences',title:'Személyek mondatokban',subtitle:'Ugyanaz az ige, mind a hat személy teljes mondatában.',rows:sentences},{id:'sentence-types',title:'Kérdés és tagadás',subtitle:'Csak ez az ige, de már eltérő mondattípusokban.',rows:sentenceTypes},{id:'time-and-mood',title:'Idő és mód',subtitle:'Perfekt, Präteritum, feltételes vagy felszólító alak – továbbra is egyetlen igével.',rows:otherForms}]}
-  })
-}
 async function loadGrammarCurriculum(){
   if(GRAMMAR_CURRICULUM)return GRAMMAR_CURRICULUM;
-  const [core,foundations,caseLab,workshop,mixed]=await Promise.all([fetchJSON(`decks/${LANG}/grammar/core-curriculum.json`),fetchJSON(`decks/${LANG}/grammar/foundations-curriculum.json`),fetchJSON(`decks/${LANG}/grammar/case-lab.json`),fetchJSON(`decks/${LANG}/grammar/verb-workshop.json`),fetchJSON(`decks/${LANG}/grammar/mixed-curriculum.json`)]);
-  const tracks=[...(foundations.tracks||[])].sort((a,b)=>(a.order||0)-(b.order||0)),trackOrder=new Map(tracks.map((track,index)=>[track.id,track.order||index+1]));
-  const units=[...(foundations.units||[]).map(unit=>({...unit,curriculumSource:'foundations'})),...(caseLab.units||[]).map(unit=>({...unit,curriculumSource:'case-lab'})),...grammarVerbUnits(workshop).map(unit=>({...unit,curriculumSource:'verbs'})),...(core.units||[]).map(unit=>({...unit,track:'structures',curriculumSource:'core'})),...(mixed.units||[]).map(unit=>({...unit,curriculumSource:'mixed'}))];
-  const data={...core,id:'de-grammar-forms-v3',title:'Nyelvtan és alakok 3.0',subtitle:'Német A1–B1 · esetek, igeműhely és mondatok',tracks,units};
+  const data=await fetchJSON(`decks/${LANG}/grammar/curriculum-v4.json`);
   if(!data||!Array.isArray(data.units)||!data.units.length)throw Error('The Grammar & Forms curriculum is empty.');
+  const tracks=[...(data.tracks||[])].sort((a,b)=>(a.order||0)-(b.order||0)),trackOrder=new Map(tracks.map((track,index)=>[track.id,track.order||index+1]));
   const unitIds=new Set(),goalIds=new Set();
   for(const unit of data.units){
     if(!unit.id||unitIds.has(unit.id))throw Error(`Invalid or duplicate grammar unit: ${unit.id||'missing id'}`);unitIds.add(unit.id);
     if(!Array.isArray(unit.phases)||!unit.phases.length)throw Error(`Grammar unit has no phases: ${unit.id}`);
-    for(const phase of unit.phases){for(const row of phase.rows||[]){const key=`${unit.id}:${phase.id}:${row.key}`;if(!row.key||goalIds.has(key)||!row.prompt||!row.target)throw Error(`Invalid grammar goal: ${key}`);goalIds.add(key)}}
+    for(const phase of unit.phases){for(const row of phase.rows||[]){const key=`${unit.id}:${phase.id}:${row.key}`;if(!row.key||!row.skillId||goalIds.has(key)||!row.prompt||!row.target)throw Error(`Invalid grammar goal: ${key}`);goalIds.add(key)}}
   }
-  GRAMMAR_CURRICULUM={...data,units:[...data.units].sort((a,b)=>(trackOrder.get(a.track)||99)-(trackOrder.get(b.track)||99)||(a.order||0)-(b.order||0))};
+  GRAMMAR_CURRICULUM={...data,tracks,units:[...data.units].sort((a,b)=>(trackOrder.get(a.track)||99)-(trackOrder.get(b.track)||99)||(a.order||0)-(b.order||0))};
   return GRAMMAR_CURRICULUM;
 }
 function grammarUnitById(id){return GRAMMAR_CURRICULUM?.units?.find(unit=>unit.id===id)||null}
 function grammarTrackById(id){return GRAMMAR_CURRICULUM?.tracks?.find(track=>track.id===id)||{id,title:'További nyelvtan',summary:''}}
 function grammarPhaseSpec(unit,phase){
   const rows=(phase.rows||[]).map(row=>({
-    guided_key:`${unit.curriculumSource==='core'?'grammar-core':'grammar-v2'}:${unit.id}:${phase.id}:${row.key}`,
+    guided_key:`grammar-v4:${unit.id}:${phase.id}:${row.key}`,
     english:row.prompt,
     target:row.target,
     hint:row.hint||'',
     explanation:row.explanation||unit.rule||'',
     alternatives:row.alternatives||'',
-    sentence_id:`${unit.curriculumSource==='core'?'grammar-core':'grammar-v2'}:${unit.id}:${phase.id}:${row.key}`,
-    tags:`grammar-forms|track:${unit.track||'structures'}|unit:${unit.id}|phase:${phase.id}|level:${unit.level||''}`
+    options:Array.isArray(row.options)?row.options.join('|'):(row.options||''),
+    focus:Array.isArray(row.focus)?row.focus.join('|'):(row.focus||''),
+    task_type:row.task||phase.task||'',
+    skill_id:row.skillId,
+    skill_stage:row.stage||phase.stage||'',
+    diagnostic:row.diagnostic||'',
+    sentence_id:`grammar-v4:${unit.id}:${phase.id}:${row.key}`,
+    tags:`grammar-forms-v4|track:${unit.track||'spiral'}|unit:${unit.id}|phase:${phase.id}|skill:${row.skillId}|level:${unit.level||''}`
   }));
-  const setName=unit.curriculumSource==='core'?`Grammar Core · ${unit.order||0} · ${unit.id} · ${phase.id}`:`Grammar Lab · ${unit.track||'forms'} · ${unit.order||0} · ${unit.id} · ${phase.id}`;
-  return{deck:LANG,setName,mode:phase.mode||'grammar',variant:phase.variant||'progressive',target:'grammar_recall',label:`${unit.title} · ${phase.title}`,rows}
+  const setName=`Grammar 4 · ${unit.track||'spiral'} · ${unit.order||0} · ${unit.id} · ${phase.id}`;
+  return{deck:LANG,setName,mode:phase.mode||'grammar',variant:phase.variant||'choice',target:'grammar_skill',label:`${unit.title} · ${phase.title}`,sequence:phase.sequence!==false,evidencePerSkill:phase.evidencePerSkill||1,requireTransfer:!!phase.requireTransfer,rows}
 }
 async function grammarPhaseStatuses(unit){
-  const out=[];
-  for(const phase of unit.phases){const spec=grammarPhaseSpec(unit,phase);let status={total:spec.rows.length,mastered:0,percent:0,complete:false};if(window.LanguageDeckPractice?.guidedStatus)status=await window.LanguageDeckPractice.guidedStatus(spec);out.push({...phase,spec,status})}
-  return out;
+  return Promise.all(unit.phases.map(async phase=>{const spec=grammarPhaseSpec(unit,phase);let status={total:spec.rows.length,mastered:0,percent:0,complete:false};if(window.LanguageDeckPractice?.guidedStatus)status=await window.LanguageDeckPractice.guidedStatus(spec);return{...phase,spec,status}}));
 }
 async function grammarUnitStatus(unit){
   const phases=await grammarPhaseStatuses(unit),total=phases.reduce((n,p)=>n+p.status.total,0),mastered=phases.reduce((n,p)=>n+p.status.mastered,0);
   return{unit,phases,total,mastered,percent:total?Math.round(mastered/total*100):100,complete:total===0||mastered===total}
 }
-async function grammarCourseStatuses(){const data=await loadGrammarCurriculum(),out=[];for(const unit of data.units)out.push(await grammarUnitStatus(unit));return out}
+async function grammarCourseStatuses(){const data=await loadGrammarCurriculum();return Promise.all(data.units.map(unit=>grammarUnitStatus(unit)))}
 function showGrammarCourseHost(){
   $('browseShell').classList.add('hidden');$('studyHost').classList.add('hidden');$('chapterStudyHost').classList.add('hidden');$('practiceStudyHost').classList.add('hidden');$('grammarCourseHost').classList.remove('hidden')
 }
@@ -4248,13 +4239,13 @@ async function renderGrammarCourse(){
     const statuses=await grammarCourseStatuses(),total=statuses.reduce((n,x)=>n+x.total,0),mastered=statuses.reduce((n,x)=>n+x.mastered,0),pct=total?Math.round(mastered/total*100):100,next=statuses.find(x=>!x.complete)||statuses[0];
     $('grammarCourseTitle').textContent=data.title;$('grammarCourseSub').textContent=`${data.subtitle} · ${mastered}/${total} cél`;
     const sections=(data.tracks||[]).map(track=>{const rows=statuses.filter(status=>status.unit.track===track.id),trackTotal=rows.reduce((n,x)=>n+x.total,0),trackMastered=rows.reduce((n,x)=>n+x.mastered,0);if(!rows.length)return'';return`<section class="grammar-track-section"><div class="grammar-track-head"><div><h3>${esc(track.title)}</h3><p>${esc(track.summary||'')}</p></div><span>${trackMastered}/${trackTotal} cél</span></div><div class="grammar-unit-list">${rows.map((x,i)=>`<article class="grammar-unit ${x.complete?'done':x===next?'current':''}"><div class="grammar-unit-no">${x.complete?'✓':x.unit.order||i+1}</div><div class="grammar-unit-copy"><b>${esc(x.unit.title)}</b><span>${esc(x.unit.summary)}</span><small>${esc(x.unit.level||'')} · ${x.mastered}/${x.total} cél</small></div><button data-grammar-unit="${esc(x.unit.id)}">${x.complete?'Ismétlés':x.mastered?'Folytatás':'Kezdés'}</button></article>`).join('')}</div></section>`}).join('');
-    body.innerHTML=`<div class="guided-study-intro"><div class="chapter-study-kicker">Megértés → egy alakrendszer → fokozatos keverés</div><h2>${esc(data.title)}</h2><p>Először egyetlen névmást, esetet vagy igét jársz végig. Az esetlabor külön gyakoroltatja a személyeket, névelőket, igevonzatokat, elöljárókat és mondatsorrendet; a vegyes feladatok csak ezután jelennek meg. A magyar mondat személye mindig egyezik a német alannyal.</p></div><div class="grammar-course-progress"><div class="grammar-course-progress-top"><b>Teljes tanterv</b><span>${mastered}/${total} · ${pct}%</span></div><div class="grammar-course-track"><i style="width:${pct}%"></i></div></div>${sections}`;
+    body.innerHTML=`<div class="guided-study-intro"><div class="chapter-study-kicker">Megértés → kontrollált variáció → önálló átvitel</div><h2>${esc(data.title)}</h2><p>A 4.0-s tanterv készségeket mér, nem bemagolt mintamondatokat. A kontrasztpárok együtt maradnak, a feladat mindig a tanult nyelvtani jelre fókuszál, majd új igékkel, főnevekkel, személyekkel és élethelyzetekkel ellenőrzi az átvitelt. A teljes mondatos felidézés csak az előkészítő lépések után következik.</p></div><div class="grammar-course-progress"><div class="grammar-course-progress-top"><b>Teljes tanterv</b><span>${mastered}/${total} készség · ${pct}%</span></div><div class="grammar-course-track"><i style="width:${pct}%"></i></div></div>${sections}`;
     body.querySelectorAll('[data-grammar-unit]').forEach(button=>button.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=button.dataset.grammarUnit;renderGrammarCourse()});
     secondary.textContent='Vissza a Practice oldalra';secondary.onclick=()=>closeGrammarCourse();main.textContent=next?(next.mastered?'Folytatás':'Első lecke'):'Ismétlés';main.disabled=!next;main.onclick=()=>{if(next){GRAMMAR_COURSE_SESSION.unitId=next.unit.id;renderGrammarCourse()}};return;
   }
   const status=await grammarUnitStatus(active),next=status.phases.find(p=>!p.status.complete),units=data.units,nextUnit=units[units.findIndex(u=>u.id===active.id)+1]||null;
   const track=grammarTrackById(active.track);$('grammarCourseTitle').textContent=active.title;$('grammarCourseSub').textContent=`${track.title} · ${active.level} · ${status.mastered}/${status.total} cél`;
-  body.innerHTML=`<article class="grammar-concept"><div class="chapter-study-kicker">${esc(track.title)} · ${esc(active.level)} · ${active.order}. egység</div>${active.verb?`<div class="grammar-verb-badge">${esc(active.verb.group)} · ${esc(active.verb.meaning)}</div>`:''}<h2>${esc(active.title)}</h2><p>${esc(active.rule)}</p>${grammarMemoryHookHtml(active)}<div class="grammar-examples">${(active.examples||[]).map(example=>`<div class="grammar-example"><b>${esc(example.de)}</b><span>${esc(example.hu)}</span></div>`).join('')}</div>${grammarParadigmsHtml(active)}</article><div class="guided-phase-list">${status.phases.map((phase,i)=>`<div class="guided-phase ${phase.status.complete?'done':phase===next?'current':''}"><div class="guided-phase-no">${phase.status.complete?'✓':i+1}</div><div class="guided-phase-copy"><b>${esc(phase.title)}</b><span>${esc(phase.subtitle)} · ${phase.status.mastered}/${phase.status.total}</span><div class="guided-phase-progress"><i style="width:${phase.status.percent||0}%"></i></div></div><button data-grammar-phase="${esc(phase.id)}">${phase.status.complete?'Ismétlés':phase===next?'Kezdés':'Megnyitás'}</button></div>`).join('')}</div><div class="guided-study-note">A segítséggel javított válasz gyakorlásnak számít, de nem teljes felidézésnek. Az egység előbb ugyanazon rendszer alakjait tartja együtt; a keverés külön tanulási szakasz.</div>`;
+  body.innerHTML=`<article class="grammar-concept"><div class="chapter-study-kicker">${esc(track.title)} · ${esc(active.level)} · ${active.order}. egység</div>${active.verb?`<div class="grammar-verb-badge">${esc(active.verb.group)} · ${esc(active.verb.meaning)}</div>`:''}<h2>${esc(active.title)}</h2><p>${esc(active.rule)}</p>${grammarMemoryHookHtml(active)}<div class="grammar-examples">${(active.examples||[]).map(example=>`<div class="grammar-example"><b>${esc(example.de)}</b><span>${esc(example.hu)}</span></div>`).join('')}</div>${grammarParadigmsHtml(active)}</article><div class="guided-phase-list">${status.phases.map((phase,i)=>`<div class="guided-phase ${phase.status.complete?'done':phase===next?'current':''}"><div class="guided-phase-no">${phase.status.complete?'✓':i+1}</div><div class="guided-phase-copy"><b>${esc(phase.title)}</b><span>${esc(phase.subtitle)} · ${phase.status.mastered}/${phase.status.total} készség</span><div class="guided-phase-progress"><i style="width:${phase.status.percent||0}%"></i></div></div><button data-grammar-phase="${esc(phase.id)}">${phase.status.complete?'Ismétlés':phase===next?'Kezdés':'Megnyitás'}</button></div>`).join('')}</div><div class="guided-study-note">Egy készséget több, egymástól eltérő példán bizonyítasz. A kontrasztpárok sorrendje rögzített; a véletlen keverés csak a már felépített tudás átviteli szakaszában jelenik meg.</div>`;
   body.querySelectorAll('[data-grammar-phase]').forEach(button=>button.onclick=()=>startGrammarPhase(button.dataset.grammarPhase));
   secondary.textContent='Összes egység';secondary.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=null;renderGrammarCourse()};main.disabled=false;if(next){main.textContent=`Folytatás · ${next.title}`;main.onclick=()=>startGrammarPhase(next.id)}else if(nextUnit){main.textContent='Következő egység';main.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=nextUnit.id;renderGrammarCourse()}}else{main.textContent='Tanterv áttekintése';main.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=null;renderGrammarCourse()}}
 }
@@ -4308,7 +4299,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "3.4.0-case-lab-20260818";
+    const APP_BUILD = "4.0.0-grammar-curriculum-20260825";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5989,9 +5980,36 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     /* ---------- Guided Chapter Study sets ---------- */
-    function guidedRowDone(row, spec = guidedPractice) {
+    function guidedRowHasEvidence(row) {
+      return +(row.guided_success_at || 0) > +(row.explicit_unknown_at || 0);
+    }
+    function guidedSkillKey(row) {
+      return String(row?.skill_id || row?.guided_key || row?.id || "");
+    }
+    function guidedSkillGroups(rows) {
+      const groups = new Map();
+      for (const row of rows || []) {
+        const key = guidedSkillKey(row);
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(row);
+      }
+      return groups;
+    }
+    function guidedSkillDone(skillRows, spec = guidedPractice) {
+      if (!skillRows?.length) return true;
+      const needed = Math.min(Math.max(1, +(spec?.evidencePerSkill || 1)), skillRows.length);
+      const evidenced = skillRows.filter(guidedRowHasEvidence);
+      if (evidenced.length < needed) return false;
+      if (spec?.requireTransfer && !evidenced.some(row => row.skill_stage === "transfer")) return false;
+      return true;
+    }
+    function guidedRowDone(row, spec = guidedPractice, allRows = null) {
       if (!spec) return false;
       const streak = row.streak | 0, correct = row.times_correct | 0;
+      if (spec.target === "grammar_skill") {
+        const rows = allRows || [row];
+        return guidedSkillDone(guidedSkillGroups(rows).get(guidedSkillKey(row)) || [row], spec);
+      }
       if (spec.target === "recognition") return correct >= 1;
       if (["memorise","grammar_recall"].includes(spec.target)) return +(row.guided_full_recall_at || 0) > +(row.explicit_unknown_at || 0);
       if (spec.target === "grammar") return streak >= 2 && correct >= 2;
@@ -6003,7 +6021,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return streak >= 2;
     }
     function guidedProgressForRows(rows, spec = guidedPractice) {
-      const total = rows.length, mastered = rows.filter(r => guidedRowDone(r, spec)).length;
+      if (spec?.target === "grammar_skill") {
+        const groups = [...guidedSkillGroups(rows).values()];
+        const total = groups.length, mastered = groups.filter(group => guidedSkillDone(group, spec)).length;
+        return { total, mastered, new: Math.max(0,total-mastered), due: Math.max(0,total-mastered), percent: total ? Math.round(mastered/total*100) : 100, is_complete: total === 0 || mastered === total };
+      }
+      const total = rows.length, mastered = rows.filter(r => guidedRowDone(r, spec, rows)).length;
       return { total, mastered, new: Math.max(0,total-mastered), due: Math.max(0,total-mastered), percent: total ? Math.round(mastered/total*100) : 100, is_complete: total === 0 || mastered === total };
     }
     function guidedBaseRow(raw, deck, setName) {
@@ -6024,7 +6047,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       for (const w of wanted) {
         const old = byKey.get(w.guided_key); if (!old) continue;
         const merged = { ...old, ...w, id:old.id, times_seen:old.times_seen||0, times_correct:old.times_correct||0, times_wrong:old.times_wrong||0, streak:Math.max(old.streak||0,w.seed_streak||0), last_seen:old.last_seen||null, next_due:old.next_due??null, progressive_level:old.progressive_level, recovery_progress:old.recovery_progress };
-        const contentFields=["english","target","hint","explanation","alternatives","article","tags","sentence_id","guided_key","set_name","deck"];
+        const contentFields=["english","target","hint","explanation","alternatives","options","focus","task_type","skill_id","skill_stage","diagnostic","article","tags","sentence_id","guided_key","set_name","deck"];
         if(contentFields.every(field=>JSON.stringify(old[field]??null)===JSON.stringify(merged[field]??null)))continue;
         await DB.update(table, merged);
       }
@@ -6090,8 +6113,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (practiceScope === "wrong") pool = pool.filter(r => (r.times_wrong | 0) > 0);
 
       if (guidedPractice && currentSetName === guidedPractice.setName) {
-        let remaining = pool.filter(r => !guidedRowDone(r, guidedPractice));
-        remaining.sort((a,b)=>((a.guided_attempts|0)-(b.guided_attempts|0))||((a.guided_last_answer_at||0)-(b.guided_last_answer_at||0))||((b.times_wrong|0)-(a.times_wrong|0))||((a.id||0)-(b.id||0)));
+        const groups = guidedSkillGroups(learningScopeRows || pool);
+        let remaining = pool.filter(r => !guidedSkillDone(groups.get(guidedSkillKey(r)), guidedPractice));
+        remaining.sort(guidedPractice.sequence
+          ? ((a,b)=>(a.id||0)-(b.id||0))
+          : ((a,b)=>(guidedRowHasEvidence(a)-guidedRowHasEvidence(b))||((a.guided_attempts|0)-(b.guided_attempts|0))||((a.guided_last_answer_at||0)-(b.guided_last_answer_at||0))||((b.times_wrong|0)-(a.times_wrong|0))||((a.id||0)-(b.id||0))));
         return remaining.slice(0, limit);
       }
 
@@ -6207,6 +6233,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       // wrong answer clears the mastered state.
       if (isMastered(row)) noteMasteredReviewServed(table, itemId);
       row.times_seen = (row.times_seen | 0) + 1;
+      if (guidedPractice) {
+        row.guided_attempts = (row.guided_attempts | 0) + 1;
+        row.guided_last_answer_at = Date.now();
+      }
       if (correct) {
         row.times_correct = (row.times_correct | 0) + 1;
         row.streak = (row.streak | 0) + 1;
@@ -6223,10 +6253,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           row.recovery_progress = 0;
         }
         row.next_due = calcNextDue(row.streak, row.difficulty || 1.0, profile);
+        if (guidedPractice?.target === "grammar_skill") row.guided_success_at = Date.now();
       } else {
         row.times_wrong = (row.times_wrong | 0) + 1;
         row.streak = 0;
         row.recovery_progress = 0; // mistake resets recovery progress
+        if (guidedPractice?.target === "grammar_skill") row.explicit_unknown_at = Date.now();
         row.next_due = calcWrongDue(profile);
       }
       row.last_seen = nowIso();
@@ -7733,7 +7765,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       }
       const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
       let sets = await DB.getSets(table, currentDeck);
-      sets=sets.filter(s=>!(/^(?:Course ·|Grammar Core ·|Grammar Lab ·|Internal ·)/.test(String(s.set_name||"")))||(guidedPractice&&s.set_name===guidedPractice.setName));
+      sets=sets.filter(s=>!(/^(?:Course ·|Grammar Core ·|Grammar Lab ·|Grammar 4 ·|Internal ·)/.test(String(s.set_name||"")))||(guidedPractice&&s.set_name===guidedPractice.setName));
       if (currentGame === "grammar" || currentGame === "sentences") sets = sets.filter(s => setSupportsStudyMode(s.set_name, currentGame, currentDeck));
       const allOpt = document.createElement("option"); allOpt.value = "__all__";
       allOpt.textContent = currentGame === "grammar" ? "All grammar decks" : currentGame === "sentences" ? "All sentence decks" : "All decks";
@@ -9018,20 +9050,33 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return tokens;
     }
 
-    function pickBlankIndices(tokens, streak) {
+    function grammarFocusTerms(value) {
+      return String(value || "").split("|").map(x => optionalRecallPunctuationNorm(x)).filter(Boolean);
+    }
+
+    function pickBlankIndices(tokens, streak, focus = "") {
       const candidates = [];
+      const allWords = [];
       tokens.forEach((t, idx) => {
         if (t.isWord) {
+          allWords.push(idx);
           const clean = t.raw.replace(/[^\p{L}\p{M}'’-]/gu, "");
           if (clean.length >= 3) candidates.push(idx);
         }
       });
+      const focused = grammarFocusTerms(focus);
+      if (focused.length) {
+        const exact = allWords.filter(idx => focused.includes(optionalRecallPunctuationNorm(tokens[idx].raw)));
+        if (exact.length) return exact;
+      }
       const shuffled = shuffleArr(candidates);
       const desired = Math.max(1, Math.min(4, 1 + Math.floor((streak || 0) / 2)));
       return shuffled.slice(0, Math.min(desired, shuffled.length)).sort((a, b) => a - b);
     }
 
-    function buildWordBank(correctWords) {
+    function buildWordBank(correctWords, explicitOptions = "") {
+      const supplied = splitAlternatives(explicitOptions);
+      if (supplied.length) return shuffleArr([...new Set([...correctWords, ...supplied].map(w => String(w || "").trim()).filter(Boolean))]);
       const pool = [];
       for (const row of sentencePool) {
         const tokens = tokenizeSentence(row.target);
@@ -9047,7 +9092,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     function prepareSentenceData(s) {
       const tokens = tokenizeSentence(s.target);
-      const blankIndices = pickBlankIndices(tokens, s.streak || 0);
+      const blankIndices = pickBlankIndices(tokens, s.streak || 0, s.focus || "");
       const blankAnswers = blankIndices.map(i => tokens[i].raw);
       // Reorder mode: every non-space token becomes a draggable chunk (with a
       // stable uid so duplicates like "es … es" can be told apart in the DOM).
@@ -9061,7 +9106,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         progressiveAnswer: "",
         progressiveChallenge: buildProgressiveChallenge(s.target, s),
         showProgressiveErrors: false,
-        bankWords: buildWordBank(blankAnswers),
+        bankWords: buildWordBank(blankAnswers, s.options || ""),
+        selectOptions: splitAlternatives(s.options || ""),
+        selectAnswer: "",
         orderWords,
         orderBank: shuffleArr(orderWords),
         orderPlaced: [],
@@ -11201,7 +11248,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if(!integratedInitialized){await init(requested);integratedInitialized=true}
       if(!guidedSavedSettings)guidedSavedSettings={currentGame,currentDeck,currentSetName,wordMode,sentenceMode,practiceScope,repetitionProfile,newRatio,newItemOrder,visibleCount,gateEnabled,gateSize,currentGateIndex,strictGate};
       await ensureGuidedSet(spec);guidedPractice={...spec,deck:normalizeDeck(spec.deck||"de"),setName:normalizeSetName(spec.setName)};
-      currentGame=requested;currentDeck=guidedPractice.deck;currentSetName=guidedPractice.setName;practiceScope="all";repetitionProfile="normal";newRatio=1;newItemOrder="smart";gateEnabled=false;currentGateIndex=0;strictGate=false;
+      currentGame=requested;currentDeck=guidedPractice.deck;currentSetName=guidedPractice.setName;practiceScope="all";repetitionProfile="normal";newRatio=1;newItemOrder=spec.sequence?"csv":"smart";gateEnabled=false;currentGateIndex=0;strictGate=false;
       if(requested==="words")wordMode=spec.variant||"progressive";else sentenceMode=spec.variant||"order";
       sessionLoadedIds=new Set();wordQueue=[];sentenceQueue=[];sentencePool=[];correctCount=0;wrongCount=0;
       syncLanguageSelectOptions();applySettingsToUI();await refreshSetOptions();setSelect.value=currentSetName;applyDeckUI();updateGameUI();updateScore();updateModeSummary();await refreshStats();await refreshGateInfo();await loadCurrentGame(true);await checkEmptyState();return window.LanguageDeckPractice.snapshot();

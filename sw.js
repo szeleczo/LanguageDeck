@@ -1,16 +1,12 @@
-/* LanguageDeck 3.4.0 — expanded German case laboratory. */
-const CACHE_VERSION="languagedeck-3-4-0-case-lab-20260818";
+/* LanguageDeck 4.0.0 — skill-based German grammar curriculum. */
+const CACHE_VERSION="languagedeck-4-0-0-grammar-curriculum-20260825";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
   "./decks/de/courses/index.json",
   "./decks/de/grammar/grammar-sentences-learning.csv",
-  "./decks/de/grammar/core-curriculum.json",
-  "./decks/de/grammar/case-lab.json",
-  "./decks/de/grammar/foundations-curriculum.json",
-  "./decks/de/grammar/mixed-curriculum.json",
+  "./decks/de/grammar/curriculum-v4.json",
   "./decks/de/grammar/sentence-patterns.csv",
-  "./decks/de/grammar/verb-workshop.json",
   "./decks/de/language.json",
   "./decks/de/lexicon.csv",
   "./decks/de/manifest.json",
