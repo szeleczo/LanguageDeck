@@ -48,6 +48,9 @@ assert.match(indexHtml, /languagedeck:guided-phase-complete/, "completed guided 
 assert.ok(!indexHtml.includes('const INLINE_KEYPAD_PUNCTUATION = [".", ","'), "optional comma keys no longer create a keypad row");
 assert.match(indexHtml, /inline-keypad button\.inline-keypad-key[\s\S]*?min-height:\s*46px/, "main QWERTZ keys keep a 46px touch height");
 assert.match(indexHtml, /gap:\s*1\.5px/, "keyboard gaps leave more width for letter keys");
+assert.match(indexHtml, /const dockedKeypadMode = isTouchPrimaryDevice\(\)[\s\S]*wordMode === "typing"[\s\S]*sentenceMode === "typing"/, "regular word and sentence typing keep the global touch keypad docked");
+assert.match(indexHtml, /typingKeypadActivators\[0\]\?\.\(\)/, "sentence typing binds the keypad to the first blank immediately");
+assert.match(indexHtml, /inp\.classList\.add\("keypad-input-active"\)/, "the first bound sentence blank is visibly active without a tap");
 assert.match(indexHtml, /document\.elementFromPoint\(e\.clientX,e\.clientY\)/, "drag correction follows the key under the pointer");
 assert.match(indexHtml, /chosen\._keyAction\?\.\(\)/, "main keyboard commits the release-time key");
 assert.match(indexHtml, /data-text-key[\s\S]*?slideCommit/, "Text Study keyboard suppresses duplicate pointer clicks");
@@ -63,6 +66,10 @@ assert.match(indexHtml, /morePracticeOptionsBtn/, "advanced controls remain reac
 assert.match(indexHtml, /p === "stories" \|\| p === "texts"/, "course and book files stay out of the standalone deck browser");
 assert.match(indexHtml, /unit\.lexiconFile.*unitLexicon.*lexicon:/s, "story units can load their own isolated lexicon");
 assert.match(indexHtml, /spec\.target === "grammar_skill"[\s\S]*guidedSkillDone/, "grammar mastery is calculated from skill evidence");
+assert.match(indexHtml, /skill_stage:phase\.requireTransfer\?'transfer':\(row\.stage\|\|phase\.stage\|\|''\)/, "transfer-required grammar phases emit transfer evidence instead of impossible control-only evidence");
+assert.match(indexHtml, /const transferRows = skillRows\.filter[\s\S]*spec\?\.requireTransfer && transferRows\.length/, "malformed legacy guided specs cannot create an endless transfer loop");
+assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_success_at"/, "guided success evidence is mirrored into the active and queued cards");
+assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedSkillDone[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "completed grammar skills are removed from already-prefetched queues");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 
 const languages = JSON.parse(text(join(root, "decks", "languages.json")));
@@ -137,6 +144,15 @@ const twoWay = curriculum.units.find(unit => unit.id === "two-way-prepositions")
 assert.match(twoWay.rule, /mozgás önmagában nem elég/, "two-way prepositions reject the misleading movement-only shortcut");
 assert.ok(new Set(twoWay.phases.flatMap(phase => phase.rows.flatMap(row => row.target.match(/[A-ZÄÖÜ][a-zäöüß]+/g) || []))).size >= 10, "the two-way lesson rotates a broad noun vocabulary");
 assert.ok(twoWay.phases[0].rows.some(row => row.prompt.includes("Wo?")) && twoWay.phases[0].rows.some(row => row.prompt.includes("Wohin?")), "Wo/Wohin contrasts stay explicit");
+const reportedSentenceTransfer = curriculum.units.find(unit => unit.id === "sentence-core").phases.find(phase => phase.id === "transfer");
+const reportedTransferRows = reportedSentenceTransfer.rows.map((row, index) => ({
+  ...row,
+  skill_stage: reportedSentenceTransfer.requireTransfer ? "transfer" : (row.stage || reportedSentenceTransfer.stage || ""),
+  guided_success_at: index < reportedSentenceTransfer.evidencePerSkill ? 100 + index : 0,
+  explicit_unknown_at: 0
+}));
+const reportedEvidence = reportedTransferRows.filter(row => row.guided_success_at > row.explicit_unknown_at);
+assert.ok(reportedEvidence.length >= reportedSentenceTransfer.evidencePerSkill && reportedEvidence.some(row => row.skill_stage === "transfer"), "the reported Reggel kavet iszom phase closes after its required distinct correct examples");
 assert.match(indexHtml, /grammarFocusTerms/, "typing blanks can target the grammar-bearing token");
 assert.match(indexHtml, /newItemOrder=spec\.sequence\?"csv":"smart"/, "guided contrast pairs preserve CSV order");
 assert.match(indexHtml, /guided_success_at/, "a clean answer records reusable skill evidence");
@@ -147,7 +163,7 @@ assert.match(indexHtml, /grammar-track-section/, "the curriculum overview separa
 assert.match(indexHtml, /grammarRecommendation/, "the curriculum explains its next recommended unit");
 assert.match(indexHtml, /grammarStatusMeta/, "the curriculum exposes new, building and stable states");
 assert.match(indexHtml, /grammarPracticeHu/, "Grammar & Forms practice controls have a Hungarian UI scope");
-assert.match(indexHtml, /4\.1\.0-grammar-b2-variation-20260826/, "the application build marker includes Grammar 4.1");
+assert.match(indexHtml, /4\.1\.2-guided-completion-20260826/, "the application build marker includes the 4.1.2 guided completion fix");
 
 const variationBank = JSON.parse(text(join(deRoot, "grammar", "variation-bank-hu-v1.json")));
 assert.equal(variationBank.sourceLanguage, "hu", "the controlled variation bridge uses Hungarian source meanings");
@@ -279,7 +295,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-1-0-grammar-b2-variation-20260826/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-1-2-guided-completion-20260826/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");

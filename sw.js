@@ -1,5 +1,5 @@
-/* LanguageDeck 4.1.0 — Hungarian Grammar & Forms, controlled variation and B2. */
-const CACHE_VERSION="languagedeck-4-1-0-grammar-b2-variation-20260826";
+/* LanguageDeck 4.1.2 — finite guided grammar completion plus keypad fix. */
+const CACHE_VERSION="languagedeck-4-1-2-guided-completion-20260826";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

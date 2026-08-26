@@ -1821,7 +1821,11 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
       color: var(--text);
       min-height: 36px;
     }
-    #legacyPracticeRoot .blank-input:focus{ outline: none; border-color: var(--primary); }
+    #legacyPracticeRoot .blank-input:focus, #legacyPracticeRoot .blank-input.keypad-input-active{
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-soft);
+    }
     #legacyPracticeRoot .sentence-bank{
       display: flex;
       flex-wrap: wrap;
@@ -3804,7 +3808,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.1.0-grammar-b2-variation-20260826",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.1.2-guided-completion-20260826",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function norm(v){return String(v||"").toLocaleLowerCase().normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
 function parseCSV(text){const rows=[];let row=[],cell="",q=false,s=String(text||"").replace(/^\uFEFF/,"");for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')q=false;else cell+=c}else if(c==='"')q=true;else if(c===','){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
@@ -4205,7 +4209,11 @@ function grammarPhaseSpec(unit,phase){
     focus:Array.isArray(row.focus)?row.focus.join('|'):(row.focus||''),
     task_type:row.task||phase.task||'',
     skill_id:row.skillId,
-    skill_stage:row.stage||phase.stage||'',
+    // A phase that explicitly requires transfer evidence is itself the
+    // transfer context. This semantic flag wins over stale row-level labels;
+    // otherwise a phase can demand evidence that none of its rows can ever
+    // produce and trap the learner in an endless loop.
+    skill_stage:phase.requireTransfer?'transfer':(row.stage||phase.stage||''),
     diagnostic:row.diagnostic||'',
     sentence_id:`grammar-v4:${unit.id}:${phase.id}:${row.key}`,
     tags:`grammar-forms-v4|track:${unit.track||'spiral'}|unit:${unit.id}|phase:${phase.id}|skill:${row.skillId}|level:${unit.level||''}`
@@ -4307,7 +4315,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.1.0-grammar-b2-variation-20260826";
+    const APP_BUILD = "4.1.2-guided-completion-20260826";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -6013,7 +6021,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const needed = Math.min(Math.max(1, +(spec?.evidencePerSkill || 1)), skillRows.length);
       const evidenced = skillRows.filter(guidedRowHasEvidence);
       if (evidenced.length < needed) return false;
-      if (spec?.requireTransfer && !evidenced.some(row => row.skill_stage === "transfer")) return false;
+      // Never make a guided phase mathematically impossible. Well-formed
+      // grammar specs contain transfer rows (enforced by the curriculum
+      // adapter and integrity tests). If an older/imported spec does not,
+      // the required evidence count still closes the phase instead of
+      // repeating the same cards forever.
+      const transferRows = skillRows.filter(row => row.skill_stage === "transfer");
+      if (spec?.requireTransfer && transferRows.length && !transferRows.some(guidedRowHasEvidence)) return false;
       return true;
     }
     function guidedRowDone(row, spec = guidedPractice, allRows = null) {
@@ -6041,6 +6055,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       }
       const total = rows.length, mastered = rows.filter(r => guidedRowDone(r, spec, rows)).length;
       return { total, mastered, new: Math.max(0,total-mastered), due: Math.max(0,total-mastered), percent: total ? Math.round(mastered/total*100) : 100, is_complete: total === 0 || mastered === total };
+    }
+    async function pruneCompletedGuidedQueue(table, queue) {
+      if (!guidedPractice || currentSetName !== guidedPractice.setName || !queue?.length) return queue || [];
+      const rows = await DB.getAll(table, currentDeck, currentSetName);
+      const groups = guidedSkillGroups(rows);
+      return queue.filter(row => !guidedSkillDone(groups.get(guidedSkillKey(row)) || [row], guidedPractice));
     }
     function guidedBaseRow(raw, deck, setName) {
       return { deck, set_name:setName, english:raw.english||"", target:raw.target||"", article:raw.article||null, times_seen:0, times_correct:0, times_wrong:0, streak:+raw.seed_streak||0, last_seen:null, next_due:null, difficulty:1.0, ...raw, deck, set_name:setName };
@@ -7831,8 +7851,16 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       textModeContainer.classList.toggle("hidden", !isText);
       document.documentElement.classList.toggle("text-practice-active", isText);
       document.documentElement.classList.toggle("order-practice-active", isSentenceGame && sentenceMode === "order");
-      const progressiveActive = (isWords && wordMode === "progressive") || (isSentenceGame && sentenceMode === "progressive");
-      if (!progressiveActive) document.documentElement.classList.remove("keypad-active");
+      // Every touch typing surface uses the same docked in-app keyboard. Do
+      // not collapse it back into the exercise card merely because the mode
+      // is regular Type rather than Adaptive/Progressive. The active input
+      // renderer owns activation; this branch only clears the dock when the
+      // selected mode cannot use it at all.
+      const dockedKeypadMode = isTouchPrimaryDevice() && (
+        (isWords && (wordMode === "typing" || wordMode === "progressive")) ||
+        (isSentenceGame && (sentenceMode === "typing" || sentenceMode === "progressive"))
+      );
+      if (!dockedKeypadMode) document.documentElement.classList.remove("keypad-active");
       visibleCountSelect.disabled = !isWordMatch;
       sentenceModeSelect.disabled = !isSentenceGame;
       modeSelect.disabled = !isWords;
@@ -8520,6 +8548,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     async function ensureWordQueue(min) {
+      wordQueue = await pruneCompletedGuidedQueue("word_pairs", wordQueue);
       if (wordQueue.length >= min) return;
       const fresh = await fetchWordItems(true);
       if (fresh.length > 0) wordQueue.push(...fresh);
@@ -8735,7 +8764,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (!row) return;
       const fields = ["streak", "next_due", "times_seen", "times_correct",
         "times_wrong", "recovery_progress", "progressive_level", "last_seen", "difficulty",
-        "guided_attempts", "guided_last_answer_at", "guided_full_recall_at", "explicit_unknown_at", "full_recall_at"];
+        "guided_attempts", "guided_last_answer_at", "guided_success_at", "guided_full_recall_at", "explicit_unknown_at", "full_recall_at"];
       const apply = (it) => {
         if (!it || it.id !== row.id) return;
         for (const f of fields) if (row[f] !== undefined) it[f] = row[f];
@@ -9046,6 +9075,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     async function ensureSentenceQueue(min) {
+      sentenceQueue = await pruneCompletedGuidedQueue("sentence_pairs", sentenceQueue);
       if (sentenceQueue.length >= min) return;
       const fresh = await fetchSentenceItems(true);
       if (fresh.length > 0) { sentenceQueue.push(...fresh); sentencePool.push(...fresh); }
@@ -9642,6 +9672,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
             });
             const activateTypingKeypad = () => {
               if (!sentenceTypingKeypad) return;
+              sentenceTarget.querySelectorAll(".blank-input.keypad-input-active").forEach(el => el.classList.remove("keypad-input-active"));
+              inp.classList.add("keypad-input-active");
               const challenge = { full: String(currentSentenceData.blankAnswers[blankIdx] || ""), masked: "", missing: "" };
               renderInlineMissingKeypad(sentenceTypingKeypad, inp, challenge, value => {
                 currentSentenceData.typingAnswers[blankIdx] = value;
