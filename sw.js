@@ -1,5 +1,5 @@
-/* LanguageDeck 4.1.2 — finite guided grammar completion plus keypad fix. */
-const CACHE_VERSION="languagedeck-4-1-2-guided-completion-20260826";
+/* LanguageDeck 4.1.3 — ELI5 grammar explanations and answer-chip stabilization. */
+const CACHE_VERSION="languagedeck-4-1-3-eli5-grammar-stabilization-20260827";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

@@ -1807,6 +1807,36 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
       border-color: var(--primary);
       border-style: solid;
     }
+    /* Sentence blanks are buttons, but they are answer slots rather than
+       primary actions. Reset every physical-button style, not only its text. */
+    #legacyPracticeRoot button.blank-chip{
+      appearance: none;
+      display: inline-block;
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px dashed var(--border-strong);
+      border-bottom-width: 1px;
+      border-radius: 6px;
+      padding: 4px 12px;
+      min-height: 32px;
+      margin: 0 2px;
+      font-weight: inherit;
+      letter-spacing: normal;
+      transform: none;
+    }
+    #legacyPracticeRoot button.blank-chip:hover:not(:disabled){ background: var(--surface-2); }
+    #legacyPracticeRoot button.blank-chip.active,
+    #legacyPracticeRoot button.blank-chip.active:hover:not(:disabled){
+      background: var(--primary-soft);
+      color: var(--text);
+      border-color: var(--primary);
+      border-style: solid;
+    }
+    #legacyPracticeRoot button.blank-chip:active:not(:disabled){
+      transform: none;
+      border-bottom-width: 1px;
+      margin: 0 2px;
+    }
     #legacyPracticeRoot .blank-input{
       display: inline-block;
       width: auto;
@@ -3808,7 +3838,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.1.2-guided-completion-20260826",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.1.3-eli5-grammar-stabilization-20260827",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function norm(v){return String(v||"").toLocaleLowerCase().normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
 function parseCSV(text){const rows=[];let row=[],cell="",q=false,s=String(text||"").replace(/^\uFEFF/,"");for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')q=false;else cell+=c}else if(c==='"')q=true;else if(c===','){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
@@ -4315,7 +4345,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.1.2-guided-completion-20260826";
+    const APP_BUILD = "4.1.3-eli5-grammar-stabilization-20260827";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;

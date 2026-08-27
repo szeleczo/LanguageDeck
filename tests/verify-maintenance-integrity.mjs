@@ -71,6 +71,8 @@ assert.match(indexHtml, /const transferRows = skillRows\.filter[\s\S]*spec\?\.re
 assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_success_at"/, "guided success evidence is mirrored into the active and queued cards");
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedSkillDone[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "completed grammar skills are removed from already-prefetched queues");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
+assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
+assert.match(indexHtml, /4\.1\.3-eli5-grammar-stabilization-20260827/, "the application build marker includes the 4.1.3 grammar stabilization");
 
 const languages = JSON.parse(text(join(root, "decks", "languages.json")));
 assert.deepEqual(languages.languages.map(language => language.code), ["de", "it"], "German and Italian remain registered");
@@ -128,8 +130,21 @@ for (const unit of curriculum.units) {
     }
   }
 }
-assert.equal(grammarGoalCount, 771, "Grammar 4.1 contains 771 varied evidence rows");
+assert.equal(grammarGoalCount, 773, "Grammar 4.1.3 contains 773 varied evidence rows");
 assert.equal(skillIds.size, 329, "Grammar 4.1 measures 329 reusable grammar skills instead of memorised strings");
+const clippedSkillRequirements = [];
+for (const unit of curriculum.units) for (const phase of unit.phases) {
+  const rowsBySkill = new Map();
+  for (const row of phase.rows) rowsBySkill.set(row.skillId, (rowsBySkill.get(row.skillId) || 0) + 1);
+  for (const [skillId, available] of rowsBySkill) {
+    const requested = Math.max(1, +(phase.evidencePerSkill || 1));
+    if (available < requested) clippedSkillRequirements.push(`${unit.id}/${phase.id}/${skillId}: ${available}/${requested}`);
+  }
+}
+assert.deepEqual(clippedSkillRequirements, [], "every skill has enough distinct rows for its declared evidence threshold");
+const determinerForms = curriculum.units.find(unit => unit.id === "pronoun-and-determiner-system").phases.find(phase => phase.id === "forms").rows;
+assert.ok(determinerForms.some(row => row.key === "this-colleague-dat" && row.skillId === "determiner.dieser"), "dieser mastery has a second distinct context");
+assert.ok(determinerForms.some(row => row.key === "which-bus-dat" && row.skillId === "determiner.welcher"), "welcher mastery has a second distinct context");
 const verbUnits = curriculum.units.filter(unit => unit.verb);
 assert.equal(verbUnits.length, 20, "Igeműhely 2.0 provides twenty isolated high-value verb workshops");
 for (const id of ["verb-sein", "verb-haben", "verb-gehen", "verb-geben", "verb-nehmen", "verb-helfen", "verb-sprechen", "verb-werden", "verb-kommen", "verb-fahren", "verb-lesen", "verb-sehen", "verb-essen", "verb-schlafen", "verb-tragen", "verb-treffen", "verb-wissen", "verb-bleiben", "verb-bringen", "verb-schreiben"]) assert.ok(verbUnits.some(unit => unit.id === id), `verb workshop is missing ${id}`);
@@ -163,7 +178,13 @@ assert.match(indexHtml, /grammar-track-section/, "the curriculum overview separa
 assert.match(indexHtml, /grammarRecommendation/, "the curriculum explains its next recommended unit");
 assert.match(indexHtml, /grammarStatusMeta/, "the curriculum exposes new, building and stable states");
 assert.match(indexHtml, /grammarPracticeHu/, "Grammar & Forms practice controls have a Hungarian UI scope");
-assert.match(indexHtml, /4\.1\.2-guided-completion-20260826/, "the application build marker includes the 4.1.2 guided completion fix");
+const rowByKey = (unitId, phaseId, key) => curriculum.units.find(unit => unit.id === unitId).phases.find(phase => phase.id === phaseId).rows.find(row => row.key === key);
+assert.match(rowByKey("two-way-prepositions", "transfer", "sofa-place").explanation, /hol ül.*Wo\?.*Dativ/, "sitzen is explained through static place meaning rather than false verb government");
+assert.match(rowByKey("two-way-prepositions", "transfer", "cupboard-goal").explanation, /Wohin\?.*Akkusativ/, "hängen is explained through destination meaning rather than transitivity");
+assert.match(rowByKey("fixed-prepositions", "pronouns", "with-him").explanation, /für ihn, de mit ihm/, "person-pronoun contrast keeps the Hungarian meanings separate");
+assert.match(rowByKey("genitive", "forms", "house").explanation, /des lesz.*-es végződést kap/, "genitive possession identifies both German markings correctly");
+assert.match(rowByKey("preterite-narration", "forms", "musste").explanation, /módbeli igéknél.*beszédben is gyakran/, "spoken Präteritum guidance is limited instead of overgeneralised");
+assert.match(rowByKey("konjunktiv-two", "transfer", "polite").explanation, /ebben a mondatban a mir áll előbb/, "object order is described as this sentence's pattern rather than a universal rule");
 
 const variationBank = JSON.parse(text(join(deRoot, "grammar", "variation-bank-hu-v1.json")));
 assert.equal(variationBank.sourceLanguage, "hu", "the controlled variation bridge uses Hungarian source meanings");
@@ -295,7 +316,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-1-2-guided-completion-20260826/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-1-3-eli5-grammar-stabilization-20260827/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");

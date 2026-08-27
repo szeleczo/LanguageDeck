@@ -1,7 +1,7 @@
 {
   "schemaVersion": 4,
   "id": "de-grammar-curriculum-v4",
-  "title": "Nyelvtan és alakok 4.1",
+  "title": "Nyelvtan és alakok 4.1.3",
   "subtitle": "Német A1–B2 · magyar, készségközpontú spirális tanterv",
   "explanationLanguage": "hu",
   "targetLanguage": "de",
@@ -2606,7 +2606,7 @@
               "target": "Der Sessel steht in dem Zimmer.",
               "task": "fill",
               "focus": "dem",
-              "explanation": "Wo? → Dativ; das Zimmer → dem Zimmer.",
+              "explanation": "A fotel már a szobában van: Wo? (hol?) → Dativ. A das ezért dem lesz; az in dem rövid alakja im.",
               "stage": "control",
               "alternatives": "Der Sessel steht im Zimmer.",
               "options": [
@@ -2622,7 +2622,7 @@
               "target": "Ich stelle den Sessel in das Zimmer.",
               "task": "fill",
               "focus": "das",
-              "explanation": "Wohin? → Akkusativ; das Zimmer → das Zimmer.",
+              "explanation": "A fotel új helyre kerül: Wohin? (hová?) → Akkusativ. A das itt nem változik, ezért a jelentésből kell felismerni az esetet.",
               "stage": "control",
               "alternatives": "Ich stelle den Sessel ins Zimmer.",
               "options": [
@@ -2638,7 +2638,7 @@
               "target": "Die Pflanze steht auf dem Balkon.",
               "task": "fill",
               "focus": "dem",
-              "explanation": "Wo? → Dativ; der Balkon → dem Balkon.",
+              "explanation": "A növény már az erkélyen áll: Wo? (hol?) → Dativ. der Balkon → dem Balkon.",
               "stage": "control",
               "options": [
                 "der",
@@ -2653,7 +2653,7 @@
               "target": "Ich stelle die Pflanze auf den Balkon.",
               "task": "fill",
               "focus": "den",
-              "explanation": "Wohin? → Akkusativ; der Balkon → den Balkon.",
+              "explanation": "A növény az erkélyre kerül: Wohin? (hová?) → Akkusativ. der Balkon → den Balkon. A célhely számít, nem önmagában a mozgás.",
               "stage": "control",
               "options": [
                 "der",
@@ -2668,7 +2668,7 @@
               "target": "Die Bank steht an dem Fluss.",
               "task": "fill",
               "focus": "dem",
-              "explanation": "Wo? → Dativ; der Fluss → dem Fluss.",
+              "explanation": "A pad már a folyó mellett áll: Wo? (hol?) → Dativ. der Fluss → dem Fluss.",
               "stage": "control",
               "alternatives": "Die Bank steht am Fluss.",
               "options": [
@@ -2684,7 +2684,7 @@
               "target": "Wir setzen uns an den Fluss.",
               "task": "fill",
               "focus": "den",
-              "explanation": "Wohin? → Akkusativ; der Fluss → den Fluss.",
+              "explanation": "Leülünk a folyó mellé, tehát új helyet adunk meg: Wohin? (hová?) → Akkusativ. der Fluss → den Fluss.",
               "stage": "control",
               "options": [
                 "der",
@@ -2709,7 +2709,7 @@
               "prompt": "A kabát a szekrényben lóg.",
               "target": "Der Mantel hängt im Schrank.",
               "stage": "transfer",
-              "explanation": "Wo? → im Schrank, Dativ."
+              "explanation": "A kabát már a szekrényben lóg: Wo? (hol?) → Dativ. Az im az in dem rövid alakja."
             },
             {
               "key": "cupboard-goal",
@@ -2717,7 +2717,7 @@
               "prompt": "A kabátot a szekrénybe akasztom.",
               "target": "Ich hänge den Mantel in den Schrank.",
               "stage": "transfer",
-              "explanation": "Wohin? → in den Schrank, Akkusativ."
+              "explanation": "A kabátot a szekrénybe akasztom: Wohin? (hová?) → Akkusativ. der Schrank → den Schrank."
             },
             {
               "key": "sofa-place",
@@ -2725,7 +2725,7 @@
               "prompt": "A macska a kanapén ül.",
               "target": "Die Katze sitzt auf dem Sofa.",
               "stage": "transfer",
-              "explanation": "Wo? → auf dem Sofa."
+              "explanation": "A mondat azt mondja meg, hol ül a macska: Wo? → Dativ. Ezért auf dem Sofa, akkor is, ha a macska közben mocorog."
             },
             {
               "key": "sofa-goal",
@@ -2733,7 +2733,7 @@
               "prompt": "A macska a kanapéra ugrik.",
               "target": "Die Katze springt auf das Sofa.",
               "stage": "transfer",
-              "explanation": "Wohin? → auf das Sofa.",
+              "explanation": "A macska a kanapéra ugrik, vagyis célhelyet mondunk: Wohin? → Akkusativ. A das alak itt nem változik: auf das Sofa.",
               "alternatives": "Die Katze springt aufs Sofa."
             },
             {
@@ -2742,7 +2742,7 @@
               "prompt": "A kerékpár az ajtó előtt áll.",
               "target": "Das Fahrrad steht vor der Tür.",
               "stage": "transfer",
-              "explanation": "Wo? → vor der Tür."
+              "explanation": "A kerékpár már az ajtó előtt áll: Wo? (hol?) → Dativ. die Tür → vor der Tür."
             },
             {
               "key": "door-goal",
@@ -2750,7 +2750,7 @@
               "prompt": "A kerékpárt az ajtó elé állítja. · férfi",
               "target": "Er stellt das Fahrrad vor die Tür.",
               "stage": "transfer",
-              "explanation": "Wohin? → vor die Tür."
+              "explanation": "A kerékpárt az ajtó elé teszi: Wohin? (hová?) → Akkusativ. A nőnemű die nem változik, ezért a jelentésre kell figyelni."
             }
           ],
           "requireTransfer": true
@@ -3601,7 +3601,7 @@
                 "Dativ"
               ],
               "focus": "Akkusativ",
-              "explanation": "für + Akkusativ.",
+              "explanation": "A für mindig Akkusativot kér. A FUDOG öt tagja — für, um, durch, ohne, gegen — mind ugyanígy működik.",
               "stage": "recognise"
             },
             {
@@ -3615,7 +3615,7 @@
                 "Dativ"
               ],
               "focus": "Akkusativ",
-              "explanation": "ohne + Akkusativ.",
+              "explanation": "Az ohne mindig Akkusativot kér. Ugyanabba a FUDOG-csoportba tartozik, mint a für, um, durch és gegen.",
               "stage": "recognise"
             },
             {
@@ -3629,7 +3629,7 @@
                 "Dativ"
               ],
               "focus": "Dativ",
-              "explanation": "mit + Dativ.",
+              "explanation": "A mit mindig Dativot kér. Tanuld együtt ezzel a csoporttal: mit, von, zu, bei, nach, aus, seit.",
               "stage": "recognise"
             },
             {
@@ -3643,7 +3643,7 @@
                 "Dativ"
               ],
               "focus": "Dativ",
-              "explanation": "von + Dativ.",
+              "explanation": "A von mindig Dativot kér. Ugyanígy működik a mit, zu, bei, nach, aus és seit is.",
               "stage": "recognise"
             },
             {
@@ -3657,7 +3657,7 @@
                 "Dativ"
               ],
               "focus": "Dativ",
-              "explanation": "zu + Dativ.",
+              "explanation": "A zu mindig Dativot kér. Gyakran összeolvad a névelővel: zu dem → zum, zu der → zur.",
               "stage": "recognise"
             }
           ]
@@ -3678,7 +3678,7 @@
               "target": "Das ist für mich.",
               "task": "fill",
               "focus": "mich",
-              "explanation": "für + Akkusativ: ich → mich.",
+              "explanation": "A für után Akkusativ kell. Az ich alanyalak, itt viszont mich lesz belőle: für mich.",
               "stage": "control",
               "options": [
                 "mich",
@@ -3692,7 +3692,7 @@
               "target": "Er kommt mit mir.",
               "task": "fill",
               "focus": "mir",
-              "explanation": "mit + Dativ: ich → mir.",
+              "explanation": "A mit után Dativ kell. Az ich Dativ alakja mir, ezért: mit mir.",
               "stage": "control",
               "options": [
                 "mich",
@@ -3706,7 +3706,7 @@
               "target": "Ich fange ohne dich an.",
               "task": "fill",
               "focus": "dich",
-              "explanation": "ohne + Akkusativ: du → dich.",
+              "explanation": "Az ohne után Akkusativ kell: du → dich. Az anfangen elváló ige, ezért az an a mondat végére kerül.",
               "stage": "control",
               "options": [
                 "dich",
@@ -3720,7 +3720,7 @@
               "target": "Ich weiß das von dir.",
               "task": "fill",
               "focus": "dir",
-              "explanation": "von + Dativ: du → dir.",
+              "explanation": "A von után Dativ kell: du → dir. Ezért mondjuk: von dir.",
               "stage": "control",
               "options": [
                 "dich",
@@ -3734,7 +3734,7 @@
               "target": "Wir kaufen ein Geschenk für ihn.",
               "task": "fill",
               "focus": "ihn",
-              "explanation": "für + Akkusativ: er → ihn.",
+              "explanation": "A magyar „neki” itt félrevezethet: a für Akkusativot kér. Az er alakból ezért ihn lesz: für ihn.",
               "stage": "control",
               "options": [
                 "ihn",
@@ -3748,7 +3748,7 @@
               "target": "Ich spreche mit ihm.",
               "task": "fill",
               "focus": "ihm",
-              "explanation": "mit + Dativ: er → ihm.",
+              "explanation": "Most ugyanazt a férfit Dativban mondjuk: er → ihm. Hasonlítsd össze: für ihn, de mit ihm.",
               "stage": "control",
               "options": [
                 "ihn",
@@ -3773,7 +3773,7 @@
               "target": "Wir laufen gegen den Wind.",
               "task": "fill",
               "focus": "den",
-              "explanation": "gegen + Akkusativ; der Wind → den Wind.",
+              "explanation": "A gegen mindig Akkusativot kér. Ezért der Wind → gegen den Wind.",
               "stage": "control"
             },
             {
@@ -3803,7 +3803,7 @@
               "target": "Ich gehe zu meinem Kollegen.",
               "task": "fill",
               "focus": "meinem",
-              "explanation": "zu + Dativ; mein Kollege → meinem Kollegen.",
+              "explanation": "A zu után Dativ kell: mein Kollege → meinem Kollegen. A Kollege különleges szó: alanyeseten kívül kap egy -n végződést.",
               "stage": "control"
             }
           ],
@@ -9341,7 +9341,7 @@
                 "wurde"
               ],
               "focus": "war",
-              "explanation": "sein → war.",
+              "explanation": "A sein múlt idejű alakja rendhagyó: war. Az ich és az er/sie/es alak ugyanaz: ich war, er war.",
               "stage": "recognise"
             },
             {
@@ -9356,7 +9356,7 @@
                 "konnte"
               ],
               "focus": "hatte",
-              "explanation": "haben → hatte.",
+              "explanation": "A haben egyszerű múltja hatte. Az ich és az er/sie/es alak itt is ugyanaz: ich hatte, sie hatte.",
               "stage": "recognise"
             },
             {
@@ -9371,7 +9371,7 @@
                 "wollte"
               ],
               "focus": "konnte",
-              "explanation": "können → konnte.",
+              "explanation": "A können egyszerű múltja konnte. Az ö-ről eltűnik a két pont: können → konnte.",
               "stage": "recognise"
             },
             {
@@ -9386,7 +9386,7 @@
                 "wollte"
               ],
               "focus": "musste",
-              "explanation": "müssen → musste.",
+              "explanation": "A müssen egyszerű múltja musste, két pont nélkül. A módbeli igéknél ezt az egyszerű múltat beszédben is gyakran használjuk.",
               "stage": "recognise"
             },
             {
@@ -9401,7 +9401,7 @@
                 "sah"
               ],
               "focus": "kam",
-              "explanation": "kommen → kam.",
+              "explanation": "A kommen rendhagyó múlt idejű alakja kam. Nem kap -te végződést: er kam.",
               "stage": "recognise"
             },
             {
@@ -9416,7 +9416,7 @@
                 "sah"
               ],
               "focus": "sah",
-              "explanation": "sehen → sah.",
+              "explanation": "A sehen rendhagyó múlt idejű alakja sah. Az ich és az er alak egyforma: ich sah, er sah.",
               "stage": "recognise"
             }
           ]
@@ -9436,7 +9436,7 @@
               "prompt": "Késő volt.",
               "target": "Es war spät.",
               "stage": "control",
-              "explanation": "sein → war."
+              "explanation": "A német mondatnak itt szüksége van egy alanyra, ezért kerül bele az es: Es war spät."
             },
             {
               "key": "no-bus",
@@ -9444,7 +9444,7 @@
               "prompt": "Már nem volt busz.",
               "target": "Es gab keinen Bus mehr.",
               "stage": "control",
-              "explanation": "es gibt → es gab."
+              "explanation": "Az es gibt azt jelenti, hogy „van”; múlt időben es gab. A Bus itt tárgy, ezért keinen Bus."
             },
             {
               "key": "wait",
@@ -9452,7 +9452,7 @@
               "prompt": "Sokáig kellett várnom.",
               "target": "Ich musste lange warten.",
               "stage": "control",
-              "explanation": "musste + infinitív warten."
+              "explanation": "A musste a mondat elején ragozódik, a warten pedig a végére kerül. A két ige keretként fogja közre a mondat többi részét."
             },
             {
               "key": "taxi",
@@ -9460,7 +9460,7 @@
               "prompt": "Aztán jött egy taxi.",
               "target": "Dann kam ein Taxi.",
               "stage": "control",
-              "explanation": "kommen → kam."
+              "explanation": "A Dann elfoglalja az első helyet, de a ragozott ige marad a másodikon. Ezért: Dann kam ein Taxi."
             }
           ]
         },
@@ -9490,7 +9490,7 @@
               "target": "Sie wollte nach Hause gehen.",
               "task": "fill",
               "focus": "wollte",
-              "explanation": "wollen → wollte.",
+              "explanation": "A wollte a második helyen áll, a gehen pedig a mondat végén. A két ige közé kerül: nach Hause.",
               "stage": "control"
             },
             {
@@ -9500,7 +9500,7 @@
               "target": "Der Mann las den Brief.",
               "task": "fill",
               "focus": "las",
-              "explanation": "lesen → las.",
+              "explanation": "A lesen rendhagyó múlt idejű alakja las. A levél a cselekvés tárgya, ezért den Brief.",
               "stage": "control"
             },
             {
@@ -9881,6 +9881,22 @@
               ]
             },
             {
+              "key": "this-colleague-dat",
+              "skillId": "determiner.dieser",
+              "prompt": "Ezzel a kolléganővel beszélek.",
+              "target": "Ich spreche mit dieser Kollegin.",
+              "task": "fill",
+              "focus": "dieser",
+              "explanation": "A mit Dativot kér. A nőnemű diese ezért dieser lesz: mit dieser Kollegin.",
+              "stage": "control",
+              "options": [
+                "diese",
+                "dieser",
+                "diesem",
+                "diesen"
+              ]
+            },
+            {
               "key": "which-train",
               "skillId": "determiner.welcher",
               "prompt": "Melyik vonatot választod?",
@@ -9894,6 +9910,22 @@
                 "meiner",
                 "diesem",
                 "Welchen"
+              ]
+            },
+            {
+              "key": "which-bus-dat",
+              "skillId": "determiner.welcher",
+              "prompt": "Melyik busszal utazol?",
+              "target": "Mit welchem Bus fährst du?",
+              "task": "fill",
+              "focus": "welchem",
+              "explanation": "A mit Dativot kér. A welcher hímnemű Dativ alakja welchem: mit welchem Bus.",
+              "stage": "control",
+              "options": [
+                "welcher",
+                "welchen",
+                "welchem",
+                "welche"
               ]
             }
           ]
@@ -10740,7 +10772,7 @@
               "target": "Ich hätte mehr Zeit.",
               "task": "fill",
               "focus": "hätte",
-              "explanation": "haben → hätte.",
+              "explanation": "A hätte a haben feltételes alakja. A hatte alakból indulunk, majd az a két pontot kap: hatte → hätte.",
               "stage": "control",
               "options": [
                 "hatte",
@@ -10755,7 +10787,7 @@
               "target": "Ich wäre gern zu Hause.",
               "task": "fill",
               "focus": "wäre",
-              "explanation": "sein → wäre.",
+              "explanation": "A wäre a sein feltételes alakja. A war alakból indulunk, majd az a két pontot kap: war → wäre.",
               "stage": "control",
               "options": [
                 "war",
@@ -10770,7 +10802,7 @@
               "target": "Könntest du warten?",
               "task": "fill",
               "focus": "Könntest",
-              "explanation": "können → könntest.",
+              "explanation": "A könnte a können feltételes alakja; du mellett könntest lesz. Kérdésben ez kerül előre: Könntest du…?",
               "stage": "control",
               "options": [
                 "hatte",
@@ -10828,7 +10860,7 @@
               "prompt": "Ha jobb lenne az idő, kirándulnánk.",
               "target": "Wenn das Wetter besser wäre, würden wir wandern.",
               "stage": "transfer",
-              "explanation": "wäre; würden … wandern."
+              "explanation": "A wenn-részben a wäre a végére kerül. A főmondatban a würden + wandern egyértelműen mutatja, hogy elképzelt helyzetről beszélünk."
             },
             {
               "key": "advice",
@@ -10836,7 +10868,7 @@
               "prompt": "A helyedben korábban indulnék.",
               "target": "An deiner Stelle würde ich früher losfahren.",
               "stage": "transfer",
-              "explanation": "würde … losfahren."
+              "explanation": "Az An deiner Stelle áll az első helyen, ezért a würde marad a másodikon. A losfahren a mondat végére kerül."
             },
             {
               "key": "polite",
@@ -10844,7 +10876,7 @@
               "prompt": "Meg tudná mutatni nekem az utat?",
               "target": "Könnten Sie mir den Weg zeigen?",
               "stage": "transfer",
-              "explanation": "Könnten Sie; mir Dativ; den Weg Akkusativ."
+              "explanation": "A Könnten Sie… udvariasabbá teszi a kérdést. A mir a személyt, a den Weg pedig a megmutatott dolgot jelöli; ebben a mondatban a mir áll előbb."
             }
           ],
           "requireTransfer": true
@@ -11799,7 +11831,7 @@
                 "auf wen"
               ],
               "focus": "worauf",
-              "explanation": "Dolog: worauf.",
+              "explanation": "Ha dologra kérdezünk, wo(r)- alakot használunk: auf → worauf. Az r azért kerül bele, mert az auf magánhangzóval kezdődik.",
               "stage": "recognise"
             },
             {
@@ -11813,7 +11845,7 @@
                 "auf wen"
               ],
               "focus": "auf wen",
-              "explanation": "Személy: auf wen.",
+              "explanation": "Ha személyre kérdezünk, nem használunk worauf alakot. A warten auf Akkusativot kér, ezért: auf wen.",
               "stage": "recognise"
             },
             {
@@ -11827,7 +11859,7 @@
                 "mit wem"
               ],
               "focus": "womit",
-              "explanation": "Dolog: womit.",
+              "explanation": "Ha dologra kérdezünk a mit szóval, womit lesz belőle. Itt nem kell r, mert a mit mássalhangzóval kezdődik.",
               "stage": "recognise"
             },
             {
@@ -11841,7 +11873,7 @@
                 "mit wem"
               ],
               "focus": "mit wem",
-              "explanation": "Személy: mit wem.",
+              "explanation": "Ha személyre kérdezünk, a mit külön marad. A mit Dativot kér, ezért: mit wem.",
               "stage": "recognise"
             }
           ]
@@ -11862,7 +11894,7 @@
               "target": "Ich warte auf die Antwort. Ich warte schon lange darauf.",
               "task": "fill",
               "focus": "darauf",
-              "explanation": "auf die Antwort → darauf.",
+              "explanation": "Ha egy már említett dologra utalunk vissza, da(r)- alakot használunk: auf → darauf. Személynél viszont auf ihn vagy auf sie állna.",
               "stage": "control",
               "options": [
                 "darauf",
@@ -11877,7 +11909,7 @@
               "target": "Sie denkt an den Urlaub. Sie denkt oft daran.",
               "task": "fill",
               "focus": "daran",
-              "explanation": "an den Urlaub → daran.",
+              "explanation": "Az an szóból visszautaláskor daran lesz. Az r azért kell, mert az an magánhangzóval kezdődik.",
               "stage": "control",
               "options": [
                 "darauf",
@@ -11892,7 +11924,7 @@
               "target": "Wir sprechen über den Plan. Jetzt sprechen wir darüber.",
               "task": "fill",
               "focus": "darüber",
-              "explanation": "über den Plan → darüber.",
+              "explanation": "Az über szóból visszautaláskor darüber lesz. A sprechen über együtt tanulandó, mert a darüber alakból már nem látszik az eset.",
               "stage": "control",
               "options": [
                 "darauf",
@@ -11907,7 +11939,7 @@
               "target": "Er ist stolz auf das Ergebnis. Er ist stolz darauf.",
               "task": "fill",
               "focus": "darauf",
-              "explanation": "auf das Ergebnis → darauf.",
+              "explanation": "A stolz auf azt jelenti, hogy „büszke valamire”. Ha erre a dologra visszautalunk, darauf lesz belőle.",
               "stage": "control",
               "options": [
                 "darauf",
@@ -11940,7 +11972,7 @@
               "prompt": "Kire emlékszel? A régi tanáromra.",
               "target": "An wen erinnerst du dich? An meinen alten Lehrer.",
               "stage": "transfer",
-              "explanation": "Személyre an wen."
+              "explanation": "A sich erinnern an azt jelenti, hogy „emlékezni valakire vagy valamire”. Személynél így kérdezünk: an wen?"
             },
             {
               "key": "depend",
@@ -11956,7 +11988,7 @@
               "prompt": "Kivel beszéltél erről? A főnökömmel.",
               "target": "Mit wem hast du darüber gesprochen? Mit meinem Chef.",
               "stage": "transfer",
-              "explanation": "Személy: mit wem; dolog: darüber."
+              "explanation": "Személyre mit wem kérdez, a korábban említett dologra pedig darüber utal vissza. A gesprochen a mondat végére kerül."
             }
           ],
           "requireTransfer": true
@@ -12379,7 +12411,7 @@
               "target": "das Dach des Hauses",
               "task": "fill",
               "focus": "des",
-              "explanation": "das Haus → des Hauses.",
+              "explanation": "A német két helyen mutatja a birtokost: das Haus → des Hauses. A névelő des lesz, a Haus pedig -es végződést kap.",
               "stage": "control",
               "options": [
                 "des",
@@ -12394,7 +12426,7 @@
               "target": "das Auto des Mannes",
               "task": "fill",
               "focus": "des",
-              "explanation": "der Mann → des Mannes.",
+              "explanation": "A der Mann birtokos alakja des Mannes. A rövid főnevek gyakran -es, a hosszabbak gyakran csak -s végződést kapnak.",
               "stage": "control",
               "options": [
                 "des",
@@ -12409,7 +12441,7 @@
               "target": "die Tasche der Frau",
               "task": "fill",
               "focus": "der",
-              "explanation": "die Frau → der Frau.",
+              "explanation": "Nőnemben a birtokos névelő der, a főnév pedig nem változik: die Frau → der Frau. Ez a der itt nem hímnemet jelent.",
               "stage": "control",
               "options": [
                 "des",
@@ -12424,7 +12456,7 @@
               "target": "das Zimmer der Kinder",
               "task": "fill",
               "focus": "der",
-              "explanation": "Többes Genitiv: der Kinder.",
+              "explanation": "Többes számban a birtokos névelő szintén der. A Kinder nem kap újabb végződést: der Kinder.",
               "stage": "control",
               "options": [
                 "des",
@@ -12504,7 +12536,7 @@
               "target": "Der Eingang des Museums ist geschlossen.",
               "task": "fill",
               "focus": "des|Museums",
-              "explanation": "das Museum → des Museums.",
+              "explanation": "A Museum birtokos alakja des Museums. Az -um végű idegen szavak általában csak -s végződést kapnak.",
               "stage": "control"
             },
             {
@@ -12514,7 +12546,7 @@
               "target": "Die Leiterin der Firma hält eine Rede.",
               "task": "fill",
               "focus": "der|Firma",
-              "explanation": "die Firma → der Firma.",
+              "explanation": "A Firma nőnemű szó, ezért a birtokos névelő der. Maga a főnév nem változik: der Firma.",
               "stage": "control"
             },
             {
@@ -12524,7 +12556,7 @@
               "target": "Das Ende des Films war überraschend.",
               "task": "fill",
               "focus": "des|Films",
-              "explanation": "der Film → des Films.",
+              "explanation": "Németül előbb mondjuk, mi valaminek a része, utána a birtokost: das Ende des Films. Magyarul a sorrend fordított: a film vége.",
               "stage": "control"
             },
             {
