@@ -1,5 +1,5 @@
 /* LanguageDeck 4.2.0 — compact grammar modules and single-target practice. */
-const CACHE_VERSION="languagedeck-4-2-1-race-fix-grammar-content-20260830";
+const CACHE_VERSION="languagedeck-4-2-2-grammar-prompt-context-20260830";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

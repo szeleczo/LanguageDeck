@@ -3600,7 +3600,7 @@
       {
        "key": "fuer",
        "skillId": "prep.fixed-akk",
-       "prompt": "für · melyik eset?",
+       "prompt": "Ez neked szól, ajándékba. · für",
        "target": "Akkusativ",
        "task": "select",
        "options": [
@@ -3614,7 +3614,7 @@
       {
        "key": "ohne",
        "skillId": "prep.fixed-akk",
-       "prompt": "ohne · melyik eset?",
+       "prompt": "Kávé nélkül nem megy a reggel. · ohne",
        "target": "Akkusativ",
        "task": "select",
        "options": [
@@ -3628,7 +3628,7 @@
       {
        "key": "mit",
        "skillId": "prep.fixed-dat",
-       "prompt": "mit · melyik eset?",
+       "prompt": "Kenyeret eszem vajjal. · mit",
        "target": "Dativ",
        "task": "select",
        "options": [
@@ -3642,7 +3642,7 @@
       {
        "key": "von",
        "skillId": "prep.fixed-dat",
-       "prompt": "von · melyik eset?",
+       "prompt": "Ezt tőle tudom. · von",
        "target": "Dativ",
        "task": "select",
        "options": [
@@ -3656,7 +3656,7 @@
       {
        "key": "zu",
        "skillId": "prep.fixed-dat",
-       "prompt": "zu · melyik eset?",
+       "prompt": "Megyek az orvoshoz. · zu",
        "target": "Dativ",
        "task": "select",
        "options": [
@@ -8748,7 +8748,7 @@
       {
        "key": "sehen",
        "skillId": "government.akk",
-       "prompt": "sehen · vonzat",
+       "prompt": "Látom a filmet. · sehen",
        "target": "Akkusativ",
        "task": "select",
        "options": [
@@ -8763,7 +8763,7 @@
       {
        "key": "brauchen",
        "skillId": "government.akk",
-       "prompt": "brauchen · vonzat",
+       "prompt": "Szükségem van egy tollra. · brauchen",
        "target": "Akkusativ",
        "task": "select",
        "options": [
@@ -8778,7 +8778,7 @@
       {
        "key": "helfen",
        "skillId": "government.dat",
-       "prompt": "helfen · vonzat",
+       "prompt": "Segítek a barátomnak. · helfen",
        "target": "Dativ",
        "task": "select",
        "options": [
@@ -8793,7 +8793,7 @@
       {
        "key": "gefallen",
        "skillId": "government.dat",
-       "prompt": "gefallen · vonzat",
+       "prompt": "Tetszik nekem a film. · gefallen",
        "target": "Dativ",
        "task": "select",
        "options": [
@@ -8808,7 +8808,7 @@
       {
        "key": "wait",
        "skillId": "government.prep",
-       "prompt": "warten auf · vonzat",
+       "prompt": "Várok a buszra. · warten auf",
        "target": "elöljáró",
        "task": "select",
        "options": [
@@ -8823,7 +8823,7 @@
       {
        "key": "speak-about",
        "skillId": "government.prep",
-       "prompt": "sprechen über · vonzat",
+       "prompt": "Beszélek a problémáról. · sprechen über",
        "target": "elöljáró",
        "task": "select",
        "options": [
@@ -9773,7 +9773,7 @@
       {
        "key": "mein",
        "skillId": "determiner.ein-family",
-       "prompt": "mein · melyik névelőmintát követi?",
+       "prompt": "Ez az én könyvem. · mein",
        "target": "ein",
        "task": "select",
        "options": [
@@ -9787,7 +9787,7 @@
       {
        "key": "kein",
        "skillId": "determiner.ein-family",
-       "prompt": "kein · melyik névelőmintát követi?",
+       "prompt": "Nincs autóm. · kein",
        "target": "ein",
        "task": "select",
        "options": [
@@ -9801,7 +9801,7 @@
       {
        "key": "dieser",
        "skillId": "determiner.der-family",
-       "prompt": "dieser · melyik névelőmintát követi?",
+       "prompt": "Ez az étterem jó. · dieser",
        "target": "der",
        "task": "select",
        "options": [
@@ -9815,7 +9815,7 @@
       {
        "key": "welcher",
        "skillId": "determiner.der-family",
-       "prompt": "welcher · melyik névelőmintát követi?",
+       "prompt": "Melyik busz megy a városba? · welcher",
        "target": "der",
        "task": "select",
        "options": [
@@ -15201,7 +15201,7 @@
   "scope": "Grammar & Forms only",
   "progressCompatibility": "A 4.0-s célazonosítók és tanulási készletek változatlanul megmaradnak."
  },
- "curriculumVersion": "4.2.1",
+ "curriculumVersion": "4.2.2",
  "modules": [
   {
    "id": "sentence-present",

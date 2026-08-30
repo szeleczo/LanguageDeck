@@ -72,7 +72,7 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedSkillDone[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "completed grammar skills are removed from already-prefetched queues");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.2\.1-race-fix-grammar-content-20260830/, "the application build marker includes the 4.2.1 race-fix and grammar-content release");
+assert.match(indexHtml, /4\.2\.2-grammar-prompt-context-20260830/, "the application build marker includes the 4.2.2 grammar-prompt-context release");
 assert.ok(!/if\s*\(fetchingMore\)\s*return\s*\[\];/.test(indexHtml), "fetchWordItems/fetchSentenceItems no longer share a boolean guard that silently drops a concurrent fetch");
 assert.match(indexHtml, /wordFetchInFlight/, "fetchWordItems uses its own in-flight promise instead of the shared fetchingMore flag");
 assert.match(indexHtml, /sentenceFetchInFlight/, "fetchSentenceItems uses its own in-flight promise instead of the shared fetchingMore flag");
@@ -103,7 +103,7 @@ assert.ok(standaloneIndex.every(deck => !/[\\/]stories[\\/]|[\\/]texts[\\/]/.tes
 
 const curriculum = JSON.parse(text(join(deRoot, "grammar", "curriculum-v4.json")));
 assert.equal(curriculum.schemaVersion, 4, "Grammar & Forms uses the v4 curriculum schema");
-assert.equal(curriculum.curriculumVersion, "4.2.1", "the curriculum identifies the 4.2.1 race-fix and grammar-content release");
+assert.equal(curriculum.curriculumVersion, "4.2.2", "the curriculum identifies the 4.2.2 grammar-prompt-context release");
 assert.equal(curriculum.explanationLanguage, "hu", "grammar explanations are Hungarian");
 assert.equal(curriculum.targetLanguage, "de", "grammar production remains German");
 assert.deepEqual(curriculum.tracks.map(track => track.id), ["a1-foundation", "a1-expansion", "a2-connection", "b1-expression", "b2-precision"], "the curriculum spirals through five CEFR stage bands up to B2");
@@ -390,7 +390,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-2-1-race-fix-grammar-content-20260830/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-2-2-grammar-prompt-context-20260830/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
