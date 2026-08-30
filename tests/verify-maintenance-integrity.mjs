@@ -72,7 +72,7 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedSkillDone[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "completed grammar skills are removed from already-prefetched queues");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.1\.3-eli5-grammar-stabilization-20260827/, "the application build marker includes the 4.1.3 grammar stabilization");
+assert.match(indexHtml, /4\.2\.0-compact-grammar-modules-20260830/, "the application build marker includes the compact 4.2 grammar release");
 
 const languages = JSON.parse(text(join(root, "decks", "languages.json")));
 assert.deepEqual(languages.languages.map(language => language.code), ["de", "it"], "German and Italian remain registered");
@@ -99,16 +99,74 @@ assert.ok(standaloneIndex.every(deck => !/[\\/]stories[\\/]|[\\/]texts[\\/]/.tes
 
 const curriculum = JSON.parse(text(join(deRoot, "grammar", "curriculum-v4.json")));
 assert.equal(curriculum.schemaVersion, 4, "Grammar & Forms uses the v4 curriculum schema");
+assert.equal(curriculum.curriculumVersion, "4.2.0", "the curriculum identifies the compact 4.2 release");
 assert.equal(curriculum.explanationLanguage, "hu", "grammar explanations are Hungarian");
 assert.equal(curriculum.targetLanguage, "de", "grammar production remains German");
 assert.deepEqual(curriculum.tracks.map(track => track.id), ["a1-foundation", "a1-expansion", "a2-connection", "b1-expression", "b2-precision"], "the curriculum spirals through five CEFR stage bands up to B2");
-assert.equal(curriculum.units.length, 57, "Grammar 4.1 contains fifty-seven focused units");
+assert.equal(curriculum.units.length, 57, "the existing fifty-seven source units remain available as a hidden task bank");
 assert.deepEqual(curriculum.units.map(unit => unit.order), Array.from({length:57}, (_, i) => i + 1), "unit order is stable and contiguous");
 const requiredUnits = ["sentence-core", "noun-gender-plural", "nouns-nominative-accusative", "dative-recipient", "perfect-foundation", "two-way-prepositions", "fixed-prepositions", "modal-system", "verb-government", "object-order", "subordinate-clauses", "preterite-narration", "adjective-system", "reflexive-and-nicht", "konjunktiv-two", "relative-clauses", "infinitive-clauses", "passive", "prepositional-verbs", "past-sequence", "genitive", "final-transfer"];
 for (const id of requiredUnits) assert.ok(curriculum.units.some(unit => unit.id === id), `curriculum is missing ${id}`);
 const requiredB2Units = ["b2-complex-connectors", "b2-indirect-speech", "b2-advanced-passive", "b2-relative-precision", "b2-nominalisation", "b2-participial-adjectives", "b2-word-order-focus", "b2-register-modality", "b2-final-transfer"];
 for (const id of requiredB2Units) assert.ok(curriculum.units.some(unit => unit.id === id), `B2 curriculum is missing ${id}`);
 assert.equal(curriculum.units.filter(unit => unit.progressSetName?.startsWith("Grammar 4 ·") && !unit.progressSetName.includes("v4.1")).length, 33, "all 4.0 units retain their exact legacy progress set identity");
+const expectedModuleIds = ["sentence-present", "verb-system", "akkusativ-dativ", "noun-system", "time-system", "word-order", "mood-voice", "b2-precision"];
+assert.deepEqual(curriculum.modules.map(module => module.id), expectedModuleIds, "the learner sees eight coherent grammar modules in a stable order");
+assert.deepEqual(curriculum.modules.map(module => module.order), Array.from({length:8}, (_, i) => i + 1), "module order is stable and contiguous");
+const sourceUnitAssignments = curriculum.modules.flatMap(module => module.sourceUnits.map(unitId => [unitId, module.id]));
+assert.equal(sourceUnitAssignments.length, curriculum.units.length, "every hidden source unit belongs to exactly one visible module");
+assert.equal(new Set(sourceUnitAssignments.map(([unitId]) => unitId)).size, curriculum.units.length, "no hidden source unit appears in two modules");
+for (const [unitId, moduleId] of sourceUnitAssignments) assert.ok(curriculum.units.some(unit => unit.id === unitId), `${moduleId} references missing source unit ${unitId}`);
+const unitsById = new Map(curriculum.units.map(unit => [unit.id, unit]));
+const practiceRows = (module, practiceSet) => module.sourceUnits.flatMap(unitId => {
+  const unit = unitsById.get(unitId);
+  return unit.phases.filter(phase => phase.variant === practiceSet.variant).flatMap(phase => phase.rows.map(row => ({ unit, phase, row })));
+});
+let visiblePracticeRowCount = 0;
+for (const module of curriculum.modules) for (const practiceSet of module.practiceSets) {
+  const rows = practiceRows(module, practiceSet);
+  assert.ok(rows.length, `${module.id}/${practiceSet.id} needs at least one task`);
+  visiblePracticeRowCount += rows.length;
+}
+assert.equal(visiblePracticeRowCount, 585, "the compact modules expose a reviewed subset of 585 source tasks");
+let focusedPracticeRowCount = 0;
+for (const module of curriculum.modules) for (const practiceSet of module.practiceSets.filter(set => set.focusOnly)) {
+  for (const {unit, phase, row} of practiceRows(module, practiceSet)) {
+    focusedPracticeRowCount++;
+    const focus = String(Array.isArray(row.focus) ? row.focus.join("|") : row.focus || "").split("|").map(value => value.trim()).filter(Boolean);
+    const options = Array.isArray(row.options) ? row.options : String(row.options || "").split("|").filter(Boolean);
+    const key = `${unit.id}/${phase.id}/${row.key}`;
+    assert.ok(focus.length && focus.every(value => row.target.toLocaleLowerCase("de-DE").includes(value.toLocaleLowerCase("de-DE"))), `${key} must visibly contain every measured form`);
+    if (practiceSet.variant === "choice") assert.ok(options.length >= 2, `${key} needs at least two targeted choices`);
+    if (practiceSet.variant === "choice" && focus.some(value => /\s/u.test(value))) assert.ok(options.includes(row.target), `${key} whole-answer choices must offer the complete correct answer`);
+  }
+}
+assert.equal(focusedPracticeRowCount, 505, "all 505 focused module tasks pass the target contract");
+const caseModule = curriculum.modules.find(module => module.id === "akkusativ-dativ");
+assert.equal(caseModule.practiceSets.length, 1, "Akkusativ and Dativ have one uninterrupted targeted practice path");
+const caseSet = caseModule.practiceSets[0];
+assert.deepEqual(
+  { variant:caseSet.variant, focusOnly:caseSet.focusOnly, singleTarget:caseSet.singleTarget },
+  { variant:"choice", focusOnly:true, singleTarget:true },
+  "case practice uses one-target choices only"
+);
+const caseRows = practiceRows(caseModule, caseSet);
+assert.equal(caseRows.length, 66, "the case module contains sixty-six focused decisions");
+assert.equal(new Set(caseRows.map(({row}) => row.skillId)).size, 31, "the case module covers thirty-one distinct case skills");
+for (const {unit, phase, row} of caseRows) {
+  const focus = String(Array.isArray(row.focus) ? row.focus.join("|") : row.focus || "").split("|").map(value => value.trim()).filter(Boolean);
+  const options = Array.isArray(row.options) ? row.options : String(row.options || "").split("|").filter(Boolean);
+  const key = `${unit.id}/${phase.id}/${row.key}`;
+  assert.equal(focus.length, 1, `${key} must measure exactly one visible case form`);
+  assert.ok(options.length >= 2 && options.includes(focus[0]), `${key} needs a targeted choice bank containing the answer`);
+  const escaped = focus[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const occurrences = [...row.target.matchAll(new RegExp(`(?<![\\p{L}\\p{M}])${escaped}(?![\\p{L}\\p{M}])`, "gu"))].length;
+  assert.equal(occurrences, 1, `${key} must blank only its single case-bearing target`);
+}
+assert.ok(caseRows.every(({phase}) => phase.variant === "choice"), "case practice excludes unrelated typing and sentence-order assessment");
+const dativeRecipientControl = unitsById.get("dative-recipient").phases.find(phase => phase.id === "forms").rows;
+assert.ok(dativeRecipientControl.some(row => row.key === "to-guests" && row.focus === "den" && row.skillId === "dative.plural.article"), "plural Dativ article choice is measured separately");
+assert.ok(dativeRecipientControl.some(row => row.key === "with-children-n" && row.focus === "Kindern" && row.skillId === "dative.plural.n"), "plural Dativ noun ending is measured separately");
 const grammarGoalIds = new Set();
 const skillIds = new Set();
 let grammarGoalCount = 0;
@@ -130,8 +188,8 @@ for (const unit of curriculum.units) {
     }
   }
 }
-assert.equal(grammarGoalCount, 773, "Grammar 4.1.3 contains 773 varied evidence rows");
-assert.equal(skillIds.size, 329, "Grammar 4.1 measures 329 reusable grammar skills instead of memorised strings");
+assert.equal(grammarGoalCount, 774, "Grammar 4.2 contains 774 varied evidence rows in its source bank");
+assert.equal(skillIds.size, 330, "Grammar 4.2 measures 330 reusable grammar skills instead of memorised strings");
 const clippedSkillRequirements = [];
 for (const unit of curriculum.units) for (const phase of unit.phases) {
   const rowsBySkill = new Map();
@@ -172,12 +230,24 @@ assert.match(indexHtml, /grammarFocusTerms/, "typing blanks can target the gramm
 assert.match(indexHtml, /newItemOrder=spec\.sequence\?"csv":"smart"/, "guided contrast pairs preserve CSV order");
 assert.match(indexHtml, /guided_success_at/, "a clean answer records reusable skill evidence");
 assert.match(indexHtml, /curriculum-v4\.json/, "the app loads only the unified v4 curriculum");
-assert.match(indexHtml, /grammarParadigmsHtml\(active\)/, "verb and case paradigms are visible before practice");
-assert.match(indexHtml, /grammarMemoryHookHtml\(active\)/, "lessons can show a mental hook before practice");
-assert.match(indexHtml, /grammar-track-section/, "the curriculum overview separates CEFR spiral stages");
-assert.match(indexHtml, /grammarRecommendation/, "the curriculum explains its next recommended unit");
-assert.match(indexHtml, /grammarStatusMeta/, "the curriculum exposes new, building and stable states");
+assert.match(indexHtml, /function grammarModuleById/, "the curriculum is navigated through coherent modules");
+assert.match(indexHtml, /function grammarReferenceHtml/, "each module renders its compact reference sheet before practice");
+assert.match(indexHtml, /grammar-module-list/, "the overview renders the eight large modules instead of the source-unit list");
+assert.ok(!indexHtml.includes("data-grammar-phase"), "the old 171-phase learner navigation is no longer rendered");
+assert.match(indexHtml, /grammarRecommendation/, "the curriculum explains its next recommended module");
+assert.match(indexHtml, /grammarStatusMeta/, "the curriculum exposes new, building and stable module states");
 assert.match(indexHtml, /grammarPracticeHu/, "Grammar & Forms practice controls have a Hungarian UI scope");
+assert.match(indexHtml, /function grammarPracticeSetSpec/, "visible module practice is built from the reviewed source bank");
+assert.match(indexHtml, /task_scope:wholeAnswerChoice\?'select':policy\.focusOnly\?'focus'/, "focused tasks carry an explicit one-target scope into the engine");
+assert.match(indexHtml, /if\(policy\.singleTarget&&focus\.length!==1\)throw Error/, "single-target practice rejects rows that try to measure more than one form");
+assert.match(indexHtml, /if \(taskScope === "focus"\) throw new Error/, "a missing grammar target fails closed instead of blanking a random word");
+assert.match(indexHtml, /grammarFocusTermsCaseSensitive/, "the blank finder distinguishes sentence-initial Der from a lower-case der target");
+assert.match(indexHtml, /function maybeAutoSubmitCompletedChoice/, "grammar choices submit as soon as the learner chooses an answer");
+assert.match(indexHtml, /sentenceCheckBtn\.classList\.toggle\("hidden", autoChoice\)/, "grammar choice tasks hide the redundant Check button");
+assert.match(indexHtml, /currentSentence\.task_scope === "select"/, "whole-answer choices use the dedicated select renderer");
+assert.match(indexHtml, /Array\.isArray\(spec\.legacySetNames\)/, "module sets can migrate evidence from the 4.1 progress sets");
+assert.match(indexHtml, /"task_scope"/, "task scope survives guided-set persistence and refreshes");
+assert.match(indexHtml, /grammarWorkshopSelect/, "twenty verb workshops are accessed from one compact selector");
 const rowByKey = (unitId, phaseId, key) => curriculum.units.find(unit => unit.id === unitId).phases.find(phase => phase.id === phaseId).rows.find(row => row.key === key);
 assert.match(rowByKey("two-way-prepositions", "transfer", "sofa-place").explanation, /hol ül.*Wo\?.*Dativ/, "sitzen is explained through static place meaning rather than false verb government");
 assert.match(rowByKey("two-way-prepositions", "transfer", "cupboard-goal").explanation, /Wohin\?.*Akkusativ/, "hängen is explained through destination meaning rather than transitivity");
@@ -316,7 +386,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-1-3-eli5-grammar-stabilization-20260827/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-2-0-compact-grammar-modules-20260830/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");

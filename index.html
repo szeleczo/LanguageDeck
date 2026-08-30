@@ -1837,6 +1837,25 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
       border-bottom-width: 1px;
       margin: 0 2px;
     }
+    #legacyPracticeRoot .grammar-select-answer{
+      display:block;
+      width:100%;
+      padding:12px 14px;
+      border:1px dashed var(--border-strong);
+      border-radius:12px;
+      background:var(--surface-2);
+      color:var(--text-muted);
+      font-size:15px;
+      font-weight:700;
+      line-height:1.4;
+      text-align:center;
+    }
+    #legacyPracticeRoot .grammar-select-answer.chosen{
+      border-style:solid;
+      border-color:var(--primary);
+      background:var(--primary-soft);
+      color:var(--text);
+    }
     #legacyPracticeRoot .blank-input{
       display: inline-block;
       width: auto;
@@ -3181,6 +3200,18 @@ html.integrated-practice-active body{overflow:hidden!important}
     .grammar-recommendation{max-width:720px;margin:0 auto 12px;padding:14px 15px;border:1px solid color-mix(in srgb,var(--accent) 28%,var(--line));border-radius:18px;background:color-mix(in srgb,var(--accent2) 68%,var(--surface));display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}.grammar-recommendation small{display:block;color:var(--accent);font-weight:850;letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px}.grammar-recommendation b{display:block;font-size:14px}.grammar-recommendation p{margin:4px 0 0;color:var(--muted);font-size:11.5px;line-height:1.4}.grammar-recommendation button{border:0;border-radius:12px;background:var(--accent);color:#fff;font-weight:820;min-height:40px;padding:9px 13px}.grammar-state{display:inline-flex;align-items:center;border-radius:999px;padding:3px 7px;font-size:9.5px;font-style:normal;font-weight:850;background:var(--surface2);color:var(--muted);margin-left:5px}.grammar-state.stable{background:color-mix(in srgb,var(--good) 16%,var(--surface));color:var(--good)}.grammar-state.learning{background:color-mix(in srgb,var(--accent) 14%,var(--surface));color:var(--accent)}.grammar-source-row{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.grammar-source-row span{border:1px solid var(--line);border-radius:999px;padding:4px 8px;color:var(--muted);font-size:10px;font-weight:760}.grammar-source-row span:first-child{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 30%,var(--line))}
     @media (max-width:430px){.grammar-recommendation{grid-template-columns:1fr}.grammar-recommendation button{width:100%}}
     @media(max-width:430px){.grammar-unit{grid-template-columns:38px minmax(0,1fr);padding:11px}.grammar-unit>button{grid-column:2;width:100%}.grammar-unit-no{width:35px;height:35px}.grammar-concept{padding:15px}.grammar-track-head{align-items:flex-start}.grammar-track-head span{padding-top:2px}}
+    .grammar-compact-intro{max-width:720px;margin-left:auto;margin-right:auto}.grammar-module-list{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .grammar-module-card{display:grid;grid-template-columns:42px minmax(0,1fr);gap:10px;padding:14px;border:1px solid var(--line);border-radius:19px;background:var(--surface);box-shadow:0 8px 24px rgba(24,30,48,.045)}.grammar-module-card.current{border-color:color-mix(in srgb,var(--accent) 48%,var(--line))}.grammar-module-card.done{border-color:color-mix(in srgb,var(--good) 28%,var(--line));background:color-mix(in srgb,var(--good2) 34%,var(--surface))}
+    .grammar-module-number{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:var(--surface2);color:var(--muted);font-weight:850;font-size:12px}.grammar-module-card.done .grammar-module-number{background:var(--good2);color:var(--good)}
+    .grammar-module-card b{display:block;font-size:14px;line-height:1.3}.grammar-module-card p{margin:5px 0;color:var(--muted);font-size:11.5px;line-height:1.4}.grammar-module-card small{color:var(--accent);font-size:10.5px;font-weight:800}.grammar-module-card>button{grid-column:2;justify-self:start;min-height:37px;padding:7px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--text);font-weight:800;font-size:11.5px}.grammar-module-card.current>button{background:var(--accent);border-color:var(--accent);color:#fff}
+    .grammar-module-reference{max-width:760px;margin:0 auto 12px;padding:18px;border:1px solid var(--line);border-radius:22px;background:var(--surface);box-shadow:var(--shadow)}.grammar-module-reference>h2{font-family:var(--display);font-size:clamp(25px,6vw,36px);letter-spacing:-.035em;margin:0 0 8px}.grammar-module-rule{font-size:14px;line-height:1.55;font-weight:760;margin:0}.grammar-module-lead{margin:9px 0 0;color:var(--muted);font-size:12.5px;line-height:1.55}
+    .grammar-decision-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}.grammar-decision-grid section{padding:11px;border:1px solid var(--line);border-radius:14px;background:var(--surface2)}.grammar-decision-grid small{display:block;color:var(--accent);font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.04em}.grammar-decision-grid b{display:block;margin-top:4px;font-size:12.5px;line-height:1.4}.grammar-decision-grid span{display:block;margin-top:5px;color:var(--muted);font-size:11px;line-height:1.4}
+    .grammar-reference-tables{display:grid;gap:10px;margin-top:14px}.grammar-reference-table{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--surface2)}.grammar-reference-table h3{margin:0;padding:10px 11px 8px;color:var(--accent);font-size:11px;letter-spacing:.04em;text-transform:uppercase}.grammar-reference-table table{border-collapse:collapse;width:100%;min-width:500px}.grammar-reference-table th,.grammar-reference-table td{padding:8px 10px;text-align:left;border-top:1px solid var(--line);font-size:11.5px;line-height:1.35;white-space:nowrap}.grammar-reference-table th{background:color-mix(in srgb,var(--surface2) 82%,var(--surface));color:var(--muted);font-size:10px}.grammar-reference-table td:first-child{font-weight:800;color:var(--text)}.grammar-reference-table>p{margin:0;padding:9px 11px;color:var(--muted);font-size:10.5px;line-height:1.45;border-top:1px solid var(--line)}
+    .grammar-contrast-list{display:grid;gap:9px;margin-top:14px}.grammar-contrast-list section{padding:11px 12px;border-radius:15px;background:color-mix(in srgb,var(--accent2) 62%,var(--surface));border:1px solid color-mix(in srgb,var(--accent) 20%,var(--line))}.grammar-contrast-list h3{margin:0 0 7px;color:var(--accent);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em}.grammar-contrast-list section>div{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px}.grammar-contrast-list span{font-weight:750;font-size:12px;line-height:1.4}.grammar-contrast-list i{font-style:normal;color:var(--accent)}.grammar-contrast-list p{margin:7px 0 0;color:var(--muted);font-size:10.5px;line-height:1.45}
+    .grammar-contractions{margin-top:14px}.grammar-contractions h3{margin:0 0 7px;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.04em}.grammar-contractions>div{display:flex;flex-wrap:wrap;gap:6px}.grammar-contractions span{padding:6px 9px;border-radius:999px;background:var(--surface2);border:1px solid var(--line);font-size:11px;font-weight:750}
+    .grammar-module-practice{max-width:760px;margin:0 auto 10px;padding:14px 15px;border:1px solid color-mix(in srgb,var(--accent) 28%,var(--line));border-radius:18px;background:color-mix(in srgb,var(--accent2) 64%,var(--surface));display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}.grammar-module-practice small{display:block;color:var(--accent);font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.05em}.grammar-module-practice b{display:block;margin-top:3px;font-size:14px}.grammar-module-practice p{margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.4}.grammar-module-practice>button{min-height:42px;padding:9px 14px;border:0;border-radius:13px;background:var(--accent);color:#fff;font-weight:850}
+    .grammar-targeted,.grammar-workshop{max-width:760px;margin:10px auto 0;border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden}.grammar-targeted summary,.grammar-workshop summary{cursor:pointer;padding:12px 14px;font-weight:820;font-size:12px}.grammar-targeted>div{display:flex;flex-wrap:wrap;gap:7px;padding:0 13px 13px}.grammar-targeted button{min-height:36px;padding:7px 10px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text);font-size:11px;font-weight:750}.grammar-workshop-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;padding:0 13px 10px;align-items:end}.grammar-workshop-controls label{display:grid;gap:5px;color:var(--muted);font-size:10.5px;font-weight:750}.grammar-workshop-controls select{width:100%;min-height:40px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text);padding:7px 9px;font:inherit}.grammar-workshop-controls button{min-height:40px;border:0;border-radius:11px;background:var(--accent);color:#fff;padding:8px 13px;font-weight:820}.grammar-workshop>p{margin:0;padding:0 13px 13px;color:var(--muted);font-size:10.5px;line-height:1.45}
+    @media(max-width:620px){.grammar-module-list{grid-template-columns:1fr}.grammar-decision-grid{grid-template-columns:1fr}.grammar-module-reference{padding:15px}.grammar-module-practice{grid-template-columns:1fr}.grammar-module-practice>button{width:100%}.grammar-contrast-list section>div{grid-template-columns:1fr}.grammar-contrast-list i{display:none}.grammar-workshop-controls{grid-template-columns:1fr}.grammar-workshop-controls button{width:100%}}
 
     /* LanguageDeck 3.0: Chapter Study is an orchestrator, not a second
        hand-written exercise engine. The cards below launch the proven
@@ -3838,7 +3869,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.1.3-eli5-grammar-stabilization-20260827",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.2.0-compact-grammar-modules-20260830",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function norm(v){return String(v||"").toLocaleLowerCase().normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
 function parseCSV(text){const rows=[];let row=[],cell="",q=false,s=String(text||"").replace(/^\uFEFF/,"");for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')q=false;else cell+=c}else if(c==='"')q=true;else if(c===','){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
@@ -4179,7 +4210,7 @@ function localStoryPackages(){try{return JSON.parse(localStorage.getItem('ld-sto
 function startLocalStoryPackage(id){const pack=localStoryPackages().find(x=>x.id===id);if(pack)startIntegratedStory({local:id,language:pack.language||LANG,seriesTitle:pack.seriesTitle||pack.title||pack.name||''},'practice')}
 async function renderPracticeLibrary(){
   const host=$('practiceLibrary');if(!host)return;host.classList.remove('loading');let manifest;try{manifest=await loadPackageManifest()}catch(e){host.innerHTML=`<article class="error-state"><h2>Practice library unavailable</h2><p>${esc(e.message||e)}</p></article>`;return}
-  const packages=(manifest.catalogPackages||[]).filter(p=>p.kind==='standalone'),localStories=localStoryPackages(),storySection=STORY?`<section><div class="practice-domain-head"><h2>Current story</h2><span>isolated domain</span></div><article class="practice-domain-card featured"><h3>${esc(STORY.title)}</h3><p>Only this story's vocabulary, grammar and sentences. Other courses and standalone decks never enter this domain.</p><div class="practice-domain-meta">${STORY.chapters.length} chapters · own Course / Book / Practice context</div><div class="practice-mode-group"><span class="practice-mode-label">Words</span><div class="practice-domain-actions"><button class="primary-action" data-story-practice="words" data-story-variant="match">Match</button><button data-story-practice="words" data-story-variant="progressive">Adaptive</button><button data-story-practice="words" data-story-variant="typing">Type</button></div></div><div class="practice-mode-group"><span class="practice-mode-label">In context</span><div class="practice-domain-actions"><button data-story-practice="grammar" data-story-variant="order">Grammar</button><button data-story-practice="sentences" data-story-variant="order">Sentences</button><button data-story-read>Read</button></div></div></article></section>`:`<section><div class="practice-domain-head"><h2>Story courses</h2><span>not installed for this language</span></div><div class="practice-empty-course">${esc(LANGUAGE_CATALOG.find(x=>x.code===LANG)?.name||LANG.toUpperCase())} currently has standalone practice only. Its deck library remains fully available below.</div></section>`,programmeSection=LANG==='de'?`<section><div class="practice-domain-head"><h2>Learning programmes</h2><span>guided curriculum</span></div><article class="practice-domain-card"><h3>Grammar &amp; Forms</h3><p>Magyar A1–B2 tanterv: kontrollált változatosság, húsz igeműhely, Course/Book/Core 3000 szókincs és B2 pontossági modulok.</p><div class="practice-domain-actions"><button class="primary-action" data-grammar-course>Nyelvtani tanterv megnyitása</button></div></article></section>`:'',localStorySection=localStories.length?`<section><div class="practice-domain-head"><h2>Imported stories</h2><span>on this device</span></div><div class="standalone-grid">${localStories.map(x=>`<article class="practice-domain-card"><h3>${esc(x.seriesTitle||x.title||x.name||x.id)}</h3><p>${esc(x.subtitle||'Imported Story Study package')}</p><div class="practice-domain-actions"><button class="primary-action" data-local-story="${esc(x.id)}">Open story</button></div></article>`).join('')}</div></section>`:'';
+  const packages=(manifest.catalogPackages||[]).filter(p=>p.kind==='standalone'),localStories=localStoryPackages(),storySection=STORY?`<section><div class="practice-domain-head"><h2>Current story</h2><span>isolated domain</span></div><article class="practice-domain-card featured"><h3>${esc(STORY.title)}</h3><p>Only this story's vocabulary, grammar and sentences. Other courses and standalone decks never enter this domain.</p><div class="practice-domain-meta">${STORY.chapters.length} chapters · own Course / Book / Practice context</div><div class="practice-mode-group"><span class="practice-mode-label">Words</span><div class="practice-domain-actions"><button class="primary-action" data-story-practice="words" data-story-variant="match">Match</button><button data-story-practice="words" data-story-variant="progressive">Adaptive</button><button data-story-practice="words" data-story-variant="typing">Type</button></div></div><div class="practice-mode-group"><span class="practice-mode-label">In context</span><div class="practice-domain-actions"><button data-story-practice="grammar" data-story-variant="order">Grammar</button><button data-story-practice="sentences" data-story-variant="order">Sentences</button><button data-story-read>Read</button></div></div></article></section>`:`<section><div class="practice-domain-head"><h2>Story courses</h2><span>not installed for this language</span></div><div class="practice-empty-course">${esc(LANGUAGE_CATALOG.find(x=>x.code===LANG)?.name||LANG.toUpperCase())} currently has standalone practice only. Its deck library remains fully available below.</div></section>`,programmeSection=LANG==='de'?`<section><div class="practice-domain-head"><h2>Learning programmes</h2><span>guided curriculum</span></div><article class="practice-domain-card"><h3>Grammar &amp; Forms</h3><p>Nyolc tömör A1–B2 modul: áttekintő táblázatok, egyetlen célra épülő feladatok, gyors válaszadás és választható Igeműhely.</p><div class="practice-domain-actions"><button class="primary-action" data-grammar-course>Nyelvtani modulok megnyitása</button></div></article></section>`:'',localStorySection=localStories.length?`<section><div class="practice-domain-head"><h2>Imported stories</h2><span>on this device</span></div><div class="standalone-grid">${localStories.map(x=>`<article class="practice-domain-card"><h3>${esc(x.seriesTitle||x.title||x.name||x.id)}</h3><p>${esc(x.subtitle||'Imported Story Study package')}</p><div class="practice-domain-actions"><button class="primary-action" data-local-story="${esc(x.id)}">Open story</button></div></article>`).join('')}</div></section>`:'';
   host.innerHTML=`${storySection}${programmeSection}<section><div class="practice-domain-head"><h2>Standalone decks</h2><span>independent packages</span></div><div class="standalone-grid">${packages.map(p=>`<article class="practice-domain-card"><h3>${esc(p.title)}</h3><p>${esc(p.description||'Independent practice package.')}</p><div class="practice-domain-meta">${esc(p.level||'All levels')}</div><div class="practice-domain-actions">${(p.actions||[]).map((a,i)=>`<button class="${i===0?'primary-action':''}" data-catalog-package="${esc(p.id)}" data-catalog-action="${i}">${esc(a.label||practiceModeLabel(a.mode))}</button>`).join('')}</div></article>`).join('')}</div></section>${localStorySection}<section><div class="practice-domain-head"><h2>My library</h2><span>device tools</span></div><article class="practice-domain-card"><h3>Personal decks and progress</h3><p>Import your own material, manage installed decks, or move learning progress between devices.</p><div class="practice-tools"><button class="practice-tool" data-practice-tool="import"><b>Import</b><span>CSV word or sentence deck, or Story Study ZIP</span></button><button class="practice-tool" data-practice-tool="manage"><b>Installed decks</b><span>Review and remove local deck copies</span></button><button class="practice-tool" data-practice-tool="sync"><b>Sync progress</b><span>Create or apply a device transfer code</span></button></div></article></section>`;
   host.querySelectorAll('[data-story-practice]').forEach(b=>b.onclick=()=>startStoryDomainPractice(b.dataset.storyPractice,b.dataset.storyVariant));host.querySelector('[data-story-read]')?.addEventListener('click',()=>CURRENT?startIntegratedStory(storyRequestFor(CURRENT.ch),'practice'):showView('course'));host.querySelector('[data-grammar-course]')?.addEventListener('click',()=>openGrammarCourse(null,'practice'));host.querySelectorAll('[data-catalog-package]').forEach(b=>b.onclick=()=>{const p=packages.find(x=>x.id===b.dataset.catalogPackage),a=p?.actions?.[+b.dataset.catalogAction];if(a)startCatalogIntegrated(a)});host.querySelectorAll('[data-local-story]').forEach(b=>b.onclick=()=>startLocalStoryPackage(b.dataset.localStory));host.querySelectorAll('[data-practice-tool]').forEach(b=>b.onclick=()=>startPracticeUtility(b.dataset.practiceTool))
 }
@@ -4210,101 +4241,104 @@ async function rereadChapter(id){const ch=STORY.chapters.find(x=>x.id===id);if(!
 $('chapterStudyBack').onclick=()=>exitChapterStudy('course');$('chapterStudySettings').onclick=()=>openSettings('main');
 
 let GRAMMAR_CURRICULUM=null;
-let GRAMMAR_COURSE_SESSION={unitId:null,returnView:'practice'};
+let GRAMMAR_COURSE_SESSION={moduleId:null,returnView:'practice'};
 async function loadGrammarCurriculum(){
   if(GRAMMAR_CURRICULUM)return GRAMMAR_CURRICULUM;
   const data=await fetchJSON(`decks/${LANG}/grammar/curriculum-v4.json`);
-  if(!data||!Array.isArray(data.units)||!data.units.length)throw Error('A Nyelvtan és alakok tanterv üres.');
-  const tracks=[...(data.tracks||[])].sort((a,b)=>(a.order||0)-(b.order||0)),trackOrder=new Map(tracks.map((track,index)=>[track.id,track.order||index+1]));
+  if(!data||!Array.isArray(data.units)||!data.units.length||!Array.isArray(data.modules)||!data.modules.length)throw Error('A Nyelvtan és alakok tanterv üres.');
   const unitIds=new Set(),goalIds=new Set();
   for(const unit of data.units){
-    if(!unit.id||unitIds.has(unit.id))throw Error(`Invalid or duplicate grammar unit: ${unit.id||'missing id'}`);unitIds.add(unit.id);
-    if(!Array.isArray(unit.phases)||!unit.phases.length)throw Error(`Grammar unit has no phases: ${unit.id}`);
-    for(const phase of unit.phases){for(const row of phase.rows||[]){const key=`${unit.id}:${phase.id}:${row.key}`;if(!row.key||!row.skillId||goalIds.has(key)||!row.prompt||!row.target)throw Error(`Invalid grammar goal: ${key}`);goalIds.add(key)}}
+    if(!unit.id||unitIds.has(unit.id))throw Error(`Invalid or duplicate grammar source unit: ${unit.id||'missing id'}`);unitIds.add(unit.id);
+    if(!Array.isArray(unit.phases)||!unit.phases.length)throw Error(`Grammar source unit has no phases: ${unit.id}`);
+    for(const phase of unit.phases)for(const row of phase.rows||[]){const key=`${unit.id}:${phase.id}:${row.key}`;if(!row.key||!row.skillId||goalIds.has(key)||!row.prompt||!row.target)throw Error(`Invalid grammar goal: ${key}`);goalIds.add(key)}
   }
-  GRAMMAR_CURRICULUM={...data,tracks,units:[...data.units].sort((a,b)=>(trackOrder.get(a.track)||99)-(trackOrder.get(b.track)||99)||(a.order||0)-(b.order||0))};
+  const moduleIds=new Set(),assigned=new Set();
+  for(const module of data.modules){
+    if(!module.id||moduleIds.has(module.id))throw Error(`Invalid or duplicate grammar module: ${module.id||'missing id'}`);moduleIds.add(module.id);
+    if(!Array.isArray(module.sourceUnits)||!module.sourceUnits.length||!Array.isArray(module.practiceSets)||!module.practiceSets.length)throw Error(`Incomplete grammar module: ${module.id}`);
+    for(const id of module.sourceUnits){if(!unitIds.has(id))throw Error(`Missing source unit ${id} in ${module.id}`);if(assigned.has(id))throw Error(`Grammar source unit appears twice: ${id}`);assigned.add(id)}
+  }
+  if(assigned.size!==unitIds.size)throw Error('Nem minden háttérkészség tartozik látható nyelvtani modulhoz.');
+  GRAMMAR_CURRICULUM={...data,modules:[...data.modules].sort((a,b)=>(a.order||0)-(b.order||0)),units:[...data.units].sort((a,b)=>(a.order||0)-(b.order||0))};
   return GRAMMAR_CURRICULUM;
 }
 function grammarUnitById(id){return GRAMMAR_CURRICULUM?.units?.find(unit=>unit.id===id)||null}
-function grammarTrackById(id){return GRAMMAR_CURRICULUM?.tracks?.find(track=>track.id===id)||{id,title:'További nyelvtan',summary:''}}
-function grammarPhaseSpec(unit,phase){
-  const rows=(phase.rows||[]).map(row=>({
+function grammarModuleById(id){return GRAMMAR_CURRICULUM?.modules?.find(module=>module.id===id)||null}
+function grammarLegacySetName(unit,phase){return unit.progressSetName?`${unit.progressSetName} · ${phase.id}`:`Grammar 4 · ${unit.track||'spiral'} · ${unit.order||0} · ${unit.id} · ${phase.id}`}
+function grammarFocusParts(value){return String(Array.isArray(value)?value.join('|'):value||'').split('|').map(part=>part.trim()).filter(Boolean)}
+function grammarRowSpec(unit,phase,row,policy={}){
+  const focus=grammarFocusParts(row.focus),targetNorm=String(row.target||'').toLocaleLowerCase('de-DE'),wholeAnswerChoice=(policy.variant||phase.variant)==='choice'&&focus.some(part=>/\s/u.test(part));
+  if(policy.focusOnly){
+    if(!focus.length)throw Error(`A célzott feladatból hiányzik a focus: ${unit.id}/${phase.id}/${row.key}`);
+    if(policy.singleTarget&&focus.length!==1)throw Error(`Az egyváltozós feladat több célt mér: ${unit.id}/${phase.id}/${row.key}`);
+    if(focus.some(part=>!targetNorm.includes(part.toLocaleLowerCase('de-DE'))))throw Error(`A tanult alak nem található a célmondatban: ${unit.id}/${phase.id}/${row.key}`);
+    const options=Array.isArray(row.options)?row.options:String(row.options||'').split('|').filter(Boolean);
+    if((policy.variant||phase.variant)==='choice'&&options.length<2)throw Error(`A választós célfeladathoz nincs célzott válaszbank: ${unit.id}/${phase.id}/${row.key}`);
+  }
+  return{
     guided_key:`grammar-v4:${unit.id}:${phase.id}:${row.key}`,
-    english:row.prompt,
-    target:row.target,
-    hint:row.hint||'',
-    explanation:row.explanation||unit.rule||'',
-    alternatives:row.alternatives||'',
-    options:Array.isArray(row.options)?row.options.join('|'):(row.options||''),
-    focus:Array.isArray(row.focus)?row.focus.join('|'):(row.focus||''),
-    task_type:row.task||phase.task||'',
-    skill_id:row.skillId,
-    // A phase that explicitly requires transfer evidence is itself the
-    // transfer context. This semantic flag wins over stale row-level labels;
-    // otherwise a phase can demand evidence that none of its rows can ever
-    // produce and trap the learner in an endless loop.
-    skill_stage:phase.requireTransfer?'transfer':(row.stage||phase.stage||''),
-    diagnostic:row.diagnostic||'',
+    english:row.prompt,target:row.target,hint:row.hint||'',explanation:row.explanation||unit.rule||'',alternatives:row.alternatives||'',
+    options:Array.isArray(row.options)?row.options.join('|'):(row.options||''),focus:focus.join('|'),task_type:row.task||phase.task||'',
+    task_scope:wholeAnswerChoice?'select':policy.focusOnly?'focus':policy.structureOnly?'structure':policy.production?'production':'guided',skill_id:row.skillId,
+    skill_stage:phase.requireTransfer?'transfer':(row.stage||phase.stage||''),diagnostic:row.diagnostic||'',
     sentence_id:`grammar-v4:${unit.id}:${phase.id}:${row.key}`,
-    tags:`grammar-forms-v4|track:${unit.track||'spiral'}|unit:${unit.id}|phase:${phase.id}|skill:${row.skillId}|level:${unit.level||''}`
-  }));
-  const setName=unit.progressSetName?`${unit.progressSetName} · ${phase.id}`:`Grammar 4 · ${unit.track||'spiral'} · ${unit.order||0} · ${unit.id} · ${phase.id}`;
-  return{deck:LANG,setName,mode:phase.mode||'grammar',variant:phase.variant||'choice',target:'grammar_skill',label:`${unit.title} · ${phase.title}`,sequence:phase.sequence!==false,evidencePerSkill:phase.evidencePerSkill||1,requireTransfer:!!phase.requireTransfer,rows}
+    tags:`grammar-forms-v4.2|module:${policy.moduleId||''}|unit:${unit.id}|phase:${phase.id}|skill:${row.skillId}|level:${unit.level||''}`
+  }
 }
-async function grammarPhaseStatuses(unit){
-  return Promise.all(unit.phases.map(async phase=>{const spec=grammarPhaseSpec(unit,phase);let status={total:spec.rows.length,mastered:0,percent:0,complete:false};if(window.LanguageDeckPractice?.guidedStatus)status=await window.LanguageDeckPractice.guidedStatus(spec);return{...phase,spec,status}}));
+function grammarPhaseSpec(unit,phase){
+  const rows=(phase.rows||[]).map(row=>grammarRowSpec(unit,phase,row,{variant:phase.variant}));
+  return{deck:LANG,setName:grammarLegacySetName(unit,phase),mode:phase.mode||'grammar',variant:phase.variant||'choice',target:'grammar_skill',label:`${unit.title} · ${phase.title}`,sequence:phase.sequence!==false,evidencePerSkill:phase.evidencePerSkill||1,requireTransfer:!!phase.requireTransfer,rows}
 }
-async function grammarUnitStatus(unit){
-  const phases=await grammarPhaseStatuses(unit),total=phases.reduce((n,p)=>n+p.status.total,0),mastered=phases.reduce((n,p)=>n+p.status.mastered,0);
-  return{unit,phases,total,mastered,percent:total?Math.round(mastered/total*100):100,complete:total===0||mastered===total}
+function grammarPracticeSetSpec(module,practiceSet){
+  const rows=[],legacySetNames=[];
+  for(const id of module.sourceUnits){const unit=grammarUnitById(id);if(!unit)continue;for(const phase of unit.phases||[]){if((phase.variant||'choice')!==practiceSet.variant)continue;legacySetNames.push(grammarLegacySetName(unit,phase));for(const row of phase.rows||[])rows.push(grammarRowSpec(unit,phase,row,{...practiceSet,moduleId:module.id}))}}
+  if(!rows.length)throw Error(`A modul gyakorlása üres: ${module.id}/${practiceSet.id}`);
+  return{deck:LANG,setName:`Grammar 4.2 · ${module.order} · ${module.id} · ${practiceSet.id}`,legacySetNames:[...new Set(legacySetNames)],mode:'grammar',variant:practiceSet.variant,target:'grammar_skill',label:`${module.title} · ${practiceSet.title}`,sequence:practiceSet.sequence!==false,evidencePerSkill:practiceSet.evidencePerSkill||1,requireTransfer:false,rows}
 }
-async function grammarCourseStatuses(){const data=await loadGrammarCurriculum();return Promise.all(data.units.map(unit=>grammarUnitStatus(unit)))}
-function showGrammarCourseHost(){
-  $('browseShell').classList.add('hidden');$('studyHost').classList.add('hidden');$('chapterStudyHost').classList.add('hidden');$('practiceStudyHost').classList.add('hidden');$('grammarCourseHost').classList.remove('hidden')
+async function grammarModuleStatus(module){
+  const sets=[];for(const practiceSet of module.practiceSets){const spec=grammarPracticeSetSpec(module,practiceSet);let status={total:new Set(spec.rows.map(row=>row.skill_id)).size,mastered:0,percent:0,complete:false};if(window.LanguageDeckPractice?.guidedStatus)status=await window.LanguageDeckPractice.guidedStatus(spec);sets.push({...practiceSet,spec,status})}
+  const total=sets.reduce((n,set)=>n+set.status.total,0),mastered=sets.reduce((n,set)=>n+set.status.mastered,0);return{module,sets,total,mastered,percent:total?Math.round(mastered/total*100):100,complete:total===0||mastered===total}
 }
-async function openGrammarCourse(unitId=null,returnView='practice'){
-  GRAMMAR_COURSE_SESSION={unitId:unitId||null,returnView:returnView||'practice'};showGrammarCourseHost();
-  $('grammarCourseBody').innerHTML='<div class="loading">A nyelvtani tanterv betöltése…</div>';
+async function grammarCourseStatuses(){const data=await loadGrammarCurriculum();return Promise.all(data.modules.map(module=>grammarModuleStatus(module)))}
+function showGrammarCourseHost(){$('browseShell').classList.add('hidden');$('studyHost').classList.add('hidden');$('chapterStudyHost').classList.add('hidden');$('practiceStudyHost').classList.add('hidden');$('grammarCourseHost').classList.remove('hidden')}
+async function openGrammarCourse(moduleId=null,returnView='practice'){
+  GRAMMAR_COURSE_SESSION={moduleId:moduleId||null,returnView:returnView||'practice'};showGrammarCourseHost();$('grammarCourseBody').innerHTML='<div class="loading">A nyelvtani modulok betöltése…</div>';
   try{await loadGrammarCurriculum();await renderGrammarCourse()}catch(err){console.error(err);$('grammarCourseBody').innerHTML=`<article class="error-state"><h2>A nyelvtani csomag nem nyitható meg</h2><p>${esc(err.message||err)}</p></article>`}
 }
-function closeGrammarCourse(view=GRAMMAR_COURSE_SESSION.returnView||'practice'){
-  $('grammarCourseHost').classList.add('hidden');$('browseShell').classList.remove('hidden');GRAMMAR_COURSE_SESSION.unitId=null;showView(['course','book','practice'].includes(view)?view:'practice')
-}
-function grammarParadigmsHtml(unit){return(unit.paradigms||[]).length?`<div class="grammar-paradigms">${unit.paradigms.map(table=>`<section class="grammar-paradigm"><h3>${esc(table.title||'Alaktábla')}</h3><div class="grammar-table-wrap"><table><thead><tr>${(table.columns||[]).map(cell=>`<th>${esc(cell)}</th>`).join('')}</tr></thead><tbody>${(table.rows||[]).map(row=>`<tr>${row.map(cell=>`<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`).join('')}</div>`:''}
-function grammarMemoryHookHtml(unit){const hook=unit.memoryHook;if(!hook||!Array.isArray(hook.lines)||!hook.lines.length)return'';return`<aside class="grammar-memory-hook"><h3>${esc(hook.title||'Mentális kapaszkodó')}</h3>${hook.lines.map(line=>`<p>${esc(line)}</p>`).join('')}</aside>`}
+function closeGrammarCourse(view=GRAMMAR_COURSE_SESSION.returnView||'practice'){$('grammarCourseHost').classList.add('hidden');$('browseShell').classList.remove('hidden');GRAMMAR_COURSE_SESSION.moduleId=null;showView(['course','book','practice'].includes(view)?view:'practice')}
 function grammarStatusMeta(status){if(status.complete)return{key:'stable',label:'Stabil'};if(status.mastered>0)return{key:'learning',label:'Épül'};return{key:'new',label:'Új'}}
-function grammarRecommendation(statuses,next){if(!next)return'A teljes útvonal elkészült; válassz ismétlést abból a témából, amelyet beszédben még bizonytalannak érzel.';const index=statuses.indexOf(next),previous=index>0?statuses[index-1]:null;if(previous?.complete)return`Az előző egység stabil, ezért most a következő ráépülő készség jön.`;if(next.mastered)return`Ebben az egységben már van eredményed; a rendszer a még hiányzó készségeket folytatja.`;return`Ez az első még nem bizonyított egység a spirális útvonalon.`}
-function grammarSourcesHtml(unit){const sources=unit.vocabularySources||[];if(!sources.length&&!unit.variation)return'';const labels=[unit.variation?'Kontrollált variáció':null,...sources].filter(Boolean);return`<div class="grammar-source-row">${labels.map(label=>`<span>${esc(label)}</span>`).join('')}</div>`}
+function grammarRecommendation(statuses,next){if(!next)return'A teljes útvonal elkészült; válassz ismétlést abból a témából, amelyet még bizonytalannak érzel.';const previous=statuses[statuses.indexOf(next)-1];if(previous?.complete)return'Az előző nagy témakör stabil; innen érdemes továbbhaladni.';if(next.mastered)return'A modulban már van eredményed; a rendszer a hiányzó készségekkel folytatja.';return'Ez az első még nem gyakorolt összefüggő témakör.'}
+function grammarReferenceTablesHtml(reference){return(reference?.tables||[]).length?`<div class="grammar-reference-tables">${reference.tables.map(item=>`<section class="grammar-reference-table"><h3>${esc(item.title||'Áttekintés')}</h3><div class="grammar-table-wrap"><table><thead><tr>${(item.columns||[]).map(cell=>`<th>${esc(cell)}</th>`).join('')}</tr></thead><tbody>${(item.rows||[]).map(row=>`<tr>${row.map(cell=>`<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${item.note?`<p>${esc(item.note)}</p>`:''}</section>`).join('')}</div>`:''}
+function grammarReferenceHtml(module){const reference=module.reference||{};return`<article class="grammar-module-reference"><div class="chapter-study-kicker">${esc(module.level||'')} · ${module.order}. modul</div><h2>${esc(module.title)}</h2><p class="grammar-module-rule">${esc(module.coreRule||'')}</p>${reference.lead?`<p class="grammar-module-lead">${esc(reference.lead)}</p>`:''}${(reference.decisionCards||[]).length?`<div class="grammar-decision-grid">${reference.decisionCards.map(card=>`<section><small>${esc(card.title)}</small><b>${esc(card.rule)}</b><span>${esc(card.example)}</span></section>`).join('')}</div>`:''}${grammarReferenceTablesHtml(reference)}${(reference.contrasts||[]).length?`<div class="grammar-contrast-list">${reference.contrasts.map(item=>`<section><h3>${esc(item.title)}</h3><div><span>${esc(item.left)}</span><i>↔</i><span>${esc(item.right)}</span></div>${item.note?`<p>${esc(item.note)}</p>`:''}</section>`).join('')}</div>`:''}${(reference.contractions||[]).length?`<section class="grammar-contractions"><h3>Gyakori összevonások</h3><div>${reference.contractions.map(item=>`<span>${esc(item)}</span>`).join('')}</div></section>`:''}</article>`}
+function grammarWorkshopHtml(module){if(!module.workshopUnits?.length)return'';const units=module.workshopUnits.map(grammarUnitById).filter(Boolean);return`<details class="grammar-workshop"><summary>Igeműhely · egyetlen ige célzottan</summary><div class="grammar-workshop-controls"><label>Válassz igét<select id="grammarWorkshopSelect">${units.map(unit=>`<option value="${esc(unit.id)}">${esc(unit.title)}</option>`).join('')}</select></label><button id="grammarWorkshopStart">Gyakorlás</button></div><p>Az Igeműhely nem külön fejezetlista: kiválasztasz egy igét, és a rendszer a következő hiányzó alakját gyakoroltatja.</p></details>`}
 async function renderGrammarCourse(){
-  const data=await loadGrammarCurriculum(),body=$('grammarCourseBody'),main=$('grammarCourseMain'),secondary=$('grammarCourseSecondary'),active=grammarUnitById(GRAMMAR_COURSE_SESSION.unitId);
-  body.innerHTML='<div class="loading">A haladás ellenőrzése…</div>';
+  const data=await loadGrammarCurriculum(),body=$('grammarCourseBody'),main=$('grammarCourseMain'),secondary=$('grammarCourseSecondary'),active=grammarModuleById(GRAMMAR_COURSE_SESSION.moduleId);body.innerHTML='<div class="loading">A haladás ellenőrzése…</div>';
   if(!active){
     const statuses=await grammarCourseStatuses(),total=statuses.reduce((n,x)=>n+x.total,0),mastered=statuses.reduce((n,x)=>n+x.mastered,0),pct=total?Math.round(mastered/total*100):100,next=statuses.find(x=>!x.complete)||statuses[0];
-    $('grammarCourseTitle').textContent=data.title;$('grammarCourseSub').textContent=`${data.subtitle} · ${mastered}/${total} cél`;
-    const sections=(data.tracks||[]).map(track=>{const rows=statuses.filter(status=>status.unit.track===track.id),trackTotal=rows.reduce((n,x)=>n+x.total,0),trackMastered=rows.reduce((n,x)=>n+x.mastered,0);if(!rows.length)return'';return`<section class="grammar-track-section"><div class="grammar-track-head"><div><h3>${esc(track.title)}</h3><p>${esc(track.summary||'')}</p></div><span>${trackMastered}/${trackTotal} cél</span></div><div class="grammar-unit-list">${rows.map((x,i)=>{const state=grammarStatusMeta(x);return`<article class="grammar-unit ${x.complete?'done':x===next?'current':''}"><div class="grammar-unit-no">${x.complete?'✓':x.unit.order||i+1}</div><div class="grammar-unit-copy"><b>${esc(x.unit.title)}<em class="grammar-state ${state.key}">${state.label}</em></b><span>${esc(x.unit.summary)}</span><small>${esc(x.unit.level||'')} · ${x.mastered}/${x.total} cél</small></div><button data-grammar-unit="${esc(x.unit.id)}">${x.complete?'Ismétlés':x.mastered?'Folytatás':'Kezdés'}</button></article>`}).join('')}</div></section>`}).join('');
-    const recommendation=next?`<div class="grammar-recommendation"><div><small>Következő ajánlott lépés</small><b>${esc(next.unit.title)}</b><p>${esc(grammarRecommendation(statuses,next))}</p></div><button data-grammar-recommended>${next.mastered?'Folytatás':'Kezdés'}</button></div>`:'';
-    body.innerHTML=`<div class="guided-study-intro"><div class="chapter-study-kicker">Megértés → kontrollált variáció → önálló átvitel</div><h2>${esc(data.title)}</h2><p>A 4.1-es tanterv készségeket mér, nem bemagolt mondatokat. A Course, Book és Core 3000 ellenőrzött szavai változatos helyzeteket adnak, az Igeműhely egyetlen igén építi fel az alakbiztonságot, a B2 szakasz pedig regisztert, szövegkapcsolást és haladó mondatszerkezeteket gyakorol.</p></div><div class="grammar-course-progress"><div class="grammar-course-progress-top"><b>Teljes tanterv</b><span>${mastered}/${total} készség · ${pct}%</span></div><div class="grammar-course-track"><i style="width:${pct}%"></i></div></div>${recommendation}${sections}`;
-    body.querySelectorAll('[data-grammar-unit]').forEach(button=>button.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=button.dataset.grammarUnit;renderGrammarCourse()});
-    body.querySelector('[data-grammar-recommended]')?.addEventListener('click',()=>{GRAMMAR_COURSE_SESSION.unitId=next.unit.id;renderGrammarCourse()});
-    secondary.textContent='Vissza a Practice oldalra';secondary.onclick=()=>closeGrammarCourse();main.textContent=next?(next.mastered?'Folytatás':'Első lecke'):'Ismétlés';main.disabled=!next;main.onclick=()=>{if(next){GRAMMAR_COURSE_SESSION.unitId=next.unit.id;renderGrammarCourse()}};return;
+    $('grammarCourseTitle').textContent=data.title;$('grammarCourseSub').textContent=`${data.subtitle} · ${mastered}/${total} készség`;
+    const modules=`<div class="grammar-module-list">${statuses.map((x,index)=>{const state=grammarStatusMeta(x);return`<article class="grammar-module-card ${x.complete?'done':x===next?'current':''}"><div class="grammar-module-number">${x.complete?'✓':x.module.order||index+1}</div><div><b>${esc(x.module.title)}<em class="grammar-state ${state.key}">${state.label}</em></b><p>${esc(x.module.summary)}</p><small>${esc(x.module.level||'')} · ${x.mastered}/${x.total} készség</small></div><button data-grammar-module="${esc(x.module.id)}">${x.complete?'Ismétlés':x.mastered?'Folytatás':'Megnyitás'}</button></article>`}).join('')}</div>`;
+    const recommendation=next?`<div class="grammar-recommendation"><div><small>Következő ajánlott modul</small><b>${esc(next.module.title)}</b><p>${esc(grammarRecommendation(statuses,next))}</p></div><button data-grammar-recommended>${next.mastered?'Folytatás':'Megnyitás'}</button></div>`:'';
+    body.innerHTML=`<div class="guided-study-intro grammar-compact-intro"><div class="chapter-study-kicker">8 nagy témakör · részletes készségmérés a háttérben</div><h2>${esc(data.title)}</h2><p>Az áttekintés, a táblázat és a gyakorlás egy helyen marad. Nincs 57 fejezet és 171 kötelező alfejezet.</p></div><div class="grammar-course-progress"><div class="grammar-course-progress-top"><b>Teljes tanterv</b><span>${mastered}/${total} készség · ${pct}%</span></div><div class="grammar-course-track"><i style="width:${pct}%"></i></div></div>${recommendation}${modules}`;
+    body.querySelectorAll('[data-grammar-module]').forEach(button=>button.onclick=()=>{GRAMMAR_COURSE_SESSION.moduleId=button.dataset.grammarModule;renderGrammarCourse()});body.querySelector('[data-grammar-recommended]')?.addEventListener('click',()=>{GRAMMAR_COURSE_SESSION.moduleId=next.module.id;renderGrammarCourse()});
+    secondary.textContent='Vissza a Practice oldalra';secondary.onclick=()=>closeGrammarCourse();main.textContent=next?(next.mastered?'Folytatás':'Első modul'):'Ismétlés';main.disabled=!next;main.onclick=()=>{if(next){GRAMMAR_COURSE_SESSION.moduleId=next.module.id;renderGrammarCourse()}};return;
   }
-  const status=await grammarUnitStatus(active),next=status.phases.find(p=>!p.status.complete),units=data.units,nextUnit=units[units.findIndex(u=>u.id===active.id)+1]||null;
-  const track=grammarTrackById(active.track);$('grammarCourseTitle').textContent=active.title;$('grammarCourseSub').textContent=`${track.title} · ${active.level} · ${status.mastered}/${status.total} cél`;
-  body.innerHTML=`<article class="grammar-concept"><div class="chapter-study-kicker">${esc(track.title)} · ${esc(active.level)} · ${active.order}. egység</div>${active.verb?`<div class="grammar-verb-badge">${esc(active.verb.group)} · ${esc(active.verb.meaning)}</div>`:''}${grammarSourcesHtml(active)}<h2>${esc(active.title)}</h2><p>${esc(active.rule)}</p>${grammarMemoryHookHtml(active)}<div class="grammar-examples">${(active.examples||[]).map(example=>`<div class="grammar-example"><b>${esc(example.de)}</b><span>${esc(example.hu)}</span></div>`).join('')}</div>${grammarParadigmsHtml(active)}</article><div class="guided-phase-list">${status.phases.map((phase,i)=>`<div class="guided-phase ${phase.status.complete?'done':phase===next?'current':''}"><div class="guided-phase-no">${phase.status.complete?'✓':i+1}</div><div class="guided-phase-copy"><b>${esc(phase.title)}</b><span>${esc(phase.subtitle)} · ${phase.status.mastered}/${phase.status.total} készség</span><div class="guided-phase-progress"><i style="width:${phase.status.percent||0}%"></i></div></div><button data-grammar-phase="${esc(phase.id)}">${phase.status.complete?'Ismétlés':phase===next?'Kezdés':'Megnyitás'}</button></div>`).join('')}</div><div class="guided-study-note">Egy készséget több, egymástól eltérő példán bizonyítasz. A tanulási állapot az egyes készségek bizonyítékából épül; egy bemagolt mondat önmagában nem tesz stabillá egy témát.</div>`;
-  body.querySelectorAll('[data-grammar-phase]').forEach(button=>button.onclick=()=>startGrammarPhase(button.dataset.grammarPhase));
-  secondary.textContent='Összes egység';secondary.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=null;renderGrammarCourse()};main.disabled=false;if(next){main.textContent=`Folytatás · ${next.title}`;main.onclick=()=>startGrammarPhase(next.id)}else if(nextUnit){main.textContent='Következő egység';main.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=nextUnit.id;renderGrammarCourse()}}else{main.textContent='Tanterv áttekintése';main.onclick=()=>{GRAMMAR_COURSE_SESSION.unitId=null;renderGrammarCourse()}}
+  const status=await grammarModuleStatus(active),next=status.sets.find(set=>!set.status.complete)||status.sets[0],modules=data.modules,nextModule=modules[modules.findIndex(module=>module.id===active.id)+1]||null;
+  $('grammarCourseTitle').textContent=active.title;$('grammarCourseSub').textContent=`${active.level} · ${status.mastered}/${status.total} készség`;
+  const targeted=status.sets.length>1?`<details class="grammar-targeted"><summary>Célzott gyakorlás</summary><div>${status.sets.map(set=>`<button data-grammar-set="${esc(set.id)}">${esc(set.title)} · ${set.status.mastered}/${set.status.total}</button>`).join('')}</div></details>`:'';
+  body.innerHTML=`${grammarReferenceHtml(active)}<section class="grammar-module-practice"><div><small>Gyakorlás</small><b>Egy feladat = egy mért cél</b><p>A többi mondatrész segítség marad. Választós feladatnál a helyes válasz után automatikusan továbblépsz.</p></div><button data-grammar-primary>${next.status.complete?'Ismétlés':'Gyakorlás folytatása'}</button></section>${targeted}${grammarWorkshopHtml(active)}`;
+  body.querySelector('[data-grammar-primary]').onclick=()=>startGrammarPracticeSet(next.id);body.querySelectorAll('[data-grammar-set]').forEach(button=>button.onclick=()=>startGrammarPracticeSet(button.dataset.grammarSet));
+  body.querySelector('#grammarWorkshopStart')?.addEventListener('click',()=>startGrammarWorkshop(body.querySelector('#grammarWorkshopSelect')?.value));
+  secondary.textContent='Mind a 8 modul';secondary.onclick=()=>{GRAMMAR_COURSE_SESSION.moduleId=null;renderGrammarCourse()};main.disabled=false;if(!status.complete){main.textContent='Gyakorlás';main.onclick=()=>startGrammarPracticeSet(next.id)}else if(nextModule){main.textContent='Következő modul';main.onclick=()=>{GRAMMAR_COURSE_SESSION.moduleId=nextModule.id;renderGrammarCourse()}}else{main.textContent='Modulok áttekintése';main.onclick=()=>{GRAMMAR_COURSE_SESSION.moduleId=null;renderGrammarCourse()}}
 }
-async function startGrammarPhase(id){
-  const unit=grammarUnitById(GRAMMAR_COURSE_SESSION.unitId),phase=unit?.phases?.find(p=>p.id===id);if(!unit||!phase)return;
-  const spec=grammarPhaseSpec(unit,phase);$('grammarCourseHost').classList.add('hidden');await startIntegratedPractice(spec.mode,'grammar-course',spec)
-}
-$('grammarCourseBack').onclick=()=>{if(GRAMMAR_COURSE_SESSION.unitId){GRAMMAR_COURSE_SESSION.unitId=null;renderGrammarCourse()}else closeGrammarCourse()};
+async function startGrammarPracticeSet(id){const module=grammarModuleById(GRAMMAR_COURSE_SESSION.moduleId),practiceSet=module?.practiceSets?.find(set=>set.id===id);if(!module||!practiceSet)return;const spec=grammarPracticeSetSpec(module,practiceSet);$('grammarCourseHost').classList.add('hidden');await startIntegratedPractice(spec.mode,'grammar-course',spec)}
+async function startGrammarWorkshop(unitId){const unit=grammarUnitById(unitId);if(!unit)return;const phases=await Promise.all(unit.phases.map(async phase=>{const spec=grammarPhaseSpec(unit,phase),status=window.LanguageDeckPractice?.guidedStatus?await window.LanguageDeckPractice.guidedStatus(spec):{complete:false};return{phase,spec,status}})),next=phases.find(item=>!item.status.complete)||phases[0];if(!next)return;$('grammarCourseHost').classList.add('hidden');await startIntegratedPractice(next.spec.mode,'grammar-course',next.spec)}
+$('grammarCourseBack').onclick=()=>{if(GRAMMAR_COURSE_SESSION.moduleId){GRAMMAR_COURSE_SESSION.moduleId=null;renderGrammarCourse()}else closeGrammarCourse()};
 $('grammarCourseSecondary').onclick=()=>closeGrammarCourse();$('grammarCourseSettings').onclick=()=>openSettings('main');
 
 let ACTIVE_PRACTICE_MODE=null,PRACTICE_RETURN_VIEW='practice',PRACTICE_DOCK_OBSERVER=null,PRACTICE_PENDING_OPTIONS=null;
 function practiceModeLabel(mode){return({words:'Words',grammar:'Grammar',sentences:'Sentences'})[mode]||'Practice'}
 function localizeGrammarPracticeControls(grammar){const hint=grammar?'Súgó':'Hint',why=grammar?'Miért':'Why';for(const id of ['typingHintBtn','sentenceHintBtn']){const button=$(id);if(button){button.title=hint;button.setAttribute('aria-label',hint)}}const explain=$('sentenceExplainBtn');if(explain){explain.textContent=why;explain.title=why;explain.setAttribute('aria-label',why)}$('practiceSettingsBtn').title=grammar?'Alkalmazásbeállítások':'App settings';$('practiceSettingsBtn').setAttribute('aria-label',$('practiceSettingsBtn').title)}
-function updatePracticeShell(detail={}){const mode=detail.mode||ACTIVE_PRACTICE_MODE||'words',p=detail.progress||{total:0,mastered:0,new:0,due:0,percent:0},grammar=PRACTICE_RETURN_VIEW==='grammar-course',guidedTitle=detail.guidedTarget==='story_practice'?'Story Practice':grammar?'Nyelvtan és alakok':'Chapter Study';$('practiceStudyTitle').textContent=detail.guided?guidedTitle:practiceModeLabel(mode);$('practiceStudySub').textContent=detail.guidedLabel||[detail.variant,detail.setName].filter(Boolean).join(' · ')||(grammar?'Vezetett nyelvtani gyakorlat':'Standalone deck');$('integratedPracticeSettingsLabel').textContent=grammar?'Vezetett nyelvtani gyakorlat':detail.guided?`Guided ${guidedTitle}`:`${practiceModeLabel(mode)}${detail.setName?' · '+detail.setName:''}`;$('practiceProgressScope').textContent=grammar?'Tanulási cél':detail.guided?'Learning goal':(detail.gateEnabled===false?'Whole table':`Gate ${(detail.gateIndex||0)+1} / ${detail.totalGates||0}`);$('practiceProgressCounts').textContent=grammar?`${p.mastered||0} / ${p.total||0} elsajátítva`:`${p.mastered||0} / ${p.total||0} mastered${detail.guided?'':` · ${p.due||0} due · ${p.new||0} new`}`;$('practiceProgressScore').textContent=`${detail.scoreOk||0} ✓ · ${detail.scoreKo||0} ✗`;$('practiceProgressFill').style.width=`${Math.max(0,Math.min(100,p.percent||0))}%`;$('practiceSetupBtn').disabled=false;$('practiceSetupBtn').title=grammar?'Gyakorlási beállítások':'Session options';$('practiceBackBtn').title=grammar?'Vissza a nyelvtani egységhez':'Back';localizeGrammarPracticeControls(grammar);if(!$('settingsBackdrop').classList.contains('hidden'))renderCurrentPracticeSettings();syncPracticeDock()}
+function updatePracticeShell(detail={}){const mode=detail.mode||ACTIVE_PRACTICE_MODE||'words',p=detail.progress||{total:0,mastered:0,new:0,due:0,percent:0},grammar=PRACTICE_RETURN_VIEW==='grammar-course',guidedTitle=detail.guidedTarget==='story_practice'?'Story Practice':grammar?'Nyelvtan és alakok':'Chapter Study';$('practiceStudyTitle').textContent=detail.guided?guidedTitle:practiceModeLabel(mode);$('practiceStudySub').textContent=detail.guidedLabel||[detail.variant,detail.setName].filter(Boolean).join(' · ')||(grammar?'Vezetett nyelvtani gyakorlat':'Standalone deck');$('integratedPracticeSettingsLabel').textContent=grammar?'Vezetett nyelvtani gyakorlat':detail.guided?`Guided ${guidedTitle}`:`${practiceModeLabel(mode)}${detail.setName?' · '+detail.setName:''}`;$('practiceProgressScope').textContent=grammar?'Tanulási cél':detail.guided?'Learning goal':(detail.gateEnabled===false?'Whole table':`Gate ${(detail.gateIndex||0)+1} / ${detail.totalGates||0}`);$('practiceProgressCounts').textContent=grammar?`${p.mastered||0} / ${p.total||0} elsajátítva`:`${p.mastered||0} / ${p.total||0} mastered${detail.guided?'':` · ${p.due||0} due · ${p.new||0} new`}`;$('practiceProgressScore').textContent=`${detail.scoreOk||0} ✓ · ${detail.scoreKo||0} ✗`;$('practiceProgressFill').style.width=`${Math.max(0,Math.min(100,p.percent||0))}%`;$('practiceSetupBtn').disabled=false;$('practiceSetupBtn').title=grammar?'Gyakorlási beállítások':'Session options';$('practiceBackBtn').title=grammar?'Vissza a nyelvtani modulhoz':'Back';localizeGrammarPracticeControls(grammar);if(!$('settingsBackdrop').classList.contains('hidden'))renderCurrentPracticeSettings();syncPracticeDock()}
 function renderCurrentPracticeSettings(){const box=$('integratedPracticeSettings');if(!ACTIVE_PRACTICE_MODE||!window.LanguageDeckPractice){box.classList.add('hidden');PRACTICE_PENDING_OPTIONS=null;return}box.classList.remove('hidden');$('openPracticeSetupBtn').classList.add('hidden');const live=window.LanguageDeckPractice.snapshot();if(live.guided){PRACTICE_PENDING_OPTIONS=null;document.querySelectorAll('[data-practice-order],[data-practice-gate]').forEach(b=>{b.classList.remove('on');b.disabled=true;b.onclick=null});$('morePracticeOptionsBtn').disabled=true;$('restartPracticeBtn').disabled=true;$('practiceOptionsNote').textContent='This learning domain controls order and scope for the current goal.';return}document.querySelectorAll('[data-practice-order],[data-practice-gate]').forEach(b=>b.disabled=false);$('morePracticeOptionsBtn').disabled=false;$('restartPracticeBtn').disabled=false;if(!PRACTICE_PENDING_OPTIONS||PRACTICE_PENDING_OPTIONS.mode!==live.mode)PRACTICE_PENDING_OPTIONS={mode:live.mode,order:live.order||'smart',gateEnabled:live.gateEnabled!==false};document.querySelectorAll('[data-practice-order]').forEach(b=>{b.classList.toggle('on',b.dataset.practiceOrder===PRACTICE_PENDING_OPTIONS.order);b.onclick=()=>{PRACTICE_PENDING_OPTIONS.order=b.dataset.practiceOrder==='csv'?'csv':'smart';renderCurrentPracticeSettings()}});document.querySelectorAll('[data-practice-gate]').forEach(b=>{const value=b.dataset.practiceGate==='true';b.classList.toggle('on',value===PRACTICE_PENDING_OPTIONS.gateEnabled);b.onclick=()=>{PRACTICE_PENDING_OPTIONS.gateEnabled=value;renderCurrentPracticeSettings()}});const changed=PRACTICE_PENDING_OPTIONS.order!==(live.order||'smart')||PRACTICE_PENDING_OPTIONS.gateEnabled!==(live.gateEnabled!==false);$('practiceOptionsNote').textContent=changed?'Restart session to apply these changes.':'Current session uses these settings.'}
 function syncPracticeDock(){const root=$('legacyPracticeRoot'),fallback=$('practiceDockFallback');if(!root||!fallback)return;const actions=root.querySelector('#wordTypingContainer:not(.hidden) .typing-actions, #sentenceContainer:not(.hidden) .sentence-actions');fallback.classList.toggle('hidden',!!actions)}
 async function startIntegratedPractice(mode,returnView='practice',guidedSpec=null){if(!window.LanguageDeckPractice)throw Error('The integrated practice engine did not initialise.');PRACTICE_RETURN_VIEW=returnView;ACTIVE_PRACTICE_MODE=mode;PRACTICE_PENDING_OPTIONS=null;ACTIVE_STUDY_ENGINE?.destroy?.();ACTIVE_STUDY_ENGINE=null;ACTIVE_STUDY_API=null;$('browseShell').classList.add('hidden');$('studyHost').classList.add('hidden');$('chapterStudyHost').classList.add('hidden');$('grammarCourseHost').classList.add('hidden');$('practiceStudyHost').classList.remove('hidden');document.documentElement.classList.add('integrated-practice-active');if(guidedSpec)await window.LanguageDeckPractice.startGuided(guidedSpec);else await window.LanguageDeckPractice.start(mode);updatePracticeShell(window.LanguageDeckPractice.snapshot());PRACTICE_DOCK_OBSERVER?.disconnect();PRACTICE_DOCK_OBSERVER=new MutationObserver(()=>requestAnimationFrame(syncPracticeDock));PRACTICE_DOCK_OBSERVER.observe($('legacyPracticeRoot'),{subtree:true,attributes:true,attributeFilter:['class'],childList:true});syncPracticeDock()}
@@ -4345,7 +4379,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.1.3-eli5-grammar-stabilization-20260827";
+    const APP_BUILD = "4.2.0-compact-grammar-modules-20260830";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -6098,6 +6132,23 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function ensureGuidedSet(spec) {
       const table = spec.mode === "words" ? "word_pairs" : "sentence_pairs", deck = normalizeDeck(spec.deck || "de"), setName = normalizeSetName(spec.setName), wanted = (spec.rows||[]).map(r=>guidedBaseRow(r,deck,setName));
       let existing = await DB.getAll(table, deck, setName);
+      if (!existing.length && wanted.length && Array.isArray(spec.legacySetNames) && spec.legacySetNames.length) {
+        const legacyRows = [];
+        for (const legacySetName of spec.legacySetNames) legacyRows.push(...await DB.getAll(table, deck, normalizeSetName(legacySetName)));
+        if (legacyRows.length) {
+          const legacyByKey = new Map(legacyRows.filter(row => row.guided_key).map(row => [row.guided_key, row]));
+          const migrated = wanted.map(wantedRow => {
+            const old = legacyByKey.get(wantedRow.guided_key);
+            if (!old) return wantedRow;
+            const { id, deck:oldDeck, set_name:oldSet, ...state } = old;
+            return { ...state, ...wantedRow, deck, set_name:setName,
+              times_seen:old.times_seen||0,times_correct:old.times_correct||0,times_wrong:old.times_wrong||0,
+              streak:Math.max(old.streak||0,wantedRow.seed_streak||0),last_seen:old.last_seen||null,next_due:old.next_due??null };
+          });
+          await DB.bulkInsert(table, migrated);
+          return;
+        }
+      }
       const existingKeys = new Set(existing.map(r=>r.guided_key).filter(Boolean)), wantedKeys = new Set(wanted.map(r=>r.guided_key).filter(Boolean));
       const sameKeys = existing.length === wanted.length && existingKeys.size === wantedKeys.size && [...wantedKeys].every(k=>existingKeys.has(k));
       if (!sameKeys && existing.length) {
@@ -6110,7 +6161,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       for (const w of wanted) {
         const old = byKey.get(w.guided_key); if (!old) continue;
         const merged = { ...old, ...w, id:old.id, times_seen:old.times_seen||0, times_correct:old.times_correct||0, times_wrong:old.times_wrong||0, streak:Math.max(old.streak||0,w.seed_streak||0), last_seen:old.last_seen||null, next_due:old.next_due??null, progressive_level:old.progressive_level, recovery_progress:old.recovery_progress };
-        const contentFields=["english","target","hint","explanation","alternatives","options","focus","task_type","skill_id","skill_stage","diagnostic","article","tags","sentence_id","guided_key","set_name","deck"];
+        const contentFields=["english","target","hint","explanation","alternatives","options","focus","task_type","task_scope","skill_id","skill_stage","diagnostic","article","tags","sentence_id","guided_key","set_name","deck"];
         if(contentFields.every(field=>JSON.stringify(old[field]??null)===JSON.stringify(merged[field]??null)))continue;
         await DB.update(table, merged);
       }
@@ -9129,7 +9180,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return String(value || "").split("|").map(x => optionalRecallPunctuationNorm(x)).filter(Boolean);
     }
 
-    function pickBlankIndices(tokens, streak, focus = "") {
+    function grammarFocusTermsCaseSensitive(value) {
+      return String(value || "").split("|").map(x => String(x || "").normalize("NFC").replace(/[,\.!?;:]+/gu, "").trim()).filter(Boolean);
+    }
+
+    function pickBlankIndices(tokens, streak, focus = "", taskScope = "") {
       const candidates = [];
       const allWords = [];
       tokens.forEach((t, idx) => {
@@ -9141,9 +9196,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       });
       const focused = grammarFocusTerms(focus);
       if (focused.length) {
+        const caseSensitive = grammarFocusTermsCaseSensitive(focus);
+        const exactCase = allWords.filter(idx => caseSensitive.includes(String(tokens[idx].raw || "").normalize("NFC").replace(/[,\.!?;:]+/gu, "").trim()));
+        if (exactCase.length) return exactCase;
         const exact = allWords.filter(idx => focused.includes(optionalRecallPunctuationNorm(tokens[idx].raw)));
         if (exact.length) return exact;
       }
+      if (taskScope === "focus") throw new Error(`A célzott nyelvtani alak nem található a mondatban: ${focus}`);
       const shuffled = shuffleArr(candidates);
       const desired = Math.max(1, Math.min(4, 1 + Math.floor((streak || 0) / 2)));
       return shuffled.slice(0, Math.min(desired, shuffled.length)).sort((a, b) => a - b);
@@ -9167,7 +9226,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     function prepareSentenceData(s) {
       const tokens = tokenizeSentence(s.target);
-      const blankIndices = pickBlankIndices(tokens, s.streak || 0, s.focus || "");
+      const blankIndices = s.task_scope === "select" ? [] : pickBlankIndices(tokens, s.streak || 0, s.focus || "", s.task_scope || "");
       const blankAnswers = blankIndices.map(i => tokens[i].raw);
       // Reorder mode: every non-space token becomes a draggable chunk (with a
       // stable uid so duplicates like "es … es" can be told apart in the DOM).
@@ -9190,6 +9249,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         orderChecked: false,
         orderAwaitingContinue: false,
         orderAutoSubmitting: false,
+        choiceAutoSubmitting: false,
         feedbackAwaitingContinue: false,
         orderLayout: null
       };
@@ -9376,7 +9436,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function hasCurrentSentenceInput() {
       if (!currentSentenceData) return false;
       if (sentenceMode === "order") return currentSentenceData.orderPlaced.length > 0;
-      if (sentenceMode === "choice") return currentSentenceData.choiceAnswers.some(hasTypedText);
+      if (sentenceMode === "choice") return currentSentence.task_scope === "select" ? hasTypedText(currentSentenceData.selectAnswer) : currentSentenceData.choiceAnswers.some(hasTypedText);
       if (sentenceMode === "progressive") return hasTypedText(currentSentenceData.progressiveAnswer);
       return currentSentenceData.typingAnswers.some(hasTypedText);
     }
@@ -9384,7 +9444,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function canSubmitCurrentSentenceAnswer() {
       if (!currentSentenceData) return false;
       if (sentenceMode === "order") return isOrderSentenceComplete();
-      if (sentenceMode === "choice") return currentSentenceData.choiceAnswers.every(hasTypedText);
+      if (sentenceMode === "choice") return currentSentence.task_scope === "select" ? hasTypedText(currentSentenceData.selectAnswer) : currentSentenceData.choiceAnswers.every(hasTypedText);
       if (sentenceMode === "progressive") return hasTypedText(currentSentenceData.progressiveAnswer);
       return currentSentenceData.typingAnswers.every(hasTypedText);
     }
@@ -9392,6 +9452,24 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function orderSignature() {
       if (!currentSentenceData || !currentSentenceData.orderPlaced) return "";
       return currentSentenceData.orderPlaced.map(t => t.uid).join("|");
+    }
+
+    function choiceSignature() {
+      if (currentSentence?.task_scope === "select") return normTxt(currentSentenceData?.selectAnswer || "");
+      return currentSentenceData?.choiceAnswers?.map(value => normTxt(value || "")).join("|") || "";
+    }
+
+    function maybeAutoSubmitCompletedChoice() {
+      if (sentenceMode !== "choice" || !grammarPracticeHu() || !currentSentenceData || locked || currentSentenceData.feedbackAwaitingContinue) return;
+      if (currentSentence.task_scope === "select" ? !hasTypedText(currentSentenceData.selectAnswer) : !currentSentenceData.choiceAnswers.every(hasTypedText)) return;
+      const signature = choiceSignature();
+      if (currentSentenceData.choiceAutoSubmitting) return;
+      currentSentenceData.choiceAutoSubmitting = true;
+      setTimeout(() => {
+        if (!currentSentenceData || sentenceMode !== "choice" || choiceSignature() !== signature) return;
+        currentSentenceData.choiceAutoSubmitting = false;
+        submitSentenceAnswer(false);
+      }, 180);
     }
 
     function maybeAutoSubmitCompletedOrder() {
@@ -9442,9 +9520,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const awaitingOrder = isOrderMode && currentSentenceData && currentSentenceData.orderAwaitingContinue;
       const awaitingFeedback = currentSentenceData && currentSentenceData.feedbackAwaitingContinue;
       const awaiting = !!(awaitingOrder || awaitingFeedback);
+      const autoChoice = sentenceMode === "choice" && grammarPracticeHu();
       sentenceCheckBtn.textContent = practiceUiText("Check", "Ellenőrzés");
       sentenceResetBtn.textContent = practiceUiText("Clear", "Törlés");
       sentenceRevealBtn.textContent = awaiting ? practiceUiText("Continue", "Tovább") : practiceUiText("Reveal", "Megoldás");
+      sentenceCheckBtn.classList.toggle("hidden", autoChoice);
       sentenceCheckBtn.disabled = awaiting || locked || !canSubmitCurrentSentenceAnswer();
       sentenceResetBtn.disabled = awaiting || locked || !hasCurrentSentenceInput();
       sentenceRevealBtn.disabled = locked || !currentSentence;
@@ -9664,6 +9744,33 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         return;
       }
 
+      if (sentenceMode === "choice" && currentSentence.task_scope === "select") {
+        sentenceHelp.textContent = grammarPracticeHu() ? "Válaszd ki az egyetlen helyes választ." : "Choose the one correct answer.";
+        sentenceResetBtn.classList.remove("hidden");
+        sentenceMeta.textContent = (currentSentence.streak | 0) > 0 ? `${practiceUiText("Streak", "Sorozat")} ${currentSentence.streak}` : "";
+        sentenceTarget.innerHTML = "";
+        const selectedAnswer = document.createElement("div");
+        selectedAnswer.className = "grammar-select-answer" + (currentSentenceData.selectAnswer ? " chosen" : "");
+        selectedAnswer.textContent = currentSentenceData.selectAnswer || "Válassz az alábbi lehetőségek közül";
+        sentenceTarget.appendChild(selectedAnswer);
+        sentenceBank.innerHTML = "";
+        currentSentenceData.selectOptions.forEach(option => {
+          const btn = document.createElement("button");
+          btn.className = "bank-word" + (normTxt(currentSentenceData.selectAnswer) === normTxt(option) ? " used" : "");
+          btn.textContent = option;
+          btn.addEventListener("click", () => {
+            currentSentenceData.choiceAutoSubmitting = false;
+            currentSentenceData.selectAnswer = option;
+            renderSentence();
+            maybeAutoSubmitCompletedChoice();
+          });
+          sentenceBank.appendChild(btn);
+        });
+        updateSentenceActionButtons();
+        scheduleSentenceViewportFit();
+        return;
+      }
+
       sentenceResetBtn.classList.remove("hidden");
       sentenceMeta.textContent = (currentSentence.streak | 0) > 0 ? `${practiceUiText("Streak", "Sorozat")} ${currentSentence.streak}` : "";
       sentenceResult.textContent = "";
@@ -9688,7 +9795,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
             if (activeBlankIndex === blankIdx) btn.classList.add("active");
             const v = currentSentenceData.choiceAnswers[blankIdx];
             btn.textContent = v || "_____";
-            btn.addEventListener("click", () => { activeBlankIndex = blankIdx; renderSentence(); });
+            btn.addEventListener("click", () => { currentSentenceData.choiceAutoSubmitting = false; activeBlankIndex = blankIdx; renderSentence(); });
             sentenceTarget.appendChild(btn);
           } else {
             const inp = document.createElement("input");
@@ -9740,10 +9847,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           if (used >= Math.max(1, need)) btn.classList.add("used");
           btn.textContent = word;
           btn.addEventListener("click", () => {
+            currentSentenceData.choiceAutoSubmitting = false;
             currentSentenceData.choiceAnswers[activeBlankIndex] = word;
             const next = currentSentenceData.choiceAnswers.findIndex(a => !a);
             if (next >= 0) activeBlankIndex = next;
             renderSentence();
+            maybeAutoSubmitCompletedChoice();
           });
           sentenceBank.appendChild(btn);
         });
@@ -9758,7 +9867,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (sentenceQueue.length === 0) {
         currentSentence = null; currentSentenceData = null;
         sentenceEnglish.textContent = practiceUiText("Done", "Kész");
-        sentenceHelp.textContent = grammarPracticeHu() ? "A szakasz elkészült; visszatérés a nyelvtani egységhez…" : guidedPractice ? "Phase complete — return to Chapter Study." : (gateEnabled ? "No more sentences in this gate." : "No more sentences in this deck.");
+        sentenceHelp.textContent = grammarPracticeHu() ? "A gyakorlás elkészült; visszatérés a nyelvtani modulhoz…" : guidedPractice ? "Phase complete — return to Chapter Study." : (gateEnabled ? "No more sentences in this gate." : "No more sentences in this deck.");
         sentenceMeta.textContent = ""; sentenceTarget.innerHTML = ""; sentenceBank.innerHTML = "";
         sentenceResult.textContent = "";
         currentSentenceData = null;
@@ -9787,6 +9896,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         return normTxt(placed) === normTxt(answer);
       }
       if (sentenceMode === "choice") {
+        if (currentSentence.task_scope === "select") return normTxt(currentSentenceData.selectAnswer || "") === normTxt(currentSentence.target);
         return currentSentenceData.blankAnswers.every((a, i) =>
           normTxt(a) === normTxt(currentSentenceData.choiceAnswers[i] || ""));
       }
@@ -9904,6 +10014,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function resetSentenceInputs() {
       if (!currentSentenceData) return;
       currentSentenceData.choiceAnswers = new Array(currentSentenceData.blankIndices.length).fill("");
+      currentSentenceData.selectAnswer = "";
       currentSentenceData.typingAnswers = new Array(currentSentenceData.blankIndices.length).fill("");
       currentSentenceData.progressiveAnswer = "";
       currentSentenceData.showProgressiveErrors = false;
@@ -9911,6 +10022,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       currentSentenceData.orderChecked = false;
       currentSentenceData.orderAwaitingContinue = false;
       currentSentenceData.orderAutoSubmitting = false;
+      currentSentenceData.choiceAutoSubmitting = false;
       currentSentenceData.feedbackAwaitingContinue = false;
       currentSentenceData.showHint = false;
       currentSentenceData.showExplanation = false;

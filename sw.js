@@ -1,5 +1,5 @@
-/* LanguageDeck 4.1.3 — ELI5 grammar explanations and answer-chip stabilization. */
-const CACHE_VERSION="languagedeck-4-1-3-eli5-grammar-stabilization-20260827";
+/* LanguageDeck 4.2.0 — compact grammar modules and single-target practice. */
+const CACHE_VERSION="languagedeck-4-2-0-compact-grammar-modules-20260830";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
