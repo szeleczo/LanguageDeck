@@ -3869,7 +3869,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.2.0-compact-grammar-modules-20260830",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.2.1-race-fix-grammar-content-20260830",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function norm(v){return String(v||"").toLocaleLowerCase().normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
 function parseCSV(text){const rows=[];let row=[],cell="",q=false,s=String(text||"").replace(/^\uFEFF/,"");for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')q=false;else cell+=c}else if(c==='"')q=true;else if(c===','){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
@@ -6082,9 +6082,16 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
     function guidedSkillDone(skillRows, spec = guidedPractice) {
       if (!skillRows?.length) return true;
-      const needed = Math.min(Math.max(1, +(spec?.evidencePerSkill || 1)), skillRows.length);
-      const evidenced = skillRows.filter(guidedRowHasEvidence);
-      if (evidenced.length < needed) return false;
+      const needed = Math.max(1, +(spec?.evidencePerSkill || 1));
+      // Sum each row's own consecutive-correct streak, capping each row's
+      // contribution at `needed`. A skill covered by a single row now
+      // genuinely requires that row to be answered correctly `needed` times
+      // IN A ROW (a wrong answer resets that row's streak to 0, per the
+      // existing scoring code) rather than just once, ever. A skill spread
+      // across several rows can also be evidenced by different rows each
+      // being answered correctly on separate occasions.
+      const evidenced = skillRows.reduce((n, row) => n + Math.min(+(row.streak || 0), needed), 0);
+      if (evidenced < needed) return false;
       // Never make a guided phase mathematically impossible. Well-formed
       // grammar specs contain transfer rows (enforced by the curriculum
       // adapter and integrity tests). If an older/imported spec does not,
@@ -6409,8 +6416,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     let guidedCompletionTimer = null;
     function scheduleGuidedPhaseCompletion() {
       if (!guidedPractice || guidedCompletionTimer) return;
-      guidedCompletionTimer = setTimeout(() => {
+      guidedCompletionTimer = setTimeout(async () => {
         guidedCompletionTimer = null;
+        // The queue may have looked empty only because a fetch was still
+        // in flight (see fetchWordItems/fetchSentenceItems). Wait for it and
+        // re-check for real due items before treating the phase as finished.
+        if (wordFetchInFlight) await wordFetchInFlight;
+        if (sentenceFetchInFlight) await sentenceFetchInFlight;
+        if ((wordQueue && wordQueue.length > 0) || (sentenceQueue && sentenceQueue.length > 0)) return;
         window.dispatchEvent(new CustomEvent("languagedeck:guided-phase-complete"));
       }, 650);
     }
@@ -6458,7 +6471,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const COMBINED_SENTENCE_MASTERY_STREAK = 3;
     const COMBINED_SENTENCE_MASTERY_LEVEL = 3;
 
-    let fetchingMore = false;
+    let fetchingMore = false; // retained only so any stray reference doesn't throw; no longer gates fetches
+    let wordFetchInFlight = null;
+    let sentenceFetchInFlight = null;
 
     // Match should feel immediate. Visual feedback is deliberately shorter
     // than a normal tap, while IndexedDB writes stay serialised in the background.
@@ -8532,50 +8547,60 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     /* ---------- Fetching items ---------- */
     async function fetchWordItems(forceResetIfEmpty = true) {
-      if (fetchingMore) return [];
-      fetchingMore = true;
-      try {
-        const table = "word_pairs";
-        const allRows = await DB.getAll(table, currentDeck, currentSetName);
-        await syncWordRowsWithGlobal(allRows);
-        const all = allRows.filter(r => ldQuizSafeEnglish(r.english, false));
-        const useGateSize = gateSize;
-        const batchSize = gateEnabled ? Math.max(useGateSize, visibleCount * 20) : Math.max(100, visibleCount * 20);
+      // A concurrent call WAITS for the in-flight fetch and gets its real
+      // result, instead of the old boolean guard that made it silently
+      // receive [] — which the caller then misread as "nothing left".
+      if (wordFetchInFlight) return wordFetchInFlight;
+      wordFetchInFlight = (async () => {
+        try {
+          const table = "word_pairs";
+          const allRows = await DB.getAll(table, currentDeck, currentSetName);
+          await syncWordRowsWithGlobal(allRows);
+          const all = allRows.filter(r => ldQuizSafeEnglish(r.english, false));
+          const useGateSize = gateSize;
+          const batchSize = gateEnabled ? Math.max(useGateSize, visibleCount * 20) : Math.max(100, visibleCount * 20);
 
-        let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
-        let filtered = pool.filter(r => !sessionLoadedIds.has(r.id));
-        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled, pool);
+          let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
+          let filtered = pool.filter(r => !sessionLoadedIds.has(r.id));
+          let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled, pool);
 
-        if (forceResetIfEmpty && data.length === 0 && sessionLoadedIds.size > 0) {
-          sessionLoadedIds = new Set();
-          data = selectStudyItems(pool, batchSize, newRatio, practiceScope, !gateEnabled, pool);
-        }
-        for (const it of data) sessionLoadedIds.add(it.id);
-        return data;
-      } finally { fetchingMore = false; }
+          if (forceResetIfEmpty && data.length === 0 && sessionLoadedIds.size > 0) {
+            sessionLoadedIds = new Set();
+            data = selectStudyItems(pool, batchSize, newRatio, practiceScope, !gateEnabled, pool);
+          }
+          for (const it of data) sessionLoadedIds.add(it.id);
+          return data;
+        } finally { wordFetchInFlight = null; }
+      })();
+      return wordFetchInFlight;
     }
 
     async function fetchSentenceItems(forceResetIfEmpty = true) {
-      if (fetchingMore) return [];
-      fetchingMore = true;
-      try {
-        const table = "sentence_pairs";
-        let all = await DB.getAll(table, currentDeck, currentSetName);
-        if (currentSetName === "__all__" && (currentGame === "grammar" || currentGame === "sentences")) {
-          all = all.filter(r => setSupportsStudyMode(r.set_name, currentGame, currentDeck));
-        }
-        const useGateSize = Math.min(gateSize, 50);
-        const batchSize = gateEnabled ? Math.max(useGateSize, 30) : 50;
-        let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
-        let filtered = pool.filter(r => !sessionLoadedIds.has(r.id));
-        let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled, pool);
-        if (forceResetIfEmpty && data.length === 0 && sessionLoadedIds.size > 0) {
-          sessionLoadedIds = new Set();
-          data = selectStudyItems(pool, batchSize, newRatio, practiceScope, !gateEnabled, pool);
-        }
-        for (const it of data) sessionLoadedIds.add(it.id);
-        return data;
-      } finally { fetchingMore = false; }
+      // Same fix as fetchWordItems, and its OWN flag: sharing one guard
+      // between words and sentences/grammar was the second half of the bug
+      // — a grammar-module fetch could be starved by an unrelated word fetch.
+      if (sentenceFetchInFlight) return sentenceFetchInFlight;
+      sentenceFetchInFlight = (async () => {
+        try {
+          const table = "sentence_pairs";
+          let all = await DB.getAll(table, currentDeck, currentSetName);
+          if (currentSetName === "__all__" && (currentGame === "grammar" || currentGame === "sentences")) {
+            all = all.filter(r => setSupportsStudyMode(r.set_name, currentGame, currentDeck));
+          }
+          const useGateSize = Math.min(gateSize, 50);
+          const batchSize = gateEnabled ? Math.max(useGateSize, 30) : 50;
+          let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
+          let filtered = pool.filter(r => !sessionLoadedIds.has(r.id));
+          let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled, pool);
+          if (forceResetIfEmpty && data.length === 0 && sessionLoadedIds.size > 0) {
+            sessionLoadedIds = new Set();
+            data = selectStudyItems(pool, batchSize, newRatio, practiceScope, !gateEnabled, pool);
+          }
+          for (const it of data) sessionLoadedIds.add(it.id);
+          return data;
+        } finally { sentenceFetchInFlight = null; }
+      })();
+      return sentenceFetchInFlight;
     }
 
     async function loadCurrentGame(reset = true) {

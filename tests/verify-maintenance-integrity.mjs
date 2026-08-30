@@ -72,7 +72,11 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedSkillDone[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "completed grammar skills are removed from already-prefetched queues");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.2\.0-compact-grammar-modules-20260830/, "the application build marker includes the compact 4.2 grammar release");
+assert.match(indexHtml, /4\.2\.1-race-fix-grammar-content-20260830/, "the application build marker includes the 4.2.1 race-fix and grammar-content release");
+assert.ok(!/if\s*\(fetchingMore\)\s*return\s*\[\];/.test(indexHtml), "fetchWordItems/fetchSentenceItems no longer share a boolean guard that silently drops a concurrent fetch");
+assert.match(indexHtml, /wordFetchInFlight/, "fetchWordItems uses its own in-flight promise instead of the shared fetchingMore flag");
+assert.match(indexHtml, /sentenceFetchInFlight/, "fetchSentenceItems uses its own in-flight promise instead of the shared fetchingMore flag");
+assert.match(indexHtml, /skillRows\.reduce\(\(n, row\) => n \+ Math\.min\(\+\(row\.streak \|\| 0\), needed\), 0\)/, "guidedSkillDone requires repeated correct answers via the row's own streak, not a one-time success flag");
 
 const languages = JSON.parse(text(join(root, "decks", "languages.json")));
 assert.deepEqual(languages.languages.map(language => language.code), ["de", "it"], "German and Italian remain registered");
@@ -99,17 +103,17 @@ assert.ok(standaloneIndex.every(deck => !/[\\/]stories[\\/]|[\\/]texts[\\/]/.tes
 
 const curriculum = JSON.parse(text(join(deRoot, "grammar", "curriculum-v4.json")));
 assert.equal(curriculum.schemaVersion, 4, "Grammar & Forms uses the v4 curriculum schema");
-assert.equal(curriculum.curriculumVersion, "4.2.0", "the curriculum identifies the compact 4.2 release");
+assert.equal(curriculum.curriculumVersion, "4.2.1", "the curriculum identifies the 4.2.1 race-fix and grammar-content release");
 assert.equal(curriculum.explanationLanguage, "hu", "grammar explanations are Hungarian");
 assert.equal(curriculum.targetLanguage, "de", "grammar production remains German");
 assert.deepEqual(curriculum.tracks.map(track => track.id), ["a1-foundation", "a1-expansion", "a2-connection", "b1-expression", "b2-precision"], "the curriculum spirals through five CEFR stage bands up to B2");
-assert.equal(curriculum.units.length, 57, "the existing fifty-seven source units remain available as a hidden task bank");
-assert.deepEqual(curriculum.units.map(unit => unit.order), Array.from({length:57}, (_, i) => i + 1), "unit order is stable and contiguous");
-const requiredUnits = ["sentence-core", "noun-gender-plural", "nouns-nominative-accusative", "dative-recipient", "perfect-foundation", "two-way-prepositions", "fixed-prepositions", "modal-system", "verb-government", "object-order", "subordinate-clauses", "preterite-narration", "adjective-system", "reflexive-and-nicht", "konjunktiv-two", "relative-clauses", "infinitive-clauses", "passive", "prepositional-verbs", "past-sequence", "genitive", "final-transfer"];
+assert.equal(curriculum.units.length, 60, "the sixty source units (fifty-seven original plus the three adjective-declension units added in 4.2.1) remain available as a hidden task bank");
+assert.deepEqual(curriculum.units.map(unit => unit.order).sort((a, b) => a - b), Array.from({length:60}, (_, i) => i + 1), "unit order is stable and globally contiguous across every track");
+const requiredUnits = ["sentence-core", "noun-gender-plural", "nouns-nominative-accusative", "dative-recipient", "perfect-foundation", "two-way-prepositions", "fixed-prepositions", "modal-system", "verb-government", "object-order", "subordinate-clauses", "preterite-narration", "adjective-comparison", "adjective-weak", "adjective-mixed", "adjective-strong", "reflexive-and-nicht", "konjunktiv-two", "relative-clauses", "infinitive-clauses", "passive", "prepositional-verbs", "past-sequence", "genitive", "final-transfer"];
 for (const id of requiredUnits) assert.ok(curriculum.units.some(unit => unit.id === id), `curriculum is missing ${id}`);
 const requiredB2Units = ["b2-complex-connectors", "b2-indirect-speech", "b2-advanced-passive", "b2-relative-precision", "b2-nominalisation", "b2-participial-adjectives", "b2-word-order-focus", "b2-register-modality", "b2-final-transfer"];
 for (const id of requiredB2Units) assert.ok(curriculum.units.some(unit => unit.id === id), `B2 curriculum is missing ${id}`);
-assert.equal(curriculum.units.filter(unit => unit.progressSetName?.startsWith("Grammar 4 ·") && !unit.progressSetName.includes("v4.1")).length, 33, "all 4.0 units retain their exact legacy progress set identity");
+assert.equal(curriculum.units.filter(unit => unit.progressSetName?.startsWith("Grammar 4 ·") && !unit.progressSetName.includes("v4.1")).length, 36, "the original 33 units retain their exact legacy progress set identity, plus the 3 new adjective-declension units that adopted the same naming pattern");
 const expectedModuleIds = ["sentence-present", "verb-system", "akkusativ-dativ", "noun-system", "time-system", "word-order", "mood-voice", "b2-precision"];
 assert.deepEqual(curriculum.modules.map(module => module.id), expectedModuleIds, "the learner sees eight coherent grammar modules in a stable order");
 assert.deepEqual(curriculum.modules.map(module => module.order), Array.from({length:8}, (_, i) => i + 1), "module order is stable and contiguous");
@@ -128,7 +132,7 @@ for (const module of curriculum.modules) for (const practiceSet of module.practi
   assert.ok(rows.length, `${module.id}/${practiceSet.id} needs at least one task`);
   visiblePracticeRowCount += rows.length;
 }
-assert.equal(visiblePracticeRowCount, 585, "the compact modules expose a reviewed subset of 585 source tasks");
+assert.equal(visiblePracticeRowCount, 621, "the compact modules expose a reviewed subset of 621 source tasks");
 let focusedPracticeRowCount = 0;
 for (const module of curriculum.modules) for (const practiceSet of module.practiceSets.filter(set => set.focusOnly)) {
   for (const {unit, phase, row} of practiceRows(module, practiceSet)) {
@@ -141,7 +145,7 @@ for (const module of curriculum.modules) for (const practiceSet of module.practi
     if (practiceSet.variant === "choice" && focus.some(value => /\s/u.test(value))) assert.ok(options.includes(row.target), `${key} whole-answer choices must offer the complete correct answer`);
   }
 }
-assert.equal(focusedPracticeRowCount, 505, "all 505 focused module tasks pass the target contract");
+assert.equal(focusedPracticeRowCount, 541, "all 541 focused module tasks pass the target contract");
 const caseModule = curriculum.modules.find(module => module.id === "akkusativ-dativ");
 assert.equal(caseModule.practiceSets.length, 1, "Akkusativ and Dativ have one uninterrupted targeted practice path");
 const caseSet = caseModule.practiceSets[0];
@@ -188,8 +192,8 @@ for (const unit of curriculum.units) {
     }
   }
 }
-assert.equal(grammarGoalCount, 774, "Grammar 4.2 contains 774 varied evidence rows in its source bank");
-assert.equal(skillIds.size, 330, "Grammar 4.2 measures 330 reusable grammar skills instead of memorised strings");
+assert.equal(grammarGoalCount, 810, "Grammar 4.2.1 contains 810 varied evidence rows in its source bank");
+assert.equal(skillIds.size, 350, "Grammar 4.2.1 measures 350 reusable grammar skills instead of memorised strings");
 const clippedSkillRequirements = [];
 for (const unit of curriculum.units) for (const phase of unit.phases) {
   const rowsBySkill = new Map();
@@ -386,7 +390,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-2-0-compact-grammar-modules-20260830/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-2-1-race-fix-grammar-content-20260830/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
