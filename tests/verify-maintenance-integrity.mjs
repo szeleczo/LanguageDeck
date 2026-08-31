@@ -75,12 +75,17 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedSkillDone[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "completed grammar skills are removed from already-prefetched queues");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.3\.0-shared-knowledge-20260831/, "the application build marker includes the 4.3 shared-knowledge release");
-assert.equal((indexHtml.match(/4\.3\.0-shared-knowledge-20260831/g) || []).length, 2, "Course and Practice use the same 4.3 build marker");
+assert.match(indexHtml, /4\.3\.1-practice-transition-recovery-20260831/, "the application build marker includes the 4.3.1 transition-recovery release");
+assert.equal((indexHtml.match(/4\.3\.1-practice-transition-recovery-20260831/g) || []).length, 2, "Course and Practice use the same 4.3.1 build marker");
 assert.match(indexHtml, /KNOWLEDGE_SCHEMA_VERSION=3/, "shared lexical knowledge has an explicit schema");
 assert.match(indexHtml, /KNOWLEDGE_CHANNELS=\["reading","words","grammar_context"\]/, "course, word practice and grammar context retain separate evidence channels");
 assert.match(indexHtml, /strength:1,sourceMode:"grammar"/, "grammar context can only mark a lexeme as encountered");
 assert.match(indexHtml, /if \(!isCurrentSentenceCorrect\(\)\)[\s\S]*Még nem jó[\s\S]*return;[\s\S]*submitSentenceAnswer\(false\)/, "choice exercises auto-submit only a correct completed answer");
+assert.match(indexHtml, /async function advanceAfterCorrectSentence\(\)[\s\S]*try \{[\s\S]*loadNextSentence\(\)[\s\S]*catch \(error\)[\s\S]*feedbackAwaitingContinue = true[\s\S]*finally \{[\s\S]*locked = false[\s\S]*updateSentenceActionButtons\(\)/, "a failed next-card load always unlocks the practice UI and offers a retry");
+assert.match(indexHtml, /Promise\.allSettled\(\[refreshStats\(\), refreshGateInfo\(\)\]\)/, "non-critical statistics refresh cannot block the next practice card");
+assert.match(indexHtml, /Could not save the correct sentence answer[\s\S]*locked = false;[\s\S]*updateSentenceActionButtons\(\);[\s\S]*return;/, "a failed answer write cannot leave the practice UI locked");
+assert.match(indexHtml, /async function advanceAfterCorrectWord\(\)[\s\S]*catch \(error\)[\s\S]*wordTypingAwaitingContinue = true[\s\S]*finally \{[\s\S]*locked = false[\s\S]*updateTypingActionButtons\(\)/, "word-card transitions receive the same unlock-and-retry protection");
+assert.ok(!/setTimeout\(async \(\) => \{ locked = false; if \(currentGame === "combined"\)/.test(indexHtml), "correct word and sentence transitions do not use unguarded async timers");
 assert.ok(!indexHtml.includes("leadingGermanArticle"), "all article parsing uses the configured language helper");
 assert.match(indexHtml, /leadingConfiguredArticle\(target, currentDeck\)/, "Word Match uses the configured article parser");
 assert.match(indexHtml, /data-catalog-language="\$\{esc\(LANG\)\}"/, "every catalog button carries the language that rendered it");
@@ -449,7 +454,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-3-0-shared-knowledge-20260831/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-3-1-practice-transition-recovery-20260831/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");

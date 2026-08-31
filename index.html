@@ -3869,7 +3869,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.3.0-shared-knowledge-20260831",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.3.1-practice-transition-recovery-20260831",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4384,7 +4384,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-const APP_BUILD = "4.3.0-shared-knowledge-20260831";
+const APP_BUILD = "4.3.1-practice-transition-recovery-20260831";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -8940,15 +8940,30 @@ const APP_BUILD = "4.3.0-shared-knowledge-20260831";
       wordTypingAwaitingContinue = false;
       locked = true;
       updateTypingActionButtons();
+      await advanceAfterCorrectWord();
+    }
+
+    async function advanceAfterCorrectWord() {
+      let advanced = false;
       try {
         if (currentGame === "combined") await loadNextCombinedTask();
         else await loadNextTypingWord();
-        await refreshStats();
-        await refreshGateInfo();
+        advanced = true;
+      } catch (error) {
+        console.error("Could not load the next word card", error);
+        wordTypingAwaitingContinue = true;
+        typingResult.textContent = practiceUiText(
+          "Answer saved. Tap Continue to retry loading the next card.",
+          "A válasz elmentve. Koppints a Tovább gombra a következő feladat újrapróbálásához."
+        );
       } finally {
         locked = false;
         updateTypingActionButtons();
       }
+      if (advanced) Promise.allSettled([refreshStats(), refreshGateInfo()]).then(results => {
+        for (const result of results) if (result.status === "rejected") console.warn("Practice status refresh failed", result.reason);
+      });
+      return advanced;
     }
 
     async function finalizeCorrectWordPair(pairId) {
@@ -9161,11 +9176,22 @@ const APP_BUILD = "4.3.0-shared-knowledge-20260831";
             splitAlternatives(currentTypingWord.alternatives || currentTypingWord.alt || ""))
         : isTypingAnswerCorrect(currentTypingWord, typingInput.value);
       if (correct) {
-        correctCount++; updateScore();
         typingResult.textContent = "Correct.";
         statusEl.textContent = "";
-        await saveWordAnswer(currentTypingWord.id, true, !wordAttemptHadError);
-        setTimeout(async () => { locked = false; if (currentGame === "combined") await loadNextCombinedTask(); else await loadNextTypingWord(); await refreshStats(); await refreshGateInfo(); }, 450);
+        try {
+          await saveWordAnswer(currentTypingWord.id, true, !wordAttemptHadError);
+        } catch (error) {
+          console.error("Could not save the correct word answer", error);
+          typingResult.textContent = practiceUiText(
+            "Correct, but saving failed. Submit the answer again to retry.",
+            "Helyes, de a mentés nem sikerült. Küldd el újra a választ."
+          );
+          locked = false;
+          updateTypingActionButtons();
+          return;
+        }
+        correctCount++; updateScore();
+        setTimeout(() => advanceAfterCorrectWord(), 450);
       } else {
         clearTimeout(wordProgressiveAutoSubmitTimer);
         wrongCount++; updateScore();
@@ -9566,16 +9592,7 @@ const APP_BUILD = "4.3.0-shared-knowledge-20260831";
       currentSentenceData.orderAwaitingContinue = false;
       currentSentenceData.orderAutoSubmitting = false;
       updateSentenceActionButtons();
-      (async () => {
-        try {
-          await loadNextSentence();
-          await refreshStats();
-          await refreshGateInfo();
-        } finally {
-          locked = false;
-          updateSentenceActionButtons();
-        }
-      })();
+      advanceAfterCorrectSentence();
     }
 
     function updateSentenceActionButtons() {
@@ -9599,15 +9616,32 @@ const APP_BUILD = "4.3.0-shared-knowledge-20260831";
       currentSentenceData.feedbackAwaitingContinue = false;
       locked = true;
       updateSentenceActionButtons();
+      await advanceAfterCorrectSentence();
+    }
+
+    async function advanceAfterCorrectSentence() {
+      let advanced = false;
       try {
         if (currentGame === "combined") await loadNextCombinedTask();
         else await loadNextSentence();
-        await refreshStats();
-        await refreshGateInfo();
+        advanced = true;
+      } catch (error) {
+        console.error("Could not load the next practice card", error);
+        if (currentSentenceData) {
+          currentSentenceData.feedbackAwaitingContinue = true;
+          sentenceResult.textContent = practiceUiText(
+            "Answer saved. Tap Continue to retry loading the next card.",
+            "A válasz elmentve. Koppints a Tovább gombra a következő feladat újrapróbálásához."
+          );
+        }
       } finally {
         locked = false;
         updateSentenceActionButtons();
       }
+      if (advanced) Promise.allSettled([refreshStats(), refreshGateInfo()]).then(results => {
+        for (const result of results) if (result.status === "rejected") console.warn("Practice status refresh failed", result.reason);
+      });
+      return advanced;
     }
 
     function renderSentenceKeepingScroll() {
@@ -10043,11 +10077,23 @@ const APP_BUILD = "4.3.0-shared-knowledge-20260831";
         renderSentence();
       }
       if (correct) {
-        correctCount++; updateScore();
         sentenceResult.textContent = practiceUiText("Correct.", "Helyes.");
         statusEl.textContent = "";
-        await saveSentenceAnswer(currentSentence.id, true, !(currentSentenceData && currentSentenceData.hadProgressiveError));
-        setTimeout(async () => { locked = false; if (currentGame === "combined") await loadNextCombinedTask(); else await loadNextSentence(); await refreshStats(); await refreshGateInfo(); }, 650);
+        try {
+          await saveSentenceAnswer(currentSentence.id, true, !(currentSentenceData && currentSentenceData.hadProgressiveError));
+        } catch (error) {
+          console.error("Could not save the correct sentence answer", error);
+          currentSentenceData.choiceAutoSubmitting = false;
+          sentenceResult.textContent = practiceUiText(
+            "Correct, but saving failed. Tap the answer again to retry.",
+            "Helyes, de a mentés nem sikerült. Koppints újra a válaszra."
+          );
+          locked = false;
+          updateSentenceActionButtons();
+          return;
+        }
+        correctCount++; updateScore();
+        setTimeout(() => advanceAfterCorrectSentence(), 650);
       } else {
         clearTimeout(sentenceProgressiveAutoSubmitTimer);
         if (sentenceMode === "progressive" && currentSentenceData && currentSentenceData.progressiveChallenge && currentSentenceData.progressiveChallenge.masked) {

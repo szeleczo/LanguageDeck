@@ -1,5 +1,5 @@
-/* LanguageDeck 4.3.0 — shared language-scoped knowledge. */
-const CACHE_VERSION="languagedeck-4-3-0-shared-knowledge-20260831";
+/* LanguageDeck 4.3.1 — recoverable practice transitions. */
+const CACHE_VERSION="languagedeck-4-3-1-practice-transition-recovery-20260831";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
