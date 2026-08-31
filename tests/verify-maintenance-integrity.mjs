@@ -34,6 +34,9 @@ function walk(directory) {
 }
 
 const indexHtml = text(join(root, "index.html"));
+for (const [index, script] of [...indexHtml.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].entries()) {
+  assert.doesNotThrow(() => new Function(script[1]), `inline script ${index + 1} is valid JavaScript`);
+}
 assert.match(indexHtml, /function chapterCacheKey\(ch\).*unitId.*folder/, "chapter cache requires a stable unitId or folder");
 assert.match(indexHtml, /CHAPTER_DATA\.set\(key,x\)/, "chapter writes use the derived cache key");
 assert.ok(!indexHtml.includes("CHAPTER_DATA.get(ch.id)"), "no direct chapter-id cache reads remain");
@@ -46,9 +49,9 @@ assert.match(indexHtml, /guided_full_recall_at.*explicit_unknown_at/, "guided me
 assert.match(indexHtml, /guided_attempts.*guided_last_answer_at.*times_wrong/s, "guided selection is ordered by least practice first");
 assert.match(indexHtml, /languagedeck:guided-phase-complete/, "completed guided phases return automatically");
 assert.ok(!indexHtml.includes('const INLINE_KEYPAD_PUNCTUATION = [".", ","'), "optional comma keys no longer create a keypad row");
-assert.match(indexHtml, /inline-keypad button\.inline-keypad-key[\s\S]*?min-height:\s*46px/, "main QWERTZ keys keep a 46px touch height");
+assert.match(indexHtml, /inline-keypad button\.inline-keypad-key[\s\S]*?min-height:\s*46px/, "main configured keypad keys keep a 46px touch height");
 assert.match(indexHtml, /gap:\s*1\.5px/, "keyboard gaps leave more width for letter keys");
-assert.match(indexHtml, /const dockedKeypadMode = isTouchPrimaryDevice\(\)[\s\S]*wordMode === "typing"[\s\S]*sentenceMode === "typing"/, "regular word and sentence typing keep the global touch keypad docked");
+assert.match(indexHtml, /const dockedKeypadMode = keyboardConfig\(\)\.mode === "inline" && isTouchPrimaryDevice\(\)[\s\S]*wordMode === "typing"[\s\S]*sentenceMode === "typing"/, "regular word and sentence typing keep the configured global touch keypad docked");
 assert.match(indexHtml, /typingKeypadActivators\[0\]\?\.\(\)/, "sentence typing binds the keypad to the first blank immediately");
 assert.match(indexHtml, /inp\.classList\.add\("keypad-input-active"\)/, "the first bound sentence blank is visibly active without a tap");
 assert.match(indexHtml, /document\.elementFromPoint\(e\.clientX,e\.clientY\)/, "drag correction follows the key under the pointer");
@@ -72,14 +75,45 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedSkillDone[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "completed grammar skills are removed from already-prefetched queues");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.2\.2-grammar-prompt-context-20260830/, "the application build marker includes the 4.2.2 grammar-prompt-context release");
+assert.match(indexHtml, /4\.2\.4-catalog-session-contract-20260831/, "the application build marker includes the 4.2.4 catalog-session release");
+assert.ok(!indexHtml.includes("leadingGermanArticle"), "all article parsing uses the configured language helper");
+assert.match(indexHtml, /leadingConfiguredArticle\(target, currentDeck\)/, "Word Match uses the configured article parser");
+assert.match(indexHtml, /data-catalog-language="\$\{esc\(LANG\)\}"/, "every catalog button carries the language that rendered it");
+assert.match(indexHtml, /startCatalogIntegrated\(\{\.\.\.a,language:b\.dataset\.catalogLanguage\}\)/, "the catalog forwards that exact rendered language");
+assert.match(indexHtml, /let catalogSessionSerial = 0/, "the practice engine serializes catalog launches");
+assert.match(indexHtml, /async function startCatalogPractice\(spec=\{\}\)\{[\s\S]*?await init\(requested\)[\s\S]*?const session = catalogSessionRequest\(spec\)[\s\S]*?applyCatalogSession\(session,setName\)[\s\S]*?catalogSessionMatches\(session,setName\)/, "catalog launches restore saved settings first, then commit one explicit language/mode/deck contract");
+assert.match(indexHtml, /deckPrefix !== language/, "a catalog action cannot pair a deck with another installed language");
 assert.ok(!/if\s*\(fetchingMore\)\s*return\s*\[\];/.test(indexHtml), "fetchWordItems/fetchSentenceItems no longer share a boolean guard that silently drops a concurrent fetch");
 assert.match(indexHtml, /wordFetchInFlight/, "fetchWordItems uses its own in-flight promise instead of the shared fetchingMore flag");
 assert.match(indexHtml, /sentenceFetchInFlight/, "fetchSentenceItems uses its own in-flight promise instead of the shared fetchingMore flag");
 assert.match(indexHtml, /skillRows\.reduce\(\(n, row\) => n \+ Math\.min\(\+\(row\.streak \|\| 0\), needed\), 0\)/, "guidedSkillDone requires repeated correct answers via the row's own streak, not a one-time success flag");
 
 const languages = JSON.parse(text(join(root, "decks", "languages.json")));
+assert.equal(languages.schemaVersion, 2, "the language registry points to one canonical per-language configuration");
 assert.deepEqual(languages.languages.map(language => language.code), ["de", "it"], "German and Italian remain registered");
+assert.ok(languages.languages.every(language => language.config && language.manifest), "registry entries contain paths, not duplicate language settings");
+const languageConfigs = new Map(languages.languages.map(entry => [entry.code, JSON.parse(text(join(root, "decks", entry.config)))]));
+const germanLanguage = languageConfigs.get("de"), italianLanguage = languageConfigs.get("it");
+assert.equal(germanLanguage.schemaVersion, 2, "German uses the current language configuration schema");
+assert.deepEqual(germanLanguage.keyboard.rows, ["qwertzuiopü", "asdfghjklöä", "yxcvbnmß"], "German keeps its established touch-keypad layout in data");
+assert.deepEqual(italianLanguage.keyboard.rows, ["qwertyuiopè", "asdfghjklòàù", "zxcvbnmì"], "Italian has its own in-app QWERTY keypad layout");
+assert.ok([...languageConfigs.values()].every(config => config.keyboard?.mode === "inline" && config.keyboard.rows?.length), "every installed language package supplies its own in-app keyboard");
+assert.equal(italianLanguage.articleParsing.mode, "none", "article-specific import parsing is opt-in per language");
+assert.ok(germanLanguage.capabilities.grammarCurriculum, "Grammar availability is declared by the language package");
+assert.match(indexHtml, /entry\.config \? await fetchOptionalJson\(`decks\/\$\{entry\.config\}`\)/, "Practice loads each language configuration before use");
+assert.match(indexHtml, /keyboardConfig\(\)\.mode === "inline"/, "both touch keypad decisions read the language configuration");
+assert.match(indexHtml, /activeLanguage\.capabilities\?\.grammarCurriculum/, "the curriculum card is capability-driven rather than tied to a language code");
+assert.match(indexHtml, /path=cfg\.capabilities\?\.grammarCurriculum/, "the curriculum loader uses the configured path");
+assert.match(indexHtml, /function portableSlug\(/, "fallback identifiers use a portable Unicode-safe slug");
+assert.match(indexHtml, /function portableLexemeSuffix\(/, "Text Study fallback lexeme IDs keep non-Latin forms distinct");
+assert.match(indexHtml, /function contentTypeTerms\(/, "legacy import set names use configured content-type synonyms");
+assert.ok(!indexHtml.includes('mode: "native"'), "the app never falls back to the device keyboard");
+assert.ok(!indexHtml.includes("qwertz"), "the app code contains no embedded German keypad layout");
+assert.ok(!indexHtml.includes("de-DE"), "the app code contains no embedded German comparison locale");
+assert.ok(!indexHtml.includes("decks/de/"), "the app code contains no unscoped German deck path");
+assert.ok(!/LANG\s*={2,3}\s*["']de["']/.test(indexHtml), "the app does not gate a feature on a German language code");
+const portableKey = value => (String(value).normalize("NFKC").match(/[\p{L}\p{N}]+/gu) || []).map(part => Array.from(part).map(ch => ch.codePointAt(0).toString(36)).join("_")).join("-") || "item";
+assert.notEqual(portableKey("日本語"), portableKey("русский"), "portable fallback keys preserve distinct non-Latin content");
 const appManifest = JSON.parse(text(join(root, "manifest.webmanifest")));
 assert.equal(appManifest.name, "LanguageDeck", "the install name stays stable across releases");
 assert.equal(appManifest.id, "./?app=LanguageDeck-v3.3.2", "the established PWA identity stays stable so updates retain progress");
@@ -93,6 +127,13 @@ assert.ok(!appIcon.includes("C 38.5 57.8"), "the obsolete head silhouette is no 
 const italianManifest = JSON.parse(text(join(root, "decks", "it", "manifest.json")));
 assert.deepEqual(italianManifest.catalogPackages[0].actions.map(action => action.variant), ["match", "progressive", "typing"], "Italian words keep every word mode");
 const germanManifest = JSON.parse(text(join(deRoot, "manifest.json")));
+for (const [language, manifest] of [["de", germanManifest], ["it", italianManifest]]) {
+  for (const action of manifest.catalogPackages.flatMap(pack => pack.actions || [])) {
+    assert.ok(String(action.deckId || "").startsWith(`${language}-`), `${language} catalog action ${action.label} points only to its own deck`);
+    assert.ok(["words", "grammar", "sentences"].includes(action.mode), `${language} catalog action has a supported mode`);
+    assert.ok(action.variant, `${language} catalog action declares an explicit variant`);
+  }
+}
 const wordVariants = new Set(germanManifest.catalogPackages.flatMap(pack => pack.actions).filter(action => action.mode === "words").map(action => action.variant));
 const sentenceVariants = new Set(germanManifest.catalogPackages.flatMap(pack => pack.actions).filter(action => ["grammar", "sentences"].includes(action.mode)).map(action => action.variant));
 assert.deepEqual([...wordVariants].sort(), ["match", "progressive", "typing"], "German word packages keep Match, Adaptive and Type");
@@ -233,7 +274,7 @@ assert.ok(reportedEvidence.length >= reportedSentenceTransfer.evidencePerSkill &
 assert.match(indexHtml, /grammarFocusTerms/, "typing blanks can target the grammar-bearing token");
 assert.match(indexHtml, /newItemOrder=spec\.sequence\?"csv":"smart"/, "guided contrast pairs preserve CSV order");
 assert.match(indexHtml, /guided_success_at/, "a clean answer records reusable skill evidence");
-assert.match(indexHtml, /curriculum-v4\.json/, "the app loads only the unified v4 curriculum");
+assert.match(indexHtml, /capabilities\?\.grammarCurriculum/, "the app loads the declared grammar curriculum from the language package");
 assert.match(indexHtml, /function grammarModuleById/, "the curriculum is navigated through coherent modules");
 assert.match(indexHtml, /function grammarReferenceHtml/, "each module renders its compact reference sheet before practice");
 assert.match(indexHtml, /grammar-module-list/, "the overview renders the eight large modules instead of the source-unit list");
@@ -390,7 +431,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-2-2-grammar-prompt-context-20260830/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-2-4-catalog-session-contract-20260831/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
