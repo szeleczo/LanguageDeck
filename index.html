@@ -3869,7 +3869,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.2.4-catalog-session-contract-20260831",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.3.0-shared-knowledge-20260831",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -3885,14 +3885,24 @@ async function fetchGitHubStoryCatalog(){const repo=detectGitHubRepo();if(!repo)
 async function loadCourseCatalog(){const raw=await fetchText(COURSE_INDEX,false),ci=raw?JSON.parse(raw):{courses:[]},declared=Array.isArray(ci.courses)?ci.courses:[],discovered=await fetchGitHubStoryCatalog(),map=new Map();for(const c of [...declared,...discovered]){const key=c.story||c.id;if(!map.has(key))map.set(key,c);else map.set(key,{...map.get(key),...c})}return[...map.values()]}
 const DB_NAME="languagedeck",DB_VERSION=3;let dbp=null;function dbOpen(){if(dbp)return dbp;dbp=new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VERSION);r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains("word_pairs")){const s=d.createObjectStore("word_pairs",{keyPath:"id",autoIncrement:true});s.createIndex("by_deck","deck",{unique:false});s.createIndex("by_deck_set",["deck","set_name"],{unique:false})}if(!d.objectStoreNames.contains("sentence_pairs")){const s=d.createObjectStore("sentence_pairs",{keyPath:"id",autoIncrement:true});s.createIndex("by_deck","deck",{unique:false});s.createIndex("by_deck_set",["deck","set_name"],{unique:false})}if(!d.objectStoreNames.contains("reading_items"))d.createObjectStore("reading_items",{keyPath:"key"});if(!d.objectStoreNames.contains("reading_units"))d.createObjectStore("reading_units",{keyPath:"key"});if(!d.objectStoreNames.contains("reading_patterns"))d.createObjectStore("reading_patterns",{keyPath:"key"})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});return dbp}
 async function dbAll(store){const d=await dbOpen();return new Promise((res,rej)=>{const r=d.transaction(store).objectStore(store).getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)})}
+async function dbGet(store,key){const d=await dbOpen();return new Promise((res,rej)=>{const r=d.transaction(store).objectStore(store).get(key);r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error)})}
 async function dbPut(store,row){const d=await dbOpen();return new Promise((res,rej)=>{const t=d.transaction(store,"readwrite"),r=t.objectStore(store).put(row);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
 async function dbDelete(store,key){const d=await dbOpen();return new Promise((res,rej)=>{const t=d.transaction(store,"readwrite"),r=t.objectStore(store).delete(key);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+const KNOWLEDGE_SCHEMA_VERSION=3,KNOWLEDGE_CHANNELS=["reading","words","grammar_context"],KNOWLEDGE_LOCKS=new Map();
+function emptyKnowledgeChannel(){return{seen:0,correct:0,wrong:0,lastAt:0}}
+function normalizeKnowledgeEvidence(value){const out={};for(const channel of KNOWLEDGE_CHANNELS){const src=value?.[channel]||{};out[channel]={seen:+src.seen||0,correct:+src.correct||0,wrong:+src.wrong||0,lastAt:+src.lastAt||0}}return out}
+function sharedKnowledgeStrength(row){return Math.max(+(row?.strength||0),+(row?.lvl||0),+(row?.storyState?.lvl||0))}
+function decorateKnowledgeRow(row,language,id){const src=row||{},strength=sharedKnowledgeStrength(src),story=src.storyState||{},evidence=normalizeKnowledgeEvidence(src.evidence);if((+story.lvl||0)>0){evidence.reading.seen=Math.max(evidence.reading.seen,1);evidence.reading.correct=Math.max(evidence.reading.correct,(+story.lvl||0)>=2?1:0);evidence.reading.wrong=Math.max(evidence.reading.wrong,+story.readingMisses||0);evidence.reading.lastAt=Math.max(evidence.reading.lastAt,+src.lastSeen||0)}return{...src,key:`${language}|${id}`,schemaVersion:KNOWLEDGE_SCHEMA_VERSION,language,itemKey:id,lexeme_id:id,kind:"word",strength,lvl:strength,evidence,storyState:{...story,lvl:Math.max(+story.lvl||0,strength)}}}
+async function withKnowledgeLock(key,work){const previous=KNOWLEDGE_LOCKS.get(key)||Promise.resolve(),current=previous.catch(()=>{}).then(work);KNOWLEDGE_LOCKS.set(key,current);try{return await current}finally{if(KNOWLEDGE_LOCKS.get(key)===current)KNOWLEDGE_LOCKS.delete(key)}}
+async function recordKnowledgeEvidence({language=LANG,lexemeId,channel="words",seen=0,correct=0,wrong=0,lastAt=Date.now(),strength=0,sourceMode="",absolute=false,storyState=null}){if(!lexemeId||!KNOWLEDGE_CHANNELS.includes(channel))return null;const key=`${language}|${lexemeId}`;return withKnowledgeLock(key,async()=>{const prev=decorateKnowledgeRow(await dbGet("reading_items",key),language,lexemeId),evidence=normalizeKnowledgeEvidence(prev.evidence),slot=evidence[channel]||emptyKnowledgeChannel();slot.seen=absolute?Math.max(slot.seen,+seen||0):slot.seen+(+seen||0);slot.correct=absolute?Math.max(slot.correct,+correct||0):slot.correct+(+correct||0);slot.wrong=absolute?Math.max(slot.wrong,+wrong||0):slot.wrong+(+wrong||0);slot.lastAt=Math.max(slot.lastAt,+lastAt||0);evidence[channel]=slot;const level=Math.max(sharedKnowledgeStrength(prev),+strength||0),previousStory=prev.storyState||{},mergedStory=storyState?{...previousStory,...storyState,lvl:Math.max(+previousStory.lvl||0,+(storyState.lvl||0),level),fullRecallAt:Math.max(+previousStory.fullRecallAt||0,+storyState.fullRecallAt||0),explicitUnknownAt:Math.max(+previousStory.explicitUnknownAt||0,+storyState.explicitUnknownAt||0)}:previousStory,row=decorateKnowledgeRow({...prev,evidence,strength:level,lvl:level,lastSeen:Math.max(+prev.lastSeen||0,+lastAt||0),sourceMode:sourceMode||prev.sourceMode||"",storyState:mergedStory},language,lexemeId);await dbPut("reading_items",row);return row})}
+async function migrateSharedKnowledge(language=LANG,canonicalize=id=>id){const rows=(await dbAll("reading_items")).filter(row=>row.language===language||String(row.key||"").startsWith(language+"|"));for(const rawRow of rows){const raw=rawRow.lexeme_id||rawRow.itemKey||String(rawRow.key||"").slice(language.length+1),id=canonicalize(raw);if(!id)continue;const row=decorateKnowledgeRow(rawRow,language,id);await dbPut("reading_items",row);if(rawRow.key&&rawRow.key!==row.key)await dbDelete("reading_items",rawRow.key)}const marker=`ld-shared-knowledge-v3:${language}`;if(localStorage.getItem(marker)==="done")return;const wordRows=(await dbAll("word_pairs")).filter(row=>row.deck===language&&row.lexeme_id),wordTotals=new Map();for(const row of wordRows){const id=canonicalize(row.lexeme_id);if(!id)continue;const cur=wordTotals.get(id)||{seen:0,correct:0,wrong:0,strength:0,lastAt:0};cur.seen+=+row.times_seen||0;cur.correct+=+row.times_correct||0;cur.wrong+=+row.times_wrong||0;cur.strength=Math.max(cur.strength,(row.streak|0)>=5?4:(row.streak|0)>=3?3:(row.times_correct|0)>0?2:(row.times_seen|0)>0?1:0);cur.lastAt=Math.max(cur.lastAt,Date.parse(row.last_seen||"")||0);wordTotals.set(id,cur)}for(const[id,total]of wordTotals)await recordKnowledgeEvidence({language,lexemeId:id,channel:"words",...total,absolute:true,sourceMode:"migration"});const sentenceRows=(await dbAll("sentence_pairs")).filter(row=>row.deck===language&&(row.lexeme_refs||row.lexemeRefs));for(const row of sentenceRows){const refs=Array.isArray(row.lexemeRefs)?row.lexemeRefs:String(row.lexeme_refs||row.lexemeRefs||"").split("|");for(const raw of refs.map(x=>String(x).trim()).filter(Boolean)){const id=canonicalize(raw);await recordKnowledgeEvidence({language,lexemeId:id,channel:"grammar_context",seen:+row.times_seen||0,correct:+row.times_correct||0,wrong:+row.times_wrong||0,lastAt:Date.parse(row.last_seen||"")||0,strength:(row.times_seen|0)>0?1:0,absolute:true,sourceMode:"migration"})}}localStorage.setItem(marker,"done")}
+window.LanguageDeckKnowledge={schemaVersion:KNOWLEDGE_SCHEMA_VERSION,decorate:decorateKnowledgeRow,record:recordKnowledgeEvidence,migrate:migrateSharedKnowledge};
 function wordKnowledgeLevel(row){return Math.max(+(row?.lvl||0),+(row?.storyState?.lvl||0))}
 function explicitUnknownPending(state){const s=state?.storyState||state||{};return +(s.explicitUnknownAt||0)>+(s.fullRecallAt||0)}
 function mergeWordKnowledgeRows(a,b,id){const aa=a||{},bb=b||{},prefer=wordKnowledgeLevel(aa)>=wordKnowledgeLevel(bb)?aa:bb,other=prefer===aa?bb:aa,level=Math.max(wordKnowledgeLevel(aa),wordKnowledgeLevel(bb)),as=aa.storyState||{},bs=bb.storyState||{},due=[as.due,bs.due].filter(x=>Number.isFinite(+x)).map(Number),state={...as,...bs,lvl:level,collected:!!(as.collected||bs.collected),handedOff:!!(as.handedOff||bs.handedOff),explicitUnknownAt:Math.max(+(as.explicitUnknownAt||0),+(bs.explicitUnknownAt||0)),fullRecallAt:Math.max(+(as.fullRecallAt||0),+(bs.fullRecallAt||0))};if(due.length)state.due=Math.min(...due);return{...other,...prefer,key:`${LANG}|${id}`,itemKey:id,language:LANG,lvl:level,storyState:state,lastSeen:Math.max(+(aa.lastSeen||0),+(bb.lastSeen||0))||Date.now()}}
-async function migrateGlobalKnowledge(){const rows=(await dbAll("reading_items")).filter(r=>r.language===LANG||String(r.key||"").startsWith(LANG+"|")),merged=new Map(),stale=new Set();for(const r of rows){const raw=r.itemKey||String(r.key||"").slice(LANG.length+1),id=canon(raw),key=`${LANG}|${id}`;merged.set(id,mergeWordKnowledgeRows(merged.get(id),r,id));if(String(r.key||"")!==key||raw!==id)stale.add(r.key)}if(!stale.size)return;for(const row of merged.values())await dbPut("reading_items",row);for(const key of stale)await dbDelete("reading_items",key)}
+async function migrateGlobalKnowledge(){const rows=(await dbAll("reading_items")).filter(r=>r.language===LANG||String(r.key||"").startsWith(LANG+"|")),merged=new Map(),stale=new Set();for(const r of rows){const raw=r.itemKey||String(r.key||"").slice(LANG.length+1),id=canon(raw),key=`${LANG}|${id}`;merged.set(id,mergeWordKnowledgeRows(merged.get(id),r,id));if(String(r.key||"")!==key||raw!==id)stale.add(r.key)}for(const row of merged.values())await dbPut("reading_items",decorateKnowledgeRow(row,LANG,row.itemKey));for(const key of stale)await dbDelete("reading_items",key);await migrateSharedKnowledge(LANG,canon)}
 async function loadGlobal(){GLOBAL_WORDS.clear();GLOBAL_PATTERNS.clear();for(const r of await dbAll("reading_items")){if(r.language===LANG||String(r.key||"").startsWith(LANG+"|")){const id=canon(r.itemKey||String(r.key).slice(LANG.length+1));GLOBAL_WORDS.set(id,mergeWordKnowledgeRows(GLOBAL_WORDS.get(id),r,id))}}for(const r of await dbAll("reading_patterns")){if(r.language===LANG||String(r.key||"").startsWith(LANG+"|"))GLOBAL_PATTERNS.set(r.patternId||String(r.key).slice(LANG.length+1),r)}}
-async function setWordLevel(item,lvl){const id=canon(item.lexeme_id),prev=GLOBAL_WORDS.get(id)||{};const row={...prev,key:`${LANG}|${id}`,itemKey:id,language:LANG,kind:item.kind||"word",lvl:Math.max(+prev.lvl||0,lvl),lastSeen:Date.now(),storyState:{...(prev.storyState||{}),lvl:Math.max(+(prev.storyState?.lvl||0),lvl),collected:true}};GLOBAL_WORDS.set(id,row);await dbPut("reading_items",row)}
+async function setWordLevel(item,lvl){const id=canon(item.lexeme_id),row=await recordKnowledgeEvidence({language:LANG,lexemeId:id,channel:"reading",seen:1,correct:lvl>=2?1:0,strength:lvl,sourceMode:"course-preparation",storyState:{lvl,collected:true}});GLOBAL_WORDS.set(id,row)}
 async function setPatternLevel(id,lvl){const prev=GLOBAL_PATTERNS.get(id)||{},row={...prev,key:`${LANG}|${id}`,patternId:id,language:LANG,lvl:Math.max(+prev.lvl||0,lvl),lastSeen:Date.now(),storyState:{...(prev.storyState||{}),lvl:Math.max(+(prev.storyState?.lvl||0),lvl)}};GLOBAL_PATTERNS.set(id,row);await dbPut("reading_patterns",row)}
 function unitState(id){try{return JSON.parse(localStorage.getItem(`ld-story-study-v3:${LANG}:${id}`)||"null")||{}}catch(_){return{}}}
 
@@ -4017,8 +4027,8 @@ async function ldMigrateLegacy(){const mark=`ld-global-migration-v2:${DATA.langu
  const oldWords=(await ldAll("reading_items")).filter(r=>r.language===DATA.language||String(r.key||"").startsWith(DATA.language+"|")),staleKeys=[];for(const r of oldWords){const raw=r.itemKey||String(r.key||"").slice(DATA.language.length+1),id=ldCanon(raw);wk[id]=ldMergeState(wk[id],r.storyState||{lvl:r.lvl||0});if(String(r.key||"")!==`${DATA.language}|${id}`||raw!==id)staleKeys.push(r.key)}
  await ldPutMany("reading_items",Object.entries(wk).map(([id,state])=>({key:`${DATA.language}|${id}`,itemKey:id,language:DATA.language,kind:"word",lvl:state.lvl||0,storyState:state,lastSeen:Date.now()})));
  await ldPutMany("reading_patterns",Object.entries(pk).map(([id,state])=>({key:`${DATA.language}|${id}`,patternId:id,language:DATA.language,lvl:state.lvl||0,storyState:state,lastSeen:Date.now()})));await ldDeleteMany("reading_items",staleKeys);localStorage.setItem(mark,new Date().toISOString())}
-async function ldLoadGlobal(){await ldMigrateLegacy();K={};PK={};LD_WORD_ROWS.clear();LD_PATTERN_ROWS.clear();for(const row of await ldAll("reading_items")){if(!(row.language===DATA.language||String(row.key||"").startsWith(DATA.language+"|")))continue;const raw=row.itemKey||String(row.key||"").slice(DATA.language.length+1),id=ldCanon(raw);LD_WORD_ROWS.set(id,row);K[id]=ldMergeState(K[id],row.storyState||{lvl:row.lvl||0})}for(const row of await ldAll("reading_patterns")){if(!(row.language===DATA.language||String(row.key||"").startsWith(DATA.language+"|")))continue;const id=row.patternId||String(row.key||"").slice(DATA.language.length+1);LD_PATTERN_ROWS.set(id,row);PK[id]=ldMergeState(PK[id],row.storyState||{lvl:row.lvl||0})}}
-function ldScheduleSave(){clearTimeout(LD_SAVE_TIMER);LD_SAVE_TIMER=setTimeout(async()=>{const now=Date.now();const words=Object.keys(V).filter(id=>K[id]).map(id=>{const state=K[id],prev=LD_WORD_ROWS.get(id)||{};const row={...prev,key:`${DATA.language}|${id}`,itemKey:id,language:DATA.language,kind:prev.kind||"word",lvl:state.lvl||0,storyState:{...state},lastSeen:now};LD_WORD_ROWS.set(id,row);return row});const patterns=Object.keys(P).filter(id=>PK[id]).map(id=>{const state=PK[id],prev=LD_PATTERN_ROWS.get(id)||{};const row={...prev,key:`${DATA.language}|${id}`,patternId:id,language:DATA.language,lvl:state.lvl||0,storyState:{...state},lastSeen:now};LD_PATTERN_ROWS.set(id,row);return row});try{await Promise.all([ldPutMany("reading_items",words),ldPutMany("reading_patterns",patterns)])}catch(e){console.error("Global knowledge save failed",e)}},80)}
+async function ldLoadGlobal(){await ldMigrateLegacy();await window.LanguageDeckKnowledge?.migrate(DATA.language,ldCanon);K={};PK={};LD_WORD_ROWS.clear();LD_PATTERN_ROWS.clear();for(const row of await ldAll("reading_items")){if(!(row.language===DATA.language||String(row.key||"").startsWith(DATA.language+"|")))continue;const raw=row.itemKey||String(row.key||"").slice(DATA.language.length+1),id=ldCanon(raw);LD_WORD_ROWS.set(id,row);K[id]=ldMergeState(K[id],row.storyState||{lvl:row.lvl||0})}for(const row of await ldAll("reading_patterns")){if(!(row.language===DATA.language||String(row.key||"").startsWith(DATA.language+"|")))continue;const id=row.patternId||String(row.key||"").slice(DATA.language.length+1);LD_PATTERN_ROWS.set(id,row);PK[id]=ldMergeState(PK[id],row.storyState||{lvl:row.lvl||0})}}
+function ldScheduleSave(){clearTimeout(LD_SAVE_TIMER);LD_SAVE_TIMER=setTimeout(async()=>{const now=Date.now();const words=Object.keys(V).filter(id=>K[id]).map(id=>{const state=K[id],prev=LD_WORD_ROWS.get(id)||{},base={...prev,key:`${DATA.language}|${id}`,itemKey:id,language:DATA.language,kind:prev.kind||"word",lvl:state.lvl||0,strength:Math.max(+prev.strength||0,+state.lvl||0),storyState:{...state},lastSeen:now},row=window.LanguageDeckKnowledge?.decorate(base,DATA.language,id)||base;LD_WORD_ROWS.set(id,row);return row});const patterns=Object.keys(P).filter(id=>PK[id]).map(id=>{const state=PK[id],prev=LD_PATTERN_ROWS.get(id)||{};const row={...prev,key:`${DATA.language}|${id}`,patternId:id,language:DATA.language,lvl:state.lvl||0,storyState:{...state},lastSeen:now};LD_PATTERN_ROWS.set(id,row);return row});try{await Promise.all([ldPutMany("reading_items",words),ldPutMany("reading_patterns",patterns)])}catch(e){console.error("Global knowledge save failed",e)}},80)}
 
 async function bootStoryStudy(){try{const source=await loaderSource();DATA=loaderBuild(source);V=Object.fromEntries(DATA.vocab.map(v=>[v.id,v]));P=DATA.patterns||{};STORAGE=`ld-story-study-v3:${DATA.language}:${DATA.id}`;settings={coverage:DATA.defaults.coverage,goal:DATA.defaults.goal,translation:DATA.defaults.translation,manual:0,configured:false};await load();if(settings.goal==="understand")settings.goal="use";translationPinned=settings.translation==='always'?true:translationPinned;settings.configured||position>0?resumeStory():paintStart();if(DATA.validation.unknown.length)toast(`${DATA.validation.unknown.length} tokens need glossary entries.`);callbacks.onReady?.(getPublicApi())}catch(err){console.error(err);show('startPane');$('title').textContent='Story Study';$('startCard').innerHTML=`<h2>Could not open this text</h2><p>${esc(err.message||err)}</p><p>${navigator.onLine?'Check story.json, unit.json and CSV files.':'You appear to be offline and this chapter is not cached yet.'}</p>`;$('main').textContent='Back to Course';$('main').onclick=()=>callbacks.onExit?.('course');callbacks.onError?.(err)}}
 
@@ -4289,6 +4299,7 @@ function grammarRowSpec(unit,phase,row,policy={}){
     english:row.prompt,target:row.target,hint:row.hint||'',explanation:row.explanation||unit.rule||'',alternatives:row.alternatives||'',
     options:Array.isArray(row.options)?row.options.join('|'):(row.options||''),focus:focus.join('|'),task_type:row.task||phase.task||'',
     task_scope:wholeAnswerChoice?'select':policy.focusOnly?'focus':policy.structureOnly?'structure':policy.production?'production':'guided',skill_id:row.skillId,
+    lexeme_refs:Array.isArray(row.lexemeRefs)?row.lexemeRefs.join('|'):(row.lexemeRefs||''),
     skill_stage:phase.requireTransfer?'transfer':(row.stage||phase.stage||''),diagnostic:row.diagnostic||'',
     sentence_id:`grammar-v4:${unit.id}:${phase.id}:${row.key}`,
     tags:`grammar-forms-v4.2|module:${policy.moduleId||''}|unit:${unit.id}|phase:${phase.id}|skill:${row.skillId}|level:${unit.level||''}`
@@ -4373,7 +4384,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-const APP_BUILD = "4.2.4-catalog-session-contract-20260831";
+const APP_BUILD = "4.3.0-shared-knowledge-20260831";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5582,7 +5593,8 @@ const APP_BUILD = "4.2.4-catalog-session-contract-20260831";
         row.next_due = calcMasteredProgressiveDue(row.streak, row.difficulty || 1.0, profile);
       }
       await DB.update(table, row);
-      if (table === "word_pairs") await syncWordAnswerToGlobal(row);
+      if (table === "word_pairs") await syncWordAnswerToGlobal(row, correct);
+      if (table === "sentence_pairs") await syncGrammarContextToGlobal(row, correct);
       return row;
     }
 
@@ -6374,7 +6386,7 @@ const APP_BUILD = "4.2.4-catalog-session-contract-20260831";
       }
       row.last_seen = nowIso();
       await DB.update(table, row);
-      if (table === "word_pairs") await syncWordAnswerToGlobal(row);
+      if (table === "word_pairs") await syncWordAnswerToGlobal(row, correct);
       return row;
     }
 
@@ -8548,19 +8560,22 @@ const APP_BUILD = "4.2.4-catalog-session-contract-20260831";
       for (const row of changed) await DB.update("word_pairs", row);
       return rows;
     }
-    async function syncWordAnswerToGlobal(row) {
+    async function syncWordAnswerToGlobal(row, correct = null) {
       if (!row || !row.lexeme_id) return;
       const idx = await sharedLexiconIndex(), id = idx.canon(row.lexeme_id);
-      const key = `${row.deck || currentDeck}|${id}`;
-      const prev = await DB.getRecord("reading_items", key) || {};
       const inferred = (row.streak | 0) >= 5 ? 4 : (row.streak | 0) >= 3 ? 3 : (row.times_correct | 0) > 0 ? 2 : 0;
-      const lvl = Math.max(+prev.lvl || 0, inferred);
-      const fullRecallAt = Math.max(+(prev.storyState?.fullRecallAt || prev.fullRecallAt || 0), +(row.full_recall_at || 0));
-      await DB.putRecord("reading_items", {
-        ...prev, key, itemKey: id, language: row.deck || currentDeck, kind: "word", lvl,
-        lastSeen: Date.now(), sourceMode: "words",
-        storyState: { ...(prev.storyState || {}), lvl, collected: true, fullRecallAt }
-      });
+      await window.LanguageDeckKnowledge.record({language:row.deck||currentDeck,lexemeId:id,channel:"words",seen:+row.times_seen||0,correct:+row.times_correct||0,wrong:+row.times_wrong||0,lastAt:Date.parse(row.last_seen||"")||Date.now(),strength:inferred,sourceMode:"words",absolute:true,storyState:{collected:true,fullRecallAt:+row.full_recall_at||0,explicitUnknownAt:correct===false?Date.now():0}});
+    }
+    async function syncGrammarContextToGlobal(row,correct) {
+      if (!row || !(row.lexeme_refs || row.lexemeRefs)) return;
+      const idx = await sharedLexiconIndex(), refs = Array.isArray(row.lexemeRefs) ? row.lexemeRefs : String(row.lexeme_refs || row.lexemeRefs || "").split("|");
+      for (const raw of refs.map(value => String(value).trim()).filter(Boolean)) {
+        const id = idx.canon(raw);
+        if (!id) continue;
+        // A correct article/case/word-order answer proves that the lexeme was
+        // encountered in context, not that the learner can recall the word.
+        await window.LanguageDeckKnowledge.record({language:row.deck||currentDeck,lexemeId:id,channel:"grammar_context",seen:1,correct:correct?1:0,wrong:correct?0:1,strength:1,sourceMode:"grammar"});
+      }
     }
 
     /* ---------- Fetching items ---------- */
@@ -9505,6 +9520,12 @@ const APP_BUILD = "4.2.4-catalog-session-contract-20260831";
     function maybeAutoSubmitCompletedChoice() {
       if (sentenceMode !== "choice" || !grammarPracticeHu() || !currentSentenceData || locked || currentSentenceData.feedbackAwaitingContinue) return;
       if (currentSentence.task_scope === "select" ? !hasTypedText(currentSentenceData.selectAnswer) : !currentSentenceData.choiceAnswers.every(hasTypedText)) return;
+      if (!isCurrentSentenceCorrect()) {
+        currentSentenceData.choiceAutoSubmitting = false;
+        sentenceResult.textContent = "Még nem jó — válassz másik alakot.";
+        updateSentenceActionButtons();
+        return;
+      }
       const signature = choiceSignature();
       if (currentSentenceData.choiceAutoSubmitting) return;
       currentSentenceData.choiceAutoSubmitting = true;
@@ -10110,6 +10131,7 @@ const APP_BUILD = "4.2.4-catalog-session-contract-20260831";
       const next = currentSentenceData.choiceAnswers.findIndex(a => !a);
       if (next >= 0) activeBlankIndex = next;
       renderSentence();
+      maybeAutoSubmitCompletedChoice();
     }
 
     document.addEventListener("keydown", async (event) => {

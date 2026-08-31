@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "code": "de",
   "name": "German",
   "nativeName": "Deutsch",
@@ -17,6 +17,11 @@
   "typingHelp": "Type the German equivalent. Include the article if applicable.",
   "comparison": {
     "locale": "de-DE"
+  },
+  "knowledge": {
+    "schemaVersion": 3,
+    "lexicon": "lexicon.csv",
+    "aliases": "aliases.csv"
   },
   "keyboard": {
     "mode": "inline",

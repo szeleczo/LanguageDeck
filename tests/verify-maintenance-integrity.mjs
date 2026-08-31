@@ -75,7 +75,12 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedSkillDone[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "completed grammar skills are removed from already-prefetched queues");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.2\.4-catalog-session-contract-20260831/, "the application build marker includes the 4.2.4 catalog-session release");
+assert.match(indexHtml, /4\.3\.0-shared-knowledge-20260831/, "the application build marker includes the 4.3 shared-knowledge release");
+assert.equal((indexHtml.match(/4\.3\.0-shared-knowledge-20260831/g) || []).length, 2, "Course and Practice use the same 4.3 build marker");
+assert.match(indexHtml, /KNOWLEDGE_SCHEMA_VERSION=3/, "shared lexical knowledge has an explicit schema");
+assert.match(indexHtml, /KNOWLEDGE_CHANNELS=\["reading","words","grammar_context"\]/, "course, word practice and grammar context retain separate evidence channels");
+assert.match(indexHtml, /strength:1,sourceMode:"grammar"/, "grammar context can only mark a lexeme as encountered");
+assert.match(indexHtml, /if \(!isCurrentSentenceCorrect\(\)\)[\s\S]*Még nem jó[\s\S]*return;[\s\S]*submitSentenceAnswer\(false\)/, "choice exercises auto-submit only a correct completed answer");
 assert.ok(!indexHtml.includes("leadingGermanArticle"), "all article parsing uses the configured language helper");
 assert.match(indexHtml, /leadingConfiguredArticle\(target, currentDeck\)/, "Word Match uses the configured article parser");
 assert.match(indexHtml, /data-catalog-language="\$\{esc\(LANG\)\}"/, "every catalog button carries the language that rendered it");
@@ -94,7 +99,9 @@ assert.deepEqual(languages.languages.map(language => language.code), ["de", "it"
 assert.ok(languages.languages.every(language => language.config && language.manifest), "registry entries contain paths, not duplicate language settings");
 const languageConfigs = new Map(languages.languages.map(entry => [entry.code, JSON.parse(text(join(root, "decks", entry.config)))]));
 const germanLanguage = languageConfigs.get("de"), italianLanguage = languageConfigs.get("it");
-assert.equal(germanLanguage.schemaVersion, 2, "German uses the current language configuration schema");
+assert.equal(germanLanguage.schemaVersion, 3, "German uses the shared-knowledge language configuration schema");
+assert.equal(italianLanguage.schemaVersion, 3, "Italian uses the shared-knowledge language configuration schema");
+assert.ok([...languageConfigs.values()].every(config => config.knowledge?.schemaVersion === 3 && config.knowledge.lexicon && config.knowledge.aliases), "every installed language declares its own lexicon namespace");
 assert.deepEqual(germanLanguage.keyboard.rows, ["qwertzuiopü", "asdfghjklöä", "yxcvbnmß"], "German keeps its established touch-keypad layout in data");
 assert.deepEqual(italianLanguage.keyboard.rows, ["qwertyuiopè", "asdfghjklòàù", "zxcvbnmì"], "Italian has its own in-app QWERTY keypad layout");
 assert.ok([...languageConfigs.values()].every(config => config.keyboard?.mode === "inline" && config.keyboard.rows?.length), "every installed language package supplies its own in-app keyboard");
@@ -372,6 +379,17 @@ for (const id of canonicalIds) {
   assert.ok(!generated || !canonicalIds.has(generated[1]), `generated duplicate suffix remains: ${id}`);
 }
 
+const italianRoot = join(root, "decks", "it");
+const italianLexicon = parseCsv(text(join(italianRoot, "lexicon.csv")));
+const italianLexemeIds = new Set(italianLexicon.map(row => row.lexeme_id));
+assert.equal(italianLexemeIds.size, italianLexicon.length, "Italian canonical lexeme IDs are unique");
+const italianWords = parseCsv(text(join(italianRoot, "words", "core-3000.csv")));
+assert.equal(italianWords.length, 3000, "Italian Core 3000 keeps all rows");
+for (const row of italianWords) {
+  assert.ok(row.lexeme_id, `Italian word is missing lexeme_id: ${row.target}`);
+  assert.ok(italianLexemeIds.has(row.lexeme_id), `Italian word references missing lexeme: ${row.lexeme_id}`);
+}
+
 const aliases = parseCsv(text(join(deRoot, "aliases.csv")));
 const aliasMap = new Map();
 for (const row of aliases) {
@@ -431,10 +449,11 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-2-4-catalog-session-contract-20260831/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-3-0-shared-knowledge-20260831/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
+assert.match(serviceWorker, /decks\/it\/lexicon\.csv/, "Italian shared lexicon is available offline");
 assert.match(serviceWorker, /decks\/de\/stories\/tschick\/story\.json/, "Tschick course metadata is available offline");
 assert.match(serviceWorker, /icon-maskable\.svg/, "the vector maskable icon is available offline");
 const shellMatch = serviceWorker.match(/const APP_SHELL=\[([\s\S]*?)\];/);

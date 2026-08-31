@@ -1,5 +1,5 @@
-/* LanguageDeck 4.2.4 — catalog session contract. */
-const CACHE_VERSION="languagedeck-4-2-4-catalog-session-contract-20260831";
+/* LanguageDeck 4.3.0 — shared language-scoped knowledge. */
+const CACHE_VERSION="languagedeck-4-3-0-shared-knowledge-20260831";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
@@ -107,6 +107,8 @@ const APP_SHELL=[
   "./decks/de/words/hooks.csv",
   "./decks/index.json",
   "./decks/it/language.json",
+  "./decks/it/aliases.csv",
+  "./decks/it/lexicon.csv",
   "./decks/it/manifest.json",
   "./decks/it/words/core-3000.csv",
   "./decks/languages.json",

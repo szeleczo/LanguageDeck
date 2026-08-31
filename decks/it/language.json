@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "code": "it",
   "name": "Italian",
   "nativeName": "Italiano",
@@ -13,6 +13,11 @@
   "typingHelp": "Type the Italian equivalent.",
   "comparison": {
     "locale": "it-IT"
+  },
+  "knowledge": {
+    "schemaVersion": 3,
+    "lexicon": "lexicon.csv",
+    "aliases": "aliases.csv"
   },
   "keyboard": {
     "mode": "inline",
