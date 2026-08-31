@@ -1,4 +1,5 @@
 {
+  "schemaVersion": 2,
   "code": "de",
   "name": "German",
   "nativeName": "Deutsch",
@@ -13,5 +14,32 @@
     "das"
   ],
   "typingPlaceholder": "e.g. das Haus",
-  "typingHelp": "Type the German equivalent. Include the article if applicable."
+  "typingHelp": "Type the German equivalent. Include the article if applicable.",
+  "comparison": {
+    "locale": "de-DE"
+  },
+  "keyboard": {
+    "mode": "inline",
+    "rows": [
+      "qwertzuiopü",
+      "asdfghjklöä",
+      "yxcvbnmß"
+    ],
+    "punctuation": ["'", "’", "-"]
+  },
+  "articleParsing": {
+    "mode": "separate-leading-article",
+    "nounStartsUppercase": true
+  },
+  "csv": {
+    "targetHeaders": ["target", "german", "de", "deutsch", "translation", "answer"],
+    "exampleTargetHeaders": ["example_target", "example_de", "german_example"]
+  },
+  "contentTypeSynonyms": {
+    "sentences": ["sätze", "saetze"],
+    "words": ["wörter", "woerter"]
+  },
+  "capabilities": {
+    "grammarCurriculum": "grammar/curriculum-v4.json"
+  }
 }

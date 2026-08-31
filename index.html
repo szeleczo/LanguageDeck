@@ -3227,7 +3227,7 @@ html.integrated-practice-active body{overflow:hidden!important}
 <main id="browseMain">
 <section class="view on" id="courseView"><div class="eyebrow">Guided course</div><h1 id="courseTitle">Loading your next case…</h1><p class="lede" id="courseLede">The course remembers vocabulary across every chapter and prepares only what the next section needs.</p><div class="loading" id="courseBody">Loading Baker Street…</div></section>
 <section class="view" id="bookView"><div class="eyebrow">Story map</div><h1 id="bookTitle">Book</h1><p class="lede">Whole stories remain whole. Chapters load separately, scenes are meaningful stopping points, and study blocks adapt inside them.</p><div class="course-picker hidden" id="coursePickerWrap"><label for="coursePicker">Current story</label><select id="coursePicker"></select></div><div class="chapter-list" id="chapterList"></div></section>
-<section class="view" id="practiceView"><div class="eyebrow">Freedom always</div><h1>Practice</h1><p class="lede">Every learning engine now opens inside the same focused Study Shell.</p><div class="practice-grid"><button class="practice-card practice-button" id="practiceStoryBtn"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 4h16v16H4z"></path><path d="M8 8h8M8 12h8M8 16h5"></path></svg><h3>Story Study</h3><p>Open the current Baker Street chapter inside the unified Study Shell.</p></button><button class="practice-card practice-button" id="practiceWordsBtn"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><h3>Words</h3><p>Vocabulary matching, adaptive recall and the existing QWERTZ typing keyboard.</p></button><button class="practice-card practice-button" id="practiceGrammarBtn"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h13"></path></svg><h3>Grammar &amp; Forms</h3><p>Magyar magyarázatok, igealakok és teljes német mondatok egy vezetett tantervben.</p></button><button class="practice-card practice-button" id="practiceSentencesBtn"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 5h16M4 10h16M4 15h11M4 20h8"></path></svg><h3>Sentences</h3><p>Sentence building, reorder, hints, explanations and typed recall.</p></button></div><div class="legacy-note">Story courses and standalone practice decks stay in separate learning domains.</div></section>
+<section class="view" id="practiceView"><div class="eyebrow">Freedom always</div><h1>Practice</h1><p class="lede">Every learning engine now opens inside the same focused Study Shell.</p><div class="practice-grid"><button class="practice-card practice-button" id="practiceStoryBtn"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 4h16v16H4z"></path><path d="M8 8h8M8 12h8M8 16h5"></path></svg><h3>Story Study</h3><p>Open the current Baker Street chapter inside the unified Study Shell.</p></button><button class="practice-card practice-button" id="practiceWordsBtn"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><h3>Words</h3><p>Vocabulary matching, adaptive recall and the typing keyboard configured for the learning language.</p></button><button class="practice-card practice-button" id="practiceGrammarBtn"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h13"></path></svg><h3>Grammar &amp; Forms</h3><p>Magyar magyarázatok, igealakok és teljes német mondatok egy vezetett tantervben.</p></button><button class="practice-card practice-button" id="practiceSentencesBtn"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 5h16M4 10h16M4 15h11M4 20h8"></path></svg><h3>Sentences</h3><p>Sentence building, reorder, hints, explanations and typed recall.</p></button></div><div class="legacy-note">Story courses and standalone practice decks stay in separate learning domains.</div></section>
 </main>
 <nav class="bottom-nav"><div class="nav-inner"><button class="nav-btn on" data-view="course"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m16 8-2.4 5.6L8 16l2.4-5.6L16 8z"></path></svg>Course</button><button class="nav-btn" data-view="book"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>Book</button><button class="nav-btn" data-view="practice"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 20h9"></path><path d="M12 4h9"></path><path d="M4 9h16"></path><path d="M4 15h16"></path></svg>Practice</button></div></nav>
 </div>
@@ -3869,9 +3869,12 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.2.2-grammar-prompt-context-20260830",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.2.3-language-adapters-20260831",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
-function norm(v){return String(v||"").toLocaleLowerCase().normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
+function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
+function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
+function portableSlug(value,code=LANG){const parts=languageLower(value,code).normalize("NFKC").match(/[\p{L}\p{N}]+/gu)||[];return parts.map(part=>Array.from(part).map(ch=>ch.codePointAt(0).toString(36)).join("_")).join("-")||"item"}
+function norm(v){return languageLower(v).normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
 function parseCSV(text){const rows=[];let row=[],cell="",q=false,s=String(text||"").replace(/^\uFEFF/,"");for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==='"'&&s[i+1]==='"'){cell+='"';i++}else if(c==='"')q=false;else cell+=c}else if(c==='"')q=true;else if(c===','){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
 function objects(text){const r=parseCSV(text);if(!r.length)return[];const h=r[0].map(x=>x.trim());return r.slice(1).filter(x=>x.some(v=>String(v).trim())).map(x=>Object.fromEntries(h.map((k,i)=>[k,x[i]||""])))}
 async function fetchText(url,required=true){try{const r=await fetch(url+(url.includes('?')?'&':'?')+'v='+APP_BUILD,{cache:'no-cache'});if(!r.ok)throw Error(`HTTP ${r.status}: ${url}`);return await r.text()}catch(e){if(required)throw e;return""}}
@@ -3978,7 +3981,7 @@ let P = {};
 
 /* ---------- manifest-driven Story Study loader ---------- */
 function loaderNorm(value){return String(value||"").toLocaleLowerCase().normalize("NFC").replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu,"").replace(/\s+/g," ").trim()}
-function loaderSlug(value){return String(value||"").toLowerCase().replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"item"}
+function loaderSlug(value){return portableSlug(value)}
 function loaderParseCSV(text){const rows=[];let row=[],cell="",quoted=false;const src=String(text||"").replace(/^\uFEFF/,"");for(let i=0;i<src.length;i++){const c=src[i];if(quoted){if(c==='"'&&src[i+1]==='"'){cell+='"';i++}else if(c==='"')quoted=false;else cell+=c}else if(c==='"')quoted=true;else if(c===','){row.push(cell);cell=""}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=""}else if(c!=='\r')cell+=c}if(cell.length||row.length){row.push(cell);rows.push(row)}return rows}
 function loaderObjects(text){const rows=loaderParseCSV(text);if(!rows.length)return[];const h=rows[0].map(x=>String(x||"").trim());return rows.slice(1).filter(r=>r.some(x=>String(x||"").trim())).map(r=>Object.fromEntries(h.map((k,i)=>[k,r[i]??""])))}
 function loaderSplit(value){return String(value||"").split("|").map(x=>x.trim()).filter(Boolean)}
@@ -4191,13 +4194,14 @@ function installArchitectureShells(){
   if(!$('languageBackdrop')){const wrap=document.createElement('div');wrap.className='sheet-backdrop hidden';wrap.id='languageBackdrop';wrap.innerHTML='<section class="sheet"><div class="sheet-head"><div><h2>Learning language</h2><p>Course, Book and Practice switch together.</p></div><button class="close" id="languageClose" aria-label="Close language selector">×</button></div><div class="language-list" id="languageList"></div></section>';document.body.appendChild(wrap)}
 }
 async function loadGlobalLanguageCatalog(){
-  const data=await fetchJSON('decks/languages.json');LANGUAGE_CATALOG=Array.isArray(data.languages)?data.languages:[];const active=LANGUAGE_CATALOG.find(x=>x.code===LANG);
+  const data=await fetchJSON('decks/languages.json'),entries=Array.isArray(data.languages)?data.languages:[];
+  LANGUAGE_CATALOG=await Promise.all(entries.filter(x=>x?.code).map(async entry=>{if(!entry.config)return entry;try{return {...entry,...await fetchJSON(`decks/${entry.config}`),code:entry.code,config:entry.config,manifest:entry.manifest||`${entry.code}/manifest.json`}}catch(e){console.warn(`Language configuration unavailable for ${entry.code}`,e);return entry}}));const active=LANGUAGE_CATALOG.find(x=>x.code===LANG);
   if(!active&&LANGUAGE_CATALOG[0]){localStorage.setItem('ld-active-language',LANGUAGE_CATALOG[0].code);const u=new URL(location.href);u.searchParams.set('lang',LANGUAGE_CATALOG[0].code);location.replace(u);return false}
   if(active){$('languageFlag').textContent=active.flag||'🌐';$('languageLabel').textContent=active.name||active.nativeName||active.code.toUpperCase()}
   $('languageList').innerHTML=LANGUAGE_CATALOG.map(x=>`<button class="language-choice ${x.code===LANG?'on':''}" data-language="${esc(x.code)}"><span class="flag">${esc(x.flag||'🌐')}</span><span><b>${esc(x.name||x.nativeName||x.code.toUpperCase())}</b><small>${esc(x.label||x.nativeName||x.code.toUpperCase())}</small></span></button>`).join('');
   document.querySelectorAll('[data-language]').forEach(b=>b.onclick=()=>{const code=b.dataset.language;if(code===LANG){$('languageBackdrop').classList.add('hidden');return}localStorage.setItem('ld-active-language',code);const u=new URL(location.href);u.searchParams.set('lang',code);location.assign(u)});return true
 }
-async function loadPackageManifest(){if(!PACKAGE_MANIFEST)PACKAGE_MANIFEST=await fetchJSON(`decks/${LANG}/manifest.json`);return PACKAGE_MANIFEST}
+async function loadPackageManifest(){if(!PACKAGE_MANIFEST){const cfg=LANGUAGE_CATALOG.find(x=>x.code===LANG)||{},path=cfg.manifest||`${LANG}/manifest.json`;PACKAGE_MANIFEST=await fetchJSON(`decks/${path}`)}return PACKAGE_MANIFEST}
 async function storyDomainRows(mode){
   const chapters=[];for(const ch of STORY?.chapters||[])chapters.push({ch,data:await loadChapter(ch)});
   if(mode==='words'){const seen=new Set(),rows=[];for(const {ch,data} of chapters)for(const w of data.words||[]){const key=canon(w.lexeme_id||w.id);if(!key||seen.has(key)||!ldQuizSafeEnglish(w.english,true)||!w.target)continue;seen.add(key);rows.push({guided_key:`story:${STORY.id}:word:${key}`,english:w.english,target:w.target,article:w.article||'',type:w.kind||'word',hint:w.hint||`From ${ch.title}`,lexeme_id:key,article_prompt:!!w.article})}return rows}
@@ -4210,7 +4214,7 @@ function localStoryPackages(){try{return JSON.parse(localStorage.getItem('ld-sto
 function startLocalStoryPackage(id){const pack=localStoryPackages().find(x=>x.id===id);if(pack)startIntegratedStory({local:id,language:pack.language||LANG,seriesTitle:pack.seriesTitle||pack.title||pack.name||''},'practice')}
 async function renderPracticeLibrary(){
   const host=$('practiceLibrary');if(!host)return;host.classList.remove('loading');let manifest;try{manifest=await loadPackageManifest()}catch(e){host.innerHTML=`<article class="error-state"><h2>Practice library unavailable</h2><p>${esc(e.message||e)}</p></article>`;return}
-  const packages=(manifest.catalogPackages||[]).filter(p=>p.kind==='standalone'),localStories=localStoryPackages(),storySection=STORY?`<section><div class="practice-domain-head"><h2>Current story</h2><span>isolated domain</span></div><article class="practice-domain-card featured"><h3>${esc(STORY.title)}</h3><p>Only this story's vocabulary, grammar and sentences. Other courses and standalone decks never enter this domain.</p><div class="practice-domain-meta">${STORY.chapters.length} chapters · own Course / Book / Practice context</div><div class="practice-mode-group"><span class="practice-mode-label">Words</span><div class="practice-domain-actions"><button class="primary-action" data-story-practice="words" data-story-variant="match">Match</button><button data-story-practice="words" data-story-variant="progressive">Adaptive</button><button data-story-practice="words" data-story-variant="typing">Type</button></div></div><div class="practice-mode-group"><span class="practice-mode-label">In context</span><div class="practice-domain-actions"><button data-story-practice="grammar" data-story-variant="order">Grammar</button><button data-story-practice="sentences" data-story-variant="order">Sentences</button><button data-story-read>Read</button></div></div></article></section>`:`<section><div class="practice-domain-head"><h2>Story courses</h2><span>not installed for this language</span></div><div class="practice-empty-course">${esc(LANGUAGE_CATALOG.find(x=>x.code===LANG)?.name||LANG.toUpperCase())} currently has standalone practice only. Its deck library remains fully available below.</div></section>`,programmeSection=LANG==='de'?`<section><div class="practice-domain-head"><h2>Learning programmes</h2><span>guided curriculum</span></div><article class="practice-domain-card"><h3>Grammar &amp; Forms</h3><p>Nyolc tömör A1–B2 modul: áttekintő táblázatok, egyetlen célra épülő feladatok, gyors válaszadás és választható Igeműhely.</p><div class="practice-domain-actions"><button class="primary-action" data-grammar-course>Nyelvtani modulok megnyitása</button></div></article></section>`:'',localStorySection=localStories.length?`<section><div class="practice-domain-head"><h2>Imported stories</h2><span>on this device</span></div><div class="standalone-grid">${localStories.map(x=>`<article class="practice-domain-card"><h3>${esc(x.seriesTitle||x.title||x.name||x.id)}</h3><p>${esc(x.subtitle||'Imported Story Study package')}</p><div class="practice-domain-actions"><button class="primary-action" data-local-story="${esc(x.id)}">Open story</button></div></article>`).join('')}</div></section>`:'';
+  const packages=(manifest.catalogPackages||[]).filter(p=>p.kind==='standalone'),localStories=localStoryPackages(),activeLanguage=LANGUAGE_CATALOG.find(x=>x.code===LANG)||{},storySection=STORY?`<section><div class="practice-domain-head"><h2>Current story</h2><span>isolated domain</span></div><article class="practice-domain-card featured"><h3>${esc(STORY.title)}</h3><p>Only this story's vocabulary, grammar and sentences. Other courses and standalone decks never enter this domain.</p><div class="practice-domain-meta">${STORY.chapters.length} chapters · own Course / Book / Practice context</div><div class="practice-mode-group"><span class="practice-mode-label">Words</span><div class="practice-domain-actions"><button class="primary-action" data-story-practice="words" data-story-variant="match">Match</button><button data-story-practice="words" data-story-variant="progressive">Adaptive</button><button data-story-practice="words" data-story-variant="typing">Type</button></div></div><div class="practice-mode-group"><span class="practice-mode-label">In context</span><div class="practice-domain-actions"><button data-story-practice="grammar" data-story-variant="order">Grammar</button><button data-story-practice="sentences" data-story-variant="order">Sentences</button><button data-story-read>Read</button></div></div></article></section>`:`<section><div class="practice-domain-head"><h2>Story courses</h2><span>not installed for this language</span></div><div class="practice-empty-course">${esc(activeLanguage.name||LANG.toUpperCase())} currently has standalone practice only. Its deck library remains fully available below.</div></section>`,programmeSection=activeLanguage.capabilities?.grammarCurriculum?`<section><div class="practice-domain-head"><h2>Learning programmes</h2><span>guided curriculum</span></div><article class="practice-domain-card"><h3>Grammar &amp; Forms</h3><p>Nyolc tömör A1–B2 modul: áttekintő táblázatok, egyetlen célra épülő feladatok, gyors válaszadás és választható Igeműhely.</p><div class="practice-domain-actions"><button class="primary-action" data-grammar-course>Nyelvtani modulok megnyitása</button></div></article></section>`:'',localStorySection=localStories.length?`<section><div class="practice-domain-head"><h2>Imported stories</h2><span>on this device</span></div><div class="standalone-grid">${localStories.map(x=>`<article class="practice-domain-card"><h3>${esc(x.seriesTitle||x.title||x.name||x.id)}</h3><p>${esc(x.subtitle||'Imported Story Study package')}</p><div class="practice-domain-actions"><button class="primary-action" data-local-story="${esc(x.id)}">Open story</button></div></article>`).join('')}</div></section>`:'';
   host.innerHTML=`${storySection}${programmeSection}<section><div class="practice-domain-head"><h2>Standalone decks</h2><span>independent packages</span></div><div class="standalone-grid">${packages.map(p=>`<article class="practice-domain-card"><h3>${esc(p.title)}</h3><p>${esc(p.description||'Independent practice package.')}</p><div class="practice-domain-meta">${esc(p.level||'All levels')}</div><div class="practice-domain-actions">${(p.actions||[]).map((a,i)=>`<button class="${i===0?'primary-action':''}" data-catalog-package="${esc(p.id)}" data-catalog-action="${i}">${esc(a.label||practiceModeLabel(a.mode))}</button>`).join('')}</div></article>`).join('')}</div></section>${localStorySection}<section><div class="practice-domain-head"><h2>My library</h2><span>device tools</span></div><article class="practice-domain-card"><h3>Personal decks and progress</h3><p>Import your own material, manage installed decks, or move learning progress between devices.</p><div class="practice-tools"><button class="practice-tool" data-practice-tool="import"><b>Import</b><span>CSV word or sentence deck, or Story Study ZIP</span></button><button class="practice-tool" data-practice-tool="manage"><b>Installed decks</b><span>Review and remove local deck copies</span></button><button class="practice-tool" data-practice-tool="sync"><b>Sync progress</b><span>Create or apply a device transfer code</span></button></div></article></section>`;
   host.querySelectorAll('[data-story-practice]').forEach(b=>b.onclick=()=>startStoryDomainPractice(b.dataset.storyPractice,b.dataset.storyVariant));host.querySelector('[data-story-read]')?.addEventListener('click',()=>CURRENT?startIntegratedStory(storyRequestFor(CURRENT.ch),'practice'):showView('course'));host.querySelector('[data-grammar-course]')?.addEventListener('click',()=>openGrammarCourse(null,'practice'));host.querySelectorAll('[data-catalog-package]').forEach(b=>b.onclick=()=>{const p=packages.find(x=>x.id===b.dataset.catalogPackage),a=p?.actions?.[+b.dataset.catalogAction];if(a)startCatalogIntegrated(a)});host.querySelectorAll('[data-local-story]').forEach(b=>b.onclick=()=>startLocalStoryPackage(b.dataset.localStory));host.querySelectorAll('[data-practice-tool]').forEach(b=>b.onclick=()=>startPracticeUtility(b.dataset.practiceTool))
 }
@@ -4244,7 +4248,9 @@ let GRAMMAR_CURRICULUM=null;
 let GRAMMAR_COURSE_SESSION={moduleId:null,returnView:'practice'};
 async function loadGrammarCurriculum(){
   if(GRAMMAR_CURRICULUM)return GRAMMAR_CURRICULUM;
-  const data=await fetchJSON(`decks/${LANG}/grammar/curriculum-v4.json`);
+  const cfg=LANGUAGE_CATALOG.find(x=>x.code===LANG)||{},path=cfg.capabilities?.grammarCurriculum;
+  if(!path)throw Error('Ehhez a nyelvi csomaghoz még nincs telepített nyelvtani tanterv.');
+  const data=await fetchJSON(`decks/${LANG}/${path}`);
   if(!data||!Array.isArray(data.units)||!data.units.length||!Array.isArray(data.modules)||!data.modules.length)throw Error('A Nyelvtan és alakok tanterv üres.');
   const unitIds=new Set(),goalIds=new Set();
   for(const unit of data.units){
@@ -4267,11 +4273,11 @@ function grammarModuleById(id){return GRAMMAR_CURRICULUM?.modules?.find(module=>
 function grammarLegacySetName(unit,phase){return unit.progressSetName?`${unit.progressSetName} · ${phase.id}`:`Grammar 4 · ${unit.track||'spiral'} · ${unit.order||0} · ${unit.id} · ${phase.id}`}
 function grammarFocusParts(value){return String(Array.isArray(value)?value.join('|'):value||'').split('|').map(part=>part.trim()).filter(Boolean)}
 function grammarRowSpec(unit,phase,row,policy={}){
-  const focus=grammarFocusParts(row.focus),targetNorm=String(row.target||'').toLocaleLowerCase('de-DE'),wholeAnswerChoice=(policy.variant||phase.variant)==='choice'&&focus.some(part=>/\s/u.test(part));
+  const focus=grammarFocusParts(row.focus),targetNorm=languageLower(row.target),wholeAnswerChoice=(policy.variant||phase.variant)==='choice'&&focus.some(part=>/\s/u.test(part));
   if(policy.focusOnly){
     if(!focus.length)throw Error(`A célzott feladatból hiányzik a focus: ${unit.id}/${phase.id}/${row.key}`);
     if(policy.singleTarget&&focus.length!==1)throw Error(`Az egyváltozós feladat több célt mér: ${unit.id}/${phase.id}/${row.key}`);
-    if(focus.some(part=>!targetNorm.includes(part.toLocaleLowerCase('de-DE'))))throw Error(`A tanult alak nem található a célmondatban: ${unit.id}/${phase.id}/${row.key}`);
+    if(focus.some(part=>!targetNorm.includes(languageLower(part))))throw Error(`A tanult alak nem található a célmondatban: ${unit.id}/${phase.id}/${row.key}`);
     const options=Array.isArray(row.options)?row.options:String(row.options||'').split('|').filter(Boolean);
     if((policy.variant||phase.variant)==='choice'&&options.length<2)throw Error(`A választós célfeladathoz nincs célzott válaszbank: ${unit.id}/${phase.id}/${row.key}`);
   }
@@ -4357,29 +4363,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
        ============================================================ */
 
     /* ---------- DECK CONFIG ---------- */
-    let DECK_CONFIG = {
-      de: {
-        code: "de",
-        label: "English → German",
-        shortLabel: "German",
-        flag: "🇩🇪",
-        sourceName: "English",
-        leftTitle: "English",
-        rightTitle: "German",
-        targetName: "German",
-        deckFolder: "de",
-        useArticles: true,
-        typingPlaceholder: "e.g. das Haus",
-        typingHelp: "Type the German equivalent. Include the article if applicable."
-      }
-    };
+    let DECK_CONFIG = {};
 
     let SUPPORTED_DECKS = new Set(Object.keys(DECK_CONFIG));
     const LANGUAGE_MANIFESTS = new Map();
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.2.0-compact-grammar-modules-20260830";
+    const APP_BUILD = "4.2.3-language-adapters-20260831";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -4394,23 +4385,30 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       } catch (_) { return null; }
     }
 
-    function languageConfigFromRegistry(entry) {
+    function languageConfigFromRegistry(entry, language = {}) {
+      const value = { ...entry, ...language, code: entry.code, manifest: entry.manifest || language.manifest || `${entry.code}/manifest.json` };
       return {
-        code: entry.code,
-        label: entry.label || `${(entry.sourceLanguage || "en").toUpperCase()} → ${entry.name || entry.code.toUpperCase()}`,
-        shortLabel: entry.name || entry.nativeName || entry.code.toUpperCase(),
-        nativeName: entry.nativeName || entry.name || entry.code.toUpperCase(),
-        flag: entry.flag || "🌐",
-        sourceName: entry.sourceName || "English",
-        leftTitle: entry.leftTitle || "English",
-        rightTitle: entry.name || entry.nativeName || entry.code.toUpperCase(),
-        targetName: entry.name || entry.nativeName || entry.code.toUpperCase(),
-        deckFolder: entry.code,
-        manifest: entry.manifest || `${entry.code}/manifest.json`,
-        useArticles: !!entry.useArticles,
-        articles: Array.isArray(entry.articles) ? entry.articles : [],
-        typingPlaceholder: entry.typingPlaceholder || "Answer",
-        typingHelp: entry.typingHelp || `Type the ${entry.name || "target-language"} equivalent.`
+        code: value.code,
+        label: value.label || `${(value.sourceLanguage || "en").toUpperCase()} → ${value.name || value.code.toUpperCase()}`,
+        shortLabel: value.name || value.nativeName || value.code.toUpperCase(),
+        nativeName: value.nativeName || value.name || value.code.toUpperCase(),
+        flag: value.flag || "🌐",
+        sourceName: value.sourceName || "English",
+        leftTitle: value.leftTitle || "English",
+        rightTitle: value.name || value.nativeName || value.code.toUpperCase(),
+        targetName: value.name || value.nativeName || value.code.toUpperCase(),
+        deckFolder: value.code,
+        manifest: value.manifest,
+        useArticles: !!value.useArticles,
+        articles: Array.isArray(value.articles) ? value.articles : [],
+        typingPlaceholder: value.typingPlaceholder || "Answer",
+        typingHelp: value.typingHelp || `Type the ${value.name || "target-language"} equivalent.`,
+        comparison: value.comparison && typeof value.comparison === "object" ? value.comparison : {},
+        keyboard: value.keyboard && typeof value.keyboard === "object" ? value.keyboard : { mode: "inline", rows: [] },
+        articleParsing: value.articleParsing && typeof value.articleParsing === "object" ? value.articleParsing : { mode: "none" },
+        csv: value.csv && typeof value.csv === "object" ? value.csv : {},
+        contentTypeSynonyms: value.contentTypeSynonyms && typeof value.contentTypeSynonyms === "object" ? value.contentTypeSynonyms : {},
+        capabilities: value.capabilities && typeof value.capabilities === "object" ? value.capabilities : {}
       };
     }
 
@@ -4420,7 +4418,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         const available = {};
         for (const entry of registry.languages) {
           if (!entry || !entry.code) continue;
-          available[entry.code] = languageConfigFromRegistry(entry);
+          const language = entry.config ? await fetchOptionalJson(`decks/${entry.config}`) : null;
+          available[entry.code] = languageConfigFromRegistry(entry, language || {});
         }
         if (Object.keys(available).length) DECK_CONFIG = available;
       }
@@ -4821,8 +4820,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const nowIso = () => new Date().toISOString();
 
     function normalizeDeck(deck) {
-      const d = (deck || "de").toString().trim().toLowerCase();
-      return SUPPORTED_DECKS.has(d) ? d : "de";
+      const fallback = SUPPORTED_DECKS.values().next().value || Object.keys(DECK_CONFIG)[0] || "de";
+      const d = (deck || fallback).toString().trim().toLowerCase();
+      return SUPPORTED_DECKS.has(d) ? d : fallback;
     }
 
     function normalizeSetName(name) {
@@ -5022,61 +5022,62 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return null;
     }
 
-    function normalizeGermanArticle(v) {
+    function normalizeConfiguredArticle(v, deck = currentDeck) {
       const article = normTxt(v);
-      return (article === "der" || article === "die" || article === "das") ? article : null;
+      return (deckCfg(deck).articles || []).map(x => normTxt(x)).includes(article) ? article : null;
     }
 
-    function leadingGermanArticle(targetValue) {
+    function leadingConfiguredArticle(targetValue, deck = currentDeck) {
       const target = String(targetValue || "").trim();
-      const lower = target.toLowerCase();
-      for (const candidate of ["der ", "die ", "das "]) {
+      const lower = languageLowerForDeck(target, deck);
+      for (const article of deckCfg(deck).articles || []) {
+        const candidate = `${languageLowerForDeck(article, deck)} `;
         if (lower.startsWith(candidate)) {
-          return { article: candidate.trim(), rest: target.slice(candidate.length).trim() };
+          return { article: String(article).trim(), rest: target.slice(candidate.length).trim() };
         }
       }
       return null;
     }
 
-    function looksLikeStandaloneGermanNoun(rest) {
+    function looksLikeStandaloneNoun(rest, deck = currentDeck) {
       const s = String(rest || "").trim();
       if (!s) return false;
       // Do not treat full sentences or comma-separated clauses as noun targets.
       if (/[.!?;:=]/.test(s) || s.includes(",")) return false;
       const words = s.split(/\s+/).filter(Boolean);
       if (words.length > 2) return false;
-      // German nouns normally start uppercase. This keeps “Das ist ...” intact.
-      return /^[A-ZÄÖÜ]/.test(words[0] || "");
+      if (deckCfg(deck).articleParsing?.nounStartsUppercase !== true) return false;
+      return /^\p{Lu}/u.test(words[0] || "");
     }
 
-    function shouldStripArticleFromImportedTarget(targetValue, articleValue, typeValue, articlePromptValue) {
-      const leading = leadingGermanArticle(targetValue);
+    function shouldStripArticleFromImportedTarget(targetValue, articleValue, typeValue, articlePromptValue, deck = currentDeck) {
+      if (deckCfg(deck).articleParsing?.mode !== "separate-leading-article") return false;
+      const leading = leadingConfiguredArticle(targetValue, deck);
       if (!leading) return false;
-      const explicitArticle = normalizeGermanArticle(articleValue);
+      const explicitArticle = normalizeConfiguredArticle(articleValue, deck);
       if (explicitArticle && explicitArticle !== leading.article) return false;
 
       const t = normTxt(typeValue || "");
       const explicitPrompt = parseOptionalBool(articlePromptValue);
       if (t === "noun" || explicitPrompt === true) return true;
       if (["phrase", "expression", "chunk", "sentence", "idiom", "pattern", "grammar", "register_pair", "professional", "verb"].includes(t)) return false;
-      return looksLikeStandaloneGermanNoun(leading.rest);
+      return looksLikeStandaloneNoun(leading.rest, deck);
     }
 
-    function splitArticleFromTarget(targetValue, articleValue, typeValue, articlePromptValue) {
-      const explicitArticle = normalizeGermanArticle(articleValue);
+    function splitArticleFromTarget(targetValue, articleValue, typeValue, articlePromptValue, deck = currentDeck) {
+      const explicitArticle = normalizeConfiguredArticle(articleValue, deck);
       const target = String(targetValue || "").trim();
-      const leading = leadingGermanArticle(target);
+      const leading = leadingConfiguredArticle(target, deck);
 
-      if (shouldStripArticleFromImportedTarget(target, articleValue, typeValue, articlePromptValue)) {
+      if (shouldStripArticleFromImportedTarget(target, articleValue, typeValue, articlePromptValue, deck)) {
         return [explicitArticle || leading.article, leading.rest];
       }
       return [explicitArticle || null, target];
     }
 
     function csvTargetHeaderCandidates(deck) {
-      if (deck === "de") return ["target", "german", "de", "deutsch", "translation", "answer"];
-      if (deck === "it") return ["target", "italian", "it", "italiano", "translation", "answer"];
-      return ["target", "translation", "answer"];
+      const configured = deckCfg(deck).csv?.targetHeaders;
+      return Array.isArray(configured) && configured.length ? configured : ["target", "translation", "answer"];
     }
 
     /* ---------- Learning help: hint + explanation ---------- */
@@ -5617,10 +5618,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     function shouldUseInlineMissingKeypad(challenge) {
-      // On touch-first devices the progressive mode should never fall back to
-      // the OS keyboard. Levels 1–4 use missing-letter entry; level 5 uses the
-      // same in-app keypad as a full-answer builder.
-      return !!(challenge && isTouchPrimaryDevice());
+      // A language can deliberately opt out and use the device keyboard. This
+      // is the safe default for scripts without a reviewed in-app layout.
+      return !!(challenge && isTouchPrimaryDevice() && keyboardConfig().mode === "inline");
     }
 
     function setInlineKeypadInputMode(input, enabled) {
@@ -5638,37 +5638,23 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       }
     }
 
-    /* Fixed QWERTZ geometry: every letter has a HOME ROW and a position in
-       it, like on a real keyboard. The pad only shows the relevant subset,
-       but each shown letter always sits in its own row, in QWERTZ order —
-       "a" is always on the left of the home row, never wrapped to the end
-       of the top row. Accented letters slot in right after their base
-       letter (Italian à è é ì ò ù etc.), umlauts at their German positions. */
-    const INLINE_KEYPAD_ROWS = [
-      Array.from("qwertzuiopü"),
-      Array.from("asdfghjklöä"),
-      Array.from("yxcvbnmß")
-    ];
-    const INLINE_KEYPAD_POS = (() => {
+    function inlineKeypadPositionMap(keyboard) {
       const pos = new Map();
-      INLINE_KEYPAD_ROWS.forEach((row, r) => row.forEach((ch, c) => pos.set(ch, { row: r, col: c })));
-      // Accents inherit their base letter's slot (placed just after it).
-      const accents = { "à":"a","á":"a","â":"a","è":"e","é":"e","ê":"e","ì":"i","í":"i","î":"i",
-                        "ò":"o","ó":"o","ô":"o","ù":"u","ú":"u","û":"u","ç":"c","ñ":"n" };
-      for (const [acc, base] of Object.entries(accents)) {
+      keyboard.rows.forEach((row, r) => row.forEach((ch, c) => pos.set(ch, { row: r, col: c })));
+      for (const [acc, base] of Object.entries(keyboard.accentSlots || {})) {
         const p = pos.get(base);
         if (p) pos.set(acc, { row: p.row, col: p.col + 0.5 });
       }
       return pos;
-    })();
-    const INLINE_REQUIRED_PUNCTUATION = new Set(["'", "’", "-"]);
+    }
 
-    /* Bucket a set of letters into the fixed keyboard rows, keeping QWERTZ
-       order inside each row; unknown characters fall to the bottom row. */
-    function layoutKeypadRows(chars) {
-      const rows = INLINE_KEYPAD_ROWS.map(() => []);
+    /* Keep each configured key in a stable row. Characters not in the
+       language layout are still reachable, at the end of its last row. */
+    function layoutKeypadRows(chars, keyboard = keyboardConfig()) {
+      const rows = keyboard.rows.map(() => []);
+      const pos = inlineKeypadPositionMap(keyboard);
       for (const ch of chars) {
-        const p = INLINE_KEYPAD_POS.get(ch) || { row: INLINE_KEYPAD_ROWS.length - 1, col: 999 };
+        const p = pos.get(ch) || { row: Math.max(0, keyboard.rows.length - 1), col: 999 };
         rows[p.row].push({ ch, col: p.col });
       }
       return rows
@@ -5680,7 +5666,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const out = [];
       Array.from(String(text || "")).forEach(ch => {
         if (lettersOnly && !(/[\p{L}\p{M}]/u.test(ch))) return;
-        const lower = ch.toLocaleLowerCase();
+        const lower = languageLowerForDeck(ch);
         if (!out.includes(lower)) out.push(lower);
       });
       return out;
@@ -5688,18 +5674,21 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     function inlineKeypadRowsFor(challenge) {
       if (!challenge) return [];
-      // FULL keyboard, every time: all base QWERTZ keys plus any accented
-      // letters the current answer needs (slotted next to their base key).
+      const keyboard = keyboardConfig();
+      if (keyboard.mode !== "inline") return [];
+      // FULL configured keyboard, every time, plus any character the current
+      // answer needs. Stable layout avoids leaking the answer through keys.
       // Stable layout builds muscle memory and never leaks which letters the
       // answer contains.
-      const chars = new Set(INLINE_KEYPAD_ROWS.flat());
+      const chars = new Set(keyboard.rows.flat());
       for (const ch of uniqueCharsFrom(challenge.full, true)) chars.add(ch);
-      return layoutKeypadRows([...chars]);
+      return layoutKeypadRows([...chars], keyboard);
     }
 
     function inlineRequiredPunctuationFor(challenge) {
       if (!challenge || challenge.masked) return [];
-      return Array.from(String(challenge.full || "")).filter((ch,idx,arr)=>INLINE_REQUIRED_PUNCTUATION.has(ch)&&arr.indexOf(ch)===idx);
+      const punctuation = new Set(keyboardConfig().punctuation || []);
+      return Array.from(String(challenge.full || "")).filter((ch,idx,arr)=>punctuation.has(ch)&&arr.indexOf(ch)===idx);
     }
 
     function renderInlineMissingKeypad(container, input, challenge, onChange) {
@@ -5907,9 +5896,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const { headers, items } = csvToObjects(text);
       const englishKey = findHeader(headers, ["english", "en", "source", "prompt", "cue"]);
       const targetKey = findHeader(headers, csvTargetHeaderCandidates(deck));
-      if (!englishKey || !targetKey) {
-        throw new Error("CSV must have an English/source column and a target column. Supported: english/en/source + target/german/de/italian/it.");
-      }
+      if (!englishKey || !targetKey) throw new Error("CSV needs an English/source column and a target column accepted by the selected language package.");
 
       const articleKey = findHeader(headers, ["article", "gender", "der_die_das"]);
       const pluralKey = findHeader(headers, ["plural", "plural_de", "plural_form"]);
@@ -5921,7 +5908,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const articlePromptKey = findHeader(headers, ["article_prompt", "ask_article", "test_article"]);
       const levelKey = findHeader(headers, ["level", "cefr", "difficulty_level"]);
       const exampleEnKey = findHeader(headers, ["example_en", "english_example", "example_english"]);
-      const exampleTargetKey = findHeader(headers, ["example_target", "example_de", "german_example", "example_german", "example_it", "italian_example"]);
+      const exampleTargetKey = findHeader(headers, ["example_target", ...(deckCfg(deck).csv?.exampleTargetHeaders || [])]);
       const alternativesKey = findHeader(headers, ["alternatives", "alt", "accepted", "accepted_answers"]);
       const sourceKey = findHeader(headers, ["source", "source_sentence", "sentence", "from_sentence"]);
       const sourceIdKey = findHeader(headers, ["source_id", "sentence_id", "source_sentence_id", "from_sentence_id"]);
@@ -5938,9 +5925,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
         let article = null;
         let target = targetRaw;
-        if (deck === "de") {
-          [article, target] = splitArticleFromTarget(targetRaw, articleRaw, typeRaw, articlePromptRaw);
-        }
+        [article, target] = splitArticleFromTarget(targetRaw, articleRaw, typeRaw, articlePromptRaw, deck);
 
         const row = {
           deck, set_name: setName, english, target, article: article || null,
@@ -5976,6 +5961,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     async function refreshExtendedGlossContentV315() {
+      // One-time content migration for a retired German package. It is kept
+      // explicitly scoped so newer language packages never inherit its data.
+      const legacyLanguage = "de";
+      if (!SUPPORTED_DECKS.has(legacyLanguage)) return { updated: 0, installed: 0 };
       const marker = "ld-content-migration-3.1.5-extended-glosses";
       if (localStorage.getItem(marker) === "done") return { updated: 0, installed: 0 };
       const specs = [
@@ -5985,10 +5974,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       ];
       let updated = 0, installed = 0;
       for (const spec of specs) {
-        const existing = await DB.getAll("word_pairs", "de", spec.setName);
+        const existing = await DB.getAll("word_pairs", legacyLanguage, spec.setName);
         if (!existing.length) continue;
         installed++;
-        const r = await fetch(cacheBustedUrl(`decks/de/${spec.file}`), { cache: "reload" });
+        const r = await fetch(cacheBustedUrl(`decks/${legacyLanguage}/${spec.file}`), { cache: "reload" });
         if (!r.ok) throw new Error(`Extended glossary refresh failed (${r.status}) for ${spec.setName}.`);
         const { items } = csvToObjects(await r.text());
         const freshByLexeme = new Map(items.filter(x => x.lexeme_id).map(x => [String(x.lexeme_id).trim(), x]));
@@ -6024,9 +6013,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const { headers, items } = csvToObjects(text);
       const englishKey = findHeader(headers, ["english", "en", "source", "prompt", "cue"]);
       const targetKey = findHeader(headers, csvTargetHeaderCandidates(deck));
-      if (!englishKey || !targetKey) {
-        throw new Error("CSV must have an English/source column and a target column. Supported: english/en/source + target/german/de/italian/it.");
-      }
+      if (!englishKey || !targetKey) throw new Error("CSV needs an English/source column and a target column accepted by the selected language package.");
       const registerKey = findHeader(headers, ["register", "style", "tone"]);
       const tagsKey = findHeader(headers, ["tags", "tag", "topic", "category"]);
       const hintKey = findHeader(headers, ["hint"]);
@@ -6752,8 +6739,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function textCeiling() { return TEXT_CEILINGS[textGoal] || 2; }
     function textKey(unitId) { return `${currentDeck}|${unitId}`; }
     function textItemStorageKey(key) { return `${currentDeck}|${key}`; }
+    function portableLexemeSuffix(value, deck = currentDeck) {
+      const parts = languageLowerForDeck(value, deck).normalize("NFKC").match(/[\p{L}\p{N}]+/gu) || [];
+      return parts.map(part => Array.from(part).map(ch => ch.codePointAt(0).toString(36)).join("_")).join("-") || "item";
+    }
     function textNormalize(value) {
-      return String(value || "").toLocaleLowerCase().normalize("NFC")
+      return languageLowerForDeck(value).normalize("NFC")
         .replace(/^[^\p{L}\p{M}]+|[^\p{L}\p{M}]+$/gu, "")
         .replace(/\s+/g, " ").trim();
     }
@@ -6824,7 +6815,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     function textLexemeBase(row) {
-      return row.lexeme_id || `${currentDeck}.unknown.${textNormalize(row.target).replace(/[^a-z0-9]+/g, "-")}`;
+      return row.lexeme_id || `${currentDeck}.unknown.${portableLexemeSuffix(row.target)}`;
     }
 
     function textBuildAnchors(sentences, words, explicitAnchors, lexiconRows) {
@@ -7418,8 +7409,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
     function textBuildKeyboard() {
       const keyboard = $("txKeyboard"), input = $("txTypingInput"); if (!keyboard || !input) return;
-      const rows = ["QWERTZUIOPÜ", "ASDFGHJKLÖÄ", "YXCVBNMß"];
-      keyboard.innerHTML = rows.map(row => `<div class="tx-keyrow" style="--key-count:${[...row].length}">${[...row].map(k => `<button type="button" class="tx-key" data-text-key="${k.toLowerCase()}">${k}</button>`).join("")}</div>`).join("") + `<div class="tx-keyrow" style="--key-count:2"><button type="button" class="tx-key wide" data-text-key=" ">Space</button><button type="button" class="tx-key wide" data-text-key="backspace">⌫</button></div>`;
+      const layout = keyboardConfig();
+      keyboard.classList.remove("hidden"); input.readOnly = false; input.setAttribute("inputmode", "none");
+      const rows = layout.rows.map(row => row.map(ch => ch.toLocaleUpperCase(languageLocaleForDeck())).join(""));
+      keyboard.innerHTML = rows.map(row => `<div class="tx-keyrow" style="--key-count:${[...row].length}">${[...row].map(k => `<button type="button" class="tx-key" data-text-key="${languageLowerForDeck(k)}">${k}</button>`).join("")}</div>`).join("") + `<div class="tx-keyrow" style="--key-count:2"><button type="button" class="tx-key wide" data-text-key=" ">Space</button><button type="button" class="tx-key wide" data-text-key="backspace">⌫</button></div>`;
       let activeKey=null;
       const select=e=>document.elementFromPoint(e.clientX,e.clientY)?.closest("[data-text-key]");
       const clear=()=>{activeKey?.classList.remove("is-pressing");activeKey=null};
@@ -7706,7 +7699,19 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     /* ---------- UI helpers ---------- */
-    function deckCfg(deck = currentDeck) { return DECK_CONFIG[normalizeDeck(deck)] || DECK_CONFIG.de; }
+    function deckCfg(deck = currentDeck) { return DECK_CONFIG[normalizeDeck(deck)] || Object.values(DECK_CONFIG)[0] || {}; }
+    function languageLocaleForDeck(deck = currentDeck) { return deckCfg(deck).comparison?.locale || undefined; }
+    function languageLowerForDeck(value, deck = currentDeck) { return String(value || "").toLocaleLowerCase(languageLocaleForDeck(deck)); }
+    function keyboardConfig(deck = currentDeck) {
+      const configured = deckCfg(deck).keyboard || {}, rows = Array.isArray(configured.rows) ? configured.rows.map(row => Array.from(String(row || "")).map(ch => languageLowerForDeck(ch, deck)).filter(Boolean)).filter(row => row.length) : [];
+      if (configured.mode !== "inline" || !rows.length) throw new Error(`The ${languageName(deck)} package needs an in-app keyboard layout.`);
+      return {
+        mode: "inline",
+        rows,
+        punctuation: Array.isArray(configured.punctuation) ? configured.punctuation.map(String) : [],
+        accentSlots: configured.accentSlots && typeof configured.accentSlots === "object" ? configured.accentSlots : {}
+      };
+    }
     function languageEntries() { return Object.entries(DECK_CONFIG).map(([code, cfg]) => ({ code, cfg })); }
     function languageName(deck = currentDeck) { return deckCfg(deck).shortLabel || deckCfg(deck).targetName || normalizeDeck(deck).toUpperCase(); }
     function languageFullLabel(deck = currentDeck) { return deckCfg(deck).label || `${deckCfg(deck).sourceName || "English"} → ${languageName(deck)}`; }
@@ -7952,7 +7957,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       // is regular Type rather than Adaptive/Progressive. The active input
       // renderer owns activation; this branch only clears the dock when the
       // selected mode cannot use it at all.
-      const dockedKeypadMode = isTouchPrimaryDevice() && (
+      const dockedKeypadMode = keyboardConfig().mode === "inline" && isTouchPrimaryDevice() && (
         (isWords && (wordMode === "typing" || wordMode === "progressive")) ||
         (isSentenceGame && (sentenceMode === "typing" || sentenceMode === "progressive"))
       );
@@ -8125,7 +8130,16 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
 
     /* ---------- Combined book flow ---------- */
-    function combinedBaseName(name) {
+    function contentTypeTerms(type, deck = currentDeck) {
+      const generic = type === "sentences" ? ["sentences", "sentence"] : ["words", "word", "vocab", "vocabulary"];
+      const configured = deckCfg(deck).contentTypeSynonyms?.[type];
+      return [...new Set([...generic, ...(Array.isArray(configured) ? configured : [])].map(value => String(value).trim()).filter(Boolean))];
+    }
+    function contentTypeRegex(type, deck = currentDeck) {
+      const terms = contentTypeTerms(type, deck).map(value => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+      return new RegExp(`(?:${terms.join("|")})`, "i");
+    }
+    function combinedBaseName(name, deck = currentDeck) {
       const raw = String(name || "")
         .trim()
         // The import UI often receives the original filename as deck name.
@@ -8134,27 +8148,28 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return raw
         // Existing supported forms:
         //   "Book — Sentences", "Book - Words", "Book (sentences)"
-        .replace(/\s+[—–-]\s+(Sentences|Sentence|Words|Word|Vocab|Vocabulary)\s*$/i, "")
-        .replace(/\s+\((sentences?|words?|vocab|vocabulary)\)\s*$/i, "")
+        .replace(new RegExp(`\\s+[—–-]\\s+${contentTypeRegex("sentences",deck).source}\\s*$`, "i"), "")
+        .replace(new RegExp(`\\s+[—–-]\\s+${contentTypeRegex("words",deck).source}\\s*$`, "i"), "")
+        .replace(new RegExp(`\\s+\\((?:${contentTypeRegex("sentences",deck).source}|${contentTypeRegex("words",deck).source})\\)\\s*$`, "i"), "")
         // New robust forms produced by AI/content pipelines:
         //   "Book_sentences", "Book_words", "Book-sentences", "Book words"
-        .replace(/[\s_—–-]+(sentences?|words?|vocab|vocabulary|sätze|saetze|wörter|woerter)\s*$/i, "")
+        .replace(new RegExp(`[\\s_—–-]+(?:${contentTypeRegex("sentences",deck).source}|${contentTypeRegex("words",deck).source})\\s*$`, "i"), "")
         .trim();
     }
 
-    function combinedBaseKey(name) {
-      return combinedBaseName(name)
+    function combinedBaseKey(name, deck = currentDeck) {
+      return combinedBaseName(name, deck)
         .normalize("NFKC")
-        .toLocaleLowerCase()
+        .toLocaleLowerCase(languageLocaleForDeck(deck))
         .replace(/[\s_—–-]+/g, "_")
         .replace(/^_+|_+$/g, "");
     }
 
-    function sentenceSetLooksLikeBook(name) {
-      return /(^|[\s_—–-])(sentences?|sätze|saetze)(\.|$|[\s_—–-])/i.test(String(name || ""));
+    function sentenceSetLooksLikeBook(name, deck = currentDeck) {
+      return new RegExp(`(^|[\\s_—–-])${contentTypeRegex("sentences",deck).source}(\\.|$|[\\s_—–-])`, "i").test(String(name || ""));
     }
-    function wordSetLooksLikeBook(name) {
-      return /(^|[\s_—–-])(words?|vocab|vocabulary|wörter|woerter)(\.|$|[\s_—–-])/i.test(String(name || ""));
+    function wordSetLooksLikeBook(name, deck = currentDeck) {
+      return new RegExp(`(^|[\\s_—–-])${contentTypeRegex("words",deck).source}(\\.|$|[\\s_—–-])`, "i").test(String(name || ""));
     }
 
     async function collectCombinedDeckPairs(deck = currentDeck) {
@@ -8169,22 +8184,22 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       };
       for (const s of sentenceSets) {
         if (!s.set_name || s.set_name === "__all__") continue;
-        const base = combinedBaseName(s.set_name);
-        const key = combinedBaseKey(s.set_name);
+        const base = combinedBaseName(s.set_name, deck);
+        const key = combinedBaseKey(s.set_name, deck);
         if (!base || !key) continue;
         const p = ensure(base, key);
-        if (!p.sentenceSetName || sentenceSetLooksLikeBook(s.set_name)) {
+        if (!p.sentenceSetName || sentenceSetLooksLikeBook(s.set_name, deck)) {
           p.sentenceSetName = s.set_name;
           p.sentenceCount = s.item_count;
         }
       }
       for (const s of wordSets) {
         if (!s.set_name || s.set_name === "__all__") continue;
-        const base = combinedBaseName(s.set_name);
-        const key = combinedBaseKey(s.set_name);
+        const base = combinedBaseName(s.set_name, deck);
+        const key = combinedBaseKey(s.set_name, deck);
         if (!base || !key) continue;
         const p = ensure(base, key);
-        if (!p.wordSetName || wordSetLooksLikeBook(s.set_name)) {
+        if (!p.wordSetName || wordSetLooksLikeBook(s.set_name, deck)) {
           p.wordSetName = s.set_name;
           p.wordCount = s.item_count;
         }
@@ -9857,7 +9872,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (sentenceMode === "typing") {
         sentenceTypingKeypad = document.createElement("div");
         sentenceTypingKeypad.className = "inline-keypad hidden";
-        sentenceTypingKeypad.setAttribute("aria-label", "Sentence typing QWERTZ keypad");
+        sentenceTypingKeypad.setAttribute("aria-label", "Sentence typing keypad");
         sentenceTarget.appendChild(sentenceTypingKeypad);
         typingKeypadActivators[0]?.();
       }

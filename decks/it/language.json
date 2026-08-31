@@ -1,4 +1,5 @@
 {
+  "schemaVersion": 2,
   "code": "it",
   "name": "Italian",
   "nativeName": "Italiano",
@@ -9,5 +10,35 @@
   "useArticles": false,
   "articles": [],
   "typingPlaceholder": "e.g. casa",
-  "typingHelp": "Type the Italian equivalent."
+  "typingHelp": "Type the Italian equivalent.",
+  "comparison": {
+    "locale": "it-IT"
+  },
+  "keyboard": {
+    "mode": "inline",
+    "rows": [
+      "qwertyuiopè",
+      "asdfghjklòàù",
+      "zxcvbnmì"
+    ],
+    "accentSlots": {
+      "é": "e",
+      "í": "i",
+      "ó": "o",
+      "ú": "u"
+    },
+    "punctuation": ["'", "’", "-"]
+  },
+  "articleParsing": {
+    "mode": "none"
+  },
+  "csv": {
+    "targetHeaders": ["target", "italian", "it", "italiano", "translation", "answer"],
+    "exampleTargetHeaders": ["example_target", "example_it", "italian_example"]
+  },
+  "contentTypeSynonyms": {
+    "sentences": [],
+    "words": []
+  },
+  "capabilities": {}
 }
