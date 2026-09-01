@@ -75,8 +75,8 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedSkillDone[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "completed grammar skills are removed from already-prefetched queues");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.3\.3-match-scheduling-20260901/, "the application build marker includes the 4.3.3 Match scheduling release");
-assert.equal((indexHtml.match(/4\.3\.3-match-scheduling-20260901/g) || []).length, 2, "Course and Practice use the same 4.3.3 build marker");
+assert.match(indexHtml, /4\.3\.4-match-stability-20260901/, "the application build marker includes the 4.3.4 Match stability release");
+assert.equal((indexHtml.match(/4\.3\.4-match-stability-20260901/g) || []).length, 2, "Course and Practice use the same 4.3.4 build marker");
 assert.match(indexHtml, /practiceSetupBtn'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openUtility\?\.\('session',LANG\)/, "the sliders restore the dedicated current-session controls");
 assert.match(indexHtml, /practiceSettingsBtn'\)\.onclick=\(\)=>openSettings\('main'\)/, "the gear keeps the application settings role");
 assert.match(indexHtml, /diagnostic_article_attempts/, "article answers have their own factual diagnostic counters");
@@ -84,9 +84,7 @@ assert.match(indexHtml, /diagnostic_match_attempts/, "word matching has its own 
 assert.match(indexHtml, /const INTAKE_MASTERY_STREAK = GATE_MASTERY_STREAK/, "new-card intake and the visible mastery threshold cannot disagree");
 assert.match(indexHtml, /data\.length < minimumCount/, "Match refills before a round shrinks, not only after the queue reaches zero");
 assert.match(indexHtml, /ensureWordQueue\(Math\.max\(visibleCount, visibleCount \* 3\)\)/, "Match keeps spare candidates for duplicate target labels");
-assert.match(indexHtml, /async function recordArticleOnlyAnswer/, "article reviews have a separate persistence path");
-assert.match(indexHtml, /scheduleArticleRecovery\(pair, "mistake"\)[\s\S]*finalizeCorrectWordPair\(pair\.id, \{ signals:\[\{kind:"match",correct:true\},\{kind:"article",correct:false\}\]/, "a wrong article preserves a correct lexical match and schedules only article recovery");
-assert.ok(!/Wrong article[\s\S]{0,300}scheduleWordMistake\(pair\)/.test(indexHtml), "a wrong article never requeues the word as lexically wrong");
+assert.match(indexHtml, /Wrong article[\s\S]{0,200}scheduleWordMistake\(pair\)[\s\S]{0,300}saveWordAnswer\(pair\.id, false/, "a wrong article again follows the normal word-card retry path");
 assert.match(indexHtml, /removeRetiredCore3000MetaCardsV433/, "installed Core 3000 databases receive the content cleanup migration");
 assert.match(indexHtml, /ld_practice_diagnostic_errors_v1/, "recent exact practice errors are retained in a bounded local log");
 assert.match(indexHtml, /DIAGNOSTIC_EVENT_LIMIT = 180/, "the detailed diagnostic log is size bounded");
@@ -472,7 +470,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-3-3-match-scheduling-20260901/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-3-4-match-stability-20260901/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");

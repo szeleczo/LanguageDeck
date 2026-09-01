@@ -1,5 +1,5 @@
-/* LanguageDeck 4.3.3 — complete Match rounds, separate article scheduling, and Core 3000 cleanup. */
-const CACHE_VERSION="languagedeck-4-3-3-match-scheduling-20260901";
+/* LanguageDeck 4.3.4 — Match stability and Core 3000 cleanup. */
+const CACHE_VERSION="languagedeck-4-3-4-match-stability-20260901";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

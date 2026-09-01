@@ -3870,7 +3870,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.3.3-match-scheduling-20260901",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.3.4-match-stability-20260901",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4388,7 +4388,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-const APP_BUILD = "4.3.3-match-scheduling-20260901";
+const APP_BUILD = "4.3.4-match-stability-20260901";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -6465,21 +6465,6 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
       } catch (_) {}
     }
 
-    function applyArticleEvidence(row, correct, profile) {
-      if (!row) return;
-      row.article_times_seen = (row.article_times_seen | 0) + 1;
-      if (correct) {
-        row.article_times_correct = (row.article_times_correct | 0) + 1;
-        row.article_streak = (row.article_streak | 0) + 1;
-        row.article_next_due = calcNextDue(row.article_streak, row.difficulty || 1.0, profile);
-      } else {
-        row.article_times_wrong = (row.article_times_wrong | 0) + 1;
-        row.article_streak = 0;
-        row.article_next_due = calcWrongDue(profile);
-      }
-      row.article_last_seen = nowIso();
-    }
-
     async function recordAnswer(table, itemId, correct, profile, evidence = null) {
       const row = await DB.getById(table, itemId);
       if (!row) return null;
@@ -6488,8 +6473,6 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
       // wrong answer clears the mastered state.
       if (isMastered(row)) noteMasteredReviewServed(table, itemId);
       noteDiagnosticCounters(row, evidence, correct);
-      const articleSignal = diagnosticSignals(evidence, correct).find(signal => signal.kind === "article");
-      if (table === "word_pairs" && articleSignal) applyArticleEvidence(row, articleSignal.correct, profile);
       row.times_seen = (row.times_seen | 0) + 1;
       if (guidedPractice) {
         row.guided_attempts = (row.guided_attempts | 0) + 1;
@@ -6523,17 +6506,6 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
       await DB.update(table, row);
       appendDiagnosticError(row, table, evidence, correct);
       if (table === "word_pairs") await syncWordAnswerToGlobal(row, correct);
-      return row;
-    }
-
-    async function recordArticleOnlyAnswer(itemId, correct, profile, evidence = null) {
-      const row = await DB.getById("word_pairs", itemId);
-      if (!row) return null;
-      const articleEvidence = evidence || { signals:[{kind:"article",correct}] };
-      noteDiagnosticCounters(row, articleEvidence, correct);
-      applyArticleEvidence(row, correct, profile);
-      await DB.update("word_pairs", row);
-      appendDiagnosticError(row, "word_pairs", articleEvidence, correct);
       return row;
     }
 
@@ -6588,10 +6560,6 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
     let matchedIds = new Set();
     let locked = false;
     let pendingArticlePairId = null;
-    let pendingArticlePair = null;
-    let pendingArticleRecovery = false;
-    let articleRecoveryQueue = [];
-    let sessionArticleReturns = new Map();
 
     let correctCount = 0;
     let wrongCount = 0;
@@ -6640,7 +6608,7 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
     let sessionMistakeReturns = new Map();
     let lastPracticeProgress = { total:0, mastered:0, new:0, due:0, percent:0, is_complete:false, totalGates:0, gateIndex:0 };
 
-    function resetSessionMistakes() { sessionMistakeReturns = new Map(); sessionArticleReturns = new Map(); articleRecoveryQueue = []; pendingArticlePair = null; pendingArticleRecovery = false; }
+    function resetSessionMistakes() { sessionMistakeReturns = new Map(); }
     function queuePracticeWrite(task) {
       practicePendingWrites++;
       const run = practiceWriteChain.then(() => task());
@@ -6668,26 +6636,6 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
     function scheduleWordMistake(item) { return scheduleMistakeReturn("word", wordQueue, item); }
     function scheduleSentenceMistake(item) { return scheduleMistakeReturn("sentence", sentenceQueue, item); }
     function mistakeReturnCount() { return [...sessionMistakeReturns.values()].reduce((n,x)=>n+x,0); }
-    function articleReturnCount() { return [...sessionArticleReturns.values()].reduce((n,x)=>n+x,0); }
-
-    function scheduleArticleRecovery(item, source = "mistake") {
-      if (!item || !hasArticle(item) || articleRecoveryQueue.some(entry => entry.item?.id === item.id)) return false;
-      const used = sessionArticleReturns.get(item.id) || 0;
-      if (used >= SESSION_MISTAKE_MAX_RETURNS) return false;
-      sessionArticleReturns.set(item.id, used + 1);
-      articleRecoveryQueue.push({ item, source });
-      dispatchPracticeState();
-      return true;
-    }
-
-    async function loadDueArticleRecoveries() {
-      if (currentGame !== "words" || wordMode !== "match" || !deckCfg().useArticles) return;
-      const rows = await DB.getAll("word_pairs", currentDeck, currentSetName), now = nowIso();
-      const due = rows.filter(row => hasArticle(row) && row.article_next_due && row.article_next_due <= now)
-        .sort((a,b)=>(a.article_next_due||"").localeCompare(b.article_next_due||"")||(a.id|0)-(b.id|0))
-        .slice(0, 6);
-      for (const item of due) if (!articleRecoveryQueue.some(entry => entry.item?.id === item.id)) articleRecoveryQueue.push({ item, source:"due" });
-    }
 
     /* ---------- DOM refs ---------- */
     const $ = id => document.getElementById(id);
@@ -8833,8 +8781,6 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
       wordQueue = []; currentWordRoundPairs = []; rightOrder = [];
       currentTypingWord = null;
 
-      await loadDueArticleRecoveries();
-
       const fresh = await fetchWordItems(false);
       wordQueue = orderStudyBatch(fresh);
 
@@ -9040,9 +8986,6 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
         });
         rightColumn.appendChild(card);
       });
-      // Article reviews have their own queue and do not consume or shrink the
-      // lexical Match grid. Open one only after a complete round is rendered.
-      setTimeout(() => openNextArticleRecovery(), 180);
     }
 
     function markWordWrongTemporarily() {
@@ -9092,7 +9035,6 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
       if (!row) return;
       const fields = ["streak", "next_due", "times_seen", "times_correct",
         "times_wrong", "recovery_progress", "progressive_level", "last_seen", "difficulty",
-        "article_times_seen", "article_times_correct", "article_times_wrong", "article_streak", "article_next_due", "article_last_seen",
         "guided_attempts", "guided_last_answer_at", "guided_success_at", "guided_full_recall_at", "explicit_unknown_at", "full_recall_at"];
       const apply = (it) => {
         if (!it || it.id !== row.id) return;
@@ -9206,65 +9148,27 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
       }
     }
 
-    function showArticleModal(pairId, pairOverride = null, recovery = false) {
+    function showArticleModal(pairId) {
       if (!deckCfg().useArticles) return;
       pendingArticlePairId = pairId;
-      pendingArticlePair = pairOverride || getCurrentWordPairById(pairId);
-      pendingArticleRecovery = !!recovery;
-      const pair = pendingArticlePair;
-      if (!pair) { pendingArticlePairId = null; pendingArticleRecovery = false; return; }
+      const pair = getCurrentWordPairById(pairId);
+      if (!pair) return;
       articleWordText.textContent = targetWordOnly(pair);
       articleModal.classList.add("active");
     }
     function hideArticleModal() {
       pendingArticlePairId = null;
-      pendingArticlePair = null;
-      pendingArticleRecovery = false;
       articleModal.classList.remove("active");
       syncPendingArticleCard(null);
-    }
-
-    function openNextArticleRecovery() {
-      if (locked || pendingArticlePairId !== null || !articleRecoveryQueue.length || articleModal.classList.contains("active")) return false;
-      const entry = articleRecoveryQueue.shift();
-      if (!entry?.item) return false;
-      statusEl.textContent = entry.source === "due" ? "Article review." : "Try the article again.";
-      showArticleModal(entry.item.id, entry.item, true);
-      return true;
     }
 
     async function handleArticleChoice(chosen) {
       if (pendingArticlePairId === null || locked) return;
       locked = true;
-      const pair = pendingArticlePair || getCurrentWordPairById(pendingArticlePairId);
+      const pair = getCurrentWordPairById(pendingArticlePairId);
       if (!pair) { locked = false; hideArticleModal(); return; }
       const expected = articleOf(pair);
       const choice = normTxt(chosen);
-
-      if (pendingArticleRecovery) {
-        const correct = choice === expected;
-        if (correct) {
-          correctCount++;
-          statusEl.textContent = "Correct article.";
-        } else {
-          wrongCount++;
-          statusEl.textContent = `Wrong article. Correct: ${expected}`;
-          scheduleArticleRecovery(pair, "mistake");
-        }
-        updateScore();
-        const evidence = { signals:[{kind:"article",correct}], chosen:choice, expected };
-        queuePracticeWrite(async () => {
-          const row = await recordArticleOnlyAnswer(pair.id, correct, repetitionProfile, evidence);
-          syncRowIntoLiveItems(row);
-          await refreshStats(); await refreshGateInfo();
-        });
-        hideArticleModal();
-        // Interleave at most one standalone article review per Match round;
-        // do not turn a vocabulary session into a chain of article pop-ups.
-        setTimeout(() => { locked = false; }, correct ? MATCH_CORRECT_FLASH_MS : MATCH_WRONG_FLASH_MS);
-        return;
-      }
-
       if (choice === expected) {
         statusEl.textContent = "Correct word and correct article.";
         hideArticleModal();
@@ -9272,11 +9176,10 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
       } else {
         wrongCount++; updateScore();
         statusEl.textContent = `Wrong article. Correct: ${expected}`;
-        // The learner DID match the word. Record that lexical success while
-        // keeping the article mistake in its separate SRS channel.
-        scheduleArticleRecovery(pair, "mistake");
+        scheduleWordMistake(pair);
+        queuePracticeWrite(async () => { await saveWordAnswer(pair.id, false, true, { signals:[{kind:"match",correct:true},{kind:"article",correct:false}], chosen:choice, expected }); await refreshStats(); await refreshGateInfo(); });
         hideArticleModal();
-        await finalizeCorrectWordPair(pair.id, { signals:[{kind:"match",correct:true},{kind:"article",correct:false}], chosen:choice, expected });
+        setTimeout(() => { locked = false; }, MATCH_WRONG_FLASH_MS);
       }
     }
 
@@ -11873,7 +11776,6 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
       const now = nowIso(), seen = all.filter(r => (r.times_seen | 0) > 0);
       const progressMastered = all.filter(r => (r.streak | 0) >= GATE_MASTERY_STREAK).length;
       const stableMastered = all.filter(isMastered).length;
-      const articleDue = all.filter(r => hasArticle(r) && r.article_next_due && r.article_next_due <= now).length;
       const totals = seen.reduce((a,r) => {
         a.seen += diagnosticInt(r,"times_seen"); a.correct += diagnosticInt(r,"times_correct");
         a.wrongLowerBound += r.diagnostic_total_wrong == null ? diagnosticInt(r,"times_wrong") : diagnosticInt(r,"diagnostic_total_wrong");
@@ -11890,23 +11792,22 @@ const APP_BUILD = "4.3.3-match-scheduling-20260901";
         `Language: ${currentDeck} (${languageName(currentDeck)})`, `Mode: ${currentGame} / ${currentGame === "words" ? wordMode : sentenceMode}`,
         `Set: ${currentSetName} | scope: ${practiceScope} | profile: ${repetitionProfile} | order: ${newItemOrder}`,
         `Gate: ${gateEnabled ? `${currentGateIndex+1}/${totalGates} (size ${gateSize})` : "whole table"}`,
-        `Session: ${correctCount} correct, ${wrongCount} wrong, ${sessionLoadedIds.size} unique, ${mistakeReturnCount()} lexical returns, ${articleReturnCount()} article returns`,
+        `Session: ${correctCount} correct, ${wrongCount} wrong, ${sessionLoadedIds.size} unique, ${mistakeReturnCount()} targeted returns`,
         `Writes: ${pendingAtOpen} pending when opened, ${practiceWriteErrors} errors`, "",
         "CURRENT DECK SUMMARY",
         `Rows: ${all.length} total, ${seen.length} encountered, ${all.filter(r=>r.next_due==null).length} new, ${all.filter(r=>r.next_due!=null&&r.next_due<=now).length} due, ${progressMastered} mastered on progress strip, ${stableMastered} stable`,
         `Recorded encounters: ${totals.seen} | correct answers: ${totals.correct} | recorded mistakes: at least ${totals.wrongLowerBound}`,
         `Match: ${totals.matchAttempts} attempts / ${totals.matchWrong} wrong`,
-        `Articles: ${totals.articleAttempts} attempts / ${totals.articleWrong} wrong | ${articleDue} article reviews due`,
+        `Articles: ${totals.articleAttempts} attempts / ${totals.articleWrong} wrong`,
         `Typing: ${totals.typingAttempts} attempts / ${totals.typingWrong} wrong`,
         `Adaptive typing: ${totals.progressiveAttempts} attempts / ${totals.progressiveWrong} wrong`,
         `Reveal/solution: ${totals.solutionWrong}`, "",
         "NOTES",
         "Error-type counters and the detailed error log start with build 4.3.2. Older mistakes remain only in the legacy aggregate, which was allowed to decrease during recovery; therefore the historical mistake total is a lower bound.",
-        "Active wrong pressure is an adaptive scheduling value, not a lifetime mistake count. One pressure point clears after three consecutive correct lexical answers; a session can insert at most two targeted returns for the same item.",
-        "Since build 4.3.3, article knowledge has its own streak and due date. A wrong der/die/das answer no longer resets an otherwise correct word match.", "",
+        "Active wrong pressure is an adaptive scheduling value, not a lifetime mistake count. One pressure point clears after three consecutive correct answers; a session can insert at most two targeted returns for the same item.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
-      for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${r.diagnostic_total_wrong??r.times_wrong??0} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} (streak ${r.article_streak|0}, ${diagnosticDueLabel(r.article_next_due)}) | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | word streak ${r.streak|0} | active pressure ${r.times_wrong|0}, recovery ${r.recovery_progress|0}/${WRONG_RECOVERY_STREAK} | ${diagnosticDueLabel(r.next_due)}`);
+      for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${r.diagnostic_total_wrong??r.times_wrong??0} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | streak ${r.streak|0} | active pressure ${r.times_wrong|0}, recovery ${r.recovery_progress|0}/${WRONG_RECOVERY_STREAK} | ${diagnosticDueLabel(r.next_due)}`);
       lines.push("", "MOST REPEATED ITEMS (up to 40)");
       for (const r of repeated) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${r.diagnostic_total_wrong??r.times_wrong??0} | streak ${r.streak|0} | last ${r.last_seen||"—"} | ${diagnosticDueLabel(r.next_due)}`);
       lines.push("", "RECENT EXACT ERRORS (newest first, up to 60)");
