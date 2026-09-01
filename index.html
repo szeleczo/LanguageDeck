@@ -3870,7 +3870,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.3.4-match-stability-20260901",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.4.0-learning-engine-stabilization-20260901",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4388,7 +4388,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-const APP_BUILD = "4.3.4-match-stability-20260901";
+    const APP_BUILD = "4.4.0-learning-engine-stabilization-20260901";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -4889,11 +4889,26 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       return d.toISOString();
     }
 
-    function calcWrongDue(profile = "normal") {
-      const minutes = profile === "easy" ? 10 : profile === "hard" ? 2 : 5;
-      const d = new Date();
-      d.setMinutes(d.getMinutes() + minutes);
-      return d.toISOString();
+    function stableHash(value) {
+      let h = 2166136261;
+      for (const ch of String(value || "")) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619); }
+      return h >>> 0;
+    }
+
+    /* Repeated misses need more time to consolidate, not an endless loop at
+       "now + five minutes". The small deterministic offset prevents a whole
+       Match round from becoming due at the same second without making a card
+       jump unpredictably between sessions. */
+    function calcWrongDue(profile = "normal", pressure = 1, seed = "") {
+      const steps = {
+        easy: [10, 30, 90, 240],
+        normal: [5, 15, 45, 120],
+        hard: [2, 7, 20, 60]
+      };
+      const level = Math.max(1, Math.min(4, pressure | 0));
+      const minutes = (steps[profile] || steps.normal)[level - 1];
+      const jitterSeconds = (stableHash(seed) % 91) - 45;
+      return new Date(Date.now() + minutes * 60000 + jitterSeconds * 1000).toISOString();
     }
 
     /* v67: Full-typing progressive recall is a stronger mastery signal than
@@ -5615,7 +5630,9 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       if (correct && clean && beforeLevel >= maxLevel) {
         row.full_recall_at = Date.now();
         if (["memorise","grammar_recall"].includes(guidedPractice?.target)) row.guided_full_recall_at = row.full_recall_at;
-        row.next_due = calcMasteredProgressiveDue(row.streak, row.difficulty || 1.0, profile);
+        const strongRecallDue = calcMasteredProgressiveDue(row.streak, row.difficulty || 1.0, profile);
+        row.word_next_due = strongRecallDue;
+        row.next_due = table === "word_pairs" ? earliestDue(row.word_next_due, row.article_next_due) : strongRecallDue;
       }
       await DB.update(table, row);
       if (table === "word_pairs") await syncWordAnswerToGlobal(row, correct);
@@ -6092,6 +6109,42 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       return removed;
     }
 
+    /* 4.4 keeps the historical counters for reporting, but moves scheduling
+       onto bounded, channel-specific state. A former bad answer therefore
+       cannot leave a word at "pressure 19" forever, and an article mistake
+       no longer erases evidence that the word itself was recognised. */
+    async function migrateLearningEngineV440() {
+      const marker = "ld-learning-engine-migration-4.4.0";
+      if (localStorage.getItem(marker) === "done") return 0;
+      let changed = 0;
+      for (const table of ["word_pairs", "sentence_pairs"]) {
+        for (const deck of Object.keys(DECK_CONFIG)) {
+          const rows = await DB.getAll(table, deck, "__all__");
+          for (const row of rows) {
+            let dirty = false;
+            if (row.diagnostic_total_wrong == null) { row.diagnostic_total_wrong = row.times_wrong | 0; dirty = true; }
+            if (row.learning_pressure == null) { row.learning_pressure = Math.min(3, Math.max(0, row.times_wrong | 0)); dirty = true; }
+            else {
+              const pressure = Math.max(0, Math.min(4, row.learning_pressure | 0));
+              if (pressure !== row.learning_pressure) { row.learning_pressure = pressure; dirty = true; }
+            }
+            if (row.word_next_due == null && row.next_due != null) { row.word_next_due = row.next_due; dirty = true; }
+            if (table === "word_pairs") {
+              for (const field of ["article_pressure", "article_streak"]) {
+                if (row[field] == null) { row[field] = 0; dirty = true; }
+              }
+              if (row.article_next_due === undefined) { row.article_next_due = null; dirty = true; }
+            }
+            // Retire the old all-or-nothing recovery mechanism entirely.
+            if (Object.prototype.hasOwnProperty.call(row, "recovery_progress")) { delete row.recovery_progress; dirty = true; }
+            if (dirty) { await DB.update(table, row); changed++; }
+          }
+        }
+      }
+      localStorage.setItem(marker, "done");
+      return changed;
+    }
+
     async function importSentencesFromCsv(text, deck, setName) {
       deck = normalizeDeck(deck);
       setName = normalizeSetName(setName);
@@ -6239,7 +6292,7 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       const byKey = new Map(existing.map(r=>[r.guided_key,r]));
       for (const w of wanted) {
         const old = byKey.get(w.guided_key); if (!old) continue;
-        const merged = { ...old, ...w, id:old.id, times_seen:old.times_seen||0, times_correct:old.times_correct||0, times_wrong:old.times_wrong||0, streak:Math.max(old.streak||0,w.seed_streak||0), last_seen:old.last_seen||null, next_due:old.next_due??null, progressive_level:old.progressive_level, recovery_progress:old.recovery_progress };
+        const merged = { ...old, ...w, id:old.id, times_seen:old.times_seen||0, times_correct:old.times_correct||0, times_wrong:old.times_wrong||0, streak:Math.max(old.streak||0,w.seed_streak||0), last_seen:old.last_seen||null,next_due:old.next_due??null,word_next_due:old.word_next_due??old.next_due??null,learning_pressure:old.learning_pressure??Math.min(3,old.times_wrong|0),article_pressure:old.article_pressure??0,article_streak:old.article_streak??0,article_next_due:old.article_next_due??null,progressive_level:old.progressive_level };
         const contentFields=["english","target","hint","explanation","alternatives","options","focus","task_type","task_scope","skill_id","skill_stage","diagnostic","article","tags","sentence_id","guided_key","set_name","deck"];
         if(contentFields.every(field=>JSON.stringify(old[field]??null)===JSON.stringify(merged[field]??null)))continue;
         await DB.update(table, merged);
@@ -6280,17 +6333,34 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       };
     }
 
-    /* Maximum number of items allowed to be "in learning" at once when the
-       gate is OFF. An item is in learning once it has been seen but its streak
-       is still below GATE_MASTERY_STREAK. While the learning pool is full, NO
-       new items are introduced — the engine re-serves due and (if needed)
-       ahead-of-schedule reviews until enough items are mastered. This is what
-       makes no-gate mode "don't show me new words until the current ones go
-       really well". */
-    const MAX_LEARNING_POOL = 10;
-    /* An item releases its learning slot (and lets new material in) only
-       after THREE correct answers — "goes really well", not merely "answered
-       twice". Gate unlocking keeps its own, unchanged threshold. */
+    /* No-gate practice adjusts its active learning set from recent lexical
+       accuracy. A learner who is struggling gets a smaller, calmer set; a
+       stable learner sees new material sooner. */
+    const ACTIVE_POOL_LIMITS = Object.freeze({ struggling: 8, steady: 12, strong: 16 });
+    const LEARNING_ACCURACY_WINDOW = 30;
+    function learningAccuracyKey(deck = currentDeck, setName = currentSetName) {
+      return `ld-learning-accuracy-v2:${deck}:${setName}`;
+    }
+    function recentLearningOutcomes(deck = currentDeck, setName = currentSetName) {
+      try {
+        const raw = JSON.parse(localStorage.getItem(learningAccuracyKey(deck, setName)) || "[]");
+        return Array.isArray(raw) ? raw.filter(x => x === 0 || x === 1).slice(-LEARNING_ACCURACY_WINDOW) : [];
+      } catch (_) { return []; }
+    }
+    function recordRecentLearningOutcome(row, correct) {
+      if (!row || row.deck !== currentDeck || row.set_name !== currentSetName) return;
+      const values = recentLearningOutcomes(row.deck, row.set_name);
+      values.push(correct ? 1 : 0);
+      try { localStorage.setItem(learningAccuracyKey(row.deck, row.set_name), JSON.stringify(values.slice(-LEARNING_ACCURACY_WINDOW))); } catch (_) {}
+    }
+    function activeLearningPoolLimit(rows) {
+      const outcomes = recentLearningOutcomes();
+      if (outcomes.length < 8) return ACTIVE_POOL_LIMITS.steady;
+      const accuracy = outcomes.reduce((sum, value) => sum + value, 0) / outcomes.length;
+      if (accuracy < 0.65) return ACTIVE_POOL_LIMITS.struggling;
+      if (accuracy > 0.85) return ACTIVE_POOL_LIMITS.strong;
+      return ACTIVE_POOL_LIMITS.steady;
+    }
     /* New intake and the progress strip must agree on what releases a
        learning slot. The old value (3) disagreed with the visible mastery
        threshold (2): dozens of cards looked mastered to the learner but
@@ -6307,14 +6377,14 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
 
     function selectStudyItems(rows, limit, newRatio, practiceScope, throttleNew = false, learningScopeRows = null) {
       let pool = rows;
-      if (practiceScope === "wrong") pool = pool.filter(r => (r.times_wrong | 0) > 0);
+      if (practiceScope === "wrong") pool = pool.filter(r => (r.learning_pressure | 0) > 0 || (r.article_pressure | 0) > 0);
 
       if (guidedPractice && currentSetName === guidedPractice.setName) {
         const groups = guidedSkillGroups(learningScopeRows || pool);
         let remaining = pool.filter(r => !guidedSkillDone(groups.get(guidedSkillKey(r)), guidedPractice));
         remaining.sort(guidedPractice.sequence
           ? ((a,b)=>(a.id||0)-(b.id||0))
-          : ((a,b)=>(guidedRowHasEvidence(a)-guidedRowHasEvidence(b))||((a.guided_attempts|0)-(b.guided_attempts|0))||((a.guided_last_answer_at||0)-(b.guided_last_answer_at||0))||((b.times_wrong|0)-(a.times_wrong|0))||((a.id||0)-(b.id||0))));
+          : ((a,b)=>(guidedRowHasEvidence(a)-guidedRowHasEvidence(b))||((a.guided_attempts|0)-(b.guided_attempts|0))||((a.guided_last_answer_at||0)-(b.guided_last_answer_at||0))||((b.learning_pressure|0)-(a.learning_pressure|0))||((a.id||0)-(b.id||0))));
         return remaining.slice(0, limit);
       }
 
@@ -6333,7 +6403,7 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
         if (isDue) due.push(r);
         else future.push(r);
       }
-      due.sort((a, b) => -((a.times_wrong | 0) - (b.times_wrong | 0)) || (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
+      due.sort((a, b) => -Math.max((a.learning_pressure | 0), (a.article_pressure | 0)) + Math.max((b.learning_pressure | 0), (b.article_pressure | 0)) || (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
       future.sort((a, b) => (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
       // Oldest-due mastered items first, so reviews cycle rather than repeat.
       masteredDue.sort((a, b) => (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
@@ -6379,7 +6449,7 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
         // reported 0 learning after the first pass, so the intake throttle
         // silently opened and the session became an endless stream of new
         // sentences with no reviews (fixed only by an app restart).
-        newBudget = Math.max(0, MAX_LEARNING_POOL - countLearning(learningScopeRows || rows));
+        newBudget = Math.max(0, activeLearningPoolLimit(learningScopeRows || rows) - countLearning(learningScopeRows || rows));
         newTarget = Math.min(newTarget, newBudget);
       }
 
@@ -6417,10 +6487,7 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       return orderStudyBatch(selected).slice(0, limit);
     }
 
-    /* Number of consecutive correct answers required to clear ONE wrong-strike.
-       Higher value = harder to "rehabilitate" a previously wrong word.
-       Was effectively 1 (each correct decremented times_wrong); now 3. */
-    const WRONG_RECOVERY_STREAK = 3;
+    const MAX_LEARNING_PRESSURE = 4;
     const DIAGNOSTIC_EVENT_LIMIT = 180;
     const DIAGNOSTIC_KINDS = new Set(["match", "article", "typing", "progressive", "sentence", "grammar", "solution"]);
 
@@ -6465,6 +6532,51 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       } catch (_) {}
     }
 
+    function clampLearningPressure(value) {
+      return Math.max(0, Math.min(MAX_LEARNING_PRESSURE, value | 0));
+    }
+    function adjustLearningPressure(row, field, correct, missWeight = 1) {
+      const current = clampLearningPressure(row[field] || 0);
+      row[field] = correct ? Math.max(0, current - 1) : Math.min(MAX_LEARNING_PRESSURE, current + missWeight);
+      return row[field];
+    }
+    function earliestDue(...values) {
+      const usable = values.filter(value => !!value).sort();
+      return usable[0] || null;
+    }
+    function answerChannels(row, table, evidence, overallCorrect) {
+      const signals = diagnosticSignals(evidence, overallCorrect);
+      const nonArticle = signals.filter(signal => signal.kind !== "article");
+      const lexicalCorrect = nonArticle.length
+        ? nonArticle.every(signal => signal.correct)
+        : !!overallCorrect;
+      const articleSignal = signals.find(signal => signal.kind === "article") || null;
+      // Typed full-word recall contains the article in its expected answer, so
+      // it is valid positive article evidence even without a separate click.
+      const typedRecall = table === "word_pairs" && hasArticle(row) &&
+        signals.some(signal => (signal.kind === "typing" || signal.kind === "progressive") && signal.correct);
+      return {
+        lexicalCorrect,
+        articleCorrect: articleSignal ? articleSignal.correct : (typedRecall ? true : null)
+      };
+    }
+    function updateArticleChannel(row, correct, profile) {
+      if (correct === null || correct === undefined || !hasArticle(row)) return;
+      row.article_times_seen = (row.article_times_seen | 0) + 1;
+      if (correct) {
+        row.article_times_correct = (row.article_times_correct | 0) + 1;
+        row.article_streak = (row.article_streak | 0) + 1;
+        adjustLearningPressure(row, "article_pressure", true);
+        row.article_next_due = calcNextDue(row.article_streak, row.difficulty || 1.0, profile);
+      } else {
+        row.article_times_wrong = (row.article_times_wrong | 0) + 1;
+        row.article_streak = 0;
+        const pressure = adjustLearningPressure(row, "article_pressure", false, 1);
+        row.article_next_due = calcWrongDue(profile, pressure, `article:${row.id}`);
+      }
+      row.article_last_seen = nowIso();
+    }
+
     async function recordAnswer(table, itemId, correct, profile, evidence = null) {
       const row = await DB.getById(table, itemId);
       if (!row) return null;
@@ -6473,39 +6585,36 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       // wrong answer clears the mastered state.
       if (isMastered(row)) noteMasteredReviewServed(table, itemId);
       noteDiagnosticCounters(row, evidence, correct);
+      const channels = answerChannels(row, table, evidence, correct);
+      const lexicalCorrect = channels.lexicalCorrect;
       row.times_seen = (row.times_seen | 0) + 1;
       if (guidedPractice) {
         row.guided_attempts = (row.guided_attempts | 0) + 1;
         row.guided_last_answer_at = Date.now();
       }
-      if (correct) {
+      if (lexicalCorrect) {
         row.times_correct = (row.times_correct | 0) + 1;
         row.streak = (row.streak | 0) + 1;
-        // Only decrement wrong-count after enough consecutive correct answers
-        // since the last mistake. This prevents a single lucky match from
-        // wiping out a wrong-strike — the user must demonstrate real recall.
-        if ((row.times_wrong | 0) > 0) {
-          row.recovery_progress = (row.recovery_progress | 0) + 1;
-          if (row.recovery_progress >= WRONG_RECOVERY_STREAK) {
-            row.times_wrong = (row.times_wrong | 0) - 1;
-            row.recovery_progress = 0;
-          }
-        } else {
-          row.recovery_progress = 0;
-        }
-        row.next_due = calcNextDue(row.streak, row.difficulty || 1.0, profile);
+        adjustLearningPressure(row, "learning_pressure", true);
+        row.word_next_due = calcNextDue(row.streak, row.difficulty || 1.0, profile);
         if (guidedPractice?.target === "grammar_skill") row.guided_success_at = Date.now();
       } else {
-        row.times_wrong = (row.times_wrong | 0) + 1;
         row.streak = 0;
-        row.recovery_progress = 0; // mistake resets recovery progress
+        const pressure = adjustLearningPressure(row, "learning_pressure", false, 2);
         if (guidedPractice?.target === "grammar_skill") row.explicit_unknown_at = Date.now();
-        row.next_due = calcWrongDue(profile);
+        row.word_next_due = calcWrongDue(profile, pressure, `word:${row.id}`);
       }
+      if (table === "word_pairs") updateArticleChannel(row, channels.articleCorrect, profile);
+      row.next_due = table === "word_pairs"
+        ? earliestDue(row.word_next_due, row.article_next_due)
+        : row.word_next_due;
       row.last_seen = nowIso();
       await DB.update(table, row);
       appendDiagnosticError(row, table, evidence, correct);
-      if (table === "word_pairs") await syncWordAnswerToGlobal(row, correct);
+      if (table === "word_pairs") {
+        recordRecentLearningOutcome(row, lexicalCorrect);
+        await syncWordAnswerToGlobal(row, lexicalCorrect);
+      }
       return row;
     }
 
@@ -8167,11 +8276,12 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       const stable = all.filter(r => (r.streak | 0) >= 3).length;
       renderLearningDoctor(all, "current deck");
       statTotal.textContent = total; statNew.textContent = newCount; statDue.textContent = due; statStable.textContent = stable;
-      const hardest = all.filter(r => (r.times_wrong | 0) > 0).sort((a,b)=>(b.times_wrong-a.times_wrong)||(a.times_correct-b.times_correct)||(a.id-b.id)).slice(0,5);
+      const pressureOf = row => Math.max(row.learning_pressure | 0, row.article_pressure | 0);
+      const hardest = all.filter(r => pressureOf(r) > 0).sort((a,b)=>pressureOf(b)-pressureOf(a)||((b.diagnostic_total_wrong??b.times_wrong??0)-(a.diagnostic_total_wrong??a.times_wrong??0))||(a.id-b.id)).slice(0,5);
       hardestTitle.textContent = currentGame === "words" ? "Most-missed words" : currentGame === "grammar" ? "Most-missed grammar sentences" : "Most-missed sentences";
       if (!hardest.length) { hardestList.textContent = "No data yet."; return; }
-      if (currentGame === "words") hardestList.innerHTML = hardest.map(item => `<div class="hardest-item"><strong>${escapeHtml(item.english)}</strong> — ${escapeHtml(targetDisplay(item))}<div class="meta">deck: ${escapeHtml(item.set_name || "default")} · wrong: ${item.times_wrong} · right: ${item.times_correct} · streak: ${item.streak}</div></div>`).join("");
-      else hardestList.innerHTML = hardest.map(item => `<div class="hardest-item"><div><strong>EN:</strong> ${escapeHtml(item.english)}</div><div><strong>${escapeHtml(deckCfg().targetName)}:</strong> ${escapeHtml(item.target)}</div><div class="meta">deck: ${escapeHtml(item.set_name || "default")} · wrong: ${item.times_wrong || 0} · right: ${item.times_correct || 0} · streak: ${item.streak || 0}</div></div>`).join("");
+      if (currentGame === "words") hardestList.innerHTML = hardest.map(item => `<div class="hardest-item"><strong>${escapeHtml(item.english)}</strong> — ${escapeHtml(targetDisplay(item))}<div class="meta">deck: ${escapeHtml(item.set_name || "default")} · active pressure: ${pressureOf(item)}/4 · right: ${item.times_correct} · streak: ${item.streak}</div></div>`).join("");
+      else hardestList.innerHTML = hardest.map(item => `<div class="hardest-item"><div><strong>EN:</strong> ${escapeHtml(item.english)}</div><div><strong>${escapeHtml(deckCfg().targetName)}:</strong> ${escapeHtml(item.target)}</div><div class="meta">deck: ${escapeHtml(item.set_name || "default")} · active pressure: ${pressureOf(item)}/4 · right: ${item.times_correct || 0} · streak: ${item.streak || 0}</div></div>`).join("");
     }
 
     function rebuildGateSelect() {
@@ -8683,7 +8793,7 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       if (!row || !row.lexeme_id) return;
       const idx = await sharedLexiconIndex(), id = idx.canon(row.lexeme_id);
       const inferred = (row.streak | 0) >= 5 ? 4 : (row.streak | 0) >= 3 ? 3 : (row.times_correct | 0) > 0 ? 2 : 0;
-      await window.LanguageDeckKnowledge.record({language:row.deck||currentDeck,lexemeId:id,channel:"words",seen:+row.times_seen||0,correct:+row.times_correct||0,wrong:+row.times_wrong||0,lastAt:Date.parse(row.last_seen||"")||Date.now(),strength:inferred,sourceMode:"words",absolute:true,storyState:{collected:true,fullRecallAt:+row.full_recall_at||0,explicitUnknownAt:correct===false?Date.now():0}});
+      await window.LanguageDeckKnowledge.record({language:row.deck||currentDeck,lexemeId:id,channel:"words",seen:+row.times_seen||0,correct:+row.times_correct||0,wrong:+(row.diagnostic_total_wrong ?? row.times_wrong)||0,lastAt:Date.parse(row.last_seen||"")||Date.now(),strength:inferred,sourceMode:"words",absolute:true,storyState:{collected:true,fullRecallAt:+row.full_recall_at||0,explicitUnknownAt:correct===false?Date.now():0}});
     }
     async function syncGrammarContextToGlobal(row,correct) {
       if (!row || !(row.lexeme_refs || row.lexemeRefs)) return;
@@ -9033,8 +9143,8 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
        were computed from an outdated streak. */
     function syncRowIntoLiveItems(row) {
       if (!row) return;
-      const fields = ["streak", "next_due", "times_seen", "times_correct",
-        "times_wrong", "recovery_progress", "progressive_level", "last_seen", "difficulty",
+      const fields = ["streak", "next_due", "word_next_due", "learning_pressure", "article_pressure", "article_streak", "article_next_due", "article_times_seen", "article_times_correct", "article_times_wrong", "article_last_seen", "times_seen", "times_correct",
+        "times_wrong", "diagnostic_total_wrong", "progressive_level", "last_seen", "difficulty",
         "guided_attempts", "guided_last_answer_at", "guided_success_at", "guided_full_recall_at", "explicit_unknown_at", "full_recall_at"];
       const apply = (it) => {
         if (!it || it.id !== row.id) return;
@@ -10651,8 +10761,8 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       return clampInt(Math.round(d), 0, 0xfffe);
     }
     const SYNC_TABLES = ["word_pairs", "sentence_pairs"];
-    const SYNC_FIELDS = ["streak", "next_due", "times_seen", "times_correct",
-      "times_wrong", "progressive_level", "recovery_progress", "last_seen"];
+    const SYNC_FIELDS = ["streak", "next_due", "word_next_due", "learning_pressure", "article_pressure", "article_streak", "article_next_due", "article_times_seen", "article_times_correct", "article_times_wrong", "article_last_seen", "times_seen", "times_correct",
+      "times_wrong", "diagnostic_total_wrong", "progressive_level", "last_seen"];
     function bytesFromB64url(str) {
       const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
       const bin = atob(b64 + "===".slice((b64.length + 3) % 4));
@@ -11603,6 +11713,13 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
         console.warn("LanguageDeck 4.3.3 Core 3000 cleanup deferred:", err);
       }
 
+      try {
+        const migrated = await migrateLearningEngineV440();
+        if (migrated) console.info(`LanguageDeck 4.4.0: migrated ${migrated} learning records to separate word/article scheduling.`);
+      } catch (err) {
+        console.warn("LanguageDeck 4.4.0 learning-engine migration deferred:", err);
+      }
+
       await refreshSetOptions();
       applyDeckUI();
       updateGameUI();
@@ -11763,6 +11880,12 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       const target = [row.article, row.target].filter(Boolean).join(" ");
       return `${String(row.english || "—").replace(/\s+/g," ").trim()} → ${target.replace(/\s+/g," ").trim() || "—"}`;
     }
+    function diagnosticLifetimeWrong(row) { return diagnosticInt(row, "diagnostic_total_wrong") || diagnosticInt(row, "times_wrong"); }
+    function diagnosticPressureLabel(row) {
+      const word = Math.max(0, Math.min(MAX_LEARNING_PRESSURE, row.learning_pressure | 0));
+      const article = Math.max(0, Math.min(MAX_LEARNING_PRESSURE, row.article_pressure | 0));
+      return row.article ? `word ${word}/${MAX_LEARNING_PRESSURE}, article ${article}/${MAX_LEARNING_PRESSURE}` : `word ${word}/${MAX_LEARNING_PRESSURE}`;
+    }
     function readDiagnosticErrors(deck) {
       try { const parsed=JSON.parse(localStorage.getItem(`ld_practice_diagnostic_errors_v1:${deck}`)||"[]");return Array.isArray(parsed)?parsed:[] } catch (_) { return [] }
     }
@@ -11778,20 +11901,24 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
       const stableMastered = all.filter(isMastered).length;
       const totals = seen.reduce((a,r) => {
         a.seen += diagnosticInt(r,"times_seen"); a.correct += diagnosticInt(r,"times_correct");
-        a.wrongLowerBound += r.diagnostic_total_wrong == null ? diagnosticInt(r,"times_wrong") : diagnosticInt(r,"diagnostic_total_wrong");
+        a.wrongLowerBound += diagnosticLifetimeWrong(r);
         for (const kind of DIAGNOSTIC_KINDS) { a[`${kind}Attempts`] += diagnosticInt(r,`diagnostic_${kind}_attempts`); a[`${kind}Wrong`] += diagnosticInt(r,`diagnostic_${kind}_wrong`); }
         return a;
       }, {seen:0,correct:0,wrongLowerBound:0,...Object.fromEntries([...DIAGNOSTIC_KINDS].flatMap(k=>[[`${k}Attempts`,0],[`${k}Wrong`,0]]))});
       const errors = readDiagnosticErrors(currentDeck).filter(e => currentSetName === "__all__" || e.set === currentSetName);
       const ranked = [...seen].sort((a,b) =>
-        ((b.diagnostic_total_wrong ?? b.times_wrong ?? 0)-(a.diagnostic_total_wrong ?? a.times_wrong ?? 0)) ||
+        (Math.max(b.learning_pressure|0,b.article_pressure|0)-Math.max(a.learning_pressure|0,a.article_pressure|0)) ||
+        (diagnosticLifetimeWrong(b)-diagnosticLifetimeWrong(a)) ||
         ((b.times_seen|0)-(a.times_seen|0)) || ((a.id|0)-(b.id|0)));
-      const repeated = [...seen].sort((a,b)=>(b.times_seen|0)-(a.times_seen|0)||((b.diagnostic_total_wrong??b.times_wrong??0)-(a.diagnostic_total_wrong??a.times_wrong??0))).slice(0,40);
+      const repeated = [...seen].sort((a,b)=>(b.times_seen|0)-(a.times_seen|0)||(diagnosticLifetimeWrong(b)-diagnosticLifetimeWrong(a))).slice(0,40);
+      const recent = recentLearningOutcomes();
+      const recentAccuracy = recent.length ? Math.round(recent.reduce((total,value)=>total+value,0) / recent.length * 100) : null;
       const lines = [
         "LanguageDeck learning diagnostics", `Build: ${APP_BUILD}`, `Created: ${now}`,
         `Language: ${currentDeck} (${languageName(currentDeck)})`, `Mode: ${currentGame} / ${currentGame === "words" ? wordMode : sentenceMode}`,
         `Set: ${currentSetName} | scope: ${practiceScope} | profile: ${repetitionProfile} | order: ${newItemOrder}`,
         `Gate: ${gateEnabled ? `${currentGateIndex+1}/${totalGates} (size ${gateSize})` : "whole table"}`,
+        `Learning intake: ${activeLearningPoolLimit(all)} active slots | recent lexical accuracy: ${recentAccuracy == null ? "not enough data" : `${recentAccuracy}% (${recent.length} answers)`}`,
         `Session: ${correctCount} correct, ${wrongCount} wrong, ${sessionLoadedIds.size} unique, ${mistakeReturnCount()} targeted returns`,
         `Writes: ${pendingAtOpen} pending when opened, ${practiceWriteErrors} errors`, "",
         "CURRENT DECK SUMMARY",
@@ -11803,13 +11930,13 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
         `Adaptive typing: ${totals.progressiveAttempts} attempts / ${totals.progressiveWrong} wrong`,
         `Reveal/solution: ${totals.solutionWrong}`, "",
         "NOTES",
-        "Error-type counters and the detailed error log start with build 4.3.2. Older mistakes remain only in the legacy aggregate, which was allowed to decrease during recovery; therefore the historical mistake total is a lower bound.",
-        "Active wrong pressure is an adaptive scheduling value, not a lifetime mistake count. One pressure point clears after three consecutive correct answers; a session can insert at most two targeted returns for the same item.", "",
+        "Error-type counters and the detailed error log start with build 4.3.2. Older mistakes remain in the historical aggregate; therefore the historical mistake total is a lower bound.",
+        "Since build 4.4, word recall and article recall have separate bounded pressure (0–4). A correct word is retained when only its article is wrong; a correct answer clears one pressure point. A session can insert at most two targeted returns for the same item.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
-      for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${r.diagnostic_total_wrong??r.times_wrong??0} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | streak ${r.streak|0} | active pressure ${r.times_wrong|0}, recovery ${r.recovery_progress|0}/${WRONG_RECOVERY_STREAK} | ${diagnosticDueLabel(r.next_due)}`);
+      for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
       lines.push("", "MOST REPEATED ITEMS (up to 40)");
-      for (const r of repeated) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${r.diagnostic_total_wrong??r.times_wrong??0} | streak ${r.streak|0} | last ${r.last_seen||"—"} | ${diagnosticDueLabel(r.next_due)}`);
+      for (const r of repeated) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | last ${r.last_seen||"—"} | ${diagnosticDueLabel(r.next_due)}`);
       lines.push("", "RECENT EXACT ERRORS (newest first, up to 60)");
       if (!errors.length) lines.push("No typed error events have been recorded yet.");
       for (const e of errors.slice(-60).reverse()) lines.push(`${e.at} | ${(e.kinds||[]).join("+")||"answer"} | ${e.english||"—"} → ${[e.article,e.target].filter(Boolean).join(" ")||"—"} | chose: ${e.chosen||"—"} | expected: ${e.expected||"—"} | ${e.mode}/${e.variant} | ${e.set}`);
@@ -11866,7 +11993,7 @@ const APP_BUILD = "4.3.4-match-stability-20260901";
         const useGateSize = currentGame === "words" ? gateSize : Math.min(gateSize, 50);
         const scopeRows = gateEnabled ? fetchGateRows(all, currentGateIndex, useGateSize) : all;
         const progress = guidedPractice ? guidedProgressForRows(scopeRows,guidedPractice) : computeProgress(scopeRows), deckProgress = guidedPractice ? guidedProgressForRows(all,guidedPractice) : computeProgress(all), now = nowIso();
-        return { ...currentPracticeStateDetail(), progress, pendingAtOpen, deckTotal:all.length, deckMastered:deckProgress.mastered, deckDue:all.filter(r=>r.next_due!=null&&r.next_due<=now).length, deckNew:all.filter(r=>r.next_due==null).length, wrongMarked:all.filter(r=>(r.times_wrong|0)>0).length, totalGates, gateIndex:currentGateIndex };
+        return { ...currentPracticeStateDetail(), progress, pendingAtOpen, deckTotal:all.length, deckMastered:deckProgress.mastered, deckDue:all.filter(r=>r.next_due!=null&&r.next_due<=now).length, deckNew:all.filter(r=>r.next_due==null).length, wrongMarked:all.filter(r=>Math.max(r.learning_pressure|0,r.article_pressure|0)>0).length, totalGates, gateIndex:currentGateIndex };
       },
       async diagnostics() { return buildPracticeDiagnostics(); }
     };
