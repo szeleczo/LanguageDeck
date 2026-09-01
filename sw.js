@@ -1,5 +1,5 @@
-/* LanguageDeck 4.3.1 — recoverable practice transitions. */
-const CACHE_VERSION="languagedeck-4-3-1-practice-transition-recovery-20260831";
+/* LanguageDeck 4.3.2 — factual learning diagnostics and restored session controls. */
+const CACHE_VERSION="languagedeck-4-3-2-learning-diagnostics-20260901";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

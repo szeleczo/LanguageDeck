@@ -75,8 +75,15 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedSkillDone[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "completed grammar skills are removed from already-prefetched queues");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.3\.1-practice-transition-recovery-20260831/, "the application build marker includes the 4.3.1 transition-recovery release");
-assert.equal((indexHtml.match(/4\.3\.1-practice-transition-recovery-20260831/g) || []).length, 2, "Course and Practice use the same 4.3.1 build marker");
+assert.match(indexHtml, /4\.3\.2-learning-diagnostics-20260901/, "the application build marker includes the 4.3.2 diagnostics release");
+assert.equal((indexHtml.match(/4\.3\.2-learning-diagnostics-20260901/g) || []).length, 2, "Course and Practice use the same 4.3.2 build marker");
+assert.match(indexHtml, /practiceSetupBtn'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openUtility\?\.\('session',LANG\)/, "the sliders restore the dedicated current-session controls");
+assert.match(indexHtml, /practiceSettingsBtn'\)\.onclick=\(\)=>openSettings\('main'\)/, "the gear keeps the application settings role");
+assert.match(indexHtml, /diagnostic_article_attempts/, "article answers have their own factual diagnostic counters");
+assert.match(indexHtml, /diagnostic_match_attempts/, "word matching has its own factual diagnostic counters");
+assert.match(indexHtml, /ld_practice_diagnostic_errors_v1/, "recent exact practice errors are retained in a bounded local log");
+assert.match(indexHtml, /DIAGNOSTIC_EVENT_LIMIT = 180/, "the detailed diagnostic log is size bounded");
+assert.match(indexHtml, /async diagnostics\(\) \{ return buildPracticeDiagnostics\(\); \}/, "the practice engine exposes a copyable read-only report");
 assert.match(indexHtml, /KNOWLEDGE_SCHEMA_VERSION=3/, "shared lexical knowledge has an explicit schema");
 assert.match(indexHtml, /KNOWLEDGE_CHANNELS=\["reading","words","grammar_context"\]/, "course, word practice and grammar context retain separate evidence channels");
 assert.match(indexHtml, /strength:1,sourceMode:"grammar"/, "grammar context can only mark a lexeme as encountered");
@@ -454,7 +461,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-3-1-practice-transition-recovery-20260831/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-3-2-learning-diagnostics-20260901/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
