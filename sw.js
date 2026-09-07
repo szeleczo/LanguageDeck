@@ -1,5 +1,5 @@
-/* LanguageDeck 4.4.5 — visible learning movement in gate and whole-table practice. */
-const CACHE_VERSION="languagedeck-4-4-5-visible-learning-progress-20260907";
+/* LanguageDeck 4.4.6 — balanced intake and visible knowledge depth. */
+const CACHE_VERSION="languagedeck-4-4-6-balanced-intake-depth-progress-20260907";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

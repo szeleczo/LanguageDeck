@@ -75,8 +75,8 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedRowDone\(row, guidedPractice, rows\)[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "prefetched guided queues use the target-specific completion rule");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.4\.5-visible-learning-progress-20260907/, "the application build marker includes the 4.4.5 visible learning progress release");
-assert.equal((indexHtml.match(/4\.4\.5-visible-learning-progress-20260907/g) || []).length, 2, "Course and Practice use the same 4.4.5 build marker");
+assert.match(indexHtml, /4\.4\.6-balanced-intake-depth-progress-20260907/, "the application build marker includes the 4.4.6 balanced intake and depth progress release");
+assert.equal((indexHtml.match(/4\.4\.6-balanced-intake-depth-progress-20260907/g) || []).length, 2, "Course and Practice use the same 4.4.6 build marker");
 assert.match(indexHtml, /practiceSetupBtn'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openUtility\?\.\('session',LANG\)/, "the sliders restore the dedicated current-session controls");
 assert.match(indexHtml, /practiceSettingsBtn'\)\.onclick=\(\)=>openSettings\('main'\)/, "the gear keeps the application settings role");
 assert.match(indexHtml, /id="sessionActualNewRatio"[\s\S]*id="sessionRequestedNewRatio"[\s\S]*id="sessionIntakeStatus"[\s\S]*id="sessionScopeStatus"/, "Session controls show realised pacing, requested pacing, intake and scope together");
@@ -84,10 +84,11 @@ assert.match(indexHtml, /This block has no unseen items[\s\S]*Open the next bloc
 assert.match(indexHtml, /sessionWholeTableBtn[\s\S]*gateEnabledCheckbox\.value = "false"/, "Session controls provide a direct escape from a stale block to whole-table practice");
 assert.match(indexHtml, /diagnostic_article_attempts/, "article answers have their own factual diagnostic counters");
 assert.match(indexHtml, /diagnostic_match_attempts/, "word matching has its own factual diagnostic counters");
-assert.match(indexHtml, /const INTAKE_RELEASE_STREAK = 1/, "one clean lexical success releases an intake slot without changing mastery");
-assert.match(indexHtml, /const GATE_MASTERY_STREAK = 2/, "the faster intake release does not falsely mark a word mastered");
+assert.match(indexHtml, /const INTAKE_RELEASE_STREAK = 2/, "a new word remains active until a second separated lexical success");
+assert.match(indexHtml, /function balancedNewItemTarget[\s\S]*Math\.min\(requested, budget, available\)[\s\S]*answeredCount === 0/, "new intake uses a testable ceiling with one finite fresh-scope bootstrap");
+assert.match(indexHtml, /const GATE_MASTERY_STREAK = 2/, "the intake release and visible learned threshold use the same two-success evidence");
 assert.match(indexHtml, /data\.length < minimumCount/, "Match refills before a round shrinks, not only after the queue reaches zero");
-assert.match(indexHtml, /ensureWordQueue\(Math\.max\(visibleCount, visibleCount \* 3\)\)/, "Match keeps spare candidates for duplicate target labels");
+assert.match(indexHtml, /if \(wordQueue\.length < visibleCount\) await flushPracticeWrites\(\);[\s\S]*ensureWordQueue\(visibleCount\)/, "Match waits for completed answers before selecting the next balanced round");
 assert.match(indexHtml, /Wrong article[\s\S]{0,200}scheduleArticleMistake\(pair\)[\s\S]{0,300}saveWordAnswer\(pair\.id, false/, "a wrong article stays in the normal flow but uses its own bounded retry path");
 assert.match(indexHtml, /const SESSION_ARTICLE_MAX_RETURNS = 1/, "an article error can insert only one same-session return");
 assert.match(indexHtml, /sessionArticleBlockedIds\.add\(item\.id\)/, "an exhausted article retry cannot be fetched again during the same session");
@@ -95,11 +96,14 @@ assert.match(indexHtml, /const MAX_LEARNING_PRESSURE = 4/, "active learning pres
 assert.match(indexHtml, /function answerChannels[\s\S]*?const lexicalCorrect[\s\S]*?articleCorrect/, "word and article evidence are separated before scheduling");
 assert.match(indexHtml, /updateArticleChannel\(row, channels\.articleCorrect, profile\)/, "article scheduling uses only the article evidence channel");
 assert.match(indexHtml, /calcWrongDue\(profile = "normal", pressure = 1, seed = ""\)[\s\S]*?normal: \[5, 15, 45, 120\]/, "repeated misses receive progressive spacing instead of a fixed five minutes");
-assert.match(indexHtml, /const ACTIVE_POOL_LIMITS = Object\.freeze\(\{ struggling: 8, steady: 12, strong: 24 \}\)/, "strong lexical accuracy opens a 24-slot active pool");
+assert.match(indexHtml, /const ACTIVE_POOL_LIMITS = Object\.freeze\(\{ struggling: 8, steady: 12, strong: 16 \}\)/, "adaptive intake stays bounded at 8, 12 or 16 active words");
+assert.equal((indexHtml.match(/selectStudyItems\(filtered, batchSize, newRatio, practiceScope, true, pool\)/g) || []).length, 2, "gate and whole-table word fetches both enforce the active-learning throttle");
+assert.match(indexHtml, /if \(!throttleNew\) for \(const it of remNew\)/, "word practice cannot backfill spare queue capacity beyond its new-item ceiling");
+assert.match(indexHtml, /sessionSelectionHistoryIds/, "selection history rotates independently from factual unique-item diagnostics");
 assert.match(indexHtml, /function noteSessionLearningMovement[\s\S]*adaptiveStep[\s\S]*developingStep[\s\S]*sessionProgressAdvances\+\+[\s\S]*sessionReinforcements\+\+/, "session feedback separates genuine learning movement from reinforcement");
 assert.match(indexHtml, /function resetSessionPacing[\s\S]*sessionProgressAdvances = 0[\s\S]*sessionReinforcements = 0/, "starting a new session resets its learning-movement counters");
-assert.match(indexHtml, /detail\.gateEnabled===false\?`\$\{p\.mastered\|\|0\}\/\$\{total\} learned · \$\{sessionAdvanced\} advanced now/, "whole-table progress uses full-deck counts and visible session movement without gate assumptions");
-assert.match(indexHtml, /\$\{p\.mastered\|\|0\}\/\$\{total\} learned · \$\{sessionAdvanced\} advanced now · \$\{gateReady\?'next block open'/, "gate progress explicitly announces session movement and when the next block is available");
+assert.match(indexHtml, /detail\.gateEnabled===false\?`\$\{p\.new\|\|0\} new · \$\{depthPercent\}% depth · \$\{stable\} stable`/, "whole-table progress reports unseen vocabulary, partial depth and stable knowledge");
+assert.match(indexHtml, /`\$\{p\.new\|\|0\} new · \$\{depthPercent\}% depth · \$\{gateReady\?'next block open'/, "gate progress reports the same depth model plus next-block readiness");
 assert.match(indexHtml, /sessionProgressAdvances, sessionReinforcements, sessionMasteryGains, sessionStableGains/, "the integrated shell receives factual session movement counters");
 assert.match(indexHtml, /ADAPTIVE LEVEL REGRESSIONS \(newest first, up to 20\)/, "Adaptive lower-than-save events are promoted next to the diagnostic summary");
 assert.match(indexHtml, /crossedRuntime[\s\S]*after restart/, "Adaptive diagnostics distinguish same-runtime changes from restart-related regressions");
@@ -122,8 +126,14 @@ assert.match(indexHtml, /visibleCountSelect\.addEventListener\("change"/, "the l
 assert.match(indexHtml, /data-match-pairs="4"[\s\S]*wordMatchContainer:not\(\.hidden\)[\s\S]*padding-top:clamp\(64px,10vh,112px\)/, "the four-pair phone board is shifted into the lower thumb-reach zone");
 assert.match(indexHtml, /setAttribute\("data-match-pairs", String\(visibleCount\)\)/, "Match rendering publishes the active round size to the responsive layout");
 assert.match(indexHtml, /id="practiceProgressStable"/, "the compact progress strip has a stable-knowledge segment");
+assert.match(indexHtml, /id="practiceProgressRecall"/, "the compact progress strip exposes developing recall");
+assert.match(indexHtml, /id="practiceProgressLearned"/, "the compact progress strip exposes the two-success learned stage");
 assert.match(indexHtml, /id="practiceProgressLearning"/, "the compact progress strip has a learning segment");
-assert.match(indexHtml, /id="practiceProgressDue"/, "the compact progress strip has a due/session-return indicator");
+assert.match(indexHtml, /id="practiceProgressMet"/, "the compact progress strip distinguishes merely encountered words");
+assert.match(indexHtml, /id="practiceProgressDepth"/, "partial knowledge contributes to a separate weighted depth line");
+assert.ok(!indexHtml.includes('id="practiceProgressDue"'), "due work is no longer drawn as a backwards-moving orange progress overlay");
+assert.match(indexHtml, /function knowledgeDepthStage[\s\S]*row\.times_seen[\s\S]*row\.times_correct[\s\S]*return 5[\s\S]*progressiveLevelIndex/, "knowledge depth combines encounters, successes, Adaptive levels and stable recall");
+assert.match(indexHtml, /sessionGoal=30/, "session progress has a finite motivating useful-answer goal");
 assert.match(indexHtml, /PRACTICE_PROGRESS_VIEW==='session'/, "word practice can switch the compact strip to session progress");
 assert.match(indexHtml, /sessionNewAnswers, sessionReviewAnswers, sessionArticleReturns/, "the shell receives factual session pacing counters");
 assert.match(indexHtml, /migrateLearningEngineV440[\s\S]*?Math\.min\(3, Math\.max\(0, row\.times_wrong \| 0\)\)/, "legacy pressure migrates conservatively without erasing history");
@@ -513,7 +523,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-4-5-visible-learning-progress-20260907/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-4-6-balanced-intake-depth-progress-20260907/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");

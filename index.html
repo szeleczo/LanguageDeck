@@ -3122,8 +3122,7 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
 <style id="delivery2IntegrationStyles">
 .integrated-practice-host{position:fixed;inset:0;z-index:125;background:var(--bg);color:var(--text);display:flex;flex-direction:column;overflow:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
 .integrated-study-header{flex:0 0 58px;height:58px;display:grid;grid-template-columns:42px minmax(0,1fr) auto auto;gap:7px;align-items:center;padding:7px 11px;background:var(--surface);border-bottom:1px solid var(--line)}
-.integrated-study-header .icon{width:40px;height:40px}.integrated-study-heading{min-width:0}.integrated-study-heading b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-study-heading span{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress{flex:0 0 37px;min-height:37px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:4px 12px;background:var(--surface);border-bottom:1px solid var(--line);font-size:10px;color:var(--muted)}.integrated-practice-progress strong{color:var(--text);font-size:10px;white-space:nowrap}.integrated-practice-progress .practice-progress-counts{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress .practice-progress-score{font-weight:850;white-space:nowrap}.integrated-practice-progress .practice-progress-mini{grid-column:1/-1;position:relative;display:flex;width:100%;height:6px;min-height:6px;margin:0;padding:0;border:0;border-radius:999px;background:var(--surface2)!important;overflow:hidden;cursor:pointer;appearance:none}.integrated-practice-progress .practice-progress-segment{display:block;height:4px;width:0;flex:0 0 auto;transition:width .15s ease}.integrated-practice-progress .practice-progress-stable{background:var(--accent)}.integrated-practice-progress .practice-progress-learning{background:#7dd3fc}.integrated-practice-progress .practice-progress-due{position:absolute;left:0;bottom:0;height:2px;width:0;background:#f59e0b;transition:width .15s ease}
-.integrated-practice-progress .practice-progress-score.progress-earned{animation:progressEarned .42s ease-out;color:var(--good)}
+.integrated-study-header .icon{width:40px;height:40px}.integrated-study-heading{min-width:0}.integrated-study-heading b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-study-heading span{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress{flex:0 0 40px;min-height:40px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:4px 12px;background:var(--surface);border-bottom:1px solid var(--line);font-size:10px;color:var(--muted)}.integrated-practice-progress strong{color:var(--text);font-size:10px;white-space:nowrap}.integrated-practice-progress .practice-progress-counts{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress .practice-progress-score{font-weight:850;white-space:nowrap}.integrated-practice-progress .practice-progress-mini{grid-column:1/-1;position:relative;display:flex;align-items:flex-start;width:100%;height:9px;min-height:9px;margin:0;padding:0 0 3px;border:0;border-radius:999px;background:var(--surface2)!important;overflow:hidden;cursor:pointer;appearance:none}.integrated-practice-progress .practice-progress-segment{display:block;height:6px;width:0;flex:0 0 auto;transition:width .18s ease}.integrated-practice-progress .practice-progress-stable{background:#315be8}.integrated-practice-progress .practice-progress-recall{background:#5579ee}.integrated-practice-progress .practice-progress-learned{background:#60a5fa}.integrated-practice-progress .practice-progress-learning{background:#7dd3fc}.integrated-practice-progress .practice-progress-met{background:#bae6fd}.integrated-practice-progress .practice-progress-depth{position:absolute;left:0;bottom:0;height:2px;width:0;background:#315be8;transition:width .18s ease}.integrated-practice-progress .practice-progress-score.progress-earned{animation:progressEarned .42s ease-out;color:var(--good)}
 @keyframes progressEarned{0%{transform:scale(1)}45%{transform:scale(1.08)}100%{transform:scale(1)}}
 #legacyPracticeRoot{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:var(--bg);color:var(--text);overflow:hidden;--integrated-dock-h:64px}
 #legacyPracticeRoot>.appbar,#legacyPracticeRoot>#installBanner,#legacyPracticeRoot>#iosInstallBanner{display:none!important}
@@ -3295,8 +3294,11 @@ html.integrated-practice-active body{overflow:hidden!important}
     <span class="practice-progress-score" id="practiceProgressScore">0 ✓ · 0 ✗</span>
     <button class="practice-progress-mini" id="practiceProgressToggle" type="button" aria-label="Show session progress" title="Tap to switch between deck and session progress">
       <span class="practice-progress-segment practice-progress-stable" id="practiceProgressStable"></span>
+      <span class="practice-progress-segment practice-progress-recall" id="practiceProgressRecall"></span>
+      <span class="practice-progress-segment practice-progress-learned" id="practiceProgressLearned"></span>
       <span class="practice-progress-segment practice-progress-learning" id="practiceProgressLearning"></span>
-      <span class="practice-progress-due" id="practiceProgressDue"></span>
+      <span class="practice-progress-segment practice-progress-met" id="practiceProgressMet"></span>
+      <span class="practice-progress-depth" id="practiceProgressDepth"></span>
     </button>
   </div>
   <div id="legacyPracticeRoot" class="legacy-practice-root"><header class="appbar">
@@ -3613,6 +3615,7 @@ html.integrated-practice-active body{overflow:hidden!important}
 <div class="session-controls-stat"><b id="sessionScopeStatus">—</b><span>current learning scope</span></div>
 </div>
 <p class="session-controls-explanation" id="sessionControlsExplanation">The actual new-item share appears after your first answered word card.</p>
+<p class="session-controls-explanation">Progress colors: met → practising → recalled twice → strong recall → stable. The thin blue line is total knowledge depth.</p>
 <div class="session-controls-shortcuts">
 <button class="secondary hidden" id="sessionNextGateBtn" type="button">Open next block</button>
 <button class="secondary hidden" id="sessionWholeTableBtn" type="button">Use whole table</button>
@@ -3909,7 +3912,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.4.5-visible-learning-progress-20260907",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.4.6-balanced-intake-depth-progress-20260907",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4409,32 +4412,38 @@ function updatePracticeShell(detail={}){
   $('practiceStudyTitle').textContent=detail.guided?guidedTitle:practiceModeLabel(mode);
   $('practiceStudySub').textContent=detail.guidedLabel||[languageLabel,detail.variant,detail.setName].filter(Boolean).join(' · ')||(grammar?'Vezetett nyelvtani gyakorlat':'Standalone deck');
   $('integratedPracticeSettingsLabel').textContent=grammar?'Vezetett nyelvtani gyakorlat':detail.guided?`Guided ${guidedTitle}`:`${languageLabel?languageLabel+' · ':''}${practiceModeLabel(mode)}${detail.setName?' · '+detail.setName:''}`;
-  const stable=Math.max(0,p.stable??p.mastered??0),learning=Math.max(0,(p.total||0)-(p.new||0)-stable),total=Math.max(0,p.total||0);
+  const stable=Math.max(0,p.stable??p.mastered??0),recall=Math.max(0,p.recall||0),learned=Math.max(0,p.learned||0),learning=Math.max(0,p.learning??((p.total||0)-(p.new||0)-stable)),met=Math.max(0,p.met||0),total=Math.max(0,p.total||0),depthPercent=Math.max(0,Math.min(100,p.depthPercent??p.percent??0));
   const sessionNew=Math.max(0,detail.sessionNewAnswers||0),sessionReview=Math.max(0,detail.sessionReviewAnswers||0),articleReturns=Math.max(0,detail.sessionArticleReturns||0);
   const sessionAdvanced=Math.max(0,detail.sessionProgressAdvances||0),sessionReinforced=Math.max(0,detail.sessionReinforcements||0),sessionMastered=Math.max(0,detail.sessionMasteryGains||0),sessionStable=Math.max(0,detail.sessionStableGains||0);
-  const sessionProgressTotal=sessionAdvanced+sessionReinforced,sessionOutcomeTotal=sessionProgressTotal+Math.max(0,detail.scoreKo||0);
+  const sessionProgressTotal=sessionAdvanced+sessionReinforced,sessionGoal=30;
   const sessionView=canShowSession&&PRACTICE_PROGRESS_VIEW==='session';
   const remaining=Math.max(0,total-(p.mastered||0)),gateReady=detail.gateEnabled!==false&&!!p.is_complete&&(detail.gateIndex||0)<Math.max(0,(detail.totalGates||0)-1);
   $('practiceProgressScope').textContent=sessionView?'This session':grammar?'Tanulási cél':detail.guided?'Learning goal':(detail.gateEnabled===false?'Whole table':`Gate ${(detail.gateIndex||0)+1}/${detail.totalGates||0}${gateReady?' · ready':''}`);
   $('practiceProgressCounts').textContent=sessionView
-    ? `${sessionAdvanced} advanced · ${sessionReinforced} reinforced · ${sessionMastered} newly learned${sessionStable?` · ${sessionStable} stable`:''}`
-    : grammar?`${p.mastered||0} / ${p.total||0} elsajátítva`:detail.guided?`${p.mastered||0} / ${p.total||0} mastered`:detail.gateEnabled===false?`${p.mastered||0}/${total} learned · ${sessionAdvanced} advanced now · ${stable} stable`:`${p.mastered||0}/${total} learned · ${sessionAdvanced} advanced now · ${gateReady?'next block open':`${remaining} remaining`}`;
+    ? `${Math.min(sessionGoal,sessionProgressTotal)}/${sessionGoal} useful · ${sessionAdvanced} advanced · ${sessionReinforced} reinforced`
+    : grammar?`${p.mastered||0} / ${p.total||0} elsajátítva`:detail.guided?`${p.mastered||0} / ${p.total||0} mastered`:detail.gateEnabled===false?`${p.new||0} new · ${depthPercent}% depth · ${stable} stable`:`${p.new||0} new · ${depthPercent}% depth · ${gateReady?'next block open':`${remaining} to learn`}`;
   const score=$('practiceProgressScore');
   score.textContent=`${detail.scoreOk||0} ✓ · ${detail.scoreKo||0} ✗`;
   score.title=canShowSession?`${sessionAdvanced} answers moved learning forward; ${sessionReinforced} reinforced already learned material.`:'';
   score.setAttribute('aria-label',canShowSession?`${detail.scoreOk||0} correct, ${sessionAdvanced} advanced, ${sessionReinforced} reinforced, ${detail.scoreKo||0} wrong`:`${detail.scoreOk||0} correct, ${detail.scoreKo||0} wrong`);
   if(sessionAdvanced>LAST_SESSION_ADVANCE_RENDERED){score.classList.remove('progress-earned');void score.offsetWidth;score.classList.add('progress-earned');setTimeout(()=>score.classList.remove('progress-earned'),450)}
   LAST_SESSION_ADVANCE_RENDERED=sessionAdvanced;
-  const stablePct=sessionView?(sessionOutcomeTotal?sessionAdvanced/sessionOutcomeTotal*100:0):(total?stable/total*100:0);
-  const learningPct=sessionView?(sessionOutcomeTotal?sessionReinforced/sessionOutcomeTotal*100:0):(total?learning/total*100:0);
-  const duePct=sessionView?(sessionOutcomeTotal?Math.min(100,(detail.scoreKo||0)/sessionOutcomeTotal*100):0):(total?Math.min(100,(p.due||0)/total*100):0);
+  const sessionAdvancedShown=Math.min(sessionGoal,sessionAdvanced),sessionReinforcedShown=Math.min(Math.max(0,sessionGoal-sessionAdvancedShown),sessionReinforced);
+  const stablePct=sessionView?sessionAdvancedShown/sessionGoal*100:(total?stable/total*100:0);
+  const recallPct=sessionView?0:(total?recall/total*100:0);
+  const learnedPct=sessionView?0:(total?learned/total*100:0);
+  const learningPct=sessionView?sessionReinforcedShown/sessionGoal*100:(total?learning/total*100:0);
+  const metPct=sessionView?0:(total?met/total*100:0);
   $('practiceProgressStable').style.width=`${stablePct}%`;
+  $('practiceProgressRecall').style.width=`${recallPct}%`;
+  $('practiceProgressLearned').style.width=`${learnedPct}%`;
   $('practiceProgressLearning').style.width=`${learningPct}%`;
-  $('practiceProgressDue').style.width=`${duePct}%`;
+  $('practiceProgressMet').style.width=`${metPct}%`;
+  $('practiceProgressDepth').style.width=`${sessionView?Math.min(100,sessionProgressTotal/sessionGoal*100):depthPercent}%`;
   const toggle=$('practiceProgressToggle');
   toggle.disabled=!canShowSession;
   toggle.setAttribute('aria-label',sessionView?'Show deck progress':'Show session progress');
-  toggle.title=canShowSession?(sessionView?'Tap for whole-deck progress':'Tap for this-session progress'):'Progress';
+  toggle.title=canShowSession?(sessionView?'Session goal: useful correct answers. Tap for deck progress.':`Stable ${stable} · recall ${recall} · learned ${learned} · first success ${learning} · met ${met} · new ${p.new||0}. Tap for session progress.`):'Progress';
   $('practiceSetupBtn').disabled=false;$('practiceSetupBtn').title=grammar?'Gyakorlási beállítások':'Session options';$('practiceBackBtn').title=grammar?'Vissza a nyelvtani modulhoz':'Back';localizeGrammarPracticeControls(grammar);if(!$('settingsBackdrop').classList.contains('hidden'))renderCurrentPracticeSettings();syncPracticeDock()
 }
 function renderCurrentPracticeSettings(){const box=$('integratedPracticeSettings');if(!ACTIVE_PRACTICE_MODE||!window.LanguageDeckPractice){box.classList.add('hidden');PRACTICE_PENDING_OPTIONS=null;return}box.classList.remove('hidden');$('openPracticeSetupBtn').classList.add('hidden');const live=window.LanguageDeckPractice.snapshot();if(live.guided){PRACTICE_PENDING_OPTIONS=null;document.querySelectorAll('[data-practice-order],[data-practice-gate]').forEach(b=>{b.classList.remove('on');b.disabled=true;b.onclick=null});$('morePracticeOptionsBtn').disabled=true;$('restartPracticeBtn').disabled=true;$('practiceOptionsNote').textContent='This learning domain controls order and scope for the current goal.';return}document.querySelectorAll('[data-practice-order],[data-practice-gate]').forEach(b=>b.disabled=false);$('morePracticeOptionsBtn').disabled=false;$('restartPracticeBtn').disabled=false;if(!PRACTICE_PENDING_OPTIONS||PRACTICE_PENDING_OPTIONS.mode!==live.mode)PRACTICE_PENDING_OPTIONS={mode:live.mode,order:live.order||'smart',gateEnabled:live.gateEnabled!==false};document.querySelectorAll('[data-practice-order]').forEach(b=>{b.classList.toggle('on',b.dataset.practiceOrder===PRACTICE_PENDING_OPTIONS.order);b.onclick=()=>{PRACTICE_PENDING_OPTIONS.order=b.dataset.practiceOrder==='csv'?'csv':'smart';renderCurrentPracticeSettings()}});document.querySelectorAll('[data-practice-gate]').forEach(b=>{const value=b.dataset.practiceGate==='true';b.classList.toggle('on',value===PRACTICE_PENDING_OPTIONS.gateEnabled);b.onclick=()=>{PRACTICE_PENDING_OPTIONS.gateEnabled=value;renderCurrentPracticeSettings()}});const changed=PRACTICE_PENDING_OPTIONS.order!==(live.order||'smart')||PRACTICE_PENDING_OPTIONS.gateEnabled!==(live.gateEnabled!==false);$('practiceOptionsNote').textContent=changed?'Restart session to apply these changes.':'Current session uses these settings.'}
@@ -4463,7 +4472,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.4.5-visible-learning-progress-20260907";
+    const APP_BUILD = "4.4.6-balanced-intake-depth-progress-20260907";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -6398,28 +6407,44 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return rows;
     }
 
+    function knowledgeDepthStage(row) {
+      if (!row || ((row.times_seen | 0) === 0 && row.next_due == null)) return 0;
+      if ((row.times_correct | 0) === 0) return 1;
+      if (isMastered(row) || +row.full_recall_at > 0) return 5;
+      const adaptive = row.progressive_level == null ? 0 : progressiveLevelIndex(row);
+      if ((row.streak | 0) >= 3 || adaptive >= 3) return 4;
+      if ((row.streak | 0) >= GATE_MASTERY_STREAK || adaptive >= 2) return 3;
+      return 2;
+    }
+
     function computeProgress(rows) {
       const total = rows.length;
-      if (total === 0) return { total: 0, mastered: 0, stable: 0, new: 0, due: 0, percent: 0, is_complete: false };
+      if (total === 0) return { total: 0, mastered: 0, stable: 0, recall: 0, learned: 0, learning: 0, met: 0, new: 0, due: 0, percent: 0, depthPercent: 0, is_complete: false };
       const now = nowIso();
-      let mastered = 0, stable = 0, n = 0, due = 0;
+      const stages = [0, 0, 0, 0, 0, 0], weights = [0, .12, .32, .55, .78, 1];
+      let mastered = 0, stable = 0, n = 0, due = 0, depth = 0;
       for (const r of rows) {
         if ((r.streak | 0) >= GATE_MASTERY_STREAK) mastered++;
         if (isMastered(r)) stable++;
         if (r.next_due == null) n++;
         else if (r.next_due <= now) due++;
+        const stage = knowledgeDepthStage(r);
+        stages[stage]++;
+        depth += weights[stage];
       }
       return {
-        total, mastered, stable, new: n, due,
+        total, mastered, stable: stages[5], recall: stages[4], learned: stages[3], learning: stages[2], met: stages[1], new: stages[0], due,
         percent: Math.round((mastered / total) * 100),
+        depthPercent: Math.round((depth / total) * 100),
         is_complete: (mastered / total) >= GATE_UNLOCK_RATIO
       };
     }
 
-    /* No-gate practice adjusts its active learning set from recent lexical
-       accuracy. A learner who is struggling gets a smaller, calmer set; a
-       stable learner sees new material sooner. */
-    const ACTIVE_POOL_LIMITS = Object.freeze({ struggling: 8, steady: 12, strong: 24 });
+    /* Gate and whole-table practice share the same active learning budget.
+       A gate is a content boundary, not permission to activate every unseen
+       word inside it at once. Strong performance widens the window modestly
+       without recreating the old 24-word intake flood. */
+    const ACTIVE_POOL_LIMITS = Object.freeze({ struggling: 8, steady: 12, strong: 16 });
     const LEARNING_ACCURACY_WINDOW = 30;
     function learningAccuracyKey(deck = currentDeck, setName = currentSetName) {
       return `ld-learning-accuracy-v2:${deck}:${setName}`;
@@ -6438,17 +6463,20 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
     function activeLearningPoolLimit(rows) {
       const outcomes = recentLearningOutcomes();
-      if (outcomes.length < 8) return ACTIVE_POOL_LIMITS.steady;
-      const accuracy = outcomes.reduce((sum, value) => sum + value, 0) / outcomes.length;
-      if (accuracy < 0.65) return ACTIVE_POOL_LIMITS.struggling;
-      if (accuracy > 0.85) return ACTIVE_POOL_LIMITS.strong;
-      return ACTIVE_POOL_LIMITS.steady;
+      let limit = ACTIVE_POOL_LIMITS.steady;
+      if (outcomes.length < 8) limit = ACTIVE_POOL_LIMITS.steady;
+      else {
+        const accuracy = outcomes.reduce((sum, value) => sum + value, 0) / outcomes.length;
+        if (accuracy < 0.65) limit = ACTIVE_POOL_LIMITS.struggling;
+        else if (accuracy > 0.85) limit = ACTIVE_POOL_LIMITS.strong;
+      }
+      // Match needs enough distinct active items to fill the chosen board.
+      return Math.max(limit, currentGame === "words" && wordMode === "match" ? visibleCount : 1);
     }
-    /* A clean first lexical success releases the temporary intake slot. This
-       does NOT mark the word mastered: normal SRS reviews and the visible
-       mastery threshold remain unchanged. It only prevents a correctly
-       recognised new word from blocking all further new intake. */
-    const INTAKE_RELEASE_STREAK = 1;
+    /* One recognition is not yet learning. Keep the item active until a
+       second, separated lexical success; normal SRS mastery still remains at
+       streak 5 and is not weakened by this intake rule. */
+    const INTAKE_RELEASE_STREAK = 2;
 
     function countLearning(rows) {
       let n = 0;
@@ -6456,6 +6484,17 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         if (r.next_due != null && (r.streak | 0) < INTAKE_RELEASE_STREAK) n++;
       }
       return n;
+    }
+
+    function balancedNewItemTarget(requestedTarget, activeBudget, noReviewMaterial, answeredCount, bootstrapSize, availableNew) {
+      const requested = Math.max(0, requestedTarget | 0);
+      const budget = Math.max(0, activeBudget | 0);
+      const available = Math.max(0, availableNew | 0);
+      let target = Math.min(requested, budget, available);
+      if (noReviewMaterial && answeredCount === 0) {
+        target = Math.max(target, Math.min(Math.max(0, bootstrapSize | 0), budget, available));
+      }
+      return target;
     }
 
     function selectStudyItems(rows, limit, newRatio, practiceScope, throttleNew = false, learningScopeRows = null) {
@@ -6521,11 +6560,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       let newTarget = (currentGame === "words" && !guidedPractice)
         ? sessionPacingNewTarget(limit, newRatio)
         : Math.round(limit * newRatio);
-      const dueTarget = Math.max(0, limit - newTarget);
 
-      // New-intake throttle (no-gate mode): the learning pool caps how many
-      // new items may enter. NOTE: `rows` (the full scope), not `pool`, is
-      // used for the count so practice-scope filters can't hide learning load.
+      // New-intake throttle (gate AND whole-table modes): the learning pool
+      // caps how many unseen items may enter. NOTE: `rows` (the full scope),
+      // not `pool`, is used so session filtering cannot hide learning load.
       let newBudget = Infinity;
       if (throttleNew) {
         // CRITICAL: count learning items on the FULL scope, not on the
@@ -6535,9 +6573,15 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         // silently opened and the session became an endless stream of new
         // sentences with no reviews (fixed only by an app restart).
         newBudget = Math.max(0, activeLearningPoolLimit(learningScopeRows || rows) - countLearning(learningScopeRows || rows));
-        newTarget = Math.min(newTarget, newBudget);
+        // A completely fresh scope needs enough distinct cards to start. This
+        // one-time bootstrap is the only permitted overshoot; subsequent
+        // batches repay it through reviews before admitting more new words.
+        const noReviewMaterial = due.length === 0 && future.length === 0 && masteredDue.length === 0;
+        const bootstrap = wordMode === "match" ? visibleCount : 6;
+        newTarget = balancedNewItemTarget(newTarget, newBudget, noReviewMaterial, sessionNewAnswers + sessionReviewAnswers, bootstrap, newItems.length);
       }
 
+      const dueTarget = Math.max(0, limit - newTarget);
       let selected = due.slice(0, dueTarget);
       const remDue = due.slice(dueTarget);
       selected = selected.concat(newItems.slice(0, newTarget));
@@ -6563,9 +6607,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           if (!seen.has(it.id)) { selected.push(it); seen.add(it.id); }
           if (selected.length >= limit) break;
         }
-        for (const it of remNew) {
+        // Do not fill spare queue capacity with extra unseen words. The New
+        // item setting is a ceiling, not a request to exhaust the gate. A
+        // shorter rolling queue is intentional and will be refilled after
+        // the learner's answers update the active set.
+        if (!throttleNew) for (const it of remNew) {
           if (selected.length >= limit) break;
-          if (throttleNew && newUsed >= newBudget) break;
           if (!seen.has(it.id)) { selected.push(it); seen.add(it.id); newUsed++; }
         }
       }
@@ -6823,7 +6870,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     let sessionStableGains = 0;
     const SESSION_WORD_TRANSITION = Symbol("sessionWordTransition");
 
+    // `sessionLoadedIds` is a diagnostic unique-item set. Selection history
+    // rotates independently so allowing a spaced return does not erase the
+    // factual unique count shown in diagnostics.
     let sessionLoadedIds = new Set();
+    let sessionSelectionHistoryIds = new Set();
 
     let wordQueue = [];
     let currentWordRoundPairs = [];
@@ -8206,7 +8257,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (guidedPractice) noteEl.textContent = "This guided lesson controls its own order and intake.";
       else if (currentGame !== "words") noteEl.textContent = "For sentence practice, the percentage shapes each fetched batch. Live answered-card pacing is measured in Words mode.";
       else if (gateEnabled && (lastPracticeProgress.new | 0) === 0) noteEl.textContent = `This block has no unseen items, so the ${requested}% target cannot add new words here. Open the next block or use the whole table.`;
-      else if (limit && occupied >= limit) noteEl.textContent = `All ${limit} learning slots are occupied. New words pause until an active word gets one clean lexical success.`;
+      else if (limit && occupied >= limit) noteEl.textContent = `All ${limit} learning slots are occupied. New words pause until active words have been recalled correctly twice.`;
       else if (realised == null) noteEl.textContent = `The ${requested}% value is a target among answered word cards, not a fixed promise. The actual share appears after your first answer.`;
       else if (realised + 10 < requested) noteEl.textContent = `The current ${realised}% is below the ${requested}% target because due reviews, the current block, or available learning slots took priority.`;
       else noteEl.textContent = `The current session is tracking the ${requested}% target. Due reviews still keep priority when they need attention.`;
@@ -9062,25 +9113,28 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           await syncWordRowsWithGlobal(allRows);
           const all = allRows.filter(r => ldQuizSafeEnglish(r.english, false));
           const useGateSize = gateSize;
-          // Refill a modest rolling window. A 100-card preload kept the active
-          // learning budget stale for dozens of rounds after cards graduated.
-          const batchSize = gateEnabled ? Math.max(useGateSize, visibleCount * 20) : Math.max(12, visibleCount * 3);
+          // Gate size controls content scope only. Queue a small rolling
+          // window in both modes so freshly answered rows can be reconsidered
+          // between introductions instead of preloading the whole gate.
+          const batchSize = Math.max(12, visibleCount * 2);
 
           let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
-          let filtered = pool.filter(r => !sessionLoadedIds.has(r.id) && !reservedIds.has(r.id) && !sessionArticleBlockedIds.has(r.id));
-          let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled, pool);
+          const activeReturnWaiting = pool.some(r => sessionSelectionHistoryIds.has(r.id) && r.next_due != null && (r.streak | 0) < INTAKE_RELEASE_STREAK && !reservedIds.has(r.id));
+          if (forceResetIfShort && wordMode !== "match" && activeReturnWaiting && reservedIds.size === 0) sessionSelectionHistoryIds = new Set();
+          let filtered = pool.filter(r => !sessionSelectionHistoryIds.has(r.id) && !reservedIds.has(r.id) && !sessionArticleBlockedIds.has(r.id));
+          let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, true, pool);
 
           /* A Match round is invalid when it contains fewer cards than the
              configured visible count. Previously the session history reset
              only at EXACTLY zero, which produced 4-, 2- and 1-pair rounds as
              the prefetched pool ran out. Keep already queued cards reserved,
              rotate the remaining history, and refill before returning. */
-          if (forceResetIfShort && data.length < minimumCount && sessionLoadedIds.size > reservedIds.size) {
-            sessionLoadedIds = new Set(reservedIds);
+          if (forceResetIfShort && data.length < minimumCount && sessionSelectionHistoryIds.size > reservedIds.size) {
+            sessionSelectionHistoryIds = new Set(reservedIds);
             filtered = pool.filter(r => !reservedIds.has(r.id) && !sessionArticleBlockedIds.has(r.id));
-            data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled, pool);
+            data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, true, pool);
           }
-          for (const it of data) sessionLoadedIds.add(it.id);
+          for (const it of data) { sessionLoadedIds.add(it.id); sessionSelectionHistoryIds.add(it.id); }
           return data;
         } finally { wordFetchInFlight = null; }
       })();
@@ -9116,7 +9170,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     async function loadCurrentGame(reset = true) {
-      if (reset) sessionLoadedIds = new Set();
+      if (reset) { sessionLoadedIds = new Set(); sessionSelectionHistoryIds = new Set(); }
       await refreshGateInfo();
       if (currentGame === "words") await loadWords(reset);
       else if (currentGame === "text") await loadTextMode(reset);
@@ -9126,7 +9180,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     /* ---------- Word match game ---------- */
     async function loadWords(reset = true) {
-      if (reset) { sessionLoadedIds = new Set(); resetSessionMistakes(); resetSessionPacing(); }
+      if (reset) { sessionLoadedIds = new Set(); sessionSelectionHistoryIds = new Set(); resetSessionMistakes(); resetSessionPacing(); }
       selectedLeft = null; selectedRight = null;
       matchedIds = new Set();
       pendingArticlePairId = null; hideArticleModal();
@@ -9182,8 +9236,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       pendingArticlePairId = null; hideArticleModal();
       currentWordRoundPairs = [];
 
-      // Keep enough spare candidates to replace identical target labels.
-      await ensureWordQueue(Math.max(visibleCount, visibleCount * 3));
+      // Writes from the completed round define which words remain active.
+      // Wait for them before refilling, otherwise the next round can be built
+      // from stale "new" rows and overshoot the requested intake ratio.
+      if (wordQueue.length < visibleCount) await flushPracticeWrites();
+      await ensureWordQueue(visibleCount);
 
       // Avoid putting two pairs with the SAME target word into one round.
       // Otherwise the right column shows two identical-looking cards (e.g. "sie")
@@ -12211,6 +12268,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         `Set: ${currentSetName} | scope: ${practiceScope} | profile: ${repetitionProfile} | order: ${newItemOrder}`,
         `Gate: ${gateEnabled ? `${currentGateIndex+1}/${totalGates} (size ${gateSize})` : "whole table"}`,
         `Learning intake: ${countLearning(all)}/${activeLearningPoolLimit(all)} active slots occupied | requested new ratio: ${Math.round(newRatio * 100)}% | recent lexical accuracy: ${recentAccuracy == null ? "not enough data" : `${recentAccuracy}% (${recent.length} answers)`}`,
+        `Intake policy: shared in gate and whole-table practice | release after ${INTAKE_RELEASE_STREAK} lexical successes | requested new ratio is a ceiling`,
         `Session pacing: ${sessionNewAnswers} new · ${sessionReviewAnswers} reviews · ${sessionArticleReturns} article-driven returns`,
         `Session learning movement: ${sessionProgressAdvances} advanced · ${sessionReinforcements} reinforced · ${sessionMasteryGains} newly mastered · ${sessionStableGains} newly stable`,
         `Session score: ${correctCount} correct, ${wrongCount} wrong, ${sessionLoadedIds.size} unique loaded, ${mistakeReturnCount()} targeted returns`,
