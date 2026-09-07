@@ -1,5 +1,5 @@
-/* LanguageDeck 4.4.3 — target-aware guided selection and Adaptive level diagnostics. */
-const CACHE_VERSION="languagedeck-4-4-3-adaptive-diagnostics-20260907";
+/* LanguageDeck 4.4.5 — visible learning movement in gate and whole-table practice. */
+const CACHE_VERSION="languagedeck-4-4-5-visible-learning-progress-20260907";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

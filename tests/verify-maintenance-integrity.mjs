@@ -75,10 +75,13 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedRowDone\(row, guidedPractice, rows\)[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "prefetched guided queues use the target-specific completion rule");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.4\.3-adaptive-diagnostics-20260907/, "the application build marker includes the 4.4.3 Adaptive diagnostics release");
-assert.equal((indexHtml.match(/4\.4\.3-adaptive-diagnostics-20260907/g) || []).length, 2, "Course and Practice use the same 4.4.3 build marker");
+assert.match(indexHtml, /4\.4\.5-visible-learning-progress-20260907/, "the application build marker includes the 4.4.5 visible learning progress release");
+assert.equal((indexHtml.match(/4\.4\.5-visible-learning-progress-20260907/g) || []).length, 2, "Course and Practice use the same 4.4.5 build marker");
 assert.match(indexHtml, /practiceSetupBtn'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openUtility\?\.\('session',LANG\)/, "the sliders restore the dedicated current-session controls");
 assert.match(indexHtml, /practiceSettingsBtn'\)\.onclick=\(\)=>openSettings\('main'\)/, "the gear keeps the application settings role");
+assert.match(indexHtml, /id="sessionActualNewRatio"[\s\S]*id="sessionRequestedNewRatio"[\s\S]*id="sessionIntakeStatus"[\s\S]*id="sessionScopeStatus"/, "Session controls show realised pacing, requested pacing, intake and scope together");
+assert.match(indexHtml, /This block has no unseen items[\s\S]*Open the next block or use the whole table/, "Session controls explain why a requested new-item share may be impossible inside a completed block");
+assert.match(indexHtml, /sessionWholeTableBtn[\s\S]*gateEnabledCheckbox\.value = "false"/, "Session controls provide a direct escape from a stale block to whole-table practice");
 assert.match(indexHtml, /diagnostic_article_attempts/, "article answers have their own factual diagnostic counters");
 assert.match(indexHtml, /diagnostic_match_attempts/, "word matching has its own factual diagnostic counters");
 assert.match(indexHtml, /const INTAKE_RELEASE_STREAK = 1/, "one clean lexical success releases an intake slot without changing mastery");
@@ -93,6 +96,13 @@ assert.match(indexHtml, /function answerChannels[\s\S]*?const lexicalCorrect[\s\
 assert.match(indexHtml, /updateArticleChannel\(row, channels\.articleCorrect, profile\)/, "article scheduling uses only the article evidence channel");
 assert.match(indexHtml, /calcWrongDue\(profile = "normal", pressure = 1, seed = ""\)[\s\S]*?normal: \[5, 15, 45, 120\]/, "repeated misses receive progressive spacing instead of a fixed five minutes");
 assert.match(indexHtml, /const ACTIVE_POOL_LIMITS = Object\.freeze\(\{ struggling: 8, steady: 12, strong: 24 \}\)/, "strong lexical accuracy opens a 24-slot active pool");
+assert.match(indexHtml, /function noteSessionLearningMovement[\s\S]*adaptiveStep[\s\S]*developingStep[\s\S]*sessionProgressAdvances\+\+[\s\S]*sessionReinforcements\+\+/, "session feedback separates genuine learning movement from reinforcement");
+assert.match(indexHtml, /function resetSessionPacing[\s\S]*sessionProgressAdvances = 0[\s\S]*sessionReinforcements = 0/, "starting a new session resets its learning-movement counters");
+assert.match(indexHtml, /detail\.gateEnabled===false\?`\$\{p\.mastered\|\|0\}\/\$\{total\} learned · \$\{sessionAdvanced\} advanced now/, "whole-table progress uses full-deck counts and visible session movement without gate assumptions");
+assert.match(indexHtml, /\$\{p\.mastered\|\|0\}\/\$\{total\} learned · \$\{sessionAdvanced\} advanced now · \$\{gateReady\?'next block open'/, "gate progress explicitly announces session movement and when the next block is available");
+assert.match(indexHtml, /sessionProgressAdvances, sessionReinforcements, sessionMasteryGains, sessionStableGains/, "the integrated shell receives factual session movement counters");
+assert.match(indexHtml, /ADAPTIVE LEVEL REGRESSIONS \(newest first, up to 20\)/, "Adaptive lower-than-save events are promoted next to the diagnostic summary");
+assert.match(indexHtml, /crossedRuntime[\s\S]*after restart/, "Adaptive diagnostics distinguish same-runtime changes from restart-related regressions");
 assert.match(indexHtml, /function sessionPacingNewTarget[\s\S]*desiredNewTotal[\s\S]*sessionNewAnswers/, "the new-item percentage is calculated against answered cards across the session");
 assert.match(indexHtml, /Session pacing: \$\{sessionNewAnswers\} new · \$\{sessionReviewAnswers\} reviews · \$\{sessionArticleReturns\} article-driven returns/, "diagnostics expose the realized new/review/article-return mix");
 assert.match(indexHtml, /let remaining = pool\.filter\(r => !guidedRowDone\(r, guidedPractice, guidedRows\)\)/, "Current Story Adaptive selection does not mistake reading recognition for full recall");
@@ -503,7 +513,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-4-3-adaptive-diagnostics-20260907/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-4-5-visible-learning-progress-20260907/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
