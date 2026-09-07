@@ -3870,7 +3870,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.4.0-learning-engine-stabilization-20260901",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.4.1-learning-pacing-20260906",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4388,7 +4388,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.4.0-learning-engine-stabilization-20260901";
+    const APP_BUILD = "4.4.1-learning-pacing-20260906";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -4945,21 +4945,21 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
        weaker items are waiting. This applies to every mode (words and
        sentences), not just progressive. */
     const MASTERY_STREAK = 5;                  // streak at/above which an item is "mastered"
-    const MASTERED_REVIEW_SLOTS_PER_BATCH = 2; // at most this many mastered reviews per batch
+    const MASTERED_REVIEW_SLOTS_PER_BATCH = 1; // stable reviews must never dominate a learning batch
     /* The daily mastered-review quota scales with how much has actually been
        mastered, instead of being a flat number that is too big for a 30-item
        deck and too small for a 3000-item one. The target is a spaced-repetition
        cadence: on average each mastered item should resurface for a check
-       roughly every ~12 days, so the daily quota is about 1/12 of the mastered
+       roughly every ~24 days, so the daily quota is about 1/24 of the mastered
        pool — clamped to a sane floor and ceiling so tiny decks still get an
        occasional review and huge decks never flood a single day.
 
        Examples (mastered pool -> daily quota):
-         10  -> 4  (floor)     100 -> ~8        1000 -> ~83
-         30  -> 4  (floor)     300 -> ~25       3000 -> 120 (ceiling) */
-    const MASTERED_REVIEW_DAYS_PER_CYCLE = 12; // aim to revisit each mastered item ~every N days
-    const MASTERED_REVIEW_MIN_PER_DAY = 4;     // tiny decks still get a few checks
-    const MASTERED_REVIEW_MAX_PER_DAY = 120;   // huge decks never dump everything at once
+         10  -> 2  (floor)     100 -> ~4        1000 -> ~42
+         30  -> 2  (floor)     300 -> ~13       3000 -> 60 (ceiling) */
+    const MASTERED_REVIEW_DAYS_PER_CYCLE = 24; // stable knowledge gets a lighter maintenance cycle
+    const MASTERED_REVIEW_MIN_PER_DAY = 2;     // tiny decks still get an occasional check
+    const MASTERED_REVIEW_MAX_PER_DAY = 60;    // huge decks never dump everything at once
 
     function masteredDailyQuota(masteredCount) {
       const n = Math.max(0, masteredCount | 0);
@@ -6336,7 +6336,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     /* No-gate practice adjusts its active learning set from recent lexical
        accuracy. A learner who is struggling gets a smaller, calmer set; a
        stable learner sees new material sooner. */
-    const ACTIVE_POOL_LIMITS = Object.freeze({ struggling: 8, steady: 12, strong: 16 });
+    const ACTIVE_POOL_LIMITS = Object.freeze({ struggling: 8, steady: 12, strong: 24 });
     const LEARNING_ACCURACY_WINDOW = 30;
     function learningAccuracyKey(deck = currentDeck, setName = currentSetName) {
       return `ld-learning-accuracy-v2:${deck}:${setName}`;
@@ -6361,16 +6361,16 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (accuracy > 0.85) return ACTIVE_POOL_LIMITS.strong;
       return ACTIVE_POOL_LIMITS.steady;
     }
-    /* New intake and the progress strip must agree on what releases a
-       learning slot. The old value (3) disagreed with the visible mastery
-       threshold (2): dozens of cards looked mastered to the learner but
-       silently blocked every new word from entering the queue. */
-    const INTAKE_MASTERY_STREAK = GATE_MASTERY_STREAK;
+    /* A clean first lexical success releases the temporary intake slot. This
+       does NOT mark the word mastered: normal SRS reviews and the visible
+       mastery threshold remain unchanged. It only prevents a correctly
+       recognised new word from blocking all further new intake. */
+    const INTAKE_RELEASE_STREAK = 1;
 
     function countLearning(rows) {
       let n = 0;
       for (const r of rows) {
-        if (r.next_due != null && (r.streak | 0) < INTAKE_MASTERY_STREAK) n++;
+        if (r.next_due != null && (r.streak | 0) < INTAKE_RELEASE_STREAK) n++;
       }
       return n;
     }
@@ -6435,8 +6435,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         return selected.slice(0, limit);
       }
 
-      const dueTarget = Math.floor(limit * (1 - newRatio));
-      let newTarget = limit - dueTarget;
+      let newTarget = (currentGame === "words" && !guidedPractice)
+        ? sessionPacingNewTarget(limit, newRatio)
+        : Math.round(limit * newRatio);
+      const dueTarget = Math.max(0, limit - newTarget);
 
       // New-intake throttle (no-gate mode): the learning pool caps how many
       // new items may enter. NOTE: `rows` (the full scope), not `pool`, is
@@ -6580,6 +6582,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function recordAnswer(table, itemId, correct, profile, evidence = null) {
       const row = await DB.getById(table, itemId);
       if (!row) return null;
+      const wasNewWord = table === "word_pairs" && (row.times_seen | 0) === 0;
       // Spend the daily mastered-review budget HERE — when the learner
       // actually answers a mastered item — checked before mutating, since a
       // wrong answer clears the mastered state.
@@ -6612,6 +6615,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       await DB.update(table, row);
       appendDiagnosticError(row, table, evidence, correct);
       if (table === "word_pairs") {
+        noteSessionWordAnswer(wasNewWord);
         recordRecentLearningOutcome(row, lexicalCorrect);
         await syncWordAnswerToGlobal(row, lexicalCorrect);
       }
@@ -6673,6 +6677,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     let correctCount = 0;
     let wrongCount = 0;
 
+    // These count cards actually answered, not items merely prefetched into
+    // the queue. That makes the New item ratio a session-level pacing target.
+    let sessionNewAnswers = 0;
+    let sessionReviewAnswers = 0;
+    let sessionArticleReturns = 0;
+
     let sessionLoadedIds = new Set();
 
     let wordQueue = [];
@@ -6711,13 +6721,35 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const MATCH_WRONG_FLASH_MS = 150;
     const MATCH_ROUND_ADVANCE_MS = 160;
     const SESSION_MISTAKE_MAX_RETURNS = 2;
+    const SESSION_ARTICLE_MAX_RETURNS = 1;
     let practiceWriteChain = Promise.resolve();
     let practicePendingWrites = 0;
     let practiceWriteErrors = 0;
     let sessionMistakeReturns = new Map();
+    let sessionArticleBlockedIds = new Set();
     let lastPracticeProgress = { total:0, mastered:0, new:0, due:0, percent:0, is_complete:false, totalGates:0, gateIndex:0 };
 
-    function resetSessionMistakes() { sessionMistakeReturns = new Map(); }
+    function resetSessionMistakes() {
+      sessionMistakeReturns = new Map();
+      sessionArticleBlockedIds = new Set();
+    }
+    function resetSessionPacing() {
+      sessionNewAnswers = 0;
+      sessionReviewAnswers = 0;
+      sessionArticleReturns = 0;
+    }
+    function sessionPacingNewTarget(limit, ratio = newRatio) {
+      const size = Math.max(0, limit | 0);
+      const boundedRatio = Math.max(0, Math.min(1, Number(ratio) || 0));
+      const answered = sessionNewAnswers + sessionReviewAnswers;
+      const desiredNewTotal = Math.round((answered + size) * boundedRatio);
+      return Math.max(0, Math.min(size, desiredNewTotal - sessionNewAnswers));
+    }
+    function noteSessionWordAnswer(wasNew) {
+      if (currentGame !== "words" || guidedPractice) return;
+      if (wasNew) sessionNewAnswers++;
+      else sessionReviewAnswers++;
+    }
     function queuePracticeWrite(task) {
       practicePendingWrites++;
       const run = practiceWriteChain.then(() => task());
@@ -6731,11 +6763,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return practiceWriteChain;
     }
     async function flushPracticeWrites() { await practiceWriteChain; }
-    function scheduleMistakeReturn(kind, queue, item) {
+    function scheduleMistakeReturn(kind, queue, item, maxReturns = SESSION_MISTAKE_MAX_RETURNS) {
       if (!item || !queue) return false;
       const key = `${kind}:${item.id}`;
       const used = sessionMistakeReturns.get(key) || 0;
-      if (used >= SESSION_MISTAKE_MAX_RETURNS || queue.some(x => x && x.id === item.id)) return false;
+      if (used >= maxReturns || queue.some(x => x && x.id === item.id)) return false;
       sessionMistakeReturns.set(key, used + 1);
       const gap = used === 0 ? 3 : 2;
       queue.splice(Math.min(gap, queue.length), 0, item);
@@ -6743,6 +6775,18 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return true;
     }
     function scheduleWordMistake(item) { return scheduleMistakeReturn("word", wordQueue, item); }
+    function scheduleArticleMistake(item) {
+      if (!item) return false;
+      const key = `article:${item.id}`;
+      const used = sessionMistakeReturns.get(key) || 0;
+      if (used >= SESSION_ARTICLE_MAX_RETURNS) {
+        sessionArticleBlockedIds.add(item.id);
+        return false;
+      }
+      const scheduled = scheduleMistakeReturn("article", wordQueue, item, SESSION_ARTICLE_MAX_RETURNS);
+      if (scheduled) sessionArticleReturns++;
+      return scheduled;
+    }
     function scheduleSentenceMistake(item) { return scheduleMistakeReturn("sentence", sentenceQueue, item); }
     function mistakeReturnCount() { return [...sessionMistakeReturns.values()].reduce((n,x)=>n+x,0); }
 
@@ -8822,10 +8866,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           const useGateSize = gateSize;
           // Refill a modest rolling window. A 100-card preload kept the active
           // learning budget stale for dozens of rounds after cards graduated.
-          const batchSize = gateEnabled ? Math.max(useGateSize, visibleCount * 20) : Math.max(24, visibleCount * 4);
+          const batchSize = gateEnabled ? Math.max(useGateSize, visibleCount * 20) : Math.max(12, visibleCount * 3);
 
           let pool = getRowsForScope(all, gateEnabled, currentGateIndex, useGateSize);
-          let filtered = pool.filter(r => !sessionLoadedIds.has(r.id) && !reservedIds.has(r.id));
+          let filtered = pool.filter(r => !sessionLoadedIds.has(r.id) && !reservedIds.has(r.id) && !sessionArticleBlockedIds.has(r.id));
           let data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled, pool);
 
           /* A Match round is invalid when it contains fewer cards than the
@@ -8835,7 +8879,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
              rotate the remaining history, and refill before returning. */
           if (forceResetIfShort && data.length < minimumCount && sessionLoadedIds.size > reservedIds.size) {
             sessionLoadedIds = new Set(reservedIds);
-            filtered = pool.filter(r => !reservedIds.has(r.id));
+            filtered = pool.filter(r => !reservedIds.has(r.id) && !sessionArticleBlockedIds.has(r.id));
             data = selectStudyItems(filtered, batchSize, newRatio, practiceScope, !gateEnabled, pool);
           }
           for (const it of data) sessionLoadedIds.add(it.id);
@@ -8884,7 +8928,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     /* ---------- Word match game ---------- */
     async function loadWords(reset = true) {
-      if (reset) { sessionLoadedIds = new Set(); resetSessionMistakes(); }
+      if (reset) { sessionLoadedIds = new Set(); resetSessionMistakes(); resetSessionPacing(); }
       selectedLeft = null; selectedRight = null;
       matchedIds = new Set();
       pendingArticlePairId = null; hideArticleModal();
@@ -9286,7 +9330,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       } else {
         wrongCount++; updateScore();
         statusEl.textContent = `Wrong article. Correct: ${expected}`;
-        scheduleWordMistake(pair);
+        scheduleArticleMistake(pair);
         queuePracticeWrite(async () => { await saveWordAnswer(pair.id, false, true, { signals:[{kind:"match",correct:true},{kind:"article",correct:false}], chosen:choice, expected }); await refreshStats(); await refreshGateInfo(); });
         hideArticleModal();
         setTimeout(() => { locked = false; }, MATCH_WRONG_FLASH_MS);
@@ -11918,8 +11962,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         `Language: ${currentDeck} (${languageName(currentDeck)})`, `Mode: ${currentGame} / ${currentGame === "words" ? wordMode : sentenceMode}`,
         `Set: ${currentSetName} | scope: ${practiceScope} | profile: ${repetitionProfile} | order: ${newItemOrder}`,
         `Gate: ${gateEnabled ? `${currentGateIndex+1}/${totalGates} (size ${gateSize})` : "whole table"}`,
-        `Learning intake: ${activeLearningPoolLimit(all)} active slots | recent lexical accuracy: ${recentAccuracy == null ? "not enough data" : `${recentAccuracy}% (${recent.length} answers)`}`,
-        `Session: ${correctCount} correct, ${wrongCount} wrong, ${sessionLoadedIds.size} unique, ${mistakeReturnCount()} targeted returns`,
+        `Learning intake: ${activeLearningPoolLimit(all)} active slots | requested new ratio: ${Math.round(newRatio * 100)}% | recent lexical accuracy: ${recentAccuracy == null ? "not enough data" : `${recentAccuracy}% (${recent.length} answers)`}`,
+        `Session pacing: ${sessionNewAnswers} new · ${sessionReviewAnswers} reviews · ${sessionArticleReturns} article-driven returns`,
+        `Session score: ${correctCount} correct, ${wrongCount} wrong, ${sessionLoadedIds.size} unique loaded, ${mistakeReturnCount()} targeted returns`,
         `Writes: ${pendingAtOpen} pending when opened, ${practiceWriteErrors} errors`, "",
         "CURRENT DECK SUMMARY",
         `Rows: ${all.length} total, ${seen.length} encountered, ${all.filter(r=>r.next_due==null).length} new, ${all.filter(r=>r.next_due!=null&&r.next_due<=now).length} due, ${progressMastered} mastered on progress strip, ${stableMastered} stable`,
@@ -11931,7 +11976,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         `Reveal/solution: ${totals.solutionWrong}`, "",
         "NOTES",
         "Error-type counters and the detailed error log start with build 4.3.2. Older mistakes remain in the historical aggregate; therefore the historical mistake total is a lower bound.",
-        "Since build 4.4, word recall and article recall have separate bounded pressure (0–4). A correct word is retained when only its article is wrong; a correct answer clears one pressure point. A session can insert at most two targeted returns for the same item.", "",
+        "Since build 4.4, word recall and article recall have separate bounded pressure (0–4). A correct word is retained when only its article is wrong; a correct answer clears one pressure point.",
+        "Since build 4.4.1, a lexical error can insert at most two targeted returns, while an article error can insert at most one. The New item ratio is measured against answered cards across the session, not just a prefetched batch.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);

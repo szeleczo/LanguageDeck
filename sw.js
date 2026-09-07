@@ -1,5 +1,5 @@
-/* LanguageDeck 4.4.0 — bounded, separated learning pressure. */
-const CACHE_VERSION="languagedeck-4-4-0-learning-engine-stabilization-20260901";
+/* LanguageDeck 4.4.1 — session-level learning pace and lighter stable review. */
+const CACHE_VERSION="languagedeck-4-4-1-learning-pacing-20260906";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
