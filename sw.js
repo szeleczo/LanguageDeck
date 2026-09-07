@@ -1,5 +1,5 @@
-/* LanguageDeck 4.4.1 — session-level learning pace and lighter stable review. */
-const CACHE_VERSION="languagedeck-4-4-1-learning-pacing-20260906";
+/* LanguageDeck 4.4.3 — target-aware guided selection and Adaptive level diagnostics. */
+const CACHE_VERSION="languagedeck-4-4-3-adaptive-diagnostics-20260907";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

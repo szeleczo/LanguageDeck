@@ -72,11 +72,11 @@ assert.match(indexHtml, /spec\.target === "grammar_skill"[\s\S]*guidedSkillDone/
 assert.match(indexHtml, /skill_stage:phase\.requireTransfer\?'transfer':\(row\.stage\|\|phase\.stage\|\|''\)/, "transfer-required grammar phases emit transfer evidence instead of impossible control-only evidence");
 assert.match(indexHtml, /const transferRows = skillRows\.filter[\s\S]*spec\?\.requireTransfer && transferRows\.length/, "malformed legacy guided specs cannot create an endless transfer loop");
 assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_success_at"/, "guided success evidence is mirrored into the active and queued cards");
-assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedSkillDone[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "completed grammar skills are removed from already-prefetched queues");
+assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedRowDone\(row, guidedPractice, rows\)[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "prefetched guided queues use the target-specific completion rule");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.4\.1-learning-pacing-20260906/, "the application build marker includes the 4.4.1 pacing release");
-assert.equal((indexHtml.match(/4\.4\.1-learning-pacing-20260906/g) || []).length, 2, "Course and Practice use the same 4.4.1 build marker");
+assert.match(indexHtml, /4\.4\.3-adaptive-diagnostics-20260907/, "the application build marker includes the 4.4.3 Adaptive diagnostics release");
+assert.equal((indexHtml.match(/4\.4\.3-adaptive-diagnostics-20260907/g) || []).length, 2, "Course and Practice use the same 4.4.3 build marker");
 assert.match(indexHtml, /practiceSetupBtn'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openUtility\?\.\('session',LANG\)/, "the sliders restore the dedicated current-session controls");
 assert.match(indexHtml, /practiceSettingsBtn'\)\.onclick=\(\)=>openSettings\('main'\)/, "the gear keeps the application settings role");
 assert.match(indexHtml, /diagnostic_article_attempts/, "article answers have their own factual diagnostic counters");
@@ -95,8 +95,27 @@ assert.match(indexHtml, /calcWrongDue\(profile = "normal", pressure = 1, seed = 
 assert.match(indexHtml, /const ACTIVE_POOL_LIMITS = Object\.freeze\(\{ struggling: 8, steady: 12, strong: 24 \}\)/, "strong lexical accuracy opens a 24-slot active pool");
 assert.match(indexHtml, /function sessionPacingNewTarget[\s\S]*desiredNewTotal[\s\S]*sessionNewAnswers/, "the new-item percentage is calculated against answered cards across the session");
 assert.match(indexHtml, /Session pacing: \$\{sessionNewAnswers\} new · \$\{sessionReviewAnswers\} reviews · \$\{sessionArticleReturns\} article-driven returns/, "diagnostics expose the realized new/review/article-return mix");
+assert.match(indexHtml, /let remaining = pool\.filter\(r => !guidedRowDone\(r, guidedPractice, guidedRows\)\)/, "Current Story Adaptive selection does not mistake reading recognition for full recall");
+assert.match(indexHtml, /appendAdaptiveDiagnosticEvent\(row, "answer"[\s\S]*beforeLevel[\s\S]*afterLevel/, "Adaptive answers record their exact before and after levels");
+assert.match(indexHtml, /adaptiveWasReveal[\s\S]*reason: adaptiveWasReveal \? "reveal"/, "Adaptive level diagnostics distinguish Reveal from a wrong typed answer");
+assert.match(indexHtml, /noteAdaptiveLevelLoad\(currentTypingWord, guidedPractice \? "guided-queue" : "deck-queue"\)/, "every displayed Adaptive word records the level loaded from storage");
+assert.match(indexHtml, /lowerThanPreviousSave/, "diagnostics explicitly flag a card loaded below its last recorded saved level");
+assert.match(indexHtml, /ADAPTIVE_DIAGNOSTIC_EVENT_LIMIT = 240/, "the Adaptive transition log is locally size bounded");
+assert.match(indexHtml, /RECENT ADAPTIVE LEVEL EVENTS/, "the copyable report includes recent Adaptive level transitions");
+assert.match(indexHtml, /Learning intake: \$\{countLearning\(all\)\}\/\$\{activeLearningPoolLimit\(all\)\} active slots occupied/, "diagnostics show occupied intake slots instead of only the ceiling");
 assert.match(indexHtml, /const MASTERED_REVIEW_SLOTS_PER_BATCH = 1/, "stable reviews occupy at most one slot per refill");
 assert.match(indexHtml, /const MASTERED_REVIEW_DAYS_PER_CYCLE = 24/, "stable knowledge uses the lighter maintenance cycle");
+assert.match(indexHtml, /PHONE_MATCH_DEFAULT_MARKER = "ld-match-phone-default-v4\.4\.2"/, "the phone-sized Match default is an idempotent one-time migration");
+assert.match(indexHtml, /Math\.min\(window\.innerWidth \|\| 9999, window\.innerHeight \|\| 9999\) <= 600/, "only phone-sized coarse-pointer devices receive the four-pair default");
+assert.match(indexHtml, /if \(visibleCount > 4\) visibleCount = 4/, "large saved phone rounds are reduced to the thumb-friendly four-pair default");
+assert.match(indexHtml, /visibleCountSelect\.addEventListener\("change"/, "the learner can still restore six or more pairs after the one-time default");
+assert.match(indexHtml, /data-match-pairs="4"[\s\S]*wordMatchContainer:not\(\.hidden\)[\s\S]*padding-top:clamp\(64px,10vh,112px\)/, "the four-pair phone board is shifted into the lower thumb-reach zone");
+assert.match(indexHtml, /setAttribute\("data-match-pairs", String\(visibleCount\)\)/, "Match rendering publishes the active round size to the responsive layout");
+assert.match(indexHtml, /id="practiceProgressStable"/, "the compact progress strip has a stable-knowledge segment");
+assert.match(indexHtml, /id="practiceProgressLearning"/, "the compact progress strip has a learning segment");
+assert.match(indexHtml, /id="practiceProgressDue"/, "the compact progress strip has a due/session-return indicator");
+assert.match(indexHtml, /PRACTICE_PROGRESS_VIEW==='session'/, "word practice can switch the compact strip to session progress");
+assert.match(indexHtml, /sessionNewAnswers, sessionReviewAnswers, sessionArticleReturns/, "the shell receives factual session pacing counters");
 assert.match(indexHtml, /migrateLearningEngineV440[\s\S]*?Math\.min\(3, Math\.max\(0, row\.times_wrong \| 0\)\)/, "legacy pressure migrates conservatively without erasing history");
 assert.ok(!/row\.recovery_progress\s*=/.test(indexHtml), "the old all-or-nothing recovery branch no longer writes state");
 assert.match(indexHtml, /removeRetiredCore3000MetaCardsV433/, "installed Core 3000 databases receive the content cleanup migration");
@@ -484,7 +503,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-4-1-learning-pacing-20260906/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-4-3-adaptive-diagnostics-20260907/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");

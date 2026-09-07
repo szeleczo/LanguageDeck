@@ -3105,10 +3105,13 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
 <style id="delivery2IntegrationStyles">
 .integrated-practice-host{position:fixed;inset:0;z-index:125;background:var(--bg);color:var(--text);display:flex;flex-direction:column;overflow:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
 .integrated-study-header{flex:0 0 58px;height:58px;display:grid;grid-template-columns:42px minmax(0,1fr) auto auto;gap:7px;align-items:center;padding:7px 11px;background:var(--surface);border-bottom:1px solid var(--line)}
-.integrated-study-header .icon{width:40px;height:40px}.integrated-study-heading{min-width:0}.integrated-study-heading b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-study-heading span{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress{flex:0 0 34px;min-height:34px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:4px 12px;background:var(--surface);border-bottom:1px solid var(--line);font-size:10px;color:var(--muted)}.integrated-practice-progress strong{color:var(--text);font-size:10px;white-space:nowrap}.integrated-practice-progress .practice-progress-counts{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress .practice-progress-score{font-weight:850;white-space:nowrap}.integrated-practice-progress .practice-progress-mini{grid-column:1/-1;height:3px;border-radius:999px;background:var(--surface2);overflow:hidden}.integrated-practice-progress .practice-progress-mini i{display:block;height:100%;width:0;background:var(--accent);border-radius:inherit;transition:width .15s ease}
+.integrated-study-header .icon{width:40px;height:40px}.integrated-study-heading{min-width:0}.integrated-study-heading b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-study-heading span{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress{flex:0 0 37px;min-height:37px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:4px 12px;background:var(--surface);border-bottom:1px solid var(--line);font-size:10px;color:var(--muted)}.integrated-practice-progress strong{color:var(--text);font-size:10px;white-space:nowrap}.integrated-practice-progress .practice-progress-counts{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress .practice-progress-score{font-weight:850;white-space:nowrap}.integrated-practice-progress .practice-progress-mini{grid-column:1/-1;position:relative;display:flex;width:100%;height:6px;min-height:6px;margin:0;padding:0;border:0;border-radius:999px;background:var(--surface2)!important;overflow:hidden;cursor:pointer;appearance:none}.integrated-practice-progress .practice-progress-segment{display:block;height:4px;width:0;flex:0 0 auto;transition:width .15s ease}.integrated-practice-progress .practice-progress-stable{background:var(--accent)}.integrated-practice-progress .practice-progress-learning{background:#7dd3fc}.integrated-practice-progress .practice-progress-due{position:absolute;left:0;bottom:0;height:2px;width:0;background:#f59e0b;transition:width .15s ease}
 #legacyPracticeRoot{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:var(--bg);color:var(--text);overflow:hidden;--integrated-dock-h:64px}
 #legacyPracticeRoot>.appbar,#legacyPracticeRoot>#installBanner,#legacyPracticeRoot>#iosInstallBanner{display:none!important}
 #legacyPracticeRoot>.main{width:min(940px,100%)!important;max-width:940px!important;flex:1 1 auto!important;min-height:0!important;margin:0 auto!important;padding:10px 14px calc(var(--integrated-dock-h) + 16px + env(safe-area-inset-bottom))!important;overflow-y:auto!important;overflow-x:hidden!important}
+@media (pointer:coarse) and (hover:none) and (max-width:600px) and (max-aspect-ratio:13/10){
+  html.integrated-practice-active[data-match-pairs="4"] #legacyPracticeRoot #wordMatchContainer:not(.hidden){padding-top:clamp(64px,10vh,112px)}
+}
 #legacyPracticeRoot .context-strip{display:none!important}#legacyPracticeRoot .play-meta{margin:0 2px 7px!important}#legacyPracticeRoot .game-area-spacer{display:none!important}#legacyPracticeRoot #textModeContainer{display:none!important}
 .integrated-practice-dock{position:absolute;z-index:90;left:0;right:0;bottom:0;height:calc(var(--integrated-dock-h) + env(safe-area-inset-bottom));min-height:calc(var(--integrated-dock-h) + env(safe-area-inset-bottom));padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 96%,transparent);border-top:1px solid var(--line);backdrop-filter:blur(16px);display:flex;align-items:stretch;gap:8px}
 #practiceDockPortal{display:none!important}.integrated-dock-fallback{flex:1 1 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-left:5px}.integrated-dock-fallback span{font-size:12px;color:var(--muted)}
@@ -3271,7 +3274,11 @@ html.integrated-practice-active body{overflow:hidden!important}
     <strong id="practiceProgressScope">Loading…</strong>
     <span class="practice-progress-counts" id="practiceProgressCounts">Reading practice progress…</span>
     <span class="practice-progress-score" id="practiceProgressScore">0 ✓ · 0 ✗</span>
-    <div class="practice-progress-mini" aria-hidden="true"><i id="practiceProgressFill"></i></div>
+    <button class="practice-progress-mini" id="practiceProgressToggle" type="button" aria-label="Show session progress" title="Tap to switch between deck and session progress">
+      <span class="practice-progress-segment practice-progress-stable" id="practiceProgressStable"></span>
+      <span class="practice-progress-segment practice-progress-learning" id="practiceProgressLearning"></span>
+      <span class="practice-progress-due" id="practiceProgressDue"></span>
+    </button>
   </div>
   <div id="legacyPracticeRoot" class="legacy-practice-root"><header class="appbar">
 <div class="appbar-inner">
@@ -3870,7 +3877,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.4.1-learning-pacing-20260906",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.4.3-adaptive-diagnostics-20260907",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4359,17 +4366,45 @@ async function startGrammarWorkshop(unitId){const unit=grammarUnitById(unitId);i
 $('grammarCourseBack').onclick=()=>{if(GRAMMAR_COURSE_SESSION.moduleId){GRAMMAR_COURSE_SESSION.moduleId=null;renderGrammarCourse()}else closeGrammarCourse()};
 $('grammarCourseSecondary').onclick=()=>closeGrammarCourse();$('grammarCourseSettings').onclick=()=>openSettings('main');
 
-let ACTIVE_PRACTICE_MODE=null,PRACTICE_RETURN_VIEW='practice',PRACTICE_DOCK_OBSERVER=null,PRACTICE_PENDING_OPTIONS=null;
+let ACTIVE_PRACTICE_MODE=null,PRACTICE_RETURN_VIEW='practice',PRACTICE_DOCK_OBSERVER=null,PRACTICE_PENDING_OPTIONS=null,PRACTICE_PROGRESS_VIEW='deck',LAST_PRACTICE_DETAIL={};
 function practiceModeLabel(mode){return({words:'Words',grammar:'Grammar',sentences:'Sentences'})[mode]||'Practice'}
 function localizeGrammarPracticeControls(grammar){const hint=grammar?'Súgó':'Hint',why=grammar?'Miért':'Why';for(const id of ['typingHintBtn','sentenceHintBtn']){const button=$(id);if(button){button.title=hint;button.setAttribute('aria-label',hint)}}const explain=$('sentenceExplainBtn');if(explain){explain.textContent=why;explain.title=why;explain.setAttribute('aria-label',why)}$('practiceSettingsBtn').title=grammar?'Alkalmazásbeállítások':'App settings';$('practiceSettingsBtn').setAttribute('aria-label',$('practiceSettingsBtn').title)}
-function updatePracticeShell(detail={}){const mode=detail.mode||ACTIVE_PRACTICE_MODE||'words',p=detail.progress||{total:0,mastered:0,new:0,due:0,percent:0},grammar=PRACTICE_RETURN_VIEW==='grammar-course',guidedTitle=detail.guidedTarget==='story_practice'?'Story Practice':grammar?'Nyelvtan és alakok':'Chapter Study',languageLabel=detail.languageLabel||detail.deck?.toUpperCase()||'';$('practiceStudyTitle').textContent=detail.guided?guidedTitle:practiceModeLabel(mode);$('practiceStudySub').textContent=detail.guidedLabel||[languageLabel,detail.variant,detail.setName].filter(Boolean).join(' · ')||(grammar?'Vezetett nyelvtani gyakorlat':'Standalone deck');$('integratedPracticeSettingsLabel').textContent=grammar?'Vezetett nyelvtani gyakorlat':detail.guided?`Guided ${guidedTitle}`:`${languageLabel?languageLabel+' · ':''}${practiceModeLabel(mode)}${detail.setName?' · '+detail.setName:''}`;$('practiceProgressScope').textContent=grammar?'Tanulási cél':detail.guided?'Learning goal':(detail.gateEnabled===false?'Whole table':`Gate ${(detail.gateIndex||0)+1} / ${detail.totalGates||0}`);$('practiceProgressCounts').textContent=grammar?`${p.mastered||0} / ${p.total||0} elsajátítva`:`${p.mastered||0} / ${p.total||0} mastered${detail.guided?'':` · ${p.due||0} due · ${p.new||0} new`}`;$('practiceProgressScore').textContent=`${detail.scoreOk||0} ✓ · ${detail.scoreKo||0} ✗`;$('practiceProgressFill').style.width=`${Math.max(0,Math.min(100,p.percent||0))}%`;$('practiceSetupBtn').disabled=false;$('practiceSetupBtn').title=grammar?'Gyakorlási beállítások':'Session options';$('practiceBackBtn').title=grammar?'Vissza a nyelvtani modulhoz':'Back';localizeGrammarPracticeControls(grammar);if(!$('settingsBackdrop').classList.contains('hidden'))renderCurrentPracticeSettings();syncPracticeDock()}
+function updatePracticeShell(detail={}){
+  LAST_PRACTICE_DETAIL=detail;
+  const mode=detail.mode||ACTIVE_PRACTICE_MODE||'words',p=detail.progress||{total:0,mastered:0,stable:0,new:0,due:0,percent:0},grammar=PRACTICE_RETURN_VIEW==='grammar-course',guidedTitle=detail.guidedTarget==='story_practice'?'Story Practice':grammar?'Nyelvtan és alakok':'Chapter Study',languageLabel=detail.languageLabel||detail.deck?.toUpperCase()||'';
+  const canShowSession=mode==='words'&&!detail.guided&&!grammar;
+  if(!canShowSession)PRACTICE_PROGRESS_VIEW='deck';
+  $('practiceStudyTitle').textContent=detail.guided?guidedTitle:practiceModeLabel(mode);
+  $('practiceStudySub').textContent=detail.guidedLabel||[languageLabel,detail.variant,detail.setName].filter(Boolean).join(' · ')||(grammar?'Vezetett nyelvtani gyakorlat':'Standalone deck');
+  $('integratedPracticeSettingsLabel').textContent=grammar?'Vezetett nyelvtani gyakorlat':detail.guided?`Guided ${guidedTitle}`:`${languageLabel?languageLabel+' · ':''}${practiceModeLabel(mode)}${detail.setName?' · '+detail.setName:''}`;
+  const stable=Math.max(0,p.stable??p.mastered??0),learning=Math.max(0,(p.total||0)-(p.new||0)-stable),total=Math.max(0,p.total||0);
+  const sessionNew=Math.max(0,detail.sessionNewAnswers||0),sessionReview=Math.max(0,detail.sessionReviewAnswers||0),sessionTotal=sessionNew+sessionReview,articleReturns=Math.max(0,detail.sessionArticleReturns||0);
+  const sessionView=canShowSession&&PRACTICE_PROGRESS_VIEW==='session';
+  $('practiceProgressScope').textContent=sessionView?'This session':grammar?'Tanulási cél':detail.guided?'Learning goal':(detail.gateEnabled===false?'Whole table':`Gate ${(detail.gateIndex||0)+1} / ${detail.totalGates||0}`);
+  $('practiceProgressCounts').textContent=sessionView
+    ? `${sessionNew} new · ${sessionReview} reviews · ${articleReturns} article returns`
+    : grammar?`${p.mastered||0} / ${p.total||0} elsajátítva`:detail.guided?`${p.mastered||0} / ${p.total||0} mastered`:`${stable} stable · ${learning} learning · ${p.due||0} due · ${p.new||0} new`;
+  $('practiceProgressScore').textContent=`${detail.scoreOk||0} ✓ · ${detail.scoreKo||0} ✗`;
+  const stablePct=sessionView?(sessionTotal?sessionNew/sessionTotal*100:0):(total?stable/total*100:0);
+  const learningPct=sessionView?(sessionTotal?sessionReview/sessionTotal*100:0):(total?learning/total*100:0);
+  const duePct=sessionView?(sessionTotal?Math.min(100,articleReturns/sessionTotal*100):0):(total?Math.min(100,(p.due||0)/total*100):0);
+  $('practiceProgressStable').style.width=`${stablePct}%`;
+  $('practiceProgressLearning').style.width=`${learningPct}%`;
+  $('practiceProgressDue').style.width=`${duePct}%`;
+  const toggle=$('practiceProgressToggle');
+  toggle.disabled=!canShowSession;
+  toggle.setAttribute('aria-label',sessionView?'Show deck progress':'Show session progress');
+  toggle.title=canShowSession?(sessionView?'Tap for whole-deck progress':'Tap for this-session progress'):'Progress';
+  $('practiceSetupBtn').disabled=false;$('practiceSetupBtn').title=grammar?'Gyakorlási beállítások':'Session options';$('practiceBackBtn').title=grammar?'Vissza a nyelvtani modulhoz':'Back';localizeGrammarPracticeControls(grammar);if(!$('settingsBackdrop').classList.contains('hidden'))renderCurrentPracticeSettings();syncPracticeDock()
+}
 function renderCurrentPracticeSettings(){const box=$('integratedPracticeSettings');if(!ACTIVE_PRACTICE_MODE||!window.LanguageDeckPractice){box.classList.add('hidden');PRACTICE_PENDING_OPTIONS=null;return}box.classList.remove('hidden');$('openPracticeSetupBtn').classList.add('hidden');const live=window.LanguageDeckPractice.snapshot();if(live.guided){PRACTICE_PENDING_OPTIONS=null;document.querySelectorAll('[data-practice-order],[data-practice-gate]').forEach(b=>{b.classList.remove('on');b.disabled=true;b.onclick=null});$('morePracticeOptionsBtn').disabled=true;$('restartPracticeBtn').disabled=true;$('practiceOptionsNote').textContent='This learning domain controls order and scope for the current goal.';return}document.querySelectorAll('[data-practice-order],[data-practice-gate]').forEach(b=>b.disabled=false);$('morePracticeOptionsBtn').disabled=false;$('restartPracticeBtn').disabled=false;if(!PRACTICE_PENDING_OPTIONS||PRACTICE_PENDING_OPTIONS.mode!==live.mode)PRACTICE_PENDING_OPTIONS={mode:live.mode,order:live.order||'smart',gateEnabled:live.gateEnabled!==false};document.querySelectorAll('[data-practice-order]').forEach(b=>{b.classList.toggle('on',b.dataset.practiceOrder===PRACTICE_PENDING_OPTIONS.order);b.onclick=()=>{PRACTICE_PENDING_OPTIONS.order=b.dataset.practiceOrder==='csv'?'csv':'smart';renderCurrentPracticeSettings()}});document.querySelectorAll('[data-practice-gate]').forEach(b=>{const value=b.dataset.practiceGate==='true';b.classList.toggle('on',value===PRACTICE_PENDING_OPTIONS.gateEnabled);b.onclick=()=>{PRACTICE_PENDING_OPTIONS.gateEnabled=value;renderCurrentPracticeSettings()}});const changed=PRACTICE_PENDING_OPTIONS.order!==(live.order||'smart')||PRACTICE_PENDING_OPTIONS.gateEnabled!==(live.gateEnabled!==false);$('practiceOptionsNote').textContent=changed?'Restart session to apply these changes.':'Current session uses these settings.'}
 function syncPracticeDock(){const root=$('legacyPracticeRoot'),fallback=$('practiceDockFallback');if(!root||!fallback)return;const actions=root.querySelector('#wordTypingContainer:not(.hidden) .typing-actions, #sentenceContainer:not(.hidden) .sentence-actions');fallback.classList.toggle('hidden',!!actions)}
-async function startIntegratedPractice(mode,returnView='practice',guidedSpec=null){if(!window.LanguageDeckPractice)throw Error('The integrated practice engine did not initialise.');PRACTICE_RETURN_VIEW=returnView;ACTIVE_PRACTICE_MODE=mode;PRACTICE_PENDING_OPTIONS=null;ACTIVE_STUDY_ENGINE?.destroy?.();ACTIVE_STUDY_ENGINE=null;ACTIVE_STUDY_API=null;$('browseShell').classList.add('hidden');$('studyHost').classList.add('hidden');$('chapterStudyHost').classList.add('hidden');$('grammarCourseHost').classList.add('hidden');$('practiceStudyHost').classList.remove('hidden');document.documentElement.classList.add('integrated-practice-active');if(guidedSpec)await window.LanguageDeckPractice.startGuided(guidedSpec);else await window.LanguageDeckPractice.start(mode);updatePracticeShell(window.LanguageDeckPractice.snapshot());PRACTICE_DOCK_OBSERVER?.disconnect();PRACTICE_DOCK_OBSERVER=new MutationObserver(()=>requestAnimationFrame(syncPracticeDock));PRACTICE_DOCK_OBSERVER.observe($('legacyPracticeRoot'),{subtree:true,attributes:true,attributeFilter:['class'],childList:true});syncPracticeDock()}
+async function startIntegratedPractice(mode,returnView='practice',guidedSpec=null){if(!window.LanguageDeckPractice)throw Error('The integrated practice engine did not initialise.');PRACTICE_RETURN_VIEW=returnView;PRACTICE_PROGRESS_VIEW='deck';ACTIVE_PRACTICE_MODE=mode;PRACTICE_PENDING_OPTIONS=null;ACTIVE_STUDY_ENGINE?.destroy?.();ACTIVE_STUDY_ENGINE=null;ACTIVE_STUDY_API=null;$('browseShell').classList.add('hidden');$('studyHost').classList.add('hidden');$('chapterStudyHost').classList.add('hidden');$('grammarCourseHost').classList.add('hidden');$('practiceStudyHost').classList.remove('hidden');document.documentElement.classList.add('integrated-practice-active');if(guidedSpec)await window.LanguageDeckPractice.startGuided(guidedSpec);else await window.LanguageDeckPractice.start(mode);updatePracticeShell(window.LanguageDeckPractice.snapshot());PRACTICE_DOCK_OBSERVER?.disconnect();PRACTICE_DOCK_OBSERVER=new MutationObserver(()=>requestAnimationFrame(syncPracticeDock));PRACTICE_DOCK_OBSERVER.observe($('legacyPracticeRoot'),{subtree:true,attributes:true,attributeFilter:['class'],childList:true});syncPracticeDock()}
 window.addEventListener('languagedeck:guided-phase-complete',()=>{if(ACTIVE_PRACTICE_MODE&&['chapter-study','grammar-course'].includes(PRACTICE_RETURN_VIEW))exitIntegratedPractice(PRACTICE_RETURN_VIEW)},{passive:true});
 async function exitIntegratedPractice(view=PRACTICE_RETURN_VIEW){const returnToChapter=view==='chapter-study'&&!!CHAPTER_STUDY_SESSION,returnToGrammar=view==='grammar-course'&&!!GRAMMAR_COURSE_SESSION;await window.LanguageDeckPractice?.flush?.();window.LanguageDeckPractice?.save?.();await window.LanguageDeckPractice?.endGuided?.();PRACTICE_DOCK_OBSERVER?.disconnect();PRACTICE_DOCK_OBSERVER=null;PRACTICE_PENDING_OPTIONS=null;document.documentElement.classList.remove('integrated-practice-active','keypad-active','order-practice-active','text-practice-active','keyboard-open');$('practiceStudyHost').classList.add('hidden');ACTIVE_PRACTICE_MODE=null;closeSettings();try{await loadGlobal();if(STORY){CURRENT=await chooseCurrent();renderCourse();renderBook()}}catch(e){console.warn(e)}if(returnToChapter){$('browseShell').classList.add('hidden');$('chapterStudyHost').classList.remove('hidden');await renderChapterStudy();return}if(returnToGrammar){showGrammarCourseHost();await renderGrammarCourse();return}$('browseShell').classList.remove('hidden');showView(view)}
 window.addEventListener('ld-practice-state',e=>updatePracticeShell(e.detail||{}));
 installArchitectureShells();
+$('practiceProgressToggle').onclick=()=>{if($('practiceProgressToggle').disabled)return;PRACTICE_PROGRESS_VIEW=PRACTICE_PROGRESS_VIEW==='deck'?'session':'deck';updatePracticeShell(window.LanguageDeckPractice?.snapshot?.()||LAST_PRACTICE_DETAIL)};
 $('practiceBackBtn').onclick=()=>exitIntegratedPractice();$('practiceDockEndBtn').onclick=()=>exitIntegratedPractice();$('practiceSetupBtn').onclick=()=>window.LanguageDeckPractice?.openUtility?.('session',LANG);$('practiceSettingsBtn').onclick=()=>openSettings('main');$('morePracticeOptionsBtn').onclick=()=>{closeSettings();window.LanguageDeckPractice?.openUtility?.('session',LANG)};$('restartPracticeBtn').onclick=async()=>{if(window.LanguageDeckPractice?.snapshot?.().guided)return;await window.LanguageDeckPractice?.restartWithOptions?.(PRACTICE_PENDING_OPTIONS||{});PRACTICE_PENDING_OPTIONS=null;updatePracticeShell(window.LanguageDeckPractice?.snapshot?.()||{});closeSettings();syncPracticeDock()};
 
 $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=closeSettings;$('dataCheckClose').onclick=closeSettings;$('diagnosticsClose').onclick=closeSettings;$('settingsBackdrop').onclick=e=>{if(e.target===$('settingsBackdrop'))closeSettings()};$('openDiagnosticsBtn').onclick=()=>showSettingsView('diagnostics');$('diagnosticsBack').onclick=()=>showSettingsView('main');$('refreshDiagnosticsBtn').onclick=refreshPracticeDiagnostics;$('copyDiagnosticsBtn').onclick=copyPracticeDiagnostics;$('openDataCheckBtn').onclick=()=>showSettingsView('data');$('dataCheckBack').onclick=()=>showSettingsView('main');$('refreshDataCheckBtn').onclick=refreshDataCheck;$('clearCacheBtn').onclick=clearAppCache;$('refreshCourseBtn').onclick=()=>location.reload();document.querySelectorAll('[data-theme-choice]').forEach(b=>b.onclick=()=>{saveCourseTheme(b.dataset.themeChoice);applyCourseTheme()});$('languageBtn').onclick=()=>$('languageBackdrop').classList.remove('hidden');$('languageClose').onclick=()=>$('languageBackdrop').classList.add('hidden');$('languageBackdrop').onclick=e=>{if(e.target===$('languageBackdrop'))$('languageBackdrop').classList.add('hidden')};window.addEventListener('languagedeck:open-session-options',()=>window.LanguageDeckPractice?.openUtility?.('session',LANG));window.addEventListener('online',updateNetworkState);window.addEventListener('offline',updateNetworkState);init();
@@ -4388,7 +4423,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.4.1-learning-pacing-20260906";
+    const APP_BUILD = "4.4.3-adaptive-diagnostics-20260907";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5635,6 +5670,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         row.next_due = table === "word_pairs" ? earliestDue(row.word_next_due, row.article_next_due) : strongRecallDue;
       }
       await DB.update(table, row);
+      const adaptiveWasReveal = diagnosticSignals(evidence, correct).some(signal => signal.kind === "solution");
+      if (table === "word_pairs") appendAdaptiveDiagnosticEvent(row, "answer", {
+          beforeLevel, afterLevel: progressiveLevelIndex(row),
+          rawStoredLevel: row.progressive_level ?? null,
+          correct: !!correct, clean: !!clean,
+          reason: adaptiveWasReveal ? "reveal" : correct ? (clean ? "clean-correct" : "corrected-or-mistap") : "wrong"
+        });
       if (table === "word_pairs") await syncWordAnswerToGlobal(row, correct);
       if (table === "sentence_pairs") await syncGrammarContextToGlobal(row, correct);
       return row;
@@ -6255,8 +6297,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function pruneCompletedGuidedQueue(table, queue) {
       if (!guidedPractice || currentSetName !== guidedPractice.setName || !queue?.length) return queue || [];
       const rows = await DB.getAll(table, currentDeck, currentSetName);
-      const groups = guidedSkillGroups(rows);
-      return queue.filter(row => !guidedSkillDone(groups.get(guidedSkillKey(row)) || [row], guidedPractice));
+      return queue.filter(row => !guidedRowDone(row, guidedPractice, rows));
     }
     function guidedBaseRow(raw, deck, setName) {
       return { deck, set_name:setName, english:raw.english||"", target:raw.target||"", article:raw.article||null, times_seen:0, times_correct:0, times_wrong:0, streak:+raw.seed_streak||0, last_seen:null, next_due:null, difficulty:1.0, ...raw, deck, set_name:setName };
@@ -6318,16 +6359,17 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     function computeProgress(rows) {
       const total = rows.length;
-      if (total === 0) return { total: 0, mastered: 0, new: 0, due: 0, percent: 0, is_complete: false };
+      if (total === 0) return { total: 0, mastered: 0, stable: 0, new: 0, due: 0, percent: 0, is_complete: false };
       const now = nowIso();
-      let mastered = 0, n = 0, due = 0;
+      let mastered = 0, stable = 0, n = 0, due = 0;
       for (const r of rows) {
         if ((r.streak | 0) >= GATE_MASTERY_STREAK) mastered++;
+        if (isMastered(r)) stable++;
         if (r.next_due == null) n++;
         else if (r.next_due <= now) due++;
       }
       return {
-        total, mastered, new: n, due,
+        total, mastered, stable, new: n, due,
         percent: Math.round((mastered / total) * 100),
         is_complete: (mastered / total) >= GATE_UNLOCK_RATIO
       };
@@ -6380,8 +6422,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (practiceScope === "wrong") pool = pool.filter(r => (r.learning_pressure | 0) > 0 || (r.article_pressure | 0) > 0);
 
       if (guidedPractice && currentSetName === guidedPractice.setName) {
-        const groups = guidedSkillGroups(learningScopeRows || pool);
-        let remaining = pool.filter(r => !guidedSkillDone(groups.get(guidedSkillKey(r)), guidedPractice));
+        const guidedRows = learningScopeRows || pool;
+        let remaining = pool.filter(r => !guidedRowDone(r, guidedPractice, guidedRows));
         remaining.sort(guidedPractice.sequence
           ? ((a,b)=>(a.id||0)-(b.id||0))
           : ((a,b)=>(guidedRowHasEvidence(a)-guidedRowHasEvidence(b))||((a.guided_attempts|0)-(b.guided_attempts|0))||((a.guided_last_answer_at||0)-(b.guided_last_answer_at||0))||((b.learning_pressure|0)-(a.learning_pressure|0))||((a.id||0)-(b.id||0))));
@@ -6491,7 +6533,44 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     const MAX_LEARNING_PRESSURE = 4;
     const DIAGNOSTIC_EVENT_LIMIT = 180;
+    const ADAPTIVE_DIAGNOSTIC_EVENT_LIMIT = 240;
+    const PRACTICE_RUNTIME_ID = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
     const DIAGNOSTIC_KINDS = new Set(["match", "article", "typing", "progressive", "sentence", "grammar", "solution"]);
+
+    function adaptiveDiagnosticKey(deck = currentDeck) {
+      return `ld_practice_adaptive_events_v1:${deck}`;
+    }
+    function readAdaptiveDiagnosticEvents(deck = currentDeck) {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(adaptiveDiagnosticKey(deck)) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (_) { return []; }
+    }
+    function appendAdaptiveDiagnosticEvent(row, event, details = {}) {
+      if (!row) return;
+      try {
+        const events = readAdaptiveDiagnosticEvents(row.deck || currentDeck);
+        events.push({
+          at: nowIso(), runtime: PRACTICE_RUNTIME_ID, event,
+          id: row.id ?? null, lexeme_id: String(row.lexeme_id || ""),
+          set: String(row.set_name || currentSetName || "default"),
+          english: String(row.english || ""), target: String(row.target || ""), article: String(row.article || ""),
+          ...details
+        });
+        localStorage.setItem(adaptiveDiagnosticKey(row.deck || currentDeck), JSON.stringify(events.slice(-ADAPTIVE_DIAGNOSTIC_EVENT_LIMIT)));
+      } catch (_) {}
+    }
+    function noteAdaptiveLevelLoad(row, source = "queue") {
+      if (!row || currentGame !== "words" || wordMode !== "progressive") return;
+      const events = readAdaptiveDiagnosticEvents(row.deck || currentDeck);
+      const previous = [...events].reverse().find(e => e.event === "answer" && e.id === row.id && e.set === row.set_name);
+      const loadedLevel = progressiveLevelIndex(row);
+      appendAdaptiveDiagnosticEvent(row, "load", {
+        source, loadedLevel, rawStoredLevel: row.progressive_level ?? null,
+        previousSavedLevel: Number.isFinite(+previous?.afterLevel) ? +previous.afterLevel : null,
+        lowerThanPreviousSave: Number.isFinite(+previous?.afterLevel) && loadedLevel < +previous.afterLevel
+      });
+    }
 
     function diagnosticSignals(evidence, correct) {
       const raw = Array.isArray(evidence?.signals) && evidence.signals.length
@@ -6727,7 +6806,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     let practiceWriteErrors = 0;
     let sessionMistakeReturns = new Map();
     let sessionArticleBlockedIds = new Set();
-    let lastPracticeProgress = { total:0, mastered:0, new:0, due:0, percent:0, is_complete:false, totalGates:0, gateIndex:0 };
+    let lastPracticeProgress = { total:0, mastered:0, stable:0, new:0, due:0, percent:0, is_complete:false, totalGates:0, gateIndex:0 };
 
     function resetSessionMistakes() {
       sessionMistakeReturns = new Map();
@@ -8026,7 +8105,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           ? (variantLabels[textGoal] || "Reading")
           : (variantLabels[sentenceMode] || sentenceMode);
       const setText = currentSetName === "__all__" ? (currentGame === "grammar" ? "All grammar decks" : currentGame === "sentences" ? "All sentence decks" : "All decks") : currentSetName;
-      return { mode:currentGame, modeLabel, variant, deck:currentDeck, languageLabel:languageName(currentDeck), setName:setText, wordMode, sentenceMode, order:newItemOrder, gateEnabled, gateIndex:currentGateIndex, totalGates, score:{ok:correctCount,ko:wrongCount}, scoreOk:correctCount, scoreKo:wrongCount, progress:{...lastPracticeProgress}, pendingWrites:practicePendingWrites, writeErrors:practiceWriteErrors, sessionUnique:sessionLoadedIds.size, mistakeReturns:mistakeReturnCount(), guided:!!guidedPractice, guidedLabel:guidedPractice?.label||"", guidedTarget:guidedPractice?.target||"" };
+      return { mode:currentGame, modeLabel, variant, deck:currentDeck, languageLabel:languageName(currentDeck), setName:setText, wordMode, sentenceMode, order:newItemOrder, gateEnabled, gateIndex:currentGateIndex, totalGates, score:{ok:correctCount,ko:wrongCount}, scoreOk:correctCount, scoreKo:wrongCount, progress:{...lastPracticeProgress}, pendingWrites:practicePendingWrites, writeErrors:practiceWriteErrors, sessionUnique:sessionLoadedIds.size, mistakeReturns:mistakeReturnCount(), sessionNewAnswers, sessionReviewAnswers, sessionArticleReturns, guided:!!guidedPractice, guidedLabel:guidedPractice?.label||"", guidedTarget:guidedPractice?.target||"" };
     }
     function dispatchPracticeState() {
       try { window.dispatchEvent(new CustomEvent("ld-practice-state", { detail: currentPracticeStateDetail() })); } catch (_) {}
@@ -8351,8 +8430,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function refreshGateInfo() {
       if (currentGame === "text") {
         totalGates = 0; gatePanel.classList.add("gate-disabled"); gateLabel.textContent = "Text"; gateProgressText.textContent = "—"; gateProgressFill.style.width = "0%";
-        lastPracticeProgress = { total:0, mastered:0, new:0, due:0, percent:0, is_complete:true, totalGates:0, gateIndex:0 }; dispatchPracticeState();
-        return { progress: { total:0, mastered:0, new:0, due:0, percent:0, is_complete:true }, total_gates:0, gate_index:0 };
+        lastPracticeProgress = { total:0, mastered:0, stable:0, new:0, due:0, percent:0, is_complete:true, totalGates:0, gateIndex:0 }; dispatchPracticeState();
+        return { progress: { total:0, mastered:0, stable:0, new:0, due:0, percent:0, is_complete:true }, total_gates:0, gate_index:0 };
       }
       const table = currentGame === "words" ? "word_pairs" : "sentence_pairs";
       let all = await DB.getAll(table, currentDeck, currentSetName);
@@ -9089,6 +9168,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     function renderWordMatch() {
+      document.documentElement.setAttribute("data-match-pairs", String(visibleCount));
       leftColumn.innerHTML = "";
       rightColumn.innerHTML = "";
       currentWordRoundPairs.forEach((pair, index) => {
@@ -9373,6 +9453,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         return;
       }
       currentTypingWord = wordQueue.shift();
+      noteAdaptiveLevelLoad(currentTypingWord, guidedPractice ? "guided-queue" : "deck-queue");
       typingHintVisible = false;
       setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
       renderTypingLearningTools();
@@ -11679,6 +11760,20 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     window.addEventListener("load", updateVh);
 
     /* ---------- Init ---------- */
+    const PHONE_MATCH_DEFAULT_MARKER = "ld-match-phone-default-v4.4.2";
+    function applyPhoneMatchDefaultV442() {
+      let isPhone = false;
+      try {
+        isPhone = window.matchMedia("(pointer: coarse)").matches &&
+          Math.min(window.innerWidth || 9999, window.innerHeight || 9999) <= 600;
+      } catch (_) {}
+      if (!isPhone || localStorage.getItem(PHONE_MATCH_DEFAULT_MARKER)) return false;
+      if (visibleCount > 4) visibleCount = 4;
+      try { localStorage.setItem(PHONE_MATCH_DEFAULT_MARKER, "1"); } catch (_) {}
+      saveSettings();
+      return true;
+    }
+
     function applySettingsToUI() {
       gameSelect.value = currentGame;
       deckSelect.value = currentDeck;
@@ -11724,6 +11819,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         theme = saved.theme ?? theme;
         columnOrder = saved.columnOrder ?? columnOrder;
       }
+      applyPhoneMatchDefaultV442();
 
       const requestedMode = requestedModeOverride || new URLSearchParams(location.search).get("mode");
       if (["words","grammar","sentences"].includes(requestedMode)) currentGame = requestedMode;
@@ -11950,6 +12046,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         return a;
       }, {seen:0,correct:0,wrongLowerBound:0,...Object.fromEntries([...DIAGNOSTIC_KINDS].flatMap(k=>[[`${k}Attempts`,0],[`${k}Wrong`,0]]))});
       const errors = readDiagnosticErrors(currentDeck).filter(e => currentSetName === "__all__" || e.set === currentSetName);
+      const adaptiveEvents = readAdaptiveDiagnosticEvents(currentDeck).filter(e => currentSetName === "__all__" || e.set === currentSetName);
+      const adaptiveLoads = adaptiveEvents.filter(e => e.event === "load");
+      const adaptiveRegressions = adaptiveLoads.filter(e => e.lowerThanPreviousSave);
+      const adaptiveDistribution = currentGame === "words"
+        ? Array.from({length:PROGRESSIVE_LEVELS.length},(_,level)=>all.filter(r=>progressiveLevelIndex(r)===level).length)
+        : [];
       const ranked = [...seen].sort((a,b) =>
         (Math.max(b.learning_pressure|0,b.article_pressure|0)-Math.max(a.learning_pressure|0,a.article_pressure|0)) ||
         (diagnosticLifetimeWrong(b)-diagnosticLifetimeWrong(a)) ||
@@ -11962,7 +12064,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         `Language: ${currentDeck} (${languageName(currentDeck)})`, `Mode: ${currentGame} / ${currentGame === "words" ? wordMode : sentenceMode}`,
         `Set: ${currentSetName} | scope: ${practiceScope} | profile: ${repetitionProfile} | order: ${newItemOrder}`,
         `Gate: ${gateEnabled ? `${currentGateIndex+1}/${totalGates} (size ${gateSize})` : "whole table"}`,
-        `Learning intake: ${activeLearningPoolLimit(all)} active slots | requested new ratio: ${Math.round(newRatio * 100)}% | recent lexical accuracy: ${recentAccuracy == null ? "not enough data" : `${recentAccuracy}% (${recent.length} answers)`}`,
+        `Learning intake: ${countLearning(all)}/${activeLearningPoolLimit(all)} active slots occupied | requested new ratio: ${Math.round(newRatio * 100)}% | recent lexical accuracy: ${recentAccuracy == null ? "not enough data" : `${recentAccuracy}% (${recent.length} answers)`}`,
         `Session pacing: ${sessionNewAnswers} new · ${sessionReviewAnswers} reviews · ${sessionArticleReturns} article-driven returns`,
         `Session score: ${correctCount} correct, ${wrongCount} wrong, ${sessionLoadedIds.size} unique loaded, ${mistakeReturnCount()} targeted returns`,
         `Writes: ${pendingAtOpen} pending when opened, ${practiceWriteErrors} errors`, "",
@@ -11974,18 +12076,33 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         `Typing: ${totals.typingAttempts} attempts / ${totals.typingWrong} wrong`,
         `Adaptive typing: ${totals.progressiveAttempts} attempts / ${totals.progressiveWrong} wrong`,
         `Reveal/solution: ${totals.solutionWrong}`, "",
+        ...(currentGame === "words" ? [
+          "ADAPTIVE LEVEL SUMMARY",
+          `Current stored/fallback levels: ${adaptiveDistribution.map((count,i)=>`L${i+1} ${count}`).join(" | ")}`,
+          `Recorded adaptive events since 4.4.3: ${adaptiveEvents.length} | card loads: ${adaptiveLoads.length} | loads below the last recorded saved level: ${adaptiveRegressions.length}`, ""
+        ] : []),
         "NOTES",
         "Error-type counters and the detailed error log start with build 4.3.2. Older mistakes remain in the historical aggregate; therefore the historical mistake total is a lower bound.",
         "Since build 4.4, word recall and article recall have separate bounded pressure (0–4). A correct word is retained when only its article is wrong; a correct answer clears one pressure point.",
-        "Since build 4.4.1, a lexical error can insert at most two targeted returns, while an article error can insert at most one. The New item ratio is measured against answered cards across the session, not just a prefetched batch.", "",
+        "Since build 4.4.1, a lexical error can insert at most two targeted returns, while an article error can insert at most one. The New item ratio is measured against answered cards across the session, not just a prefetched batch.",
+        "Since build 4.4.3, Adaptive card loads and level transitions are recorded. A load-below-save event is direct evidence that a later card load used a lower level than the last saved answer for the same stored row.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
-      for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
+      for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
       lines.push("", "MOST REPEATED ITEMS (up to 40)");
       for (const r of repeated) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | last ${r.last_seen||"—"} | ${diagnosticDueLabel(r.next_due)}`);
       lines.push("", "RECENT EXACT ERRORS (newest first, up to 60)");
       if (!errors.length) lines.push("No typed error events have been recorded yet.");
       for (const e of errors.slice(-60).reverse()) lines.push(`${e.at} | ${(e.kinds||[]).join("+")||"answer"} | ${e.english||"—"} → ${[e.article,e.target].filter(Boolean).join(" ")||"—"} | chose: ${e.chosen||"—"} | expected: ${e.expected||"—"} | ${e.mode}/${e.variant} | ${e.set}`);
+      if (currentGame === "words") {
+        lines.push("", "RECENT ADAPTIVE LEVEL EVENTS (newest first, up to 80)");
+        if (!adaptiveEvents.length) lines.push("No Adaptive level events have been recorded yet. Practise in Adaptive Words mode, then reopen diagnostics.");
+        for (const e of adaptiveEvents.slice(-80).reverse()) {
+          const label = `${e.english||"—"} → ${[e.article,e.target].filter(Boolean).join(" ")||"—"}`;
+          if (e.event === "answer") lines.push(`${e.at} | answer | ${label} | L${(+e.beforeLevel||0)+1} → L${(+e.afterLevel||0)+1}/${PROGRESSIVE_LEVELS.length} | ${e.reason||"—"} | runtime ${e.runtime||"—"} | ${e.set}`);
+          else lines.push(`${e.at} | load | ${label} | loaded L${(+e.loadedLevel||0)+1}/${PROGRESSIVE_LEVELS.length} | raw stored: ${e.rawStoredLevel==null?"none":`L${(+e.rawStoredLevel||0)+1}`} | previous saved: ${e.previousSavedLevel==null?"none":`L${(+e.previousSavedLevel||0)+1}`} | lower: ${e.lowerThanPreviousSave?"YES":"no"} | runtime ${e.runtime||"—"} | ${e.set}`);
+        }
+      }
       return lines.join("\n");
     }
 
