@@ -1,5 +1,5 @@
-/* LanguageDeck 4.4.12 — source-aware shared knowledge recovery. */
-const CACHE_VERSION="languagedeck-4-4-12-shared-knowledge-recovery-20260908";
+/* LanguageDeck 4.4.13 — session-scoped Adaptive recovery. */
+const CACHE_VERSION="languagedeck-4-4-13-session-scoped-adaptive-recovery-20260908";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

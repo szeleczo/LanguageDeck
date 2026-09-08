@@ -3919,7 +3919,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.4.12-shared-knowledge-recovery-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.4.13-session-scoped-adaptive-recovery-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4479,7 +4479,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.4.12-shared-knowledge-recovery-20260908";
+    const APP_BUILD = "4.4.13-session-scoped-adaptive-recovery-20260908";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5448,10 +5448,34 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     });
     const PROGRESSIVE_RESCUE_REASONS = new Set(["reveal", "repeated-wrong"]);
 
+    function progressiveRecoverySessionMatches(item) {
+      return !!adaptiveRecoverySessionId &&
+        String(item?.progressive_recovery_session || "") === adaptiveRecoverySessionId;
+    }
+
     function progressiveRescueReason(item) {
-      if (!item?.progressive_assist_next) return "";
+      // Recovery is deliberately session-scoped. An older session or build
+      // can never turn today's first miss into a one-letter retry; stale
+      // persisted fields are cleared lazily when that card is next loaded.
+      if (!item?.progressive_assist_next || !progressiveRecoverySessionMatches(item)) return "";
       const reason = String(item.progressive_assist_reason || "");
       return PROGRESSIVE_RESCUE_REASONS.has(reason) ? reason : "";
+    }
+
+    async function clearStaleProgressiveRecoveryState(item) {
+      if (!item || progressiveRecoverySessionMatches(item)) return item;
+      const hasStaleState = !!item.progressive_assist_next ||
+        !!item.progressive_assist_reason ||
+        (item.progressive_wrong_run | 0) > 0 ||
+        !!item.progressive_recovery_session;
+      if (!hasStaleState) return item;
+      item.progressive_assist_next = false;
+      item.progressive_assist_reason = "";
+      item.progressive_wrong_run = 0;
+      item.progressive_recovery_session = "";
+      await DB.update("word_pairs", item);
+      syncRowIntoLiveItems(item);
+      return item;
     }
 
     function progressiveRecoveryDecision(correct, wasReveal = false, previousWrongRun = 0) {
@@ -5511,6 +5535,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     function progressiveHelpText(item, scopeLabel) {
       const info = progressiveInfo(item);
+      if (info.assisted) {
+        if (grammarPracticeHu()) return "Segített visszakérdezés · Írd be sorrendben a hiányzó betűket.";
+        return isTouchPrimaryDevice()
+          ? "Guided retry · Tap the missing letter."
+          : "Guided retry · Type the missing letter.";
+      }
       if (info.kind === "full") {
         if (grammarPracticeHu()) return isTouchPrimaryDevice()
           ? "Írd be a teljes német mondatot az alkalmazás billentyűzetével."
@@ -5793,7 +5823,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const beforeLevel = progressiveLevelIndex(before);
       const wasAssisted = table === "word_pairs" && !!progressiveRescueReason(before);
       const adaptiveWasReveal = diagnosticSignals(evidence, correct).some(signal => signal.kind === "solution");
-      const previousWrongRun = clampInt(before?.progressive_wrong_run || 0, 0, 99);
+      const previousWrongRun = progressiveRecoverySessionMatches(before)
+        ? clampInt(before?.progressive_wrong_run || 0, 0, 99)
+        : 0;
       const row = await recordAnswer(table, itemId, correct, profile, evidence);
       if (!row) return null;
       const maxLevel = Math.max(0, PROGRESSIVE_LEVELS.length - 1);
@@ -5809,6 +5841,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       row.progressive_wrong_run = recovery.wrongRun;
       row.progressive_assist_reason = recovery.rescueReason;
       row.progressive_assist_next = !!recovery.rescueReason;
+      row.progressive_recovery_session = correct ? "" : adaptiveRecoverySessionId;
       if (row[SESSION_WORD_TRANSITION]) row[SESSION_WORD_TRANSITION].afterLevel = progressiveLevelIndex(row);
       if (guidedPractice) {
         row.guided_attempts = (row.guided_attempts | 0) + 1;
@@ -5840,6 +5873,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           afterDue: scheduleMove.afterDue ?? null,
           scheduleReason: scheduleMove.scheduleReason || "",
           rescueQueued: !!row.progressive_assist_next, rescueReason: row.progressive_assist_reason || "",
+          recoverySession: row.progressive_recovery_session || "",
           reason: adaptiveWasReveal ? "reveal" : correct ? (wasAssisted ? "assisted-correct-held" : clean ? "clean-correct" : "corrected-or-mistap") : "wrong"
         });
       }
@@ -7044,11 +7078,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     let practiceWriteErrors = 0;
     let sessionMistakeReturns = new Map();
     let sessionArticleBlockedIds = new Set();
+    let adaptiveRecoverySessionId = "";
+    let adaptiveRecoverySessionSerial = 0;
     let lastPracticeProgress = { total:0, mastered:0, stable:0, new:0, due:0, percent:0, is_complete:false, totalGates:0, gateIndex:0, intakeOccupied:0, intakeLimit:0 };
 
     function resetSessionMistakes() {
       sessionMistakeReturns = new Map();
       sessionArticleBlockedIds = new Set();
+      adaptiveRecoverySessionId = `${PRACTICE_RUNTIME_ID}:${++adaptiveRecoverySessionSerial}`;
     }
     function resetSessionPacing() {
       sessionNewAnswers = 0;
@@ -9191,6 +9228,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           row.progressive_assist_next = false;
           row.progressive_assist_reason = "";
           row.progressive_wrong_run = 0;
+          row.progressive_recovery_session = "";
           row.streak = afterStreak;
           row.learning_pressure = Math.max(1, row.learning_pressure | 0);
           row.word_next_due = dueNow;
@@ -9584,7 +9622,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function syncRowIntoLiveItems(row) {
       if (!row) return;
       const fields = ["streak", "next_due", "word_next_due", "learning_pressure", "article_pressure", "article_streak", "article_next_due", "article_times_seen", "article_times_correct", "article_times_wrong", "article_last_seen", "times_seen", "times_correct",
-        "times_wrong", "diagnostic_total_wrong", "progressive_level", "progressive_assist_next", "progressive_assist_reason", "progressive_wrong_run", "last_seen", "difficulty",
+        "times_wrong", "diagnostic_total_wrong", "progressive_level", "progressive_assist_next", "progressive_assist_reason", "progressive_wrong_run", "progressive_recovery_session", "last_seen", "difficulty",
         "guided_attempts", "guided_last_answer_at", "guided_success_at", "guided_full_recall_at", "explicit_unknown_at", "full_recall_at"];
       const apply = (it) => {
         if (!it || it.id !== row.id) return;
@@ -9773,6 +9811,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       currentTypingWord = queuedTypingWord && queuedTypingWord.id != null
         ? ((await DB.getById("word_pairs", queuedTypingWord.id)) || queuedTypingWord)
         : queuedTypingWord;
+      if (wordMode === "progressive") currentTypingWord = await clearStaleProgressiveRecoveryState(currentTypingWord);
       noteAdaptiveLevelLoad(currentTypingWord, guidedPractice ? "guided-queue-live-db" : "deck-queue-live-db");
       typingHintVisible = false;
       setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
@@ -12430,7 +12469,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         ...(currentGame === "words" ? [
           "ADAPTIVE LEVEL SUMMARY",
           `Current stored/fallback levels: ${adaptiveDistribution.map((count,i)=>`L${i+1} ${count}`).join(" | ")}`,
-          `Guided retries pending after Reveal or repeated wrong answers: ${adaptiveAssistedPending}`,
+          `Guided retries pending in this learning session after Reveal or repeated wrong answers: ${adaptiveAssistedPending}`,
           `Recorded adaptive events since 4.4.3: ${adaptiveEvents.length} | card loads: ${adaptiveLoads.length} | loads below the last recorded saved level: ${adaptiveRegressions.length}`,
           `Of those lower loads, ${adaptiveCrossRuntimeRegressions.length} happened after an app/runtime restart.`, "",
           "ADAPTIVE LEVEL REGRESSIONS (newest first, up to 20)",
@@ -12449,7 +12488,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.3, Adaptive card loads and level transitions are recorded. A load-below-save event is direct evidence that a later card load used a lower level than the last saved answer for the same stored row.",
         "Since build 4.4.4, the report separates same-runtime and after-restart lower loads and lists them near the summary with the current database level.", "",
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
-        "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.", "",
+        "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
+        "Since build 4.4.13, the one-letter guided retry is scoped to the current learning session. Old wrong-run or rescue fields cannot affect a new session, and an assisted card is labelled Guided retry.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveRescueReason(r)?`, guided retry pending (${progressiveRescueReason(r)})`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
