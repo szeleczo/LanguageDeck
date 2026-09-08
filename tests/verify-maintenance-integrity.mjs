@@ -43,7 +43,8 @@ assert.ok(!indexHtml.includes("CHAPTER_DATA.get(ch.id)"), "no direct chapter-id 
 assert.ok(!indexHtml.includes("CHAPTER_DATA.set(ch.id"), "no direct chapter-id cache writes remain");
 assert.match(indexHtml, /<aside class="context-rail hidden" id="contextRail">/, "word gloss uses a docked contextual rail");
 assert.match(indexHtml, /activeGlossId=id;openedSentence=new Set\(\[id\]\)/, "a word tap updates only the active gloss");
-assert.match(indexHtml, /k\.explicitUnknownAt=Date\.now\(\);k\.excluded=false;k\.handedOff=false/, "a tapped unknown is locked back into learning");
+assert.match(indexHtml, /k\.explicitUnknownAt=Date\.now\(\);k\.explicitUnknownSource="story-tap";k\.excluded=false;k\.handedOff=false/, "a tapped unknown is source-tagged and locked back into learning");
+assert.match(indexHtml, /k\.explicitUnknownAt=Date\.now\(\);k\.explicitUnknownSource="story-reread";save\(\)/, "a reread lookup is source-tagged separately");
 assert.match(indexHtml, /explicitUnknownPending\(state\).*priority:1000/s, "explicit unknown words join the chapter learning plan");
 assert.match(indexHtml, /guided_full_recall_at.*explicit_unknown_at/, "guided memorisation requires item-specific full recall evidence");
 assert.match(indexHtml, /guided_attempts.*guided_last_answer_at.*times_wrong/s, "guided selection is ordered by least practice first");
@@ -75,8 +76,8 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedRowDone\(row, guidedPractice, rows\)[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "prefetched guided queues use the target-specific completion rule");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.4\.11-live-queue-state-20260908/, "the application build marker includes the 4.4.11 live queue state release");
-assert.equal((indexHtml.match(/4\.4\.11-live-queue-state-20260908/g) || []).length, 2, "Course and Practice use the same 4.4.11 build marker");
+assert.match(indexHtml, /4\.4\.12-shared-knowledge-recovery-20260908/, "the application build marker includes the 4.4.12 shared knowledge recovery release");
+assert.equal((indexHtml.match(/4\.4\.12-shared-knowledge-recovery-20260908/g) || []).length, 2, "Course and Practice use the same 4.4.12 build marker");
 assert.match(indexHtml, /practiceSetupBtn'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openUtility\?\.\('session',LANG\)/, "the sliders restore the dedicated current-session controls");
 assert.match(indexHtml, /practiceSettingsBtn'\)\.onclick=\(\)=>openSettings\('main'\)/, "the gear keeps the application settings role");
 assert.match(indexHtml, /id="sessionActualNewRatio"[\s\S]*id="sessionRequestedNewRatio"[\s\S]*id="sessionIntakeStatus"[\s\S]*id="sessionScopeStatus"/, "Session controls show realised pacing, requested pacing, intake and scope together");
@@ -114,7 +115,9 @@ assert.match(indexHtml, /appendAdaptiveDiagnosticEvent\(row, "answer"[\s\S]*befo
 assert.match(indexHtml, /function lapsedStreak\(streak\)[\s\S]*Math\.floor\(Math\.max\(0, streak \| 0\) \/ 2\)/, "a lexical lapse preserves half of the established SRS streak");
 assert.match(indexHtml, /row\.streak = lapsedStreak\(beforeStreak\)/, "failed lexical recall uses gradual SRS fallback instead of full reset");
 assert.match(indexHtml, /beforePressure[\s\S]*afterPressure[\s\S]*beforeDue[\s\S]*afterDue[\s\S]*scheduleReason/, "Adaptive diagnostics expose scheduling state before and after an answer");
-assert.match(indexHtml, /appendAdaptiveDiagnosticEvent\(row, "reset"[\s\S]*source: "shared-explicit-unknown"/, "shared explicit-unknown resets are identified in Adaptive diagnostics");
+assert.match(indexHtml, /const afterLevel = Math\.max\(0, beforeLevel - 1\), afterStreak = lapsedStreak\(beforeStreak\)[\s\S]*appendAdaptiveDiagnosticEvent\(row, "shared-unknown"/, "Story uncertainty causes a gradual Adaptive and SRS demotion instead of a reset");
+assert.ok(!/syncWordAnswerToGlobal[\s\S]{0,1200}explicitUnknownAt:correct===false\?Date\.now\(\):0/.test(indexHtml), "ordinary Words errors never become Story explicit-unknown events");
+assert.match(indexHtml, /explicitUnknownSource:\s*unknownSource/, "shared knowledge keeps the source of the newest explicit-unknown event");
 assert.ok(!/else \{\s*row\.streak = 0;\s*const pressure = adjustLearningPressure\(row, "learning_pressure", false, 2\)/.test(indexHtml), "lexical scheduling no longer erases the full streak on a lapse");
 assert.match(indexHtml, /adaptiveWasReveal[\s\S]*reason: adaptiveWasReveal \? "reveal"/, "Adaptive level diagnostics distinguish Reveal from a wrong typed answer");
 assert.match(indexHtml, /DB\.getById\("word_pairs", queuedTypingWord\.id\)[\s\S]*noteAdaptiveLevelLoad\(currentTypingWord, guidedPractice \? "guided-queue-live-db" : "deck-queue-live-db"\)/, "every displayed Adaptive word is rehydrated from the current database row before its level is rendered and diagnosed");
@@ -528,7 +531,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-4-11-live-queue-state-20260908/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-4-12-shared-knowledge-recovery-20260908/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
