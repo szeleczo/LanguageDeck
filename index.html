@@ -3912,7 +3912,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.4.6-balanced-intake-depth-progress-20260907",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.4.7-adaptive-recall-scaffolding-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4472,7 +4472,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.4.6-balanced-intake-depth-progress-20260907";
+    const APP_BUILD = "4.4.7-adaptive-recall-scaffolding-20260908";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5363,30 +5363,41 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     const PROGRESSIVE_LEVELS = [
       {
-        label: "1 letter hidden",
-        shortLabel: "1 missing letter per word",
-        kind: "one"
-      },
-      {
-        label: "Light mask",
-        shortLabel: "about 25% hidden",
+        label: "Guided recall",
+        shortLabel: "about 30% hidden",
         kind: "ratio",
-        ratio: 0.25,
-        keepEdges: true
+        ratio: 0.30,
+        minHidden: 2,
+        minHiddenFrom: 4,
+        protectFirstFrom: 4,
+        protectLastFrom: 7
       },
       {
-        label: "Medium mask",
+        label: "Partial recall",
         shortLabel: "about 45% hidden",
         kind: "ratio",
         ratio: 0.45,
-        keepEdges: true
+        minHidden: 2,
+        minHiddenFrom: 4,
+        protectFirstFrom: 5
       },
       {
-        label: "Skeleton clue",
-        shortLabel: "mostly hidden",
-        kind: "skeleton",
-        ratio: 0.65,
-        keepEdges: false
+        label: "Deep recall",
+        shortLabel: "about 60% hidden",
+        kind: "ratio",
+        ratio: 0.60,
+        minHidden: 2,
+        minHiddenFrom: 4,
+        protectFirstFrom: 6
+      },
+      {
+        label: "Minimal clue",
+        shortLabel: "about 75% hidden",
+        kind: "ratio",
+        ratio: 0.75,
+        minHidden: 3,
+        minHiddenFrom: 5,
+        protectFirstFrom: 2
       },
       {
         label: "Full typing",
@@ -5394,6 +5405,29 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         kind: "full"
       }
     ];
+
+    // Sentence and grammar Progressive tasks keep their established curve in
+    // this focused release. Their prompts contain several words, so applying
+    // the stronger per-word mask without separate usability evidence would
+    // multiply the number of gaps and change a different learning activity.
+    const SENTENCE_PROGRESSIVE_LEVELS = [
+      { label: "1 letter hidden", shortLabel: "1 missing letter per word", kind: "one" },
+      { label: "Light mask", shortLabel: "about 25% hidden", kind: "ratio", ratio: 0.25, keepEdges: true },
+      { label: "Medium mask", shortLabel: "about 45% hidden", kind: "ratio", ratio: 0.45, keepEdges: true },
+      { label: "Skeleton clue", shortLabel: "mostly hidden", kind: "skeleton", ratio: 0.65, keepEdges: false },
+      { label: "Full typing", shortLabel: "no clue", kind: "full" }
+    ];
+
+    // The old one-letter task remains useful as a temporary bridge after a
+    // wrong answer or Reveal, but it is no longer a normal learning level.
+    // Passing this assisted retry holds the stored level instead of awarding
+    // a progression step.
+    const PROGRESSIVE_RESCUE_LEVEL = Object.freeze({
+      label: "Guided retry",
+      shortLabel: "1 missing letter per word",
+      kind: "one",
+      assisted: true
+    });
 
     function clampInt(n, min, max) {
       const v = Number.isFinite(Number(n)) ? Math.trunc(Number(n)) : min;
@@ -5420,12 +5454,17 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     function progressiveInfo(item) {
       const idx = progressiveLevelIndex(item);
-      return {
+      const wordAdaptive = currentGame === "words" && wordMode === "progressive";
+      const levels = wordAdaptive ? PROGRESSIVE_LEVELS : SENTENCE_PROGRESSIVE_LEVELS;
+      const storedInfo = {
         index: idx,
         humanLevel: idx + 1,
-        maxLevel: PROGRESSIVE_LEVELS.length,
-        ...PROGRESSIVE_LEVELS[idx]
+        maxLevel: levels.length,
+        ...levels[idx]
       };
+      return wordAdaptive && item?.progressive_assist_next
+        ? { ...storedInfo, ...PROGRESSIVE_RESCUE_LEVEL }
+        : storedInfo;
     }
 
     /* Difficulty shown as 5 dots — replaces the "Level 2/5 · about 25%
@@ -5462,6 +5501,31 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return out;
     }
 
+    function distributedIndexSelection(candidates, count, random = Math.random) {
+      const remaining = [...new Set(candidates)].map(Number).filter(Number.isFinite);
+      const wanted = Math.max(0, Math.min(Math.trunc(count) || 0, remaining.length));
+      const picked = [];
+      if (!wanted) return picked;
+
+      // Randomise tie-breaking, then repeatedly choose the position furthest
+      // from all previous gaps. This avoids unreadable clusters whenever the
+      // word supplies enough room, without making every encounter identical.
+      for (let i = remaining.length - 1; i > 0; i--) {
+        const j = Math.max(0, Math.min(i, Math.floor(random() * (i + 1))));
+        [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
+      }
+      picked.push(remaining.shift());
+      while (picked.length < wanted && remaining.length) {
+        let bestIndex = 0, bestDistance = -1;
+        for (let i = 0; i < remaining.length; i++) {
+          const distance = Math.min(...picked.map(position => Math.abs(position - remaining[i])));
+          if (distance > bestDistance) { bestDistance = distance; bestIndex = i; }
+        }
+        picked.push(remaining.splice(bestIndex, 1)[0]);
+      }
+      return picked;
+    }
+
     function maskLetterRunAdaptive(word, info) {
       const chars = Array.from(String(word || ""));
       const len = chars.length;
@@ -5477,21 +5541,20 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         minVisible = len >= 3 ? 2 : 1;
         hideCount = 1;
       } else if (info.kind === "ratio") {
-        // Always keep the first letter as an anchor (len>=3): without this,
-        // level 3 could hide the initial letter while the HARDER skeleton
-        // level always preserves it — an inverted difficulty step.
         const protectedIdx = new Set();
-        if (len >= 3) protectedIdx.add(0);
-        if (info.keepEdges && len >= 4) {
-          protectedIdx.add(0);
-          protectedIdx.add(len - 1);
+        const usesAdaptiveWordRules = info.protectFirstFrom != null || info.protectLastFrom != null || info.minHidden != null;
+        if (usesAdaptiveWordRules) {
+          if (len >= (info.protectFirstFrom || Infinity)) protectedIdx.add(0);
+          if (len >= (info.protectLastFrom || Infinity)) protectedIdx.add(len - 1);
+        } else {
+          if (len >= 3) protectedIdx.add(0);
+          if (info.keepEdges && len >= 4) protectedIdx.add(len - 1);
         }
         minVisible = Math.max(1, protectedIdx.size);
         candidates = indexRange(0, len).filter(i => !protectedIdx.has(i));
-        hideCount = Math.max(1, Math.round(len * (info.ratio || 0.25)));
+        const minimum = usesAdaptiveWordRules && len >= (info.minHiddenFrom || Infinity) ? (info.minHidden || 1) : 1;
+        hideCount = Math.max(minimum, Math.round(len * (info.ratio || 0.30)));
       } else if (info.kind === "skeleton") {
-        // Late stage: keep the first letter as a recognition anchor, and sometimes the last
-        // letter for long words so the clue remains readable rather than turning into noise.
         const protectedIdx = new Set([0]);
         if (len >= 7) protectedIdx.add(len - 1);
         minVisible = protectedIdx.size;
@@ -5503,7 +5566,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       hideCount = Math.min(hideCount, maxHidden, candidates.length);
       if (hideCount <= 0) return chars.join("");
 
-      const hidden = new Set(shuffleArr(candidates).slice(0, hideCount));
+      const hidden = new Set(distributedIndexSelection(candidates, hideCount));
       return chars.map((ch, i) => hidden.has(i) ? "_" : ch).join("");
     }
 
@@ -5697,12 +5760,17 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function recordProgressiveAnswer(table, itemId, correct, profile, clean = true, evidence = null) {
       const before = await DB.getById(table, itemId);
       const beforeLevel = progressiveLevelIndex(before);
+      const wasAssisted = table === "word_pairs" && !!before?.progressive_assist_next;
       const row = await recordAnswer(table, itemId, correct, profile, evidence);
       if (!row) return null;
       const maxLevel = Math.max(0, PROGRESSIVE_LEVELS.length - 1);
-      row.progressive_level = (correct && !clean)
+      row.progressive_level = (correct && (!clean || wasAssisted))
         ? beforeLevel
         : nextProgressiveLevel(beforeLevel, correct);
+      // Any actual failure (including Reveal) gets one highly scaffolded next
+      // encounter. A successful assisted answer consumes the help but cannot
+      // masquerade as evidence for a higher memory level.
+      row.progressive_assist_next = table === "word_pairs" && !correct;
       if (row[SESSION_WORD_TRANSITION]) row[SESSION_WORD_TRANSITION].afterLevel = progressiveLevelIndex(row);
       if (guidedPractice) {
         row.guided_attempts = (row.guided_attempts | 0) + 1;
@@ -5724,8 +5792,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (table === "word_pairs") appendAdaptiveDiagnosticEvent(row, "answer", {
           beforeLevel, afterLevel: progressiveLevelIndex(row),
           rawStoredLevel: row.progressive_level ?? null,
-          correct: !!correct, clean: !!clean,
-          reason: adaptiveWasReveal ? "reveal" : correct ? (clean ? "clean-correct" : "corrected-or-mistap") : "wrong"
+          correct: !!correct, clean: !!clean, assisted: wasAssisted,
+          rescueQueued: !!row.progressive_assist_next,
+          reason: adaptiveWasReveal ? "reveal" : correct ? (wasAssisted ? "assisted-correct-held" : clean ? "clean-correct" : "corrected-or-mistap") : "wrong"
         });
       if (table === "word_pairs") await syncWordAnswerToGlobal(row, correct);
       if (table === "sentence_pairs") await syncGrammarContextToGlobal(row, correct);
@@ -6661,6 +6730,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const loadedLevel = progressiveLevelIndex(row);
       appendAdaptiveDiagnosticEvent(row, "load", {
         source, loadedLevel, rawStoredLevel: row.progressive_level ?? null,
+        assisted: !!row.progressive_assist_next,
         previousSavedLevel: Number.isFinite(+previous?.afterLevel) ? +previous.afterLevel : null,
         previousSavedAt: previous?.at || null,
         previousSavedRuntime: previous?.runtime || null,
@@ -9060,6 +9130,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           row.explicit_unknown_at = explicitAt;
           row.guided_full_recall_at = null;
           row.progressive_level = 0;
+          row.progressive_assist_next = false;
           row.streak = 0;
           row.next_due = nowIso();
           changed.push(row);
@@ -9444,7 +9515,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function syncRowIntoLiveItems(row) {
       if (!row) return;
       const fields = ["streak", "next_due", "word_next_due", "learning_pressure", "article_pressure", "article_streak", "article_next_due", "article_times_seen", "article_times_correct", "article_times_wrong", "article_last_seen", "times_seen", "times_correct",
-        "times_wrong", "diagnostic_total_wrong", "progressive_level", "last_seen", "difficulty",
+        "times_wrong", "diagnostic_total_wrong", "progressive_level", "progressive_assist_next", "last_seen", "difficulty",
         "guided_attempts", "guided_last_answer_at", "guided_success_at", "guided_full_recall_at", "explicit_unknown_at", "full_recall_at"];
       const apply = (it) => {
         if (!it || it.id !== row.id) return;
@@ -12255,6 +12326,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const adaptiveDistribution = currentGame === "words"
         ? Array.from({length:PROGRESSIVE_LEVELS.length},(_,level)=>all.filter(r=>progressiveLevelIndex(r)===level).length)
         : [];
+      const adaptiveAssistedPending = currentGame === "words"
+        ? all.filter(r=>r.progressive_assist_next).length
+        : 0;
       const ranked = [...seen].sort((a,b) =>
         (Math.max(b.learning_pressure|0,b.article_pressure|0)-Math.max(a.learning_pressure|0,a.article_pressure|0)) ||
         (diagnosticLifetimeWrong(b)-diagnosticLifetimeWrong(a)) ||
@@ -12284,6 +12358,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         ...(currentGame === "words" ? [
           "ADAPTIVE LEVEL SUMMARY",
           `Current stored/fallback levels: ${adaptiveDistribution.map((count,i)=>`L${i+1} ${count}`).join(" | ")}`,
+          `Guided retries pending after a wrong answer or Reveal: ${adaptiveAssistedPending}`,
           `Recorded adaptive events since 4.4.3: ${adaptiveEvents.length} | card loads: ${adaptiveLoads.length} | loads below the last recorded saved level: ${adaptiveRegressions.length}`,
           `Of those lower loads, ${adaptiveCrossRuntimeRegressions.length} happened after an app/runtime restart.`, "",
           "ADAPTIVE LEVEL REGRESSIONS (newest first, up to 20)",
@@ -12301,9 +12376,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.1, a lexical error can insert at most two targeted returns, while an article error can insert at most one. The New item ratio is measured against answered cards across the session, not just a prefetched batch.",
         "Since build 4.4.3, Adaptive card loads and level transitions are recorded. A load-below-save event is direct evidence that a later card load used a lower level than the last saved answer for the same stored row.",
         "Since build 4.4.4, the report separates same-runtime and after-restart lower loads and lists them near the summary with the current database level.", "",
+        "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. A wrong answer or Reveal schedules a one-letter guided retry; passing it holds rather than advances the stored level.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
-      for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
+      for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${r.progressive_assist_next?", guided retry pending":""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
       lines.push("", "MOST REPEATED ITEMS (up to 40)");
       for (const r of repeated) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | last ${r.last_seen||"—"} | ${diagnosticDueLabel(r.next_due)}`);
       lines.push("", "RECENT EXACT ERRORS (newest first, up to 60)");
@@ -12314,8 +12390,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         if (!adaptiveEvents.length) lines.push("No Adaptive level events have been recorded yet. Practise in Adaptive Words mode, then reopen diagnostics.");
         for (const e of adaptiveEvents.slice(-80).reverse()) {
           const label = `${e.english||"—"} → ${[e.article,e.target].filter(Boolean).join(" ")||"—"}`;
-          if (e.event === "answer") lines.push(`${e.at} | answer | ${label} | L${(+e.beforeLevel||0)+1} → L${(+e.afterLevel||0)+1}/${PROGRESSIVE_LEVELS.length} | ${e.reason||"—"} | runtime ${e.runtime||"—"} | ${e.set}`);
-          else lines.push(`${e.at} | load | ${label} | loaded L${(+e.loadedLevel||0)+1}/${PROGRESSIVE_LEVELS.length} | raw stored: ${e.rawStoredLevel==null?"none":`L${(+e.rawStoredLevel||0)+1}`} | previous saved: ${e.previousSavedLevel==null?"none":`L${(+e.previousSavedLevel||0)+1}`} | lower: ${e.lowerThanPreviousSave?"YES":"no"} | ${e.crossedRuntime?"after restart":"same runtime"} | source ${e.source||"—"} | runtime ${e.runtime||"—"} | ${e.set}`);
+          if (e.event === "answer") lines.push(`${e.at} | answer | ${label} | L${(+e.beforeLevel||0)+1} → L${(+e.afterLevel||0)+1}/${PROGRESSIVE_LEVELS.length} | ${e.reason||"—"}${e.assisted?" | guided retry":""}${e.rescueQueued?" | retry queued":""} | runtime ${e.runtime||"—"} | ${e.set}`);
+          else lines.push(`${e.at} | load | ${label} | loaded L${(+e.loadedLevel||0)+1}/${PROGRESSIVE_LEVELS.length}${e.assisted?" (guided retry)":""} | raw stored: ${e.rawStoredLevel==null?"none":`L${(+e.rawStoredLevel||0)+1}`} | previous saved: ${e.previousSavedLevel==null?"none":`L${(+e.previousSavedLevel||0)+1}`} | lower: ${e.lowerThanPreviousSave?"YES":"no"} | ${e.crossedRuntime?"after restart":"same runtime"} | source ${e.source||"—"} | runtime ${e.runtime||"—"} | ${e.set}`);
         }
       }
       return lines.join("\n");
