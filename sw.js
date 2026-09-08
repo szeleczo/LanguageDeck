@@ -1,5 +1,5 @@
-/* LanguageDeck 4.4.13 — session-scoped Adaptive recovery. */
-const CACHE_VERSION="languagedeck-4-4-14-first-contact-scaffolding-20260908";
+/* LanguageDeck 4.4.15 — shared Adaptive/Story mastery alignment. */
+const CACHE_VERSION="languagedeck-4-4-15-shared-mastery-alignment-20260908";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
