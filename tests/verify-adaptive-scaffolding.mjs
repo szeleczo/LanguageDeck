@@ -37,4 +37,10 @@ assert.match(indexHtml, /Guided retries pending after Reveal or repeated wrong a
 assert.match(indexHtml, /reason: adaptiveWasReveal \? "reveal"[\s\S]*"assisted-correct-held"/, "diagnostics distinguish Reveal and assisted success");
 assert.match(indexHtml, /if \(!item\?\.progressive_assist_next\) return "";[\s\S]*PROGRESSIVE_RESCUE_REASONS\.has\(reason\) \? reason : ""/, "legacy bare rescue flags are ignored instead of leaking into the new build");
 
+const lapseSource = indexHtml.match(/function lapsedStreak\([^)]*\) \{[\s\S]*?\n    \}/)?.[0];
+assert.ok(lapseSource, "gradual SRS lapse recovery is independently testable");
+const lapsedStreak = Function(`return (${lapseSource})`)();
+assert.deepEqual([0,1,2,3,4,5,6].map(lapsedStreak), [0,0,1,1,2,2,3], "a lapse halves prior SRS evidence without erasing established recall");
+assert.match(indexHtml, /row\.progressive_level = \(correct && \(!clean \|\| wasAssisted\)\)[\s\S]*nextProgressiveLevel\(beforeLevel, correct\)/, "SRS lapse recovery does not replace the independent one-level Adaptive fallback");
+
 console.log("Adaptive scaffolding behavior checks passed.");

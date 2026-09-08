@@ -3919,7 +3919,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.4.9-adaptive-recovery-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.4.10-gradual-lapse-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4479,7 +4479,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.4.9-adaptive-recovery-20260908";
+    const APP_BUILD = "4.4.10-gradual-lapse-20260908";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -4970,6 +4970,17 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (streak <= 0) return 5;
       const idx = Math.min(streak - 1, steps.length - 1);
       return steps[idx];
+    }
+
+    /* A failed recall is evidence that the interval was too ambitious, but it
+       does not erase all earlier successful recalls. Halving the scheduling
+       streak gives young items a strong correction while letting established
+       items rebuild from an intermediate interval instead of starting over.
+
+       Examples before the next successful answer:
+         1 -> 0, 2 -> 1, 3 -> 1, 4 -> 2, 5 -> 2, 6 -> 3. */
+    function lapsedStreak(streak) {
+      return Math.max(0, Math.floor(Math.max(0, streak | 0) / 2));
     }
 
     function calcNextDue(streak, difficulty = 1.0, profile = "normal") {
@@ -5815,13 +5826,23 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         row.next_due = table === "word_pairs" ? earliestDue(row.word_next_due, row.article_next_due) : strongRecallDue;
       }
       await DB.update(table, row);
-      if (table === "word_pairs") appendAdaptiveDiagnosticEvent(row, "answer", {
+      if (table === "word_pairs") {
+        const scheduleMove = row[SESSION_WORD_TRANSITION] || {};
+        appendAdaptiveDiagnosticEvent(row, "answer", {
           beforeLevel, afterLevel: progressiveLevelIndex(row),
           rawStoredLevel: row.progressive_level ?? null,
           correct: !!correct, clean: !!clean, assisted: wasAssisted,
+          beforeStreak: scheduleMove.beforeStreak ?? null,
+          afterStreak: scheduleMove.afterStreak ?? null,
+          beforePressure: scheduleMove.beforePressure ?? null,
+          afterPressure: scheduleMove.afterPressure ?? null,
+          beforeDue: scheduleMove.beforeDue ?? null,
+          afterDue: scheduleMove.afterDue ?? null,
+          scheduleReason: scheduleMove.scheduleReason || "",
           rescueQueued: !!row.progressive_assist_next, rescueReason: row.progressive_assist_reason || "",
           reason: adaptiveWasReveal ? "reveal" : correct ? (wasAssisted ? "assisted-correct-held" : clean ? "clean-correct" : "corrected-or-mistap") : "wrong"
         });
+      }
       if (table === "word_pairs") await syncWordAnswerToGlobal(row, correct);
       if (table === "sentence_pairs") await syncGrammarContextToGlobal(row, correct);
       return row;
@@ -6856,6 +6877,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (!row) return null;
       const wasNewWord = table === "word_pairs" && (row.times_seen | 0) === 0;
       const beforeStreak = row.streak | 0;
+      const beforePressure = clampLearningPressure(row.learning_pressure || 0);
+      const beforeDue = row.word_next_due ?? row.next_due ?? null;
       const beforeLevel = table === "word_pairs" ? progressiveLevelIndex(row) : 0;
       // Spend the daily mastered-review budget HERE — when the learner
       // actually answers a mastered item — checked before mutating, since a
@@ -6876,7 +6899,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         row.word_next_due = calcNextDue(row.streak, row.difficulty || 1.0, profile);
         if (guidedPractice?.target === "grammar_skill") row.guided_success_at = Date.now();
       } else {
-        row.streak = 0;
+        row.streak = lapsedStreak(beforeStreak);
         const pressure = adjustLearningPressure(row, "learning_pressure", false, 2);
         if (guidedPractice?.target === "grammar_skill") row.explicit_unknown_at = Date.now();
         row.word_next_due = calcWrongDue(profile, pressure, `word:${row.id}`);
@@ -6889,7 +6912,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       await DB.update(table, row);
       if (table === "word_pairs") Object.defineProperty(row, SESSION_WORD_TRANSITION, {
         configurable: true,
-        value: { lexicalCorrect, wasNewWord, beforeStreak, afterStreak:row.streak|0, beforeLevel, afterLevel:beforeLevel }
+        value: {
+          lexicalCorrect, wasNewWord,
+          beforeStreak, afterStreak:row.streak|0,
+          beforePressure, afterPressure:clampLearningPressure(row.learning_pressure || 0),
+          beforeDue, afterDue:row.word_next_due ?? null,
+          scheduleReason: lexicalCorrect ? "correct" : "gradual-lapse",
+          beforeLevel, afterLevel:beforeLevel
+        }
       });
       appendDiagnosticError(row, table, evidence, correct);
       if (table === "word_pairs") {
@@ -9152,6 +9182,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         const rec = global.get(id);
         const state = rec?.storyState || rec || {}, explicitAt = +(state.explicitUnknownAt || 0), fullRecallAt = +(state.fullRecallAt || 0);
         if (explicitAt > fullRecallAt && +(row.explicit_unknown_at || 0) < explicitAt) {
+          const beforeLevel = progressiveLevelIndex(row), beforeStreak = row.streak | 0;
           row.lexeme_id = id;
           row.explicit_unknown_at = explicitAt;
           row.guided_full_recall_at = null;
@@ -9161,6 +9192,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           row.progressive_wrong_run = 0;
           row.streak = 0;
           row.next_due = nowIso();
+          appendAdaptiveDiagnosticEvent(row, "reset", {
+            source: "shared-explicit-unknown",
+            beforeLevel, afterLevel: 0,
+            beforeStreak, afterStreak: 0,
+            explicitUnknownAt: explicitAt,
+            sharedFullRecallAt: fullRecallAt
+          });
           changed.push(row);
           continue;
         }
@@ -12404,7 +12442,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.1, a lexical error can insert at most two targeted returns, while an article error can insert at most one. The New item ratio is measured against answered cards across the session, not just a prefetched batch.",
         "Since build 4.4.3, Adaptive card loads and level transitions are recorded. A load-below-save event is direct evidence that a later card load used a lower level than the last saved answer for the same stored row.",
         "Since build 4.4.4, the report separates same-runtime and after-restart lower loads and lists them near the summary with the current database level.", "",
-        "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.", "",
+        "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
+        "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Adaptive level and SRS streak remain separate; explicit unknown marks imported from Story Study are recorded as reset events.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveRescueReason(r)?`, guided retry pending (${progressiveRescueReason(r)})`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
@@ -12418,7 +12457,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         if (!adaptiveEvents.length) lines.push("No Adaptive level events have been recorded yet. Practise in Adaptive Words mode, then reopen diagnostics.");
         for (const e of adaptiveEvents.slice(-80).reverse()) {
           const label = `${e.english||"—"} → ${[e.article,e.target].filter(Boolean).join(" ")||"—"}`;
-          if (e.event === "answer") lines.push(`${e.at} | answer | ${label} | L${(+e.beforeLevel||0)+1} → L${(+e.afterLevel||0)+1}/${PROGRESSIVE_LEVELS.length} | ${e.reason||"—"}${e.assisted?" | guided retry":""}${e.rescueQueued?` | retry queued (${e.rescueReason||"unspecified"})`:""} | runtime ${e.runtime||"—"} | ${e.set}`);
+          if (e.event === "answer") lines.push(`${e.at} | answer | ${label} | Adaptive L${(+e.beforeLevel||0)+1} → L${(+e.afterLevel||0)+1}/${PROGRESSIVE_LEVELS.length} | SRS ${e.beforeStreak??"—"} → ${e.afterStreak??"—"} | pressure ${e.beforePressure??"—"} → ${e.afterPressure??"—"} | due ${e.beforeDue||"new"} → ${e.afterDue||"new"} | ${e.scheduleReason||"—"} · ${e.reason||"—"}${e.assisted?" | guided retry":""}${e.rescueQueued?` | retry queued (${e.rescueReason||"unspecified"})`:""} | runtime ${e.runtime||"—"} | ${e.set}`);
+          else if (e.event === "reset") lines.push(`${e.at} | reset | ${label} | Adaptive L${(+e.beforeLevel||0)+1} → L${(+e.afterLevel||0)+1}/${PROGRESSIVE_LEVELS.length} | SRS ${e.beforeStreak??"—"} → ${e.afterStreak??"—"} | source ${e.source||"—"} | explicit unknown ${e.explicitUnknownAt||"—"} | runtime ${e.runtime||"—"} | ${e.set}`);
           else lines.push(`${e.at} | load | ${label} | loaded L${(+e.loadedLevel||0)+1}/${PROGRESSIVE_LEVELS.length}${e.assisted?` (guided retry: ${e.assistReason||"unspecified"})`:""} | raw stored: ${e.rawStoredLevel==null?"none":`L${(+e.rawStoredLevel||0)+1}`} | previous saved: ${e.previousSavedLevel==null?"none":`L${(+e.previousSavedLevel||0)+1}`} | lower: ${e.lowerThanPreviousSave?"YES":"no"} | ${e.crossedRuntime?"after restart":"same runtime"} | source ${e.source||"—"} | runtime ${e.runtime||"—"} | ${e.set}`);
         }
       }

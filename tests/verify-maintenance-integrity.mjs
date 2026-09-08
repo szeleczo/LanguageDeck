@@ -75,8 +75,8 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedRowDone\(row, guidedPractice, rows\)[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "prefetched guided queues use the target-specific completion rule");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.4\.9-adaptive-recovery-20260908/, "the application build marker includes the 4.4.9 Adaptive recovery release");
-assert.equal((indexHtml.match(/4\.4\.9-adaptive-recovery-20260908/g) || []).length, 2, "Course and Practice use the same 4.4.9 build marker");
+assert.match(indexHtml, /4\.4\.10-gradual-lapse-20260908/, "the application build marker includes the 4.4.10 gradual lapse recovery release");
+assert.equal((indexHtml.match(/4\.4\.10-gradual-lapse-20260908/g) || []).length, 2, "Course and Practice use the same 4.4.10 build marker");
 assert.match(indexHtml, /practiceSetupBtn'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openUtility\?\.\('session',LANG\)/, "the sliders restore the dedicated current-session controls");
 assert.match(indexHtml, /practiceSettingsBtn'\)\.onclick=\(\)=>openSettings\('main'\)/, "the gear keeps the application settings role");
 assert.match(indexHtml, /id="sessionActualNewRatio"[\s\S]*id="sessionRequestedNewRatio"[\s\S]*id="sessionIntakeStatus"[\s\S]*id="sessionScopeStatus"/, "Session controls show realised pacing, requested pacing, intake and scope together");
@@ -111,6 +111,11 @@ assert.match(indexHtml, /function sessionPacingNewTarget[\s\S]*desiredNewTotal[\
 assert.match(indexHtml, /Session pacing: \$\{sessionNewAnswers\} new · \$\{sessionReviewAnswers\} reviews · \$\{sessionArticleReturns\} article-driven returns/, "diagnostics expose the realized new/review/article-return mix");
 assert.match(indexHtml, /let remaining = pool\.filter\(r => !guidedRowDone\(r, guidedPractice, guidedRows\)\)/, "Current Story Adaptive selection does not mistake reading recognition for full recall");
 assert.match(indexHtml, /appendAdaptiveDiagnosticEvent\(row, "answer"[\s\S]*beforeLevel[\s\S]*afterLevel/, "Adaptive answers record their exact before and after levels");
+assert.match(indexHtml, /function lapsedStreak\(streak\)[\s\S]*Math\.floor\(Math\.max\(0, streak \| 0\) \/ 2\)/, "a lexical lapse preserves half of the established SRS streak");
+assert.match(indexHtml, /row\.streak = lapsedStreak\(beforeStreak\)/, "failed lexical recall uses gradual SRS fallback instead of full reset");
+assert.match(indexHtml, /beforePressure[\s\S]*afterPressure[\s\S]*beforeDue[\s\S]*afterDue[\s\S]*scheduleReason/, "Adaptive diagnostics expose scheduling state before and after an answer");
+assert.match(indexHtml, /appendAdaptiveDiagnosticEvent\(row, "reset"[\s\S]*source: "shared-explicit-unknown"/, "shared explicit-unknown resets are identified in Adaptive diagnostics");
+assert.ok(!/else \{\s*row\.streak = 0;\s*const pressure = adjustLearningPressure\(row, "learning_pressure", false, 2\)/.test(indexHtml), "lexical scheduling no longer erases the full streak on a lapse");
 assert.match(indexHtml, /adaptiveWasReveal[\s\S]*reason: adaptiveWasReveal \? "reveal"/, "Adaptive level diagnostics distinguish Reveal from a wrong typed answer");
 assert.match(indexHtml, /noteAdaptiveLevelLoad\(currentTypingWord, guidedPractice \? "guided-queue" : "deck-queue"\)/, "every displayed Adaptive word records the level loaded from storage");
 assert.match(indexHtml, /lowerThanPreviousSave/, "diagnostics explicitly flag a card loaded below its last recorded saved level");
@@ -523,7 +528,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-4-9-adaptive-recovery-20260908/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-4-10-gradual-lapse-20260908/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
