@@ -1,5 +1,5 @@
-/* LanguageDeck 4.4.10 — gradual SRS lapse recovery with factual transitions. */
-const CACHE_VERSION="languagedeck-4-4-10-gradual-lapse-20260908";
+/* LanguageDeck 4.4.11 — live queue state rehydration. */
+const CACHE_VERSION="languagedeck-4-4-11-live-queue-state-20260908";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

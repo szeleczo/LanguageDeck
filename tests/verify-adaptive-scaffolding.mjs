@@ -33,6 +33,7 @@ assert.deepEqual(progressiveRecoveryDecision(false, true, 0), { wrongRun: 1, res
 assert.deepEqual(progressiveRecoveryDecision(true, false, 2), { wrongRun: 0, rescueReason: "" }, "a correct recall clears the failure run and rescue");
 assert.match(indexHtml, /row\.progressive_level = \(correct && \(!clean \|\| wasAssisted\)\)[\s\S]*progressiveRecoveryDecision\(correct, adaptiveWasReveal, previousWrongRun\)[\s\S]*row\.progressive_assist_next = !!recovery\.rescueReason/, "recording uses the tested recovery decision");
 assert.match(indexHtml, /"progressive_level", "progressive_assist_next", "progressive_assist_reason", "progressive_wrong_run"/, "recovery state reaches live queued cards");
+assert.match(indexHtml, /const queuedTypingWord = wordQueue\.shift\(\);[\s\S]*await DB\.getById\("word_pairs", queuedTypingWord\.id\)[\s\S]*noteAdaptiveLevelLoad\(currentTypingWord, guidedPractice \? "guided-queue-live-db" : "deck-queue-live-db"\)/, "Adaptive cards re-read persisted learning state when dequeued");
 assert.match(indexHtml, /Guided retries pending after Reveal or repeated wrong answers/, "diagnostics expose only qualified guided retries");
 assert.match(indexHtml, /reason: adaptiveWasReveal \? "reveal"[\s\S]*"assisted-correct-held"/, "diagnostics distinguish Reveal and assisted success");
 assert.match(indexHtml, /if \(!item\?\.progressive_assist_next\) return "";[\s\S]*PROGRESSIVE_RESCUE_REASONS\.has\(reason\) \? reason : ""/, "legacy bare rescue flags are ignored instead of leaking into the new build");

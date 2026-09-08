@@ -3919,7 +3919,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.4.10-gradual-lapse-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.4.11-live-queue-state-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4479,7 +4479,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.4.10-gradual-lapse-20260908";
+    const APP_BUILD = "4.4.11-live-queue-state-20260908";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -9766,8 +9766,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         scheduleGuidedPhaseCompletion();
         return;
       }
-      currentTypingWord = wordQueue.shift();
-      noteAdaptiveLevelLoad(currentTypingWord, guidedPractice ? "guided-queue" : "deck-queue");
+      const queuedTypingWord = wordQueue.shift();
+      currentTypingWord = queuedTypingWord && queuedTypingWord.id != null
+        ? ((await DB.getById("word_pairs", queuedTypingWord.id)) || queuedTypingWord)
+        : queuedTypingWord;
+      noteAdaptiveLevelLoad(currentTypingWord, guidedPractice ? "guided-queue-live-db" : "deck-queue-live-db");
       typingHintVisible = false;
       setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
       renderTypingLearningTools();
