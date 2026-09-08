@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.0 — read-only Library readiness and vocabulary-unlock forecasting. */
-const CACHE_VERSION="languagedeck-4-5-0-library-readonly-20260908";
+/* LanguageDeck 4.5.2 — first-contact success advances Adaptive learning. */
+const CACHE_VERSION="languagedeck-4-5-2-first-contact-advance-20260908";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

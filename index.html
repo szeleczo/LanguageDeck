@@ -3125,7 +3125,7 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
 <style id="delivery2IntegrationStyles">
 .integrated-practice-host{position:fixed;inset:0;z-index:125;background:var(--bg);color:var(--text);display:flex;flex-direction:column;overflow:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
 .integrated-study-header{flex:0 0 58px;height:58px;display:grid;grid-template-columns:42px minmax(0,1fr) auto auto;gap:7px;align-items:center;padding:7px 11px;background:var(--surface);border-bottom:1px solid var(--line)}
-.integrated-study-header .icon{width:40px;height:40px}.integrated-study-heading{min-width:0}.integrated-study-heading b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-study-heading span{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress{flex:0 0 40px;min-height:40px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:4px 12px;background:var(--surface);border-bottom:1px solid var(--line);font-size:10px;color:var(--muted)}.integrated-practice-progress strong{color:var(--text);font-size:10px;white-space:nowrap}.integrated-practice-progress .practice-progress-counts{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress .practice-progress-score{font-weight:850;white-space:nowrap}.integrated-practice-progress .practice-progress-mini{grid-column:1/-1;position:relative;display:flex;align-items:flex-start;width:100%;height:9px;min-height:9px;margin:0;padding:0 0 3px;border:0;border-radius:999px;background:var(--surface2)!important;overflow:hidden;cursor:pointer;appearance:none}.integrated-practice-progress .practice-progress-segment{display:block;height:6px;width:0;flex:0 0 auto;transition:width .18s ease}.integrated-practice-progress .practice-progress-stable{background:#315be8}.integrated-practice-progress .practice-progress-recall{background:#5579ee}.integrated-practice-progress .practice-progress-learned{background:#60a5fa}.integrated-practice-progress .practice-progress-learning{background:#7dd3fc}.integrated-practice-progress .practice-progress-met{background:#bae6fd}.integrated-practice-progress .practice-progress-depth{position:absolute;left:0;bottom:0;height:2px;width:0;background:#315be8;transition:width .18s ease}.integrated-practice-progress .practice-progress-score.progress-earned{animation:progressEarned .42s ease-out;color:var(--good)}
+.integrated-study-header .icon{width:40px;height:40px}.integrated-study-heading{min-width:0}.practice-command-pill{appearance:none;width:100%;min-width:0;min-height:40px;margin:0;padding:5px 11px 5px 13px;border:1px solid var(--line);border-radius:999px;background:var(--surface2);color:var(--text);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:9px;text-align:left;cursor:pointer;box-shadow:none}.practice-command-pill:hover{border-color:var(--strong);background:color-mix(in srgb,var(--surface2) 86%,var(--accent2))}.practice-command-pill:active{transform:none;box-shadow:none}.practice-command-copy{display:block;min-width:0}.integrated-study-heading b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-study-heading .practice-command-copy>span{display:block;color:var(--muted);font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.practice-command-caret{display:block;color:var(--muted);font-size:13px;line-height:1}.practice-command-pill:focus-visible{outline:2px solid var(--accent);outline-offset:2px}@media(max-width:560px){.integrated-study-header{grid-template-columns:40px minmax(0,1fr) 40px 40px;padding-inline:8px;gap:5px}.practice-command-pill{padding:4px 9px}.integrated-study-heading b{font-size:11.5px}.integrated-study-heading .practice-command-copy>span{font-size:9.5px}}.integrated-practice-progress{flex:0 0 40px;min-height:40px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:4px 12px;background:var(--surface);border-bottom:1px solid var(--line);font-size:10px;color:var(--muted)}.integrated-practice-progress strong{color:var(--text);font-size:10px;white-space:nowrap}.integrated-practice-progress .practice-progress-counts{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.integrated-practice-progress .practice-progress-score{font-weight:850;white-space:nowrap}.integrated-practice-progress .practice-progress-mini{grid-column:1/-1;position:relative;display:flex;align-items:flex-start;width:100%;height:9px;min-height:9px;margin:0;padding:0 0 3px;border:0;border-radius:999px;background:var(--surface2)!important;overflow:hidden;cursor:pointer;appearance:none}.integrated-practice-progress .practice-progress-segment{display:block;height:6px;width:0;flex:0 0 auto;transition:width .18s ease}.integrated-practice-progress .practice-progress-stable{background:#315be8}.integrated-practice-progress .practice-progress-recall{background:#5579ee}.integrated-practice-progress .practice-progress-learned{background:#60a5fa}.integrated-practice-progress .practice-progress-learning{background:#7dd3fc}.integrated-practice-progress .practice-progress-met{background:#bae6fd}.integrated-practice-progress .practice-progress-depth{position:absolute;left:0;bottom:0;height:2px;width:0;background:#315be8;transition:width .18s ease}.integrated-practice-progress .practice-progress-score.progress-earned{animation:progressEarned .42s ease-out;color:var(--good)}
 @keyframes progressEarned{0%{transform:scale(1)}45%{transform:scale(1.08)}100%{transform:scale(1)}}
 #legacyPracticeRoot{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:var(--bg);color:var(--text);overflow:hidden;--integrated-dock-h:64px}
 #legacyPracticeRoot>.appbar,#legacyPracticeRoot>#installBanner,#legacyPracticeRoot>#iosInstallBanner{display:none!important}
@@ -3136,6 +3136,7 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
 #legacyPracticeRoot .context-strip{display:none!important}#legacyPracticeRoot .play-meta{margin:0 2px 7px!important}#legacyPracticeRoot .game-area-spacer{display:none!important}#legacyPracticeRoot #textModeContainer{display:none!important}
 .integrated-practice-dock{position:absolute;z-index:90;left:0;right:0;bottom:0;height:calc(var(--integrated-dock-h) + env(safe-area-inset-bottom));min-height:calc(var(--integrated-dock-h) + env(safe-area-inset-bottom));padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 96%,transparent);border-top:1px solid var(--line);backdrop-filter:blur(16px);display:flex;align-items:stretch;gap:8px}
 #practiceDockPortal{display:none!important}.integrated-dock-fallback{flex:1 1 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-left:5px}.integrated-dock-fallback span{font-size:12px;color:var(--muted)}
+.progress-transfer-intro{font-size:12px;color:var(--text-muted);line-height:1.45;margin-bottom:12px}.progress-transfer-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.progress-transfer-actions button{min-height:46px}.progress-transfer-preview{border:1px solid var(--border);border-radius:12px;background:var(--surface-2);padding:11px 12px;margin:9px 0;color:var(--text-muted);font-size:12px;line-height:1.45}.progress-transfer-preview strong{color:var(--text)}.progress-transfer-preview.ready{border-color:color-mix(in srgb,var(--success) 45%,var(--border));background:color-mix(in srgb,var(--success-soft) 72%,var(--surface))}.progress-transfer-status{font-size:12px;color:var(--text-faint);min-height:18px;margin:7px 0}.progress-transfer-legacy{margin-top:12px;border-top:1px solid var(--border);padding-top:10px}.progress-transfer-legacy summary{cursor:pointer;color:var(--text-muted);font-size:11px;font-weight:750}.progress-transfer-file{display:none}@media(max-width:560px){.progress-transfer-actions{grid-template-columns:1fr}}
 #legacyPracticeRoot .typing-actions.practice-actions,#legacyPracticeRoot .sentence-actions.practice-actions{position:fixed!important;left:max(10px,env(safe-area-inset-left))!important;right:max(10px,env(safe-area-inset-right))!important;bottom:max(8px,env(safe-area-inset-bottom))!important;z-index:94!important;width:auto!important;max-width:720px!important;min-height:48px!important;margin:0 auto!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;display:flex!important;gap:7px!important;order:initial!important}
 #legacyPracticeRoot .typing-actions.practice-actions button,#legacyPracticeRoot .sentence-actions.practice-actions button{min-height:var(--tap)!important;height:var(--tap)!important;margin:0!important;flex:1 1 auto!important;border-radius:var(--radius-md)!important}
 #legacyPracticeRoot .sentence-result:not(:empty){position:static!important;inset:auto!important;max-width:none!important;width:auto!important;margin:7px 0!important;box-shadow:none!important;pointer-events:auto!important}
@@ -3295,7 +3296,7 @@ html.integrated-practice-active body{overflow:hidden!important}
 <div id="practiceStudyHost" class="integrated-practice-host hidden" aria-live="polite">
   <header class="integrated-study-header">
     <button class="icon" id="practiceBackBtn" aria-label="Back to Practice">←</button>
-    <div class="integrated-study-heading"><b id="practiceStudyTitle">Words</b><span id="practiceStudySub">Loading real deck data…</span></div>
+    <button class="integrated-study-heading practice-command-pill" id="practiceCommandPill" type="button" aria-label="Change language, mode, exercise or deck" title="Change what you practise"><span class="practice-command-copy"><b id="practiceStudyTitle">Words</b><span id="practiceStudySub">Loading real deck data…</span></span><span class="practice-command-caret" aria-hidden="true">⌄</span></button>
     <button class="icon" id="practiceSetupBtn" aria-label="Session options" title="Session options"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"></path><circle cx="8" cy="6" r="1.5" fill="currentColor"></circle><circle cx="15" cy="12" r="1.5" fill="currentColor"></circle><circle cx="12" cy="18" r="1.5" fill="currentColor"></circle></svg></button>
     <button class="icon" id="practiceSettingsBtn" aria-label="App settings" title="App settings">⚙</button>
   </header>
@@ -3756,7 +3757,7 @@ html.integrated-practice-active body{overflow:hidden!important}
           </div>
 <button class="ghost" id="browseBuiltinBtn" style="width:100%;">Browse current-language built-in decks</button>
 <button class="ghost" id="manageDecksBtn" style="width:100%;">Manage installed decks</button>
-<button class="ghost" id="syncProgressBtn" style="width:100%;">Sync progress between devices</button>
+<button class="ghost" id="syncProgressBtn" style="width:100%;">Transfer progress between devices</button>
 <button class="ghost" id="openPackBuilderBtn" hidden style="width:100%;">Language Pack Builder</button>
 </div>
 </details>
@@ -3792,23 +3793,28 @@ html.integrated-practice-active body{overflow:hidden!important}
 </div>
 <div class="modal-backdrop" id="syncModal">
 <div class="modal-card">
-<div class="modal-title">Sync progress</div>
-<div style="font-size:12px;color:var(--text-faint);margin-bottom:8px;line-height:1.4;">
-        Create a code on this device, then enter it on the other device and
-        tap Apply. The code carries streaks, review schedule and difficulty
-        levels for every practiced card; newer progress wins per card and
-        nothing is deleted. Codes are case-insensitive and dashes are
-        optional. For large collections, "Copy as link" is easier: opening
-        the link on the other device offers to apply it automatically.
-      </div>
-<textarea autocomplete="off" id="syncCodeArea" placeholder="Tap 'Create code' here, or paste a code from your other device." spellcheck="false" style="width:100%;min-height:110px;resize:vertical;font:12px ui-monospace,Menlo,Consolas,monospace;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);color:var(--text);word-break:break-all;"></textarea>
+<div class="modal-title">Progress transfer</div>
+<div class="progress-transfer-intro">Move your learning state between desktop and mobile without an account. A Progress Pack includes Adaptive/Words progress, sentence practice, shared Story vocabulary, text progress and chapter positions. It does not contain book/deck content or appearance settings.</div>
+<div class="progress-transfer-actions">
+<button id="progressPackExportBtn">Share / export progress</button>
+<button class="secondary" id="progressPackImportBtn">Choose Progress Pack</button>
+</div>
+<input class="progress-transfer-file" id="progressPackFile" type="file" accept=".ldprogress,application/json" />
+<div class="progress-transfer-preview" id="progressPackPreview">No Progress Pack selected. Export on the device with the progress you want to carry over, then open that file here.</div>
+<button class="secondary" id="progressPackApplyBtn" disabled style="width:100%;">Merge selected progress</button>
+<div class="progress-transfer-status" id="progressPackStatus"></div>
+<details class="progress-transfer-legacy">
+<summary>Legacy code transfer</summary>
+<div style="font-size:11px;color:var(--text-faint);margin:8px 0;line-height:1.4;">Older LanguageDeck builds can still exchange the compact card code below. It only covers part of the modern learning state, so Progress Pack is preferred.</div>
+<textarea autocomplete="off" id="syncCodeArea" placeholder="Create or paste an older sync code." spellcheck="false" style="width:100%;min-height:90px;resize:vertical;font:12px ui-monospace,Menlo,Consolas,monospace;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);color:var(--text);word-break:break-all;"></textarea>
 <div id="syncStatus" style="font-size:12px;color:var(--text-faint);min-height:16px;margin:6px 0 2px;"></div>
 <div class="settings-actions" style="display:flex;gap:8px;flex-wrap:wrap;">
-<button id="syncCreateBtn" style="flex:1;">Create code</button>
-<button class="secondary" id="syncLinkBtn" style="flex:1;">Copy as link</button>
-<button class="secondary" id="syncApplyBtn" style="flex:1;">Apply code</button>
-<button class="ghost close-btn" id="closeSyncBtn">Done</button>
+<button id="syncCreateBtn" style="flex:1;">Create old code</button>
+<button class="secondary" id="syncLinkBtn" style="flex:1;">Copy old link</button>
+<button class="secondary" id="syncApplyBtn" style="flex:1;">Apply old code</button>
 </div>
+</details>
+<div class="settings-actions"><button class="ghost close-btn" id="closeSyncBtn">Done</button></div>
 </div>
 </div>
 <div class="toast" id="legacyToast"></div>
@@ -3923,7 +3929,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.0-library-readonly-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.2-first-contact-advance-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4137,7 +4143,7 @@ let autoAdvanceTimer=null;
 function cancelAutoAdvance(){if(autoAdvanceTimer){clearTimeout(autoAdvanceTimer);autoAdvanceTimer=null;}const b=$("main");if(b)b.disabled=false;}
 function scheduleAutoAdvance(next,delay=520){cancelAutoAdvance();const b=$("main");if(b){b.disabled=true;b.textContent="Continuing…";}autoAdvanceTimer=setTimeout(()=>{autoAdvanceTimer=null;if(b)b.disabled=false;next();},delay);}
 function show(id){["startPane","warmPane","readPane","practicePane","rereadPane"].forEach(x=>$(x).classList.toggle("on",x===id));if(id!=="readPane")$("contextRail").classList.add("hidden");$("stage").scrollTop=0}
-function save(){try{localStorage.setItem(STORAGE,JSON.stringify({settings,SK,position,blockClock,lastMetrics,translationPinned,storyId:DATA.storyId,chapterId:DATA.chapterId}))}catch(e){}ldScheduleSave();callbacks.onStateChange?.(getPublicApi().getSnapshot())}
+function save(){try{localStorage.setItem(STORAGE,JSON.stringify({settings,SK,position,blockClock,lastMetrics,translationPinned,storyId:DATA.storyId,chapterId:DATA.chapterId,updatedAt:Date.now()}))}catch(e){}ldScheduleSave();callbacks.onStateChange?.(getPublicApi().getSnapshot())}
 async function load(){let legacyK={},legacyPK={};try{const x=JSON.parse(localStorage.getItem(STORAGE)||"null");if(x){settings={...settings,...x.settings};legacyK=x.K||{};legacyPK=x.PK||{};SK=x.SK||{};position=x.position||0;blockClock=x.blockClock||0;lastMetrics=x.lastMetrics||null;translationPinned=x.translationPinned??(settings.translation==="always")}}catch(e){}await ldLoadGlobal();for(const[id,v]of Object.entries(legacyK)){const c=ldCanon(id);K[c]=ldMergeState(K[c],v)}for(const[id,v]of Object.entries(legacyPK))PK[id]=ldMergeState(PK[id],v);save()}
 function resetProgress(){SK={};position=0;blockClock=0;lastMetrics=null;translationPinned=settings.translation==="always";settings.configured=true;save();closeStudyMenu();startBlock();toast("Chapter progress erased. Shared knowledge was kept.")}
 function sceneStarts(){const out=[];let last=null;DATA.sentences.forEach((s,i)=>{if(s.page!==last){const count=DATA.sentences.filter(x=>x.page===s.page).length;out.push({page:s.page,index:i,label:`Section ${out.length+1} of ${new Set(DATA.sentences.map(x=>x.page)).size} · sentences ${i+1}–${i+count}`});last=s.page}});return out}
@@ -4330,7 +4336,7 @@ async function startBookReview(){const sources=[];for(const ch of STORY.chapters
 async function finishChapterStudy(){const x=CHAPTER_STUDY_SESSION;if(!x)return;const phases=await guidedPhaseStatuses(x);if(phases.some(p=>!p.status.complete)){x.showReread=false;await renderChapterStudy();return}const now=Date.now(),intervals=[3,7,14,30];if(x.bookReview){for(const z of x.sources){const st=chapterStudyState(z.ch);st.status='complete';st.reviewCount=(st.reviewCount||0)+1;st.lastReviewAt=now;st.nextReviewAt=now+intervals[Math.min(st.reviewCount-1,intervals.length-1)]*86400000;saveChapterStudyState(z.ch,st)}}else{const st=chapterStudyState(x.ch);st.status='complete';st.deferred=false;if(x.review){st.reviewCount=(st.reviewCount||0)+1;st.lastReviewAt=now;st.nextReviewAt=now+intervals[Math.min(st.reviewCount-1,intervals.length-1)]*86400000}else{st.completedAt=now;st.reviewCount=0;st.nextReviewAt=now+86400000}saveChapterStudyState(x.ch,st)}await exitChapterStudy('course')}
 async function exitChapterStudy(view='course'){$('chapterStudyHost').classList.add('hidden');$('browseShell').classList.remove('hidden');CHAPTER_STUDY_SESSION=null;closeSettings();await loadGlobal();if(STORY){CURRENT=await chooseCurrent();renderCourse();renderBook()}showView(view)}
 async function deferChapterStudy(id){const ch=STORY.chapters.find(x=>x.id===id);if(!ch)return;const st=chapterStudyState(ch);st.status='deferred';st.deferredAt=Date.now();saveChapterStudyState(ch,st);CURRENT=await chooseCurrent();renderCourse();renderBook()}
-async function rereadChapter(id){const ch=STORY.chapters.find(x=>x.id===id);if(!ch)return;const st=unitState(ch.unitId);st.position=0;localStorage.setItem(`ld-story-study-v3:${LANG}:${ch.unitId}`,JSON.stringify(st));const data=await loadChapter(ch);CURRENT={ch,data,status:chapterStatus(ch,data),prep:prepFor(data,{...chapterStatus(ch,data),pos:0})};startIntegratedStory(storyRequestFor(ch),'book')}
+async function rereadChapter(id){const ch=STORY.chapters.find(x=>x.id===id);if(!ch)return;const st=unitState(ch.unitId);st.position=0;st.updatedAt=Date.now();localStorage.setItem(`ld-story-study-v3:${LANG}:${ch.unitId}`,JSON.stringify(st));const data=await loadChapter(ch);CURRENT={ch,data,status:chapterStatus(ch,data),prep:prepFor(data,{...chapterStatus(ch,data),pos:0})};startIntegratedStory(storyRequestFor(ch),'book')}
 $('chapterStudyBack').onclick=()=>exitChapterStudy('course');$('chapterStudySettings').onclick=()=>openSettings('main');
 
 let GRAMMAR_CURRICULUM=null;
@@ -4439,8 +4445,8 @@ function updatePracticeShell(detail={}){
   const mode=detail.mode||ACTIVE_PRACTICE_MODE||'words',p=detail.progress||{total:0,mastered:0,stable:0,new:0,due:0,percent:0},grammar=PRACTICE_RETURN_VIEW==='grammar-course',guidedTitle=detail.guidedTarget==='story_practice'?'Story Practice':grammar?'Nyelvtan és alakok':'Chapter Study',languageLabel=detail.languageLabel||detail.deck?.toUpperCase()||'';
   const canShowSession=mode==='words'&&!detail.guided&&!grammar;
   if(!canShowSession)PRACTICE_PROGRESS_VIEW='deck';
-  $('practiceStudyTitle').textContent=detail.guided?guidedTitle:practiceModeLabel(mode);
-  $('practiceStudySub').textContent=detail.guidedLabel||[languageLabel,detail.variant,detail.setName].filter(Boolean).join(' · ')||(grammar?'Vezetett nyelvtani gyakorlat':'Standalone deck');
+  $('practiceStudyTitle').textContent=detail.guided?guidedTitle:[practiceModeLabel(mode),detail.variant].filter(Boolean).join(' · ');
+  $('practiceStudySub').textContent=detail.guided?(detail.guidedLabel||[languageLabel,detail.setName].filter(Boolean).join(' · ')):[languageLabel,detail.setName].filter(Boolean).join(' · ')||(grammar?'Vezetett nyelvtani gyakorlat':'Standalone deck');
   $('integratedPracticeSettingsLabel').textContent=grammar?'Vezetett nyelvtani gyakorlat':detail.guided?`Guided ${guidedTitle}`:`${languageLabel?languageLabel+' · ':''}${practiceModeLabel(mode)}${detail.setName?' · '+detail.setName:''}`;
   const stable=Math.max(0,p.stable??p.mastered??0),recall=Math.max(0,p.recall||0),learned=Math.max(0,p.learned||0),learning=Math.max(0,p.learning??((p.total||0)-(p.new||0)-stable)),met=Math.max(0,p.met||0),total=Math.max(0,p.total||0),depthPercent=Math.max(0,Math.min(100,p.depthPercent??p.percent??0));
   const sessionNew=Math.max(0,detail.sessionNewAnswers||0),sessionReview=Math.max(0,detail.sessionReviewAnswers||0),articleReturns=Math.max(0,detail.sessionArticleReturns||0);
@@ -4484,9 +4490,10 @@ async function exitIntegratedPractice(view=PRACTICE_RETURN_VIEW){const returnToC
 window.addEventListener('ld-practice-state',e=>updatePracticeShell(e.detail||{}));
 installArchitectureShells();
 $('practiceProgressToggle').onclick=()=>{if($('practiceProgressToggle').disabled)return;PRACTICE_PROGRESS_VIEW=PRACTICE_PROGRESS_VIEW==='deck'?'session':'deck';updatePracticeShell(window.LanguageDeckPractice?.snapshot?.()||LAST_PRACTICE_DETAIL)};
+$('practiceCommandPill').onclick=()=>window.LanguageDeckPractice?.openSetup?.();
 $('practiceBackBtn').onclick=()=>exitIntegratedPractice();$('practiceDockEndBtn').onclick=()=>exitIntegratedPractice();$('practiceSetupBtn').onclick=()=>window.LanguageDeckPractice?.openUtility?.('session',LANG);$('practiceSettingsBtn').onclick=()=>openSettings('main');$('morePracticeOptionsBtn').onclick=()=>{closeSettings();window.LanguageDeckPractice?.openUtility?.('session',LANG)};$('restartPracticeBtn').onclick=async()=>{if(window.LanguageDeckPractice?.snapshot?.().guided)return;await window.LanguageDeckPractice?.restartWithOptions?.(PRACTICE_PENDING_OPTIONS||{});PRACTICE_PENDING_OPTIONS=null;updatePracticeShell(window.LanguageDeckPractice?.snapshot?.()||{});closeSettings();syncPracticeDock()};
 
-$('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=closeSettings;$('dataCheckClose').onclick=closeSettings;$('diagnosticsClose').onclick=closeSettings;$('settingsBackdrop').onclick=e=>{if(e.target===$('settingsBackdrop'))closeSettings()};$('openDiagnosticsBtn').onclick=()=>showSettingsView('diagnostics');$('diagnosticsBack').onclick=()=>showSettingsView('main');$('refreshDiagnosticsBtn').onclick=refreshPracticeDiagnostics;$('copyDiagnosticsBtn').onclick=copyPracticeDiagnostics;$('openDataCheckBtn').onclick=()=>showSettingsView('data');$('dataCheckBack').onclick=()=>showSettingsView('main');$('refreshDataCheckBtn').onclick=refreshDataCheck;$('clearCacheBtn').onclick=clearAppCache;$('refreshCourseBtn').onclick=()=>location.reload();document.querySelectorAll('[data-theme-choice]').forEach(b=>b.onclick=()=>{saveCourseTheme(b.dataset.themeChoice);applyCourseTheme()});$('languageBtn').onclick=()=>$('languageBackdrop').classList.remove('hidden');$('languageClose').onclick=()=>$('languageBackdrop').classList.add('hidden');$('languageBackdrop').onclick=e=>{if(e.target===$('languageBackdrop'))$('languageBackdrop').classList.add('hidden')};window.addEventListener('languagedeck:open-session-options',()=>window.LanguageDeckPractice?.openUtility?.('session',LANG));window.addEventListener('online',updateNetworkState);window.addEventListener('offline',updateNetworkState);init();
+$('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=closeSettings;$('dataCheckClose').onclick=closeSettings;$('diagnosticsClose').onclick=closeSettings;$('settingsBackdrop').onclick=e=>{if(e.target===$('settingsBackdrop'))closeSettings()};$('openDiagnosticsBtn').onclick=()=>showSettingsView('diagnostics');$('diagnosticsBack').onclick=()=>showSettingsView('main');$('refreshDiagnosticsBtn').onclick=refreshPracticeDiagnostics;$('copyDiagnosticsBtn').onclick=copyPracticeDiagnostics;$('openDataCheckBtn').onclick=()=>showSettingsView('data');$('dataCheckBack').onclick=()=>showSettingsView('main');$('refreshDataCheckBtn').onclick=refreshDataCheck;$('clearCacheBtn').onclick=clearAppCache;$('refreshCourseBtn').onclick=()=>location.reload();document.querySelectorAll('[data-theme-choice]').forEach(b=>b.onclick=()=>{saveCourseTheme(b.dataset.themeChoice);applyCourseTheme()});$('languageBtn').onclick=()=>$('languageBackdrop').classList.remove('hidden');$('languageClose').onclick=()=>$('languageBackdrop').classList.add('hidden');$('languageBackdrop').onclick=e=>{if(e.target===$('languageBackdrop'))$('languageBackdrop').classList.add('hidden')};window.addEventListener('languagedeck:open-session-options',()=>window.LanguageDeckPractice?.openUtility?.('session',LANG));window.addEventListener('online',updateNetworkState);window.addEventListener('offline',updateNetworkState);window.addEventListener('languagedeck:progress-imported',async()=>{try{await loadGlobal();LIBRARY_STORY_CACHE.clear();if(STORY){CURRENT=await chooseCurrent();renderCourse();renderBook();if(document.querySelector('#libraryView.on'))await renderLibrary()}}catch(e){console.warn('Progress import refresh failed',e)}});init();
 </script><script>(function(){
 
     /* ============================================================
@@ -4502,7 +4509,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.0-library-readonly-20260908";
+    const APP_BUILD = "4.5.2-first-contact-advance-20260908";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5461,8 +5468,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     // A one-letter card is a first-contact teaching aid only. It is derived
     // from the word's own typing history, never from a miss, Reveal, session
-    // state, or a persisted recovery flag. Passing it does not advance the
-    // stored Adaptive level.
+    // state, or a persisted recovery flag. Passing it is a genuine successful recall signal and advances
+    // the stored Adaptive level from L1 to L2.
     const PROGRESSIVE_FIRST_CONTACT_LEVEL = Object.freeze({
       label: "First contact",
       shortLabel: "1 missing letter per word",
@@ -5837,7 +5844,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const row = await recordAnswer(table, itemId, correct, profile, evidence, table === "word_pairs");
       if (!row) return null;
       const maxLevel = Math.max(0, PROGRESSIVE_LEVELS.length - 1);
-      row.progressive_level = (correct && (!clean || wasFirstContact))
+      row.progressive_level = (correct && !clean)
         ? beforeLevel
         : nextProgressiveLevel(beforeLevel, correct);
       // Recovery-session scaffolding is retired. A miss or Reveal changes only
@@ -5879,7 +5886,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           scheduleReason: scheduleMove.scheduleReason || "",
           rescueQueued: !!row.progressive_assist_next, rescueReason: row.progressive_assist_reason || "",
           recoverySession: row.progressive_recovery_session || "",
-          reason: adaptiveWasReveal ? "reveal" : correct ? (wasFirstContact ? "first-contact-correct-held" : clean ? "clean-correct" : "corrected-or-mistap") : "wrong"
+          reason: adaptiveWasReveal ? "reveal" : correct ? (wasFirstContact ? "first-contact-correct-advanced" : clean ? "clean-correct" : "corrected-or-mistap") : "wrong"
         });
       }
       if (table === "word_pairs") await syncWordAnswerToGlobal(row, correct, true);
@@ -8578,7 +8585,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       });
     }
 
-    function openQuickSheet() { if(document.documentElement.classList.contains('integrated-practice-active')){window.dispatchEvent(new CustomEvent('languagedeck:open-session-options'));return}quickSheetStep = 1; renderQuickSheet(); quickSheet.classList.add("active"); }
+    function openQuickSheet() { quickSheetStep = 1; renderQuickSheet(); quickSheet.classList.add("active"); }
     function closeQuickSheet() { quickSheet.classList.remove("active"); saveSettings(); }
     if (qsBackBtn) qsBackBtn.addEventListener("click", () => { quickSheetStep = 1; renderQuickSheet(); });
 
@@ -9266,9 +9273,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (!row || !row.lexeme_id) return;
       const idx = await sharedLexiconIndex(), id = idx.canon(row.lexeme_id);
       const srsStrength = (row.streak | 0) >= 5 ? 4 : (row.streak | 0) >= 3 ? 3 : (row.times_correct | 0) > 0 ? 2 : 0;
-      // Shared Story readiness must reflect the FINAL Adaptive level, not the
-      // SRS streak produced by an assisted first-contact card. L1 therefore
-      // remains below the Story "known" threshold; normal L2 recall reaches it.
+      // Shared Story readiness reflects the FINAL Adaptive level. A clean
+      // first-contact success now advances L1 to L2, so the same evidence is
+      // immediately visible to Story/Library instead of creating split states.
       const adaptiveStrength = Math.min(4, Math.max(0, progressiveLevelIndex(row) + 1));
       const inferred = adaptive ? adaptiveStrength : srsStrength;
       const knowledge = await window.LanguageDeckKnowledge.record({language:row.deck||currentDeck,lexemeId:id,channel:"words",seen:+row.times_seen||0,correct:+row.times_correct||0,wrong:+(row.diagnostic_total_wrong ?? row.times_wrong)||0,lastAt:Date.parse(row.last_seen||"")||Date.now(),strength:inferred,sourceMode:adaptive?"words-adaptive":"words",absolute:true,storyState:{collected:true,fullRecallAt:+row.full_recall_at||0}});
@@ -11431,6 +11438,216 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return { updated, skippedOlder, notFound, total: payload.items.length };
     }
 
+    /* ---------- Progress Pack v3 ----------
+       The old compact code only represented a subset of Free Practice. A
+       Progress Pack is a versioned, local-first transfer file that carries all
+       learning state while leaving content and appearance settings alone.
+       Imports merge instead of replacing the database. */
+    const PROGRESS_PACK_FORMAT = "LanguageDeckProgressPack";
+    const PROGRESS_PACK_VERSION = 3;
+    const PROGRESS_PENDING_KEY = "ld-progress-pending-v1";
+    const PROGRESS_LOCAL_PREFIXES = ["ld-story-study-v3:", "ld-chapter-study-v1:", "ld-prep-session-v1:"];
+    const PROGRESS_COUNTER_FIELDS = new Set(["times_seen","times_correct","times_wrong","diagnostic_total_wrong","article_times_seen","article_times_correct","article_times_wrong"]);
+    const PROGRESS_STATE_FIELDS = [
+      "streak","next_due","word_next_due","learning_pressure","article_pressure","article_streak","article_next_due","article_last_seen",
+      "times_seen","times_correct","times_wrong","diagnostic_total_wrong","progressive_level","last_seen","last_correct","last_wrong","first_seen",
+      "progressive_wrong_run","progressive_last_session","progressive_rescue_reason","mastered_at","review_count","difficulty","ease","interval","stage"
+    ];
+
+    function progressTimestamp(value) {
+      if (value == null || value === "") return 0;
+      if (typeof value === "number" && Number.isFinite(value)) return value;
+      const n = Date.parse(value); return Number.isFinite(n) ? n : 0;
+    }
+    function progressRowActivity(state = {}) {
+      return Math.max(progressTimestamp(state.last_seen), progressTimestamp(state.article_last_seen), progressTimestamp(state.last_correct), progressTimestamp(state.last_wrong), progressTimestamp(state.first_seen));
+    }
+    function progressRowState(row) {
+      const out = {};
+      for (const key of PROGRESS_STATE_FIELDS) if (Object.prototype.hasOwnProperty.call(row || {}, key)) out[key] = row[key];
+      return out;
+    }
+    function progressPracticeRecord(table, row) {
+      return {
+        table,
+        deck: row.deck || "",
+        setName: row.set_name || "",
+        english: row.english || "",
+        target: row.target || "",
+        lexemeId: row.lexeme_id || row.lexemeId || "",
+        skillId: row.skill_id || row.skillId || "",
+        state: progressRowState(row)
+      };
+    }
+    function progressPracticeKey(item, loose = false) {
+      const identity = item.lexemeId || item.skillId || "";
+      const set = loose ? "" : normTxt(item.setName || "");
+      return [item.table, item.deck || "", set, normTxt(identity), normTxt(item.english || ""), normTxt(item.target || "")].join("|");
+    }
+    function progressLocalRowKeys(table, row) {
+      const item = progressPracticeRecord(table, row);
+      const keys = [progressPracticeKey(item, false), progressPracticeKey(item, true)];
+      if (item.lexemeId || item.skillId) keys.push([table, item.deck || "", "id", normTxt(item.lexemeId || item.skillId)].join("|"));
+      return [...new Set(keys)];
+    }
+    function mergePracticeState(row, incomingState = {}) {
+      const localState = progressRowState(row), incomingActivity = progressRowActivity(incomingState), localActivity = progressRowActivity(localState);
+      const incomingSeen = +incomingState.times_seen || 0, localSeen = +localState.times_seen || 0;
+      const incomingNewer = incomingActivity > localActivity || (incomingActivity === localActivity && incomingSeen > localSeen);
+      const merged = { ...row };
+      for (const field of PROGRESS_STATE_FIELDS) {
+        if (!Object.prototype.hasOwnProperty.call(incomingState, field)) continue;
+        if (PROGRESS_COUNTER_FIELDS.has(field)) merged[field] = Math.max(+merged[field] || 0, +incomingState[field] || 0);
+        else if (incomingNewer || !Object.prototype.hasOwnProperty.call(merged, field)) merged[field] = incomingState[field];
+      }
+      return { row: merged, changed: JSON.stringify(progressRowState(merged)) !== JSON.stringify(localState), incomingNewer };
+    }
+    function mergeEvidence(local = {}, incoming = {}) {
+      const out = {};
+      for (const channel of new Set([...Object.keys(local || {}), ...Object.keys(incoming || {})])) {
+        const a = local[channel] || {}, b = incoming[channel] || {};
+        out[channel] = { seen: Math.max(+a.seen || 0, +b.seen || 0), correct: Math.max(+a.correct || 0, +b.correct || 0), wrong: Math.max(+a.wrong || 0, +b.wrong || 0), lastAt: Math.max(+a.lastAt || 0, +b.lastAt || 0) };
+      }
+      return out;
+    }
+    function mergeStoryKnowledgeState(local = {}, incoming = {}, incomingNewer = false) {
+      const base = incomingNewer ? { ...local, ...incoming } : { ...incoming, ...local };
+      for (const key of ["lvl","readingMisses","fullRecallAt","explicitUnknownAt","lastTapBlock"]) base[key] = Math.max(+local[key] || 0, +incoming[key] || 0);
+      for (const key of ["collected","excluded","handedOff"]) base[key] = !!local[key] || !!incoming[key];
+      return base;
+    }
+    function mergeReadingItem(local, incoming) {
+      if (!local) return incoming;
+      const localAt = progressTimestamp(local.lastSeen), incomingAt = progressTimestamp(incoming.lastSeen), incomingNewer = incomingAt > localAt;
+      const base = incomingNewer ? { ...local, ...incoming } : { ...incoming, ...local };
+      base.evidence = mergeEvidence(local.evidence, incoming.evidence);
+      base.strength = Math.max(+local.strength || 0, +incoming.strength || 0, +local.lvl || 0, +incoming.lvl || 0);
+      base.lvl = base.strength;
+      base.storyState = mergeStoryKnowledgeState(local.storyState, incoming.storyState, incomingNewer);
+      base.storyState.lvl = Math.max(+base.storyState.lvl || 0, base.strength);
+      base.lastSeen = Math.max(+local.lastSeen || 0, +incoming.lastSeen || 0) || (incomingNewer ? incoming.lastSeen : local.lastSeen);
+      return base;
+    }
+    function mergeGenericKnowledge(local, incoming) {
+      if (!local) return incoming;
+      const localAt = progressTimestamp(local.lastSeen || local.lastOpened), incomingAt = progressTimestamp(incoming.lastSeen || incoming.lastOpened), incomingNewer = incomingAt > localAt;
+      const base = incomingNewer ? { ...local, ...incoming } : { ...incoming, ...local };
+      if (Object.prototype.hasOwnProperty.call(local, "lvl") || Object.prototype.hasOwnProperty.call(incoming, "lvl")) base.lvl = Math.max(+local.lvl || 0, +incoming.lvl || 0);
+      if (local.storyState || incoming.storyState) base.storyState = mergeStoryKnowledgeState(local.storyState, incoming.storyState, incomingNewer);
+      return base;
+    }
+    function progressLocalStateScore(obj = {}) {
+      return [+(obj.blockClock || obj.clock || 0), +(obj.position || 0), Array.isArray(obj.completedScenes) ? obj.completedScenes.length : 0].reduce((n, x) => n + x, 0);
+    }
+    function progressLocalUpdatedAt(obj = {}) { return +(obj.updatedAt || obj.lastOpened || 0); }
+    function mergeLocalProgressValue(localRaw, incomingRaw) {
+      let a = null, b = null;
+      try { a = localRaw ? JSON.parse(localRaw) : null; } catch (_) {}
+      try { b = incomingRaw ? JSON.parse(incomingRaw) : null; } catch (_) {}
+      if (!b) return localRaw;
+      if (!a) return incomingRaw;
+      const aAt = progressLocalUpdatedAt(a), bAt = progressLocalUpdatedAt(b);
+      if (bAt !== aAt) return bAt > aAt ? incomingRaw : localRaw;
+      return progressLocalStateScore(b) > progressLocalStateScore(a) ? incomingRaw : localRaw;
+    }
+    function collectProgressLocalStorage() {
+      const out = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (!key || !PROGRESS_LOCAL_PREFIXES.some(prefix => key.startsWith(prefix))) continue;
+        out[key] = localStorage.getItem(key);
+      }
+      return out;
+    }
+    async function createProgressPack() {
+      await flushPracticeWrites();
+      const [words, sentences, items, patterns, units] = await Promise.all([
+        DB.getAllRecords("word_pairs"), DB.getAllRecords("sentence_pairs"), DB.getAllRecords("reading_items"), DB.getAllRecords("reading_patterns"), DB.getAllRecords("reading_units")
+      ]);
+      const wordRows = words.filter(row => progressRowActivity(row) || (+row.times_seen || 0) > 0 || row.next_due != null).map(row => progressPracticeRecord("word_pairs", row));
+      const sentenceRows = sentences.filter(row => progressRowActivity(row) || (+row.times_seen || 0) > 0 || row.next_due != null).map(row => progressPracticeRecord("sentence_pairs", row));
+      const pack = {
+        format: PROGRESS_PACK_FORMAT, version: PROGRESS_PACK_VERSION, appBuild: APP_BUILD, createdAt: new Date().toISOString(),
+        practice: [...wordRows, ...sentenceRows],
+        shared: { reading_items: items, reading_patterns: patterns, reading_units: units },
+        local: collectProgressLocalStorage()
+      };
+      pack.summary = { practiceWords: wordRows.length, practiceSentences: sentenceRows.length, sharedItems: items.length, sharedPatterns: patterns.length, readingUnits: units.length, localStates: Object.keys(pack.local).length };
+      return pack;
+    }
+    function validateProgressPack(pack) {
+      if (!pack || pack.format !== PROGRESS_PACK_FORMAT || +pack.version < 3) throw new Error("This is not a supported LanguageDeck Progress Pack.");
+      if (!Array.isArray(pack.practice) || !pack.shared || typeof pack.local !== "object") throw new Error("The Progress Pack is incomplete or damaged.");
+      return pack;
+    }
+    function progressPackSummaryText(pack) {
+      const s = pack.summary || {}, when = pack.createdAt ? new Date(pack.createdAt).toLocaleString() : "unknown time";
+      return `<strong>Ready to merge</strong> · ${when}<br>${s.practiceWords || 0} word cards · ${s.practiceSentences || 0} sentence cards · ${s.sharedItems || 0} shared lexemes · ${s.readingUnits || 0} text units · ${s.localStates || 0} chapter/session states`;
+    }
+    async function savePendingProgress(items) {
+      if (!items.length) { localStorage.removeItem(PROGRESS_PENDING_KEY); return; }
+      localStorage.setItem(PROGRESS_PENDING_KEY, JSON.stringify({ version: 1, updatedAt: Date.now(), items }));
+    }
+    async function mergeProgressPracticeItems(items = [], retainUnmatched = true) {
+      const localWords = await DB.getAllRecords("word_pairs"), localSentences = await DB.getAllRecords("sentence_pairs"), index = new Map();
+      for (const [table, rows] of [["word_pairs", localWords], ["sentence_pairs", localSentences]]) for (const row of rows) for (const key of progressLocalRowKeys(table, row)) { const bucket=index.get(key)||[]; bucket.push(row); index.set(key,bucket); }
+      const unique = key => { const rows = key ? (index.get(key) || []) : []; return rows.length === 1 ? rows[0] : null; };
+      let updated = 0, keptLocal = 0; const unmatched = [];
+      for (const item of items) {
+        const exact = progressPracticeKey(item, false), loose = progressPracticeKey(item, true), idKey = item.lexemeId || item.skillId ? [item.table, item.deck || "", "id", normTxt(item.lexemeId || item.skillId)].join("|") : "";
+        const exactRows=index.get(exact)||[], row = exactRows.length ? exactRows[0] : unique(loose) || unique(idKey);
+        if (!row) { if (retainUnmatched) unmatched.push(item); continue; }
+        const merged = mergePracticeState(row, item.state || {});
+        if (merged.changed) { await DB.update(item.table, merged.row); updated++; } else keptLocal++;
+      }
+      return { updated, keptLocal, unmatched };
+    }
+    async function mergeProgressShared(shared = {}) {
+      let updated = 0;
+      for (const incoming of shared.reading_items || []) {
+        if (!incoming?.key) continue; const local = await DB.getRecord("reading_items", incoming.key); const merged = mergeReadingItem(local, incoming); await DB.putRecord("reading_items", merged); updated++;
+      }
+      for (const incoming of shared.reading_patterns || []) {
+        if (!incoming?.key) continue; const local = await DB.getRecord("reading_patterns", incoming.key); await DB.putRecord("reading_patterns", mergeGenericKnowledge(local, incoming)); updated++;
+      }
+      for (const incoming of shared.reading_units || []) {
+        if (!incoming?.key) continue; const local = await DB.getRecord("reading_units", incoming.key); await DB.putRecord("reading_units", mergeGenericKnowledge(local, incoming)); updated++;
+      }
+      return updated;
+    }
+    function mergeProgressLocal(local = {}) {
+      let updated = 0;
+      for (const [key, incomingRaw] of Object.entries(local || {})) {
+        if (!PROGRESS_LOCAL_PREFIXES.some(prefix => key.startsWith(prefix))) continue;
+        const existing = localStorage.getItem(key), merged = mergeLocalProgressValue(existing, incomingRaw);
+        if (merged && merged !== existing) { localStorage.setItem(key, merged); updated++; }
+      }
+      return updated;
+    }
+    async function applyProgressPack(pack, { retainUnmatched = true } = {}) {
+      validateProgressPack(pack); await flushPracticeWrites();
+      const practice = await mergeProgressPracticeItems(pack.practice, retainUnmatched);
+      const sharedUpdated = await mergeProgressShared(pack.shared);
+      const localUpdated = mergeProgressLocal(pack.local);
+      await savePendingProgress(practice.unmatched);
+      try { window.dispatchEvent(new CustomEvent("languagedeck:progress-imported", { detail: { practiceUpdated: practice.updated, sharedUpdated, localUpdated, pending: practice.unmatched.length } })); } catch (_) {}
+      return { practiceUpdated: practice.updated, keptLocal: practice.keptLocal, sharedUpdated, localUpdated, pending: practice.unmatched.length };
+    }
+    async function applyPendingProgressTransfers() {
+      let pending = null; try { pending = JSON.parse(localStorage.getItem(PROGRESS_PENDING_KEY) || "null"); } catch (_) {}
+      if (!pending?.items?.length) return { updated: 0, pending: 0 };
+      const res = await mergeProgressPracticeItems(pending.items, true); await savePendingProgress(res.unmatched); return { updated: res.updated, pending: res.unmatched.length };
+    }
+    function progressPackFilename() { return `LanguageDeck-progress-${new Date().toISOString().slice(0,10)}.ldprogress`; }
+    async function exportProgressPackFile() {
+      const pack = await createProgressPack(), blob = new Blob([JSON.stringify(pack)], { type: "application/json" }), filename = progressPackFilename();
+      const file = typeof File === "function" ? new File([blob], filename, { type: "application/json" }) : null;
+      const coarse = typeof window.matchMedia === "function" && window.matchMedia("(pointer: coarse)").matches;
+      const preferNativeShare = !!(coarse && file && navigator.share && navigator.canShare?.({ files: [file] }));
+      if (preferNativeShare) { await navigator.share({ title: "LanguageDeck progress", text: "LanguageDeck Progress Pack", files: [file] }); return { pack, method: "shared" }; }
+      const url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500); return { pack, method: "saved" };
+    }
+
     /* ---------- Manage installed decks (local delete) ---------- */
     /* Lists every imported set across both languages and both card types,
        with item counts and a per-deck Delete button. Deleting removes only
@@ -11622,6 +11839,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const syncModal = $("syncModal");
     const syncCodeArea = $("syncCodeArea");
     const syncStatus = $("syncStatus");
+    const progressPackExportBtn = $("progressPackExportBtn");
+    const progressPackImportBtn = $("progressPackImportBtn");
+    const progressPackFile = $("progressPackFile");
+    const progressPackApplyBtn = $("progressPackApplyBtn");
+    const progressPackPreview = $("progressPackPreview");
+    const progressPackStatus = $("progressPackStatus");
+    let pendingProgressPack = null;
     if (syncProgressBtn) {
       syncProgressBtn.addEventListener("click", () => {
         syncStatus.textContent = "";
@@ -11629,6 +11853,36 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       });
       $("closeSyncBtn").addEventListener("click", () => syncModal.classList.remove("active"));
       syncModal.addEventListener("click", e => { if (e.target === syncModal) syncModal.classList.remove("active"); });
+
+      progressPackExportBtn.addEventListener("click", async () => {
+        progressPackStatus.textContent = "Building a complete Progress Pack…";
+        progressPackExportBtn.disabled = true;
+        try {
+          const res = await exportProgressPackFile();
+          const s = res.pack.summary || {};
+          progressPackStatus.textContent = `${res.method === "shared" ? "Shared" : "Saved"} · ${s.practiceWords || 0} word cards, ${s.practiceSentences || 0} sentence cards, ${s.sharedItems || 0} shared lexemes and ${s.localStates || 0} story/session states.`;
+        } catch (err) {
+          if (err?.name !== "AbortError") progressPackStatus.textContent = `Could not export progress: ${err.message || err}`;
+        } finally { progressPackExportBtn.disabled = false; }
+      });
+      progressPackImportBtn.addEventListener("click", () => progressPackFile.click());
+      progressPackFile.addEventListener("change", async () => {
+        pendingProgressPack = null; progressPackApplyBtn.disabled = true; progressPackPreview.classList.remove("ready");
+        const file = progressPackFile.files && progressPackFile.files[0]; if (!file) return;
+        progressPackStatus.textContent = "Checking Progress Pack…";
+        try {
+          const pack = validateProgressPack(JSON.parse(await file.text())); pendingProgressPack = pack;
+          progressPackPreview.innerHTML = progressPackSummaryText(pack); progressPackPreview.classList.add("ready"); progressPackApplyBtn.disabled = false; progressPackStatus.textContent = "Nothing has been changed yet.";
+        } catch (err) { progressPackPreview.textContent = "This file could not be read as a LanguageDeck Progress Pack."; progressPackStatus.textContent = err.message || String(err); }
+      });
+      progressPackApplyBtn.addEventListener("click", async () => {
+        if (!pendingProgressPack) return; progressPackApplyBtn.disabled = true; progressPackStatus.textContent = "Merging progress…";
+        try {
+          const res = await applyProgressPack(pendingProgressPack);
+          progressPackStatus.textContent = `Merged ${res.practiceUpdated} practice rows, ${res.sharedUpdated} shared knowledge/text rows and ${res.localUpdated} chapter states.${res.pending ? ` ${res.pending} practice rows are safely held until the matching deck is installed on this device.` : ""}`;
+          showToast("Progress merged."); await refreshSetOptions(); await refreshStats(); await refreshGateInfo(); await loadCurrentGame(true); pendingProgressPack = null; progressPackFile.value = ""; progressPackApplyBtn.disabled = true;
+        } catch (err) { progressPackStatus.textContent = `Could not merge progress: ${err.message || err}`; progressPackApplyBtn.disabled = false; }
+      });
 
       $("syncCreateBtn").addEventListener("click", async () => {
         syncStatus.textContent = "Creating…";
@@ -11672,7 +11926,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (location.hash.startsWith("#sync=")) {
         try {
           syncCodeArea.value = decodeURIComponent(location.hash.slice(6));
-          syncStatus.textContent = "Code received from link — tap Apply code.";
+          syncStatus.textContent = "Legacy code received from link — tap Apply old code.";
           syncModal.classList.add("active");
         } catch (_) {}
         history.replaceState(null, "", location.pathname + location.search);
@@ -12498,7 +12752,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses the same shared lexical knowledge as Adaptive Words and Story readiness. Adaptive Words and Story readiness use the same final Adaptive evidence: first-contact success stays below the Story known threshold, Words sync happens only after the Adaptive level is saved, and obsolete recovery-session state is retired.", "",
+        "Since build 4.5.0, the read-only Library uses the same shared lexical knowledge as Adaptive Words and Story readiness. Words sync happens only after the final Adaptive level is saved and obsolete recovery-session state is retired. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2; if the learner gets the friendly one-letter card right, the system moves on instead of forcing a second L1 pass.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
@@ -12551,6 +12805,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           applyDeckUI(); updateGameUI(); updateScore(); updateModeSummary();
           await refreshStats(); await refreshGateInfo(); await loadCurrentGame(true); await checkEmptyState();
         }
+        try { await applyPendingProgressTransfers(); } catch (_) {}
         updateModeSummary();
         return this.snapshot();
       },
@@ -12572,7 +12827,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         const progress = guidedPractice ? guidedProgressForRows(scopeRows,guidedPractice) : computeProgress(scopeRows), deckProgress = guidedPractice ? guidedProgressForRows(all,guidedPractice) : computeProgress(all), now = nowIso();
         return { ...currentPracticeStateDetail(), progress, pendingAtOpen, deckTotal:all.length, deckMastered:deckProgress.mastered, deckDue:all.filter(r=>r.next_due!=null&&r.next_due<=now).length, deckNew:all.filter(r=>r.next_due==null).length, wrongMarked:all.filter(r=>Math.max(r.learning_pressure|0,r.article_pressure|0)>0).length, totalGates, gateIndex:currentGateIndex };
       },
-      async diagnostics() { return buildPracticeDiagnostics(); }
+      async diagnostics() { return buildPracticeDiagnostics(); },
+      async exportProgressPack() { return createProgressPack(); },
+      async importProgressPack(pack) { return applyProgressPack(pack); },
+      async retryPendingProgress() { return applyPendingProgressTransfers(); }
     };
   
 })();</script></body></html>

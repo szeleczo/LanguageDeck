@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const indexHtml = fs.readFileSync(path.join(here, "..", "index.html"), "utf8");
 
-assert.match(indexHtml, /4\.5\.0-library-readonly-20260908/, "4.5.0 build marker is present");
+assert.match(indexHtml, /4\.5\.2-first-contact-advance-20260908/, "4.5.2 build marker is present");
 
 const levelsBlock = indexHtml.match(/const PROGRESSIVE_LEVELS = \[([\s\S]*?)\n    \];/)?.[1] || "";
 assert.ok(levelsBlock, "Adaptive level configuration is present");
@@ -44,6 +44,7 @@ const nextProgressiveLevel = Function(`
 assert.equal(nextProgressiveLevel(4, false), 3, "one miss moves L5 to L4");
 assert.equal(nextProgressiveLevel(3, false), 2, "one miss always falls one level, not to first contact");
 assert.equal(nextProgressiveLevel(0, false), 0, "L1 cannot fall below L1");
+assert.equal(nextProgressiveLevel(0, true), 1, "a clean first-contact success advances L1 to L2");
 
 const selectorSource = indexHtml.match(/function distributedIndexSelection\([^)]*\) \{[\s\S]*?\n    \}/)?.[0];
 assert.ok(selectorSource, "distributed gap selector is present");
@@ -59,8 +60,9 @@ assert.match(indexHtml, /row\.progressive_wrong_run = 0;[\s\S]*row\.progressive_
 
 assert.match(indexHtml, /const row = await recordAnswer\(table, itemId, correct, profile, evidence, table === "word_pairs"\);/, "Progressive Words defers shared sync until the final Adaptive level is saved");
 assert.match(indexHtml, /async function recordAnswer\([^)]*deferWordGlobalSync = false\)[\s\S]*if \(!deferWordGlobalSync\) await syncWordAnswerToGlobal\(row, lexicalCorrect\);/, "ordinary Words modes keep their existing shared sync path");
-assert.match(indexHtml, /row\.progressive_level = \(correct && \(!clean \|\| wasFirstContact\)\)[\s\S]*nextProgressiveLevel\(beforeLevel, correct\)/, "first-contact success holds L1 while normal clean recall advances the Adaptive level");
+assert.match(indexHtml, /row\.progressive_level = \(correct && !clean\)[\s\S]*nextProgressiveLevel\(beforeLevel, correct\)/, "clean first-contact success advances from L1 to L2 while corrected/mistap answers hold the level");
 assert.match(indexHtml, /if \(table === "word_pairs"\) await syncWordAnswerToGlobal\(row, correct, true\);/, "Progressive Words syncs once after its final level is persisted");
+assert.match(indexHtml, /first-contact-correct-advanced/, "diagnostics name first-contact advancement explicitly");
 
 const syncSource = indexHtml.match(/async function syncWordAnswerToGlobal\([^)]*\) \{[\s\S]*?\n    \}/)?.[0] || "";
 assert.ok(syncSource, "shared Words-to-Story sync helper is present");
@@ -70,7 +72,7 @@ assert.match(syncSource, /sourceMode:adaptive\?"words-adaptive":"words"/, "share
 assert.match(syncSource, /GLOBAL_WORDS\.set\(id, mergeWordKnowledgeRows/, "the in-memory Story knowledge map updates immediately after Words sync");
 
 const adaptiveSharedStrength = levelIndex => Math.min(4, Math.max(0, levelIndex + 1));
-assert.equal(adaptiveSharedStrength(0), 1, "Adaptive L1 remains below Story's known threshold after first contact");
+assert.equal(adaptiveSharedStrength(0), 1, "Adaptive L1 is below Story's known threshold before first-contact success");
 assert.equal(adaptiveSharedStrength(1), 2, "Adaptive L2 reaches Story's known threshold");
 assert.equal(adaptiveSharedStrength(3), 4, "Adaptive L4 is strong shared evidence");
 assert.equal(adaptiveSharedStrength(4), 4, "Adaptive L5 caps at the shared store's maximum strength");
