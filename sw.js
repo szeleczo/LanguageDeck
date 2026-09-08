@@ -1,5 +1,5 @@
-/* LanguageDeck 4.4.7 — stronger Adaptive recall with one-step rescue scaffolding. */
-const CACHE_VERSION="languagedeck-4-4-7-adaptive-recall-scaffolding-20260908";
+/* LanguageDeck 4.4.8 — shared layered progress across screen sizes. */
+const CACHE_VERSION="languagedeck-4-4-8-cross-device-progress-20260908";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

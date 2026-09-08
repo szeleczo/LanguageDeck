@@ -3153,7 +3153,14 @@ html.integrated-practice-active #legacyPracticeRoot .typing-panel,html.integrate
 html.integrated-practice-active #settingsBackdrop{z-index:260!important}
 html.integrated-practice-active body{overflow:hidden!important}
 #legacyPracticeRoot .modal-backdrop{z-index:180!important}
-@media (min-aspect-ratio:13/10){.integrated-study-header{height:50px;flex-basis:50px;padding-top:4px;padding-bottom:4px}.integrated-practice-progress{flex-basis:27px;min-height:27px;padding:2px 10px}.integrated-practice-progress .practice-progress-mini{display:none}#legacyPracticeRoot>.main{padding-top:5px!important}.integrated-practice-dock{--integrated-dock-h:58px}}
+@media (min-aspect-ratio:13/10){
+  .integrated-study-header{height:50px;flex-basis:50px;padding-top:4px;padding-bottom:4px}
+  .integrated-practice-progress{flex-basis:36px;min-height:36px;padding:3px 12px 2px;grid-template-rows:minmax(13px,auto) 7px}
+  .integrated-practice-progress .practice-progress-mini{display:flex;height:7px;min-height:7px;padding-bottom:2px}
+  .integrated-practice-progress .practice-progress-segment{height:5px}
+  #legacyPracticeRoot>.main{padding-top:5px!important}
+  .integrated-practice-dock{--integrated-dock-h:58px}
+}
 
     /* Delivery 2: learning help is part of document flow, never a popover. */
     #legacyPracticeRoot .learning-tools,
@@ -3912,7 +3919,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.4.7-adaptive-recall-scaffolding-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.4.8-cross-device-progress-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4472,7 +4479,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.4.7-adaptive-recall-scaffolding-20260908";
+    const APP_BUILD = "4.4.8-cross-device-progress-20260908";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
