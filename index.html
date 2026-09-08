@@ -3919,7 +3919,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.4.13-session-scoped-adaptive-recovery-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.4.14-first-contact-scaffolding-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4479,7 +4479,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.4.13-session-scoped-adaptive-recovery-20260908";
+    const APP_BUILD = "4.4.14-first-contact-scaffolding-20260908";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5441,12 +5441,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     // Passing this assisted retry holds the stored level instead of awarding
     // a progression step.
     const PROGRESSIVE_RESCUE_LEVEL = Object.freeze({
-      label: "Guided retry",
+      label: "First contact",
       shortLabel: "1 missing letter per word",
       kind: "one",
       assisted: true
     });
-    const PROGRESSIVE_RESCUE_REASONS = new Set(["reveal", "repeated-wrong"]);
+    const PROGRESSIVE_RESCUE_REASONS = new Set(["first-contact"]);
 
     function progressiveRecoverySessionMatches(item) {
       return !!adaptiveRecoverySessionId &&
@@ -5454,12 +5454,15 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     function progressiveRescueReason(item) {
-      // Recovery is deliberately session-scoped. An older session or build
-      // can never turn today's first miss into a one-letter retry; stale
-      // persisted fields are cleared lazily when that card is next loaded.
-      if (!item?.progressive_assist_next || !progressiveRecoverySessionMatches(item)) return "";
-      const reason = String(item.progressive_assist_reason || "");
-      return PROGRESSIVE_RESCUE_REASONS.has(reason) ? reason : "";
+      // The one-letter level is now FIRST CONTACT ONLY: a word you have never
+      // typed before, still sitting at level 1. It is no longer a consolation
+      // prize for a miss or for pressing Reveal — a mastered word that slips
+      // gets the ordinary one-level drop, which is already hard enough.
+      // Deriving this from the row's own history means no session state and no
+      // persisted assist flags can ever resurrect the old behaviour.
+      if (!item || progressiveLevelIndex(item) !== 0) return "";
+      const typedAttempts = (item.diagnostic_progressive_attempts | 0) + (item.diagnostic_typing_attempts | 0);
+      return typedAttempts === 0 ? "first-contact" : "";
     }
 
     async function clearStaleProgressiveRecoveryState(item) {
@@ -5479,9 +5482,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     function progressiveRecoveryDecision(correct, wasReveal = false, previousWrongRun = 0) {
+      // wrongRun is still tracked for diagnostics, but it no longer unlocks a
+      // one-letter retry. Reveal counts exactly like an ordinary mistake.
       const wrongRun = correct ? 0 : Math.min(99, Math.max(0, Math.trunc(previousWrongRun) || 0) + 1);
-      const rescueReason = correct ? "" : wasReveal ? "reveal" : wrongRun >= 2 ? "repeated-wrong" : "";
-      return { wrongRun, rescueReason };
+      return { wrongRun, rescueReason: "" };
     }
 
     function clampInt(n, min, max) {
@@ -5859,6 +5863,26 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         row.next_due = table === "word_pairs" ? earliestDue(row.word_next_due, row.article_next_due) : strongRecallDue;
       }
       await DB.update(table, row);
+      // Feed the shared cross-mode knowledge store on every answer. Without
+      // this the sync was one-directional: Story Study could lower a word here,
+      // but nothing learned in Words practice ever travelled back, so the same
+      // lexeme stayed "unknown" while reading. Best-effort: a failure here must
+      // never lose the word_pairs write that already succeeded above.
+      if (table === "word_pairs" && row.lexeme_id) {
+        try {
+          await recordKnowledgeEvidence({
+            language: row.deck || currentDeck || LANG,
+            lexemeId: row.lexeme_id,
+            channel: "words",
+            seen: 1,
+            correct: correct ? 1 : 0,
+            wrong: correct ? 0 : 1,
+            lastAt: Date.now(),
+            strength: (row.streak | 0) >= 5 ? 4 : (row.streak | 0) >= 3 ? 3 : (row.times_correct | 0) > 0 ? 2 : 1,
+            sourceMode: "words"
+          });
+        } catch (e) { console.warn("shared knowledge write-back failed", e); }
+      }
       if (table === "word_pairs") {
         const scheduleMove = row[SESSION_WORD_TRANSITION] || {};
         appendAdaptiveDiagnosticEvent(row, "answer", {
@@ -12489,7 +12513,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.4, the report separates same-runtime and after-restart lower loads and lists them near the summary with the current database level.", "",
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
-        "Since build 4.4.13, the one-letter guided retry is scoped to the current learning session. Old wrong-run or rescue fields cannot affect a new session, and an assisted card is labelled Guided retry.", "",
+        "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step. Words practice now also writes every answer back to the shared cross-mode knowledge store.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveRescueReason(r)?`, guided retry pending (${progressiveRescueReason(r)})`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
