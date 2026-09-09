@@ -1,0 +1,14 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
+assert.match(html, /4\.5\.5-gate-full-recall-20260909/, "4.5.5 build marker is present");
+assert.match(html, /const WORD_MIN_INTERLEAVE_ANSWERS = 2/, "lexical returns require two intervening answers");
+assert.match(html, /let deferredWordReturns = new Map\(\)/, "lexical mistakes have a deferred return pool");
+assert.match(html, /function noteWordAnswerForInterleave\(item\)/, "word answers advance the interleave cooldown");
+assert.match(html, /deferredWordReturns\.set\(item\.id, item\)/, "mistakes are deferred rather than spliced into a short queue");
+assert.match(html, /!wordInterleaveBlocked\(r\)/, "normal queue fetching respects the cooldown");
+assert.match(html, /async function gateCanContinueFullRecall\(\)/, "completed gates can enter continuous full recall");
+assert.match(html, /const challengeWord = gateFullRecallMode[\s\S]*progressive_level: PROGRESSIVE_LEVELS\.length - 1[\s\S]*buildProgressiveChallenge\(targetDisplay\(currentTypingWord\), challengeWord\)/, "completed-gate continuation reuses the real Adaptive L5 challenge");
+assert.match(html, /Gate complete · continuing with full recall\./, "the continuation state is visible to the learner");
+assert.doesNotMatch(html, /queue\.splice\(Math\.min\(gap, queue\.length\), 0, item\);\s*\n\s*dispatchPracticeState\(\);\s*\n\s*return true;\s*\n\s*}\s*\n\s*function scheduleWordMistake\(item\) \{ return scheduleMistakeReturn/, "word mistakes no longer use the generic short-queue splice path");
+console.log("Gate full-recall/interleave regression checks passed.");

@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.4 — unified Adaptive-style full-typing slots. */
-const CACHE_VERSION="languagedeck-4-5-4-unified-typing-slots-20260909";
+/* LanguageDeck 4.5.5 — continuous gate full recall + spaced targeted returns. */
+const CACHE_VERSION="languagedeck-4-5-5-gate-full-recall-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

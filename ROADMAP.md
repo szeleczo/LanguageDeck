@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction after 4.5.4. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction after 4.5.5. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -14,24 +14,29 @@ Completed first read-only Library. It measures lexical readability from shared k
 
 Completed. Desktop and mobile practice use the same Command Pill and the same language / mode / exercise / deck switching path. Progress transfer is local-first and versioned: Progress Pack moves practice state, shared Story knowledge, Text progress and chapter positions with conflict-aware merging. Missing-deck progress is retained rather than discarded.
 
-
 ## 4.5.2 — first-contact learning flow
 
-Completed stabilisation release. A clean one-letter FIRST CONTACT answer is treated as real successful evidence: the word advances directly from Adaptive L1 to L2. This removes the redundant second L1 pass while keeping the first-contact card friendly. Corrected/mistap answers still hold the current level, and misses still fall by exactly one real level. Shared Story/Library knowledge follows the same final Adaptive level.
-
-
-## 4.5.4 — unified typing slots
-
-Current stabilisation release.
-
-- Full typing now reuses the same Adaptive clue renderer instead of a separate underscore/placeholder surface.
-- Full typing is represented as an all-masked pattern with zero helper letters.
-- Typed characters fill their slots live while the remaining character slots stay visible.
-- The same slot behavior applies across Words, Progressive full recall, Sentence/Grammar typing blanks, and Text/Book typing.
+Completed stabilisation release. A clean one-letter FIRST CONTACT answer advances directly from Adaptive L1 to L2. Corrected/mistap answers hold the current level; misses still fall by exactly one real level. Shared Story/Library knowledge follows the same final Adaptive level.
 
 ## 4.5.3 — unified recall evidence and typing clarity
 
-Completed stabilisation release. Book vocabulary recall now routes through the same Adaptive Words Progressive engine instead of a parallel 0–4 word drill. A lexeme keeps one shared record but separates reading recognition from active-recall strength: recognition can support Story/Library readiness but cannot raise Adaptive recall, while Grammar/Sentence context remains contextual evidence only. A genuine Story “I do not know this” tap still demotes Adaptive by exactly one level. Every typing task, in every mode and level, shows the expected answer length with underscores without revealing letters.
+Completed stabilisation release. Book vocabulary recall routes through the same Adaptive Words Progressive engine instead of a parallel 0–4 word drill. A lexeme keeps one shared record but separates reading recognition from active-recall strength. Grammar/Sentence context does not raise Adaptive recall. A genuine Story “I do not know this” tap still demotes Adaptive by exactly one level.
+
+## 4.5.4 — unified typing slots
+
+Completed stabilisation release. Full typing reuses the same Adaptive slot renderer with zero helper letters. Typed characters fill their slots live while the remaining character slots stay visible across Words, Sentence/Grammar and Text/Book typing.
+
+## 4.5.5 — continuous gate recall + real interleave
+
+Current stabilisation release. A completed Adaptive Words gate no longer dead-ends on `Done`: when normal due material is exhausted, the learner may continue inside the same gate in true L5/full-typing recall. Re-entering a completed gate also resumes this full-recall stream.
+
+A lexical miss is no longer spliced back into a short queue. It is deferred until at least two other word answers have occurred, so a difficult word cannot ladder L1→L4 through immediate short-term echo at the end of a gate. Completed-gate L5 cards can provide the interleaving material.
+
+## 4.5.6 — QR nearby Progress Pack transfer
+
+Next sync UX experiment. QR should be used to pair two devices, not to squeeze the whole learning database into a single QR code. The existing versioned Progress Pack remains the payload and conflict-aware merge layer.
+
+Preferred interaction: desktop shows a pairing QR → phone scans it with the rear camera → phone shows the response QR → desktop scans it with the webcam → the Progress Pack transfers directly peer-to-peer. The same flow works in reverse. No account or permanent cloud copy is required; the existing file export/import remains as fallback.
 
 ## 4.6 — Prepare for this text
 
@@ -56,4 +61,5 @@ Rebuild the grammar curriculum around fewer, stronger units and genuinely target
 - Desktop and mobile share components and behaviour. Responsive layout may change geometry, not available core controls.
 - Cross-device progress transfer must merge safely and never silently discard unmatched progress.
 - Prefer simpler observable learning rules over hidden rescue/session state.
+- A failed recall must be separated from its targeted retry by other material when alternatives exist; no immediate level laddering through short-term echo.
 - New features should not regress offline use, existing reading position, Adaptive scheduling or deck compatibility.

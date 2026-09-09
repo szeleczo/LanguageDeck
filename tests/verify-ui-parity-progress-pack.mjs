@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const html = fs.readFileSync(path.join(here, "..", "index.html"), "utf8");
 
-assert.match(html, /4\.5\.4-unified-typing-slots-20260909/, "4.5.4 build marker is present");
+assert.match(html, /4\.5\.5-gate-full-recall-20260909/, "4.5.5 build marker is present");
 assert.match(html, /id="practiceCommandPill"[\s\S]*id="practiceStudyTitle"[\s\S]*id="practiceStudySub"/, "the shared Study Shell owns one command pill on every viewport");
 assert.match(html, /\.practice-command-pill\{[\s\S]*border-radius:999px[\s\S]*display:grid/, "command pill has a viewport-independent component style");
 assert.match(html, /\$\('practiceCommandPill'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openSetup\?\.\(\)/, "desktop and mobile command pill use the same practice setup path");
