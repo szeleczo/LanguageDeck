@@ -626,7 +626,7 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
        Everything fits on screen — no scrolling. The page becomes a
        3-column grid: [left cards][centre info][right cards].
     */
-    @media (min-aspect-ratio: 13/10){
+    @media (pointer:coarse) and (hover:none) and (min-aspect-ratio: 13/10){
       /* Compact app bar */
       #legacyPracticeRoot .appbar{
         position: static;
@@ -846,7 +846,7 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
     }
     /* When portrait but on regular tall phones, keep the landscape-info hidden */
     #legacyPracticeRoot .landscape-info{ display: none; }
-    @media (min-aspect-ratio: 13/10){
+    @media (pointer:coarse) and (hover:none) and (min-aspect-ratio: 13/10){
       #legacyPracticeRoot .landscape-info{ display: flex; }
     }
 
@@ -2898,7 +2898,7 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
         margin: -1px 0 2px;
       }
     }
-  
+
 
     /* ============================================================
        v86 unified mobile sentence fitting
@@ -3148,7 +3148,7 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
       }
     }
 
-  
+
 </style>
 <style id="delivery2IntegrationStyles">
 .integrated-practice-host{position:fixed;inset:0;z-index:125;background:var(--bg);color:var(--text);display:flex;flex-direction:column;overflow:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
@@ -3164,6 +3164,37 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
 #legacyPracticeRoot .context-strip{display:none!important}#legacyPracticeRoot .play-meta{margin:0 2px 7px!important}#legacyPracticeRoot .game-area-spacer{display:none!important}#legacyPracticeRoot #textModeContainer{display:none!important}
 .integrated-practice-dock{position:absolute;z-index:90;left:0;right:0;bottom:0;height:calc(var(--integrated-dock-h) + env(safe-area-inset-bottom));min-height:calc(var(--integrated-dock-h) + env(safe-area-inset-bottom));padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 96%,transparent);border-top:1px solid var(--line);backdrop-filter:blur(16px);display:flex;align-items:stretch;gap:8px}
 #practiceDockPortal{display:none!important}.integrated-dock-fallback{flex:1 1 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-left:5px}.integrated-dock-fallback span{font-size:12px;color:var(--muted)}
+/* 4.5.6: one Study chrome on desktop and mobile. Wide screens centre the
+   same mobile controls instead of switching to a separate landscape shell. */
+@media (min-width:761px){
+  .integrated-study-header{grid-template-columns:40px minmax(320px,600px) 40px 40px;justify-content:center;gap:5px;padding:7px 10px}
+  .practice-command-pill{padding:4px 9px}
+  .integrated-study-heading b{font-size:11.5px}
+  .integrated-study-heading .practice-command-copy>span{font-size:9.5px}
+  .integrated-practice-progress{padding-left:max(12px,calc((100% - 720px)/2));padding-right:max(12px,calc((100% - 720px)/2))}
+}
+.integrated-gate-strip{flex:0 0 auto;width:min(640px,calc(100% - 20px));margin:10px auto 7px;display:flex;align-items:stretch;gap:6px}
+.integrated-gate-strip[hidden],.integrated-gate-strip.gate-disabled{display:none!important}
+.integrated-gate-strip .gate-nav{flex:0 0 auto;width:40px;min-height:56px;padding:0;background:var(--surface)!important;color:var(--muted)!important;border:2px solid var(--line)!important;border-bottom-width:4px!important;border-radius:14px;font-size:22px;font-weight:700;cursor:pointer}
+.integrated-gate-strip .gate-nav:hover:not(:disabled){background:var(--surface2)!important;color:var(--text)!important}
+.integrated-gate-strip .gate-nav:disabled{opacity:.3;cursor:not-allowed}
+.integrated-gate-strip .gate-nav:active:not(:disabled){transform:translateY(2px);border-bottom-width:2px!important;margin-bottom:2px}
+.integrated-gate-strip .gate-summary{flex:1 1 auto;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:8px;padding:10px 16px;background:var(--surface)!important;border:2px solid var(--line)!important;border-bottom-width:4px!important;border-radius:14px;cursor:pointer;text-align:left;min-height:56px;color:var(--text)!important;font-weight:500}
+.integrated-gate-strip .gate-summary:hover:not(:disabled){background:var(--surface2)!important}
+.integrated-gate-strip .gate-summary:active:not(:disabled){transform:translateY(2px);border-bottom-width:2px!important;margin-bottom:2px}
+.integrated-gate-strip .gate-summary-text{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted)}
+.integrated-gate-strip .gate-summary-text strong{color:var(--text);font-family:var(--display);font-weight:800}
+.integrated-gate-strip .gate-pct{font-family:var(--display);font-variant-numeric:tabular-nums;font-weight:800;color:var(--accent)}
+.integrated-gate-strip .gate-progress-bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden}
+.integrated-gate-strip .gate-progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#60a5fa);transition:width .5s ease}
+@media(max-width:560px){.integrated-gate-strip{width:calc(100% - 20px);margin-top:8px;margin-bottom:5px}.integrated-gate-strip .gate-nav{min-height:48px}.integrated-gate-strip .gate-summary{min-height:48px;padding:8px 12px;gap:6px}}
+
+.progress-transfer-camera{margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface2)}
+.progress-transfer-camera h3{margin:0 0 4px;font-size:13px}.progress-transfer-camera p{margin:0;color:var(--muted);font-size:11px;line-height:1.45}.progress-transfer-camera .progress-transfer-actions{margin-bottom:0}
+.qr-transfer-card{width:min(620px,calc(100vw - 24px));max-height:min(780px,calc(100dvh - 24px));overflow:auto}
+.qr-transfer-stage{display:grid;place-items:center;gap:10px;margin:12px 0}.qr-transfer-stage canvas{display:block;max-width:min(520px,90vw);height:auto;border:10px solid #fff;border-radius:12px;background:#fff;box-shadow:0 6px 24px rgba(15,23,42,.08)}
+.qr-transfer-frame{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;text-align:center}.qr-transfer-frame strong{color:var(--text)}
+.qr-camera-wrap{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:16px;background:#0b1020;margin:12px 0}.qr-camera-wrap video{width:100%;height:100%;object-fit:cover}.qr-camera-target{position:absolute;inset:14%;border:2px solid rgba(255,255,255,.9);border-radius:16px;box-shadow:0 0 0 999px rgba(0,0,0,.23);pointer-events:none}.qr-transfer-progress{height:7px;border-radius:999px;background:var(--line);overflow:hidden;margin:8px 0}.qr-transfer-progress>span{display:block;height:100%;width:0;background:var(--accent);transition:width .15s ease}.qr-transfer-note{font-size:11px;line-height:1.45;color:var(--muted)}
 .progress-transfer-intro{font-size:12px;color:var(--text-muted);line-height:1.45;margin-bottom:12px}.progress-transfer-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.progress-transfer-actions button{min-height:46px}.progress-transfer-preview{border:1px solid var(--border);border-radius:12px;background:var(--surface-2);padding:11px 12px;margin:9px 0;color:var(--text-muted);font-size:12px;line-height:1.45}.progress-transfer-preview strong{color:var(--text)}.progress-transfer-preview.ready{border-color:color-mix(in srgb,var(--success) 45%,var(--border));background:color-mix(in srgb,var(--success-soft) 72%,var(--surface))}.progress-transfer-status{font-size:12px;color:var(--text-faint);min-height:18px;margin:7px 0}.progress-transfer-legacy{margin-top:12px;border-top:1px solid var(--border);padding-top:10px}.progress-transfer-legacy summary{cursor:pointer;color:var(--text-muted);font-size:11px;font-weight:750}.progress-transfer-file{display:none}@media(max-width:560px){.progress-transfer-actions{grid-template-columns:1fr}}
 #legacyPracticeRoot .typing-actions.practice-actions,#legacyPracticeRoot .sentence-actions.practice-actions{position:fixed!important;left:max(10px,env(safe-area-inset-left))!important;right:max(10px,env(safe-area-inset-right))!important;bottom:max(8px,env(safe-area-inset-bottom))!important;z-index:94!important;width:auto!important;max-width:720px!important;min-height:48px!important;margin:0 auto!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;display:flex!important;gap:7px!important;order:initial!important}
 #legacyPracticeRoot .typing-actions.practice-actions button,#legacyPracticeRoot .sentence-actions.practice-actions button{min-height:var(--tap)!important;height:var(--tap)!important;margin:0!important;flex:1 1 auto!important;border-radius:var(--radius-md)!important}
@@ -3185,7 +3216,7 @@ html.integrated-practice-active #legacyPracticeRoot .typing-panel,html.integrate
 html.integrated-practice-active #settingsBackdrop{z-index:260!important}
 html.integrated-practice-active body{overflow:hidden!important}
 #legacyPracticeRoot .modal-backdrop{z-index:180!important}
-@media (min-aspect-ratio:13/10){
+@media (pointer:coarse) and (hover:none) and (min-aspect-ratio:13/10){
   .integrated-study-header{height:50px;flex-basis:50px;padding-top:4px;padding-bottom:4px}
   .integrated-practice-progress{flex-basis:36px;min-height:36px;padding:3px 12px 2px;grid-template-rows:minmax(13px,auto) 7px}
   .integrated-practice-progress .practice-progress-mini{display:flex;height:7px;min-height:7px;padding-bottom:2px}
@@ -3341,6 +3372,14 @@ html.integrated-practice-active body{overflow:hidden!important}
       <span class="practice-progress-depth" id="practiceProgressDepth"></span>
     </button>
   </div>
+  <div class="gate-strip integrated-gate-strip" id="gatePanel">
+    <button aria-label="Previous gate" class="gate-nav" id="prevGateBtn">‹</button>
+    <button aria-label="Show gate details" class="gate-summary" id="gateExpandBtn" type="button">
+      <div class="gate-summary-text"><span><strong id="gateLabel">Gate —</strong></span><span class="gate-pct" id="gateProgressText">—</span></div>
+      <div class="gate-progress-bar"><div class="gate-progress-fill" id="gateProgressFill"></div></div>
+    </button>
+    <button aria-label="Next gate" class="gate-nav" id="nextGateBtn">›</button>
+  </div>
   <div id="legacyPracticeRoot" class="legacy-practice-root"><header class="appbar">
 <div class="appbar-inner">
 <a aria-label="Back to Course" class="brand brand-link" href="index.html#course">
@@ -3382,17 +3421,7 @@ html.integrated-practice-active body{overflow:hidden!important}
       </span>
 </div>
 <!-- Compact gate strip -->
-<div class="gate-strip" id="gatePanel">
-<button aria-label="Previous gate" class="gate-nav" id="prevGateBtn">‹</button>
-<button aria-label="Show gate details" class="gate-summary" id="gateExpandBtn" type="button">
-<div class="gate-summary-text">
-<span><strong id="gateLabel">Gate —</strong></span>
-<span class="gate-pct" id="gateProgressText">—</span>
-</div>
-<div class="gate-progress-bar"><div class="gate-progress-fill" id="gateProgressFill"></div></div>
-</button>
-<button aria-label="Next gate" class="gate-nav" id="nextGateBtn">›</button>
-</div>
+
 <!-- Flexible spacer that pushes the game cards down toward the lower
          half of the screen, into the natural thumb-reach zone on tall phones.
          Capped at ~200px in CSS so it doesn't add absurd amounts on tall pages. -->
@@ -3823,6 +3852,11 @@ html.integrated-practice-active body{overflow:hidden!important}
 <div class="modal-card">
 <div class="modal-title">Progress transfer</div>
 <div class="progress-transfer-intro">Move your learning state between desktop and mobile without an account. A Progress Pack includes Adaptive/Words progress, sentence practice, shared Story vocabulary, text progress and chapter positions. It does not contain book/deck content or appearance settings.</div>
+<div class="progress-transfer-camera">
+  <h3>Camera transfer · offline</h3>
+  <p>No server and no account. The sending device shows a short sequence of QR frames containing the compressed Progress Pack; the receiving device reconstructs it with its camera.</p>
+  <div class="progress-transfer-actions"><button id="progressQrShowBtn">Show progress QR</button><button class="secondary" id="progressQrScanBtn">Scan progress QR</button></div>
+</div>
 <div class="progress-transfer-actions">
 <button id="progressPackExportBtn">Share / export progress</button>
 <button class="secondary" id="progressPackImportBtn">Choose Progress Pack</button>
@@ -3844,6 +3878,27 @@ html.integrated-practice-active body{overflow:hidden!important}
 </details>
 <div class="settings-actions"><button class="ghost close-btn" id="closeSyncBtn">Done</button></div>
 </div>
+</div>
+<div class="modal-backdrop" id="qrTransferModal">
+  <div class="modal-card qr-transfer-card">
+    <div class="modal-title" id="qrTransferTitle">Camera progress transfer</div>
+    <div id="qrSendView" class="hidden">
+      <div class="qr-transfer-note">Keep this screen visible. The QR frames repeat automatically; the other device may start scanning at any point.</div>
+      <div class="qr-transfer-stage"><canvas id="qrTransferCanvas" width="420" height="420"></canvas><div class="qr-transfer-frame" id="qrTransferFrame">Preparing…</div></div>
+    </div>
+    <div id="qrScanView" class="hidden">
+      <div class="qr-transfer-note">Point the camera at the other device. Frames can arrive in any order; duplicates are ignored.</div>
+      <div class="qr-camera-wrap"><video id="qrTransferVideo" playsinline muted></video><div class="qr-camera-target"></div></div>
+      <div class="qr-transfer-progress"><span id="qrTransferProgressFill"></span></div>
+      <div class="qr-transfer-frame" id="qrTransferScanStatus">Waiting for QR frames…</div>
+    </div>
+    <div id="qrReceiveView" class="hidden">
+      <div class="progress-transfer-preview ready" id="qrTransferPreview"></div>
+      <button id="qrTransferApplyBtn" style="width:100%;">Merge received progress</button>
+    </div>
+    <div class="progress-transfer-status" id="qrTransferStatus"></div>
+    <div class="settings-actions"><button class="ghost close-btn" id="qrTransferCloseBtn">Close</button></div>
+  </div>
 </div>
 <div class="toast" id="legacyToast"></div>
 
@@ -3957,7 +4012,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.5-gate-full-recall-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.7-word-recall-format-tolerance-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4525,7 +4580,7 @@ $('practiceCommandPill').onclick=()=>window.LanguageDeckPractice?.openSetup?.();
 $('practiceBackBtn').onclick=()=>exitIntegratedPractice();$('practiceDockEndBtn').onclick=()=>exitIntegratedPractice();$('practiceSetupBtn').onclick=()=>window.LanguageDeckPractice?.openUtility?.('session',LANG);$('practiceSettingsBtn').onclick=()=>openSettings('main');$('morePracticeOptionsBtn').onclick=()=>{closeSettings();window.LanguageDeckPractice?.openUtility?.('session',LANG)};$('restartPracticeBtn').onclick=async()=>{if(window.LanguageDeckPractice?.snapshot?.().guided)return;await window.LanguageDeckPractice?.restartWithOptions?.(PRACTICE_PENDING_OPTIONS||{});PRACTICE_PENDING_OPTIONS=null;updatePracticeShell(window.LanguageDeckPractice?.snapshot?.()||{});closeSettings();syncPracticeDock()};
 
 $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=closeSettings;$('dataCheckClose').onclick=closeSettings;$('diagnosticsClose').onclick=closeSettings;$('settingsBackdrop').onclick=e=>{if(e.target===$('settingsBackdrop'))closeSettings()};$('openDiagnosticsBtn').onclick=()=>showSettingsView('diagnostics');$('diagnosticsBack').onclick=()=>showSettingsView('main');$('refreshDiagnosticsBtn').onclick=refreshPracticeDiagnostics;$('copyDiagnosticsBtn').onclick=copyPracticeDiagnostics;$('openDataCheckBtn').onclick=()=>showSettingsView('data');$('dataCheckBack').onclick=()=>showSettingsView('main');$('refreshDataCheckBtn').onclick=refreshDataCheck;$('clearCacheBtn').onclick=clearAppCache;$('refreshCourseBtn').onclick=()=>location.reload();document.querySelectorAll('[data-theme-choice]').forEach(b=>b.onclick=()=>{saveCourseTheme(b.dataset.themeChoice);applyCourseTheme()});$('languageBtn').onclick=()=>$('languageBackdrop').classList.remove('hidden');$('languageClose').onclick=()=>$('languageBackdrop').classList.add('hidden');$('languageBackdrop').onclick=e=>{if(e.target===$('languageBackdrop'))$('languageBackdrop').classList.add('hidden')};window.addEventListener('languagedeck:open-session-options',()=>window.LanguageDeckPractice?.openUtility?.('session',LANG));window.addEventListener('online',updateNetworkState);window.addEventListener('offline',updateNetworkState);window.addEventListener('languagedeck:progress-imported',async()=>{try{await loadGlobal();LIBRARY_STORY_CACHE.clear();if(STORY){CURRENT=await chooseCurrent();renderCourse();renderBook();if(document.querySelector('#libraryView.on'))await renderLibrary()}}catch(e){console.warn('Progress import refresh failed',e)}});init();
-</script><script>(function(){
+</script><script src="vendor/qrcode.js"></script><script>(function(){
 
     /* ============================================================
        LanguageDeck PWA — single-file vocabulary trainer
@@ -4540,7 +4595,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.5-gate-full-recall-20260909";
+    const APP_BUILD = "4.5.7-word-recall-format-tolerance-20260909";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5440,6 +5495,24 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return accepted.map(optionalRecallPunctuationNorm).includes(optional);
     }
 
+    // Vocabulary recall should test lexical content, not keyboard formatting.
+    // Keep letters/diacritics and the article significant, but do not reject a
+    // correct word merely because mobile input omitted a space, changed case,
+    // or used presentation punctuation differently. Sentence production keeps
+    // the stricter full-text comparison above.
+    function compactWordRecallNorm(v) {
+      return optionalRecallPunctuationNorm(v)
+        .replace(/[^\p{L}\p{M}\p{N}]+/gu, "")
+        .trim();
+    }
+
+    function isWordRecallAnswerCorrect(expected, given, alternatives = []) {
+      if (isFullTextAnswerCorrect(expected, given, alternatives)) return true;
+      const g = compactWordRecallNorm(given);
+      if (!g) return false;
+      return [expected, ...alternatives].map(compactWordRecallNorm).includes(g);
+    }
+
     const PROGRESSIVE_LEVELS = [
       {
         label: "Guided recall",
@@ -5805,7 +5878,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const typed = typingInput.value;
       wordProgressiveAutoSubmitTimer = setTimeout(() => {
         if (locked || wordMode !== "progressive" || !currentTypingWord || !currentTypingChallenge || typingInput.value !== typed) return;
-        const correct = isProgressiveAnswerCorrect(
+        const correct = isProgressiveWordAnswerCorrect(
           currentTypingChallenge,
           typingInput.value,
           targetDisplay(currentTypingWord),
@@ -5862,6 +5935,18 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       }
       // Safety net: the FULL correct answer is always accepted too.
       return isFullTextAnswerCorrect(fullExpected, typedValue, alternatives);
+    }
+
+    function isProgressiveWordAnswerCorrect(challenge, typedValue, fullExpected, alternatives = []) {
+      if (!challenge || !challenge.masked) {
+        return isWordRecallAnswerCorrect(fullExpected, typedValue, alternatives);
+      }
+      if (normalizeMissingLetters(typedValue) === normalizeMissingLetters(challenge.missing)) {
+        return true;
+      }
+      // The learner may also type the whole vocabulary answer. Apply the same
+      // formatting-neutral word comparison as normal/full-recall typing.
+      return isWordRecallAnswerCorrect(fullExpected, typedValue, alternatives);
     }
 
     /* `clean` = the learner produced the answer without a wrong attempt on
@@ -10006,7 +10091,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     function isTypingAnswerCorrect(pair, ans) {
-      return isFullTextAnswerCorrect(targetDisplay(pair), ans, splitAlternatives(pair.alternatives || pair.alt || ""));
+      return isWordRecallAnswerCorrect(targetDisplay(pair), ans, splitAlternatives(pair.alternatives || pair.alt || ""));
     }
 
     async function submitTypingWordAnswer(showSolutionOnly = false) {
@@ -10039,7 +10124,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       }
 
       const correct = wordMode === "progressive"
-        ? isProgressiveAnswerCorrect(
+        ? isProgressiveWordAnswerCorrect(
             currentTypingChallenge,
             typingInput.value,
             targetDisplay(currentTypingWord),
@@ -11792,6 +11877,31 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500); return { pack, method: "saved" };
     }
 
+
+    /* ---------- 4.5.6 offline camera Progress Pack transfer ----------
+       No signalling server, account or persistent device link. The existing
+       Progress Pack is gzip-compressed and split into independently scannable
+       QR frames. The receiver collects the frames in any order, verifies a
+       SHA-256 fingerprint, reconstructs the pack and then uses the normal
+       conflict-aware Progress Pack merge. */
+    const QR_TRANSFER_PREFIX="LDQ1", QR_TRANSFER_CHUNK=900, QR_TRANSFER_MS=850;
+    let qrTransferTimer=null, qrTransferStream=null, qrTransferScanTimer=null, qrTransferReceivedPack=null;
+    function qrBytesToB64(bytes){let s="";for(let i=0;i<bytes.length;i+=0x8000)s+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/g,"")}
+    function qrB64ToBytes(s){s=String(s||"").replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";const raw=atob(s),out=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out}
+    async function qrTransform(bytes,kind){const ctor=kind==="gzip"?globalThis.CompressionStream:globalThis.DecompressionStream;if(!ctor)throw new Error(`${kind} compression is not available in this browser.`);const stream=new Blob([bytes]).stream().pipeThrough(new ctor("gzip"));return new Uint8Array(await new Response(stream).arrayBuffer())}
+    async function qrPackBytes(pack){const raw=new TextEncoder().encode(JSON.stringify(pack));if(globalThis.CompressionStream){try{return{alg:"g",bytes:await qrTransform(raw,"gzip")}}catch(_){}}return{alg:"r",bytes:raw}}
+    async function qrUnpackBytes(bytes,alg){const raw=alg==="g"?await qrTransform(bytes,"gunzip"):bytes;return validateProgressPack(JSON.parse(new TextDecoder().decode(raw)))}
+    async function qrDigest(bytes){const hash=new Uint8Array(await crypto.subtle.digest("SHA-256",bytes));return qrBytesToB64(hash).slice(0,22)}
+    function qrTransferId(){const b=new Uint8Array(6);crypto.getRandomValues(b);return qrBytesToB64(b)}
+    async function buildQrTransfer(){const pack=await createProgressPack(),packed=await qrPackBytes(pack),payload=qrBytesToB64(packed.bytes),hash=await qrDigest(packed.bytes),id=qrTransferId(),chunks=[];for(let i=0;i<payload.length;i+=QR_TRANSFER_CHUNK)chunks.push(payload.slice(i,i+QR_TRANSFER_CHUNK));const total=chunks.length;return{pack,id,alg:packed.alg,hash,bytes:packed.bytes.length,frames:chunks.map((chunk,i)=>`${QR_TRANSFER_PREFIX}:${id}:${i.toString(36)}:${total.toString(36)}:${packed.alg}:${hash}:${chunk}`)}}
+    function parseQrTransferFrame(raw){const parts=String(raw||"").split(":");if(parts.length!==7||parts[0]!==QR_TRANSFER_PREFIX)return null;const index=parseInt(parts[2],36),total=parseInt(parts[3],36),alg=parts[4],hash=parts[5],chunk=parts[6];if(!parts[1]||!Number.isInteger(index)||!Number.isInteger(total)||index<0||total<1||index>=total||!(alg==="g"||alg==="r")||!hash||!chunk)return null;return{id:parts[1],index,total,alg,hash,chunk}}
+    function stopQrCamera(){if(qrTransferScanTimer){clearTimeout(qrTransferScanTimer);qrTransferScanTimer=null}if(qrTransferStream){for(const t of qrTransferStream.getTracks())t.stop();qrTransferStream=null}const v=$("qrTransferVideo");if(v){try{v.pause()}catch(_){}v.srcObject=null}}
+    function stopQrTransfer(){if(qrTransferTimer){clearInterval(qrTransferTimer);qrTransferTimer=null}stopQrCamera()}
+    function openQrTransferView(kind){stopQrTransfer();qrTransferReceivedPack=null;$("qrSendView").classList.toggle("hidden",kind!=="send");$("qrScanView").classList.toggle("hidden",kind!=="scan");$("qrReceiveView").classList.add("hidden");$("qrTransferStatus").textContent="";$("qrTransferModal").classList.add("active")}
+    async function showProgressQr(){openQrTransferView("send");$("qrTransferTitle").textContent="Show progress QR";$("qrTransferFrame").textContent="Building Progress Pack…";try{if(!window.LanguageDeckQRCode)throw new Error("QR encoder did not load.");const transfer=await buildQrTransfer();let i=0;const draw=()=>{const raw=transfer.frames[i];window.LanguageDeckQRCode.draw($("qrTransferCanvas"),raw,{level:"L",size:Math.min(520,innerWidth-52)});$("qrTransferFrame").innerHTML=`Frame <strong>${i+1} / ${transfer.frames.length}</strong> · ${Math.round(transfer.bytes/1024)} KB compressed`;i=(i+1)%transfer.frames.length};draw();qrTransferTimer=setInterval(draw,QR_TRANSFER_MS);$("qrTransferStatus").textContent=`Offline transfer · ${transfer.frames.length} QR frames · no network connection is used.`}catch(err){$("qrTransferFrame").textContent="Could not create QR transfer.";$("qrTransferStatus").textContent=err.message||String(err)}}
+    async function scanProgressQr(){openQrTransferView("scan");$("qrTransferTitle").textContent="Scan progress QR";const status=$("qrTransferScanStatus"),fill=$("qrTransferProgressFill"),video=$("qrTransferVideo");fill.style.width="0%";status.textContent="Starting camera…";try{if(!globalThis.BarcodeDetector)throw new Error("Camera QR scanning is not available in this browser. Use the Progress Pack file buttons instead.");const formats=BarcodeDetector.getSupportedFormats?await BarcodeDetector.getSupportedFormats():["qr_code"];if(formats.length&&!formats.includes("qr_code"))throw new Error("This browser cannot scan QR codes with its camera.");const detector=new BarcodeDetector({formats:["qr_code"]}),coarse=matchMedia?.("(pointer:coarse)")?.matches;qrTransferStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:coarse?{ideal:"environment"}:undefined,width:{ideal:1280},height:{ideal:720}},audio:false});video.srcObject=qrTransferStream;await video.play();let transferId=null,total=0,alg="",hash="",frames=new Map(),busy=false;const detect=async()=>{if(!qrTransferStream)return;if(!busy&&video.readyState>=2){busy=true;try{for(const code of await detector.detect(video)){const f=parseQrTransferFrame(code.rawValue);if(!f)continue;if(!transferId){transferId=f.id;total=f.total;alg=f.alg;hash=f.hash}else if(f.id!==transferId||f.total!==total||f.alg!==alg||f.hash!==hash)continue;frames.set(f.index,f.chunk);const pct=Math.round(frames.size/total*100);fill.style.width=pct+"%";status.innerHTML=`Received <strong>${frames.size} / ${total}</strong> frames · ${pct}%`;if(frames.size===total){stopQrCamera();const payload=Array.from({length:total},(_,i)=>frames.get(i)||"").join(""),bytes=qrB64ToBytes(payload);if(await qrDigest(bytes)!==hash)throw new Error("QR transfer checksum failed. Please scan again.");qrTransferReceivedPack=await qrUnpackBytes(bytes,alg);$("qrScanView").classList.add("hidden");$("qrReceiveView").classList.remove("hidden");$("qrTransferPreview").innerHTML=progressPackSummaryText(qrTransferReceivedPack);$("qrTransferStatus").textContent="Transfer complete. Nothing has been changed yet.";try{navigator.vibrate?.(120)}catch(_){}return}}}catch(err){stopQrCamera();status.textContent="QR scan stopped.";$("qrTransferStatus").textContent=err.message||String(err)}finally{busy=false}}qrTransferScanTimer=setTimeout(detect,180)};detect();$("qrTransferStatus").textContent="Camera stays on this device only; frames are decoded locally."}catch(err){stopQrCamera();status.textContent="Camera unavailable.";$("qrTransferStatus").textContent=err.message||String(err)}}
+    async function applyReceivedQrProgress(){if(!qrTransferReceivedPack)return;const btn=$("qrTransferApplyBtn");btn.disabled=true;$("qrTransferStatus").textContent="Merging received progress…";try{const res=await applyProgressPack(qrTransferReceivedPack);$("qrTransferStatus").textContent=`Merged ${res.practiceUpdated} practice rows, ${res.sharedUpdated} shared knowledge/text rows and ${res.localUpdated} chapter states.${res.pending?` ${res.pending} rows are safely held until their deck is installed.`:""}`;showToast("Progress merged.");await refreshSetOptions();await refreshStats();await refreshGateInfo();await loadCurrentGame(true);qrTransferReceivedPack=null;$("qrTransferApplyBtn").disabled=true}catch(err){$("qrTransferStatus").textContent=`Could not merge progress: ${err.message||err}`;btn.disabled=false}}
+
     /* ---------- Manage installed decks (local delete) ---------- */
     /* Lists every imported set across both languages and both card types,
        with item counts and a per-deck Delete button. Deleting removes only
@@ -11989,6 +12099,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const progressPackApplyBtn = $("progressPackApplyBtn");
     const progressPackPreview = $("progressPackPreview");
     const progressPackStatus = $("progressPackStatus");
+    const progressQrShowBtn = $("progressQrShowBtn"), progressQrScanBtn = $("progressQrScanBtn");
     let pendingProgressPack = null;
     if (syncProgressBtn) {
       syncProgressBtn.addEventListener("click", () => {
@@ -11997,6 +12108,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       });
       $("closeSyncBtn").addEventListener("click", () => syncModal.classList.remove("active"));
       syncModal.addEventListener("click", e => { if (e.target === syncModal) syncModal.classList.remove("active"); });
+      progressQrShowBtn.addEventListener("click", showProgressQr);
+      progressQrScanBtn.addEventListener("click", scanProgressQr);
+      $("qrTransferCloseBtn").addEventListener("click",()=>{$("qrTransferModal").classList.remove("active");stopQrTransfer()});
+      $("qrTransferModal").addEventListener("click",e=>{if(e.target===$("qrTransferModal")){$("qrTransferModal").classList.remove("active");stopQrTransfer()}});
+      $("qrTransferApplyBtn").addEventListener("click",applyReceivedQrProgress);
 
       progressPackExportBtn.addEventListener("click", async () => {
         progressPackStatus.textContent = "Building a complete Progress Pack…";
@@ -12897,7 +13013,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator; optional camera progress transfer sends the complete compressed Progress Pack as an offline sequence of QR frames with no server. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant: spaces and presentation punctuation cannot turn an otherwise exact lexical answer into a mistake, while letters/diacritics and required articles remain significant.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
@@ -12977,5 +13093,5 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       async importProgressPack(pack) { return applyProgressPack(pack); },
       async retryPendingProgress() { return applyPendingProgressTransfers(); }
     };
-  
+
 })();</script></body></html>

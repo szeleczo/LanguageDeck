@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.5 — continuous gate full recall + spaced targeted returns. */
-const CACHE_VERSION="languagedeck-4-5-5-gate-full-recall-20260909";
+/* LanguageDeck 4.5.7 — vocabulary full-recall formatting tolerance. */
+const CACHE_VERSION="languagedeck-4-5-7-word-recall-format-tolerance-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
@@ -118,7 +118,9 @@ const APP_SHELL=[
   "./icon-maskable.svg",
   "./icon.svg",
   "./index.html",
-  "./manifest.webmanifest"
+  "./manifest.webmanifest",
+  "./vendor/qrcode.js",
+  "./vendor/QRCode-LICENSE.txt"
 ];
 self.addEventListener("message",e=>{if(e.data&&e.data.type==="SKIP_WAITING")self.skipWaiting()});
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE_VERSION).then(c=>c.addAll(APP_SHELL)));self.skipWaiting()});

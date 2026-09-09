@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction after 4.5.5. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction after 4.5.6. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -28,15 +28,24 @@ Completed stabilisation release. Full typing reuses the same Adaptive slot rende
 
 ## 4.5.5 — continuous gate recall + real interleave
 
-Current stabilisation release. A completed Adaptive Words gate no longer dead-ends on `Done`: when normal due material is exhausted, the learner may continue inside the same gate in true L5/full-typing recall. Re-entering a completed gate also resumes this full-recall stream.
+Completed stabilisation release. A completed Adaptive Words gate no longer dead-ends on `Done`: when normal due material is exhausted, the learner may continue inside the same gate in true L5/full-typing recall. Re-entering a completed gate also resumes this full-recall stream.
 
 A lexical miss is no longer spliced back into a short queue. It is deferred until at least two other word answers have occurred, so a difficult word cannot ladder L1→L4 through immediate short-term echo at the end of a gate. Completed-gate L5 cards can provide the interleaving material.
 
-## 4.5.6 — QR nearby Progress Pack transfer
+## 4.5.6 — offline camera Progress Pack transfer + desktop/mobile Study parity
 
-Next sync UX experiment. QR should be used to pair two devices, not to squeeze the whole learning database into a single QR code. The existing versioned Progress Pack remains the payload and conflict-aware merge layer.
+Current stabilisation release. Progress transfer is an occasional snapshot handoff, not a persistent sync relationship. The payload is the existing conflict-aware Progress Pack: practiced word/Adaptive state, sentence and grammar-package practice state, shared lexical/pattern knowledge, Text/Reading progress and Story/chapter/session position. No deck/book content and no account are required.
 
-Preferred interaction: desktop shows a pairing QR → phone scans it with the rear camera → phone shows the response QR → desktop scans it with the webcam → the Progress Pack transfers directly peer-to-peer. The same flow works in reverse. No account or permanent cloud copy is required; the existing file export/import remains as fallback.
+Camera transfer uses no backend, signalling service or cloud copy. The sending device gzip-compresses the complete Progress Pack and displays it as a repeating sequence of numbered QR frames. The receiving device uses its camera (rear camera on a phone where available, normal webcam on desktop), collects frames in any order, verifies the transfer fingerprint, reconstructs the same Progress Pack and only then offers the normal merge action. File export/import remains the universal fallback.
+
+Desktop Free Practice now uses the same Study chrome as mobile rather than the old landscape/desktop branch. Command Pill dimensions and controls are shared, and the gate navigator lives in the integrated Study Shell so previous/next gate navigation is available on desktop as well as mobile. Responsive layout may resize/centre this chrome, but may not remove these controls.
+
+## 4.5.7 — Word recall input tolerance
+
+- Vocabulary typing and Adaptive L5/full recall are case-insensitive.
+- Missing/extra spaces and presentation punctuation do not create false mistakes.
+- Required articles and actual letters/diacritics remain significant.
+- Sentence production keeps stricter spacing rules.
 
 ## 4.6 — Prepare for this text
 
@@ -59,7 +68,7 @@ Rebuild the grammar curriculum around fewer, stronger units and genuinely target
 - One global lexeme record across Words, Story, Library and future preparation goals, with separate recognition and active-recall evidence rather than duplicate mode-owned knowledge.
 - Library is a consumer of knowledge; 4.6 may influence priority, not ownership of knowledge.
 - Desktop and mobile share components and behaviour. Responsive layout may change geometry, not available core controls.
-- Cross-device progress transfer must merge safely and never silently discard unmatched progress.
+- Cross-device progress transfer must merge safely and never silently discard unmatched progress. Camera transfer must remain serverless and occasional; it is a transport for the complete Progress Pack, not a persistent sync service.
 - Prefer simpler observable learning rules over hidden rescue/session state.
 - A failed recall must be separated from its targeted retry by other material when alternatives exist; no immediate level laddering through short-term echo.
 - New features should not regress offline use, existing reading position, Adaptive scheduling or deck compatibility.
