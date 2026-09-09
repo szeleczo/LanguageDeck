@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.14. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.15. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -119,6 +119,16 @@ Status: completed stabilisation hotfix.
 - Transfer QR codes render as explicit black/white SVG modules in a fixed visible square rather than relying on a canvas that could appear blank in desktop browsers. The renderer self-checks that the QR contains visible dark modules.
 - Progress Pack and QR/direct-transfer merges no longer try to patch-refresh a live Study queue after the database has changed. After a successful merge, LanguageDeck stores the data, closes the transfer, and performs a clean app reload so gate/queue/current-card state is rebuilt from one consistent database snapshot.
 - A fresh one-time 4.5.11 repair pass rechecks practice rows for numeric date fields left by the failed 4.5.9 transport, even if the earlier 4.5.10 repair marker had already run. New merges normalise incoming practice dates before writing.
+
+## 4.5.15 — unified slot-only typing surface
+
+Status: completed stabilisation hotfix.
+
+- Every typing task that already shows Adaptive-style live character slots now uses those slots as the single visible answer surface on desktop and touch.
+- The underlying HTML input/textarea remains focusable for physical-keyboard input, but `Full answer`, `Missing letters only`, sentence blank fields and Text/Book typing fields are no longer rendered as a second visible box.
+- Words Typing, Adaptive masked/full recall, Sentence/Grammar progressive typing, sentence blank typing and Text/Book typing all use the same hidden-input binding helper.
+- Clicking/tapping the visible slot surface returns focus to the hidden input; desktop shows focus on the slot surface itself rather than on an invisible field.
+
 
 ## Next — 4.6 “Prepare for this”
 

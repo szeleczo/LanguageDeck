@@ -1642,6 +1642,35 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
       pointer-events: none !important;
       clip-path: inset(50%) !important;
     }
+    /* 4.5.15: every task that already exposes live Adaptive-style slots uses
+       those slots as the only visible typing surface on both desktop and
+       touch. The real input stays focusable for physical-keyboard input but
+       never creates a second "Full answer" / "Missing letters only" box. */
+    #legacyPracticeRoot .slot-answer-input-hidden,
+    #legacyPracticeRoot .tx-typing.slot-answer-input-hidden{
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      min-width: 1px !important;
+      min-height: 1px !important;
+      max-width: 1px !important;
+      max-height: 1px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: 0 !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      clip-path: inset(50%) !important;
+      overflow: hidden !important;
+    }
+    #legacyPracticeRoot .slot-input-surface{
+      cursor: text;
+      transition: border-color .12s ease, box-shadow .12s ease, background-color .12s ease;
+    }
+    #legacyPracticeRoot .slot-input-surface.is-input-focused{
+      border-color: var(--primary) !important;
+      box-shadow: 0 0 0 3px var(--primary-soft);
+    }
     #legacyPracticeRoot .typing-clue.desktop-physical-input-target,
     #legacyPracticeRoot .progressive-clue.desktop-physical-input-target{
       cursor: text;
@@ -4053,7 +4082,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.14-nearby-auto-fallback-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.15-unified-hidden-typing-surface-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4636,7 +4665,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.14-nearby-auto-fallback-20260909";
+    const APP_BUILD = "4.5.15-unified-hidden-typing-surface-20260909";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -6094,6 +6123,27 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       catch (_) { try { el.focus(); } catch (__) {} }
     }
 
+    function bindSlotInputSurface(surface, input) {
+      if (!surface || !input) return;
+      input.classList.add("slot-answer-input-hidden");
+      surface.classList.add("slot-input-surface");
+      const sync = () => surface.classList.toggle("is-input-focused", document.activeElement === input);
+      if (surface._slotInputTarget !== input) {
+        surface._slotInputTarget = input;
+        surface.addEventListener("pointerdown", event => {
+          if (event.button != null && event.button !== 0) return;
+          event.preventDefault();
+          focusPracticeInput(input);
+        });
+      }
+      if (!input.dataset.slotSurfaceBound) {
+        input.dataset.slotSurfaceBound = "1";
+        input.addEventListener("focus", sync);
+        input.addEventListener("blur", sync);
+      }
+      sync();
+    }
+
     function shouldUseInlineMissingKeypad(challenge) {
       // Touch devices use the app keyboard as the primary input surface.
       return !!(challenge && isTouchPrimaryDevice() && keyboardConfig().mode === "inline");
@@ -6190,6 +6240,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       setInlineKeypadInputMode(input, primary);
       input.classList.toggle("inline-keypad-input-hidden", !!(primary && isMissingOnly));
       input.classList.toggle("desktop-masked-input-hidden", !!(isMissingOnly && !isTouchPrimaryDevice()));
+      input.classList.toggle("slot-answer-input-hidden", !!challenge);
       container.classList.toggle("desktop-language-keypad", !!(enabled && !primary));
       container.classList.toggle("hidden", !enabled);
       document.documentElement.classList.toggle("keypad-active", !!primary);
@@ -8300,7 +8351,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           const options = textShuffle([{ value: item.target, correct: true }, ...textWordDistractors(item, "target").map(value => ({ value, correct: false }))]);
           html = `<div class="tx-task-sentence">${textHighlightSentence(sentence, textTask.key, true)}</div><div class="tx-task-help">Rebuild the missing form in its sentence.</div><div class="tx-options">${options.map(o => `<button data-text-choice="${o.correct ? "1" : "0"}">${escapeHtml(o.value)}</button>`).join("")}</div>`;
         } else {
-          html = `<div class="tx-task-sentence">${textHighlightSentence(sentence, textTask.key, true)}</div><div class="tx-task-help">Write the missing item.</div><div class="tx-task-length typing-slot-clue" id="txTypingSlots">${fullTypingSlotsHtml(item.target, "")}</div><input id="txTypingInput" class="tx-typing" placeholder="Type the full answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="none"><div class="tx-keyboard" id="txKeyboard"></div>`;
+          html = `<div class="tx-task-sentence">${textHighlightSentence(sentence, textTask.key, true)}</div><div class="tx-task-help">Write the missing item.</div><div class="tx-task-length typing-slot-clue" id="txTypingSlots">${fullTypingSlotsHtml(item.target, "")}</div><input id="txTypingInput" class="tx-typing slot-answer-input-hidden" placeholder="Type the full answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="none"><div class="tx-keyboard" id="txKeyboard"></div>`;
         }
       } else if (textTask.kind === "pattern") {
         if (!rec || rec.lvl <= 1) {
@@ -8315,7 +8366,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (txTypingInput && txTypingSlots && textTask?.item?.target) {
         const refreshTextTypingSlots = () => renderFullTypingSlots(txTypingSlots, textTask.item.target, txTypingInput.value);
         txTypingInput.addEventListener("input", refreshTextTypingSlots);
+        bindSlotInputSurface(txTypingSlots, txTypingInput);
         refreshTextTypingSlots();
+        setTimeout(() => focusPracticeInput(txTypingInput), 0);
       }
       txMainBtn.textContent = (textTask.kind === "sentence" || (textTask.kind === "pattern" && rec && rec.lvl >= 2) || (rec && rec.lvl >= 3)) ? "Check" : "Skip";
       txMainBtn.dataset.action = "task";
@@ -9384,6 +9437,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       typingClue.innerHTML = hasMask ? clueHtml(currentTypingChallenge.masked, "") : fullTypingSlotsHtml(targetDisplay(currentTypingWord), "");
       typingInput.placeholder = grammarPracticeHu() ? (hasMask ? "Csak a hiányzó betűk" : "Teljes válasz") : hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer");
       typingInput.value = "";
+      bindSlotInputSurface(typingClue, typingInput);
       typingResult.textContent = "";
       renderInlineMissingKeypad(typingInlineKeypad, typingInput, currentTypingChallenge, value => {
         if (currentTypingChallenge && currentTypingChallenge.masked) {
@@ -10105,7 +10159,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           typingClue.classList.add("hidden");
           typingClue.classList.remove("full-answer-preview", "empty");
         }
-        if (typingInput) typingInput.classList.remove("progressive-full-input", "full-answer-input-hidden");
+        if (typingInput) typingInput.classList.remove("progressive-full-input", "full-answer-input-hidden", "slot-answer-input-hidden", "desktop-masked-input-hidden", "inline-keypad-input-hidden");
+        if (typingClue) typingClue.classList.remove("slot-input-surface", "is-input-focused");
         renderInlineMissingKeypad(typingInlineKeypad, typingInput, null, null);
         typingHintVisible = false;
         renderTypingLearningTools();
@@ -10139,13 +10194,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (isProgressive) typingLevelDots.innerHTML = gateFullRecallMode
         ? levelDotsHtml({ ...currentTypingWord, progressive_level: PROGRESSIVE_LEVELS.length - 1, diagnostic_progressive_attempts: Math.max(1, currentTypingWord.diagnostic_progressive_attempts | 0) })
         : levelDotsHtml(currentTypingWord);
-      const hideFullAnswerInput = !!(isProgressive && currentTypingChallenge && !hasMask && shouldUseInlineMissingKeypad(currentTypingChallenge));
       typingClue.classList.remove("full-answer-preview", "empty");
       typingClue.classList.toggle("hidden", false);
       if (hasMask) typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, "");
       else renderFullTypingSlots(typingClue, targetDisplay(currentTypingWord), "");
       typingInput.classList.toggle("progressive-full-input", !!(isProgressive && currentTypingChallenge && !hasMask));
-      typingInput.classList.toggle("full-answer-input-hidden", hideFullAnswerInput);
+      typingInput.classList.remove("full-answer-input-hidden");
+      bindSlotInputSurface(typingClue, typingInput);
       typingInput.placeholder = isProgressive
         ? (grammarPracticeHu() ? (hasMask ? "Csak a hiányzó betűk" : "Teljes válasz") : (hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer")))
         : deckCfg().typingPlaceholder;
@@ -10850,7 +10905,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         inp.enterKeyHint = "done";
         inp.placeholder = grammarPracticeHu() ? (hasMask ? "Csak a hiányzó betűk" : "Teljes válasz") : hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer");
         inp.value = currentSentenceData.progressiveAnswer || "";
-        inp.classList.toggle("full-answer-input-hidden", !!(!hasMask && shouldUseInlineMissingKeypad(challenge)));
+        inp.classList.remove("full-answer-input-hidden");
+        bindSlotInputSurface(clue, inp);
         inp.addEventListener("input", e => {
           currentSentenceData.progressiveAnswer = e.target.value;
           currentSentenceData.showProgressiveErrors = false;
@@ -10865,7 +10921,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           if (practiceShortcutModifier(e) && (e.key === "Backspace" || e.key === "Delete")) { e.preventDefault(); e.stopPropagation(); clearSentenceShortcut(); return; }
           if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); await submitSentenceAnswer(false); }
         });
-        clue.addEventListener("click", () => { if (inp.classList.contains("desktop-masked-input-hidden")) focusPracticeInput(inp); });
+        clue.addEventListener("click", () => { focusPracticeInput(inp); });
         sentenceTarget.appendChild(inp);
         const keypad = document.createElement("div");
         keypad.className = "inline-keypad hidden";
@@ -10953,6 +11009,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
             inp.autocomplete = "off"; inp.autocapitalize = "off"; inp.autocorrect = "off"; inp.spellcheck = false;
             const refreshGuide = value => { guide.innerHTML = fullTypingSlotsHtml(expectedBlank, value); };
             refreshGuide(inp.value);
+            bindSlotInputSurface(guide, inp);
             inp.addEventListener("input", e => {
               currentSentenceData.typingAnswers[blankIdx] = e.target.value;
               refreshGuide(e.target.value);
@@ -10977,6 +11034,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
             typingKeypadActivators.push(activateTypingKeypad);
             inp.addEventListener("focus", activateTypingKeypad);
             inp.addEventListener("click", activateTypingKeypad);
+            guide.addEventListener("pointerdown", event => {
+              if (event.button != null && event.button !== 0) return;
+              event.preventDefault();
+              focusPracticeInput(inp);
+              activateTypingKeypad();
+            });
             shell.appendChild(guide);
             shell.appendChild(inp);
             sentenceTarget.appendChild(shell);
@@ -12959,7 +13022,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     typingSubmitBtn.addEventListener("click", () => submitTypingWordAnswer(false));
     typingRevealBtn.addEventListener("click", () => submitTypingWordAnswer(true));
-    typingClue.addEventListener("click", () => { if (typingInput.classList.contains("desktop-masked-input-hidden")) focusPracticeInput(typingInput); });
+    typingClue.addEventListener("click", () => { if (typingInput.classList.contains("slot-answer-input-hidden") || typingInput.classList.contains("desktop-masked-input-hidden")) focusPracticeInput(typingInput); });
     typingInput.addEventListener("input", () => {
       // One shared visual model: masked levels and full typing both keep their
       // character slots on screen while typed characters fill them live.
@@ -13460,7 +13523,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts. Since build 4.5.14, direct local progress transfer reports ICE candidate availability and automatically falls back to the compact QR delta instead of ending at a failed peer connection.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts. Since build 4.5.14, direct local progress transfer reports ICE candidate availability and automatically falls back to the compact QR delta instead of ending at a failed peer connection. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);

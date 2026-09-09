@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const must=(re,msg)=>{if(!re.test(html))throw new Error(msg)};
-must(/4\.5\.14-nearby-auto-fallback-20260909/,'4.5.13 build marker missing');
+must(/4\.5\.15-unified-hidden-typing-surface-20260909/,'4.5.13 build marker missing');
 must(/id="qrTransferVisual" class="qr-transfer-visual"/,'visible QR container missing');
 must(/createElementNS\(ns,"svg"\)/,'SVG QR renderer missing');
 must(/if\(!dark\)throw new Error\("QR encoder returned no visible modules\."\)/,'QR visibility self-check missing');

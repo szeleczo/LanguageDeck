@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
-assert.match(html,/4\.5\.14-nearby-auto-fallback-20260909/);
+assert.match(html,/4\.5\.15-unified-hidden-typing-surface-20260909/);
 assert.match(html,/function nearbyCandidateStats\(description\)/,'candidate diagnostics exist');
 assert.match(html,/function nearbyUseQrFallback\(role,reason=/,'automatic QR fallback exists');
 assert.match(html,/Scan QR-only fallback/,'receiver gets a one-click QR-only fallback');

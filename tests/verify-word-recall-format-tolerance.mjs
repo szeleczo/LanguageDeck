@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const html = fs.readFileSync(path.join(here, "..", "index.html"), "utf8");
-assert.match(html, /4\.5\.14-nearby-auto-fallback-20260909/, "4.5.13 build marker is present");
+assert.match(html, /4\.5\.15-unified-hidden-typing-surface-20260909/, "4.5.15 build marker is present");
 assert.match(html, /function compactWordRecallNorm\(/, "vocabulary recall has a compact formatting-neutral normalizer");
 assert.match(html, /function isWordRecallAnswerCorrect\(/, "normal word typing uses a dedicated lexical comparator");
 assert.match(html, /function isProgressiveWordAnswerCorrect\(/, "Adaptive full recall uses the same lexical comparator");

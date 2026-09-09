@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.14 — robust nearby transfer with automatic QR-delta fallback. */
-const CACHE_VERSION="languagedeck-4-5-14-nearby-auto-fallback-20260909";
+/* LanguageDeck 4.5.15 — unified slot-only typing surfaces. */
+const CACHE_VERSION="languagedeck-4-5-15-unified-hidden-typing-surface-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
