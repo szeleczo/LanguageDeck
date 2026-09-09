@@ -4082,7 +4082,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.15-unified-hidden-typing-surface-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.16-adaptive-gate-continuation-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4665,7 +4665,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.15-unified-hidden-typing-surface-20260909";
+    const APP_BUILD = "4.5.16-adaptive-gate-continuation-20260909";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -7342,15 +7342,16 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     let practiceWriteErrors = 0;
     let sessionMistakeReturns = new Map();
     let sessionArticleBlockedIds = new Set();
-    // 4.5.5: a lexical miss may not ladder the same word upward again through
-    // immediate short-term echo. The card stays in a deferred-return pool until
-    // at least two OTHER word answers have happened. When a completed gate has
-    // no normal due material, full-recall gate cards provide the interleave.
+    // 4.5.5/4.5.16: a lexical miss may not ladder the same word upward again
+    // through immediate short-term echo. The card stays in a deferred-return
+    // pool until at least two OTHER word answers have happened. A completed gate
+    // may keep supplying review material, but every card always uses its CURRENT
+    // stored Adaptive level; continuation never forces a demoted word back to L5.
     const WORD_MIN_INTERLEAVE_ANSWERS = 2;
     let wordInterleaveCooldown = new Map();
     let deferredWordReturns = new Map();
-    let gateFullRecallMode = false;
-    let gateFullRecallSeenIds = new Set();
+    let gateContinuationMode = false;
+    let gateContinuationSeenIds = new Set();
     let lastPracticeProgress = { total:0, mastered:0, stable:0, new:0, due:0, percent:0, is_complete:false, totalGates:0, gateIndex:0, intakeOccupied:0, intakeLimit:0 };
 
     function resetSessionMistakes() {
@@ -7358,8 +7359,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       sessionArticleBlockedIds = new Set();
       wordInterleaveCooldown = new Map();
       deferredWordReturns = new Map();
-      gateFullRecallMode = false;
-      gateFullRecallSeenIds = new Set();
+      gateContinuationMode = false;
+      gateContinuationSeenIds = new Set();
     }
     function wordInterleaveRemaining(item) { return item && item.id != null ? (wordInterleaveCooldown.get(item.id) || 0) : 0; }
     function wordInterleaveBlocked(item) { return wordInterleaveRemaining(item) > 0; }
@@ -9090,7 +9091,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const intakeLimit = currentGame === "words" ? activeLearningPoolLimit(rowsForProgress) : 0;
       const nextGateReady = !guidedPractice && gateEnabled && progress.is_complete && currentGateIndex < totalGates - 1;
       const remaining = Math.max(0, progress.total - progress.mastered);
-      gateLabel.textContent = guidedPractice ? "Chapter Study" : (gateEnabled ? `Gate ${totalGates === 0 ? 0 : currentGateIndex + 1} / ${totalGates}${gateFullRecallMode ? " · Full recall" : (nextGateReady ? " · Ready" : "")}` : "All items");
+      gateLabel.textContent = guidedPractice ? "Chapter Study" : (gateEnabled ? `Gate ${totalGates === 0 ? 0 : currentGateIndex + 1} / ${totalGates}${gateContinuationMode ? " · Review" : (nextGateReady ? " · Ready" : "")}` : "All items");
       gateProgressText.textContent = `${progress.percent}%`; gateStatsText.textContent = `Mastered: ${progress.mastered} / ${progress.total}`;
       gateMetaText.textContent = guidedPractice ? `Guided target: ${guidedPractice.target} · the phase ends at 100%` : `New: ${progress.new} · Due: ${progress.due} · Unlock at 85% · Streak threshold: 2`; gateProgressFill.style.width = `${progress.percent}%`;
       gateExpandBtn.title = nextGateReady ? `Next gate is open. ${progress.mastered} of ${progress.total} learned.` : `${progress.mastered} of ${progress.total} learned; ${remaining} remaining.`;
@@ -9694,7 +9695,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const fresh = await fetchWordItems(false);
       wordQueue = orderStudyBatch(fresh);
       // Re-entering an already completed gate must not land on an empty/Done
-      // card. Let the same refill path activate continuous L5 full recall.
+      // card. The continuation refill keeps practice going, but preserves each
+      // word's real Adaptive level rather than forcing every card to L5.
       if (wordQueue.length === 0 && wordMode === "progressive") await ensureWordQueue(1);
 
       if (wordQueue.length === 0) {
@@ -9726,22 +9728,34 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       renderTypingLearningTools();
     }
 
-    async function gateCanContinueFullRecall() {
+    async function gateCanContinuePractice() {
       if (guidedPractice || currentGame !== "words" || wordMode !== "progressive" || !gateEnabled || practiceScope === "wrong") return false;
       const info = await refreshGateInfo();
       return !!info?.progress?.is_complete;
     }
-    async function fetchGateFullRecallItems(limit = 12, reservedIds = new Set()) {
+    async function fetchGateContinuationItems(limit = 12, reservedIds = new Set()) {
       const allRows = await DB.getAll("word_pairs", currentDeck, currentSetName);
       await syncWordRowsWithGlobal(allRows);
       const pool = fetchGateRows(allRows.filter(r => ldQuizSafeEnglish(r.english, false)), currentGateIndex, gateSize)
         .filter(r => !reservedIds.has(r.id) && !sessionArticleBlockedIds.has(r.id) && !wordInterleaveBlocked(r));
       if (!pool.length) return [];
-      let unseen = pool.filter(r => !gateFullRecallSeenIds.has(r.id));
-      if (!unseen.length) { gateFullRecallSeenIds = new Set(); unseen = pool.slice(); }
+
+      // Continuation is maintenance practice, not a difficulty override. Prefer
+      // words currently at the strongest Adaptive level so a completed gate
+      // naturally feels like full recall. If the learner demotes a word, its
+      // targeted return is supplied separately and will render at the new level.
+      // If a legacy/completed gate has no L5 rows at all, keep practice alive at
+      // the strongest level that actually exists rather than inventing L5.
+      const strongest = Math.max(...pool.map(progressiveLevelIndex));
+      const preferred = pool.filter(r => progressiveLevelIndex(r) === strongest);
+      let unseen = preferred.filter(r => !gateContinuationSeenIds.has(r.id));
+      if (!unseen.length) {
+        for (const row of preferred) gateContinuationSeenIds.delete(row.id);
+        unseen = preferred.slice();
+      }
       const ordered = orderStudyBatch(unseen);
       const chosen = ordered.slice(0, Math.max(1, limit | 0));
-      for (const row of chosen) gateFullRecallSeenIds.add(row.id);
+      for (const row of chosen) gateContinuationSeenIds.add(row.id);
       return chosen;
     }
     async function ensureWordQueue(min) {
@@ -9756,10 +9770,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       }
       releaseDeferredWordReturns(wordQueue);
       if (wordQueue.length >= min) return;
-      if (await gateCanContinueFullRecall()) {
-        gateFullRecallMode = true;
+      if (await gateCanContinuePractice()) {
+        gateContinuationMode = true;
         const reservedFull = new Set(wordQueue.filter(Boolean).map(item => item.id));
-        const refill = await fetchGateFullRecallItems(Math.max(12, min - wordQueue.length), reservedFull);
+        const refill = await fetchGateContinuationItems(Math.max(12, min - wordQueue.length), reservedFull);
         const queued = new Set(wordQueue.filter(Boolean).map(item => item.id));
         wordQueue.push(...refill.filter(item => item && !queued.has(item.id)));
         releaseDeferredWordReturns(wordQueue);
@@ -10178,22 +10192,18 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
       renderTypingLearningTools();
       const isProgressive = wordMode === "progressive";
-      const challengeWord = gateFullRecallMode
-        ? { ...currentTypingWord, progressive_level: PROGRESSIVE_LEVELS.length - 1, diagnostic_progressive_attempts: Math.max(1, currentTypingWord.diagnostic_progressive_attempts | 0) }
-        : currentTypingWord;
+      // Completed-gate continuation never overrides difficulty. L5 naturally
+      // renders as full typing; a lapse to L4/L3/... must immediately change the
+      // next challenge to that real stored Adaptive level.
       currentTypingChallenge = isProgressive
-        ? buildProgressiveChallenge(targetDisplay(currentTypingWord), challengeWord)
+        ? buildProgressiveChallenge(targetDisplay(currentTypingWord), currentTypingWord)
         : { full: targetDisplay(currentTypingWord), masked: "", missing: "" };
       const hasMask = !!(currentTypingChallenge && currentTypingChallenge.masked);
-      // ONE instruction, said once: help line. In completed-gate continuation
-      // the challenge is always L5/full typing, regardless of the stored level.
       typingHelp.textContent = isProgressive
-        ? (gateFullRecallMode ? `Full recall · type the complete ${deckCfg().targetName} answer.` : progressiveHelpText(currentTypingWord, `${deckCfg().targetName} answer`))
+        ? progressiveHelpText(currentTypingWord, `${deckCfg().targetName} answer`)
         : deckCfg().typingHelp;
       typingLevelDots.classList.toggle("hidden", !isProgressive);
-      if (isProgressive) typingLevelDots.innerHTML = gateFullRecallMode
-        ? levelDotsHtml({ ...currentTypingWord, progressive_level: PROGRESSIVE_LEVELS.length - 1, diagnostic_progressive_attempts: Math.max(1, currentTypingWord.diagnostic_progressive_attempts | 0) })
-        : levelDotsHtml(currentTypingWord);
+      if (isProgressive) typingLevelDots.innerHTML = levelDotsHtml(currentTypingWord);
       typingClue.classList.remove("full-answer-preview", "empty");
       typingClue.classList.toggle("hidden", false);
       if (hasMask) typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, "");
@@ -10219,7 +10229,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       typingResult.textContent = "";
       updateTypingActionButtons();
       focusPracticeInput(typingInput);
-      statusEl.textContent = gateFullRecallMode ? "Gate complete · continuing with full recall." : "";
+      statusEl.textContent = gateContinuationMode ? "Gate complete · continuing adaptive review." : "";
     }
 
     function isTypingAnswerCorrect(pair, ans) {
@@ -13523,7 +13533,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts. Since build 4.5.14, direct local progress transfer reports ICE candidate availability and automatically falls back to the compact QR delta instead of ending at a failed peer connection. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue instead of dead-ending on Done, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.16, completed-gate continuation no longer forces L5: L5 words still return as full typing, but a lapse demotes normally and every later card uses the word’s actual stored Adaptive level. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts. Since build 4.5.14, direct local progress transfer reports ICE candidate availability and automatically falls back to the compact QR delta instead of ending at a failed peer connection. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);

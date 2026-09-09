@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.15. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.16. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -28,7 +28,7 @@ Completed stabilisation release. Full typing reuses the same Adaptive slot rende
 
 ## 4.5.5 — continuous gate recall + real interleave
 
-Completed stabilisation release. A completed Adaptive Words gate no longer dead-ends on `Done`: when normal due material is exhausted, the learner may continue inside the same gate in true L5/full-typing recall. Re-entering a completed gate also resumes this full-recall stream.
+Completed stabilisation release. A completed Adaptive Words gate no longer dead-ends on `Done`: when normal due material is exhausted, the learner may continue inside the same gate. The original 4.5.5 implementation forced every continuation card to L5/full typing; 4.5.16 corrects that over-interpretation so continuation always respects the real Adaptive level.
 
 A lexical miss is no longer spliced back into a short queue. It is deferred until at least two other word answers have occurred, so a difficult word cannot ladder L1→L4 through immediate short-term echo at the end of a gate. Completed-gate L5 cards can provide the interleaving material.
 
@@ -128,6 +128,17 @@ Status: completed stabilisation hotfix.
 - The underlying HTML input/textarea remains focusable for physical-keyboard input, but `Full answer`, `Missing letters only`, sentence blank fields and Text/Book typing fields are no longer rendered as a second visible box.
 - Words Typing, Adaptive masked/full recall, Sentence/Grammar progressive typing, sentence blank typing and Text/Book typing all use the same hidden-input binding helper.
 - Clicking/tapping the visible slot surface returns focus to the hidden input; desktop shows focus on the slot surface itself rather than on an invisible field.
+
+
+## 4.5.16 — adaptive completed-gate continuation
+
+Status: completed stabilisation correction.
+
+- A completed gate still never dead-ends on `Done`; practice can continue indefinitely inside the gate.
+- Continuation is no longer a synthetic L5 mode. Every card is rendered from its current stored Adaptive level.
+- An L5 word therefore returns naturally as full typing. If the learner is wrong or uses Reveal, the normal one-level lapse applies (for example L5 → L4), and its later targeted return is genuinely L4 rather than being forced back to full typing.
+- Continuation preferentially draws from the strongest real Adaptive level available in the gate. If a legacy/completed gate has no L5 rows, it continues at the strongest level that actually exists instead of inventing L5.
+- The two-other-answer interleave rule remains unchanged, so a demoted word cannot immediately ladder upward through short-term echo.
 
 
 ## Next — 4.6 “Prepare for this”

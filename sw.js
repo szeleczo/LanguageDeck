@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.15 — unified slot-only typing surfaces. */
-const CACHE_VERSION="languagedeck-4-5-15-unified-hidden-typing-surface-20260909";
+/* LanguageDeck 4.5.16 — adaptive completed-gate continuation. */
+const CACHE_VERSION="languagedeck-4-5-16-adaptive-gate-continuation-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
