@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction after 4.5.3. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction after 4.5.4. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -19,9 +19,19 @@ Completed. Desktop and mobile practice use the same Command Pill and the same la
 
 Completed stabilisation release. A clean one-letter FIRST CONTACT answer is treated as real successful evidence: the word advances directly from Adaptive L1 to L2. This removes the redundant second L1 pass while keeping the first-contact card friendly. Corrected/mistap answers still hold the current level, and misses still fall by exactly one real level. Shared Story/Library knowledge follows the same final Adaptive level.
 
+
+## 4.5.4 — unified typing slots
+
+Current stabilisation release.
+
+- Full typing now reuses the same Adaptive clue renderer instead of a separate underscore/placeholder surface.
+- Full typing is represented as an all-masked pattern with zero helper letters.
+- Typed characters fill their slots live while the remaining character slots stay visible.
+- The same slot behavior applies across Words, Progressive full recall, Sentence/Grammar typing blanks, and Text/Book typing.
+
 ## 4.5.3 — unified recall evidence and typing clarity
 
-Current stabilisation release. Book vocabulary recall now routes through the same Adaptive Words Progressive engine instead of a parallel 0–4 word drill. A lexeme keeps one shared record but separates reading recognition from active-recall strength: recognition can support Story/Library readiness but cannot raise Adaptive recall, while Grammar/Sentence context remains contextual evidence only. A genuine Story “I do not know this” tap still demotes Adaptive by exactly one level. Every typing task, in every mode and level, shows the expected answer length with underscores without revealing letters.
+Completed stabilisation release. Book vocabulary recall now routes through the same Adaptive Words Progressive engine instead of a parallel 0–4 word drill. A lexeme keeps one shared record but separates reading recognition from active-recall strength: recognition can support Story/Library readiness but cannot raise Adaptive recall, while Grammar/Sentence context remains contextual evidence only. A genuine Story “I do not know this” tap still demotes Adaptive by exactly one level. Every typing task, in every mode and level, shows the expected answer length with underscores without revealing letters.
 
 ## 4.6 — Prepare for this text
 

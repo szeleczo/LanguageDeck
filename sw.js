@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.3 — unified active recall and typing length guides. */
-const CACHE_VERSION="languagedeck-4-5-3-unified-recall-length-guides-20260908";
+/* LanguageDeck 4.5.4 — unified Adaptive-style full-typing slots. */
+const CACHE_VERSION="languagedeck-4-5-4-unified-typing-slots-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

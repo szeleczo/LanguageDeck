@@ -1317,6 +1317,33 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
       border-radius: 5px;
       padding: 0 2px;
     }
+    /* 4.5.4: every full-typing surface reuses the Adaptive clue renderer.
+       A full-typing task is simply an Adaptive pattern with every letter slot
+       hidden and zero helper letters. Slots stay visible while typed letters
+       fill them, so the expected answer length never disappears. */
+    #legacyPracticeRoot .typing-slot-clue{
+      font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing: 0.08em;
+    }
+    #legacyPracticeRoot .blank-type-shell{
+      display:inline-flex;
+      flex-direction:column;
+      align-items:stretch;
+      vertical-align:middle;
+      margin:0 2px;
+      line-height:1.15;
+    }
+    #legacyPracticeRoot .blank-type-shell .blank-input{ margin:2px 0 0; }
+    #legacyPracticeRoot .blank-type-guide{
+      min-height:16px;
+      color:var(--text-muted);
+      font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.08em;
+      white-space:nowrap;
+      text-align:center;
+    }
 
     /* Compact difficulty indicator: 5 dots instead of "Level 2/5 · about
        25% hidden" prose. */
@@ -3930,7 +3957,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.3-unified-recall-length-guides-20260908",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.4-unified-typing-slots-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4513,7 +4540,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.3-unified-recall-length-guides-20260908";
+    const APP_BUILD = "4.5.4-unified-typing-slots-20260909";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5716,26 +5743,27 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return guide || "_";
     }
 
-    function renderFullAnswerPreview(el, value, placeholder = "Your typed answer will appear here.", expected = "") {
+    function buildFullTypingSlotChallenge(value) {
+      const full = String(value || "");
+      const masked = answerLengthGuide(full);
+      const missing = Array.from(full).filter(ch => /[\p{L}\p{M}\p{N}]/u.test(ch)).join("");
+      return { full, masked: masked || "_", missing };
+    }
+
+    function fullTypingSlotTypedChars(value) {
+      return Array.from(String(value || "")).filter(ch => /[\p{L}\p{M}\p{N}]/u.test(ch)).join("");
+    }
+
+    function fullTypingSlotsHtml(expected, typed = "", markErrors = false) {
+      const challenge = buildFullTypingSlotChallenge(expected);
+      return clueHtml(challenge.masked, fullTypingSlotTypedChars(typed), challenge.missing, markErrors);
+    }
+
+    function renderFullTypingSlots(el, expected, typed = "", markErrors = false) {
       if (!el) return;
-      const text = String(value || "").replace(/[,\.!?;:]+/gu, "");
-      if (!text) el.textContent = placeholder;
-      else {
-        const marks = [], optional = /[,\.!?;:]/u;
-        let contentIndex = 0;
-        for (const ch of Array.from(String(expected || ""))) {
-          if (optional.test(ch)) marks.push({ at:contentIndex, ch });
-          else contentIndex++;
-        }
-        let html = "", i = 0, mi = 0;
-        for (const ch of Array.from(text)) {
-          while (mi < marks.length && marks[mi].at === i) html += `<span class="fixed-punctuation">${escapeHtml(marks[mi++].ch)}</span>`;
-          html += escapeHtml(ch); i++;
-        }
-        while (mi < marks.length && marks[mi].at <= i) html += `<span class="fixed-punctuation">${escapeHtml(marks[mi++].ch)}</span>`;
-        el.innerHTML = html;
-      }
-      el.classList.toggle("empty", !text);
+      el.classList.add("typing-slot-clue");
+      el.classList.remove("empty");
+      el.innerHTML = fullTypingSlotsHtml(expected, typed, markErrors);
     }
 
     function renderCurrentSentenceProgressiveClue(markErrors = false) {
@@ -8067,7 +8095,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           const options = textShuffle([{ value: item.target, correct: true }, ...textWordDistractors(item, "target").map(value => ({ value, correct: false }))]);
           html = `<div class="tx-task-sentence">${textHighlightSentence(sentence, textTask.key, true)}</div><div class="tx-task-help">Rebuild the missing form in its sentence.</div><div class="tx-options">${options.map(o => `<button data-text-choice="${o.correct ? "1" : "0"}">${escapeHtml(o.value)}</button>`).join("")}</div>`;
         } else {
-          html = `<div class="tx-task-sentence">${textHighlightSentence(sentence, textTask.key, true)}</div><div class="tx-task-help">Write the missing item.</div><div class="tx-task-length">${escapeHtml(answerLengthGuideText(item.target))}</div><input id="txTypingInput" class="tx-typing" placeholder="${escapeHtml(answerLengthGuideText(item.target))}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="none"><div class="tx-keyboard" id="txKeyboard"></div>`;
+          html = `<div class="tx-task-sentence">${textHighlightSentence(sentence, textTask.key, true)}</div><div class="tx-task-help">Write the missing item.</div><div class="tx-task-length typing-slot-clue" id="txTypingSlots">${fullTypingSlotsHtml(item.target, "")}</div><input id="txTypingInput" class="tx-typing" placeholder="Type the full answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="none"><div class="tx-keyboard" id="txKeyboard"></div>`;
         }
       } else if (textTask.kind === "pattern") {
         if (!rec || rec.lvl <= 1) {
@@ -8078,6 +8106,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         }
       } else html = textReorderTaskHtml(textTask.sentence, textTask.key);
       txTask.innerHTML = html;
+      const txTypingInput = $("txTypingInput"), txTypingSlots = $("txTypingSlots");
+      if (txTypingInput && txTypingSlots && textTask?.item?.target) {
+        const refreshTextTypingSlots = () => renderFullTypingSlots(txTypingSlots, textTask.item.target, txTypingInput.value);
+        txTypingInput.addEventListener("input", refreshTextTypingSlots);
+        refreshTextTypingSlots();
+      }
       txMainBtn.textContent = (textTask.kind === "sentence" || (textTask.kind === "pattern" && rec && rec.lvl >= 2) || (rec && rec.lvl >= 3)) ? "Check" : "Skip";
       txMainBtn.dataset.action = "task";
       if ($("txKeyboard")) textBuildKeyboard();
@@ -8099,7 +8133,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const clear=()=>{activeKey?.classList.remove("is-pressing");activeKey=null};
       keyboard.onpointerdown=e=>{const key=e.target.closest("[data-text-key]");if(!key)return;e.preventDefault();activeKey=key;key.classList.add("is-pressing");try{keyboard.setPointerCapture(e.pointerId)}catch(_){}};
       keyboard.onpointermove=e=>{if(!activeKey)return;const key=select(e);if(!key||!keyboard.contains(key)||key===activeKey)return;activeKey.classList.remove("is-pressing");activeKey=key;key.classList.add("is-pressing")};
-      keyboard.onpointerup=e=>{e.preventDefault();const key=activeKey;clear();if(!key)return;key.dataset.slideCommit="1";if(key.dataset.textKey==="backspace")input.value=input.value.slice(0,-1);else input.value+=key.dataset.textKey;requestAnimationFrame(()=>delete key.dataset.slideCommit)};
+      keyboard.onpointerup=e=>{e.preventDefault();const key=activeKey;clear();if(!key)return;key.dataset.slideCommit="1";if(key.dataset.textKey==="backspace")input.value=input.value.slice(0,-1);else input.value+=key.dataset.textKey;input.dispatchEvent(new Event("input",{bubbles:true}));requestAnimationFrame(()=>delete key.dataset.slideCommit)};
       keyboard.onpointercancel=clear;
     }
     function textReorderAnswer() { return [...document.querySelectorAll("#txReorderBuild [data-word]")].map(b => b.dataset.word).join(" "); }
@@ -9142,7 +9176,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       typingLevelDots.classList.remove("hidden");
       typingLevelDots.innerHTML = levelDotsHtml(currentTypingWord);
       typingClue.classList.remove("hidden");
-      typingClue.innerHTML = hasMask ? clueHtml(currentTypingChallenge.masked, "") : escapeHtml(answerLengthGuideText(targetDisplay(currentTypingWord)));
+      typingClue.innerHTML = hasMask ? clueHtml(currentTypingChallenge.masked, "") : fullTypingSlotsHtml(targetDisplay(currentTypingWord), "");
       typingInput.placeholder = grammarPracticeHu() ? (hasMask ? "Csak a hiányzó betűk" : "Teljes válasz") : hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer");
       typingInput.value = "";
       typingResult.textContent = "";
@@ -9151,6 +9185,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, value);
           typingResult.textContent = "";
           maybeAutoSubmitProgressiveWord();
+        } else {
+          renderFullTypingSlots(typingClue, targetDisplay(currentTypingWord), value);
+          typingResult.textContent = "";
         }
         updateTypingActionButtons();
       });
@@ -9858,19 +9895,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         : deckCfg().typingHelp;
       typingLevelDots.classList.toggle("hidden", !isProgressive);
       if (isProgressive) typingLevelDots.innerHTML = levelDotsHtml(currentTypingWord);
-      const showFullAnswerPreview = !!(isProgressive && currentTypingChallenge && !hasMask && shouldUseInlineMissingKeypad(currentTypingChallenge));
+      const hideFullAnswerInput = !!(isProgressive && currentTypingChallenge && !hasMask && shouldUseInlineMissingKeypad(currentTypingChallenge));
       typingClue.classList.remove("full-answer-preview", "empty");
       typingClue.classList.toggle("hidden", false);
-      if (hasMask) {
-        typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, "");
-      } else if (showFullAnswerPreview) {
-        typingClue.classList.add("full-answer-preview");
-        renderFullAnswerPreview(typingClue, "", answerLengthGuideText(targetDisplay(currentTypingWord)), targetDisplay(currentTypingWord));
-      } else {
-        typingClue.textContent = answerLengthGuideText(targetDisplay(currentTypingWord));
-      }
+      if (hasMask) typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, "");
+      else renderFullTypingSlots(typingClue, targetDisplay(currentTypingWord), "");
       typingInput.classList.toggle("progressive-full-input", !!(isProgressive && currentTypingChallenge && !hasMask));
-      typingInput.classList.toggle("full-answer-input-hidden", showFullAnswerPreview);
+      typingInput.classList.toggle("full-answer-input-hidden", hideFullAnswerInput);
       typingInput.placeholder = isProgressive
         ? (grammarPracticeHu() ? (hasMask ? "Csak a hiányzó betűk" : "Teljes válasz") : (hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer")))
         : deckCfg().typingPlaceholder;
@@ -9880,8 +9911,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, value);
           typingResult.textContent = "";
           maybeAutoSubmitProgressiveWord();
-        } else if (showFullAnswerPreview) {
-          renderFullAnswerPreview(typingClue, value, "Your typed answer will appear here.", targetDisplay(currentTypingWord));
+        } else {
+          renderFullTypingSlots(typingClue, targetDisplay(currentTypingWord), value);
           typingResult.textContent = "";
         }
         updateTypingActionButtons();
@@ -9962,6 +9993,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
             currentTypingChallenge.missing || "",
             true
           );
+        } else {
+          renderFullTypingSlots(typingClue, targetDisplay(currentTypingWord), typingInput.value, true);
         }
         await saveWordAnswer(currentTypingWord.id, false, true, { signals:[{kind:wordMode === "progressive" ? "progressive" : "typing",correct:false}], chosen:typingInput.value, expected:targetDisplay(currentTypingWord) });
         scheduleWordMistake(currentTypingWord);
@@ -10532,24 +10565,19 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         sentenceBank.innerHTML = "";
         sentenceResetBtn.classList.add("hidden"); // Clear has no role here
 
-        let clue = null;
-        let fullPreview = null;
+        let clue = document.createElement("div");
+        clue.className = "progressive-clue typing-slot-clue";
         if (hasMask) {
-          clue = document.createElement("div");
-          clue.className = "progressive-clue";
           clue.innerHTML = clueHtml(
             challenge.masked,
             currentSentenceData.progressiveAnswer || "",
             challenge.missing || "",
             !!currentSentenceData.showProgressiveErrors
           );
-          sentenceTarget.appendChild(clue);
         } else {
-          fullPreview = document.createElement("div");
-          fullPreview.className = "progressive-clue full-answer-preview";
-          renderFullAnswerPreview(fullPreview, currentSentenceData.progressiveAnswer || "", answerLengthGuideText(currentSentence.target), currentSentence.target);
-          sentenceTarget.appendChild(fullPreview);
+          renderFullTypingSlots(clue, currentSentence.target, currentSentenceData.progressiveAnswer || "", !!currentSentenceData.showProgressiveErrors);
         }
+        sentenceTarget.appendChild(clue);
 
         const inp = document.createElement(hasMask ? "input" : "textarea");
         inp.className = "blank-input progressive-input" + (!hasMask ? " progressive-full-input" : "");
@@ -10565,12 +10593,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         inp.enterKeyHint = "done";
         inp.placeholder = grammarPracticeHu() ? (hasMask ? "Csak a hiányzó betűk" : "Teljes válasz") : hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer");
         inp.value = currentSentenceData.progressiveAnswer || "";
-        inp.classList.toggle("full-answer-input-hidden", !!fullPreview);
+        inp.classList.toggle("full-answer-input-hidden", !!(!hasMask && shouldUseInlineMissingKeypad(challenge)));
         inp.addEventListener("input", e => {
           currentSentenceData.progressiveAnswer = e.target.value;
           currentSentenceData.showProgressiveErrors = false;
-          if (clue) clue.innerHTML = clueHtml(challenge.masked, e.target.value, challenge.missing || "", false);
-          if (fullPreview) renderFullAnswerPreview(fullPreview, e.target.value, practiceUiText("Your typed sentence will appear here.", "Itt jelenik meg a beírt mondat."), currentSentence.target);
+          if (hasMask) clue.innerHTML = clueHtml(challenge.masked, e.target.value, challenge.missing || "", false);
+          else renderFullTypingSlots(clue, currentSentence.target, e.target.value, false);
           sentenceResult.textContent = "";
           maybeAutoSubmitProgressiveSentence();
           updateSentenceActionButtons();
@@ -10586,8 +10614,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         renderInlineMissingKeypad(keypad, inp, challenge, value => {
           currentSentenceData.progressiveAnswer = value;
           currentSentenceData.showProgressiveErrors = false;
-          if (clue) clue.innerHTML = clueHtml(challenge.masked, value, challenge.missing || "", false);
-          if (fullPreview) renderFullAnswerPreview(fullPreview, value, practiceUiText("Your typed sentence will appear here.", "Itt jelenik meg a beírt mondat."), currentSentence.target);
+          if (hasMask) clue.innerHTML = clueHtml(challenge.masked, value, challenge.missing || "", false);
+          else renderFullTypingSlots(clue, currentSentence.target, value, false);
           sentenceResult.textContent = "";
           maybeAutoSubmitProgressiveSentence();
           updateSentenceActionButtons();
@@ -10652,30 +10680,41 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
             btn.addEventListener("click", () => { currentSentenceData.choiceAutoSubmitting = false; activeBlankIndex = blankIdx; renderSentence(); });
             sentenceTarget.appendChild(btn);
           } else {
+            const shell = document.createElement("span");
+            shell.className = "blank-type-shell";
+            const guide = document.createElement("span");
+            guide.className = "blank-type-guide typing-slot-clue";
+            const expectedBlank = String(currentSentenceData.blankAnswers[blankIdx] || "");
             const inp = document.createElement("input");
             inp.className = "blank-input";
             inp.value = currentSentenceData.typingAnswers[blankIdx] || "";
-            inp.placeholder = answerLengthGuideText(currentSentenceData.blankAnswers[blankIdx] || "");
+            inp.placeholder = grammarPracticeHu() ? "Írd be" : "Type";
             inp.dataset.blankIndex = blankIdx;
             inp.autocomplete = "off"; inp.autocapitalize = "off"; inp.autocorrect = "off"; inp.spellcheck = false;
+            const refreshGuide = value => { guide.innerHTML = fullTypingSlotsHtml(expectedBlank, value); };
+            refreshGuide(inp.value);
             inp.addEventListener("input", e => {
               currentSentenceData.typingAnswers[blankIdx] = e.target.value;
+              refreshGuide(e.target.value);
               updateSentenceActionButtons();
             });
             const activateTypingKeypad = () => {
               if (!sentenceTypingKeypad) return;
               sentenceTarget.querySelectorAll(".blank-input.keypad-input-active").forEach(el => el.classList.remove("keypad-input-active"));
               inp.classList.add("keypad-input-active");
-              const challenge = { full: String(currentSentenceData.blankAnswers[blankIdx] || ""), masked: "", missing: "" };
+              const challenge = { full: expectedBlank, masked: "", missing: "" };
               renderInlineMissingKeypad(sentenceTypingKeypad, inp, challenge, value => {
                 currentSentenceData.typingAnswers[blankIdx] = value;
+                refreshGuide(value);
                 updateSentenceActionButtons();
               });
             };
             typingKeypadActivators.push(activateTypingKeypad);
             inp.addEventListener("focus", activateTypingKeypad);
             inp.addEventListener("click", activateTypingKeypad);
-            sentenceTarget.appendChild(inp);
+            shell.appendChild(guide);
+            shell.appendChild(inp);
+            sentenceTarget.appendChild(shell);
           }
         } else {
           const span = document.createElement("span");
@@ -12284,13 +12323,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     typingSubmitBtn.addEventListener("click", () => submitTypingWordAnswer(false));
     typingRevealBtn.addEventListener("click", () => submitTypingWordAnswer(true));
     typingInput.addEventListener("input", () => {
-      // Missing-letters mode: fill typed characters into the pattern live.
+      // One shared visual model: masked levels and full typing both keep their
+      // character slots on screen while typed characters fill them live.
       if (wordMode === "progressive" && currentTypingChallenge && currentTypingChallenge.masked) {
         typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, typingInput.value);
         typingResult.textContent = "";
         maybeAutoSubmitProgressiveWord();
-      } else if (wordMode === "progressive" && currentTypingChallenge && !currentTypingChallenge.masked && typingClue.classList.contains("full-answer-preview")) {
-        renderFullAnswerPreview(typingClue, typingInput.value, "Your typed answer will appear here.", targetDisplay(currentTypingWord));
+      } else if (currentTypingWord) {
+        renderFullTypingSlots(typingClue, targetDisplay(currentTypingWord), typingInput.value);
         typingResult.textContent = "";
       }
       updateTypingActionButtons();
@@ -12772,7 +12812,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Every typing task shows answer length with underscores.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);

@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const html = fs.readFileSync(path.join(here, "..", "index.html"), "utf8");
 
-assert.match(html, /4\.5\.3-unified-recall-length-guides-20260908/, "4.5.3 build marker is present");
+assert.match(html, /4\.5\.4-unified-typing-slots-20260909/, "4.5.4 build marker is present");
 
 // Recognition/context and active recall are separate evidence dimensions.
 assert.match(html, /const KNOWLEDGE_SCHEMA_VERSION=4/, "shared lexeme knowledge uses the split-evidence schema");
@@ -29,12 +29,17 @@ assert.match(html, /returnView==='book-adaptive'[\s\S]*preserveStory/, "Book rea
 assert.match(html, /resumeAfterAdaptiveWords\(completed=false\)/, "Story resumes after the shared Adaptive batch");
 assert.match(html, /spec\.target === "book_adaptive"[\s\S]*guided_success_at/, "each Book word needs a real correct Adaptive answer to complete the batch");
 
-// All typing surfaces expose expected answer length with underscores.
-assert.match(html, /function answerLengthGuide\(value\)/, "one shared answer-length guide exists");
-assert.ok(html.includes('/[\\p{L}\\p{M}\\p{N}]/u.test(ch) ? "_"'), "letters/numbers are represented as underscores");
-assert.match(html, /typingClue\.textContent = answerLengthGuideText\(targetDisplay\(currentTypingWord\)\)/, "full word typing shows answer length");
-assert.match(html, /renderFullAnswerPreview\(fullPreview,[\s\S]*answerLengthGuideText\(currentSentence\.target\)/, "full progressive sentence typing shows answer length");
-assert.match(html, /inp\.placeholder = answerLengthGuideText\(currentSentenceData\.blankAnswers\[blankIdx\]/, "sentence blank typing shows the expected word length");
-assert.match(html, /class="tx-task-length">\$\{escapeHtml\(answerLengthGuideText\(item\.target\)\)\}/, "Text/Book typing shows the expected item length");
+// All typing surfaces reuse the Adaptive slot renderer. Full typing is an
+// all-masked challenge with zero helper letters; typed characters fill slots
+// without making the remaining slots disappear.
+assert.match(html, /function buildFullTypingSlotChallenge\(value\)/, "full typing has one shared all-masked slot challenge");
+assert.match(html, /function fullTypingSlotsHtml\(expected, typed = "", markErrors = false\)/, "full typing renders through a shared slot helper");
+assert.match(html, /return clueHtml\(challenge\.masked, fullTypingSlotTypedChars\(typed\), challenge\.missing, markErrors\)/, "full typing delegates to the Adaptive clue renderer");
+assert.match(html, /else renderFullTypingSlots\(typingClue, targetDisplay\(currentTypingWord\), ""\)/, "word full typing uses live Adaptive-style slots");
+assert.match(html, /else renderFullTypingSlots\(clue, currentSentence\.target, e\.target\.value, false\)/, "full progressive sentence typing keeps live slots");
+assert.match(html, /guide\.innerHTML = fullTypingSlotsHtml\(expectedBlank, value\)/, "sentence blank typing keeps live per-word slots");
+assert.match(html, /id="txTypingSlots">\$\{fullTypingSlotsHtml\(item\.target, ""\)\}/, "Text\/Book typing uses the same live slots");
+assert.match(html, /input\.dispatchEvent\(new Event\("input",\{bubbles:true\}\)\)/, "Text\/Book in-app keyboard refreshes the live slots while typing");
+assert.doesNotMatch(html, /renderFullAnswerPreview/, "the separate disappearing full-answer preview is retired");
 
 console.log("Unified recall evidence, Book Adaptive routing and typing length-guide checks passed.");
