@@ -4082,7 +4082,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.17-adaptive-gate-rotation-nearby-hardening-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.18-gate-review-diversity-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4665,7 +4665,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.17-adaptive-gate-rotation-nearby-hardening-20260909";
+    const APP_BUILD = "4.5.18-gate-review-diversity-20260909";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -9717,7 +9717,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       wordQueue = []; currentWordRoundPairs = []; rightOrder = [];
       currentTypingWord = null;
 
-      const fresh = await fetchWordItems(false);
+      // A completed-gate review has its own queue policy: rotate the whole
+      // gate first. Do not seed the session from the normal due/intake selector,
+      // because a tiny due subset can otherwise monopolise the review forever.
+      const fresh = gateContinuationMode && adaptiveWordEngineActive()
+        ? await fetchGateContinuationItems(Math.max(12, visibleCount * 2), new Set())
+        : await fetchWordItems(false);
       wordQueue = orderStudyBatch(fresh);
       // Re-entering an already completed gate must not land on an empty/Done
       // card. The continuation refill keeps practice going, but preserves each
@@ -9766,30 +9771,63 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function fetchGateContinuationItems(limit = 12, reservedIds = new Set()) {
       const allRows = await DB.getAll("word_pairs", currentDeck, currentSetName);
       await syncWordRowsWithGlobal(allRows);
-      const pool = fetchGateRows(allRows.filter(r => ldQuizSafeEnglish(r.english, false)), currentGateIndex, gateSize)
-        .filter(r => !reservedIds.has(r.id) && !sessionArticleBlockedIds.has(r.id) && !wordInterleaveBlocked(r));
-      if (!pool.length) return [];
+      const gatePool = fetchGateRows(allRows.filter(r => ldQuizSafeEnglish(r.english, false)), currentGateIndex, gateSize)
+        .filter(r => !sessionArticleBlockedIds.has(r.id));
+      if (!gatePool.length) return [];
 
-      // Completed-gate review rotates across the WHOLE eligible gate before a
-      // normal filler card is repeated. This prevents a tiny highest-level subset
-      // from cycling forever. Difficulty is never overridden: an L5 row is full
-      // typing, while a row demoted to L4/L3/... returns at that stored level.
-      // Targeted mistake returns are injected separately after the two-answer
-      // interleave cooldown, so difficult words can still come back sooner.
-      let unseen = pool.filter(r => !gateContinuationSeenIds.has(r.id));
-      if (!unseen.length) {
+      // Keep the cycle marker aligned with the CURRENT gate membership. A row
+      // leaving the gate must not keep the cycle artificially "complete".
+      const gateIds = new Set(gatePool.map(r => r.id));
+      for (const id of [...gateContinuationSeenIds]) if (!gateIds.has(id)) gateContinuationSeenIds.delete(id);
+      if (gateContinuationSeenIds.size >= gateIds.size) gateContinuationSeenIds.clear();
+
+      const eligible = gatePool.filter(r => !reservedIds.has(r.id) && !wordInterleaveBlocked(r));
+      if (!eligible.length) return [];
+
+      // Primary filler policy: choose unseen rows across the whole gate. Do NOT
+      // reset the cycle merely because the remaining unseen rows are temporarily
+      // reserved/cooldown-blocked; that would re-open already-seen rows and cause
+      // the small loops observed at the end of a gate.
+      let candidates = eligible.filter(r => !gateContinuationSeenIds.has(r.id));
+      if (!candidates.length) {
+        const unseenStillExists = gatePool.some(r => !gateContinuationSeenIds.has(r.id));
+        if (unseenStillExists) return [];
         gateContinuationSeenIds.clear();
-        unseen = pool.slice();
+        candidates = eligible.slice();
       }
-      const ordered = orderStudyBatch(unseen);
-      const chosen = ordered.slice(0, Math.max(1, Math.min(limit | 0 || 1, unseen.length)));
-      for (const row of chosen) gateContinuationSeenIds.add(row.id);
+
+      const ordered = orderStudyBatch(candidates);
+      const chosen = ordered.slice(0, Math.max(1, Math.min(limit | 0 || 1, candidates.length)));
+      for (const row of chosen) {
+        gateContinuationSeenIds.add(row.id);
+        sessionLoadedIds.add(row.id);
+      }
       return chosen;
     }
     async function ensureWordQueue(min) {
       wordQueue = await pruneCompletedGuidedQueue("word_pairs", wordQueue);
       releaseDeferredWordReturns(wordQueue);
       if (wordQueue.length >= min) return;
+
+      // In completed-gate review the WHOLE-GATE rotation is the primary filler
+      // source. Deferred targeted returns are released above and may interrupt
+      // after their two-answer cooldown, but the normal due/intake selector must
+      // not shrink the session back to the same handful of active cards.
+      if (await gateCanContinuePractice()) {
+        gateContinuationMode = true;
+        const reserved = new Set(wordQueue.filter(Boolean).map(item => item.id));
+        const refill = await fetchGateContinuationItems(Math.max(12, min - wordQueue.length), reserved);
+        if (refill.length) {
+          const queued = new Set(wordQueue.filter(Boolean).map(item => item.id));
+          wordQueue.push(...refill.filter(item => item && !queued.has(item.id)));
+        }
+        releaseDeferredWordReturns(wordQueue);
+        if (wordQueue.length >= min) return;
+      }
+
+      // Normal due/intake selection is only the fallback outside completed-gate
+      // review (or in the rare case where the gate has no temporarily eligible
+      // filler at all).
       const reserved = new Set(wordQueue.filter(Boolean).map(item => item.id));
       const fresh = await fetchWordItems(true, Math.max(1, min - wordQueue.length), reserved);
       if (fresh.length > 0) {
@@ -9797,15 +9835,6 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         wordQueue.push(...fresh.filter(item => item && !queued.has(item.id)));
       }
       releaseDeferredWordReturns(wordQueue);
-      if (wordQueue.length >= min) return;
-      if (await gateCanContinuePractice()) {
-        gateContinuationMode = true;
-        const reservedFull = new Set(wordQueue.filter(Boolean).map(item => item.id));
-        const refill = await fetchGateContinuationItems(Math.max(12, min - wordQueue.length), reservedFull);
-        const queued = new Set(wordQueue.filter(Boolean).map(item => item.id));
-        wordQueue.push(...refill.filter(item => item && !queued.has(item.id)));
-        releaseDeferredWordReturns(wordQueue);
-      }
     }
 
     async function loadNextWordRound() {
@@ -13587,7 +13616,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue instead of dead-ending on Done, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.16, completed-gate continuation no longer forces L5: L5 words still return as full typing, but a lapse demotes normally and every later card uses the word’s actual stored Adaptive level. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts. Since build 4.5.14, direct local progress transfer reports ICE candidate availability and automatically falls back to the compact QR delta instead of ending at a failed peer connection. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI. Since build 4.5.17, completed-gate review is locked to the Adaptive engine and rotates across the whole eligible gate before normal filler repeats; full-typing mistakes therefore demote to L4 and return with the real lower-level mask. Local peer transfer also primes camera permission before ICE gathering and reports direct-vs-privacy-obscured host candidates.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue instead of dead-ending on Done, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.16, completed-gate continuation no longer forces L5: L5 words still return as full typing, but a lapse demotes normally and every later card uses the word’s actual stored Adaptive level. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts. Since build 4.5.14, direct local progress transfer reports ICE candidate availability and automatically falls back to the compact QR delta instead of ending at a failed peer connection. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI. Since build 4.5.17, completed-gate review is locked to the Adaptive engine and rotates across the whole eligible gate before normal filler repeats; full-typing mistakes therefore demote to L4 and return with the real lower-level mask. Local peer transfer also primes camera permission before ICE gathering and reports direct-vs-privacy-obscured host candidates. Since build 4.5.18, completed-gate review uses whole-gate rotation as the primary queue source instead of letting the normal due/intake selector monopolise the session; targeted returns can interrupt after cooldown, and unique-load diagnostics include continuation cards.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);

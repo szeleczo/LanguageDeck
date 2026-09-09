@@ -4,7 +4,7 @@ const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const sw=fs.readFileSync(new URL('../sw.js',import.meta.url),'utf8');
 const qr=fs.readFileSync(new URL('../vendor/qrcode.js',import.meta.url),'utf8');
 
-assert.match(html,/4\.5\.17-adaptive-gate-rotation-nearby-hardening-20260909/,'4.5.17 build marker is present');
+assert.match(html,/4\.5\.18-gate-review-diversity-20260909/,'4.5.18 build marker is present');
 assert.match(html,/Nearby transfer · no server/,'Progress transfer clearly exposes direct serverless nearby transfer');
 assert.match(html,/const QR_REQUEST_PREFIX="LDR1", QR_DELTA_PREFIX="LDD1"/,'QR uses request + delta wire formats');
 assert.match(html,/PROGRESS_DEVICE_KEY="ld-progress-device-v1"/,'each installation has a local transfer identity');

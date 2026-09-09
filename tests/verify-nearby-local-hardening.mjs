@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import assert from "node:assert/strict";
 const html=fs.readFileSync(new URL("../index.html",import.meta.url),"utf8");
-assert.match(html,/4\.5\.17-adaptive-gate-rotation-nearby-hardening-20260909/);
+assert.match(html,/4\.5\.18-gate-review-diversity-20260909/);
 assert.match(html,/function nearbyPeerConfig\(\)\{return\{iceServers:\[\],iceTransportPolicy:"all"\}\}/,"peer remains serverless and uses default bundling");
 assert.doesNotMatch(html,/bundlePolicy:"max-bundle"/,"max-bundle is no longer forced");
 assert.match(html,/async function ensureQrCameraStream\(\)/,"camera stream can be primed and reused");

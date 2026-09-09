@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.17 — adaptive gate rotation + local peer hardening. */
-const CACHE_VERSION="languagedeck-4-5-17-adaptive-gate-rotation-nearby-hardening-20260909";
+/* LanguageDeck 4.5.18 — completed-gate review diversity. */
+const CACHE_VERSION="languagedeck-4-5-18-gate-review-diversity-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

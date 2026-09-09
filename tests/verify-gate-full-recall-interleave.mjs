@@ -1,14 +1,14 @@
 import fs from "node:fs";
 import assert from "node:assert/strict";
 const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
-assert.match(html, /4\.5\.17-adaptive-gate-rotation-nearby-hardening-20260909/, "4.5.17 build marker is present");
+assert.match(html, /4\.5\.18-gate-review-diversity-20260909/, "4.5.18 build marker is present");
 assert.match(html, /const WORD_MIN_INTERLEAVE_ANSWERS = 2/, "lexical returns require two intervening answers");
 assert.match(html, /let deferredWordReturns = new Map\(\)/, "lexical mistakes have a deferred return pool");
 assert.match(html, /function noteWordAnswerForInterleave\(item\)/, "word answers advance the interleave cooldown");
 assert.match(html, /deferredWordReturns\.set\(item\.id, item\)/, "mistakes are deferred rather than spliced into a short queue");
 assert.match(html, /!wordInterleaveBlocked\(r\)/, "normal queue fetching respects the cooldown");
 assert.match(html, /async function gateCanContinuePractice\(\)/, "completed gates can continue adaptive practice");
-assert.match(html, /let unseen = pool\.filter\(r => !gateContinuationSeenIds\.has\(r\.id\)\)/, "continuation rotates across the whole eligible gate");
+assert.match(html, /let candidates = eligible\.filter\(r => !gateContinuationSeenIds\.has\(r\.id\)\)/, "continuation rotates across the whole eligible gate");
 assert.doesNotMatch(html, /const strongest = Math\.max\(\.\.\.pool\.map\(progressiveLevelIndex\)\)/, "continuation is not restricted to a tiny strongest-level subset");
 assert.match(html, /buildProgressiveChallenge\(targetDisplay\(currentTypingWord\), currentTypingWord\)/, "continuation builds the challenge from the live stored row");
 assert.match(html, /levelDotsHtml\(currentTypingWord\)/, "continuation shows the real stored Adaptive level");

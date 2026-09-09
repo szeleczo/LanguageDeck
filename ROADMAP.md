@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.17. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.18. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -167,4 +167,13 @@ Completed stabilisation release. Completed-gate review remains inside the Adapti
 
 The serverless nearby transfer path is also hardened without adding STUN/TURN/backend services: the receiving desktop primes webcam/local-media permission before gathering its WebRTC offer, the peer connection uses the browser's default bundling with `iceTransportPolicy: all`, and diagnostics distinguish direct host candidates from privacy-obscured mDNS candidates. QR-only delta and `.ldprogress` remain fallbacks.
 
-Next optional sync step remains 4.5.18 (`Live sync while connected`) if direct peer connectivity proves usable on the real desktop/phone pair. The next main learning-product milestone remains 4.6 (`Prepare for this`).
+Next optional sync step is deferred to 4.5.19 (`Live sync while connected`) if direct peer connectivity proves usable on the real desktop/phone pair. The next main learning-product milestone remains 4.6 (`Prepare for this`).
+
+
+## 4.5.18 — completed-gate review diversity fix
+
+Completed-gate Adaptive review now uses whole-gate rotation as its primary queue source. The normal due/intake selector no longer gets first chance to refill the queue in this state, preventing a small active/due subset from monopolising the session. Eligible targeted lapse returns still interrupt after the existing two-other-answer cooldown, but otherwise a filler row is not repeated until the current gate rotation has been exhausted.
+
+The rotation cycle is not reset merely because a remaining unseen row is temporarily reserved or interleave-blocked, and continuation cards are counted in `unique loaded` diagnostics so diversity can be verified from real learning reports. Adaptive demotion and the real stored L1–L5 challenge from 4.5.17 remain unchanged.
+
+Optional serverless `Live sync while connected` moves to 4.5.19; the next main product milestone remains 4.6 (`Prepare for this`).
