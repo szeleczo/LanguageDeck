@@ -76,8 +76,8 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedRowDone\(row, guidedPractice, rows\)[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "prefetched guided queues use the target-specific completion rule");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.5\.2-first-contact-advance-20260908/, "the application build marker includes the 4.5.2 first-contact advancement release");
-assert.equal((indexHtml.match(/4\.5\.2-first-contact-advance-20260908/g) || []).length, 2, "Course and Practice use the same 4.5.2 build marker");
+assert.match(indexHtml, /4\.5\.3-unified-recall-length-guides-20260908/, "the application build marker includes the 4.5.3 unified recall release");
+assert.equal((indexHtml.match(/4\.5\.3-unified-recall-length-guides-20260908/g) || []).length, 2, "Course and Practice use the same 4.5.3 build marker");
 assert.match(indexHtml, /practiceSetupBtn'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openUtility\?\.\('session',LANG\)/, "the sliders restore the dedicated current-session controls");
 assert.match(indexHtml, /practiceSettingsBtn'\)\.onclick=\(\)=>openSettings\('main'\)/, "the gear keeps the application settings role");
 assert.match(indexHtml, /id="sessionActualNewRatio"[\s\S]*id="sessionRequestedNewRatio"[\s\S]*id="sessionIntakeStatus"[\s\S]*id="sessionScopeStatus"/, "Session controls show realised pacing, requested pacing, intake and scope together");
@@ -150,9 +150,9 @@ assert.match(indexHtml, /removeRetiredCore3000MetaCardsV433/, "installed Core 30
 assert.match(indexHtml, /ld_practice_diagnostic_errors_v1/, "recent exact practice errors are retained in a bounded local log");
 assert.match(indexHtml, /DIAGNOSTIC_EVENT_LIMIT = 180/, "the detailed diagnostic log is size bounded");
 assert.match(indexHtml, /async diagnostics\(\) \{ return buildPracticeDiagnostics\(\); \}/, "the practice engine exposes a copyable read-only report");
-assert.match(indexHtml, /KNOWLEDGE_SCHEMA_VERSION=3/, "shared lexical knowledge has an explicit schema");
+assert.match(indexHtml, /KNOWLEDGE_SCHEMA_VERSION=4/, "shared lexical knowledge has an explicit schema");
 assert.match(indexHtml, /KNOWLEDGE_CHANNELS=\["reading","words","grammar_context"\]/, "course, word practice and grammar context retain separate evidence channels");
-assert.match(indexHtml, /strength:1,sourceMode:"grammar"/, "grammar context can only mark a lexeme as encountered");
+assert.match(indexHtml, /strength:0,sourceMode:"grammar"/, "grammar context is context evidence only and cannot raise lexical strength");
 assert.match(indexHtml, /if \(!isCurrentSentenceCorrect\(\)\)[\s\S]*Még nem jó[\s\S]*return;[\s\S]*submitSentenceAnswer\(false\)/, "choice exercises auto-submit only a correct completed answer");
 assert.match(indexHtml, /async function advanceAfterCorrectSentence\(\)[\s\S]*try \{[\s\S]*loadNextSentence\(\)[\s\S]*catch \(error\)[\s\S]*feedbackAwaitingContinue = true[\s\S]*finally \{[\s\S]*locked = false[\s\S]*updateSentenceActionButtons\(\)/, "a failed next-card load always unlocks the practice UI and offers a retry");
 assert.match(indexHtml, /Promise\.allSettled\(\[refreshStats\(\), refreshGateInfo\(\)\]\)/, "non-critical statistics refresh cannot block the next practice card");
@@ -531,7 +531,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-5-2-first-contact-advance-20260908/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-5-3-unified-recall-length-guides-20260908/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");

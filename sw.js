@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.2 — first-contact success advances Adaptive learning. */
-const CACHE_VERSION="languagedeck-4-5-2-first-contact-advance-20260908";
+/* LanguageDeck 4.5.3 — unified active recall and typing length guides. */
+const CACHE_VERSION="languagedeck-4-5-3-unified-recall-length-guides-20260908";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

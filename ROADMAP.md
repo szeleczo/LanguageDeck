@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction after 4.5.2. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction after 4.5.3. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -17,7 +17,11 @@ Completed. Desktop and mobile practice use the same Command Pill and the same la
 
 ## 4.5.2 — first-contact learning flow
 
-Current stabilisation release. A clean one-letter FIRST CONTACT answer is treated as real successful evidence: the word advances directly from Adaptive L1 to L2. This removes the redundant second L1 pass while keeping the first-contact card friendly. Corrected/mistap answers still hold the current level, and misses still fall by exactly one real level. Shared Story/Library knowledge follows the same final Adaptive level.
+Completed stabilisation release. A clean one-letter FIRST CONTACT answer is treated as real successful evidence: the word advances directly from Adaptive L1 to L2. This removes the redundant second L1 pass while keeping the first-contact card friendly. Corrected/mistap answers still hold the current level, and misses still fall by exactly one real level. Shared Story/Library knowledge follows the same final Adaptive level.
+
+## 4.5.3 — unified recall evidence and typing clarity
+
+Current stabilisation release. Book vocabulary recall now routes through the same Adaptive Words Progressive engine instead of a parallel 0–4 word drill. A lexeme keeps one shared record but separates reading recognition from active-recall strength: recognition can support Story/Library readiness but cannot raise Adaptive recall, while Grammar/Sentence context remains contextual evidence only. A genuine Story “I do not know this” tap still demotes Adaptive by exactly one level. Every typing task, in every mode and level, shows the expected answer length with underscores without revealing letters.
 
 ## 4.6 — Prepare for this text
 
@@ -37,7 +41,7 @@ Rebuild the grammar curriculum around fewer, stronger units and genuinely target
 
 ## Product constraints
 
-- One global lexical knowledge state across Words, Story, Library and future preparation goals.
+- One global lexeme record across Words, Story, Library and future preparation goals, with separate recognition and active-recall evidence rather than duplicate mode-owned knowledge.
 - Library is a consumer of knowledge; 4.6 may influence priority, not ownership of knowledge.
 - Desktop and mobile share components and behaviour. Responsive layout may change geometry, not available core controls.
 - Cross-device progress transfer must merge safely and never silently discard unmatched progress.

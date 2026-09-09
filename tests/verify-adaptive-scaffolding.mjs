@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const indexHtml = fs.readFileSync(path.join(here, "..", "index.html"), "utf8");
 
-assert.match(indexHtml, /4\.5\.2-first-contact-advance-20260908/, "4.5.2 build marker is present");
+assert.match(indexHtml, /4\.5\.3-unified-recall-length-guides-20260908/, "4.5.3 build marker is present");
 
 const levelsBlock = indexHtml.match(/const PROGRESSIVE_LEVELS = \[([\s\S]*?)\n    \];/)?.[1] || "";
 assert.ok(levelsBlock, "Adaptive level configuration is present");
@@ -66,16 +66,16 @@ assert.match(indexHtml, /first-contact-correct-advanced/, "diagnostics name firs
 
 const syncSource = indexHtml.match(/async function syncWordAnswerToGlobal\([^)]*\) \{[\s\S]*?\n    \}/)?.[0] || "";
 assert.ok(syncSource, "shared Words-to-Story sync helper is present");
-assert.match(syncSource, /adaptiveStrength = Math\.min\(4, Math\.max\(0, progressiveLevelIndex\(row\) \+ 1\)\)/, "Adaptive shared strength derives from the final Adaptive level");
+assert.match(syncSource, /adaptiveStrength = Math\.max\(1, Math\.min\(5, progressiveLevelIndex\(row\) \+ 1\)\)/, "Adaptive shared strength derives from the final Adaptive level");
 assert.match(syncSource, /const inferred = adaptive \? adaptiveStrength : srsStrength;/, "Adaptive and non-Adaptive Words can use appropriate evidence strength");
 assert.match(syncSource, /sourceMode:adaptive\?"words-adaptive":"words"/, "shared knowledge records the evidence source");
 assert.match(syncSource, /GLOBAL_WORDS\.set\(id, mergeWordKnowledgeRows/, "the in-memory Story knowledge map updates immediately after Words sync");
 
-const adaptiveSharedStrength = levelIndex => Math.min(4, Math.max(0, levelIndex + 1));
+const adaptiveSharedStrength = levelIndex => Math.max(1, Math.min(5, levelIndex + 1));
 assert.equal(adaptiveSharedStrength(0), 1, "Adaptive L1 is below Story's known threshold before first-contact success");
 assert.equal(adaptiveSharedStrength(1), 2, "Adaptive L2 reaches Story's known threshold");
-assert.equal(adaptiveSharedStrength(3), 4, "Adaptive L4 is strong shared evidence");
-assert.equal(adaptiveSharedStrength(4), 4, "Adaptive L5 caps at the shared store's maximum strength");
+assert.equal(adaptiveSharedStrength(3), 4, "Adaptive L4 is strong active-recall evidence");
+assert.equal(adaptiveSharedStrength(4), 5, "Adaptive L5 remains explicit active-recall strength 5");
 
 const lapseSource = indexHtml.match(/function lapsedStreak\([^)]*\) \{[\s\S]*?\n    \}/)?.[0];
 assert.ok(lapseSource, "gradual SRS lapse recovery is independently testable");
