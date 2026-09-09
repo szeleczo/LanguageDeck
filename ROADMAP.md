@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.11. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.12. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -46,6 +46,10 @@ Desktop Free Practice now uses the same Study chrome as mobile rather than the o
 - Missing/extra spaces and presentation punctuation do not create false mistakes.
 - Required articles and actual letters/diacritics remain significant.
 - Sentence production keeps stricter spacing rules.
+
+## 4.5.12 — QR modal responsive hotfix
+
+Status: completed stabilisation hotfix. The camera-transfer modal explicitly overrides the generic 380px modal width cap on desktop, uses border-box sizing, prevents horizontal overflow and keeps the full QR plus controls inside the viewport. Mobile keeps the same component with viewport-safe margins rather than a separate transfer UI.
 
 ## 4.6 — Prepare for this text
 

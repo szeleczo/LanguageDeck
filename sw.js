@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.11 — QR visibility + clean post-import runtime recovery. */
-const CACHE_VERSION="languagedeck-4-5-11-qr-visibility-import-recovery-20260909";
+/* LanguageDeck 4.5.12 — responsive camera-transfer modal. */
+const CACHE_VERSION="languagedeck-4-5-12-qr-modal-responsive-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
