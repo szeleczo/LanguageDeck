@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.16. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.17. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -159,3 +159,12 @@ The Library can prioritise vocabulary from a selected story/chapter through the 
 ## 4.5.14 — Robust nearby transfer fallback
 
 Direct QR-signalled WebRTC remains the fastest serverless path when the browser/network exposes compatible local ICE candidates. Some desktop Brave/Windows + Android Wi-Fi combinations hide host addresses behind mDNS or block local peer UDP, so direct transfer can legitimately fail even on the same SSID. 4.5.14 surfaces candidate availability and no longer leaves the flow at a dead-end failure: the sender reuses the already-scanned receive request and automatically switches to the compact per-peer QR delta; the receiver is offered a one-click QR-only scan fallback. No STUN, TURN, backend, account or cloud relay is added.
+
+
+## 4.5.17 — adaptive gate rotation + serverless local peer hardening
+
+Completed stabilisation release. Completed-gate review remains inside the Adaptive/Progressive engine even when the visible task is full typing. A wrong L5 answer therefore persists as L4 and the later return uses the real L4 mask. Normal continuation fillers rotate across the whole eligible gate before repeating, while targeted lapse returns may interrupt after the existing two-other-answer cooldown.
+
+The serverless nearby transfer path is also hardened without adding STUN/TURN/backend services: the receiving desktop primes webcam/local-media permission before gathering its WebRTC offer, the peer connection uses the browser's default bundling with `iceTransportPolicy: all`, and diagnostics distinguish direct host candidates from privacy-obscured mDNS candidates. QR-only delta and `.ldprogress` remain fallbacks.
+
+Next optional sync step remains 4.5.18 (`Live sync while connected`) if direct peer connectivity proves usable on the real desktop/phone pair. The next main learning-product milestone remains 4.6 (`Prepare for this`).

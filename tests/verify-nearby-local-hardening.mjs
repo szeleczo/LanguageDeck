@@ -1,0 +1,12 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const html=fs.readFileSync(new URL("../index.html",import.meta.url),"utf8");
+assert.match(html,/4\.5\.17-adaptive-gate-rotation-nearby-hardening-20260909/);
+assert.match(html,/function nearbyPeerConfig\(\)\{return\{iceServers:\[\],iceTransportPolicy:"all"\}\}/,"peer remains serverless and uses default bundling");
+assert.doesNotMatch(html,/bundlePolicy:"max-bundle"/,"max-bundle is no longer forced");
+assert.match(html,/async function ensureQrCameraStream\(\)/,"camera stream can be primed and reused");
+const receive=html.slice(html.indexOf("async function startNearbyReceive()"),html.indexOf("async function scanNearbyAnswer()"));
+assert.ok(receive.indexOf("await ensureQrCameraStream()") < receive.indexOf("new RTCPeerConnection"),"receiver asks for camera/media permission before ICE gathering");
+assert.match(html,/privacy-obscured/,"candidate diagnostics expose mDNS/privacy-obscured paths without leaking addresses");
+assert.match(html,/rawHost/,"candidate diagnostics distinguish direct host candidates");
+console.log("Nearby local peer hardening regression checks passed.");

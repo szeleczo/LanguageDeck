@@ -4082,7 +4082,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.16-adaptive-gate-continuation-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.17-adaptive-gate-rotation-nearby-hardening-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4665,7 +4665,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.16-adaptive-gate-continuation-20260909";
+    const APP_BUILD = "4.5.17-adaptive-gate-rotation-nearby-hardening-20260909";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5698,7 +5698,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     function progressiveInfo(item) {
       const idx = progressiveLevelIndex(item);
-      const wordAdaptive = currentGame === "words" && wordMode === "progressive";
+      const wordAdaptive = adaptiveWordEngineActive();
       const levels = wordAdaptive ? PROGRESSIVE_LEVELS : SENTENCE_PROGRESSIVE_LEVELS;
       const storedInfo = {
         index: idx,
@@ -5942,12 +5942,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     function maybeAutoSubmitProgressiveWord() {
-      if (wordMode !== "progressive" || locked || !currentTypingWord || !currentTypingChallenge || !currentTypingChallenge.masked) return;
+      if (!adaptiveWordEngineActive() || locked || !currentTypingWord || !currentTypingChallenge || !currentTypingChallenge.masked) return;
       if (!progressiveMissingIsFilled(currentTypingChallenge, typingInput.value)) return;
       clearTimeout(wordProgressiveAutoSubmitTimer);
       const typed = typingInput.value;
       wordProgressiveAutoSubmitTimer = setTimeout(() => {
-        if (locked || wordMode !== "progressive" || !currentTypingWord || !currentTypingChallenge || typingInput.value !== typed) return;
+        if (locked || !adaptiveWordEngineActive() || !currentTypingWord || !currentTypingChallenge || typingInput.value !== typed) return;
         const correct = isProgressiveWordAnswerCorrect(
           currentTypingChallenge,
           typingInput.value,
@@ -7063,7 +7063,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       } catch (_) {}
     }
     function noteAdaptiveLevelLoad(row, source = "queue") {
-      if (!row || currentGame !== "words" || wordMode !== "progressive") return;
+      if (!row || !adaptiveWordEngineActive()) return;
       const events = readAdaptiveDiagnosticEvents(row.deck || currentDeck);
       const sameCard = e => {
         if (e.event !== "answer" || e.id !== row.id || e.set !== row.set_name) return false;
@@ -7362,6 +7362,21 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       gateContinuationMode = false;
       gateContinuationSeenIds = new Set();
     }
+    // Gate continuation is an Adaptive review state, not the standalone Type mode.
+    // Once continuation starts, keep using the Progressive engine even if a stale
+    // UI/session value briefly reports `typing`; this prevents full-recall mistakes
+    // from bypassing Adaptive demotion. A deliberate mode change resets the session
+    // and therefore clears gateContinuationMode.
+    function adaptiveWordEngineActive() {
+      if (currentGame !== "words") return false;
+      if (wordMode === "progressive" || gateContinuationMode) return true;
+      // 4.5.17 recovery guard: older completed-gate/full-type flows could leave
+      // the visible variant as standalone `typing`. Inside an already completed
+      // gate that full recall is still Adaptive evidence, so a miss must demote
+      // and the next return must use the lower real mask instead of bypassing L1–L5.
+      return wordMode === "typing" && gateEnabled && practiceScope !== "wrong" && !!lastPracticeProgress?.is_complete;
+    }
+
     function wordInterleaveRemaining(item) { return item && item.id != null ? (wordInterleaveCooldown.get(item.id) || 0) : 0; }
     function wordInterleaveBlocked(item) { return wordInterleaveRemaining(item) > 0; }
     function noteWordAnswerForInterleave(item) {
@@ -8707,13 +8722,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       };
       const modeLabels = { words: "Words", grammar: "Grammar", sentences: "Sentences", text: "Text" };
       const modeLabel = modeLabels[currentGame] || "Words";
+      const effectiveWordMode = adaptiveWordEngineActive() ? "progressive" : wordMode;
       const variant = currentGame === "words"
-        ? (variantLabels[wordMode] || wordMode)
+        ? (variantLabels[effectiveWordMode] || effectiveWordMode)
         : currentGame === "text"
           ? (variantLabels[textGoal] || "Reading")
           : (variantLabels[sentenceMode] || sentenceMode);
       const setText = currentSetName === "__all__" ? (currentGame === "grammar" ? "All grammar decks" : currentGame === "sentences" ? "All sentence decks" : "All decks") : currentSetName;
-      return { mode:currentGame, modeLabel, variant, deck:currentDeck, languageLabel:languageName(currentDeck), setName:setText, wordMode, sentenceMode, order:newItemOrder, gateEnabled, gateIndex:currentGateIndex, totalGates, score:{ok:correctCount,ko:wrongCount}, scoreOk:correctCount, scoreKo:wrongCount, progress:{...lastPracticeProgress}, pendingWrites:practicePendingWrites, writeErrors:practiceWriteErrors, sessionUnique:sessionLoadedIds.size, mistakeReturns:mistakeReturnCount(), sessionNewAnswers, sessionReviewAnswers, sessionArticleReturns, sessionProgressAdvances, sessionReinforcements, sessionMasteryGains, sessionStableGains, requestedNewRatio:newRatio, guided:!!guidedPractice, guidedLabel:guidedPractice?.label||"", guidedTarget:guidedPractice?.target||"" };
+      return { mode:currentGame, modeLabel, variant, deck:currentDeck, languageLabel:languageName(currentDeck), setName:setText, wordMode, effectiveWordMode, sentenceMode, order:newItemOrder, gateEnabled, gateIndex:currentGateIndex, totalGates, score:{ok:correctCount,ko:wrongCount}, scoreOk:correctCount, scoreKo:wrongCount, progress:{...lastPracticeProgress}, pendingWrites:practicePendingWrites, writeErrors:practiceWriteErrors, sessionUnique:sessionLoadedIds.size, mistakeReturns:mistakeReturnCount(), sessionNewAnswers, sessionReviewAnswers, sessionArticleReturns, sessionProgressAdvances, sessionReinforcements, sessionMasteryGains, sessionStableGains, requestedNewRatio:newRatio, guided:!!guidedPractice, guidedLabel:guidedPractice?.label||"", guidedTarget:guidedPractice?.target||"" };
     }
     function renderSessionControlsSummary() {
       const actualEl = $("sessionActualNewRatio"), targetEl = $("sessionRequestedNewRatio"), intakeEl = $("sessionIntakeStatus");
@@ -8761,8 +8777,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       };
       const modeLabels = { words: "Words", grammar: "Grammar", sentences: "Sentences", text: "Text" };
       const modeLabel = modeLabels[currentGame] || "Words";
+      const effectiveWordMode = adaptiveWordEngineActive() ? "progressive" : wordMode;
       const variant = currentGame === "words"
-        ? (variantLabels[wordMode] || wordMode)
+        ? (variantLabels[effectiveWordMode] || effectiveWordMode)
         : currentGame === "text"
           ? (variantLabels[textGoal] || "Reading")
           : (variantLabels[sentenceMode] || sentenceMode);
@@ -9686,6 +9703,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     /* ---------- Word match game ---------- */
     async function loadWords(reset = true) {
       if (reset) { sessionLoadedIds = new Set(); sessionSelectionHistoryIds = new Set(); resetSessionMistakes(); resetSessionPacing(); }
+      // Entering an already-completed gate in Adaptive or legacy/full-Type
+      // establishes an Adaptive review SESSION. Keep this latch even if a later
+      // mistake makes the gate statistically incomplete again; otherwise the
+      // very demotion we want would switch subsequent cards back to plain Type.
+      if (!guidedPractice && currentGame === "words" && gateEnabled && practiceScope !== "wrong" &&
+          !!lastPracticeProgress?.is_complete && (wordMode === "progressive" || wordMode === "typing")) {
+        gateContinuationMode = true;
+      }
       selectedLeft = null; selectedRight = null;
       matchedIds = new Set();
       pendingArticlePairId = null; hideArticleModal();
@@ -9697,7 +9722,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       // Re-entering an already completed gate must not land on an empty/Done
       // card. The continuation refill keeps practice going, but preserves each
       // word's real Adaptive level rather than forcing every card to L5.
-      if (wordQueue.length === 0 && wordMode === "progressive") await ensureWordQueue(1);
+      if (wordQueue.length === 0 && adaptiveWordEngineActive()) await ensureWordQueue(1);
 
       if (wordQueue.length === 0) {
         renderWordEmptyState();
@@ -9729,9 +9754,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     async function gateCanContinuePractice() {
-      if (guidedPractice || currentGame !== "words" || wordMode !== "progressive" || !gateEnabled || practiceScope === "wrong") return false;
+      if (guidedPractice || !adaptiveWordEngineActive() || !gateEnabled || practiceScope === "wrong") return false;
+      // Once a completed-gate review session has started, a lapse is allowed to
+      // make the gate incomplete without ending the review. That lower-level card
+      // must still be able to return after interleaving.
+      if (gateContinuationMode) return true;
       const info = await refreshGateInfo();
-      return !!info?.progress?.is_complete;
+      if (!!info?.progress?.is_complete) { gateContinuationMode = true; return true; }
+      return false;
     }
     async function fetchGateContinuationItems(limit = 12, reservedIds = new Set()) {
       const allRows = await DB.getAll("word_pairs", currentDeck, currentSetName);
@@ -9740,21 +9770,19 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         .filter(r => !reservedIds.has(r.id) && !sessionArticleBlockedIds.has(r.id) && !wordInterleaveBlocked(r));
       if (!pool.length) return [];
 
-      // Continuation is maintenance practice, not a difficulty override. Prefer
-      // words currently at the strongest Adaptive level so a completed gate
-      // naturally feels like full recall. If the learner demotes a word, its
-      // targeted return is supplied separately and will render at the new level.
-      // If a legacy/completed gate has no L5 rows at all, keep practice alive at
-      // the strongest level that actually exists rather than inventing L5.
-      const strongest = Math.max(...pool.map(progressiveLevelIndex));
-      const preferred = pool.filter(r => progressiveLevelIndex(r) === strongest);
-      let unseen = preferred.filter(r => !gateContinuationSeenIds.has(r.id));
+      // Completed-gate review rotates across the WHOLE eligible gate before a
+      // normal filler card is repeated. This prevents a tiny highest-level subset
+      // from cycling forever. Difficulty is never overridden: an L5 row is full
+      // typing, while a row demoted to L4/L3/... returns at that stored level.
+      // Targeted mistake returns are injected separately after the two-answer
+      // interleave cooldown, so difficult words can still come back sooner.
+      let unseen = pool.filter(r => !gateContinuationSeenIds.has(r.id));
       if (!unseen.length) {
-        for (const row of preferred) gateContinuationSeenIds.delete(row.id);
-        unseen = preferred.slice();
+        gateContinuationSeenIds.clear();
+        unseen = pool.slice();
       }
       const ordered = orderStudyBatch(unseen);
-      const chosen = ordered.slice(0, Math.max(1, limit | 0));
+      const chosen = ordered.slice(0, Math.max(1, Math.min(limit | 0 || 1, unseen.length)));
       for (const row of chosen) gateContinuationSeenIds.add(row.id);
       return chosen;
     }
@@ -10009,7 +10037,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     async function saveWordAnswer(wordId, isCorrect, clean = true, evidence = null) {
-      const row = wordMode === "progressive"
+      const row = adaptiveWordEngineActive()
         ? await recordProgressiveAnswer("word_pairs", wordId, isCorrect, repetitionProfile, clean, evidence)
         : await recordAnswer("word_pairs", wordId, isCorrect, repetitionProfile, evidence);
       syncRowIntoLiveItems(row);
@@ -10186,12 +10214,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       currentTypingWord = queuedTypingWord && queuedTypingWord.id != null
         ? ((await DB.getById("word_pairs", queuedTypingWord.id)) || queuedTypingWord)
         : queuedTypingWord;
-      if (wordMode === "progressive") currentTypingWord = await clearStaleProgressiveRecoveryState(currentTypingWord);
+      if (adaptiveWordEngineActive()) currentTypingWord = await clearStaleProgressiveRecoveryState(currentTypingWord);
       noteAdaptiveLevelLoad(currentTypingWord, guidedPractice ? "guided-queue-live-db" : "deck-queue-live-db");
       typingHintVisible = false;
       setPromptWithHintDot(typingPrompt, currentTypingWord.english, !!hintTextOf(currentTypingWord));
       renderTypingLearningTools();
-      const isProgressive = wordMode === "progressive";
+      const isProgressive = adaptiveWordEngineActive();
       // Completed-gate continuation never overrides difficulty. L5 naturally
       // renders as full typing; a lapse to L4/L3/... must immediately change the
       // next challenge to that real stored Adaptive level.
@@ -10216,7 +10244,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         : deckCfg().typingPlaceholder;
       typingInput.value = "";
       renderInlineMissingKeypad(typingInlineKeypad, typingInput, currentTypingChallenge, value => {
-        if (wordMode === "progressive" && currentTypingChallenge && currentTypingChallenge.masked) {
+        if (adaptiveWordEngineActive() && currentTypingChallenge && currentTypingChallenge.masked) {
           typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, value);
           typingResult.textContent = "";
           maybeAutoSubmitProgressiveWord();
@@ -10264,7 +10292,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         return;
       }
 
-      const correct = wordMode === "progressive"
+      const correct = adaptiveWordEngineActive()
         ? isProgressiveWordAnswerCorrect(
             currentTypingChallenge,
             typingInput.value,
@@ -10275,7 +10303,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         typingResult.textContent = "Correct.";
         statusEl.textContent = "";
         try {
-          await saveWordAnswer(currentTypingWord.id, true, !wordAttemptHadError, { signals:[{kind:wordMode === "progressive" ? "progressive" : "typing",correct:true}], chosen:typingInput.value, expected:targetDisplay(currentTypingWord) });
+          await saveWordAnswer(currentTypingWord.id, true, !wordAttemptHadError, { signals:[{kind:adaptiveWordEngineActive() ? "progressive" : "typing",correct:true}], chosen:typingInput.value, expected:targetDisplay(currentTypingWord) });
           noteWordAnswerForInterleave(currentTypingWord);
         } catch (error) {
           console.error("Could not save the correct word answer", error);
@@ -10296,7 +10324,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         statusEl.textContent = "";
         // Same per-letter feedback as sentence mode: once the answer is
         // submitted wrong, highlight which typed letters are incorrect.
-        if (wordMode === "progressive" && currentTypingChallenge && currentTypingChallenge.masked) {
+        if (adaptiveWordEngineActive() && currentTypingChallenge && currentTypingChallenge.masked) {
           typingClue.innerHTML = clueHtml(
             currentTypingChallenge.masked,
             typingInput.value,
@@ -10306,7 +10334,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         } else {
           renderFullTypingSlots(typingClue, targetDisplay(currentTypingWord), typingInput.value, true);
         }
-        await saveWordAnswer(currentTypingWord.id, false, true, { signals:[{kind:wordMode === "progressive" ? "progressive" : "typing",correct:false}], chosen:typingInput.value, expected:targetDisplay(currentTypingWord) });
+        await saveWordAnswer(currentTypingWord.id, false, true, { signals:[{kind:adaptiveWordEngineActive() ? "progressive" : "typing",correct:false}], chosen:typingInput.value, expected:targetDisplay(currentTypingWord) });
         noteWordAnswerForInterleave(currentTypingWord);
         scheduleWordMistake(currentTypingWord);
         wordTypingAwaitingContinue = true;
@@ -12240,11 +12268,21 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       try{nearbyPeer?.close()}catch(_){}
       nearbyChannel=null;nearbyPeer=null;nearbyRequest=null;nearbyReceiveMeta=null;nearbyReceiveChunks=[];nearbyReceiveBytes=0;nearbySendStarted=false;
     }
-    function nearbyPeerConfig(){return{iceServers:[],bundlePolicy:"max-bundle"}}
+    // Serverless local-only peer configuration. Do not force max-bundle here:
+    // Chromium/Brave gets the broadest chance to expose a usable host path with
+    // its default bundling behaviour. No STUN/TURN server is configured.
+    function nearbyPeerConfig(){return{iceServers:[],iceTransportPolicy:"all"}}
     function nearbyCandidateStats(description){
       const lines=String(description?.sdp||"").split(/\r?\n/).filter(x=>x.startsWith("a=candidate:"));
-      const host=lines.filter(x=>/\styp host\b/.test(x)).length,srflx=lines.filter(x=>/\styp srflx\b/.test(x)).length,relay=lines.filter(x=>/\styp relay\b/.test(x)).length,mdns=lines.filter(x=>/\.local(?:\s|$)/i.test(x)).length;
-      return{count:lines.length,host,srflx,relay,mdns};
+      const hostLines=lines.filter(x=>/\styp host\b/.test(x));
+      const host=hostLines.length,srflx=lines.filter(x=>/\styp srflx\b/.test(x)).length,relay=lines.filter(x=>/\styp relay\b/.test(x)).length,mdns=hostLines.filter(x=>/\.local(?:\s|$)/i.test(x)).length;
+      const rawHost=Math.max(0,host-mdns);
+      return{count:lines.length,host,srflx,relay,mdns,rawHost};
+    }
+    function nearbyCandidateSummary(stats){
+      const s=stats||{count:0,host:0,mdns:0,rawHost:0};
+      if(!s.count)return "0 ICE candidates";
+      return `${s.count} ICE candidate${s.count===1?"":"s"} · ${s.rawHost||0} direct host · ${s.mdns||0} privacy-obscured`;
     }
     async function nearbyWaitIce(pc,timeout=12000){
       if(pc.iceGatheringState==="complete")return true;
@@ -12280,7 +12318,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const update=()=>{
         const state=pc.connectionState,ice=pc.iceConnectionState;
         if(state==="connected"){nearbyClearConnectTimer();$("qrTransferStatus").textContent=`${label} connected · transferring progress directly…`;return}
-        if(!handledFailure&&(state==="failed"||ice==="failed")){handledFailure=true;nearbyUseQrFallback(role,"Direct connection failed on this local network.")}
+        if(!handledFailure&&(state==="failed"||ice==="failed")){handledFailure=true;nearbyUseQrFallback(role,`Direct connection failed on this local network (${nearbyCandidateSummary(nearbyCandidateStats(pc.localDescription))}).`)}
       };
       pc.addEventListener("connectionstatechange",update);pc.addEventListener("iceconnectionstatechange",update);
     }
@@ -12317,17 +12355,24 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function startNearbyReceive(){
       stopQrTransfer();stopNearbyPeer();nearbyFallbackActive=false;nearbyFallbackRequest=null;qrTransferReceivedPack=null;$("qrTransferModal").classList.add("active");nearbySetView("send");$("qrTransferTitle").textContent="Receive progress";$("qrTransferScanReplyBtn").classList.remove("hidden");$("qrTransferScanReplyBtn").textContent="Scan sender reply";$("qrTransferFrame").textContent="Preparing direct connection…";$("qrTransferSendNote").textContent="On the sending device choose Send progress and scan this QR. Then scan its reply here.";
       if(!globalThis.RTCPeerConnection){$("qrTransferStatus").textContent="This browser does not support direct peer transfer. Use QR-only or a Progress Pack file.";return}
-      try{const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Direct link","receive");const channel=pc.createDataChannel("languagedeck-progress",{ordered:true});nearbyInstallReceiverChannel(channel);nearbyRequest=buildProgressRequest();nearbyFallbackRequest=nearbyRequest;await pc.setLocalDescription(await pc.createOffer());await nearbyWaitIce(pc);const stats=nearbyCandidateStats(pc.localDescription);const raw=await nearbyEncodeSignal("offer",pc.localDescription,nearbyRequest);drawQr(raw,500);$("qrTransferFrame").textContent="Direct connection request QR";$("qrTransferStatus").textContent=stats.count?`Direct offer ready · ${stats.count} local ICE candidate${stats.count===1?"":"s"}${stats.mdns?` · ${stats.mdns} privacy-obscured`:""}. No learning data is in this QR.`:"No usable local ICE candidate was exposed. Scan this request anyway; the sender will fall back to QR-only delta."}catch(err){stopNearbyPeer();$("qrTransferStatus").textContent=`Could not prepare direct transfer: ${err.message||err}`}
+      try{
+        // The receiver used to gather ICE before it had ever requested webcam
+        // permission. Prime the same camera stream we will need for the reply
+        // scan first, then create the offer. This remains fully local.
+        $("qrTransferStatus").textContent="Requesting webcam access before local peer discovery…";
+        await ensureQrCameraStream();
+        const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Direct link","receive");const channel=pc.createDataChannel("languagedeck-progress",{ordered:true});nearbyInstallReceiverChannel(channel);nearbyRequest=buildProgressRequest();nearbyFallbackRequest=nearbyRequest;await pc.setLocalDescription(await pc.createOffer());await nearbyWaitIce(pc);const stats=nearbyCandidateStats(pc.localDescription);const raw=await nearbyEncodeSignal("offer",pc.localDescription,nearbyRequest);drawQr(raw,500);$("qrTransferFrame").textContent="Direct connection request QR";$("qrTransferStatus").textContent=stats.count?`Direct offer ready · ${nearbyCandidateSummary(stats)}. No learning data is in this QR.`:"No usable local ICE candidate was exposed. Scan this request anyway; the sender will fall back to QR-only delta."
+      }catch(err){stopNearbyPeer();stopQrCamera();$("qrTransferStatus").textContent=`Could not prepare direct transfer: ${err.message||err}`}
     }
     async function scanNearbyAnswer(){
       if(!nearbyPeer){$("qrTransferStatus").textContent="Create a receive request first.";return}
       stopQrCamera();nearbySetView("scan");$("qrTransferTitle").textContent="Receive progress";$("qrTransferScanStatus").textContent="Starting camera…";$("qrTransferStatus").textContent="Scan the reply QR shown on the sending device.";
-      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="answer")return false;stopQrCamera();const stats=nearbyCandidateStats(signal.d);await nearbyPeer.setRemoteDescription(signal.d);$("qrTransferScanStatus").textContent="Reply accepted.";if(!stats.count){await nearbyUseQrFallback("receive","The sender exposed no usable local ICE candidate.");return true}$("qrTransferStatus").textContent=`Connecting directly… ${stats.count} remote candidate${stats.count===1?"":"s"}.`;nearbyArmConnectTimeout(nearbyPeer,"receive");return true},"Scan the sender's reply QR.")}catch(err){stopQrCamera();$("qrTransferStatus").textContent=`Camera unavailable: ${err.message||err}`}
+      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="answer")return false;stopQrCamera();const stats=nearbyCandidateStats(signal.d);await nearbyPeer.setRemoteDescription(signal.d);$("qrTransferScanStatus").textContent="Reply accepted.";if(!stats.count){await nearbyUseQrFallback("receive","The sender exposed no usable local ICE candidate.");return true}$("qrTransferStatus").textContent=`Connecting directly… ${nearbyCandidateSummary(stats)}.`;nearbyArmConnectTimeout(nearbyPeer,"receive");return true},"Scan the sender's reply QR.")}catch(err){stopQrCamera();$("qrTransferStatus").textContent=`Camera unavailable: ${err.message||err}`}
     }
     async function startNearbySend(){
       stopQrTransfer();stopNearbyPeer();nearbyFallbackActive=false;nearbyFallbackRequest=null;qrTransferReceivedPack=null;$("qrTransferModal").classList.add("active");nearbySetView("scan");$("qrTransferTitle").textContent="Send progress";$("qrTransferProgressFill").style.width="0%";$("qrTransferStatus").textContent="Scan the receiver's direct connection QR.";
       if(!globalThis.RTCPeerConnection){$("qrTransferStatus").textContent="This browser does not support direct peer transfer. Use QR-only or a Progress Pack file.";return}
-      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="offer")return false;stopQrCamera();nearbyRequest=signal.r||buildProgressRequest();nearbyFallbackRequest=nearbyRequest;const remoteStats=nearbyCandidateStats(signal.d);if(!remoteStats.count){await nearbyUseQrFallback("send","The receiver exposed no usable local ICE candidate.");return true}const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Direct link","send");pc.addEventListener("datachannel",ev=>{nearbyChannel=ev.channel;nearbyChannel.addEventListener("open",()=>nearbySendDelta(nearbyChannel,nearbyRequest),{once:true})});await pc.setRemoteDescription(signal.d);await pc.setLocalDescription(await pc.createAnswer());await nearbyWaitIce(pc);const localStats=nearbyCandidateStats(pc.localDescription);if(!localStats.count){await nearbyUseQrFallback("send","This device exposed no usable local ICE candidate.");return true}const reply=await nearbyEncodeSignal("answer",pc.localDescription);nearbySetView("send");$("qrTransferSendNote").textContent="Show this reply QR to the receiving device. Progress will transfer automatically after it scans the reply. If the local link is blocked, LanguageDeck will switch to QR-only delta.";drawQr(reply,500);$("qrTransferFrame").textContent="Direct connection reply QR";$("qrTransferStatus").textContent=`Waiting for the receiver to scan this reply… ${localStats.count} local candidate${localStats.count===1?"":"s"}${localStats.mdns?` · ${localStats.mdns} privacy-obscured`:""}.`;return true},"Scan the receiver's direct connection QR.")}catch(err){stopQrCamera();stopNearbyPeer();$("qrTransferStatus").textContent=`Could not start direct transfer: ${err.message||err}`}
+      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="offer")return false;stopQrCamera();nearbyRequest=signal.r||buildProgressRequest();nearbyFallbackRequest=nearbyRequest;const remoteStats=nearbyCandidateStats(signal.d);if(!remoteStats.count){await nearbyUseQrFallback("send","The receiver exposed no usable local ICE candidate.");return true}const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Direct link","send");pc.addEventListener("datachannel",ev=>{nearbyChannel=ev.channel;nearbyChannel.addEventListener("open",()=>nearbySendDelta(nearbyChannel,nearbyRequest),{once:true})});await pc.setRemoteDescription(signal.d);await pc.setLocalDescription(await pc.createAnswer());await nearbyWaitIce(pc);const localStats=nearbyCandidateStats(pc.localDescription);if(!localStats.count){await nearbyUseQrFallback("send","This device exposed no usable local ICE candidate.");return true}const reply=await nearbyEncodeSignal("answer",pc.localDescription);nearbySetView("send");$("qrTransferSendNote").textContent="Show this reply QR to the receiving device. Progress will transfer automatically after it scans the reply. If the local link is blocked, LanguageDeck will switch to QR-only delta.";drawQr(reply,500);$("qrTransferFrame").textContent="Direct connection reply QR";$("qrTransferStatus").textContent=`Waiting for the receiver to scan this reply… ${nearbyCandidateSummary(localStats)}.`;return true},"Scan the receiver's direct connection QR.")}catch(err){stopQrCamera();stopNearbyPeer();$("qrTransferStatus").textContent=`Could not start direct transfer: ${err.message||err}`}
     }
 
     function stopQrCamera(){if(qrTransferScanTimer){clearTimeout(qrTransferScanTimer);qrTransferScanTimer=null}if(qrTransferStream){for(const t of qrTransferStream.getTracks())t.stop();qrTransferStream=null}const v=$("qrTransferVideo");if(v){try{v.pause()}catch(_){}v.srcObject=null}}
@@ -12350,13 +12395,22 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const jsqr=await loadJsQrSource(),canvas=document.createElement("canvas"),ctx=canvas.getContext("2d",{willReadFrequently:true});
       return async()=>{if(video.readyState<2||!video.videoWidth)return[];const max=720,scale=Math.min(1,max/video.videoWidth),w=Math.max(2,Math.round(video.videoWidth*scale)),h=Math.max(2,Math.round(video.videoHeight*scale));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}ctx.drawImage(video,0,0,w,h);const image=ctx.getImageData(0,0,w,h),res=jsqr(image.data,w,h,{inversionAttempts:"attemptBoth"});return res?.data?[res.data]:[]};
     }
+    function qrCameraConstraints(){
+      const coarse=matchMedia?.("(pointer:coarse)")?.matches;
+      return{video:{facingMode:coarse?{ideal:"environment"}:undefined,width:{ideal:1280},height:{ideal:720}},audio:false};
+    }
+    async function ensureQrCameraStream(){
+      if(qrTransferStream&&qrTransferStream.getVideoTracks().some(t=>t.readyState==="live"))return qrTransferStream;
+      if(!navigator.mediaDevices?.getUserMedia)throw new Error("Camera access is unavailable here. Open LanguageDeck over HTTPS or use the installed PWA.");
+      qrTransferStream=await navigator.mediaDevices.getUserMedia(qrCameraConstraints());
+      return qrTransferStream;
+    }
     async function startQrCamera(onRaw,statusText="Point the camera at the QR code."){
       const status=$("qrTransferScanStatus"),video=$("qrTransferVideo");status.textContent="Starting camera…";
-      if(!navigator.mediaDevices?.getUserMedia)throw new Error("Camera access is unavailable here. Open LanguageDeck over HTTPS or use the installed PWA.");
-      const coarse=matchMedia?.("(pointer:coarse)")?.matches;
-      // Start the camera FIRST. Decoder capability is resolved afterwards so a
-      // missing BarcodeDetector can never prevent the webcam permission prompt.
-      qrTransferStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:coarse?{ideal:"environment"}:undefined,width:{ideal:1280},height:{ideal:720}},audio:false});
+      // Reuse a stream primed before ICE gathering when available. On the
+      // desktop receiver this asks for camera/local-media permission BEFORE the
+      // offer is created, which gives Chromium/Brave its best local-host path.
+      await ensureQrCameraStream();
       video.srcObject=qrTransferStream;await video.play();status.textContent=statusText;
       const decode=await createCameraDecoder(video);let busy=false;
       const loop=async()=>{if(!qrTransferStream)return;if(!busy&&video.readyState>=2){busy=true;try{for(const raw of await decode())if(await onRaw(raw)===true)return}catch(err){stopQrCamera();status.textContent="QR scan stopped.";$("qrTransferStatus").textContent=err.message||String(err);return}finally{busy=false}}qrTransferScanTimer=setTimeout(loop,150)};loop();
@@ -13036,7 +13090,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     typingInput.addEventListener("input", () => {
       // One shared visual model: masked levels and full typing both keep their
       // character slots on screen while typed characters fill them live.
-      if (wordMode === "progressive" && currentTypingChallenge && currentTypingChallenge.masked) {
+      if (adaptiveWordEngineActive() && currentTypingChallenge && currentTypingChallenge.masked) {
         typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, typingInput.value);
         typingResult.textContent = "";
         maybeAutoSubmitProgressiveWord();
@@ -13492,7 +13546,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const recentAccuracy = recent.length ? Math.round(recent.reduce((total,value)=>total+value,0) / recent.length * 100) : null;
       const lines = [
         "LanguageDeck learning diagnostics", `Build: ${APP_BUILD}`, `Created: ${now}`,
-        `Language: ${currentDeck} (${languageName(currentDeck)})`, `Mode: ${currentGame} / ${currentGame === "words" ? wordMode : sentenceMode}`,
+        `Language: ${currentDeck} (${languageName(currentDeck)})`, `Mode: ${currentGame} / ${currentGame === "words" ? (adaptiveWordEngineActive() ? "progressive" : wordMode) : sentenceMode}${gateContinuationMode ? " · completed-gate review" : ""}`,
         `Set: ${currentSetName} | scope: ${practiceScope} | profile: ${repetitionProfile} | order: ${newItemOrder}`,
         `Gate: ${gateEnabled ? `${currentGateIndex+1}/${totalGates} (size ${gateSize})` : "whole table"}`,
         `Learning intake: ${countLearning(all)}/${activeLearningPoolLimit(all)} active slots occupied | requested new ratio: ${Math.round(newRatio * 100)}% | recent lexical accuracy: ${recentAccuracy == null ? "not enough data" : `${recentAccuracy}% (${recent.length} answers)`}`,
@@ -13533,7 +13587,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue instead of dead-ending on Done, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.16, completed-gate continuation no longer forces L5: L5 words still return as full typing, but a lapse demotes normally and every later card uses the word’s actual stored Adaptive level. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts. Since build 4.5.14, direct local progress transfer reports ICE candidate availability and automatically falls back to the compact QR delta instead of ending at a failed peer connection. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue instead of dead-ending on Done, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.16, completed-gate continuation no longer forces L5: L5 words still return as full typing, but a lapse demotes normally and every later card uses the word’s actual stored Adaptive level. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts. Since build 4.5.14, direct local progress transfer reports ICE candidate availability and automatically falls back to the compact QR delta instead of ending at a failed peer connection. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI. Since build 4.5.17, completed-gate review is locked to the Adaptive engine and rotates across the whole eligible gate before normal filler repeats; full-typing mistakes therefore demote to L4 and return with the real lower-level mask. Local peer transfer also primes camera permission before ICE gathering and reports direct-vs-privacy-obscured host candidates.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);

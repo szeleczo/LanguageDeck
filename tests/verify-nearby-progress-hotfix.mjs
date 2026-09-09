@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
-assert.match(html,/4\.5\.16-adaptive-gate-continuation-20260909/);
+assert.match(html,/4\.5\.17-adaptive-gate-rotation-nearby-hardening-20260909/);
 assert.match(html,/function qrUnwireIsoTime\(value\)\{const ms=qrUnwireTime\(value\);return ms\?new Date\(ms\)\.toISOString\(\):null\}/,'practice wire dates decode back to ISO strings');
 assert.match(html,/function repairNumericPracticeDatesV4511\(\)/,'partial 4.5.9 numeric date imports are repaired');
 assert.match(html,/typeof row\[field\] === "number"/,'numeric DB date fields are normalized');
