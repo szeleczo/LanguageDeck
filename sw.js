@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.13 — desktop shortcuts and clean masked-input surface. */
-const CACHE_VERSION="languagedeck-4-5-13-desktop-shortcuts-clean-input-20260909";
+/* LanguageDeck 4.5.14 — robust nearby transfer with automatic QR-delta fallback. */
+const CACHE_VERSION="languagedeck-4-5-14-nearby-auto-fallback-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

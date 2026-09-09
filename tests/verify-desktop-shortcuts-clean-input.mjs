@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
-assert.match(html,/4\.5\.13-desktop-shortcuts-clean-input-20260909/);
+assert.match(html,/4\.5\.14-nearby-auto-fallback-20260909/);
 assert.match(html,/desktop-masked-input-hidden/,'desktop masked input hiding class exists');
 assert.match(html,/input\.classList\.toggle\("desktop-masked-input-hidden", !!\(isMissingOnly && !isTouchPrimaryDevice\(\)\)\)/,'masked desktop inputs are hidden by the shared keypad renderer');
 assert.match(html,/practiceShortcutModifier\(e\) && e\.key === "Enter"[\s\S]*submitTypingWordAnswer\(true\)/,'word input supports Ctrl/Cmd+Enter reveal');

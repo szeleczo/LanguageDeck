@@ -4053,7 +4053,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.13-desktop-shortcuts-clean-input-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.14-nearby-auto-fallback-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4636,7 +4636,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.13-desktop-shortcuts-clean-input-20260909";
+    const APP_BUILD = "4.5.14-nearby-auto-fallback-20260909";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -12082,7 +12082,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const QR_WIRE_TIME_FIELDS=new Set(["next_due","word_next_due","article_next_due","article_last_seen","last_seen","last_correct","last_wrong","first_seen","mastered_at","guided_last_answer_at","guided_success_at","guided_full_recall_at","explicit_unknown_at","full_recall_at"]);
     let qrTransferTimer=null, qrTransferStream=null, qrTransferScanTimer=null, qrTransferReceivedPack=null, qrTransferDecoderPromise=null;
     const NEARBY_SIGNAL_PREFIX="LDP2", NEARBY_CHUNK=16384;
-    let nearbyPeer=null, nearbyChannel=null, nearbyRequest=null, nearbyReceiveMeta=null, nearbyReceiveChunks=[], nearbyReceiveBytes=0, nearbySendStarted=false;
+    let nearbyPeer=null, nearbyChannel=null, nearbyRequest=null, nearbyReceiveMeta=null, nearbyReceiveChunks=[], nearbyReceiveBytes=0, nearbySendStarted=false, nearbyFallbackRequest=null, nearbyFallbackActive=false, nearbyConnectTimer=null;
 
     function progressDeviceId(){
       let id=localStorage.getItem(PROGRESS_DEVICE_KEY)||"";
@@ -12160,15 +12160,38 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       $("qrScanView").classList.toggle("hidden",kind!=="scan");
       $("qrReceiveView").classList.toggle("hidden",kind!=="receive");
     }
+    function nearbyClearConnectTimer(){if(nearbyConnectTimer){clearTimeout(nearbyConnectTimer);nearbyConnectTimer=null}}
     function stopNearbyPeer(){
+      nearbyClearConnectTimer();
       try{nearbyChannel?.close()}catch(_){}
       try{nearbyPeer?.close()}catch(_){}
       nearbyChannel=null;nearbyPeer=null;nearbyRequest=null;nearbyReceiveMeta=null;nearbyReceiveChunks=[];nearbyReceiveBytes=0;nearbySendStarted=false;
     }
     function nearbyPeerConfig(){return{iceServers:[],bundlePolicy:"max-bundle"}}
-    async function nearbyWaitIce(pc,timeout=5000){
-      if(pc.iceGatheringState==="complete")return;
-      await new Promise(resolve=>{let done=false;const finish=()=>{if(done)return;done=true;pc.removeEventListener("icegatheringstatechange",check);clearTimeout(timer);resolve()};const check=()=>pc.iceGatheringState==="complete"&&finish();const timer=setTimeout(finish,timeout);pc.addEventListener("icegatheringstatechange",check)});
+    function nearbyCandidateStats(description){
+      const lines=String(description?.sdp||"").split(/\r?\n/).filter(x=>x.startsWith("a=candidate:"));
+      const host=lines.filter(x=>/\styp host\b/.test(x)).length,srflx=lines.filter(x=>/\styp srflx\b/.test(x)).length,relay=lines.filter(x=>/\styp relay\b/.test(x)).length,mdns=lines.filter(x=>/\.local(?:\s|$)/i.test(x)).length;
+      return{count:lines.length,host,srflx,relay,mdns};
+    }
+    async function nearbyWaitIce(pc,timeout=12000){
+      if(pc.iceGatheringState==="complete")return true;
+      return await new Promise(resolve=>{let done=false;const finish=value=>{if(done)return;done=true;pc.removeEventListener("icegatheringstatechange",check);clearTimeout(timer);resolve(value)};const check=()=>pc.iceGatheringState==="complete"&&finish(true);const timer=setTimeout(()=>finish(pc.iceGatheringState==="complete"),timeout);pc.addEventListener("icegatheringstatechange",check)});
+    }
+    async function nearbyUseQrFallback(role,reason="Direct local connection is unavailable."){
+      if(nearbyFallbackActive)return;nearbyFallbackActive=true;nearbyClearConnectTimer();
+      const req=nearbyFallbackRequest;
+      if(role==="send"&&req){
+        try{stopQrCamera();try{nearbyChannel?.close()}catch(_){};try{nearbyPeer?.close()}catch(_){};nearbyChannel=null;nearbyPeer=null;nearbyRequest=null;
+          await showProgressDelta(req);$("qrTransferStatus").textContent=`${reason} Showing the compact QR-only delta instead.`;
+        }catch(err){$("qrTransferStatus").textContent=`${reason} QR-only fallback also failed: ${err.message||err}`}
+        return;
+      }
+      stopNearbyPeer();
+      $("qrTransferScanReplyBtn").classList.remove("hidden");$("qrTransferScanReplyBtn").textContent="Scan QR-only fallback";
+      $("qrTransferStatus").textContent=`${reason} The sender will switch to rotating delta QR frames. Tap Scan QR-only fallback.`;
+    }
+    function nearbyArmConnectTimeout(pc,role,ms=12000){
+      nearbyClearConnectTimer();nearbyConnectTimer=setTimeout(()=>{if(pc!==nearbyPeer||pc.connectionState==="connected"||nearbyFallbackActive)return;nearbyUseQrFallback(role,"Direct connection timed out.")},ms);
     }
     async function nearbyEncodeSignal(kind,description,request=null){
       const packed=await qrPackBytes({f:NEARBY_SIGNAL_PREFIX,v:1,k:kind,d:{type:description.type,sdp:description.sdp},r:request||null});
@@ -12179,12 +12202,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const parts=text.split(":",3);if(parts.length!==3||!(parts[1]==="g"||parts[1]==="r"))return null;
       try{const x=await qrUnpackBytes(qrB64ToBytes(parts[2]),parts[1]);return x?.f===NEARBY_SIGNAL_PREFIX&&x?.d?.sdp?x:null}catch(_){return null}
     }
-    function nearbyConnectionStatus(pc,label){
-      pc.addEventListener("connectionstatechange",()=>{
-        const state=pc.connectionState;
-        if(state==="connected")$("qrTransferStatus").textContent=`${label} connected · transferring progress directly…`;
-        else if(state==="failed")$("qrTransferStatus").textContent="Direct connection failed. Keep both devices on the same Wi-Fi/local network, or use QR-only/file transfer.";
-      });
+    function nearbyConnectionStatus(pc,label,role){
+      let handledFailure=false;
+      const update=()=>{
+        const state=pc.connectionState,ice=pc.iceConnectionState;
+        if(state==="connected"){nearbyClearConnectTimer();$("qrTransferStatus").textContent=`${label} connected · transferring progress directly…`;return}
+        if(!handledFailure&&(state==="failed"||ice==="failed")){handledFailure=true;nearbyUseQrFallback(role,"Direct connection failed on this local network.")}
+      };
+      pc.addEventListener("connectionstatechange",update);pc.addEventListener("iceconnectionstatechange",update);
     }
     async function nearbyWaitBuffered(channel,max=256*1024){
       if(channel.bufferedAmount<=max)return;
@@ -12217,19 +12242,19 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       channel.addEventListener("message",async ev=>{try{if(typeof ev.data==="string"){const msg=JSON.parse(ev.data);if(msg.t==="meta"){nearbyReceiveMeta={alg:msg.alg,hash:msg.hash,size:+msg.size||0};nearbyReceiveChunks=[];nearbyReceiveBytes=0;$("qrTransferStatus").textContent=`Receiving ${Math.max(1,Math.round(nearbyReceiveMeta.size/1024))} KB directly…`;return}if(msg.t==="end"){await nearbyFinishReceived();return}}const buf=ev.data instanceof Blob?await ev.data.arrayBuffer():ev.data;const part=new Uint8Array(buf);nearbyReceiveChunks.push(part);nearbyReceiveBytes+=part.length;if(nearbyReceiveMeta?.size){const pct=Math.min(100,Math.round(nearbyReceiveBytes/nearbyReceiveMeta.size*100));$("qrTransferProgressFill").style.width=pct+"%"}if(nearbyReceiveMeta&&nearbyReceiveBytes>=nearbyReceiveMeta.size)await nearbyFinishReceived()}catch(err){$("qrTransferStatus").textContent=`Direct transfer failed: ${err.message||err}`}});
     }
     async function startNearbyReceive(){
-      stopQrTransfer();stopNearbyPeer();qrTransferReceivedPack=null;$("qrTransferModal").classList.add("active");nearbySetView("send");$("qrTransferTitle").textContent="Receive progress";$("qrTransferScanReplyBtn").classList.remove("hidden");$("qrTransferScanReplyBtn").textContent="Scan sender reply";$("qrTransferFrame").textContent="Preparing direct connection…";$("qrTransferSendNote").textContent="On the sending device choose Send progress and scan this QR. Then scan its reply here.";
+      stopQrTransfer();stopNearbyPeer();nearbyFallbackActive=false;nearbyFallbackRequest=null;qrTransferReceivedPack=null;$("qrTransferModal").classList.add("active");nearbySetView("send");$("qrTransferTitle").textContent="Receive progress";$("qrTransferScanReplyBtn").classList.remove("hidden");$("qrTransferScanReplyBtn").textContent="Scan sender reply";$("qrTransferFrame").textContent="Preparing direct connection…";$("qrTransferSendNote").textContent="On the sending device choose Send progress and scan this QR. Then scan its reply here.";
       if(!globalThis.RTCPeerConnection){$("qrTransferStatus").textContent="This browser does not support direct peer transfer. Use QR-only or a Progress Pack file.";return}
-      try{const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Direct link");const channel=pc.createDataChannel("languagedeck-progress",{ordered:true});nearbyInstallReceiverChannel(channel);nearbyRequest=buildProgressRequest();await pc.setLocalDescription(await pc.createOffer());await nearbyWaitIce(pc);const raw=await nearbyEncodeSignal("offer",pc.localDescription,nearbyRequest);drawQr(raw,500);$("qrTransferFrame").textContent="Direct connection request QR";$("qrTransferStatus").textContent="No learning data is in this QR. Keep both devices on the same local network."}catch(err){stopNearbyPeer();$("qrTransferStatus").textContent=`Could not prepare direct transfer: ${err.message||err}`}
+      try{const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Direct link","receive");const channel=pc.createDataChannel("languagedeck-progress",{ordered:true});nearbyInstallReceiverChannel(channel);nearbyRequest=buildProgressRequest();nearbyFallbackRequest=nearbyRequest;await pc.setLocalDescription(await pc.createOffer());await nearbyWaitIce(pc);const stats=nearbyCandidateStats(pc.localDescription);const raw=await nearbyEncodeSignal("offer",pc.localDescription,nearbyRequest);drawQr(raw,500);$("qrTransferFrame").textContent="Direct connection request QR";$("qrTransferStatus").textContent=stats.count?`Direct offer ready · ${stats.count} local ICE candidate${stats.count===1?"":"s"}${stats.mdns?` · ${stats.mdns} privacy-obscured`:""}. No learning data is in this QR.`:"No usable local ICE candidate was exposed. Scan this request anyway; the sender will fall back to QR-only delta."}catch(err){stopNearbyPeer();$("qrTransferStatus").textContent=`Could not prepare direct transfer: ${err.message||err}`}
     }
     async function scanNearbyAnswer(){
       if(!nearbyPeer){$("qrTransferStatus").textContent="Create a receive request first.";return}
       stopQrCamera();nearbySetView("scan");$("qrTransferTitle").textContent="Receive progress";$("qrTransferScanStatus").textContent="Starting camera…";$("qrTransferStatus").textContent="Scan the reply QR shown on the sending device.";
-      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="answer")return false;stopQrCamera();await nearbyPeer.setRemoteDescription(signal.d);$("qrTransferScanStatus").textContent="Reply accepted.";$("qrTransferStatus").textContent="Connecting directly…";return true},"Scan the sender's reply QR.")}catch(err){stopQrCamera();$("qrTransferStatus").textContent=`Camera unavailable: ${err.message||err}`}
+      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="answer")return false;stopQrCamera();const stats=nearbyCandidateStats(signal.d);await nearbyPeer.setRemoteDescription(signal.d);$("qrTransferScanStatus").textContent="Reply accepted.";if(!stats.count){await nearbyUseQrFallback("receive","The sender exposed no usable local ICE candidate.");return true}$("qrTransferStatus").textContent=`Connecting directly… ${stats.count} remote candidate${stats.count===1?"":"s"}.`;nearbyArmConnectTimeout(nearbyPeer,"receive");return true},"Scan the sender's reply QR.")}catch(err){stopQrCamera();$("qrTransferStatus").textContent=`Camera unavailable: ${err.message||err}`}
     }
     async function startNearbySend(){
-      stopQrTransfer();stopNearbyPeer();qrTransferReceivedPack=null;$("qrTransferModal").classList.add("active");nearbySetView("scan");$("qrTransferTitle").textContent="Send progress";$("qrTransferProgressFill").style.width="0%";$("qrTransferStatus").textContent="Scan the receiver's direct connection QR.";
+      stopQrTransfer();stopNearbyPeer();nearbyFallbackActive=false;nearbyFallbackRequest=null;qrTransferReceivedPack=null;$("qrTransferModal").classList.add("active");nearbySetView("scan");$("qrTransferTitle").textContent="Send progress";$("qrTransferProgressFill").style.width="0%";$("qrTransferStatus").textContent="Scan the receiver's direct connection QR.";
       if(!globalThis.RTCPeerConnection){$("qrTransferStatus").textContent="This browser does not support direct peer transfer. Use QR-only or a Progress Pack file.";return}
-      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="offer")return false;stopQrCamera();const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyRequest=signal.r||buildProgressRequest();nearbyConnectionStatus(pc,"Direct link");pc.addEventListener("datachannel",ev=>{nearbyChannel=ev.channel;nearbyChannel.addEventListener("open",()=>nearbySendDelta(nearbyChannel,nearbyRequest),{once:true})});await pc.setRemoteDescription(signal.d);await pc.setLocalDescription(await pc.createAnswer());await nearbyWaitIce(pc);const reply=await nearbyEncodeSignal("answer",pc.localDescription);nearbySetView("send");$("qrTransferSendNote").textContent="Show this reply QR to the receiving device. Progress will transfer automatically after it scans the reply.";drawQr(reply,500);$("qrTransferFrame").textContent="Direct connection reply QR";$("qrTransferStatus").textContent="Waiting for the receiver to scan this reply…";return true},"Scan the receiver's direct connection QR.")}catch(err){stopQrCamera();stopNearbyPeer();$("qrTransferStatus").textContent=`Could not start direct transfer: ${err.message||err}`}
+      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="offer")return false;stopQrCamera();nearbyRequest=signal.r||buildProgressRequest();nearbyFallbackRequest=nearbyRequest;const remoteStats=nearbyCandidateStats(signal.d);if(!remoteStats.count){await nearbyUseQrFallback("send","The receiver exposed no usable local ICE candidate.");return true}const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Direct link","send");pc.addEventListener("datachannel",ev=>{nearbyChannel=ev.channel;nearbyChannel.addEventListener("open",()=>nearbySendDelta(nearbyChannel,nearbyRequest),{once:true})});await pc.setRemoteDescription(signal.d);await pc.setLocalDescription(await pc.createAnswer());await nearbyWaitIce(pc);const localStats=nearbyCandidateStats(pc.localDescription);if(!localStats.count){await nearbyUseQrFallback("send","This device exposed no usable local ICE candidate.");return true}const reply=await nearbyEncodeSignal("answer",pc.localDescription);nearbySetView("send");$("qrTransferSendNote").textContent="Show this reply QR to the receiving device. Progress will transfer automatically after it scans the reply. If the local link is blocked, LanguageDeck will switch to QR-only delta.";drawQr(reply,500);$("qrTransferFrame").textContent="Direct connection reply QR";$("qrTransferStatus").textContent=`Waiting for the receiver to scan this reply… ${localStats.count} local candidate${localStats.count===1?"":"s"}${localStats.mdns?` · ${localStats.mdns} privacy-obscured`:""}.`;return true},"Scan the receiver's direct connection QR.")}catch(err){stopQrCamera();stopNearbyPeer();$("qrTransferStatus").textContent=`Could not start direct transfer: ${err.message||err}`}
     }
 
     function stopQrCamera(){if(qrTransferScanTimer){clearTimeout(qrTransferScanTimer);qrTransferScanTimer=null}if(qrTransferStream){for(const t of qrTransferStream.getTracks())t.stop();qrTransferStream=null}const v=$("qrTransferVideo");if(v){try{v.pause()}catch(_){}v.srcObject=null}}
@@ -13435,7 +13460,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts. Since build 4.5.14, direct local progress transfer reports ICE candidate availability and automatically falls back to the compact QR delta instead of ending at a failed peer connection.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);

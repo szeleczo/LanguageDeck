@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.13. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.14. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -133,3 +133,8 @@ The Library can prioritise vocabulary from a selected story/chapter through the 
 - Existing number-key shortcuts for choice/match/order remain unchanged.
 - Action buttons expose shortcut hints through their titles/tooltips.
 - Nearby transfer remains an occasional one-shot hand-off in 4.5.x; an optional live-sync-while-connected mode is a future UX choice, not required for 4.6.
+
+
+## 4.5.14 — Robust nearby transfer fallback
+
+Direct QR-signalled WebRTC remains the fastest serverless path when the browser/network exposes compatible local ICE candidates. Some desktop Brave/Windows + Android Wi-Fi combinations hide host addresses behind mDNS or block local peer UDP, so direct transfer can legitimately fail even on the same SSID. 4.5.14 surfaces candidate availability and no longer leaves the flow at a dead-end failure: the sender reuses the already-scanned receive request and automatically switches to the compact per-peer QR delta; the receiver is offered a one-click QR-only scan fallback. No STUN, TURN, backend, account or cloud relay is added.
