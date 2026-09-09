@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
+assert.match(html,/4\.5\.9-serverless-delta-qr-desktop-parity-20260909/);
+assert.match(html,/if \(wordTypingAwaitingContinue\) \{\s*await continueAfterTypingFeedback\(\);\s*return;/,'word Enter uses the same Continue path after feedback');
+assert.match(html,/if \(currentSentenceData\.feedbackAwaitingContinue\) \{\s*await continueAfterSentenceFeedback\(\);\s*return;/,'sentence Enter uses Continue after feedback');
+assert.match(html,/function handleOrderSentenceKeyboard\(i\)/,'Order mode has a keyboard insertion path');
+assert.match(html,/event\.key === "Backspace" \|\| event\.key === "Delete"/,'Order keyboard can undo the last placed token');
+assert.match(html,/if \(event\.key === "Enter"\)[\s\S]*isOrderSentenceComplete\(\)[\s\S]*submitSentenceAnswer\(false\)/,'Order Enter checks a complete answer');
+assert.match(html,/order-key-hint|key-shortcut|order-shortcut|kbd/i,'Order word bank exposes visible keyboard hints');
+assert.match(html,/function desktopLanguageKeypadChars\(challenge\)/,'desktop supplemental target-language keypad exists');
+assert.match(html,/container\.classList\.toggle\("desktop-language-keypad"/,'same inline keypad renderer supplies desktop special characters');
+assert.match(html,/if \(!primary\) \{[\s\S]*insertAtCaret/,'desktop keypad inserts at the physical-input caret rather than replacing the keyboard');
+console.log('Desktop keyboard/input parity checks passed.');

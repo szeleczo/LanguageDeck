@@ -1451,6 +1451,20 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
       -webkit-user-select: none;
     }
     #legacyPracticeRoot .inline-keypad.hidden{ display: none !important; }
+    #legacyPracticeRoot .inline-keypad.desktop-language-keypad{
+      display:flex;justify-content:center;gap:6px;margin:4px 0 10px;padding:0;touch-action:auto;
+    }
+    #legacyPracticeRoot .inline-keypad.desktop-language-keypad .inline-keypad-row{
+      display:flex;width:auto;gap:6px;overflow:visible;
+    }
+    #legacyPracticeRoot .inline-keypad.desktop-language-keypad button.inline-keypad-key{
+      width:42px;min-width:42px;min-height:38px;font-size:16px;border-radius:9px;
+    }
+    #legacyPracticeRoot .bank-word .desktop-shortcut{
+      display:inline-grid;place-items:center;min-width:17px;height:17px;margin-left:6px;padding:0 4px;
+      border:1px solid var(--border);border-radius:999px;color:var(--text-faint);font-size:9px;font-weight:800;
+      vertical-align:middle;background:var(--surface-2);
+    }
 
     /* When the in-app keyboard is on screen, the play surface switches to a
        compact layout so prompt + clue + keyboard + actions fit a phone
@@ -3853,9 +3867,9 @@ html.integrated-practice-active body{overflow:hidden!important}
 <div class="modal-title">Progress transfer</div>
 <div class="progress-transfer-intro">Move your learning state between desktop and mobile without an account. A Progress Pack includes Adaptive/Words progress, sentence practice, shared Story vocabulary, text progress and chapter positions. It does not contain book/deck content or appearance settings.</div>
 <div class="progress-transfer-camera">
-  <h3>Camera transfer · offline</h3>
-  <p>No server and no account. The sending device shows a short sequence of QR frames containing the compressed Progress Pack; the receiving device reconstructs it with its camera.</p>
-  <div class="progress-transfer-actions"><button id="progressQrShowBtn">Show progress QR</button><button class="secondary" id="progressQrScanBtn">Scan progress QR</button></div>
+  <h3>Quick QR transfer · no sync server</h3>
+  <p>Only progress changed since the other device last received from this device is sent. The receiver first shows one small request QR; the sender scans it and replies with a short rotating delta. Progress never leaves the two screens.</p>
+  <div class="progress-transfer-actions"><button id="progressQrShowBtn">Receive progress</button><button class="secondary" id="progressQrScanBtn">Send progress</button></div>
 </div>
 <div class="progress-transfer-actions">
 <button id="progressPackExportBtn">Share / export progress</button>
@@ -3883,8 +3897,9 @@ html.integrated-practice-active body{overflow:hidden!important}
   <div class="modal-card qr-transfer-card">
     <div class="modal-title" id="qrTransferTitle">Camera progress transfer</div>
     <div id="qrSendView" class="hidden">
-      <div class="qr-transfer-note">Keep this screen visible. The QR frames repeat automatically; the other device may start scanning at any point.</div>
+      <div class="qr-transfer-note" id="qrTransferSendNote">Keep this screen visible.</div>
       <div class="qr-transfer-stage"><canvas id="qrTransferCanvas" width="420" height="420"></canvas><div class="qr-transfer-frame" id="qrTransferFrame">Preparing…</div></div>
+      <button class="secondary hidden" id="qrTransferScanReplyBtn" style="width:100%;margin-top:10px;">Scan incoming progress</button>
     </div>
     <div id="qrScanView" class="hidden">
       <div class="qr-transfer-note">Point the camera at the other device. Frames can arrive in any order; duplicates are ignored.</div>
@@ -4012,7 +4027,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.7-word-recall-format-tolerance-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.9-serverless-delta-qr-desktop-parity-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4595,7 +4610,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.7-word-recall-format-tolerance-20260909";
+    const APP_BUILD = "4.5.9-serverless-delta-qr-desktop-parity-20260909";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -6054,9 +6069,22 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     function shouldUseInlineMissingKeypad(challenge) {
-      // A language can deliberately opt out and use the device keyboard. This
-      // is the safe default for scripts without a reviewed in-app layout.
+      // Touch devices use the app keyboard as the primary input surface.
       return !!(challenge && isTouchPrimaryDevice() && keyboardConfig().mode === "inline");
+    }
+
+    function desktopLanguageKeypadChars(challenge) {
+      if (!challenge || isTouchPrimaryDevice() || keyboardConfig().mode !== "inline") return [];
+      const keyboard = keyboardConfig(), out = [];
+      const add = ch => { if (ch && !/[a-z0-9]/i.test(ch) && /[\p{L}\p{M}]/u.test(ch) && !out.includes(ch)) out.push(ch); };
+      for (const ch of keyboard.rows.flat()) add(ch);
+      for (const ch of Object.keys(keyboard.accentSlots || {})) add(ch);
+      for (const ch of uniqueCharsFrom(challenge.full, true)) add(ch);
+      return out;
+    }
+
+    function shouldRenderInlineKeypad(challenge) {
+      return shouldUseInlineMissingKeypad(challenge) || desktopLanguageKeypadChars(challenge).length > 0;
     }
 
     function setInlineKeypadInputMode(input, enabled) {
@@ -6129,12 +6157,15 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     function renderInlineMissingKeypad(container, input, challenge, onChange) {
       if (!container || !input) return;
-      const enabled = shouldUseInlineMissingKeypad(challenge);
+      const primary = shouldUseInlineMissingKeypad(challenge);
+      const desktopChars = desktopLanguageKeypadChars(challenge);
+      const enabled = primary || desktopChars.length > 0;
       const isMissingOnly = !!(challenge && challenge.masked);
-      setInlineKeypadInputMode(input, enabled);
-      input.classList.toggle("inline-keypad-input-hidden", !!(enabled && isMissingOnly));
+      setInlineKeypadInputMode(input, primary);
+      input.classList.toggle("inline-keypad-input-hidden", !!(primary && isMissingOnly));
+      container.classList.toggle("desktop-language-keypad", !!(enabled && !primary));
       container.classList.toggle("hidden", !enabled);
-      document.documentElement.classList.toggle("keypad-active", !!enabled);
+      document.documentElement.classList.toggle("keypad-active", !!primary);
       container.innerHTML = "";
       if (!enabled) return;
 
@@ -6180,6 +6211,21 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         });
         return btn;
       };
+
+      if (!primary) {
+        const row = document.createElement("div");
+        row.className = "inline-keypad-row";
+        row.style.setProperty("--key-count", String(desktopChars.length));
+        const insertAtCaret = ch => {
+          const start = Number.isInteger(input.selectionStart) ? input.selectionStart : input.value.length;
+          const end = Number.isInteger(input.selectionEnd) ? input.selectionEnd : start;
+          applyValue(input.value.slice(0, start) + ch + input.value.slice(end));
+          requestAnimationFrame(() => { try { input.focus({preventScroll:true}); input.setSelectionRange(start + ch.length, start + ch.length); } catch (_) {} });
+        };
+        desktopChars.forEach(ch => row.appendChild(makeKey(ch, () => insertAtCaret(ch))));
+        container.appendChild(row);
+        return;
+      }
 
       const letterRows = [];
       const allRows = inlineKeypadRowsFor(challenge);
@@ -10097,8 +10143,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function submitTypingWordAnswer(showSolutionOnly = false) {
       if (!currentTypingWord) return;
       if (wordTypingAwaitingContinue) {
-        if (showSolutionOnly) await continueAfterTypingFeedback();
-        else updateTypingActionButtons();
+        await continueAfterTypingFeedback();
         return;
       }
       if (locked) return;
@@ -10689,10 +10734,18 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         // the user's finger during fast tapping.
         sentenceBank.innerHTML = "";
         sentenceBank.style.setProperty("--order-bank-h", `${layout.bankH}px`);
+        let desktopShortcutIndex = 0;
         currentSentenceData.orderBank.forEach(tok => {
           const btn = document.createElement("button");
           btn.className = "bank-word" + (placedUids.has(tok.uid) ? " order-placeholder" : "");
           btn.textContent = tok.raw;
+          if (!placedUids.has(tok.uid) && !isTouchPrimaryDevice() && desktopShortcutIndex < 10) {
+            const badge = document.createElement("span");
+            badge.className = "desktop-shortcut";
+            badge.textContent = desktopShortcutIndex === 9 ? "0" : String(desktopShortcutIndex + 1);
+            btn.appendChild(badge);
+            btn.dataset.keyboardIndex = String(desktopShortcutIndex++);
+          }
           if (placedUids.has(tok.uid)) {
             btn.disabled = true;
             btn.setAttribute("aria-hidden", "true");
@@ -10990,14 +11043,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       // explicitly continues. This gives time to read the correction instead
       // of auto-skipping the card.
       if (currentSentenceData.feedbackAwaitingContinue) {
-        if (showSolutionOnly) await continueAfterSentenceFeedback();
-        else updateSentenceActionButtons();
+        await continueAfterSentenceFeedback();
         return;
       }
 
       if (sentenceMode === "order" && currentSentenceData.orderAwaitingContinue) {
-        if (showSolutionOnly) continueAfterOrderFeedback();
-        else updateSentenceActionButtons();
+        continueAfterOrderFeedback();
         return;
       }
 
@@ -11146,6 +11197,28 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       maybeAutoSubmitCompletedChoice();
     }
 
+    function handleOrderSentenceKeyboard(i) {
+      if (!currentSentenceData || sentenceMode !== "order" || locked || currentSentenceData.orderAwaitingContinue) return false;
+      const placed = new Set(currentSentenceData.orderPlaced.map(t => t.uid));
+      const available = currentSentenceData.orderBank.filter(t => !placed.has(t.uid));
+      const tok = available[i];
+      if (!tok) return false;
+      currentSentenceData.orderPlaced.push(tok);
+      currentSentenceData.orderChecked = false;
+      currentSentenceData.orderAutoSubmitting = false;
+      maybeAutoSubmitCompletedOrder();
+      return true;
+    }
+
+    function removeLastOrderWord() {
+      if (!currentSentenceData || sentenceMode !== "order" || locked || currentSentenceData.orderAwaitingContinue || !currentSentenceData.orderPlaced.length) return false;
+      currentSentenceData.orderPlaced.pop();
+      currentSentenceData.orderChecked = false;
+      currentSentenceData.orderAutoSubmitting = false;
+      renderSentenceKeepingScroll();
+      return true;
+    }
+
     document.addEventListener("keydown", async (event) => {
       if (event.key === "Escape") {
         if (settingsModal.classList.contains("active")) { closeSettings(); return; }
@@ -11153,6 +11226,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         if (statsModal.classList.contains("active")) { closeStats(); return; }
         if (gateDetailModal.classList.contains("active")) { closeGateDetail(); return; }
         if (builtinModal.classList.contains("active")) { builtinModal.classList.remove("active"); return; }
+        if ($("qrTransferModal")?.classList.contains("active")) { $("qrTransferModal").classList.remove("active"); stopQrTransfer(); return; }
+      }
+      const isContinueKey = event.key === "Enter" || event.key === " ";
+      if (isContinueKey && !activeElementIsTextInput()) {
+        if (currentGame === "words" && wordTypingAwaitingContinue) { event.preventDefault(); await continueAfterTypingFeedback(); return; }
+        if ((currentGame === "sentences" || currentGame === "grammar") && currentSentenceData?.feedbackAwaitingContinue) { event.preventDefault(); await continueAfterSentenceFeedback(); return; }
+        if ((currentGame === "sentences" || currentGame === "grammar") && sentenceMode === "order" && currentSentenceData?.orderAwaitingContinue) { event.preventDefault(); continueAfterOrderFeedback(); return; }
       }
       if (event.target === typingInput) return;
       if (event.target === urlInput || event.target === newSetNameInput) return;
@@ -11171,6 +11251,17 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         if (i === null) return;
         event.preventDefault();
         if (selectedLeft === null) selectLeftByIndex(i); else selectRightByIndex(i);
+        return;
+      }
+      if ((currentGame === "sentences" || currentGame === "grammar") && sentenceMode === "order") {
+        if (event.key === "Backspace" || event.key === "Delete") { if (removeLastOrderWord()) event.preventDefault(); return; }
+        if (event.key === "Enter") {
+          if (currentSentenceData?.orderAwaitingContinue) { event.preventDefault(); continueAfterOrderFeedback(); return; }
+          if (isOrderSentenceComplete()) { event.preventDefault(); await submitSentenceAnswer(false); }
+          return;
+        }
+        const i = keyToIndex(event.key);
+        if (i !== null && handleOrderSentenceKeyboard(i)) event.preventDefault();
         return;
       }
       if ((currentGame === "sentences" || currentGame === "grammar") && sentenceMode === "choice") {
@@ -11675,8 +11766,10 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const PROGRESS_COUNTER_FIELDS = new Set(["times_seen","times_correct","times_wrong","diagnostic_total_wrong","article_times_seen","article_times_correct","article_times_wrong"]);
     const PROGRESS_STATE_FIELDS = [
       "streak","next_due","word_next_due","learning_pressure","article_pressure","article_streak","article_next_due","article_last_seen",
+      "article_times_seen","article_times_correct","article_times_wrong",
       "times_seen","times_correct","times_wrong","diagnostic_total_wrong","progressive_level","last_seen","last_correct","last_wrong","first_seen",
-      "progressive_wrong_run","progressive_last_session","progressive_rescue_reason","mastered_at","review_count","difficulty","ease","interval","stage"
+      "progressive_wrong_run","progressive_last_session","progressive_rescue_reason","mastered_at","review_count","difficulty","ease","interval","stage",
+      "guided_attempts","guided_last_answer_at","guided_success_at","guided_full_recall_at","explicit_unknown_at","full_recall_at"
     ];
 
     function progressTimestamp(value) {
@@ -11878,29 +11971,142 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
 
-    /* ---------- 4.5.6 offline camera Progress Pack transfer ----------
-       No signalling server, account or persistent device link. The existing
-       Progress Pack is gzip-compressed and split into independently scannable
-       QR frames. The receiver collects the frames in any order, verifies a
-       SHA-256 fingerprint, reconstructs the pack and then uses the normal
-       conflict-aware Progress Pack merge. */
-    const QR_TRANSFER_PREFIX="LDQ1", QR_TRANSFER_CHUNK=900, QR_TRANSFER_MS=850;
-    let qrTransferTimer=null, qrTransferStream=null, qrTransferScanTimer=null, qrTransferReceivedPack=null;
+    /* ---------- 4.5.9 serverless delta QR transfer ----------
+       This is an occasional hand-off, not a live sync connection. The receiving
+       device shows a tiny request QR containing its local device id and peer
+       watermarks. The sender scans that request, builds only the learning rows
+       changed since the receiver last accepted progress from this sender, and
+       shows a compact rotating QR delta. No account, signalling server, WebRTC,
+       upload, or shared network is required. */
+    const QR_REQUEST_PREFIX="LDR1", QR_DELTA_PREFIX="LDD1", QR_TRANSFER_CHUNK=680, QR_TRANSFER_MS=680;
+    const PROGRESS_DEVICE_KEY="ld-progress-device-v1", PROGRESS_PEERS_KEY="ld-progress-peer-cursors-v1";
+    const QR_JSQR_CACHE_KEY="ld-jsqr-source-v1", QR_JSQR_LOCAL="vendor/jsqr.js";
+    const QR_JSQR_REMOTE="https://raw.githubusercontent.com/cozmo/jsQR/8e6a036beafa7053dd44b1b76ac578d22b1b3311/dist/jsQR.js";
+    const QR_JSQR_GIT_BLOB="99ea9df26907009e5553233ffe03c529c1521739";
+    const QR_WIRE_FORMAT="LanguageDeckDelta", QR_WIRE_VERSION=1;
+    const QR_WIRE_TIME_FIELDS=new Set(["next_due","word_next_due","article_next_due","article_last_seen","last_seen","last_correct","last_wrong","first_seen","mastered_at","guided_last_answer_at","guided_success_at","guided_full_recall_at","explicit_unknown_at","full_recall_at"]);
+    let qrTransferTimer=null, qrTransferStream=null, qrTransferScanTimer=null, qrTransferReceivedPack=null, qrTransferDecoderPromise=null;
+
+    function progressDeviceId(){
+      let id=localStorage.getItem(PROGRESS_DEVICE_KEY)||"";
+      if(!id){const b=new Uint8Array(9);crypto.getRandomValues(b);id=qrBytesToB64(b);localStorage.setItem(PROGRESS_DEVICE_KEY,id)}
+      return id;
+    }
+    function progressPeerCursors(){try{const x=JSON.parse(localStorage.getItem(PROGRESS_PEERS_KEY)||"{}");return x&&typeof x==="object"?x:{}}catch(_){return{}}}
+    function saveProgressPeerCursor(sourceId,at){if(!sourceId||sourceId===progressDeviceId())return;const peers=progressPeerCursors(),value=Math.max(+peers[sourceId]||0,+at||0);peers[sourceId]=value;const entries=Object.entries(peers).sort((a,b)=>(+b[1]||0)-(+a[1]||0)).slice(0,12);localStorage.setItem(PROGRESS_PEERS_KEY,JSON.stringify(Object.fromEntries(entries)))}
     function qrBytesToB64(bytes){let s="";for(let i=0;i<bytes.length;i+=0x8000)s+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/g,"")}
     function qrB64ToBytes(s){s=String(s||"").replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";const raw=atob(s),out=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out}
+    function qrJsonToB64(value){return qrBytesToB64(new TextEncoder().encode(JSON.stringify(value)))}
+    function qrB64ToJson(value){return JSON.parse(new TextDecoder().decode(qrB64ToBytes(value)))}
     async function qrTransform(bytes,kind){const ctor=kind==="gzip"?globalThis.CompressionStream:globalThis.DecompressionStream;if(!ctor)throw new Error(`${kind} compression is not available in this browser.`);const stream=new Blob([bytes]).stream().pipeThrough(new ctor("gzip"));return new Uint8Array(await new Response(stream).arrayBuffer())}
-    async function qrPackBytes(pack){const raw=new TextEncoder().encode(JSON.stringify(pack));if(globalThis.CompressionStream){try{return{alg:"g",bytes:await qrTransform(raw,"gzip")}}catch(_){}}return{alg:"r",bytes:raw}}
-    async function qrUnpackBytes(bytes,alg){const raw=alg==="g"?await qrTransform(bytes,"gunzip"):bytes;return validateProgressPack(JSON.parse(new TextDecoder().decode(raw)))}
+    async function qrPackBytes(value){const raw=new TextEncoder().encode(JSON.stringify(value));if(globalThis.CompressionStream){try{return{alg:"g",bytes:await qrTransform(raw,"gzip")}}catch(_){}}return{alg:"r",bytes:raw}}
+    async function qrUnpackBytes(bytes,alg){const raw=alg==="g"?await qrTransform(bytes,"gunzip"):bytes;return JSON.parse(new TextDecoder().decode(raw))}
     async function qrDigest(bytes){const hash=new Uint8Array(await crypto.subtle.digest("SHA-256",bytes));return qrBytesToB64(hash).slice(0,22)}
     function qrTransferId(){const b=new Uint8Array(6);crypto.getRandomValues(b);return qrBytesToB64(b)}
-    async function buildQrTransfer(){const pack=await createProgressPack(),packed=await qrPackBytes(pack),payload=qrBytesToB64(packed.bytes),hash=await qrDigest(packed.bytes),id=qrTransferId(),chunks=[];for(let i=0;i<payload.length;i+=QR_TRANSFER_CHUNK)chunks.push(payload.slice(i,i+QR_TRANSFER_CHUNK));const total=chunks.length;return{pack,id,alg:packed.alg,hash,bytes:packed.bytes.length,frames:chunks.map((chunk,i)=>`${QR_TRANSFER_PREFIX}:${id}:${i.toString(36)}:${total.toString(36)}:${packed.alg}:${hash}:${chunk}`)}}
-    function parseQrTransferFrame(raw){const parts=String(raw||"").split(":");if(parts.length!==7||parts[0]!==QR_TRANSFER_PREFIX)return null;const index=parseInt(parts[2],36),total=parseInt(parts[3],36),alg=parts[4],hash=parts[5],chunk=parts[6];if(!parts[1]||!Number.isInteger(index)||!Number.isInteger(total)||index<0||total<1||index>=total||!(alg==="g"||alg==="r")||!hash||!chunk)return null;return{id:parts[1],index,total,alg,hash,chunk}}
+
+    function qrWireTime(value){const ms=progressTimestamp(value);return ms?Math.round(ms/1000):0}
+    function qrUnwireTime(value){return +value>0?(+value*1000):0}
+    function qrWireState(state={}){const out=[];PROGRESS_STATE_FIELDS.forEach((field,index)=>{if(!Object.prototype.hasOwnProperty.call(state,field))return;let value=state[field];if(value===undefined||value===null||value==="")return;if(QR_WIRE_TIME_FIELDS.has(field))value=qrWireTime(value);out.push(index,value)});return out}
+    function qrUnwireState(values=[]){const out={};for(let i=0;i+1<values.length;i+=2){const field=PROGRESS_STATE_FIELDS[+values[i]];if(!field)continue;let value=values[i+1];if(QR_WIRE_TIME_FIELDS.has(field))value=qrUnwireTime(value);out[field]=value}return out}
+    function qrPracticeActivity(item){return progressRowActivity(item?.state||item||{})}
+    function qrSharedActivity(row={}){let at=Math.max(progressTimestamp(row.lastSeen),progressTimestamp(row.lastOpened),+row.activeRecallUpdatedAt||0,+row.recognitionUpdatedAt||0,+row.updatedAt||0);for(const ev of Object.values(row.evidence||{}))at=Math.max(at,+ev?.lastAt||0);const st=row.storyState||{};return Math.max(at,+st.explicitUnknownAt||0,+st.fullRecallAt||0)}
+    function qrLocalActivity(raw){try{const o=JSON.parse(raw||"null")||{};return Math.max(progressTimestamp(o.updatedAt),progressTimestamp(o.lastOpened),progressTimestamp(o.completedAt),progressTimestamp(o.lastReviewAt))}catch(_){return 0}}
+    function qrWireEvidence(evidence={}){return KNOWLEDGE_CHANNELS.map(ch=>{const x=evidence[ch]||{};return[+x.seen||0,+x.correct||0,+x.wrong||0,qrWireTime(x.lastAt)]})}
+    function qrUnwireEvidence(rows=[]){const out={};KNOWLEDGE_CHANNELS.forEach((ch,i)=>{const x=rows[i]||[];out[ch]={seen:+x[0]||0,correct:+x[1]||0,wrong:+x[2]||0,lastAt:qrUnwireTime(x[3])}});return out}
+    function qrWireReadingItem(row){return[row.key||"",+row.recognitionStrength||0,+row.activeRecallStrength||0,qrWireTime(row.activeRecallUpdatedAt),qrWireTime(row.recognitionUpdatedAt),+row.strength||0,+row.lvl||0,qrWireTime(row.lastSeen),qrWireEvidence(row.evidence),row.storyState||{},row.sourceMode||""]}
+    function qrUnwireReadingItem(x){const key=String(x?.[0]||""),parts=key.split("|"),language=parts.shift()||LANG,id=parts.join("|");return{key,itemKey:id,lexeme_id:id,language,kind:"word",schemaVersion:KNOWLEDGE_SCHEMA_VERSION,recognitionStrength:+x[1]||0,activeRecallStrength:+x[2]||0,activeRecallUpdatedAt:qrUnwireTime(x[3]),recognitionUpdatedAt:qrUnwireTime(x[4]),strength:+x[5]||0,lvl:+x[6]||0,lastSeen:qrUnwireTime(x[7]),evidence:qrUnwireEvidence(x[8]),storyState:x[9]||{},sourceMode:x[10]||""}}
+    // Compact practice wire: canonical lexeme/skill ids are enough to match
+    // installed rows. Human-readable set/source/target strings are carried only
+    // for legacy rows without a stable id, which makes real deltas much smaller.
+    function qrWirePractice(item,dict){
+      const table=item.table==="sentence_pairs"?1:0,deck=dict.deck(item.deck||""),identity=table?(item.skillId||""):(item.lexemeId||"");
+      if(identity)return[table,deck,identity,qrWireState(item.state||{})];
+      return[table,deck,"",qrWireState(item.state||{}),dict.set(item.setName||""),item.english||"",item.target||""];
+    }
+    function qrUnwirePractice(x,decks,sets){
+      const table=+x[0]===1?"sentence_pairs":"word_pairs",identity=x[2]||"",out={table,deck:decks[+x[1]]||"",setName:"",english:"",target:"",lexemeId:"",skillId:"",state:qrUnwireState(x[3]||[])};
+      if(identity){if(table==="sentence_pairs")out.skillId=identity;else out.lexemeId=identity;return out}
+      out.setName=sets[+x[4]]||"";out.english=x[5]||"";out.target=x[6]||"";return out;
+    }
+    function qrDictionary(){const decks=[],sets=[],deckMap=new Map(),setMap=new Map();const index=(map,arr,value)=>{if(!map.has(value)){map.set(value,arr.length);arr.push(value)}return map.get(value)};return{decks,sets,deck:value=>index(deckMap,decks,value),set:value=>index(setMap,sets,value)}}
+
+    async function createProgressDeltaWire(since=0,receiverId=""){
+      await flushPracticeWrites();
+      const createdAt=Date.now(),sourceId=progressDeviceId(),dict=qrDictionary();
+      const [words,sentences,items,patterns,units]=await Promise.all([DB.getAllRecords("word_pairs"),DB.getAllRecords("sentence_pairs"),DB.getAllRecords("reading_items"),DB.getAllRecords("reading_patterns"),DB.getAllRecords("reading_units")]);
+      const practice=[...words.filter(r=>progressRowActivity(r)>since||(!since&&(progressRowActivity(r)||(+r.times_seen||0)>0||r.next_due!=null))).map(r=>progressPracticeRecord("word_pairs",r)),...sentences.filter(r=>progressRowActivity(r)>since||(!since&&(progressRowActivity(r)||(+r.times_seen||0)>0||r.next_due!=null))).map(r=>progressPracticeRecord("sentence_pairs",r))];
+      const changedItems=items.filter(r=>qrSharedActivity(r)>since||!since),changedPatterns=patterns.filter(r=>qrSharedActivity(r)>since||!since),changedUnits=units.filter(r=>qrSharedActivity(r)>since||!since),local=[];
+      for(const [key,raw] of Object.entries(collectProgressLocalStorage()))if(qrLocalActivity(raw)>since||!since)local.push([key,raw]);
+      const wire={f:QR_WIRE_FORMAT,v:QR_WIRE_VERSION,s:sourceId,r:receiverId||"",c:Math.round(createdAt/1000),b:Math.round((+since||0)/1000),d:null};
+      const p=practice.map(item=>qrWirePractice(item,dict));
+      wire.d={k:[dict.decks,dict.sets],p,i:changedItems.map(qrWireReadingItem),g:changedPatterns,u:changedUnits,l:local};
+      wire.n={w:practice.filter(x=>x.table==="word_pairs").length,s:practice.filter(x=>x.table==="sentence_pairs").length,i:changedItems.length,g:changedPatterns.length,u:changedUnits.length,l:local.length};
+      return wire;
+    }
+    function progressPackFromDeltaWire(wire){
+      if(!wire||wire.f!==QR_WIRE_FORMAT||+wire.v!==QR_WIRE_VERSION||!wire.d)throw new Error("This is not a supported LanguageDeck QR delta.");
+      const decks=wire.d.k?.[0]||[],sets=wire.d.k?.[1]||[],practice=(wire.d.p||[]).map(x=>qrUnwirePractice(x,decks,sets)),items=(wire.d.i||[]).map(qrUnwireReadingItem),createdAt=qrUnwireTime(wire.c);
+      const pack={format:PROGRESS_PACK_FORMAT,version:PROGRESS_PACK_VERSION,appBuild:APP_BUILD,createdAt:new Date(createdAt||Date.now()).toISOString(),practice,shared:{reading_items:items,reading_patterns:wire.d.g||[],reading_units:wire.d.u||[]},local:Object.fromEntries(wire.d.l||[]),summary:{practiceWords:+wire.n?.w||0,practiceSentences:+wire.n?.s||0,sharedItems:+wire.n?.i||0,sharedPatterns:+wire.n?.g||0,readingUnits:+wire.n?.u||0,localStates:+wire.n?.l||0}};
+      pack.__deltaMeta={sourceId:wire.s||"",receiverId:wire.r||"",createdAt:createdAt||Date.now(),baseSince:qrUnwireTime(wire.b)};
+      return validateProgressPack(pack);
+    }
+
+    function buildProgressRequest(){const peers=progressPeerCursors(),entries=Object.entries(peers).sort((a,b)=>(+b[1]||0)-(+a[1]||0)).slice(0,12).map(([id,at])=>[id,Math.round((+at||0)/1000)]);return{f:QR_REQUEST_PREFIX,v:1,id:qrTransferId(),r:progressDeviceId(),p:entries}}
+    function encodeProgressRequest(req){return`${QR_REQUEST_PREFIX}:${qrJsonToB64(req)}`}
+    function parseProgressRequest(raw){const text=String(raw||"");if(!text.startsWith(QR_REQUEST_PREFIX+":"))return null;try{const req=qrB64ToJson(text.slice(QR_REQUEST_PREFIX.length+1));return req?.f===QR_REQUEST_PREFIX&&req.r?req:null}catch(_){return null}}
+    async function buildDeltaTransfer(request){const mine=progressDeviceId(),sinceSec=(request.p||[]).find(x=>x?.[0]===mine)?.[1]||0,wire=await createProgressDeltaWire(+sinceSec*1000,request.r),packed=await qrPackBytes(wire),payload=qrBytesToB64(packed.bytes),hash=await qrDigest(packed.bytes),id=qrTransferId(),chunks=[];for(let i=0;i<payload.length;i+=QR_TRANSFER_CHUNK)chunks.push(payload.slice(i,i+QR_TRANSFER_CHUNK));const total=chunks.length||1;if(!chunks.length)chunks.push("");return{wire,id,alg:packed.alg,hash,bytes:packed.bytes.length,frames:chunks.map((chunk,i)=>`${QR_DELTA_PREFIX}:${id}:${i.toString(36)}:${total.toString(36)}:${packed.alg}:${hash}:${chunk}`),since:+sinceSec*1000}}
+    function parseDeltaFrame(raw){const parts=String(raw||"").split(":");if(parts.length!==7||parts[0]!==QR_DELTA_PREFIX)return null;const index=parseInt(parts[2],36),total=parseInt(parts[3],36),alg=parts[4],hash=parts[5],chunk=parts[6];if(!parts[1]||!Number.isInteger(index)||!Number.isInteger(total)||index<0||total<1||index>=total||!(alg==="g"||alg==="r")||!hash)return null;return{id:parts[1],index,total,alg,hash,chunk}}
+
     function stopQrCamera(){if(qrTransferScanTimer){clearTimeout(qrTransferScanTimer);qrTransferScanTimer=null}if(qrTransferStream){for(const t of qrTransferStream.getTracks())t.stop();qrTransferStream=null}const v=$("qrTransferVideo");if(v){try{v.pause()}catch(_){}v.srcObject=null}}
     function stopQrTransfer(){if(qrTransferTimer){clearInterval(qrTransferTimer);qrTransferTimer=null}stopQrCamera()}
-    function openQrTransferView(kind){stopQrTransfer();qrTransferReceivedPack=null;$("qrSendView").classList.toggle("hidden",kind!=="send");$("qrScanView").classList.toggle("hidden",kind!=="scan");$("qrReceiveView").classList.add("hidden");$("qrTransferStatus").textContent="";$("qrTransferModal").classList.add("active")}
-    async function showProgressQr(){openQrTransferView("send");$("qrTransferTitle").textContent="Show progress QR";$("qrTransferFrame").textContent="Building Progress Pack…";try{if(!window.LanguageDeckQRCode)throw new Error("QR encoder did not load.");const transfer=await buildQrTransfer();let i=0;const draw=()=>{const raw=transfer.frames[i];window.LanguageDeckQRCode.draw($("qrTransferCanvas"),raw,{level:"L",size:Math.min(520,innerWidth-52)});$("qrTransferFrame").innerHTML=`Frame <strong>${i+1} / ${transfer.frames.length}</strong> · ${Math.round(transfer.bytes/1024)} KB compressed`;i=(i+1)%transfer.frames.length};draw();qrTransferTimer=setInterval(draw,QR_TRANSFER_MS);$("qrTransferStatus").textContent=`Offline transfer · ${transfer.frames.length} QR frames · no network connection is used.`}catch(err){$("qrTransferFrame").textContent="Could not create QR transfer.";$("qrTransferStatus").textContent=err.message||String(err)}}
-    async function scanProgressQr(){openQrTransferView("scan");$("qrTransferTitle").textContent="Scan progress QR";const status=$("qrTransferScanStatus"),fill=$("qrTransferProgressFill"),video=$("qrTransferVideo");fill.style.width="0%";status.textContent="Starting camera…";try{if(!globalThis.BarcodeDetector)throw new Error("Camera QR scanning is not available in this browser. Use the Progress Pack file buttons instead.");const formats=BarcodeDetector.getSupportedFormats?await BarcodeDetector.getSupportedFormats():["qr_code"];if(formats.length&&!formats.includes("qr_code"))throw new Error("This browser cannot scan QR codes with its camera.");const detector=new BarcodeDetector({formats:["qr_code"]}),coarse=matchMedia?.("(pointer:coarse)")?.matches;qrTransferStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:coarse?{ideal:"environment"}:undefined,width:{ideal:1280},height:{ideal:720}},audio:false});video.srcObject=qrTransferStream;await video.play();let transferId=null,total=0,alg="",hash="",frames=new Map(),busy=false;const detect=async()=>{if(!qrTransferStream)return;if(!busy&&video.readyState>=2){busy=true;try{for(const code of await detector.detect(video)){const f=parseQrTransferFrame(code.rawValue);if(!f)continue;if(!transferId){transferId=f.id;total=f.total;alg=f.alg;hash=f.hash}else if(f.id!==transferId||f.total!==total||f.alg!==alg||f.hash!==hash)continue;frames.set(f.index,f.chunk);const pct=Math.round(frames.size/total*100);fill.style.width=pct+"%";status.innerHTML=`Received <strong>${frames.size} / ${total}</strong> frames · ${pct}%`;if(frames.size===total){stopQrCamera();const payload=Array.from({length:total},(_,i)=>frames.get(i)||"").join(""),bytes=qrB64ToBytes(payload);if(await qrDigest(bytes)!==hash)throw new Error("QR transfer checksum failed. Please scan again.");qrTransferReceivedPack=await qrUnpackBytes(bytes,alg);$("qrScanView").classList.add("hidden");$("qrReceiveView").classList.remove("hidden");$("qrTransferPreview").innerHTML=progressPackSummaryText(qrTransferReceivedPack);$("qrTransferStatus").textContent="Transfer complete. Nothing has been changed yet.";try{navigator.vibrate?.(120)}catch(_){}return}}}catch(err){stopQrCamera();status.textContent="QR scan stopped.";$("qrTransferStatus").textContent=err.message||String(err)}finally{busy=false}}qrTransferScanTimer=setTimeout(detect,180)};detect();$("qrTransferStatus").textContent="Camera stays on this device only; frames are decoded locally."}catch(err){stopQrCamera();status.textContent="Camera unavailable.";$("qrTransferStatus").textContent=err.message||String(err)}}
-    async function applyReceivedQrProgress(){if(!qrTransferReceivedPack)return;const btn=$("qrTransferApplyBtn");btn.disabled=true;$("qrTransferStatus").textContent="Merging received progress…";try{const res=await applyProgressPack(qrTransferReceivedPack);$("qrTransferStatus").textContent=`Merged ${res.practiceUpdated} practice rows, ${res.sharedUpdated} shared knowledge/text rows and ${res.localUpdated} chapter states.${res.pending?` ${res.pending} rows are safely held until their deck is installed.`:""}`;showToast("Progress merged.");await refreshSetOptions();await refreshStats();await refreshGateInfo();await loadCurrentGame(true);qrTransferReceivedPack=null;$("qrTransferApplyBtn").disabled=true}catch(err){$("qrTransferStatus").textContent=`Could not merge progress: ${err.message||err}`;btn.disabled=false}}
+    function openQrTransferView(kind){stopQrTransfer();qrTransferReceivedPack=null;$("qrSendView").classList.toggle("hidden",kind!=="send");$("qrScanView").classList.toggle("hidden",kind!=="scan");$("qrReceiveView").classList.add("hidden");$("qrTransferScanReplyBtn").classList.add("hidden");$("qrTransferStatus").textContent="";$("qrTransferModal").classList.add("active")}
+
+    async function gitBlobSha1(text){const body=new TextEncoder().encode(text),head=new TextEncoder().encode(`blob ${body.length}\0`),all=new Uint8Array(head.length+body.length);all.set(head);all.set(body,head.length);const hash=new Uint8Array(await crypto.subtle.digest("SHA-1",all));return[...hash].map(x=>x.toString(16).padStart(2,"0")).join("")}
+    function evalJsQrSource(source,label){(0,eval)(`${source}\n//# sourceURL=${label}`);if(typeof globalThis.jsQR!=="function")throw new Error("QR decoder did not initialise.")}
+    async function loadJsQrSource(){
+      if(typeof globalThis.jsQR==="function")return globalThis.jsQR;
+      const cached=localStorage.getItem(QR_JSQR_CACHE_KEY);if(cached){try{if(await gitBlobSha1(cached)===QR_JSQR_GIT_BLOB){evalJsQrSource(cached,"languagedeck-jsqr-cache.js");return globalThis.jsQR}}catch(_){}localStorage.removeItem(QR_JSQR_CACHE_KEY)}
+      let source="";
+      for(const url of [QR_JSQR_LOCAL,QR_JSQR_REMOTE]){try{const r=await fetch(url,{cache:"force-cache"});if(!r.ok)continue;source=await r.text();if(await gitBlobSha1(source)!==QR_JSQR_GIT_BLOB){source="";continue}break}catch(_){}}
+      if(!source)throw new Error("QR decoding is not available offline yet. Connect once so LanguageDeck can cache its local QR decoder, or use a Progress Pack file.");
+      try{localStorage.setItem(QR_JSQR_CACHE_KEY,source)}catch(_){}
+      evalJsQrSource(source,"languagedeck-jsqr.js");return globalThis.jsQR;
+    }
+    async function createCameraDecoder(video){
+      if(globalThis.BarcodeDetector){try{const formats=BarcodeDetector.getSupportedFormats?await BarcodeDetector.getSupportedFormats():["qr_code"];if(!formats.length||formats.includes("qr_code")){const detector=new BarcodeDetector({formats:["qr_code"]});return async()=>{const codes=await detector.detect(video);return(codes||[]).map(x=>x.rawValue).filter(Boolean)}}}catch(_){}}
+      const jsqr=await loadJsQrSource(),canvas=document.createElement("canvas"),ctx=canvas.getContext("2d",{willReadFrequently:true});
+      return async()=>{if(video.readyState<2||!video.videoWidth)return[];const max=720,scale=Math.min(1,max/video.videoWidth),w=Math.max(2,Math.round(video.videoWidth*scale)),h=Math.max(2,Math.round(video.videoHeight*scale));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}ctx.drawImage(video,0,0,w,h);const image=ctx.getImageData(0,0,w,h),res=jsqr(image.data,w,h,{inversionAttempts:"attemptBoth"});return res?.data?[res.data]:[]};
+    }
+    async function startQrCamera(onRaw,statusText="Point the camera at the QR code."){
+      const status=$("qrTransferScanStatus"),video=$("qrTransferVideo");status.textContent="Starting camera…";
+      if(!navigator.mediaDevices?.getUserMedia)throw new Error("Camera access is unavailable here. Open LanguageDeck over HTTPS or use the installed PWA.");
+      const coarse=matchMedia?.("(pointer:coarse)")?.matches;
+      // Start the camera FIRST. Decoder capability is resolved afterwards so a
+      // missing BarcodeDetector can never prevent the webcam permission prompt.
+      qrTransferStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:coarse?{ideal:"environment"}:undefined,width:{ideal:1280},height:{ideal:720}},audio:false});
+      video.srcObject=qrTransferStream;await video.play();status.textContent=statusText;
+      const decode=await createCameraDecoder(video);let busy=false;
+      const loop=async()=>{if(!qrTransferStream)return;if(!busy&&video.readyState>=2){busy=true;try{for(const raw of await decode())if(await onRaw(raw)===true)return}catch(err){stopQrCamera();status.textContent="QR scan stopped.";$("qrTransferStatus").textContent=err.message||String(err);return}finally{busy=false}}qrTransferScanTimer=setTimeout(loop,150)};loop();
+    }
+
+    function drawQr(raw,size){if(!window.LanguageDeckQRCode)throw new Error("QR encoder did not load.");window.LanguageDeckQRCode.draw($("qrTransferCanvas"),raw,{level:"L",size:Math.min(size||520,innerWidth-52)})}
+    async function showProgressReceiveRequest(){
+      openQrTransferView("send");$("qrTransferTitle").textContent="Receive progress";$("qrTransferSendNote").textContent="On the other device choose Send progress and scan this request. Then tap Scan incoming progress here.";$("qrTransferFrame").textContent="Preparing request…";
+      try{const req=buildProgressRequest();drawQr(encodeProgressRequest(req),460);$("qrTransferFrame").textContent="Request QR · no learning data is inside this code";$("qrTransferScanReplyBtn").classList.remove("hidden");$("qrTransferStatus").textContent="The request only contains this device's local id and previous receive watermarks."}catch(err){$("qrTransferFrame").textContent="Could not create request QR.";$("qrTransferStatus").textContent=err.message||String(err)}
+    }
+    async function scanProgressRequest(){
+      openQrTransferView("scan");$("qrTransferTitle").textContent="Send progress";$("qrTransferProgressFill").style.width="0%";$("qrTransferStatus").textContent="Camera stays local; LanguageDeck is looking only for a receive-request QR.";
+      try{await startQrCamera(async raw=>{const req=parseProgressRequest(raw);if(!req)return false;stopQrCamera();await showProgressDelta(req);return true},"Scan the receiver's request QR.")}catch(err){stopQrCamera();$("qrTransferScanStatus").textContent="Camera unavailable.";$("qrTransferStatus").textContent=err.message||String(err)}
+    }
+    async function showProgressDelta(request){
+      openQrTransferView("send");$("qrTransferTitle").textContent="Send progress";$("qrTransferSendNote").textContent="Keep this screen visible while the receiving device scans. Frames repeat automatically.";$("qrTransferFrame").textContent="Building changed progress…";
+      try{const transfer=await buildDeltaTransfer(request);let i=0;const draw=()=>{drawQr(transfer.frames[i],520);const n=transfer.wire.n||{},count=(n.w||0)+(n.s||0)+(n.i||0)+(n.g||0)+(n.u||0)+(n.l||0);$("qrTransferFrame").innerHTML=`Frame <strong>${i+1} / ${transfer.frames.length}</strong> · ${Math.max(1,Math.round(transfer.bytes/1024))} KB · ${count} changed records`;i=(i+1)%transfer.frames.length};draw();qrTransferTimer=setInterval(draw,QR_TRANSFER_MS);const firstNote=transfer.frames.length>36?`First QR transfer: ${transfer.frames.length} frames. This works, but a .ldprogress file is faster for the initial full hand-off; later QR transfers will be deltas.`:"First QR transfer to this device · full known progress is included in compact form.";$("qrTransferStatus").textContent=transfer.since?`Delta since ${new Date(transfer.since).toLocaleString()} · no server or network transfer.`:firstNote}catch(err){$("qrTransferFrame").textContent="Could not create progress delta.";$("qrTransferStatus").textContent=err.message||String(err)}
+    }
+    async function scanProgressDelta(){
+      openQrTransferView("scan");$("qrTransferTitle").textContent="Receive progress";const status=$("qrTransferScanStatus"),fill=$("qrTransferProgressFill");fill.style.width="0%";let transferId=null,total=0,alg="",hash="",frames=new Map();$("qrTransferStatus").textContent="Camera stays on this device only; QR frames are decoded locally.";
+      try{await startQrCamera(async raw=>{const f=parseDeltaFrame(raw);if(!f)return false;if(!transferId){transferId=f.id;total=f.total;alg=f.alg;hash=f.hash}else if(f.id!==transferId||f.total!==total||f.alg!==alg||f.hash!==hash)return false;frames.set(f.index,f.chunk);const pct=Math.round(frames.size/total*100);fill.style.width=pct+"%";status.innerHTML=`Received <strong>${frames.size} / ${total}</strong> frames · ${pct}%`;if(frames.size!==total)return false;stopQrCamera();const payload=Array.from({length:total},(_,i)=>frames.get(i)||"").join(""),bytes=qrB64ToBytes(payload);if(await qrDigest(bytes)!==hash)throw new Error("QR transfer checksum failed. Please scan again.");const wire=await qrUnpackBytes(bytes,alg),pack=progressPackFromDeltaWire(wire);if(pack.__deltaMeta.receiverId&&pack.__deltaMeta.receiverId!==progressDeviceId())throw new Error("This progress delta was prepared for a different device request.");qrTransferReceivedPack=pack;$("qrScanView").classList.add("hidden");$("qrReceiveView").classList.remove("hidden");$("qrTransferPreview").innerHTML=progressPackSummaryText(pack);$("qrTransferStatus").textContent="Transfer complete. Nothing has been changed yet.";try{navigator.vibrate?.(120)}catch(_){}return true},"Scan the sender's rotating progress QR frames.")}catch(err){stopQrCamera();status.textContent="Camera unavailable.";$("qrTransferStatus").textContent=err.message||String(err)}
+    }
+    async function applyReceivedQrProgress(){if(!qrTransferReceivedPack)return;const btn=$("qrTransferApplyBtn");btn.disabled=true;$("qrTransferStatus").textContent="Merging received progress…";try{const meta=qrTransferReceivedPack.__deltaMeta||{},res=await applyProgressPack(qrTransferReceivedPack);if(meta.sourceId)saveProgressPeerCursor(meta.sourceId,meta.createdAt);$("qrTransferStatus").textContent=`Merged ${res.practiceUpdated} practice rows, ${res.sharedUpdated} shared knowledge/text rows and ${res.localUpdated} chapter states.${res.pending?` ${res.pending} rows are safely held until their deck is installed.`:""}`;showToast("Progress merged.");await refreshSetOptions();await refreshStats();await refreshGateInfo();await loadCurrentGame(true);qrTransferReceivedPack=null;$("qrTransferApplyBtn").disabled=true}catch(err){$("qrTransferStatus").textContent=`Could not merge progress: ${err.message||err}`;btn.disabled=false}}
 
     /* ---------- Manage installed decks (local delete) ---------- */
     /* Lists every imported set across both languages and both card types,
@@ -12108,8 +12314,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       });
       $("closeSyncBtn").addEventListener("click", () => syncModal.classList.remove("active"));
       syncModal.addEventListener("click", e => { if (e.target === syncModal) syncModal.classList.remove("active"); });
-      progressQrShowBtn.addEventListener("click", showProgressQr);
-      progressQrScanBtn.addEventListener("click", scanProgressQr);
+      progressQrShowBtn.addEventListener("click", showProgressReceiveRequest);
+      progressQrScanBtn.addEventListener("click", scanProgressRequest);
+      $("qrTransferScanReplyBtn").addEventListener("click", scanProgressDelta);
       $("qrTransferCloseBtn").addEventListener("click",()=>{$("qrTransferModal").classList.remove("active");stopQrTransfer()});
       $("qrTransferModal").addEventListener("click",e=>{if(e.target===$("qrTransferModal")){$("qrTransferModal").classList.remove("active");stopQrTransfer()}});
       $("qrTransferApplyBtn").addEventListener("click",applyReceivedQrProgress);
@@ -13013,7 +13220,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator; optional camera progress transfer sends the complete compressed Progress Pack as an offline sequence of QR frames with no server. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant: spaces and presentation punctuation cannot turn an otherwise exact lexical answer into a mistake, while letters/diacritics and required articles remain significant.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, QR progress transfer is serverless and delta-based: the receiver shows a small request QR, the sender replies only with changed Words/Grammar/Story state, and camera decoding falls back locally when BarcodeDetector is unavailable.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
@@ -13091,7 +13298,16 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       async diagnostics() { return buildPracticeDiagnostics(); },
       async exportProgressPack() { return createProgressPack(); },
       async importProgressPack(pack) { return applyProgressPack(pack); },
-      async retryPendingProgress() { return applyPendingProgressTransfers(); }
+      async retryPendingProgress() { return applyPendingProgressTransfers(); },
+      transferDiagnostics: {
+        deviceId: () => progressDeviceId(),
+        buildRequest: () => buildProgressRequest(),
+        encodeRequest: req => encodeProgressRequest(req),
+        parseRequest: raw => parseProgressRequest(raw),
+        createDeltaWire: (since=0,receiverId="") => createProgressDeltaWire(since,receiverId),
+        packFromDeltaWire: wire => progressPackFromDeltaWire(wire),
+        parseDeltaFrame: raw => parseDeltaFrame(raw)
+      }
     };
 
 })();</script></body></html>

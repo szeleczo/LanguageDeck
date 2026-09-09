@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const indexHtml = fs.readFileSync(path.join(here, "..", "index.html"), "utf8");
 
-assert.match(indexHtml, /4\.5\.7-word-recall-format-tolerance-20260909/, "4.5.7 build marker is present");
+assert.match(indexHtml, /4\.5\.9-serverless-delta-qr-desktop-parity-20260909/, "4.5.9 build marker is present");
 
 const levelsBlock = indexHtml.match(/const PROGRESSIVE_LEVELS = \[([\s\S]*?)\n    \];/)?.[1] || "";
 assert.ok(levelsBlock, "Adaptive level configuration is present");

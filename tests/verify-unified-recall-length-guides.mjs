@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const html = fs.readFileSync(path.join(here, "..", "index.html"), "utf8");
 
-assert.match(html, /4\.5\.7-word-recall-format-tolerance-20260909/, "4.5.7 build marker is present");
+assert.match(html, /4\.5\.9-serverless-delta-qr-desktop-parity-20260909/, "4.5.9 build marker is present");
 
 // Recognition/context and active recall are separate evidence dimensions.
 assert.match(html, /const KNOWLEDGE_SCHEMA_VERSION=4/, "shared lexeme knowledge uses the split-evidence schema");

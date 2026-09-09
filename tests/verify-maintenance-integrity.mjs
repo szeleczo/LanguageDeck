@@ -76,8 +76,8 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedRowDone\(row, guidedPractice, rows\)[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "prefetched guided queues use the target-specific completion rule");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.5\.7-word-recall-format-tolerance-20260909/, "the application build marker includes the 4.5.7 word-recall tolerance release");
-assert.equal((indexHtml.match(/4\.5\.7-word-recall-format-tolerance-20260909/g) || []).length, 2, "Course and Practice use the same 4.5.7 build marker");
+assert.match(indexHtml, /4\.5\.9-serverless-delta-qr-desktop-parity-20260909/, "the application build marker includes the 4.5.9 desktop parity and serverless delta QR release");
+assert.equal((indexHtml.match(/4\.5\.9-serverless-delta-qr-desktop-parity-20260909/g) || []).length, 2, "Course and Practice use the same 4.5.9 build marker");
 assert.match(indexHtml, /practiceSetupBtn'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openUtility\?\.\('session',LANG\)/, "the sliders restore the dedicated current-session controls");
 assert.match(indexHtml, /practiceSettingsBtn'\)\.onclick=\(\)=>openSettings\('main'\)/, "the gear keeps the application settings role");
 assert.match(indexHtml, /id="sessionActualNewRatio"[\s\S]*id="sessionRequestedNewRatio"[\s\S]*id="sessionIntakeStatus"[\s\S]*id="sessionScopeStatus"/, "Session controls show realised pacing, requested pacing, intake and scope together");
@@ -531,7 +531,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-5-7-word-recall-format-tolerance-20260909/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-5-9-serverless-delta-qr-desktop-parity-20260909/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");
@@ -543,6 +543,8 @@ assert.ok(shellMatch, "service worker declares an app shell");
 for (const item of shellMatch[1].matchAll(/"([^"]+)"/g)) {
   assert.ok(existsSync(join(root, item[1].replace(/^\.\//, ""))), `service worker shell is missing ${item[1]}`);
 }
+assert.match(serviceWorker, /OPTIONAL_SHELL=\["\.\/vendor\/jsqr\.js"\]/, "the pinned QR decoder is opportunistically cached without breaking direct archives that have not vendored it yet");
+assert.ok(!existsSync(join(root, "tests", "verify-maintenance-integrity-v3.mjs")), "obsolete always-red v3 maintenance test was removed");
 assert.ok(!existsSync(join(root, "practice.html")), "duplicate standalone Practice page was removed");
 assert.ok(!existsSync(join(root, "story-study.html")), "duplicate standalone Story Study page was removed");
 assert.ok(!existsSync(join(root, "index.json")), "orphan root CSV disguised as JSON was removed");

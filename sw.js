@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.7 — vocabulary full-recall formatting tolerance. */
-const CACHE_VERSION="languagedeck-4-5-7-word-recall-format-tolerance-20260909";
+/* LanguageDeck 4.5.9 — desktop parity + serverless delta QR transfer. */
+const CACHE_VERSION="languagedeck-4-5-9-serverless-delta-qr-desktop-parity-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
@@ -120,9 +120,12 @@ const APP_SHELL=[
   "./index.html",
   "./manifest.webmanifest",
   "./vendor/qrcode.js",
-  "./vendor/QRCode-LICENSE.txt"
+  "./vendor/QRCode-LICENSE.txt",
+  "./vendor/jsQR-LICENSE.txt",
+  "./vendor/jsQR-NOTICE.txt"
 ];
+const OPTIONAL_SHELL=["./vendor/jsqr.js"];
 self.addEventListener("message",e=>{if(e.data&&e.data.type==="SKIP_WAITING")self.skipWaiting()});
-self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE_VERSION).then(c=>c.addAll(APP_SHELL)));self.skipWaiting()});
+self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE_VERSION).then(async c=>{await c.addAll(APP_SHELL);for(const path of OPTIONAL_SHELL)try{await c.add(path)}catch(_){}}));self.skipWaiting()});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_VERSION).map(k=>caches.delete(k)))));self.clients.claim()});
 self.addEventListener("fetch",e=>{const r=e.request;if(r.method!=="GET")return;const u=new URL(r.url);if(u.origin!==self.location.origin)return;e.respondWith(fetch(r,{cache:"no-cache"}).then(resp=>{if(resp.ok)caches.open(CACHE_VERSION).then(c=>c.put(r,resp.clone()));return resp}).catch(()=>caches.match(r)))});

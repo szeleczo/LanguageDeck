@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const roadmap=fs.readFileSync(new URL('../ROADMAP.md',import.meta.url),'utf8');
+assert.match(html,/const PROGRESS_DEVICE_KEY="ld-progress-device-v1", PROGRESS_PEERS_KEY="ld-progress-peer-cursors-v1"/);
+assert.match(html,/function saveProgressPeerCursor\(sourceId,at\)/);
+assert.match(html,/function buildProgressRequest\(\)[\s\S]*progressPeerCursors\(\)/);
+assert.match(html,/function encodeProgressRequest\(req\)\{return`\$\{QR_REQUEST_PREFIX\}:/);
+assert.match(html,/function parseProgressRequest\(raw\)/);
+assert.match(html,/async function buildDeltaTransfer\(request\)[\s\S]*find\(x=>x\?\.\[0\]===mine\)/,'sender consumes receiver watermark for its own device id');
+assert.match(html,/pack\.__deltaMeta=\{sourceId:wire\.s/,'decoded delta retains source identity');
+assert.match(html,/saveProgressPeerCursor\(meta\.sourceId,meta\.createdAt\)/,'watermark advances only after explicit merge');
+assert.doesNotMatch(html,/RTCPeerConnection|WebSocket|fetch\([^)]*progress/i,'learning progress is not sent to a server transport');
+assert.match(roadmap,/4\.5\.9 — Serverless delta QR progress transfer/);
+assert.match(roadmap,/no account, backend, signalling service, WebRTC session/);
+console.log('Serverless per-peer delta transfer checks passed.');

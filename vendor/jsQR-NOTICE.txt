@@ -1,0 +1,7 @@
+jsQR 1.4.0 fallback decoder
+Source: https://github.com/cozmo/jsQR
+Pinned commit: 8e6a036beafa7053dd44b1b76ac578d22b1b3311
+Pinned Git blob (dist/jsQR.js): 99ea9df26907009e5553233ffe03c529c1521739
+License: Apache-2.0 (see jsQR-LICENSE.txt)
+
+LanguageDeck uses jsQR only to decode camera frames locally when the browser's native BarcodeDetector QR support is unavailable. The GitHub update installer downloads this pinned static decoder and verifies its Git blob SHA-1 before committing it to the LanguageDeck repository. A directly deployed full archive can fetch the same pinned static decoder once and cache it locally. No LanguageDeck progress or camera image is uploaded by the QR transfer feature.
