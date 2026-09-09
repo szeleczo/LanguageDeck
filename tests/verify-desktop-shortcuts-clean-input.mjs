@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
+assert.match(html,/4\.5\.13-desktop-shortcuts-clean-input-20260909/);
+assert.match(html,/desktop-masked-input-hidden/,'desktop masked input hiding class exists');
+assert.match(html,/input\.classList\.toggle\("desktop-masked-input-hidden", !!\(isMissingOnly && !isTouchPrimaryDevice\(\)\)\)/,'masked desktop inputs are hidden by the shared keypad renderer');
+assert.match(html,/practiceShortcutModifier\(e\) && e\.key === "Enter"[\s\S]*submitTypingWordAnswer\(true\)/,'word input supports Ctrl/Cmd+Enter reveal');
+assert.match(html,/practiceShortcutModifier\(event\)[\s\S]*submitSentenceAnswer\(true\)/,'global sentence/order reveal shortcut exists');
+assert.match(html,/Ctrl\/Cmd\+Backspace/,'clear shortcut is exposed in button tooltips');
+assert.match(html,/typingRevealBtn\.title = awaiting \? "Continue · Enter \/ Space" : "Reveal · Ctrl\/Cmd\+Enter"/,'word action tooltip follows state');
+assert.match(html,/clue\.addEventListener\("click", \(\) => \{ if \(inp\.classList\.contains\("desktop-masked-input-hidden"\)\) focusPracticeInput\(inp\); \}\)/,'hidden sentence input can be refocused from the visible slot surface');
+console.log('PASS verify-desktop-shortcuts-clean-input');

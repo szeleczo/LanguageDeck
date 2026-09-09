@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.12 — responsive camera-transfer modal. */
-const CACHE_VERSION="languagedeck-4-5-12-qr-modal-responsive-20260909";
+/* LanguageDeck 4.5.13 — desktop shortcuts and clean masked-input surface. */
+const CACHE_VERSION="languagedeck-4-5-13-desktop-shortcuts-clean-input-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

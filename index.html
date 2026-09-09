@@ -1627,6 +1627,25 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
       opacity: 0 !important;
       pointer-events: none !important;
     }
+    /* Desktop masked recall uses the same visible slot/clue surface as mobile.
+       The real input remains focusable for the physical keyboard, but the
+       redundant “Missing letters only” box is not drawn. */
+    #legacyPracticeRoot .desktop-masked-input-hidden{
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      min-height: 1px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: 0 !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      clip-path: inset(50%) !important;
+    }
+    #legacyPracticeRoot .typing-clue.desktop-physical-input-target,
+    #legacyPracticeRoot .progressive-clue.desktop-physical-input-target{
+      cursor: text;
+    }
     @media (max-width: 480px){
       #legacyPracticeRoot .typing-panel{ padding: 22px 14px 18px; }
       #legacyPracticeRoot .inline-keypad{ gap: 4px; margin: 2px 0 8px; }
@@ -3488,8 +3507,8 @@ html.integrated-practice-active body{overflow:hidden!important}
 <input autocapitalize="off" autocomplete="off" autocorrect="off" enterkeyhint="done" id="typingInput" placeholder="Answer" spellcheck="false" type="text"/>
 <div aria-label="Missing letters keypad" class="inline-keypad hidden" id="typingInlineKeypad"></div>
 <div class="typing-actions practice-actions">
-<button class="ghost" id="typingRevealBtn">Reveal</button>
-<button class="primary-action" id="typingSubmitBtn">Check</button>
+<button class="ghost" id="typingRevealBtn" title="Reveal · Ctrl/Cmd+Enter">Reveal</button>
+<button class="primary-action" id="typingSubmitBtn" title="Check · Enter">Check</button>
 </div>
 </div>
 <div class="typing-result" id="typingResult"></div>
@@ -3508,9 +3527,9 @@ html.integrated-practice-active body{overflow:hidden!important}
 <div class="sentence-target" id="sentenceTarget"></div>
 <div class="sentence-bank" id="sentenceBank"></div>
 <div class="sentence-actions practice-actions">
-<button class="ghost" id="sentenceResetBtn">Clear</button>
-<button class="ghost" id="sentenceRevealBtn">Reveal</button>
-<button class="primary-action" id="sentenceCheckBtn">Check</button>
+<button class="ghost" id="sentenceResetBtn" title="Clear · Ctrl/Cmd+Backspace">Clear</button>
+<button class="ghost" id="sentenceRevealBtn" title="Reveal · Ctrl/Cmd+Enter">Reveal</button>
+<button class="primary-action" id="sentenceCheckBtn" title="Check · Enter">Check</button>
 </div>
 <div class="sentence-result" id="sentenceResult"></div>
 </div>
@@ -4034,7 +4053,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.12-qr-modal-responsive-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.13-desktop-shortcuts-clean-input-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4617,7 +4636,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.12-qr-modal-responsive-20260909";
+    const APP_BUILD = "4.5.13-desktop-shortcuts-clean-input-20260909";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -6170,6 +6189,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const isMissingOnly = !!(challenge && challenge.masked);
       setInlineKeypadInputMode(input, primary);
       input.classList.toggle("inline-keypad-input-hidden", !!(primary && isMissingOnly));
+      input.classList.toggle("desktop-masked-input-hidden", !!(isMissingOnly && !isTouchPrimaryDevice()));
       container.classList.toggle("desktop-language-keypad", !!(enabled && !primary));
       container.classList.toggle("hidden", !enabled);
       document.documentElement.classList.toggle("keypad-active", !!primary);
@@ -9936,6 +9956,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const hasAnswer = hasTypedText(typingInput && typingInput.value);
       typingSubmitBtn.textContent = practiceUiText("Check", "Ellenőrzés");
       typingRevealBtn.textContent = awaiting ? practiceUiText("Continue", "Tovább") : practiceUiText("Reveal", "Megoldás");
+      typingSubmitBtn.title = "Check · Enter";
+      typingRevealBtn.title = awaiting ? "Continue · Enter / Space" : "Reveal · Ctrl/Cmd+Enter";
       typingSubmitBtn.disabled = awaiting || !currentTypingWord || locked || !hasAnswer;
       typingRevealBtn.disabled = !currentTypingWord || locked;
     }
@@ -10618,6 +10640,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       sentenceCheckBtn.textContent = practiceUiText("Check", "Ellenőrzés");
       sentenceResetBtn.textContent = practiceUiText("Clear", "Törlés");
       sentenceRevealBtn.textContent = awaiting ? practiceUiText("Continue", "Tovább") : practiceUiText("Reveal", "Megoldás");
+      sentenceCheckBtn.title = "Check · Enter";
+      sentenceResetBtn.title = "Clear · Ctrl/Cmd+Backspace";
+      sentenceRevealBtn.title = awaiting ? "Continue · Enter / Space" : "Reveal · Ctrl/Cmd+Enter";
       sentenceCheckBtn.classList.toggle("hidden", autoChoice);
       sentenceCheckBtn.disabled = awaiting || locked || !canSubmitCurrentSentenceAnswer();
       sentenceResetBtn.disabled = awaiting || locked || !hasCurrentSentenceInput();
@@ -10836,8 +10861,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           updateSentenceActionButtons();
         });
         inp.addEventListener("keydown", async e => {
-          if (e.key === "Enter") { e.preventDefault(); await submitSentenceAnswer(false); }
+          if (practiceShortcutModifier(e) && e.key === "Enter") { e.preventDefault(); e.stopPropagation(); await submitSentenceAnswer(true); return; }
+          if (practiceShortcutModifier(e) && (e.key === "Backspace" || e.key === "Delete")) { e.preventDefault(); e.stopPropagation(); clearSentenceShortcut(); return; }
+          if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); await submitSentenceAnswer(false); }
         });
+        clue.addEventListener("click", () => { if (inp.classList.contains("desktop-masked-input-hidden")) focusPracticeInput(inp); });
         sentenceTarget.appendChild(inp);
         const keypad = document.createElement("div");
         keypad.className = "inline-keypad hidden";
@@ -10929,6 +10957,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
               currentSentenceData.typingAnswers[blankIdx] = e.target.value;
               refreshGuide(e.target.value);
               updateSentenceActionButtons();
+            });
+            inp.addEventListener("keydown", async e => {
+              if (practiceShortcutModifier(e) && e.key === "Enter") { e.preventDefault(); e.stopPropagation(); await submitSentenceAnswer(true); return; }
+              if (practiceShortcutModifier(e) && (e.key === "Backspace" || e.key === "Delete")) { e.preventDefault(); e.stopPropagation(); clearSentenceShortcut(); return; }
+              if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); await submitSentenceAnswer(false); }
             });
             const activateTypingKeypad = () => {
               if (!sentenceTypingKeypad) return;
@@ -11228,6 +11261,20 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return true;
     }
 
+    function practiceShortcutModifier(event) { return !!(event && (event.ctrlKey || event.metaKey)); }
+    function clearWordTypingShortcut() {
+      if (!typingInput || locked || wordTypingAwaitingContinue) return false;
+      typingInput.value = "";
+      typingInput.dispatchEvent(new Event("input", { bubbles: true }));
+      focusPracticeInput(typingInput);
+      return true;
+    }
+    function clearSentenceShortcut() {
+      if (!currentSentenceData || locked || currentSentenceData.feedbackAwaitingContinue || currentSentenceData.orderAwaitingContinue) return false;
+      resetSentenceInputs();
+      return true;
+    }
+
     document.addEventListener("keydown", async (event) => {
       if (event.key === "Escape") {
         if (settingsModal.classList.contains("active")) { closeSettings(); return; }
@@ -11236,6 +11283,15 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         if (gateDetailModal.classList.contains("active")) { closeGateDetail(); return; }
         if (builtinModal.classList.contains("active")) { builtinModal.classList.remove("active"); return; }
         if ($("qrTransferModal")?.classList.contains("active")) { $("qrTransferModal").classList.remove("active"); stopQrTransfer(); return; }
+      }
+      const modifier = practiceShortcutModifier(event);
+      if (modifier && event.key === "Enter") {
+        if (currentGame === "words" && currentTypingWord) { event.preventDefault(); await submitTypingWordAnswer(true); return; }
+        if ((currentGame === "sentences" || currentGame === "grammar") && currentSentence) { event.preventDefault(); await submitSentenceAnswer(true); return; }
+      }
+      if (modifier && (event.key === "Backspace" || event.key === "Delete")) {
+        if (currentGame === "words" && clearWordTypingShortcut()) { event.preventDefault(); return; }
+        if ((currentGame === "sentences" || currentGame === "grammar") && clearSentenceShortcut()) { event.preventDefault(); return; }
       }
       const isContinueKey = event.key === "Enter" || event.key === " ";
       if (isContinueKey && !activeElementIsTextInput()) {
@@ -12878,6 +12934,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     typingSubmitBtn.addEventListener("click", () => submitTypingWordAnswer(false));
     typingRevealBtn.addEventListener("click", () => submitTypingWordAnswer(true));
+    typingClue.addEventListener("click", () => { if (typingInput.classList.contains("desktop-masked-input-hidden")) focusPracticeInput(typingInput); });
     typingInput.addEventListener("input", () => {
       // One shared visual model: masked levels and full typing both keep their
       // character slots on screen while typed characters fill them live.
@@ -12893,7 +12950,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     });
 
     typingInput.addEventListener("keydown", async e => {
-      if (e.key === "Enter") { e.preventDefault(); await submitTypingWordAnswer(false); }
+      if (practiceShortcutModifier(e) && e.key === "Enter") { e.preventDefault(); e.stopPropagation(); await submitTypingWordAnswer(true); return; }
+      if (practiceShortcutModifier(e) && (e.key === "Backspace" || e.key === "Delete")) { e.preventDefault(); e.stopPropagation(); clearWordTypingShortcut(); return; }
+      if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); await submitTypingWordAnswer(false); }
     });
 
     sentenceCheckBtn.addEventListener("click", () => submitSentenceAnswer(false));
@@ -13376,7 +13435,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);

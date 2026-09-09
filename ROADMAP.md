@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.12. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.13. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -123,3 +123,13 @@ Status: completed stabilisation hotfix.
 ## Next — 4.6 “Prepare for this”
 
 The Library can prioritise vocabulary from a selected story/chapter through the existing Adaptive Words engine. It must not create a second knowledge system.
+
+## 4.5.13 — Desktop shortcuts + clean masked input
+
+- Desktop masked/full progressive recall uses the same visible slot surface as mobile; the redundant `Missing letters only` text field is hidden while the physical keyboard still writes into the focused input.
+- `Enter` = Check / Continue.
+- `Ctrl/Cmd + Enter` = Reveal / Solution.
+- `Ctrl/Cmd + Backspace` (or Delete) = Clear / Reset.
+- Existing number-key shortcuts for choice/match/order remain unchanged.
+- Action buttons expose shortcut hints through their titles/tooltips.
+- Nearby transfer remains an occasional one-shot hand-off in 4.5.x; an optional live-sync-while-connected mode is a future UX choice, not required for 4.6.
