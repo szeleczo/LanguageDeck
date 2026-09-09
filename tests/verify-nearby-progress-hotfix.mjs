@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
+assert.match(html,/4\.5\.10-nearby-direct-progress-hotfix-20260909/);
+assert.match(html,/function qrUnwireIsoTime\(value\)\{const ms=qrUnwireTime\(value\);return ms\?new Date\(ms\)\.toISOString\(\):null\}/,'practice wire dates decode back to ISO strings');
+assert.match(html,/function repairNumericPracticeDatesV4510\(\)/,'partial 4.5.9 numeric date imports are repaired');
+assert.match(html,/typeof row\[field\] === "number"/,'numeric DB date fields are normalized');
+assert.match(html,/dueStamp\(a\.next_due\) - dueStamp\(b\.next_due\)/,'queue sorting is timestamp based');
+assert.doesNotMatch(html,/\(a\.next_due \|\| ""\)\.localeCompare\(b\.next_due \|\| ""\)/,'old string-only due comparison is gone');
+assert.match(html,/async function startNearbyReceive\(\)/);
+assert.match(html,/async function startNearbySend\(\)/);
+assert.match(html,/async function scanNearbyAnswer\(\)/);
+assert.match(html,/nearbyChannel\.addEventListener\("open",\(\)=>nearbySendDelta/);
+assert.match(html,/progressQrShowBtn\.addEventListener\("click", startNearbyReceive\)/);
+assert.match(html,/progressQrScanBtn\.addEventListener\("click", startNearbySend\)/);
+console.log('4.5.10 merge/date hotfix and nearby transfer checks passed.');

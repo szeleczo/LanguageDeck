@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.9 — desktop parity + serverless delta QR transfer. */
-const CACHE_VERSION="languagedeck-4-5-9-serverless-delta-qr-desktop-parity-20260909";
+/* LanguageDeck 4.5.10 — nearby direct progress hand-off + QR date hotfix. */
+const CACHE_VERSION="languagedeck-4-5-10-nearby-direct-progress-hotfix-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

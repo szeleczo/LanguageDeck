@@ -3867,9 +3867,14 @@ html.integrated-practice-active body{overflow:hidden!important}
 <div class="modal-title">Progress transfer</div>
 <div class="progress-transfer-intro">Move your learning state between desktop and mobile without an account. A Progress Pack includes Adaptive/Words progress, sentence practice, shared Story vocabulary, text progress and chapter positions. It does not contain book/deck content or appearance settings.</div>
 <div class="progress-transfer-camera">
-  <h3>Quick QR transfer · no sync server</h3>
-  <p>Only progress changed since the other device last received from this device is sent. The receiver first shows one small request QR; the sender scans it and replies with a short rotating delta. Progress never leaves the two screens.</p>
+  <h3>Nearby transfer · no server</h3>
+  <p>A QR code only introduces the two devices. The changed Words/Grammar/Story progress then moves directly between them over a one-time encrypted browser connection and the connection closes after the hand-off. No account, backend, signalling server, STUN or TURN service is used. For the direct path, keep both devices on the same Wi-Fi or local network.</p>
   <div class="progress-transfer-actions"><button id="progressQrShowBtn">Receive progress</button><button class="secondary" id="progressQrScanBtn">Send progress</button></div>
+  <details class="progress-transfer-legacy" style="margin-top:8px;">
+    <summary>QR-only fallback</summary>
+    <div style="font-size:11px;color:var(--text-faint);margin:8px 0;line-height:1.4;">If a local peer connection is blocked by the network, the older serverless method can still move the compact delta as rotating QR frames.</div>
+    <div class="progress-transfer-actions"><button class="secondary" id="progressQrLegacyReceiveBtn">Receive by QR frames</button><button class="secondary" id="progressQrLegacySendBtn">Send by QR frames</button></div>
+  </details>
 </div>
 <div class="progress-transfer-actions">
 <button id="progressPackExportBtn">Share / export progress</button>
@@ -3902,7 +3907,7 @@ html.integrated-practice-active body{overflow:hidden!important}
       <button class="secondary hidden" id="qrTransferScanReplyBtn" style="width:100%;margin-top:10px;">Scan incoming progress</button>
     </div>
     <div id="qrScanView" class="hidden">
-      <div class="qr-transfer-note">Point the camera at the other device. Frames can arrive in any order; duplicates are ignored.</div>
+      <div class="qr-transfer-note">Point the camera at the QR code on the other device.</div>
       <div class="qr-camera-wrap"><video id="qrTransferVideo" playsinline muted></video><div class="qr-camera-target"></div></div>
       <div class="qr-transfer-progress"><span id="qrTransferProgressFill"></span></div>
       <div class="qr-transfer-frame" id="qrTransferScanStatus">Waiting for QR frames…</div>
@@ -4027,7 +4032,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.9-serverless-delta-qr-desktop-parity-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.10-nearby-direct-progress-hotfix-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4610,7 +4615,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.9-serverless-delta-qr-desktop-parity-20260909";
+    const APP_BUILD = "4.5.10-nearby-direct-progress-hotfix-20260909";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -6844,7 +6849,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         return remaining.slice(0, limit);
       }
 
-      const now = nowIso();
+      const now = nowIso(), nowMs = Date.now();
+      const dueStamp = value => progressTimestamp(value);
       // Mastered items are held out of the main pools entirely; they return
       // only via the small daily quota below. This is the fix for "mastered
       // words keep flooding back": once mastered, an item can no longer win a
@@ -6854,15 +6860,16 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       for (const r of pool) {
         if (isMastered(r)) masteredTotal++;
         if (r.next_due == null) { fresh.push(r); continue; }
-        const isDue = r.next_due <= now;
+        const dueAt = dueStamp(r.next_due);
+        const isDue = dueAt > 0 && dueAt <= nowMs;
         if (isMastered(r)) { if (isDue) masteredDue.push(r); continue; }
         if (isDue) due.push(r);
         else future.push(r);
       }
-      due.sort((a, b) => -Math.max((a.learning_pressure | 0), (a.article_pressure | 0)) + Math.max((b.learning_pressure | 0), (b.article_pressure | 0)) || (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
-      future.sort((a, b) => (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
+      due.sort((a, b) => -Math.max((a.learning_pressure | 0), (a.article_pressure | 0)) + Math.max((b.learning_pressure | 0), (b.article_pressure | 0)) || dueStamp(a.next_due) - dueStamp(b.next_due) || a.id - b.id);
+      future.sort((a, b) => dueStamp(a.next_due) - dueStamp(b.next_due) || a.id - b.id);
       // Oldest-due mastered items first, so reviews cycle rather than repeat.
-      masteredDue.sort((a, b) => (a.next_due || "").localeCompare(b.next_due || "") || a.id - b.id);
+      masteredDue.sort((a, b) => dueStamp(a.next_due) - dueStamp(b.next_due) || a.id - b.id);
       const newItems = orderNewItems(fresh);
 
       // How many mastered reviews may this batch include: bounded by the
@@ -11808,7 +11815,20 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (item.lexemeId || item.skillId) keys.push([table, item.deck || "", "id", normTxt(item.lexemeId || item.skillId)].join("|"));
       return [...new Set(keys)];
     }
+    const PROGRESS_DATE_STATE_FIELDS = new Set(["next_due","word_next_due","article_next_due","article_last_seen","last_seen","last_correct","last_wrong","first_seen","mastered_at","guided_last_answer_at","guided_success_at","guided_full_recall_at","explicit_unknown_at","full_recall_at"]);
+    function normalizePracticeStateDates(state = {}) {
+      const out = { ...state };
+      for (const field of PROGRESS_DATE_STATE_FIELDS) {
+        if (!Object.prototype.hasOwnProperty.call(out, field)) continue;
+        const value = out[field];
+        if (value == null || value === "") continue;
+        if (typeof value === "number" && Number.isFinite(value)) out[field] = new Date(value).toISOString();
+      }
+      return out;
+    }
     function mergePracticeState(row, incomingState = {}) {
+      incomingState = normalizePracticeStateDates(incomingState);
+      row = { ...row, ...normalizePracticeStateDates(progressRowState(row)) };
       const localState = progressRowState(row), incomingActivity = progressRowActivity(incomingState), localActivity = progressRowActivity(localState);
       const incomingSeen = +incomingState.times_seen || 0, localSeen = +localState.times_seen || 0;
       const incomingNewer = incomingActivity > localActivity || (incomingActivity === localActivity && incomingSeen > localSeen);
@@ -11960,6 +11980,23 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (!pending?.items?.length) return { updated: 0, pending: 0 };
       const res = await mergeProgressPracticeItems(pending.items, true); await savePendingProgress(res.unmatched); return { updated: res.updated, pending: res.unmatched.length };
     }
+    async function repairNumericPracticeDatesV4510() {
+      const marker = "ld-repair-practice-dates-4.5.10";
+      if (localStorage.getItem(marker) === "done") return 0;
+      let changed = 0;
+      for (const table of ["word_pairs","sentence_pairs"]) {
+        const rows = await DB.getAllRecords(table);
+        for (const row of rows) {
+          let dirty = false;
+          for (const field of PROGRESS_DATE_STATE_FIELDS) {
+            if (typeof row[field] === "number" && Number.isFinite(row[field])) { row[field] = new Date(row[field]).toISOString(); dirty = true; }
+          }
+          if (dirty) { await DB.update(table, row); changed++; }
+        }
+      }
+      localStorage.setItem(marker, "done");
+      return changed;
+    }
     function progressPackFilename() { return `LanguageDeck-progress-${new Date().toISOString().slice(0,10)}.ldprogress`; }
     async function exportProgressPackFile() {
       const pack = await createProgressPack(), blob = new Blob([JSON.stringify(pack)], { type: "application/json" }), filename = progressPackFilename();
@@ -11971,13 +12008,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
 
-    /* ---------- 4.5.9 serverless delta QR transfer ----------
-       This is an occasional hand-off, not a live sync connection. The receiving
-       device shows a tiny request QR containing its local device id and peer
-       watermarks. The sender scans that request, builds only the learning rows
-       changed since the receiver last accepted progress from this sender, and
-       shows a compact rotating QR delta. No account, signalling server, WebRTC,
-       upload, or shared network is required. */
+    /* ---------- 4.5.10 nearby direct progress transfer ----------
+       Progress hand-off is occasional, not persistent sync. QR carries only
+       WebRTC offer/answer signalling plus the receiver's local watermark. The
+       compact delta itself travels directly over a temporary encrypted
+       DataChannel. No account, backend, signalling service, STUN or TURN server
+       is used; the peer connection closes after transfer. The older 4.5.9
+       rotating QR delta remains available as a network-independent fallback. */
     const QR_REQUEST_PREFIX="LDR1", QR_DELTA_PREFIX="LDD1", QR_TRANSFER_CHUNK=680, QR_TRANSFER_MS=680;
     const PROGRESS_DEVICE_KEY="ld-progress-device-v1", PROGRESS_PEERS_KEY="ld-progress-peer-cursors-v1";
     const QR_JSQR_CACHE_KEY="ld-jsqr-source-v1", QR_JSQR_LOCAL="vendor/jsqr.js";
@@ -11986,6 +12023,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const QR_WIRE_FORMAT="LanguageDeckDelta", QR_WIRE_VERSION=1;
     const QR_WIRE_TIME_FIELDS=new Set(["next_due","word_next_due","article_next_due","article_last_seen","last_seen","last_correct","last_wrong","first_seen","mastered_at","guided_last_answer_at","guided_success_at","guided_full_recall_at","explicit_unknown_at","full_recall_at"]);
     let qrTransferTimer=null, qrTransferStream=null, qrTransferScanTimer=null, qrTransferReceivedPack=null, qrTransferDecoderPromise=null;
+    const NEARBY_SIGNAL_PREFIX="LDP2", NEARBY_CHUNK=16384;
+    let nearbyPeer=null, nearbyChannel=null, nearbyRequest=null, nearbyReceiveMeta=null, nearbyReceiveChunks=[], nearbyReceiveBytes=0, nearbySendStarted=false;
 
     function progressDeviceId(){
       let id=localStorage.getItem(PROGRESS_DEVICE_KEY)||"";
@@ -12006,8 +12045,9 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     function qrWireTime(value){const ms=progressTimestamp(value);return ms?Math.round(ms/1000):0}
     function qrUnwireTime(value){return +value>0?(+value*1000):0}
+    function qrUnwireIsoTime(value){const ms=qrUnwireTime(value);return ms?new Date(ms).toISOString():null}
     function qrWireState(state={}){const out=[];PROGRESS_STATE_FIELDS.forEach((field,index)=>{if(!Object.prototype.hasOwnProperty.call(state,field))return;let value=state[field];if(value===undefined||value===null||value==="")return;if(QR_WIRE_TIME_FIELDS.has(field))value=qrWireTime(value);out.push(index,value)});return out}
-    function qrUnwireState(values=[]){const out={};for(let i=0;i+1<values.length;i+=2){const field=PROGRESS_STATE_FIELDS[+values[i]];if(!field)continue;let value=values[i+1];if(QR_WIRE_TIME_FIELDS.has(field))value=qrUnwireTime(value);out[field]=value}return out}
+    function qrUnwireState(values=[]){const out={};for(let i=0;i+1<values.length;i+=2){const field=PROGRESS_STATE_FIELDS[+values[i]];if(!field)continue;let value=values[i+1];if(QR_WIRE_TIME_FIELDS.has(field))value=qrUnwireIsoTime(value);out[field]=value}return out}
     function qrPracticeActivity(item){return progressRowActivity(item?.state||item||{})}
     function qrSharedActivity(row={}){let at=Math.max(progressTimestamp(row.lastSeen),progressTimestamp(row.lastOpened),+row.activeRecallUpdatedAt||0,+row.recognitionUpdatedAt||0,+row.updatedAt||0);for(const ev of Object.values(row.evidence||{}))at=Math.max(at,+ev?.lastAt||0);const st=row.storyState||{};return Math.max(at,+st.explicitUnknownAt||0,+st.fullRecallAt||0)}
     function qrLocalActivity(raw){try{const o=JSON.parse(raw||"null")||{};return Math.max(progressTimestamp(o.updatedAt),progressTimestamp(o.lastOpened),progressTimestamp(o.completedAt),progressTimestamp(o.lastReviewAt))}catch(_){return 0}}
@@ -12057,8 +12097,85 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     async function buildDeltaTransfer(request){const mine=progressDeviceId(),sinceSec=(request.p||[]).find(x=>x?.[0]===mine)?.[1]||0,wire=await createProgressDeltaWire(+sinceSec*1000,request.r),packed=await qrPackBytes(wire),payload=qrBytesToB64(packed.bytes),hash=await qrDigest(packed.bytes),id=qrTransferId(),chunks=[];for(let i=0;i<payload.length;i+=QR_TRANSFER_CHUNK)chunks.push(payload.slice(i,i+QR_TRANSFER_CHUNK));const total=chunks.length||1;if(!chunks.length)chunks.push("");return{wire,id,alg:packed.alg,hash,bytes:packed.bytes.length,frames:chunks.map((chunk,i)=>`${QR_DELTA_PREFIX}:${id}:${i.toString(36)}:${total.toString(36)}:${packed.alg}:${hash}:${chunk}`),since:+sinceSec*1000}}
     function parseDeltaFrame(raw){const parts=String(raw||"").split(":");if(parts.length!==7||parts[0]!==QR_DELTA_PREFIX)return null;const index=parseInt(parts[2],36),total=parseInt(parts[3],36),alg=parts[4],hash=parts[5],chunk=parts[6];if(!parts[1]||!Number.isInteger(index)||!Number.isInteger(total)||index<0||total<1||index>=total||!(alg==="g"||alg==="r")||!hash)return null;return{id:parts[1],index,total,alg,hash,chunk}}
 
+    function nearbySetView(kind){
+      $("qrSendView").classList.toggle("hidden",kind!=="send");
+      $("qrScanView").classList.toggle("hidden",kind!=="scan");
+      $("qrReceiveView").classList.toggle("hidden",kind!=="receive");
+    }
+    function stopNearbyPeer(){
+      try{nearbyChannel?.close()}catch(_){}
+      try{nearbyPeer?.close()}catch(_){}
+      nearbyChannel=null;nearbyPeer=null;nearbyRequest=null;nearbyReceiveMeta=null;nearbyReceiveChunks=[];nearbyReceiveBytes=0;nearbySendStarted=false;
+    }
+    function nearbyPeerConfig(){return{iceServers:[],bundlePolicy:"max-bundle"}}
+    async function nearbyWaitIce(pc,timeout=5000){
+      if(pc.iceGatheringState==="complete")return;
+      await new Promise(resolve=>{let done=false;const finish=()=>{if(done)return;done=true;pc.removeEventListener("icegatheringstatechange",check);clearTimeout(timer);resolve()};const check=()=>pc.iceGatheringState==="complete"&&finish();const timer=setTimeout(finish,timeout);pc.addEventListener("icegatheringstatechange",check)});
+    }
+    async function nearbyEncodeSignal(kind,description,request=null){
+      const packed=await qrPackBytes({f:NEARBY_SIGNAL_PREFIX,v:1,k:kind,d:{type:description.type,sdp:description.sdp},r:request||null});
+      return `${NEARBY_SIGNAL_PREFIX}:${packed.alg}:${qrBytesToB64(packed.bytes)}`;
+    }
+    async function nearbyDecodeSignal(raw){
+      const text=String(raw||"");if(!text.startsWith(NEARBY_SIGNAL_PREFIX+":"))return null;
+      const parts=text.split(":",3);if(parts.length!==3||!(parts[1]==="g"||parts[1]==="r"))return null;
+      try{const x=await qrUnpackBytes(qrB64ToBytes(parts[2]),parts[1]);return x?.f===NEARBY_SIGNAL_PREFIX&&x?.d?.sdp?x:null}catch(_){return null}
+    }
+    function nearbyConnectionStatus(pc,label){
+      pc.addEventListener("connectionstatechange",()=>{
+        const state=pc.connectionState;
+        if(state==="connected")$("qrTransferStatus").textContent=`${label} connected · transferring progress directly…`;
+        else if(state==="failed")$("qrTransferStatus").textContent="Direct connection failed. Keep both devices on the same Wi-Fi/local network, or use QR-only/file transfer.";
+      });
+    }
+    async function nearbyWaitBuffered(channel,max=256*1024){
+      if(channel.bufferedAmount<=max)return;
+      channel.bufferedAmountLowThreshold=64*1024;
+      await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{cleanup();reject(new Error("Direct transfer stalled."))},10000);const low=()=>{cleanup();resolve()};const cleanup=()=>{clearTimeout(timer);channel.removeEventListener("bufferedamountlow",low)};channel.addEventListener("bufferedamountlow",low,{once:true})});
+    }
+    async function nearbySendDelta(channel,request){
+      if(nearbySendStarted)return;nearbySendStarted=true;
+      try{
+        const mine=progressDeviceId(),sinceSec=(request?.p||[]).find(x=>x?.[0]===mine)?.[1]||0;
+        const wire=await createProgressDeltaWire(+sinceSec*1000,request?.r||""),packed=await qrPackBytes(wire),hash=await qrDigest(packed.bytes);
+        channel.send(JSON.stringify({t:"meta",alg:packed.alg,hash,size:packed.bytes.length}));
+        for(let i=0;i<packed.bytes.length;i+=NEARBY_CHUNK){await nearbyWaitBuffered(channel);channel.send(packed.bytes.slice(i,i+NEARBY_CHUNK))}
+        await nearbyWaitBuffered(channel,64*1024);channel.send(JSON.stringify({t:"end"}));
+        $("qrTransferStatus").textContent=`Sent ${Math.max(1,Math.round(packed.bytes.length/1024))} KB directly. Waiting for the receiver to verify it…`;
+      }catch(err){$("qrTransferStatus").textContent=`Could not send progress directly: ${err.message||err}`;nearbySendStarted=false}
+    }
+    async function nearbyFinishReceived(){
+      const meta=nearbyReceiveMeta;if(!meta||nearbyReceiveBytes<meta.size)return;
+      const bytes=new Uint8Array(meta.size);let offset=0;for(const chunk of nearbyReceiveChunks){const part=chunk instanceof Uint8Array?chunk:new Uint8Array(chunk);const take=Math.min(part.length,bytes.length-offset);if(take<=0)break;bytes.set(part.subarray(0,take),offset);offset+=take}
+      if(offset!==meta.size)throw new Error("Direct transfer length mismatch.");
+      if(await qrDigest(bytes)!==meta.hash)throw new Error("Direct transfer checksum failed.");
+      const wire=await qrUnpackBytes(bytes,meta.alg),pack=progressPackFromDeltaWire(wire);
+      if(pack.__deltaMeta.receiverId&&pack.__deltaMeta.receiverId!==progressDeviceId())throw new Error("This progress was prepared for a different device.");
+      qrTransferReceivedPack=pack;stopQrCamera();nearbySetView("receive");$("qrTransferPreview").innerHTML=progressPackSummaryText(pack);$("qrTransferApplyBtn").disabled=false;$("qrTransferStatus").textContent="Direct transfer complete. Nothing has been changed yet.";try{navigator.vibrate?.(120)}catch(_){}
+      try{nearbyChannel?.close()}catch(_){};try{nearbyPeer?.close()}catch(_){}
+    }
+    function nearbyInstallReceiverChannel(channel){
+      nearbyChannel=channel;channel.binaryType="arraybuffer";nearbyReceiveMeta=null;nearbyReceiveChunks=[];nearbyReceiveBytes=0;
+      channel.addEventListener("message",async ev=>{try{if(typeof ev.data==="string"){const msg=JSON.parse(ev.data);if(msg.t==="meta"){nearbyReceiveMeta={alg:msg.alg,hash:msg.hash,size:+msg.size||0};nearbyReceiveChunks=[];nearbyReceiveBytes=0;$("qrTransferStatus").textContent=`Receiving ${Math.max(1,Math.round(nearbyReceiveMeta.size/1024))} KB directly…`;return}if(msg.t==="end"){await nearbyFinishReceived();return}}const buf=ev.data instanceof Blob?await ev.data.arrayBuffer():ev.data;const part=new Uint8Array(buf);nearbyReceiveChunks.push(part);nearbyReceiveBytes+=part.length;if(nearbyReceiveMeta?.size){const pct=Math.min(100,Math.round(nearbyReceiveBytes/nearbyReceiveMeta.size*100));$("qrTransferProgressFill").style.width=pct+"%"}if(nearbyReceiveMeta&&nearbyReceiveBytes>=nearbyReceiveMeta.size)await nearbyFinishReceived()}catch(err){$("qrTransferStatus").textContent=`Direct transfer failed: ${err.message||err}`}});
+    }
+    async function startNearbyReceive(){
+      stopQrTransfer();stopNearbyPeer();qrTransferReceivedPack=null;$("qrTransferModal").classList.add("active");nearbySetView("send");$("qrTransferTitle").textContent="Receive progress";$("qrTransferScanReplyBtn").classList.remove("hidden");$("qrTransferScanReplyBtn").textContent="Scan sender reply";$("qrTransferFrame").textContent="Preparing direct connection…";$("qrTransferSendNote").textContent="On the sending device choose Send progress and scan this QR. Then scan its reply here.";
+      if(!globalThis.RTCPeerConnection){$("qrTransferStatus").textContent="This browser does not support direct peer transfer. Use QR-only or a Progress Pack file.";return}
+      try{const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Direct link");const channel=pc.createDataChannel("languagedeck-progress",{ordered:true});nearbyInstallReceiverChannel(channel);nearbyRequest=buildProgressRequest();await pc.setLocalDescription(await pc.createOffer());await nearbyWaitIce(pc);const raw=await nearbyEncodeSignal("offer",pc.localDescription,nearbyRequest);drawQr(raw,500);$("qrTransferFrame").textContent="Direct connection request QR";$("qrTransferStatus").textContent="No learning data is in this QR. Keep both devices on the same local network."}catch(err){stopNearbyPeer();$("qrTransferStatus").textContent=`Could not prepare direct transfer: ${err.message||err}`}
+    }
+    async function scanNearbyAnswer(){
+      if(!nearbyPeer){$("qrTransferStatus").textContent="Create a receive request first.";return}
+      stopQrCamera();nearbySetView("scan");$("qrTransferTitle").textContent="Receive progress";$("qrTransferScanStatus").textContent="Starting camera…";$("qrTransferStatus").textContent="Scan the reply QR shown on the sending device.";
+      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="answer")return false;stopQrCamera();await nearbyPeer.setRemoteDescription(signal.d);$("qrTransferScanStatus").textContent="Reply accepted.";$("qrTransferStatus").textContent="Connecting directly…";return true},"Scan the sender's reply QR.")}catch(err){stopQrCamera();$("qrTransferStatus").textContent=`Camera unavailable: ${err.message||err}`}
+    }
+    async function startNearbySend(){
+      stopQrTransfer();stopNearbyPeer();qrTransferReceivedPack=null;$("qrTransferModal").classList.add("active");nearbySetView("scan");$("qrTransferTitle").textContent="Send progress";$("qrTransferProgressFill").style.width="0%";$("qrTransferStatus").textContent="Scan the receiver's direct connection QR.";
+      if(!globalThis.RTCPeerConnection){$("qrTransferStatus").textContent="This browser does not support direct peer transfer. Use QR-only or a Progress Pack file.";return}
+      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="offer")return false;stopQrCamera();const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyRequest=signal.r||buildProgressRequest();nearbyConnectionStatus(pc,"Direct link");pc.addEventListener("datachannel",ev=>{nearbyChannel=ev.channel;nearbyChannel.addEventListener("open",()=>nearbySendDelta(nearbyChannel,nearbyRequest),{once:true})});await pc.setRemoteDescription(signal.d);await pc.setLocalDescription(await pc.createAnswer());await nearbyWaitIce(pc);const reply=await nearbyEncodeSignal("answer",pc.localDescription);nearbySetView("send");$("qrTransferSendNote").textContent="Show this reply QR to the receiving device. Progress will transfer automatically after it scans the reply.";drawQr(reply,500);$("qrTransferFrame").textContent="Direct connection reply QR";$("qrTransferStatus").textContent="Waiting for the receiver to scan this reply…";return true},"Scan the receiver's direct connection QR.")}catch(err){stopQrCamera();stopNearbyPeer();$("qrTransferStatus").textContent=`Could not start direct transfer: ${err.message||err}`}
+    }
+
     function stopQrCamera(){if(qrTransferScanTimer){clearTimeout(qrTransferScanTimer);qrTransferScanTimer=null}if(qrTransferStream){for(const t of qrTransferStream.getTracks())t.stop();qrTransferStream=null}const v=$("qrTransferVideo");if(v){try{v.pause()}catch(_){}v.srcObject=null}}
-    function stopQrTransfer(){if(qrTransferTimer){clearInterval(qrTransferTimer);qrTransferTimer=null}stopQrCamera()}
+    function stopQrTransfer(){if(qrTransferTimer){clearInterval(qrTransferTimer);qrTransferTimer=null}stopQrCamera();stopNearbyPeer()}
     function openQrTransferView(kind){stopQrTransfer();qrTransferReceivedPack=null;$("qrSendView").classList.toggle("hidden",kind!=="send");$("qrScanView").classList.toggle("hidden",kind!=="scan");$("qrReceiveView").classList.add("hidden");$("qrTransferScanReplyBtn").classList.add("hidden");$("qrTransferStatus").textContent="";$("qrTransferModal").classList.add("active")}
 
     async function gitBlobSha1(text){const body=new TextEncoder().encode(text),head=new TextEncoder().encode(`blob ${body.length}\0`),all=new Uint8Array(head.length+body.length);all.set(head);all.set(body,head.length);const hash=new Uint8Array(await crypto.subtle.digest("SHA-1",all));return[...hash].map(x=>x.toString(16).padStart(2,"0")).join("")}
@@ -12106,7 +12223,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       openQrTransferView("scan");$("qrTransferTitle").textContent="Receive progress";const status=$("qrTransferScanStatus"),fill=$("qrTransferProgressFill");fill.style.width="0%";let transferId=null,total=0,alg="",hash="",frames=new Map();$("qrTransferStatus").textContent="Camera stays on this device only; QR frames are decoded locally.";
       try{await startQrCamera(async raw=>{const f=parseDeltaFrame(raw);if(!f)return false;if(!transferId){transferId=f.id;total=f.total;alg=f.alg;hash=f.hash}else if(f.id!==transferId||f.total!==total||f.alg!==alg||f.hash!==hash)return false;frames.set(f.index,f.chunk);const pct=Math.round(frames.size/total*100);fill.style.width=pct+"%";status.innerHTML=`Received <strong>${frames.size} / ${total}</strong> frames · ${pct}%`;if(frames.size!==total)return false;stopQrCamera();const payload=Array.from({length:total},(_,i)=>frames.get(i)||"").join(""),bytes=qrB64ToBytes(payload);if(await qrDigest(bytes)!==hash)throw new Error("QR transfer checksum failed. Please scan again.");const wire=await qrUnpackBytes(bytes,alg),pack=progressPackFromDeltaWire(wire);if(pack.__deltaMeta.receiverId&&pack.__deltaMeta.receiverId!==progressDeviceId())throw new Error("This progress delta was prepared for a different device request.");qrTransferReceivedPack=pack;$("qrScanView").classList.add("hidden");$("qrReceiveView").classList.remove("hidden");$("qrTransferPreview").innerHTML=progressPackSummaryText(pack);$("qrTransferStatus").textContent="Transfer complete. Nothing has been changed yet.";try{navigator.vibrate?.(120)}catch(_){}return true},"Scan the sender's rotating progress QR frames.")}catch(err){stopQrCamera();status.textContent="Camera unavailable.";$("qrTransferStatus").textContent=err.message||String(err)}
     }
-    async function applyReceivedQrProgress(){if(!qrTransferReceivedPack)return;const btn=$("qrTransferApplyBtn");btn.disabled=true;$("qrTransferStatus").textContent="Merging received progress…";try{const meta=qrTransferReceivedPack.__deltaMeta||{},res=await applyProgressPack(qrTransferReceivedPack);if(meta.sourceId)saveProgressPeerCursor(meta.sourceId,meta.createdAt);$("qrTransferStatus").textContent=`Merged ${res.practiceUpdated} practice rows, ${res.sharedUpdated} shared knowledge/text rows and ${res.localUpdated} chapter states.${res.pending?` ${res.pending} rows are safely held until their deck is installed.`:""}`;showToast("Progress merged.");await refreshSetOptions();await refreshStats();await refreshGateInfo();await loadCurrentGame(true);qrTransferReceivedPack=null;$("qrTransferApplyBtn").disabled=true}catch(err){$("qrTransferStatus").textContent=`Could not merge progress: ${err.message||err}`;btn.disabled=false}}
+    async function applyReceivedQrProgress(){if(!qrTransferReceivedPack)return;const btn=$("qrTransferApplyBtn");btn.disabled=true;$("qrTransferStatus").textContent="Merging received progress…";try{const meta=qrTransferReceivedPack.__deltaMeta||{},res=await applyProgressPack(qrTransferReceivedPack);if(meta.sourceId)saveProgressPeerCursor(meta.sourceId,meta.createdAt);$("qrTransferStatus").textContent=`Merged ${res.practiceUpdated} practice rows, ${res.sharedUpdated} shared knowledge/text rows and ${res.localUpdated} chapter states.${res.pending?` ${res.pending} rows are safely held until their deck is installed.`:""}`;showToast("Progress merged.");stopNearbyPeer();await refreshSetOptions();await refreshStats();await refreshGateInfo();await loadCurrentGame(true);qrTransferReceivedPack=null;$("qrTransferApplyBtn").disabled=true}catch(err){$("qrTransferStatus").textContent=`Could not merge progress: ${err.message||err}`;btn.disabled=false}}
 
     /* ---------- Manage installed decks (local delete) ---------- */
     /* Lists every imported set across both languages and both card types,
@@ -12314,9 +12431,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       });
       $("closeSyncBtn").addEventListener("click", () => syncModal.classList.remove("active"));
       syncModal.addEventListener("click", e => { if (e.target === syncModal) syncModal.classList.remove("active"); });
-      progressQrShowBtn.addEventListener("click", showProgressReceiveRequest);
-      progressQrScanBtn.addEventListener("click", scanProgressRequest);
-      $("qrTransferScanReplyBtn").addEventListener("click", scanProgressDelta);
+      progressQrShowBtn.addEventListener("click", startNearbyReceive);
+      progressQrScanBtn.addEventListener("click", startNearbySend);
+      $("progressQrLegacyReceiveBtn")?.addEventListener("click", showProgressReceiveRequest);
+      $("progressQrLegacySendBtn")?.addEventListener("click", scanProgressRequest);
+      $("qrTransferScanReplyBtn").addEventListener("click", ()=> nearbyPeer ? scanNearbyAnswer() : scanProgressDelta());
       $("qrTransferCloseBtn").addEventListener("click",()=>{$("qrTransferModal").classList.remove("active");stopQrTransfer()});
       $("qrTransferModal").addEventListener("click",e=>{if(e.target===$("qrTransferModal")){$("qrTransferModal").classList.remove("active");stopQrTransfer()}});
       $("qrTransferApplyBtn").addEventListener("click",applyReceivedQrProgress);
@@ -12959,6 +13078,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         console.warn("LanguageDeck 4.4.0 learning-engine migration deferred:", err);
       }
 
+      try {
+        const repaired = await repairNumericPracticeDatesV4510();
+        if (repaired) console.info(`LanguageDeck 4.5.10: repaired ${repaired} practice rows imported with numeric date fields.`);
+      } catch (err) {
+        console.warn("LanguageDeck 4.5.10 date repair deferred:", err);
+      }
+
       await refreshSetOptions();
       applyDeckUI();
       updateGameUI();
@@ -13220,7 +13346,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, QR progress transfer is serverless and delta-based: the receiver shows a small request QR, the sender replies only with changed Words/Grammar/Story state, and camera decoding falls back locally when BarcodeDetector is unavailable.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue indefinitely in L5 full recall, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);

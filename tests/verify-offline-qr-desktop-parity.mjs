@@ -4,14 +4,15 @@ const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const sw=fs.readFileSync(new URL('../sw.js',import.meta.url),'utf8');
 const qr=fs.readFileSync(new URL('../vendor/qrcode.js',import.meta.url),'utf8');
 
-assert.match(html,/4\.5\.9-serverless-delta-qr-desktop-parity-20260909/,'4.5.9 build marker is present');
-assert.match(html,/Quick QR transfer · no sync server/,'Progress transfer clearly exposes serverless QR');
+assert.match(html,/4\.5\.10-nearby-direct-progress-hotfix-20260909/,'4.5.10 build marker is present');
+assert.match(html,/Nearby transfer · no server/,'Progress transfer clearly exposes direct serverless nearby transfer');
 assert.match(html,/const QR_REQUEST_PREFIX="LDR1", QR_DELTA_PREFIX="LDD1"/,'QR uses request + delta wire formats');
 assert.match(html,/PROGRESS_DEVICE_KEY="ld-progress-device-v1"/,'each installation has a local transfer identity');
 assert.match(html,/PROGRESS_PEERS_KEY="ld-progress-peer-cursors-v1"/,'per-peer receive watermarks are persisted');
 assert.match(html,/createProgressDeltaWire\(\+sinceSec\*1000,request\.r\)/,'sender builds a delta from the receiver watermark');
 assert.match(html,/applyProgressPack\(qrTransferReceivedPack\)/,'received delta reuses the conflict-aware Progress Pack merge');
-assert.doesNotMatch(html,/RTCPeerConnection|WebSocket|wss:\/\//,'transfer has no persistent peer/server channel');
+assert.match(html,/RTCPeerConnection/,'nearby transfer uses a temporary browser peer connection');
+assert.doesNotMatch(html,/WebSocket|wss:\/\//,'transfer has no websocket/backend channel');
 
 const cameraStart=html.indexOf('async function startQrCamera(');
 const cameraEnd=html.indexOf('function drawQr(',cameraStart);
@@ -31,4 +32,4 @@ assert.doesNotMatch(html,/@media \(min-aspect-ratio:\s*13\/10\)\{/,'desktop neve
 assert.match(html,/@media \(pointer:coarse\) and \(hover:none\) and \(min-aspect-ratio:\s*13\/10\)/,'landscape-specific practice layout is touch-only');
 assert.match(sw,/\.\/vendor\/qrcode\.js/,'QR encoder is cached for offline use');
 assert.match(qr,/Kazuhiko Arase/,'vendored QR encoder retains attribution');
-console.log('Serverless QR camera path and desktop/mobile Study parity checks passed.');
+console.log('Nearby QR handshake camera path and desktop/mobile Study parity checks passed.');

@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.9. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.10. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -36,7 +36,7 @@ A lexical miss is no longer spliced back into a short queue. It is deferred unti
 
 Completed prototype, superseded on the transport side by 4.5.9. Progress transfer is an occasional snapshot handoff, not a persistent sync relationship. The payload is the existing conflict-aware Progress Pack: practiced word/Adaptive state, sentence and grammar-package practice state, shared lexical/pattern knowledge, Text/Reading progress and Story/chapter/session position. No deck/book content and no account are required.
 
-The 4.5.6 prototype proved the camera/QR interaction, but its complete-Progress-Pack QR payload did not scale. 4.5.9 replaces that transport with a compact per-peer delta while keeping the same conflict-aware Progress Pack merge. File export/import remains the durable full-state fallback.
+The 4.5.6 prototype proved the camera/QR interaction, but its complete-Progress-Pack QR payload did not scale. 4.5.9 introduced a compact per-peer delta. 4.5.10 keeps that delta format but moves it over a temporary direct local peer connection by default, using QR only for the offer/answer handshake. File export/import remains the durable full-state fallback, and rotating delta QR remains a network-independent fallback.
 
 Desktop Free Practice now uses the same Study chrome as mobile rather than the old landscape/desktop branch. Command Pill dimensions and controls are shared, and the gate navigator lives in the integrated Study Shell so previous/next gate navigation is available on desktop as well as mobile. Responsive layout may resize/centre this chrome, but may not remove these controls.
 
@@ -83,22 +83,30 @@ Status: completed.
 - Sentence Order exposes 1–9/0 shortcuts for the currently available word bank, Enter to check/continue, and Backspace/Delete to remove the last placed word.
 - The language-defined keyboard is no longer touch-only: desktop keeps the physical keyboard and gets a compact supplemental strip for target-language characters such as ä/ö/ü/ß or Italian accented vowels.
 
-## 4.5.9 — Serverless delta QR progress transfer
+## 4.5.9 — Compact per-peer progress delta
+
+Status: completed, transport superseded by 4.5.10.
+
+4.5.9 established the important data layer: device identity, per-peer receive watermarks, a compact Words/Adaptive + Grammar/Sentence + Story/Book delta, checksums, and conflict-aware merge. The rotating QR transport remains available as a fully offline fallback, but it is not the preferred path for a large first hand-off.
+
+## 4.5.10 — Nearby direct progress hand-off
 
 Status: completed.
 
-The QR feature is an occasional hand-off, not a persistent sync connection. There is no account, backend, signalling service, WebRTC session, or requirement that the devices share a network.
+The default transfer is still occasional, not continuous sync. There is no account, backend, signalling server, STUN server or TURN relay. QR is used only to exchange a temporary WebRTC offer/answer; the compact progress delta itself travels over an encrypted DataChannel and the peer connection is closed immediately after the hand-off.
 
 Flow:
 
-1. The receiving device chooses **Receive progress** and shows one small request QR containing only its local device id and previous receive watermarks.
-2. The sending device chooses **Send progress**, scans that request with its camera, and calculates only the Words/Adaptive, Grammar/Sentence, shared Story/Book knowledge and chapter/session state changed since the receiver last accepted progress from this sender.
-3. The sender displays the compact delta as a repeating QR sequence.
-4. The receiver scans the sequence, verifies its checksum, previews the Progress Pack summary and explicitly merges it with the existing conflict-aware Progress Pack engine.
+1. The receiving device chooses **Receive progress** and shows a direct-connection request QR. The request contains its local receive watermarks but no learning data.
+2. The sending device chooses **Send progress**, scans that QR, creates a one-time answer QR and prepares only the progress changed since the receiver last accepted data from this sender.
+3. The receiver scans the answer QR. On the same Wi-Fi/local network the two browsers establish a direct DataChannel and the delta transfers in seconds rather than hundreds of camera frames.
+4. The receiver verifies the checksum, previews the Progress Pack summary and explicitly merges it with the existing conflict-aware merge engine. The connection then closes.
 
-The first QR exchange between two devices may contain more frames because there is no prior watermark. Later transfers are deltas. Full `.ldprogress` export/import remains the durable backup and first-sync fallback.
+If local peer connectivity is blocked by the router/browser/firewall, **QR-only fallback** still sends the same compact delta as rotating QR frames. Full `.ldprogress` export/import remains the durable full-state backup and first-sync fallback.
 
-Camera policy: getUserMedia is requested before decoder capability checks, so a missing browser `BarcodeDetector` cannot suppress the webcam permission prompt. Native BarcodeDetector is preferred; otherwise LanguageDeck uses a pinned jsQR decoder. The GitHub installer vendors the pinned decoder into the repository. A directly opened full archive can fetch the same pinned decoder once and cache it locally. QR image data and learning progress are decoded on-device and are never uploaded.
+4.5.10 also repairs the 4.5.9 date-wire regression: practice schedule timestamps decoded from compact transport are stored as ISO timestamps again, and any numeric date fields already imported into Words/Sentence rows are repaired once on startup. Queue due-ordering is hardened to compare timestamps rather than calling string-only methods.
+
+Camera policy remains local-first: `getUserMedia()` is requested before decoder capability checks. Native BarcodeDetector is preferred; otherwise LanguageDeck uses the pinned jsQR fallback. Camera frames and learning progress are not uploaded.
 
 ## Next — 4.6 “Prepare for this”
 

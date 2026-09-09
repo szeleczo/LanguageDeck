@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
-assert.match(html,/4\.5\.9-serverless-delta-qr-desktop-parity-20260909/);
+assert.match(html,/4\.5\.10-nearby-direct-progress-hotfix-20260909/);
 
 const stateFields=[
   'streak','next_due','word_next_due','learning_pressure','article_pressure','article_streak','article_next_due','article_last_seen',
