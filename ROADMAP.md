@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.10. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.11. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -107,6 +107,14 @@ If local peer connectivity is blocked by the router/browser/firewall, **QR-only 
 4.5.10 also repairs the 4.5.9 date-wire regression: practice schedule timestamps decoded from compact transport are stored as ISO timestamps again, and any numeric date fields already imported into Words/Sentence rows are repaired once on startup. Queue due-ordering is hardened to compare timestamps rather than calling string-only methods.
 
 Camera policy remains local-first: `getUserMedia()` is requested before decoder capability checks. Native BarcodeDetector is preferred; otherwise LanguageDeck uses the pinned jsQR fallback. Camera frames and learning progress are not uploaded.
+
+## 4.5.11 — QR visibility + clean import recovery
+
+Status: completed stabilisation hotfix.
+
+- Transfer QR codes render as explicit black/white SVG modules in a fixed visible square rather than relying on a canvas that could appear blank in desktop browsers. The renderer self-checks that the QR contains visible dark modules.
+- Progress Pack and QR/direct-transfer merges no longer try to patch-refresh a live Study queue after the database has changed. After a successful merge, LanguageDeck stores the data, closes the transfer, and performs a clean app reload so gate/queue/current-card state is rebuilt from one consistent database snapshot.
+- A fresh one-time 4.5.11 repair pass rechecks practice rows for numeric date fields left by the failed 4.5.9 transport, even if the earlier 4.5.10 repair marker had already run. New merges normalise incoming practice dates before writing.
 
 ## Next — 4.6 “Prepare for this”
 

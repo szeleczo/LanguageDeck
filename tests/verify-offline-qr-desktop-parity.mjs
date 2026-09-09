@@ -4,13 +4,13 @@ const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const sw=fs.readFileSync(new URL('../sw.js',import.meta.url),'utf8');
 const qr=fs.readFileSync(new URL('../vendor/qrcode.js',import.meta.url),'utf8');
 
-assert.match(html,/4\.5\.10-nearby-direct-progress-hotfix-20260909/,'4.5.10 build marker is present');
+assert.match(html,/4\.5\.11-qr-visibility-import-recovery-20260909/,'4.5.11 build marker is present');
 assert.match(html,/Nearby transfer · no server/,'Progress transfer clearly exposes direct serverless nearby transfer');
 assert.match(html,/const QR_REQUEST_PREFIX="LDR1", QR_DELTA_PREFIX="LDD1"/,'QR uses request + delta wire formats');
 assert.match(html,/PROGRESS_DEVICE_KEY="ld-progress-device-v1"/,'each installation has a local transfer identity');
 assert.match(html,/PROGRESS_PEERS_KEY="ld-progress-peer-cursors-v1"/,'per-peer receive watermarks are persisted');
 assert.match(html,/createProgressDeltaWire\(\+sinceSec\*1000,request\.r\)/,'sender builds a delta from the receiver watermark');
-assert.match(html,/applyProgressPack\(qrTransferReceivedPack\)/,'received delta reuses the conflict-aware Progress Pack merge');
+assert.match(html,/applyProgressPack\(pack,\{notify:false\}\)/,'received delta reuses conflict-aware Progress Pack merge without live runtime refresh');
 assert.match(html,/RTCPeerConnection/,'nearby transfer uses a temporary browser peer connection');
 assert.doesNotMatch(html,/WebSocket|wss:\/\//,'transfer has no websocket/backend channel');
 

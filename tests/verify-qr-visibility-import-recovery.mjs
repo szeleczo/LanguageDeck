@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const must=(re,msg)=>{if(!re.test(html))throw new Error(msg)};
+must(/4\.5\.11-qr-visibility-import-recovery-20260909/,'4.5.11 build marker missing');
+must(/id="qrTransferVisual" class="qr-transfer-visual"/,'visible QR container missing');
+must(/createElementNS\(ns,"svg"\)/,'SVG QR renderer missing');
+must(/if\(!dark\)throw new Error\("QR encoder returned no visible modules\."\)/,'QR visibility self-check missing');
+must(/applyProgressPack\(pack,\{notify:false\}\)/,'QR merge must suppress live progress-import refresh');
+must(/reloadAfterProgressMerge\("Progress merged"\)/,'clean post-merge reload missing');
+must(/ld-repair-practice-dates-4\.5\.11/,'fresh numeric-date repair marker missing');
+console.log('PASS verify-qr-visibility-import-recovery');
