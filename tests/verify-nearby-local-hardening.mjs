@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import assert from "node:assert/strict";
 const html=fs.readFileSync(new URL("../index.html",import.meta.url),"utf8");
-assert.match(html,/4\.5\.18-gate-review-diversity-20260909/);
-assert.match(html,/function nearbyPeerConfig\(\)\{return\{iceServers:\[\],iceTransportPolicy:"all"\}\}/,"peer remains serverless and uses default bundling");
+assert.match(html,/4\.5\.19-live-sync-while-connected-20260909/);
+assert.match(html,/function nearbyPeerConfig\(\)\{return\{iceServers:\[\],iceTransportPolicy:"all",iceCandidatePoolSize:2\}\}/,"peer remains serverless, uses default bundling and primes a local candidate pool");
 assert.doesNotMatch(html,/bundlePolicy:"max-bundle"/,"max-bundle is no longer forced");
 assert.match(html,/async function ensureQrCameraStream\(\)/,"camera stream can be primed and reused");
 const receive=html.slice(html.indexOf("async function startNearbyReceive()"),html.indexOf("async function scanNearbyAnswer()"));

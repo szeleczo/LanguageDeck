@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.18 — completed-gate review diversity. */
-const CACHE_VERSION="languagedeck-4-5-18-gate-review-diversity-20260909";
+/* LanguageDeck 4.5.19 — serverless live sync while connected. */
+const CACHE_VERSION="languagedeck-4-5-19-live-sync-while-connected-20260909";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

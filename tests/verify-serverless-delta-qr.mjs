@@ -8,7 +8,7 @@ assert.match(html,/async function createProgressDeltaWire\(since=0,receiverId=""
 assert.match(html,/function progressPackFromDeltaWire\(wire\)/);
 assert.match(html,/saveProgressPeerCursor\(meta\.sourceId,meta\.createdAt\)/,'watermark advances only after explicit merge');
 assert.match(html,/new RTCPeerConnection\(nearbyPeerConfig\(\)\)/,'default transfer uses a direct peer connection');
-assert.match(html,/function nearbyPeerConfig\(\)\{return\{iceServers:\[\],iceTransportPolicy:"all"\}\}/,'no STUN/TURN servers are configured');
+assert.match(html,/function nearbyPeerConfig\(\)\{return\{iceServers:\[\],iceTransportPolicy:"all",iceCandidatePoolSize:2\}\}/,'no STUN/TURN servers are configured');
 assert.match(html,/createDataChannel\("languagedeck-progress"/,'progress uses a temporary DataChannel');
 assert.match(html,/QR-only fallback/,'rotating QR remains an explicit fallback');
 assert.doesNotMatch(html,/WebSocket|wss:\/\/|fetch\([^)]*progress/i,'learning progress is not sent to a backend transport');
