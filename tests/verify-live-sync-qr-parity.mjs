@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 const html=fs.readFileSync(new URL("../index.html",import.meta.url),"utf8");
 const sw=fs.readFileSync(new URL("../sw.js",import.meta.url),"utf8");
 const qr=fs.readFileSync(new URL("../vendor/qrcode.js",import.meta.url),"utf8");
-assert.match(html,/4\.5\.20-live-sync-only-cleanup-20260910/);
+assert.match(html,/4\.5\.21-live-sync-modal-portal-20260910/);
 assert.match(html,/const LIVE_SYNC_SIGNAL_PREFIX="LDS1"/,"only live pairing has a QR wire prefix");
 assert.match(html,/id="qrTransferVisual" class="qr-transfer-visual"/,"visible QR pairing container exists");
 assert.match(html,/createElementNS\(ns,"svg"\)/,"QR renderer uses visible SVG modules");

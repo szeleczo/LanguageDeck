@@ -3257,10 +3257,41 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
 .live-sync-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.live-sync-actions button{min-height:46px}
 .live-sync-status,.live-sync-pair-status{margin-top:8px;min-height:17px;font-size:11px;line-height:1.4;color:var(--text-faint)}.live-sync-status.connected{color:var(--success);font-weight:700}.live-sync-status.connecting{color:var(--accent);font-weight:650}
 @media(max-width:560px){.live-sync-actions{grid-template-columns:1fr}}
-#legacyPracticeRoot .modal-card.qr-transfer-card{box-sizing:border-box;width:min(620px,calc(100vw - 32px));max-width:620px;max-height:min(780px,calc(100dvh - 32px));overflow-y:auto;overflow-x:hidden}
+/* 4.5.21: Live sync is a global utility, not a child of the hidden Practice host.
+   The modal nodes are portalled to <body> on first use so they open immediately
+   from Course/Book/Practice on both desktop and mobile. */
+.live-sync-global-modal{
+  --bg:var(--ld-bg);--surface:var(--ld-surface);--surface-2:var(--ld-surface2);
+  --border:var(--ld-line);--border-strong:var(--ld-strong);--text:var(--ld-text);
+  --text-muted:var(--ld-muted);--text-faint:var(--ld-faint);--primary:var(--ld-accent);
+  --primary-hover:color-mix(in srgb,var(--ld-accent) 84%,var(--ld-ink));
+  --primary-deep:color-mix(in srgb,var(--ld-accent) 72%,var(--ld-ink));
+  --success:var(--ld-good);--danger:var(--ld-danger);--shadow-lg:var(--ld-shadow);
+  --radius-md:var(--ld-button-radius);--radius-lg:var(--ld-card-radius);--tap:var(--ld-button-height);
+  --font-sans:var(--ld-font);--font-display:var(--ld-font);
+  position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;
+  z-index:420;padding:16px;color:var(--text);font-family:var(--font-sans);
+}
+.live-sync-global-modal.active{display:flex}
+.live-sync-global-modal .modal-card{background:var(--surface);border-radius:var(--radius-lg);padding:22px;width:100%;max-width:380px;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg);border:1px solid var(--border)}
+.live-sync-global-modal .modal-title{font-family:var(--font-display);font-size:20px;font-weight:800;margin:0 0 14px;letter-spacing:-.01em}
+.live-sync-global-modal .settings-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.live-sync-global-modal .settings-actions button{flex:1 1 calc(50% - 4px)}
+.live-sync-global-modal .settings-actions .close-btn{flex:1 1 100%}
+.live-sync-global-modal button:not(.icon-btn){font:inherit;cursor:pointer;background:var(--primary);color:#fff;border:2px solid transparent;border-bottom:4px solid var(--primary-deep);border-radius:var(--radius-md);padding:10px 16px;min-height:var(--tap);font-weight:700;letter-spacing:.01em;transition:background-color .15s ease,border-color .15s ease,transform .06s ease,opacity .15s ease}
+.live-sync-global-modal button:not(.icon-btn):hover:not(:disabled){background:var(--primary-hover)}
+.live-sync-global-modal button:not(.icon-btn):active:not(:disabled){transform:translateY(2px);border-bottom-width:2px;margin-bottom:2px}
+.live-sync-global-modal button:disabled{opacity:.4;cursor:not-allowed}
+.live-sync-global-modal button.ghost{background:transparent;color:var(--text-muted);border:2px solid var(--border);border-bottom:4px solid var(--border)}
+.live-sync-global-modal button.ghost:hover:not(:disabled){background:var(--surface-2);color:var(--text);border-color:var(--border-strong)}
+.live-sync-global-modal button.secondary{background:var(--surface-2);color:var(--text);border:2px solid var(--border);border-bottom:4px solid var(--border-strong)}
+.live-sync-global-modal button.secondary:hover:not(:disabled){background:var(--border)}
+.live-sync-global-modal .hidden{display:none!important}
+#legacyPracticeRoot .modal-card.qr-transfer-card,.live-sync-global-modal .modal-card.qr-transfer-card{box-sizing:border-box;width:min(620px,calc(100vw - 32px));max-width:620px;max-height:min(780px,calc(100dvh - 32px));overflow-y:auto;overflow-x:hidden}
 .qr-transfer-card>*{min-width:0}
 .qr-transfer-stage{display:grid;place-items:center;gap:10px;margin:12px 0;min-width:0;width:100%}.qr-transfer-visual{box-sizing:border-box;display:grid;place-items:center;width:min(520px,100%);max-width:100%;aspect-ratio:1/1;padding:10px;border-radius:12px;background:#fff;box-shadow:0 6px 24px rgba(15,23,42,.08);overflow:hidden}.qr-transfer-visual svg{display:block;width:100%;height:100%;max-width:100%;max-height:100%;background:#fff}
-@media(max-width:560px){#legacyPracticeRoot .modal-card.qr-transfer-card{width:calc(100vw - 20px);max-width:calc(100vw - 20px);max-height:calc(100dvh - 20px);padding:18px}.qr-transfer-visual{width:100%;padding:8px}}
+@media(max-width:560px){#legacyPracticeRoot .modal-card.qr-transfer-card,.live-sync-global-modal .modal-card.qr-transfer-card{width:calc(100vw - 20px);max-width:calc(100vw - 20px);max-height:calc(100dvh - 20px);padding:18px}.qr-transfer-visual{width:100%;padding:8px}}
 .qr-transfer-frame{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;text-align:center}.qr-transfer-frame strong{color:var(--text)}
 .qr-camera-wrap{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:16px;background:#0b1020;margin:12px 0}.qr-camera-wrap video{width:100%;height:100%;object-fit:cover}.qr-camera-target{position:absolute;inset:14%;border:2px solid rgba(255,255,255,.9);border-radius:16px;box-shadow:0 0 0 999px rgba(0,0,0,.23);pointer-events:none}.qr-transfer-note{font-size:11px;line-height:1.45;color:var(--muted)}
 
@@ -4059,7 +4090,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.20-live-sync-only-cleanup-20260910",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.21-live-sync-modal-portal-20260910",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4437,7 +4468,20 @@ let CATALOG_LAUNCH_SERIAL=0;
 function catalogVariant(action={}){const mode=["words","grammar","sentences"].includes(action.mode)?action.mode:"words";return action.variant||(mode==="words"?"progressive":"order")}
 function catalogLaunchMatches(snapshot,action,language){const mode=["words","grammar","sentences"].includes(action.mode)?action.mode:"words",variant=catalogVariant(action),activeVariant=mode==="words"?snapshot.wordMode:snapshot.sentenceMode;return snapshot.deck===language&&snapshot.mode===mode&&activeVariant===variant}
 async function startCatalogIntegrated(action){if(!window.LanguageDeckPractice?.startCatalog)throw Error('The standalone deck engine did not initialise.');const launch=++CATALOG_LAUNCH_SERIAL,language=String(action.language||LANG).toLowerCase(),request={...action,language};PRACTICE_RETURN_VIEW='practice';ACTIVE_PRACTICE_MODE=request.mode;PRACTICE_PENDING_OPTIONS=null;ACTIVE_STUDY_ENGINE?.destroy?.();ACTIVE_STUDY_ENGINE=null;ACTIVE_STUDY_API=null;$('browseShell').classList.add('hidden');$('studyHost').classList.add('hidden');$('chapterStudyHost').classList.add('hidden');$('grammarCourseHost').classList.add('hidden');$('practiceStudyHost').classList.remove('hidden');document.documentElement.classList.add('integrated-practice-active');const snapshot=await window.LanguageDeckPractice.startCatalog(request);if(launch!==CATALOG_LAUNCH_SERIAL)return;if(!catalogLaunchMatches(snapshot,request,language)){await exitIntegratedPractice('practice');throw Error('The selected language, deck and exercise mode did not start together. Please try again.');}updatePracticeShell(snapshot);PRACTICE_DOCK_OBSERVER?.disconnect();PRACTICE_DOCK_OBSERVER=new MutationObserver(()=>requestAnimationFrame(syncPracticeDock));PRACTICE_DOCK_OBSERVER.observe($('legacyPracticeRoot'),{subtree:true,attributes:true,attributeFilter:['class'],childList:true});syncPracticeDock()}
-async function startPracticeUtility(tool){if(tool==='sync'){document.getElementById('liveSyncModal')?.classList.add('active');return}await startIntegratedPractice('words','practice');await window.LanguageDeckPractice?.openUtility?.(tool,LANG)}
+function ensureLiveSyncPortalMounted(){
+  for(const id of ['liveSyncModal','qrTransferModal']){
+    const modal=document.getElementById(id);if(!modal)continue;
+    modal.classList.add('live-sync-global-modal');
+    if(modal.parentElement!==document.body)document.body.appendChild(modal);
+  }
+}
+function openLiveSyncModalGlobal(){
+  ensureLiveSyncPortalMounted();
+  const modal=document.getElementById('liveSyncModal');if(!modal)return;
+  modal.classList.add('active');
+  requestAnimationFrame(()=>{try{modal.querySelector('#liveSyncHostBtn,#liveSyncJoinBtn,#liveSyncDisconnectBtn:not(.hidden)')?.focus({preventScroll:true})}catch(_){}});
+}
+async function startPracticeUtility(tool){if(tool==='sync'){openLiveSyncModalGlobal();return}await startIntegratedPractice('words','practice');await window.LanguageDeckPractice?.openUtility?.(tool,LANG)}
 function localStoryPackages(){try{return JSON.parse(localStorage.getItem('ld-story-pack-index-v1')||'[]').filter(x=>(x.language||'de')===LANG)}catch(_){return[]}}
 function startLocalStoryPackage(id){const pack=localStoryPackages().find(x=>x.id===id);if(pack)startIntegratedStory({local:id,language:pack.language||LANG,seriesTitle:pack.seriesTitle||pack.title||pack.name||''},'practice')}
 async function renderPracticeLibrary(){
@@ -4642,7 +4686,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.20-live-sync-only-cleanup-20260910";
+    const APP_BUILD = "4.5.21-live-sync-modal-portal-20260910";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -12384,11 +12428,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     if (manageDecksBtn) manageDecksBtn.addEventListener("click", () => { manageDecksModal.classList.add("active"); renderManageDecks(); });
 
+    ensureLiveSyncPortalMounted();
     const liveSyncOpenBtn = $("liveSyncOpenBtn");
     const liveSyncModal = $("liveSyncModal");
     const liveSyncHostBtn=$("liveSyncHostBtn"),liveSyncJoinBtn=$("liveSyncJoinBtn"),liveSyncDisconnectBtn=$("liveSyncDisconnectBtn");
     if (liveSyncOpenBtn) {
-      liveSyncOpenBtn.addEventListener("click", () => liveSyncModal.classList.add("active"));
+      liveSyncOpenBtn.addEventListener("click", openLiveSyncModalGlobal);
       $("closeLiveSyncBtn").addEventListener("click", () => liveSyncModal.classList.remove("active"));
       liveSyncModal.addEventListener("click", e => { if (e.target === liveSyncModal) liveSyncModal.classList.remove("active"); });
       liveSyncHostBtn?.addEventListener("click", startLiveSyncHost);
@@ -13209,7 +13254,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue instead of dead-ending on Done, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.16, completed-gate continuation no longer forces L5: L5 words still return as full typing, but a lapse demotes normally and every later card uses the word’s actual stored Adaptive level. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Cross-device progress uses compact per-peer deltas with conflict-aware merge; old numeric date imports are still repaired automatically. Pairing QR codes render as explicit SVG modules and the camera dialog is responsive on desktop and mobile. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI. Since build 4.5.17, completed-gate review is locked to the Adaptive engine and rotates across the whole eligible gate before normal filler repeats; full-typing mistakes therefore demote to L4 and return with the real lower-level mask. Local peer transfer also primes camera permission before ICE gathering and reports direct-vs-privacy-obscured host candidates. Since build 4.5.18, completed-gate review uses whole-gate rotation as the primary queue source instead of letting the normal due/intake selector monopolise the session; targeted returns can interrupt after cooldown, and unique-load diagnostics include continuation cards. Since build 4.5.19, serverless Live sync keeps the QR-paired DataChannel open and automatically exchanges conflict-aware progress deltas in both directions while both apps remain connected. Since 4.5.20, Live sync is the only cross-device progress path and the retired transfer interfaces and handlers are removed.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue instead of dead-ending on Done, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.16, completed-gate continuation no longer forces L5: L5 words still return as full typing, but a lapse demotes normally and every later card uses the word’s actual stored Adaptive level. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Cross-device progress uses compact per-peer deltas with conflict-aware merge; old numeric date imports are still repaired automatically. Pairing QR codes render as explicit SVG modules and the camera dialog is responsive on desktop and mobile. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI. Since build 4.5.17, completed-gate review is locked to the Adaptive engine and rotates across the whole eligible gate before normal filler repeats; full-typing mistakes therefore demote to L4 and return with the real lower-level mask. Local peer transfer also primes camera permission before ICE gathering and reports direct-vs-privacy-obscured host candidates. Since build 4.5.18, completed-gate review uses whole-gate rotation as the primary queue source instead of letting the normal due/intake selector monopolise the session; targeted returns can interrupt after cooldown, and unique-load diagnostics include continuation cards. Since build 4.5.19, serverless Live sync keeps the QR-paired DataChannel open and automatically exchanges conflict-aware progress deltas in both directions while both apps remain connected. Since 4.5.20, Live sync is the only cross-device progress path and the retired transfer interfaces and handlers are removed. Since 4.5.21, the Live sync and pairing dialogs are mounted in a global modal portal, so opening Live sync is immediate from Course, Book, Practice and My library even when the integrated Practice host is hidden.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);

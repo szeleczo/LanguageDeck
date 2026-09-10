@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import assert from "node:assert/strict";
 const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
-assert.match(html, /4\.5\.20-live-sync-only-cleanup-20260910/, "4.5.18 build marker is present");
+assert.match(html, /4\.5\.21-live-sync-modal-portal-20260910/, "4.5.18 build marker is present");
 assert.match(html, /const WORD_MIN_INTERLEAVE_ANSWERS = 2/, "lexical returns require two intervening answers");
 assert.match(html, /let deferredWordReturns = new Map\(\)/, "lexical mistakes have a deferred return pool");
 assert.match(html, /function noteWordAnswerForInterleave\(item\)/, "word answers advance the interleave cooldown");

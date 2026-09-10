@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.20 — live-sync-only cleanup. */
-const CACHE_VERSION="languagedeck-4-5-20-live-sync-only-cleanup-20260910";
+/* LanguageDeck 4.5.21 — global Live sync modal portal. */
+const CACHE_VERSION="languagedeck-4-5-21-live-sync-modal-portal-20260910";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

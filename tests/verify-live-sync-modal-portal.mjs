@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
+assert.match(html,/4\.5\.21-live-sync-modal-portal-20260910/,'4.5.21 build marker missing');
+assert.match(html,/function ensureLiveSyncPortalMounted\(\)/,'global Live sync portal mount helper missing');
+assert.match(html,/function openLiveSyncModalGlobal\(\)/,'shared Live sync opener missing');
+assert.match(html,/document\.body\.appendChild\(modal\)/,'Live sync dialogs are not portalled outside hidden Practice host');
+assert.match(html,/for\(const id of \['liveSyncModal','qrTransferModal'\]\)/,'both Live sync and QR pairing dialogs must use the portal');
+assert.match(html,/async function startPracticeUtility\(tool\)\{if\(tool==='sync'\)\{openLiveSyncModalGlobal\(\);return\}/,'My library Live sync action must use the global opener');
+assert.match(html,/liveSyncOpenBtn\.addEventListener\("click", openLiveSyncModalGlobal\)/,'Practice settings Live sync action must use the same opener');
+assert.match(html,/\.live-sync-global-modal\{[\s\S]*?position:fixed;inset:0;[\s\S]*?z-index:420/,'global modal portal must be independently visible above hidden hosts');
+assert.match(html,/\.live-sync-global-modal\.active\{display:flex\}/,'global modal active state missing');
+assert.match(html,/#legacyPracticeRoot \.modal-card\.qr-transfer-card,\.live-sync-global-modal \.modal-card\.qr-transfer-card/,'QR pairing card must retain responsive styling after portalling');
+console.log('Live sync modal portal checks passed.');

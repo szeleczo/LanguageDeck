@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.20. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.21. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -191,7 +191,7 @@ Normal learning writes mark the live session dirty rather than launching an imme
 
 The connection publishes the selected WebRTC candidate-pair type/protocol when available, sends a lightweight heartbeat while idle, and exposes an explicit **Disconnect live sync** control. Closing the transfer/settings modal does not intentionally close an already established live channel; closing/reloading/suspending an app or losing the network can still end the browser peer connection, after which the devices must pair again.
 
-The local WebRTC path remains best-effort: if Brave/Chromium, the OS firewall or the Wi-Fi network does not expose a usable direct host path, serverless live sync cannot be guaranteed. As of 4.5.20 there is deliberately no second user-facing transfer path; the devices must pair again when a direct session cannot be established.
+The local WebRTC path remains best-effort: if Brave/Chromium, the OS firewall or the Wi-Fi network does not expose a usable direct host path, serverless live sync cannot be guaranteed. As of 4.5.21 there is deliberately no second user-facing transfer path; the devices must pair again when a direct session cannot be established.
 
 Next main milestone: **4.6 — Prepare for this**.
 
@@ -207,3 +207,14 @@ The code keeps only the pieces Live sync actually needs: compact changed-record 
 The Live DataChannel remains ephemeral and serverless: no account, signalling backend, STUN or TURN. Closing the app, device sleep, network loss or browser suspension can end the session; reconnecting requires a new QR pair.
 
 Next main milestone: **4.6 — Prepare for this**.
+
+
+## 4.5.21 — Global Live sync modal portal
+
+Status: completed UI routing fix.
+
+Live sync is a global device utility and no longer depends on the visibility of the integrated Practice host. In 4.5.20 the Live sync and QR pairing modal elements still lived inside `practiceStudyHost`; when that host was hidden on Course, Book or My library, adding the modal's `active` class changed state correctly but could not render anything until another navigation action happened to reveal the Practice host.
+
+4.5.21 mounts both the Live sync dialog and its QR pairing dialog directly under `document.body` through one shared portal helper. Both the My library Live sync action and the in-Practice settings button call the same global opener, so one click/tap opens the dialog immediately on desktop and mobile from any app surface. The portalled dialogs carry their own token bridge, button/modal styling and responsive QR sizing, so they no longer inherit visibility or stacking constraints from Practice.
+
+No sync transport, merge, scheduler or learning-engine behaviour changes in this release. The next main milestone remains **4.6 — Prepare for this**.

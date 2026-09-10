@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import assert from "node:assert/strict";
 const html=fs.readFileSync(new URL("../index.html",import.meta.url),"utf8");
-assert.match(html,/4\.5\.20-live-sync-only-cleanup-20260910/);
+assert.match(html,/4\.5\.21-live-sync-modal-portal-20260910/);
 const host=html.slice(html.indexOf("async function startLiveSyncHost()"),html.indexOf("async function startLiveSyncJoin()"));
 const join=html.slice(html.indexOf("async function startLiveSyncJoin()"),html.indexOf("async function scanLiveSyncAnswer()"));
 const answer=html.slice(html.indexOf("async function scanLiveSyncAnswer()"),html.indexOf("function cancelLiveSyncPairing()"));
