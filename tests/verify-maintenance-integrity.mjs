@@ -65,7 +65,7 @@ assert.match(indexHtml, /data-story-variant="match"/, "story vocabulary exposes 
 assert.match(indexHtml, /data-story-variant="typing"/, "story vocabulary exposes typed recall");
 assert.match(indexHtml, /data-practice-tool="import"/, "My library exposes imports in Practice");
 assert.match(indexHtml, /data-practice-tool="manage"/, "My library exposes installed deck management");
-assert.match(indexHtml, /data-practice-tool="sync"/, "My library exposes progress sync");
+assert.match(indexHtml, /data-practice-tool="sync"/, "My library exposes Live sync");
 assert.match(indexHtml, /morePracticeOptionsBtn/, "advanced controls remain reachable from session settings");
 assert.match(indexHtml, /p === "stories" \|\| p === "texts"/, "course and book files stay out of the standalone deck browser");
 assert.match(indexHtml, /unit\.lexiconFile.*unitLexicon.*lexicon:/s, "story units can load their own isolated lexicon");
@@ -76,8 +76,8 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedRowDone\(row, guidedPractice, rows\)[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "prefetched guided queues use the target-specific completion rule");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.5\.19-live-sync-while-connected-20260909/, "the application build marker includes the 4.5.10 nearby direct progress hotfix");
-assert.equal((indexHtml.match(/4\.5\.19-live-sync-while-connected-20260909/g) || []).length, 2, "Course and Practice use the same 4.5.10 build marker");
+assert.match(indexHtml, /4\.5\.20-live-sync-only-cleanup-20260910/, "the application build marker is current");
+assert.equal((indexHtml.match(/4\.5\.20-live-sync-only-cleanup-20260910/g) || []).length, 2, "Course and Practice use the same current build marker");
 assert.match(indexHtml, /practiceSetupBtn'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openUtility\?\.\('session',LANG\)/, "the sliders restore the dedicated current-session controls");
 assert.match(indexHtml, /practiceSettingsBtn'\)\.onclick=\(\)=>openSettings\('main'\)/, "the gear keeps the application settings role");
 assert.match(indexHtml, /id="sessionActualNewRatio"[\s\S]*id="sessionRequestedNewRatio"[\s\S]*id="sessionIntakeStatus"[\s\S]*id="sessionScopeStatus"/, "Session controls show realised pacing, requested pacing, intake and scope together");
@@ -531,7 +531,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-5-19-live-sync-while-connected-20260909/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-5-20-live-sync-only-cleanup-20260910/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");

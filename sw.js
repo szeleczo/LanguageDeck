@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.19 — serverless live sync while connected. */
-const CACHE_VERSION="languagedeck-4-5-19-live-sync-while-connected-20260909";
+/* LanguageDeck 4.5.20 — live-sync-only cleanup. */
+const CACHE_VERSION="languagedeck-4-5-20-live-sync-only-cleanup-20260910";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

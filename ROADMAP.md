@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.18. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.20. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -10,9 +10,9 @@ Completed baseline. Adaptive Words, Story readiness and the shared lexeme store 
 
 Completed first read-only Library. It measures lexical readability from shared knowledge, exposes blocking lexemes and estimates which targeted words unlock the most sentences. Library analysis must not mutate the learning queue or create a second knowledge state.
 
-## 4.5.1 — cross-device UI parity and Progress Pack
+## 4.5.1 — cross-device UI parity and merge foundation
 
-Completed. Desktop and mobile practice use the same Command Pill and the same language / mode / exercise / deck switching path. Progress transfer is local-first and versioned: Progress Pack moves practice state, shared Story knowledge, Text progress and chapter positions with conflict-aware merging. Missing-deck progress is retained rather than discarded.
+Completed historical foundation. Desktop and mobile practice use the same Command Pill and the same language / mode / exercise / deck switching path. This release established conflict-aware progress merging across practice state, shared Story knowledge, Text progress and chapter positions. Missing-deck progress is retained rather than discarded. The former user-facing file-transfer format built on this foundation was retired in 4.5.20; the merge layer remains internal to Live sync.
 
 ## 4.5.2 — first-contact learning flow
 
@@ -72,7 +72,7 @@ Rebuild the grammar curriculum around fewer, stronger units and genuinely target
 - One global lexeme record across Words, Story, Library and future preparation goals, with separate recognition and active-recall evidence rather than duplicate mode-owned knowledge.
 - Library is a consumer of knowledge; 4.6 may influence priority, not ownership of knowledge.
 - Desktop and mobile share components and behaviour. Responsive layout may change geometry, not available core controls.
-- Cross-device progress transfer must merge safely and never silently discard unmatched progress. Camera transfer must remain serverless. One-time QR/nearby transfer stays an occasional hand-off; 4.5.19 adds an optional ephemeral live session that exists only while both apps keep their direct peer connection open. QR carries signalling or compact changed-state deltas; the full Progress Pack remains the durable backup/initial-transfer fallback. There is still no persistent sync service or account.
+- Cross-device progress must merge safely and never silently discard unmatched progress. As of 4.5.20, **Live sync is the only user-facing cross-device transfer path**. QR is used only for the temporary WebRTC offer/answer handshake; progress itself moves over the encrypted peer DataChannel. There is no account, persistent sync service, signalling backend, STUN or TURN relay. Internal conflict-aware merge, unmatched-state retention and old-date repair remain data-safety infrastructure, not alternative transfer modes.
 - Prefer simpler observable learning rules over hidden rescue/session state.
 - A failed recall must be separated from its targeted retry by other material when alternatives exist; no immediate level laddering through short-term echo.
 - New features should not regress offline use, existing reading position, Adaptive scheduling or deck compatibility.
@@ -153,7 +153,7 @@ The Library can prioritise vocabulary from a selected story/chapter through the 
 - `Ctrl/Cmd + Backspace` (or Delete) = Clear / Reset.
 - Existing number-key shortcuts for choice/match/order remain unchanged.
 - Action buttons expose shortcut hints through their titles/tooltips.
-- One-time Nearby transfer remains available alongside the optional 4.5.19 live-sync-while-connected session; neither requires an account or backend.
+- Historical note: one-time Nearby transfer existed in this release line but was retired in 4.5.20 after Live sync proved functional.
 
 
 ## 4.5.14 — Robust nearby transfer fallback
@@ -165,7 +165,7 @@ Direct QR-signalled WebRTC remains the fastest serverless path when the browser/
 
 Completed stabilisation release. Completed-gate review remains inside the Adaptive/Progressive engine even when the visible task is full typing. A wrong L5 answer therefore persists as L4 and the later return uses the real L4 mask. Normal continuation fillers rotate across the whole eligible gate before repeating, while targeted lapse returns may interrupt after the existing two-other-answer cooldown.
 
-The serverless nearby transfer path is also hardened without adding STUN/TURN/backend services: the receiving desktop primes webcam/local-media permission before gathering its WebRTC offer, the peer connection uses the browser's default bundling with `iceTransportPolicy: all`, and diagnostics distinguish direct host candidates from privacy-obscured mDNS candidates. QR-only delta and `.ldprogress` remain fallbacks.
+The serverless local peer path is also hardened without adding STUN/TURN/backend services: the receiving desktop primes webcam/local-media permission before gathering its WebRTC offer, the peer connection uses the browser's default bundling with `iceTransportPolicy: all`, and diagnostics distinguish direct host candidates from privacy-obscured mDNS candidates. The older QR-only and file fallbacks described by this historical release were retired in 4.5.20.
 
 The next sync step is 4.5.19 (`Live sync while connected`). The next main learning-product milestone remains 4.6 (`Prepare for this`).
 
@@ -183,14 +183,27 @@ Serverless `Live sync while connected` is implemented in 4.5.19; the next main p
 
 Status: implemented.
 
-Live sync is an optional, ephemeral companion to the existing one-time transfer paths. One device chooses **Start live sync**, the other chooses **Join live sync**, and the same local QR offer/answer handshake creates an encrypted WebRTC DataChannel. The DataChannel stays open after pairing instead of closing after the first delta. No account, LanguageDeck backend, signalling server, STUN server or TURN relay is introduced.
+Live sync is an ephemeral direct-device session. One device chooses **Start live sync**, the other chooses **Join live sync**, and the local QR offer/answer handshake creates an encrypted WebRTC DataChannel. The DataChannel stays open after pairing instead of closing after the first delta. No account, LanguageDeck backend, signalling server, STUN server or TURN relay is introduced.
 
-After the channel opens, both devices exchange their local installation ids and per-peer receive cursors. Each side immediately sends only the Words/Grammar/Story/Text/chapter progress that the other device has not already acknowledged. Received deltas reuse the existing conflict-aware Progress Pack merge engine and advance the durable per-peer receive cursor only after checksum verification and merge. A small cursor overlap intentionally permits harmless duplicate rows so second-resolution transport timestamps cannot skip a just-written answer.
+After the channel opens, both devices exchange their local installation ids and per-peer receive cursors. Each side immediately sends only the Words/Grammar/Story/Text/chapter progress that the other device has not already acknowledged. Received deltas reuse the internal conflict-aware progress merge engine and advance the durable per-peer receive cursor only after checksum verification and merge. A small cursor overlap intentionally permits harmless duplicate rows so second-resolution transport timestamps cannot skip a just-written answer.
 
 Normal learning writes mark the live session dirty rather than launching an immediate full scan. Changes are debounced for 1.8 seconds and outgoing database scans are rate-limited to at most one batch every four seconds. Rapid answers are therefore coalesced. Story/chapter/preparation state also participates, with a lightweight local-state signature watcher as a fallback for progress writes that occur outside Free Practice. Incoming merges are suppressed from the dirty notifier to avoid echo loops.
 
 The connection publishes the selected WebRTC candidate-pair type/protocol when available, sends a lightweight heartbeat while idle, and exposes an explicit **Disconnect live sync** control. Closing the transfer/settings modal does not intentionally close an already established live channel; closing/reloading/suspending an app or losing the network can still end the browser peer connection, after which the devices must pair again.
 
-The local WebRTC path remains best-effort: if Brave/Chromium, the OS firewall or the Wi-Fi network does not expose a usable direct host path, serverless live sync cannot be guaranteed. The existing one-time Nearby transfer, rotating QR-only delta and full `.ldprogress` export/import remain the fallback paths.
+The local WebRTC path remains best-effort: if Brave/Chromium, the OS firewall or the Wi-Fi network does not expose a usable direct host path, serverless live sync cannot be guaranteed. As of 4.5.20 there is deliberately no second user-facing transfer path; the devices must pair again when a direct session cannot be established.
+
+Next main milestone: **4.6 — Prepare for this**.
+
+
+## 4.5.20 — Live-sync-only cleanup
+
+Status: completed cleanup/stabilisation release.
+
+Live sync is now the **only** user-facing cross-device progress path. The settings UI contains only Start live sync, Join live sync, current connection status and Disconnect. The old one-time Nearby flow, rotating QR-only delta transfer, downloadable/importable progress file and legacy compact-code transfer have been removed rather than merely hidden. Their modal states, event listeners, URL/hash hooks, framing/request helpers and obsolete regression tests are removed with them.
+
+The code keeps only the pieces Live sync actually needs: compact changed-record wire encoding, per-peer cursors, checksum verification, conflict-aware merge, pending unmatched state, numeric-date migration repair, QR offer/answer rendering/decoding and local WebRTC diagnostics. These are internal data-safety/transport primitives and are not alternate sharing modes. Pairing now uses the dedicated `LDS1` signal prefix so historical one-time-transfer QR payloads cannot be mistaken for a current Live-sync handshake.
+
+The Live DataChannel remains ephemeral and serverless: no account, signalling backend, STUN or TURN. Closing the app, device sleep, network loss or browser suspension can end the session; reconnecting requires a new QR pair.
 
 Next main milestone: **4.6 — Prepare for this**.

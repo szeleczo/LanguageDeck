@@ -3251,17 +3251,19 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
 .integrated-gate-strip .gate-progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#60a5fa);transition:width .5s ease}
 @media(max-width:560px){.integrated-gate-strip{width:calc(100% - 20px);margin-top:8px;margin-bottom:5px}.integrated-gate-strip .gate-nav{min-height:48px}.integrated-gate-strip .gate-summary{min-height:48px;padding:8px 12px;gap:6px}}
 
- .progress-transfer-live{margin:12px 0;padding:12px;border:1px solid color-mix(in srgb,var(--accent) 32%,var(--line));border-radius:14px;background:color-mix(in srgb,var(--accent) 5%,var(--surface2))}
-.progress-transfer-live h3,.progress-transfer-camera h3{margin:0 0 4px;font-size:13px}.progress-transfer-live p,.progress-transfer-camera p{margin:0;color:var(--muted);font-size:11px;line-height:1.45}.progress-transfer-live .progress-transfer-actions,.progress-transfer-camera .progress-transfer-actions{margin-bottom:0}
-.live-sync-status{margin-top:8px;min-height:17px;font-size:11px;line-height:1.4;color:var(--text-faint)}.live-sync-status.connected{color:var(--success);font-weight:700}.live-sync-status.connecting{color:var(--accent);font-weight:650}
-.progress-transfer-camera{margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface2)}
+ .live-sync-intro{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:12px}
+.live-sync-panel{margin:12px 0;padding:12px;border:1px solid color-mix(in srgb,var(--accent) 32%,var(--line));border-radius:14px;background:color-mix(in srgb,var(--accent) 5%,var(--surface2))}
+.live-sync-panel h3{margin:0 0 4px;font-size:13px}.live-sync-panel p{margin:0;color:var(--muted);font-size:11px;line-height:1.45}
+.live-sync-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.live-sync-actions button{min-height:46px}
+.live-sync-status,.live-sync-pair-status{margin-top:8px;min-height:17px;font-size:11px;line-height:1.4;color:var(--text-faint)}.live-sync-status.connected{color:var(--success);font-weight:700}.live-sync-status.connecting{color:var(--accent);font-weight:650}
+@media(max-width:560px){.live-sync-actions{grid-template-columns:1fr}}
 #legacyPracticeRoot .modal-card.qr-transfer-card{box-sizing:border-box;width:min(620px,calc(100vw - 32px));max-width:620px;max-height:min(780px,calc(100dvh - 32px));overflow-y:auto;overflow-x:hidden}
 .qr-transfer-card>*{min-width:0}
-.qr-transfer-stage{display:grid;place-items:center;gap:10px;margin:12px 0;min-width:0;width:100%}.qr-transfer-visual{box-sizing:border-box;display:grid;place-items:center;width:min(520px,100%);max-width:100%;aspect-ratio:1/1;padding:10px;border-radius:12px;background:#fff;box-shadow:0 6px 24px rgba(15,23,42,.08);overflow:hidden}.qr-transfer-visual svg{display:block;width:100%;height:100%;max-width:100%;max-height:100%;background:#fff}.qr-transfer-stage canvas{display:none!important}
+.qr-transfer-stage{display:grid;place-items:center;gap:10px;margin:12px 0;min-width:0;width:100%}.qr-transfer-visual{box-sizing:border-box;display:grid;place-items:center;width:min(520px,100%);max-width:100%;aspect-ratio:1/1;padding:10px;border-radius:12px;background:#fff;box-shadow:0 6px 24px rgba(15,23,42,.08);overflow:hidden}.qr-transfer-visual svg{display:block;width:100%;height:100%;max-width:100%;max-height:100%;background:#fff}
 @media(max-width:560px){#legacyPracticeRoot .modal-card.qr-transfer-card{width:calc(100vw - 20px);max-width:calc(100vw - 20px);max-height:calc(100dvh - 20px);padding:18px}.qr-transfer-visual{width:100%;padding:8px}}
 .qr-transfer-frame{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;text-align:center}.qr-transfer-frame strong{color:var(--text)}
-.qr-camera-wrap{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:16px;background:#0b1020;margin:12px 0}.qr-camera-wrap video{width:100%;height:100%;object-fit:cover}.qr-camera-target{position:absolute;inset:14%;border:2px solid rgba(255,255,255,.9);border-radius:16px;box-shadow:0 0 0 999px rgba(0,0,0,.23);pointer-events:none}.qr-transfer-progress{height:7px;border-radius:999px;background:var(--line);overflow:hidden;margin:8px 0}.qr-transfer-progress>span{display:block;height:100%;width:0;background:var(--accent);transition:width .15s ease}.qr-transfer-note{font-size:11px;line-height:1.45;color:var(--muted)}
-.progress-transfer-intro{font-size:12px;color:var(--text-muted);line-height:1.45;margin-bottom:12px}.progress-transfer-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.progress-transfer-actions button{min-height:46px}.progress-transfer-preview{border:1px solid var(--border);border-radius:12px;background:var(--surface-2);padding:11px 12px;margin:9px 0;color:var(--text-muted);font-size:12px;line-height:1.45}.progress-transfer-preview strong{color:var(--text)}.progress-transfer-preview.ready{border-color:color-mix(in srgb,var(--success) 45%,var(--border));background:color-mix(in srgb,var(--success-soft) 72%,var(--surface))}.progress-transfer-status{font-size:12px;color:var(--text-faint);min-height:18px;margin:7px 0}.progress-transfer-legacy{margin-top:12px;border-top:1px solid var(--border);padding-top:10px}.progress-transfer-legacy summary{cursor:pointer;color:var(--text-muted);font-size:11px;font-weight:750}.progress-transfer-file{display:none}@media(max-width:560px){.progress-transfer-actions{grid-template-columns:1fr}}
+.qr-camera-wrap{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:16px;background:#0b1020;margin:12px 0}.qr-camera-wrap video{width:100%;height:100%;object-fit:cover}.qr-camera-target{position:absolute;inset:14%;border:2px solid rgba(255,255,255,.9);border-radius:16px;box-shadow:0 0 0 999px rgba(0,0,0,.23);pointer-events:none}.qr-transfer-note{font-size:11px;line-height:1.45;color:var(--muted)}
+
 #legacyPracticeRoot .typing-actions.practice-actions,#legacyPracticeRoot .sentence-actions.practice-actions{position:fixed!important;left:max(10px,env(safe-area-inset-left))!important;right:max(10px,env(safe-area-inset-right))!important;bottom:max(8px,env(safe-area-inset-bottom))!important;z-index:94!important;width:auto!important;max-width:720px!important;min-height:48px!important;margin:0 auto!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;display:flex!important;gap:7px!important;order:initial!important}
 #legacyPracticeRoot .typing-actions.practice-actions button,#legacyPracticeRoot .sentence-actions.practice-actions button{min-height:var(--tap)!important;height:var(--tap)!important;margin:0!important;flex:1 1 auto!important;border-radius:var(--radius-md)!important}
 #legacyPracticeRoot .sentence-result:not(:empty){position:static!important;inset:auto!important;max-width:none!important;width:auto!important;margin:7px 0!important;box-shadow:none!important;pointer-events:auto!important}
@@ -3880,7 +3882,7 @@ html.integrated-practice-active body{overflow:hidden!important}
           </div>
 <button class="ghost" id="browseBuiltinBtn" style="width:100%;">Browse current-language built-in decks</button>
 <button class="ghost" id="manageDecksBtn" style="width:100%;">Manage installed decks</button>
-<button class="ghost" id="syncProgressBtn" style="width:100%;">Transfer progress between devices</button>
+<button class="ghost" id="liveSyncOpenBtn" style="width:100%;">Live sync between devices</button>
 <button class="ghost" id="openPackBuilderBtn" hidden style="width:100%;">Language Pack Builder</button>
 </div>
 </details>
@@ -3914,68 +3916,34 @@ html.integrated-practice-active body{overflow:hidden!important}
 </div>
 </div>
 </div>
-<div class="modal-backdrop" id="syncModal">
+<div class="modal-backdrop" id="liveSyncModal">
 <div class="modal-card">
-<div class="modal-title">Progress transfer</div>
-<div class="progress-transfer-intro">Move your learning state between desktop and mobile without an account. A Progress Pack includes Adaptive/Words progress, sentence practice, shared Story vocabulary, text progress and chapter positions. It does not contain book/deck content or appearance settings.</div>
-<div class="progress-transfer-live">
+<div class="modal-title">Live sync</div>
+<div class="live-sync-intro">Pair two open LanguageDeck apps with QR. While the direct local connection stays open, Words, Grammar, Story/Text and chapter progress merge automatically in both directions. No account, backend, signalling server, STUN or TURN service is used.</div>
+<div class="live-sync-panel">
   <h3>Live sync · while connected</h3>
-  <p>Pair the two open LanguageDeck apps with QR once. While the direct local connection stays open, changed Words/Grammar/Story progress is merged automatically in both directions in small batches. No account, backend, signalling server, STUN or TURN service is used. Best when actively studying on one device at a time.</p>
-  <div class="progress-transfer-actions"><button id="liveSyncHostBtn">Start live sync</button><button class="secondary" id="liveSyncJoinBtn">Join live sync</button></div>
+  <p>Start on one device and join on the other. Keep both apps open on the same Wi-Fi or local network. If either app closes, sleeps deeply or loses the local peer connection, pair again.</p>
+  <div class="live-sync-actions"><button id="liveSyncHostBtn">Start live sync</button><button class="secondary" id="liveSyncJoinBtn">Join live sync</button></div>
   <button class="ghost hidden" id="liveSyncDisconnectBtn" style="width:100%;margin-top:8px;">Disconnect live sync</button>
   <div class="live-sync-status" id="liveSyncStatus">Not connected.</div>
 </div>
-<div class="progress-transfer-camera">
-  <h3>One-time nearby transfer · no server</h3>
-  <p>A QR code only introduces the two devices. The changed Words/Grammar/Story progress then moves directly between them over a one-time encrypted browser connection and the connection closes after this hand-off. No account, backend, signalling server, STUN or TURN service is used. For the direct path, keep both devices on the same Wi-Fi or local network.</p>
-  <div class="progress-transfer-actions"><button id="progressQrShowBtn">Receive progress</button><button class="secondary" id="progressQrScanBtn">Send progress</button></div>
-  <details class="progress-transfer-legacy" style="margin-top:8px;">
-    <summary>QR-only fallback</summary>
-    <div style="font-size:11px;color:var(--text-faint);margin:8px 0;line-height:1.4;">If a local peer connection is blocked by the network, the older serverless method can still move the compact delta as rotating QR frames.</div>
-    <div class="progress-transfer-actions"><button class="secondary" id="progressQrLegacyReceiveBtn">Receive by QR frames</button><button class="secondary" id="progressQrLegacySendBtn">Send by QR frames</button></div>
-  </details>
-</div>
-<div class="progress-transfer-actions">
-<button id="progressPackExportBtn">Share / export progress</button>
-<button class="secondary" id="progressPackImportBtn">Choose Progress Pack</button>
-</div>
-<input class="progress-transfer-file" id="progressPackFile" type="file" accept=".ldprogress,application/json" />
-<div class="progress-transfer-preview" id="progressPackPreview">No Progress Pack selected. Export on the device with the progress you want to carry over, then open that file here.</div>
-<button class="secondary" id="progressPackApplyBtn" disabled style="width:100%;">Merge selected progress</button>
-<div class="progress-transfer-status" id="progressPackStatus"></div>
-<details class="progress-transfer-legacy">
-<summary>Legacy code transfer</summary>
-<div style="font-size:11px;color:var(--text-faint);margin:8px 0;line-height:1.4;">Older LanguageDeck builds can still exchange the compact card code below. It only covers part of the modern learning state, so Progress Pack is preferred.</div>
-<textarea autocomplete="off" id="syncCodeArea" placeholder="Create or paste an older sync code." spellcheck="false" style="width:100%;min-height:90px;resize:vertical;font:12px ui-monospace,Menlo,Consolas,monospace;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);color:var(--text);word-break:break-all;"></textarea>
-<div id="syncStatus" style="font-size:12px;color:var(--text-faint);min-height:16px;margin:6px 0 2px;"></div>
-<div class="settings-actions" style="display:flex;gap:8px;flex-wrap:wrap;">
-<button id="syncCreateBtn" style="flex:1;">Create old code</button>
-<button class="secondary" id="syncLinkBtn" style="flex:1;">Copy old link</button>
-<button class="secondary" id="syncApplyBtn" style="flex:1;">Apply old code</button>
-</div>
-</details>
-<div class="settings-actions"><button class="ghost close-btn" id="closeSyncBtn">Done</button></div>
+<div class="settings-actions"><button class="ghost close-btn" id="closeLiveSyncBtn">Done</button></div>
 </div>
 </div>
 <div class="modal-backdrop" id="qrTransferModal">
   <div class="modal-card qr-transfer-card">
-    <div class="modal-title" id="qrTransferTitle">Camera progress transfer</div>
+    <div class="modal-title" id="qrTransferTitle">Live sync pairing</div>
     <div id="qrSendView" class="hidden">
       <div class="qr-transfer-note" id="qrTransferSendNote">Keep this screen visible.</div>
-      <div class="qr-transfer-stage"><div id="qrTransferVisual" class="qr-transfer-visual" role="img" aria-label="Progress transfer QR code"></div><canvas id="qrTransferCanvas" width="420" height="420" aria-hidden="true"></canvas><div class="qr-transfer-frame" id="qrTransferFrame">Preparing…</div></div>
+      <div class="qr-transfer-stage"><div id="qrTransferVisual" class="qr-transfer-visual" role="img" aria-label="Live sync QR code"></div><div class="qr-transfer-frame" id="qrTransferFrame">Preparing…</div></div>
       <button class="secondary hidden" id="qrTransferScanReplyBtn" style="width:100%;margin-top:10px;">Scan incoming progress</button>
     </div>
     <div id="qrScanView" class="hidden">
-      <div class="qr-transfer-note">Point the camera at the QR code on the other device.</div>
+      <div class="qr-transfer-note">Point the camera at the live-sync QR code on the other device.</div>
       <div class="qr-camera-wrap"><video id="qrTransferVideo" playsinline muted></video><div class="qr-camera-target"></div></div>
-      <div class="qr-transfer-progress"><span id="qrTransferProgressFill"></span></div>
-      <div class="qr-transfer-frame" id="qrTransferScanStatus">Waiting for QR frames…</div>
+      <div class="qr-transfer-frame" id="qrTransferScanStatus">Waiting for live-sync QR…</div>
     </div>
-    <div id="qrReceiveView" class="hidden">
-      <div class="progress-transfer-preview ready" id="qrTransferPreview"></div>
-      <button id="qrTransferApplyBtn" style="width:100%;">Merge received progress</button>
-    </div>
-    <div class="progress-transfer-status" id="qrTransferStatus"></div>
+    <div class="live-sync-pair-status" id="qrTransferStatus"></div>
     <div class="settings-actions"><button class="ghost close-btn" id="qrTransferCloseBtn">Close</button></div>
   </div>
 </div>
@@ -4091,7 +4059,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.19-live-sync-while-connected-20260909",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.20-live-sync-only-cleanup-20260910",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4469,13 +4437,13 @@ let CATALOG_LAUNCH_SERIAL=0;
 function catalogVariant(action={}){const mode=["words","grammar","sentences"].includes(action.mode)?action.mode:"words";return action.variant||(mode==="words"?"progressive":"order")}
 function catalogLaunchMatches(snapshot,action,language){const mode=["words","grammar","sentences"].includes(action.mode)?action.mode:"words",variant=catalogVariant(action),activeVariant=mode==="words"?snapshot.wordMode:snapshot.sentenceMode;return snapshot.deck===language&&snapshot.mode===mode&&activeVariant===variant}
 async function startCatalogIntegrated(action){if(!window.LanguageDeckPractice?.startCatalog)throw Error('The standalone deck engine did not initialise.');const launch=++CATALOG_LAUNCH_SERIAL,language=String(action.language||LANG).toLowerCase(),request={...action,language};PRACTICE_RETURN_VIEW='practice';ACTIVE_PRACTICE_MODE=request.mode;PRACTICE_PENDING_OPTIONS=null;ACTIVE_STUDY_ENGINE?.destroy?.();ACTIVE_STUDY_ENGINE=null;ACTIVE_STUDY_API=null;$('browseShell').classList.add('hidden');$('studyHost').classList.add('hidden');$('chapterStudyHost').classList.add('hidden');$('grammarCourseHost').classList.add('hidden');$('practiceStudyHost').classList.remove('hidden');document.documentElement.classList.add('integrated-practice-active');const snapshot=await window.LanguageDeckPractice.startCatalog(request);if(launch!==CATALOG_LAUNCH_SERIAL)return;if(!catalogLaunchMatches(snapshot,request,language)){await exitIntegratedPractice('practice');throw Error('The selected language, deck and exercise mode did not start together. Please try again.');}updatePracticeShell(snapshot);PRACTICE_DOCK_OBSERVER?.disconnect();PRACTICE_DOCK_OBSERVER=new MutationObserver(()=>requestAnimationFrame(syncPracticeDock));PRACTICE_DOCK_OBSERVER.observe($('legacyPracticeRoot'),{subtree:true,attributes:true,attributeFilter:['class'],childList:true});syncPracticeDock()}
-async function startPracticeUtility(tool){await startIntegratedPractice('words','practice');await window.LanguageDeckPractice?.openUtility?.(tool,LANG)}
+async function startPracticeUtility(tool){if(tool==='sync'){document.getElementById('liveSyncModal')?.classList.add('active');return}await startIntegratedPractice('words','practice');await window.LanguageDeckPractice?.openUtility?.(tool,LANG)}
 function localStoryPackages(){try{return JSON.parse(localStorage.getItem('ld-story-pack-index-v1')||'[]').filter(x=>(x.language||'de')===LANG)}catch(_){return[]}}
 function startLocalStoryPackage(id){const pack=localStoryPackages().find(x=>x.id===id);if(pack)startIntegratedStory({local:id,language:pack.language||LANG,seriesTitle:pack.seriesTitle||pack.title||pack.name||''},'practice')}
 async function renderPracticeLibrary(){
   const host=$('practiceLibrary');if(!host)return;host.classList.remove('loading');let manifest;try{manifest=await loadPackageManifest()}catch(e){host.innerHTML=`<article class="error-state"><h2>Practice library unavailable</h2><p>${esc(e.message||e)}</p></article>`;return}
   const packages=(manifest.catalogPackages||[]).filter(p=>p.kind==='standalone'),localStories=localStoryPackages(),activeLanguage=LANGUAGE_CATALOG.find(x=>x.code===LANG)||{},storySection=STORY?`<section><div class="practice-domain-head"><h2>Current story</h2><span>isolated domain</span></div><article class="practice-domain-card featured"><h3>${esc(STORY.title)}</h3><p>Only this story's vocabulary, grammar and sentences. Other courses and standalone decks never enter this domain.</p><div class="practice-domain-meta">${STORY.chapters.length} chapters · own Course / Book / Practice context</div><div class="practice-mode-group"><span class="practice-mode-label">Words</span><div class="practice-domain-actions"><button class="primary-action" data-story-practice="words" data-story-variant="match">Match</button><button data-story-practice="words" data-story-variant="progressive">Adaptive</button><button data-story-practice="words" data-story-variant="typing">Type</button></div></div><div class="practice-mode-group"><span class="practice-mode-label">In context</span><div class="practice-domain-actions"><button data-story-practice="grammar" data-story-variant="order">Grammar</button><button data-story-practice="sentences" data-story-variant="order">Sentences</button><button data-story-read>Read</button></div></div></article></section>`:`<section><div class="practice-domain-head"><h2>Story courses</h2><span>not installed for this language</span></div><div class="practice-empty-course">${esc(activeLanguage.name||LANG.toUpperCase())} currently has standalone practice only. Its deck library remains fully available below.</div></section>`,programmeSection=activeLanguage.capabilities?.grammarCurriculum?`<section><div class="practice-domain-head"><h2>Learning programmes</h2><span>guided curriculum</span></div><article class="practice-domain-card"><h3>Grammar &amp; Forms</h3><p>Nyolc tömör A1–B2 modul: áttekintő táblázatok, egyetlen célra épülő feladatok, gyors válaszadás és választható Igeműhely.</p><div class="practice-domain-actions"><button class="primary-action" data-grammar-course>Nyelvtani modulok megnyitása</button></div></article></section>`:'',localStorySection=localStories.length?`<section><div class="practice-domain-head"><h2>Imported stories</h2><span>on this device</span></div><div class="standalone-grid">${localStories.map(x=>`<article class="practice-domain-card"><h3>${esc(x.seriesTitle||x.title||x.name||x.id)}</h3><p>${esc(x.subtitle||'Imported Story Study package')}</p><div class="practice-domain-actions"><button class="primary-action" data-local-story="${esc(x.id)}">Open story</button></div></article>`).join('')}</div></section>`:'';
-  host.innerHTML=`${storySection}${programmeSection}<section><div class="practice-domain-head"><h2>Standalone decks</h2><span>independent packages</span></div><div class="standalone-grid">${packages.map(p=>`<article class="practice-domain-card"><h3>${esc(p.title)}</h3><p>${esc(p.description||'Independent practice package.')}</p><div class="practice-domain-meta">${esc(p.level||'All levels')}</div><div class="practice-domain-actions">${(p.actions||[]).map((a,i)=>`<button class="${i===0?'primary-action':''}" data-catalog-package="${esc(p.id)}" data-catalog-action="${i}" data-catalog-language="${esc(LANG)}">${esc(a.label||practiceModeLabel(a.mode))}</button>`).join('')}</div></article>`).join('')}</div></section>${localStorySection}<section><div class="practice-domain-head"><h2>My library</h2><span>device tools</span></div><article class="practice-domain-card"><h3>Personal decks and progress</h3><p>Import your own material, manage installed decks, or move learning progress between devices.</p><div class="practice-tools"><button class="practice-tool" data-practice-tool="import"><b>Import</b><span>CSV word or sentence deck, or Story Study ZIP</span></button><button class="practice-tool" data-practice-tool="manage"><b>Installed decks</b><span>Review and remove local deck copies</span></button><button class="practice-tool" data-practice-tool="sync"><b>Sync progress</b><span>Create or apply a device transfer code</span></button></div></article></section>`;
+  host.innerHTML=`${storySection}${programmeSection}<section><div class="practice-domain-head"><h2>Standalone decks</h2><span>independent packages</span></div><div class="standalone-grid">${packages.map(p=>`<article class="practice-domain-card"><h3>${esc(p.title)}</h3><p>${esc(p.description||'Independent practice package.')}</p><div class="practice-domain-meta">${esc(p.level||'All levels')}</div><div class="practice-domain-actions">${(p.actions||[]).map((a,i)=>`<button class="${i===0?'primary-action':''}" data-catalog-package="${esc(p.id)}" data-catalog-action="${i}" data-catalog-language="${esc(LANG)}">${esc(a.label||practiceModeLabel(a.mode))}</button>`).join('')}</div></article>`).join('')}</div></section>${localStorySection}<section><div class="practice-domain-head"><h2>My library</h2><span>device tools</span></div><article class="practice-domain-card"><h3>Personal decks and progress</h3><p>Import your own material, manage installed decks, or keep two open LanguageDeck devices in live sync.</p><div class="practice-tools"><button class="practice-tool" data-practice-tool="import"><b>Import</b><span>CSV word or sentence deck, or Story Study ZIP</span></button><button class="practice-tool" data-practice-tool="manage"><b>Installed decks</b><span>Review and remove local deck copies</span></button><button class="practice-tool" data-practice-tool="sync"><b>Live sync</b><span>Pair two open devices with QR and sync progress while connected</span></button></div></article></section>`;
   host.querySelectorAll('[data-story-practice]').forEach(b=>b.onclick=()=>startStoryDomainPractice(b.dataset.storyPractice,b.dataset.storyVariant));host.querySelector('[data-story-read]')?.addEventListener('click',()=>CURRENT?startIntegratedStory(storyRequestFor(CURRENT.ch),'practice'):showView('course'));host.querySelector('[data-grammar-course]')?.addEventListener('click',()=>openGrammarCourse(null,'practice'));host.querySelectorAll('[data-catalog-package]').forEach(b=>b.onclick=()=>{const p=packages.find(x=>x.id===b.dataset.catalogPackage),a=p?.actions?.[+b.dataset.catalogAction];if(a)startCatalogIntegrated({...a,language:b.dataset.catalogLanguage})});host.querySelectorAll('[data-local-story]').forEach(b=>b.onclick=()=>startLocalStoryPackage(b.dataset.localStory));host.querySelectorAll('[data-practice-tool]').forEach(b=>b.onclick=()=>startPracticeUtility(b.dataset.practiceTool))
 }
 async function init(){updateNetworkState();try{if(!await loadGlobalLanguageCatalog())return;const aliasRows=objects(await fetchText(`decks/${LANG}/aliases.csv`,false));ALIASES=new Map(aliasRows.map(r=>[r.old_lexeme_id,r.canonical_lexeme_id]));await migrateGlobalKnowledge();await loadGlobal();COURSES=await loadCourseCatalog();const requested=(location.hash||'#course').slice(1);if(!COURSES.length){STORY=null;CURRENT=null;renderNoCourse('No story course is installed for this language yet. Standalone practice remains available.');$('bookTitle').textContent='No book installed';$('chapterList').innerHTML='<div class="practice-empty-course">Choose Practice to use the installed standalone decks.</div>';await renderPracticeLibrary();showView('practice',false);return}const saved=localStorage.getItem(`ld-active-course:${LANG}`),course=COURSES.find(c=>(c.id||c.story)===saved)||COURSES.find(c=>c.default)||COURSES[0];await activateCourse(course);showView(['course','library','book','practice'].includes(requested)?requested:'course',false)}catch(e){console.error(e);renderNoCourse(navigator.onLine?String(e.message||e):'The app is offline and the course files are not cached yet.');showView('course',false)}}
@@ -4674,7 +4642,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.19-live-sync-while-connected-20260909";
+    const APP_BUILD = "4.5.20-live-sync-only-cleanup-20260910";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -8822,9 +8790,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const root=document.getElementById('legacyPracticeRoot');if(root)root.dataset.utilityView=tool;
       currentDeck=normalizeDeck(language);syncLanguageSelectOptions();applySettingsToUI();await refreshSetOptions();setSelect.value=currentSetName;
       applyDeckUI();updateGameUI();await refreshStats();await refreshGateInfo();await loadCurrentGame(true);
-      [settingsModal,builtinModal,manageDecksModal,syncModal].forEach(modal=>modal?.classList.remove('active'));
+      [settingsModal,builtinModal,manageDecksModal].forEach(modal=>modal?.classList.remove('active'));
       if(tool==='manage'){manageDecksModal.classList.add('active');await renderManageDecks();return}
-      if(tool==='sync'){syncModal.classList.add('active');return}
       const wanted=tool==='import'?new Set(['import']):new Set(['appearance','practice','gates']);
       settingsModal.querySelectorAll('[data-utility-section]').forEach(section=>section.open=wanted.has(section.dataset.utilitySection));
       const title=settingsModal.querySelector('.modal-title');if(title)title.textContent=tool==='import'?'Import to My library':'Session controls';
@@ -11423,7 +11390,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         if (statsModal.classList.contains("active")) { closeStats(); return; }
         if (gateDetailModal.classList.contains("active")) { closeGateDetail(); return; }
         if (builtinModal.classList.contains("active")) { builtinModal.classList.remove("active"); return; }
-        if ($("qrTransferModal")?.classList.contains("active")) { $("qrTransferModal").classList.remove("active"); stopQrTransfer(); return; }
+        if ($("qrTransferModal")?.classList.contains("active")) { cancelLiveSyncPairing(); return; }
+        if ($("liveSyncModal")?.classList.contains("active")) { $("liveSyncModal").classList.remove("active"); return; }
       }
       const modifier = practiceShortcutModifier(event);
       if (modifier && event.key === "Enter") {
@@ -11722,251 +11690,11 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       }
     }
 
-    /* ---------- Progress sync codes (no backend) ----------
-       A sync code is the learner's progress serialized and deflate-
-       compressed: for every practiced card (identified by deck + table +
-       set + english + target, NOT by device-local IDs) it carries streak,
-       schedule, counters and the adaptive level. Applying a code merges by
-       recency: the state with the later last_seen wins per card. */
-    const SYNC_PREFIX_COMPACT = "LD2.";
-    const SYNC_PREFIX_DEFLATE = "LD1.";
-    const SYNC_PREFIX_PLAIN = "LD0.";
-
-    /* ---- LD2 compact binary format ----
-       Hand-entry-oriented: Crockford base32 (case-insensitive, no 0/O or
-       1/I/L ambiguity, dashes ignored), and a bit-packed struct-of-arrays
-       payload instead of JSON. Cards are keyed by a 3-byte content hash of
-       deck+type+english+target — no readable text, no device IDs.
-       Per card: 3B hash + 1B streak/level + 2B due + 2B last-seen, then
-       deflate. Counters (times_seen/correct/wrong) are NOT carried: they are
-       statistics, not scheduling state, and dropping them roughly halves the
-       code. */
-    const CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
-    function crockfordEncode(bytes) {
-      let bits = 0, value = 0, out = "";
-      for (const b of bytes) {
-        value = (value << 8) | b; bits += 8;
-        while (bits >= 5) { out += CROCKFORD[(value >>> (bits - 5)) & 31]; bits -= 5; }
-      }
-      if (bits > 0) out += CROCKFORD[(value << (5 - bits)) & 31];
-      return out.replace(/(.{4})(?=.)/g, "$1-");
-    }
-    function crockfordDecode(str) {
-      const clean = String(str || "").toUpperCase().replace(/[\s-]/g, "")
-        .replace(/O/g, "0").replace(/[IL]/g, "1");
-      let bits = 0, value = 0; const out = [];
-      for (const ch of clean) {
-        const idx = CROCKFORD.indexOf(ch);
-        if (idx < 0) throw new Error(`Invalid character "${ch}" in code.`);
-        value = (value << 5) | idx; bits += 5;
-        if (bits >= 8) { out.push((value >>> (bits - 8)) & 255); bits -= 8; }
-      }
-      return new Uint8Array(out);
-    }
-
-    function fnv24(str) {
-      let h = 0x811c9dc5;
-      for (let i = 0; i < str.length; i++) {
-        h ^= str.charCodeAt(i);
-        h = Math.imul(h, 0x01000193);
-      }
-      return (h >>> 8) & 0xffffff; // low collision risk at deck sizes, cheap
-    }
-    function syncHashOf(tableIdx, deck, english, target) {
-      return fnv24(`${tableIdx}|${deck}|${normTxt(english)}|${normTxt(target)}`);
-    }
-
-    const QUARTER_DAY_MS = 6 * 3600 * 1000;
-    function quarterDaysBetween(fromIso, toIso) {
-      const d = (new Date(toIso).getTime() - new Date(fromIso).getTime()) / QUARTER_DAY_MS;
-      return clampInt(Math.round(d), 0, 0xfffe);
-    }
-    const SYNC_TABLES = ["word_pairs", "sentence_pairs"];
-    const SYNC_FIELDS = ["streak", "next_due", "word_next_due", "learning_pressure", "article_pressure", "article_streak", "article_next_due", "article_times_seen", "article_times_correct", "article_times_wrong", "article_last_seen", "times_seen", "times_correct",
-      "times_wrong", "diagnostic_total_wrong", "progressive_level", "last_seen"];
-    function bytesFromB64url(str) {
-      const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
-      const bin = atob(b64 + "===".slice((b64.length + 3) % 4));
-      const out = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-      return out;
-    }
-    async function pipeThrough(bytes, stream) {
-      const src = new Blob([bytes]).stream().pipeThrough(stream);
-      const buf = await new Response(src).arrayBuffer();
-      return new Uint8Array(buf);
-    }
-
-    function syncKeyOf(tableIdx, deck, setName, english, target) {
-      return `${tableIdx}|${deck}|${normTxt(setName)}|${normTxt(english)}|${normTxt(target)}`;
-    }
-    function syncLooseKeyOf(tableIdx, deck, english, target) {
-      return `${tableIdx}|${deck}|${normTxt(english)}|${normTxt(target)}`;
-    }
-
-    async function collectSyncRows() {
-      const out = [];
-      for (const deck of Object.keys(DECK_CONFIG)) {
-        for (let t = 0; t < SYNC_TABLES.length; t++) {
-          const rows = await DB.getAll(SYNC_TABLES[t], deck, "__all__");
-          for (const r of rows) out.push({ t, deck, row: r });
-        }
-      }
-      return out;
-    }
-
-    async function createSyncCode() {
-      const practiced = (await collectSyncRows())
-        .filter(({ row }) => row.next_due != null || (row.times_seen | 0) > 0);
-      const exported = nowIso();
-      const n = practiced.length;
-
-      // struct-of-arrays: like fields adjacent → deflate bites much harder
-      const buf = new Uint8Array(9 + n * 8);
-      const dv = new DataView(buf.buffer);
-      buf[0] = 2; // format version
-      dv.setUint32(1, Math.floor(Date.now() / 60000), false); // export minute
-      dv.setUint32(5, n, false);
-      let o = 9;
-      for (const { t, deck, row } of practiced) {
-        const h = syncHashOf(t, deck, row.english || "", row.target || "");
-        buf[o++] = (h >>> 16) & 255; buf[o++] = (h >>> 8) & 255; buf[o++] = h & 255;
-      }
-      for (const { row } of practiced) {
-        const streak = clampInt(row.streak | 0, 0, 15);
-        const level = clampInt(row.progressive_level | 0, 0, 7);
-        buf[o++] = (streak << 4) | (level << 1) | (row.next_due != null ? 1 : 0);
-      }
-      for (const { row } of practiced) {
-        const q = row.next_due != null ? quarterDaysBetween(exported, row.next_due) : 0xffff;
-        buf[o++] = (q >>> 8) & 255; buf[o++] = q & 255;
-      }
-      for (const { row } of practiced) {
-        const q = row.last_seen ? quarterDaysBetween(row.last_seen, exported) : 0xffff;
-        buf[o++] = (q >>> 8) & 255; buf[o++] = q & 255;
-      }
-
-      let packed = buf;
-      if (typeof CompressionStream === "function") {
-        packed = await pipeThrough(buf, new CompressionStream("deflate-raw"));
-        if (packed.length >= buf.length) packed = buf; // tiny sets: skip futile deflate
-      }
-      const flag = packed === buf ? "R" : "Z"; // raw vs deflated payload
-      return { code: SYNC_PREFIX_COMPACT + flag + crockfordEncode(packed), count: n };
-    }
-
-    async function applyCompactSyncCode(trimmed) {
-      const body = trimmed.slice(SYNC_PREFIX_COMPACT.length);
-      const flag = body.charAt(0).toUpperCase();
-      let bytes = crockfordDecode(body.slice(1));
-      if (flag === "Z") {
-        if (typeof DecompressionStream !== "function") throw new Error("This browser cannot read compressed codes.");
-        bytes = await pipeThrough(bytes, new DecompressionStream("deflate-raw"));
-      } else if (flag !== "R") {
-        throw new Error("Unrecognized code format.");
-      }
-      if (bytes.length < 9 || bytes[0] !== 2) throw new Error("Unrecognized code format.");
-      const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-      const exportedMs = dv.getUint32(1, false) * 60000;
-      const n = dv.getUint32(5, false);
-      if (bytes.length !== 9 + n * 8) throw new Error("Code is damaged (length mismatch).");
-
-      const hashes = []; let o = 9;
-      for (let i = 0; i < n; i++) { hashes.push((bytes[o] << 16) | (bytes[o + 1] << 8) | bytes[o + 2]); o += 3; }
-      const packedState = bytes.slice(o, o + n); o += n;
-      const dueQ = []; for (let i = 0; i < n; i++) { dueQ.push((bytes[o] << 8) | bytes[o + 1]); o += 2; }
-      const lastQ = []; for (let i = 0; i < n; i++) { lastQ.push((bytes[o] << 8) | bytes[o + 1]); o += 2; }
-
-      // index local rows by content hash (all matches updated on the rare collision)
-      const local = await collectSyncRows();
-      const byHash = new Map();
-      for (const entry of local) {
-        const h = syncHashOf(entry.t, entry.deck, entry.row.english || "", entry.row.target || "");
-        if (!byHash.has(h)) byHash.set(h, []);
-        byHash.get(h).push(entry);
-      }
-
-      let updated = 0, skippedOlder = 0, notFound = 0;
-      for (let i = 0; i < n; i++) {
-        const entries = byHash.get(hashes[i]);
-        if (!entries || !entries.length) { notFound++; continue; }
-        const streak = (packedState[i] >>> 4) & 15;
-        const level = (packedState[i] >>> 1) & 7;
-        const hasDue = (packedState[i] & 1) === 1;
-        const nextDue = hasDue && dueQ[i] !== 0xffff ? new Date(exportedMs + dueQ[i] * QUARTER_DAY_MS).toISOString() : (hasDue ? nowIso() : null);
-        const lastSeen = lastQ[i] !== 0xffff ? new Date(exportedMs - lastQ[i] * QUARTER_DAY_MS).toISOString() : null;
-        let any = false;
-        for (const entry of entries) {
-          const row = entry.row;
-          const localSeen = row.last_seen || row.next_due || "";
-          if (localSeen && lastSeen && lastSeen <= localSeen) { skippedOlder++; continue; }
-          row.streak = streak;
-          row.progressive_level = level;
-          if (nextDue) row.next_due = nextDue;
-          if (lastSeen) row.last_seen = lastSeen;
-          await DB.update(SYNC_TABLES[entry.t], row);
-          any = true;
-        }
-        if (any) updated++;
-      }
-      return { updated, skippedOlder, notFound, total: n };
-    }
-
-    async function applySyncCode(code) {
-      const trimmed = String(code || "").trim();
-      if (trimmed.toUpperCase().startsWith(SYNC_PREFIX_COMPACT)) {
-        return applyCompactSyncCode(trimmed);
-      }
-      let bytes;
-      if (trimmed.startsWith(SYNC_PREFIX_DEFLATE)) {
-        if (typeof DecompressionStream !== "function") throw new Error("This browser cannot read compressed codes.");
-        bytes = await pipeThrough(bytesFromB64url(trimmed.slice(SYNC_PREFIX_DEFLATE.length)), new DecompressionStream("deflate-raw"));
-      } else if (trimmed.startsWith(SYNC_PREFIX_PLAIN)) {
-        bytes = bytesFromB64url(trimmed.slice(SYNC_PREFIX_PLAIN.length));
-      } else {
-        throw new Error("Not a LanguageDeck sync code.");
-      }
-      const payload = JSON.parse(new TextDecoder().decode(bytes));
-      if (!payload || payload.v !== 1 || !Array.isArray(payload.items)) throw new Error("Unrecognized code format.");
-
-      // Index local rows by content key (device IDs differ across installs).
-      const local = await collectSyncRows();
-      const byKey = new Map(); const byLoose = new Map();
-      for (const entry of local) {
-        const { t, deck, row } = entry;
-        byKey.set(syncKeyOf(t, deck, row.set_name || "", row.english || "", row.target || ""), entry);
-        const lk = syncLooseKeyOf(t, deck, row.english || "", row.target || "");
-        if (!byLoose.has(lk)) byLoose.set(lk, entry);
-      }
-
-      let updated = 0, skippedOlder = 0, notFound = 0;
-      for (const item of payload.items) {
-        const [t, deck, setName, english, target, ...state] = item;
-        const entry = byKey.get(syncKeyOf(t, deck, setName, english, target)) ||
-                      byLoose.get(syncLooseKeyOf(t, deck, english, target));
-        if (!entry) { notFound++; continue; }
-        const row = entry.row;
-        const incoming = {};
-        SYNC_FIELDS.forEach((f, i) => { incoming[f] = state[i]; });
-        const incomingSeen = incoming.last_seen || incoming.next_due || "";
-        const localSeen = row.last_seen || row.next_due || "";
-        if (localSeen && incomingSeen && incomingSeen <= localSeen) { skippedOlder++; continue; }
-        for (const f of SYNC_FIELDS) {
-          if (incoming[f] !== null && incoming[f] !== undefined) row[f] = incoming[f];
-        }
-        await DB.update(SYNC_TABLES[t], row);
-        updated++;
-      }
-      return { updated, skippedOlder, notFound, total: payload.items.length };
-    }
-
-    /* ---------- Progress Pack v3 ----------
-       The old compact code only represented a subset of Free Practice. A
-       Progress Pack is a versioned, local-first transfer file that carries all
-       learning state while leaving content and appearance settings alone.
-       Imports merge instead of replacing the database. */
-    const PROGRESS_PACK_FORMAT = "LanguageDeckProgressPack";
-    const PROGRESS_PACK_VERSION = 3;
+    /* ---------- Live sync merge state ----------
+       The live transport sends compact deltas, but merge semantics stay
+       independent from the transport: newer scheduling state wins, counters
+       never regress, shared reading evidence is merged, and progress for decks
+       not installed on this device is retained for a later retry. */
     const PROGRESS_PENDING_KEY = "ld-progress-pending-v1";
     const PROGRESS_LOCAL_PREFIXES = ["ld-story-study-v3:", "ld-chapter-study-v1:", "ld-prep-session-v1:"];
     const PROGRESS_COUNTER_FIELDS = new Set(["times_seen","times_correct","times_wrong","diagnostic_total_wrong","article_times_seen","article_times_correct","article_times_wrong"]);
@@ -12100,31 +11828,6 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       }
       return out;
     }
-    async function createProgressPack() {
-      await flushPracticeWrites();
-      const [words, sentences, items, patterns, units] = await Promise.all([
-        DB.getAllRecords("word_pairs"), DB.getAllRecords("sentence_pairs"), DB.getAllRecords("reading_items"), DB.getAllRecords("reading_patterns"), DB.getAllRecords("reading_units")
-      ]);
-      const wordRows = words.filter(row => progressRowActivity(row) || (+row.times_seen || 0) > 0 || row.next_due != null).map(row => progressPracticeRecord("word_pairs", row));
-      const sentenceRows = sentences.filter(row => progressRowActivity(row) || (+row.times_seen || 0) > 0 || row.next_due != null).map(row => progressPracticeRecord("sentence_pairs", row));
-      const pack = {
-        format: PROGRESS_PACK_FORMAT, version: PROGRESS_PACK_VERSION, appBuild: APP_BUILD, createdAt: new Date().toISOString(),
-        practice: [...wordRows, ...sentenceRows],
-        shared: { reading_items: items, reading_patterns: patterns, reading_units: units },
-        local: collectProgressLocalStorage()
-      };
-      pack.summary = { practiceWords: wordRows.length, practiceSentences: sentenceRows.length, sharedItems: items.length, sharedPatterns: patterns.length, readingUnits: units.length, localStates: Object.keys(pack.local).length };
-      return pack;
-    }
-    function validateProgressPack(pack) {
-      if (!pack || pack.format !== PROGRESS_PACK_FORMAT || +pack.version < 3) throw new Error("This is not a supported LanguageDeck Progress Pack.");
-      if (!Array.isArray(pack.practice) || !pack.shared || typeof pack.local !== "object") throw new Error("The Progress Pack is incomplete or damaged.");
-      return pack;
-    }
-    function progressPackSummaryText(pack) {
-      const s = pack.summary || {}, when = pack.createdAt ? new Date(pack.createdAt).toLocaleString() : "unknown time";
-      return `<strong>Ready to merge</strong> · ${when}<br>${s.practiceWords || 0} word cards · ${s.practiceSentences || 0} sentence cards · ${s.sharedItems || 0} shared lexemes · ${s.readingUnits || 0} text units · ${s.localStates || 0} chapter/session states`;
-    }
     async function savePendingProgress(items) {
       if (!items.length) { localStorage.removeItem(PROGRESS_PENDING_KEY); return; }
       localStorage.setItem(PROGRESS_PENDING_KEY, JSON.stringify({ version: 1, updatedAt: Date.now(), items }));
@@ -12165,11 +11868,12 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       }
       return updated;
     }
-    async function applyProgressPack(pack, { retainUnmatched = true, notify = true } = {}) {
-      validateProgressPack(pack); await flushPracticeWrites();
-      const practice = await mergeProgressPracticeItems(pack.practice, retainUnmatched);
-      const sharedUpdated = await mergeProgressShared(pack.shared);
-      const localUpdated = mergeProgressLocal(pack.local);
+    async function applyProgressSyncState(state, { retainUnmatched = true, notify = true } = {}) {
+      if (!state || !Array.isArray(state.practice) || !state.shared || typeof state.local !== "object") throw new Error("Live sync state is incomplete or damaged.");
+      await flushPracticeWrites();
+      const practice = await mergeProgressPracticeItems(state.practice, retainUnmatched);
+      const sharedUpdated = await mergeProgressShared(state.shared);
+      const localUpdated = mergeProgressLocal(state.local);
       await savePendingProgress(practice.unmatched);
       if (notify) { try { window.dispatchEvent(new CustomEvent("languagedeck:progress-imported", { detail: { practiceUpdated: practice.updated, sharedUpdated, localUpdated, pending: practice.unmatched.length } })); } catch (_) {} }
       return { practiceUpdated: practice.updated, keptLocal: practice.keptLocal, sharedUpdated, localUpdated, pending: practice.unmatched.length };
@@ -12196,35 +11900,24 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       localStorage.setItem(marker, "done");
       return changed;
     }
-    function progressPackFilename() { return `LanguageDeck-progress-${new Date().toISOString().slice(0,10)}.ldprogress`; }
-    async function exportProgressPackFile() {
-      const pack = await createProgressPack(), blob = new Blob([JSON.stringify(pack)], { type: "application/json" }), filename = progressPackFilename();
-      const file = typeof File === "function" ? new File([blob], filename, { type: "application/json" }) : null;
-      const coarse = typeof window.matchMedia === "function" && window.matchMedia("(pointer: coarse)").matches;
-      const preferNativeShare = !!(coarse && file && navigator.share && navigator.canShare?.({ files: [file] }));
-      if (preferNativeShare) { await navigator.share({ title: "LanguageDeck progress", text: "LanguageDeck Progress Pack", files: [file] }); return { pack, method: "shared" }; }
-      const url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500); return { pack, method: "saved" };
-    }
 
 
-    /* ---------- 4.5.19 serverless nearby + live sync ----------
-       One-time hand-off still uses the existing compact per-peer delta. Live
-       sync is optional and ephemeral: QR exchanges a WebRTC offer/answer, then
-       the encrypted DataChannel stays open and conflict-aware deltas move in
-       both directions while both apps remain connected. No account, backend,
-       signalling service, STUN or TURN server is used. QR-only delta and the
-       full Progress Pack remain independent fallbacks. */
-    const QR_REQUEST_PREFIX="LDR1", QR_DELTA_PREFIX="LDD1", QR_TRANSFER_CHUNK=680, QR_TRANSFER_MS=680;
+    /* ---------- 4.5.20 live-sync-only transport ----------
+       QR carries only a temporary WebRTC offer/answer. Once paired, the
+       encrypted DataChannel remains open and conflict-aware deltas move in
+       both directions while both apps are connected. This is the only
+       cross-device transfer path in LanguageDeck. No account, backend,
+       signalling service, STUN or TURN server is used. */
     const PROGRESS_DEVICE_KEY="ld-progress-device-v1", PROGRESS_PEERS_KEY="ld-progress-peer-cursors-v1";
     const QR_JSQR_CACHE_KEY="ld-jsqr-source-v1", QR_JSQR_LOCAL="vendor/jsqr.js";
     const QR_JSQR_REMOTE="https://raw.githubusercontent.com/cozmo/jsQR/8e6a036beafa7053dd44b1b76ac578d22b1b3311/dist/jsQR.js";
     const QR_JSQR_GIT_BLOB="99ea9df26907009e5553233ffe03c529c1521739";
     const QR_WIRE_FORMAT="LanguageDeckDelta", QR_WIRE_VERSION=1;
     const QR_WIRE_TIME_FIELDS=new Set(["next_due","word_next_due","article_next_due","article_last_seen","last_seen","last_correct","last_wrong","first_seen","mastered_at","guided_last_answer_at","guided_success_at","guided_full_recall_at","explicit_unknown_at","full_recall_at"]);
-    let qrTransferTimer=null, qrTransferStream=null, qrTransferScanTimer=null, qrTransferReceivedPack=null, qrTransferDecoderPromise=null;
-    const NEARBY_SIGNAL_PREFIX="LDP2", NEARBY_CHUNK=16384;
+    let qrTransferStream=null, qrTransferScanTimer=null;
+    const LIVE_SYNC_SIGNAL_PREFIX="LDS1", LIVE_SYNC_CHUNK=16384;
     const LIVE_SYNC_PROTOCOL=1, LIVE_SYNC_DEBOUNCE_MS=1800, LIVE_SYNC_MIN_SEND_MS=4000, LIVE_SYNC_HEARTBEAT_MS=12000, LIVE_SYNC_CURSOR_OVERLAP_MS=1500;
-    let nearbyPeer=null, nearbyChannel=null, nearbyRequest=null, nearbyReceiveMeta=null, nearbyReceiveChunks=[], nearbyReceiveBytes=0, nearbySendStarted=false, nearbyFallbackRequest=null, nearbyFallbackActive=false, nearbyConnectTimer=null, nearbyMode="once";
+    let liveSyncPeer=null, liveSyncChannel=null, liveSyncConnectTimer=null;
     let liveSyncActive=false,liveSyncConnecting=false,liveSyncRole="",liveSyncPeerId="",liveSyncPeerSeenMeAt=0,liveSyncLastSendAt=0,liveSyncLastReceiveAt=0,liveSyncLastMessageAt=0,liveSyncDirty=false,liveSyncSendBusy=false,liveSyncSendQueued=false,liveSyncSendTimer=null,liveSyncWatchTimer=null,liveSyncHeartbeatTimer=null,liveSyncRemoteApplyDepth=0,liveSyncLocalSignature="",liveSyncIncoming=null,liveSyncReceivedDeltas=0,liveSyncSentDeltas=0;
 
     function progressDeviceId(){
@@ -12236,8 +11929,6 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function saveProgressPeerCursor(sourceId,at){if(!sourceId||sourceId===progressDeviceId())return;const peers=progressPeerCursors(),value=Math.max(+peers[sourceId]||0,+at||0);peers[sourceId]=value;const entries=Object.entries(peers).sort((a,b)=>(+b[1]||0)-(+a[1]||0)).slice(0,12);localStorage.setItem(PROGRESS_PEERS_KEY,JSON.stringify(Object.fromEntries(entries)))}
     function qrBytesToB64(bytes){let s="";for(let i=0;i<bytes.length;i+=0x8000)s+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/g,"")}
     function qrB64ToBytes(s){s=String(s||"").replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";const raw=atob(s),out=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)out[i]=raw.charCodeAt(i);return out}
-    function qrJsonToB64(value){return qrBytesToB64(new TextEncoder().encode(JSON.stringify(value)))}
-    function qrB64ToJson(value){return JSON.parse(new TextDecoder().decode(qrB64ToBytes(value)))}
     async function qrTransform(bytes,kind){const ctor=kind==="gzip"?globalThis.CompressionStream:globalThis.DecompressionStream;if(!ctor)throw new Error(`${kind} compression is not available in this browser.`);const stream=new Blob([bytes]).stream().pipeThrough(new ctor("gzip"));return new Uint8Array(await new Response(stream).arrayBuffer())}
     async function qrPackBytes(value){const raw=new TextEncoder().encode(JSON.stringify(value));if(globalThis.CompressionStream){try{return{alg:"g",bytes:await qrTransform(raw,"gzip")}}catch(_){}}return{alg:"r",bytes:raw}}
     async function qrUnpackBytes(bytes,alg){const raw=alg==="g"?await qrTransform(bytes,"gunzip"):bytes;return JSON.parse(new TextDecoder().decode(raw))}
@@ -12284,19 +11975,13 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       wire.n={w:practice.filter(x=>x.table==="word_pairs").length,s:practice.filter(x=>x.table==="sentence_pairs").length,i:changedItems.length,g:changedPatterns.length,u:changedUnits.length,l:local.length};
       return wire;
     }
-    function progressPackFromDeltaWire(wire){
-      if(!wire||wire.f!==QR_WIRE_FORMAT||+wire.v!==QR_WIRE_VERSION||!wire.d)throw new Error("This is not a supported LanguageDeck QR delta.");
+    function progressSyncStateFromDeltaWire(wire){
+      if(!wire||wire.f!==QR_WIRE_FORMAT||+wire.v!==QR_WIRE_VERSION||!wire.d)throw new Error("This is not a supported LanguageDeck live-sync delta.");
       const decks=wire.d.k?.[0]||[],sets=wire.d.k?.[1]||[],practice=(wire.d.p||[]).map(x=>qrUnwirePractice(x,decks,sets)),items=(wire.d.i||[]).map(qrUnwireReadingItem),createdAt=qrUnwireTime(wire.c);
-      const pack={format:PROGRESS_PACK_FORMAT,version:PROGRESS_PACK_VERSION,appBuild:APP_BUILD,createdAt:new Date(createdAt||Date.now()).toISOString(),practice,shared:{reading_items:items,reading_patterns:wire.d.g||[],reading_units:wire.d.u||[]},local:Object.fromEntries(wire.d.l||[]),summary:{practiceWords:+wire.n?.w||0,practiceSentences:+wire.n?.s||0,sharedItems:+wire.n?.i||0,sharedPatterns:+wire.n?.g||0,readingUnits:+wire.n?.u||0,localStates:+wire.n?.l||0}};
-      pack.__deltaMeta={sourceId:wire.s||"",receiverId:wire.r||"",createdAt:createdAt||Date.now(),baseSince:qrUnwireTime(wire.b)};
-      return validateProgressPack(pack);
+      const state={createdAt:new Date(createdAt||Date.now()).toISOString(),practice,shared:{reading_items:items,reading_patterns:wire.d.g||[],reading_units:wire.d.u||[]},local:Object.fromEntries(wire.d.l||[])};
+      state.__deltaMeta={sourceId:wire.s||"",receiverId:wire.r||"",createdAt:createdAt||Date.now(),baseSince:qrUnwireTime(wire.b)};
+      return state;
     }
-
-    function buildProgressRequest(){const peers=progressPeerCursors(),entries=Object.entries(peers).sort((a,b)=>(+b[1]||0)-(+a[1]||0)).slice(0,12).map(([id,at])=>[id,Math.floor((+at||0)/1000)]);return{f:QR_REQUEST_PREFIX,v:1,id:qrTransferId(),r:progressDeviceId(),p:entries}}
-    function encodeProgressRequest(req){return`${QR_REQUEST_PREFIX}:${qrJsonToB64(req)}`}
-    function parseProgressRequest(raw){const text=String(raw||"");if(!text.startsWith(QR_REQUEST_PREFIX+":"))return null;try{const req=qrB64ToJson(text.slice(QR_REQUEST_PREFIX.length+1));return req?.f===QR_REQUEST_PREFIX&&req.r?req:null}catch(_){return null}}
-    async function buildDeltaTransfer(request){const mine=progressDeviceId(),sinceSec=(request.p||[]).find(x=>x?.[0]===mine)?.[1]||0,wire=await createProgressDeltaWire(+sinceSec*1000,request.r),packed=await qrPackBytes(wire),payload=qrBytesToB64(packed.bytes),hash=await qrDigest(packed.bytes),id=qrTransferId(),chunks=[];for(let i=0;i<payload.length;i+=QR_TRANSFER_CHUNK)chunks.push(payload.slice(i,i+QR_TRANSFER_CHUNK));const total=chunks.length||1;if(!chunks.length)chunks.push("");return{wire,id,alg:packed.alg,hash,bytes:packed.bytes.length,frames:chunks.map((chunk,i)=>`${QR_DELTA_PREFIX}:${id}:${i.toString(36)}:${total.toString(36)}:${packed.alg}:${hash}:${chunk}`),since:+sinceSec*1000}}
-    function parseDeltaFrame(raw){const parts=String(raw||"").split(":");if(parts.length!==7||parts[0]!==QR_DELTA_PREFIX)return null;const index=parseInt(parts[2],36),total=parseInt(parts[3],36),alg=parts[4],hash=parts[5],chunk=parts[6];if(!parts[1]||!Number.isInteger(index)||!Number.isInteger(total)||index<0||total<1||index>=total||!(alg==="g"||alg==="r")||!hash)return null;return{id:parts[1],index,total,alg,hash,chunk}}
 
     function liveSyncElement(id){return document.getElementById(id)}
     function liveSyncStatus(message,state=""){
@@ -12309,38 +11994,38 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
     function liveSyncStopTimers(){if(liveSyncSendTimer){clearTimeout(liveSyncSendTimer);liveSyncSendTimer=null}if(liveSyncWatchTimer){clearInterval(liveSyncWatchTimer);liveSyncWatchTimer=null}if(liveSyncHeartbeatTimer){clearInterval(liveSyncHeartbeatTimer);liveSyncHeartbeatTimer=null}}
     function liveSyncReset(message="Not connected."){
-      liveSyncStopTimers();nearbyMode="once";liveSyncActive=false;liveSyncConnecting=false;liveSyncRole="";liveSyncPeerId="";liveSyncPeerSeenMeAt=0;liveSyncLastSendAt=0;liveSyncLastReceiveAt=0;liveSyncLastMessageAt=0;liveSyncDirty=false;liveSyncSendBusy=false;liveSyncSendQueued=false;liveSyncRemoteApplyDepth=0;liveSyncIncoming=null;liveSyncReceivedDeltas=0;liveSyncSentDeltas=0;liveSyncLocalSignature=liveSyncProgressLocalSignature();liveSyncStatus(message);
+      liveSyncStopTimers();liveSyncActive=false;liveSyncConnecting=false;liveSyncRole="";liveSyncPeerId="";liveSyncPeerSeenMeAt=0;liveSyncLastSendAt=0;liveSyncLastReceiveAt=0;liveSyncLastMessageAt=0;liveSyncDirty=false;liveSyncSendBusy=false;liveSyncSendQueued=false;liveSyncRemoteApplyDepth=0;liveSyncIncoming=null;liveSyncReceivedDeltas=0;liveSyncSentDeltas=0;liveSyncLocalSignature=liveSyncProgressLocalSignature();liveSyncStatus(message);
     }
     function liveSyncTotalRecords(wire){const n=wire?.n||{};return(+n.w||0)+(+n.s||0)+(+n.i||0)+(+n.g||0)+(+n.u||0)+(+n.l||0)}
     function liveSyncMarkDirty(reason="change"){
-      if(!liveSyncActive||liveSyncRemoteApplyDepth>0||nearbyMode!=="live")return;liveSyncDirty=true;if(liveSyncSendTimer)return;const elapsed=Date.now()-liveSyncLastSendAt,delay=Math.max(LIVE_SYNC_DEBOUNCE_MS,LIVE_SYNC_MIN_SEND_MS-Math.max(0,elapsed));liveSyncSendTimer=setTimeout(()=>{liveSyncSendTimer=null;liveSyncSendDelta(reason)},delay);
+      if(!liveSyncActive||liveSyncRemoteApplyDepth>0)return;liveSyncDirty=true;if(liveSyncSendTimer)return;const elapsed=Date.now()-liveSyncLastSendAt,delay=Math.max(LIVE_SYNC_DEBOUNCE_MS,LIVE_SYNC_MIN_SEND_MS-Math.max(0,elapsed));liveSyncSendTimer=setTimeout(()=>{liveSyncSendTimer=null;liveSyncSendDelta(reason)},delay);
     }
-    globalThis.LanguageDeckLiveSync={markDirty:liveSyncMarkDirty,isConnected:()=>liveSyncActive,disconnect:()=>stopNearbyPeer("Live sync disconnected.")};
-    async function nearbySelectedPairSummary(pc){
+    globalThis.LanguageDeckLiveSync={markDirty:liveSyncMarkDirty,isConnected:()=>liveSyncActive,disconnect:()=>stopLiveSyncPeer("Live sync disconnected.")};
+    async function liveSyncSelectedPairSummary(pc){
       try{const stats=await pc.getStats();let pair=null;for(const x of stats.values())if(x.type==="transport"&&x.selectedCandidatePairId)pair=stats.get(x.selectedCandidatePairId);if(!pair)for(const x of stats.values())if(x.type==="candidate-pair"&&x.state==="succeeded"&&x.nominated){pair=x;break}if(!pair)return"local peer path";const a=stats.get(pair.localCandidateId),b=stats.get(pair.remoteCandidateId),type=x=>x?.candidateType||"unknown",protocol=(a?.protocol||b?.protocol||"").toUpperCase();return`${type(a)} ↔ ${type(b)}${protocol?` · ${protocol}`:""}`}catch(_){return"local peer path"}
     }
     async function liveSyncSendDelta(reason="change"){
-      if(!liveSyncActive||nearbyMode!=="live"||!nearbyChannel||nearbyChannel.readyState!=="open"||!liveSyncPeerId)return;
+      if(!liveSyncActive||!liveSyncChannel||liveSyncChannel.readyState!=="open"||!liveSyncPeerId)return;
       if(liveSyncSendBusy){liveSyncSendQueued=true;return}liveSyncSendBusy=true;liveSyncDirty=false;
       try{
         const since=Math.max(0,(+liveSyncPeerSeenMeAt||0)-LIVE_SYNC_CURSOR_OVERLAP_MS),wire=await createProgressDeltaWire(since,liveSyncPeerId),count=liveSyncTotalRecords(wire);
         liveSyncLastSendAt=Date.now();if(!count)return;
-        const packed=await qrPackBytes(wire),hash=await qrDigest(packed.bytes),id=qrTransferId();nearbyChannel.send(JSON.stringify({t:"live-meta",v:LIVE_SYNC_PROTOCOL,id,alg:packed.alg,hash,size:packed.bytes.length,sourceId:wire.s,receiverId:wire.r,createdAt:qrUnwireTime(wire.c),count}));
-        for(let i=0;i<packed.bytes.length;i+=NEARBY_CHUNK){await nearbyWaitBuffered(nearbyChannel);nearbyChannel.send(packed.bytes.slice(i,i+NEARBY_CHUNK))}
-        await nearbyWaitBuffered(nearbyChannel,64*1024);nearbyChannel.send(JSON.stringify({t:"live-end",id}));liveSyncSentDeltas++;liveSyncStatus(`Connected · sent ${count} changed record${count===1?"":"s"} · ${liveSyncReceivedDeltas} incoming batch${liveSyncReceivedDeltas===1?"":"es"}.`,"connected");
-      }catch(err){liveSyncStatus(`Live sync send failed: ${err.message||err}`);try{nearbyPeer?.close()}catch(_){}}finally{liveSyncSendBusy=false;if(liveSyncSendQueued||liveSyncDirty){liveSyncSendQueued=false;liveSyncMarkDirty("queued")}}
+        const packed=await qrPackBytes(wire),hash=await qrDigest(packed.bytes),id=qrTransferId();liveSyncChannel.send(JSON.stringify({t:"live-meta",v:LIVE_SYNC_PROTOCOL,id,alg:packed.alg,hash,size:packed.bytes.length,sourceId:wire.s,receiverId:wire.r,createdAt:qrUnwireTime(wire.c),count}));
+        for(let i=0;i<packed.bytes.length;i+=LIVE_SYNC_CHUNK){await liveSyncWaitBuffered(liveSyncChannel);liveSyncChannel.send(packed.bytes.slice(i,i+LIVE_SYNC_CHUNK))}
+        await liveSyncWaitBuffered(liveSyncChannel,64*1024);liveSyncChannel.send(JSON.stringify({t:"live-end",id}));liveSyncSentDeltas++;liveSyncStatus(`Connected · sent ${count} changed record${count===1?"":"s"} · ${liveSyncReceivedDeltas} incoming batch${liveSyncReceivedDeltas===1?"":"es"}.`,"connected");
+      }catch(err){stopLiveSyncPeer(`Live sync send failed: ${err.message||err}. Pair again to resume.`)}finally{liveSyncSendBusy=false;if(liveSyncSendQueued||liveSyncDirty){liveSyncSendQueued=false;liveSyncMarkDirty("queued")}}
     }
     async function liveSyncFinishIncoming(){
       const incoming=liveSyncIncoming;if(!incoming||incoming.bytes<incoming.size)return;const bytes=new Uint8Array(incoming.size);let offset=0;for(const chunk of incoming.chunks){const part=chunk instanceof Uint8Array?chunk:new Uint8Array(chunk),take=Math.min(part.length,bytes.length-offset);if(take<=0)break;bytes.set(part.subarray(0,take),offset);offset+=take}if(offset!==incoming.size)throw new Error("Live sync length mismatch.");if(await qrDigest(bytes)!==incoming.hash)throw new Error("Live sync checksum failed.");
-      const wire=await qrUnpackBytes(bytes,incoming.alg),pack=progressPackFromDeltaWire(wire),meta=pack.__deltaMeta||{};if(meta.receiverId&&meta.receiverId!==progressDeviceId())throw new Error("This live delta was prepared for a different device.");
-      liveSyncRemoteApplyDepth++;let res;try{res=await applyProgressPack(pack,{notify:false})}finally{liveSyncRemoteApplyDepth=Math.max(0,liveSyncRemoteApplyDepth-1)}
-      if(meta.sourceId)saveProgressPeerCursor(meta.sourceId,meta.createdAt);liveSyncPeerId=meta.sourceId||liveSyncPeerId;liveSyncLastReceiveAt=Date.now();liveSyncReceivedDeltas++;liveSyncLocalSignature=liveSyncProgressLocalSignature();liveSyncIncoming=null;nearbyChannel?.send(JSON.stringify({t:"live-ack",v:LIVE_SYNC_PROTOCOL,sourceId:meta.sourceId||"",at:meta.createdAt||Date.now()}));
+      const wire=await qrUnpackBytes(bytes,incoming.alg),state=progressSyncStateFromDeltaWire(wire),meta=state.__deltaMeta||{};if(meta.receiverId&&meta.receiverId!==progressDeviceId())throw new Error("This live delta was prepared for a different device.");
+      liveSyncRemoteApplyDepth++;let res;try{res=await applyProgressSyncState(state,{notify:false})}finally{liveSyncRemoteApplyDepth=Math.max(0,liveSyncRemoteApplyDepth-1)}
+      if(meta.sourceId)saveProgressPeerCursor(meta.sourceId,meta.createdAt);liveSyncPeerId=meta.sourceId||liveSyncPeerId;liveSyncLastReceiveAt=Date.now();liveSyncReceivedDeltas++;liveSyncLocalSignature=liveSyncProgressLocalSignature();liveSyncIncoming=null;liveSyncChannel?.send(JSON.stringify({t:"live-ack",v:LIVE_SYNC_PROTOCOL,sourceId:meta.sourceId||"",at:meta.createdAt||Date.now()}));
       const changed=(res.practiceUpdated||0)+(res.sharedUpdated||0)+(res.localUpdated||0);liveSyncStatus(`Connected · merged ${changed} row${changed===1?"":"s"} from peer · ${liveSyncSentDeltas} outgoing batch${liveSyncSentDeltas===1?"":"es"}.`,"connected");if(changed)try{window.dispatchEvent(new CustomEvent("languagedeck:progress-imported",{detail:{...res,liveSync:true}}))}catch(_){}
     }
     async function liveSyncHandleMessage(channel,ev){
-      if(channel!==nearbyChannel)return;liveSyncLastMessageAt=Date.now();try{
+      if(channel!==liveSyncChannel)return;liveSyncLastMessageAt=Date.now();try{
         if(typeof ev.data==="string"){const msg=JSON.parse(ev.data||"{}");
-          if(msg.t==="live-hello"&&+msg.v===LIVE_SYNC_PROTOCOL&&msg.id&&msg.id!==progressDeviceId()){liveSyncPeerId=msg.id;liveSyncPeerSeenMeAt=Math.max(liveSyncPeerSeenMeAt,+msg.p?.[progressDeviceId()]||0);liveSyncActive=true;liveSyncConnecting=false;liveSyncLocalSignature=liveSyncProgressLocalSignature();const path=await nearbySelectedPairSummary(nearbyPeer);liveSyncStatus(`Connected to ${String(liveSyncPeerId).slice(0,8)}… · ${path}. Changes sync both ways while both apps stay open.`,"connected");stopQrCamera();liveSyncElement("qrTransferModal")?.classList.remove("active");liveSyncMarkDirty("initial");return}
+          if(msg.t==="live-hello"&&+msg.v===LIVE_SYNC_PROTOCOL&&msg.id&&msg.id!==progressDeviceId()){liveSyncPeerId=msg.id;liveSyncPeerSeenMeAt=Math.max(liveSyncPeerSeenMeAt,+msg.p?.[progressDeviceId()]||0);liveSyncActive=true;liveSyncConnecting=false;liveSyncLocalSignature=liveSyncProgressLocalSignature();const path=await liveSyncSelectedPairSummary(liveSyncPeer);liveSyncStatus(`Connected to ${String(liveSyncPeerId).slice(0,8)}… · ${path}. Changes sync both ways while both apps stay open.`,"connected");stopQrCamera();liveSyncElement("qrTransferModal")?.classList.remove("active");liveSyncMarkDirty("initial");return}
           if(msg.t==="live-meta"&&+msg.v===LIVE_SYNC_PROTOCOL){liveSyncIncoming={id:msg.id,alg:msg.alg,hash:msg.hash,size:+msg.size||0,bytes:0,chunks:[],sourceId:msg.sourceId||"",createdAt:+msg.createdAt||0,count:+msg.count||0};return}
           if(msg.t==="live-end"){if(liveSyncIncoming&&(!msg.id||msg.id===liveSyncIncoming.id))await liveSyncFinishIncoming();return}
           if(msg.t==="live-ack"&&msg.sourceId===progressDeviceId()){liveSyncPeerSeenMeAt=Math.max(liveSyncPeerSeenMeAt,+msg.at||0);return}
@@ -12352,154 +12037,114 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       }catch(err){liveSyncStatus(`Live sync receive failed: ${err.message||err}`)}
     }
     function liveSyncStartWatchers(){
-      liveSyncStopTimers();liveSyncLocalSignature=liveSyncProgressLocalSignature();liveSyncWatchTimer=setInterval(()=>{if(!liveSyncActive)return;const sig=liveSyncProgressLocalSignature();if(sig!==liveSyncLocalSignature){liveSyncLocalSignature=sig;liveSyncMarkDirty("local-state")}},1800);liveSyncHeartbeatTimer=setInterval(()=>{if(!liveSyncActive||!nearbyChannel||nearbyChannel.readyState!=="open")return;if(Date.now()-liveSyncLastMessageAt>LIVE_SYNC_HEARTBEAT_MS)try{nearbyChannel.send(JSON.stringify({t:"live-ping",at:Date.now()}))}catch(_){}},LIVE_SYNC_HEARTBEAT_MS);
+      liveSyncStopTimers();liveSyncLocalSignature=liveSyncProgressLocalSignature();liveSyncWatchTimer=setInterval(()=>{if(!liveSyncActive)return;const sig=liveSyncProgressLocalSignature();if(sig!==liveSyncLocalSignature){liveSyncLocalSignature=sig;liveSyncMarkDirty("local-state")}},1800);liveSyncHeartbeatTimer=setInterval(()=>{if(!liveSyncActive||!liveSyncChannel||liveSyncChannel.readyState!=="open")return;if(Date.now()-liveSyncLastMessageAt>LIVE_SYNC_HEARTBEAT_MS)try{liveSyncChannel.send(JSON.stringify({t:"live-ping",at:Date.now()}))}catch(_){}},LIVE_SYNC_HEARTBEAT_MS);
     }
     function liveSyncInstallChannel(channel,role){
-      nearbyChannel=channel;liveSyncRole=role;channel.binaryType="arraybuffer";channel.addEventListener("message",ev=>liveSyncHandleMessage(channel,ev));channel.addEventListener("open",async()=>{liveSyncConnecting=true;liveSyncLastMessageAt=Date.now();liveSyncStartWatchers();const peers=progressPeerCursors();channel.send(JSON.stringify({t:"live-hello",v:LIVE_SYNC_PROTOCOL,id:progressDeviceId(),p:peers,at:Date.now()}));liveSyncStatus("Direct channel open · exchanging progress watermarks…","connecting")},{once:true});channel.addEventListener("close",()=>{if(nearbyMode==="live"&&channel===nearbyChannel)liveSyncReset("Live sync disconnected. Pair again to resume.")});channel.addEventListener("error",()=>{if(nearbyMode==="live")liveSyncStatus("Live sync channel error. Pair again if the connection closes.")});
+      liveSyncChannel=channel;liveSyncRole=role;channel.binaryType="arraybuffer";channel.addEventListener("message",ev=>liveSyncHandleMessage(channel,ev));channel.addEventListener("open",async()=>{liveSyncConnecting=true;liveSyncLastMessageAt=Date.now();liveSyncStartWatchers();const peers=progressPeerCursors();channel.send(JSON.stringify({t:"live-hello",v:LIVE_SYNC_PROTOCOL,id:progressDeviceId(),p:peers,at:Date.now()}));liveSyncStatus("Direct channel open · exchanging progress watermarks…","connecting")},{once:true});channel.addEventListener("close",()=>{if(channel!==liveSyncChannel)return;liveSyncChannel=null;const peer=liveSyncPeer;liveSyncPeer=null;try{peer?.close()}catch(_){}liveSyncReset("Live sync disconnected. Pair again to resume.")});channel.addEventListener("error",()=>{if(channel===liveSyncChannel)liveSyncStatus("Live sync channel error. Pair again if the connection closes.")});
     }
 
-    function nearbySetView(kind){
+    function liveSyncSetPairingView(kind){
       $("qrSendView").classList.toggle("hidden",kind!=="send");
       $("qrScanView").classList.toggle("hidden",kind!=="scan");
-      $("qrReceiveView").classList.toggle("hidden",kind!=="receive");
     }
-    function nearbyClearConnectTimer(){if(nearbyConnectTimer){clearTimeout(nearbyConnectTimer);nearbyConnectTimer=null}}
-    function stopNearbyPeer(reason="Not connected."){
-      const wasLive=nearbyMode==="live"||liveSyncActive||liveSyncConnecting;nearbyClearConnectTimer();
-      try{nearbyChannel?.close()}catch(_){}
-      try{nearbyPeer?.close()}catch(_){}
-      nearbyChannel=null;nearbyPeer=null;nearbyRequest=null;nearbyReceiveMeta=null;nearbyReceiveChunks=[];nearbyReceiveBytes=0;nearbySendStarted=false;nearbyMode="once";
-      if(wasLive)liveSyncReset(reason);
+    function liveSyncClearConnectTimer(){if(liveSyncConnectTimer){clearTimeout(liveSyncConnectTimer);liveSyncConnectTimer=null}}
+    function stopLiveSyncPeer(reason="Not connected."){
+      liveSyncClearConnectTimer();
+      const channel=liveSyncChannel,peer=liveSyncPeer;liveSyncChannel=null;liveSyncPeer=null;
+      try{channel?.close()}catch(_){}
+      try{peer?.close()}catch(_){}
+      liveSyncReset(reason);
     }
-    // Serverless local-only peer configuration. Do not force max-bundle here:
-    // Chromium/Brave gets the broadest chance to expose a usable host path with
-    // its default bundling behaviour. No STUN/TURN server is configured. A small
-    // candidate pool lets host discovery start before the QR offer is finalised.
-    function nearbyPeerConfig(){return{iceServers:[],iceTransportPolicy:"all",iceCandidatePoolSize:2}}
-    function nearbyCandidateStats(description){
+    // Serverless local-only peer configuration. No STUN/TURN server is
+    // configured; Chromium/Brave may expose direct host or privacy-obscured
+    // mDNS candidates depending on browser/network policy.
+    function liveSyncPeerConfig(){return{iceServers:[],iceTransportPolicy:"all",iceCandidatePoolSize:2}}
+    function liveSyncCandidateStats(description){
       const lines=String(description?.sdp||"").split(/\r?\n/).filter(x=>x.startsWith("a=candidate:"));
       const hostLines=lines.filter(x=>/\styp host\b/.test(x));
       const host=hostLines.length,srflx=lines.filter(x=>/\styp srflx\b/.test(x)).length,relay=lines.filter(x=>/\styp relay\b/.test(x)).length,mdns=hostLines.filter(x=>/\.local(?:\s|$)/i.test(x)).length;
       const rawHost=Math.max(0,host-mdns);
       return{count:lines.length,host,srflx,relay,mdns,rawHost};
     }
-    function nearbyCandidateSummary(stats){
-      const s=stats||{count:0,host:0,mdns:0,rawHost:0};
-      if(!s.count)return "0 ICE candidates";
-      return `${s.count} ICE candidate${s.count===1?"":"s"} · ${s.rawHost||0} direct host · ${s.mdns||0} privacy-obscured`;
+    function liveSyncCandidateSummary(stats){
+      const x=stats||{count:0,host:0,mdns:0,rawHost:0};
+      if(!x.count)return "0 ICE candidates";
+      return `${x.count} ICE candidate${x.count===1?"":"s"} · ${x.rawHost||0} direct host · ${x.mdns||0} privacy-obscured`;
     }
-    async function nearbyWaitIce(pc,timeout=12000){
+    async function liveSyncWaitIce(pc,timeout=12000){
       if(pc.iceGatheringState==="complete")return true;
       return await new Promise(resolve=>{let done=false;const finish=value=>{if(done)return;done=true;pc.removeEventListener("icegatheringstatechange",check);clearTimeout(timer);resolve(value)};const check=()=>pc.iceGatheringState==="complete"&&finish(true);const timer=setTimeout(()=>finish(pc.iceGatheringState==="complete"),timeout);pc.addEventListener("icegatheringstatechange",check)});
     }
-    async function nearbyUseQrFallback(role,reason="Direct local connection is unavailable."){
-      if(nearbyFallbackActive)return;nearbyFallbackActive=true;nearbyClearConnectTimer();
-      if(nearbyMode==="live"){try{nearbyChannel?.close()}catch(_){};try{nearbyPeer?.close()}catch(_){};nearbyChannel=null;nearbyPeer=null;nearbyMode="once";liveSyncReset(`${reason} Live sync needs a working direct local peer path. One-time QR/file transfer is still available.`);$("qrTransferStatus").textContent=`${reason} Live sync could not start on this network.`;return}
-      const req=nearbyFallbackRequest;
-      if(role==="send"&&req){
-        try{stopQrCamera();try{nearbyChannel?.close()}catch(_){};try{nearbyPeer?.close()}catch(_){};nearbyChannel=null;nearbyPeer=null;nearbyRequest=null;
-          await showProgressDelta(req);$("qrTransferStatus").textContent=`${reason} Showing the compact QR-only delta instead.`;
-        }catch(err){$("qrTransferStatus").textContent=`${reason} QR-only fallback also failed: ${err.message||err}`}
-        return;
-      }
-      stopNearbyPeer();
-      $("qrTransferScanReplyBtn").classList.remove("hidden");$("qrTransferScanReplyBtn").textContent="Scan QR-only fallback";
-      $("qrTransferStatus").textContent=`${reason} The sender will switch to rotating delta QR frames. Tap Scan QR-only fallback.`;
+    function liveSyncFailPairing(reason){
+      stopLiveSyncPeer(reason);
+      const status=$("qrTransferStatus");if(status)status.textContent=reason;
     }
-    function nearbyArmConnectTimeout(pc,role,ms=12000){
-      nearbyClearConnectTimer();nearbyConnectTimer=setTimeout(()=>{if(pc!==nearbyPeer||pc.connectionState==="connected"||nearbyFallbackActive)return;nearbyUseQrFallback(role,"Direct connection timed out.")},ms);
+    function liveSyncArmConnectTimeout(pc,ms=16000){
+      liveSyncClearConnectTimer();
+      liveSyncConnectTimer=setTimeout(()=>{if(pc!==liveSyncPeer||pc.connectionState==="connected")return;liveSyncFailPairing("Live sync connection timed out. Keep both devices on the same local network and pair again.")},ms);
     }
-    async function nearbyEncodeSignal(kind,description,request=null,mode="once"){
-      const packed=await qrPackBytes({f:NEARBY_SIGNAL_PREFIX,v:1,k:kind,m:mode,d:{type:description.type,sdp:description.sdp},r:request||null});
-      return `${NEARBY_SIGNAL_PREFIX}:${packed.alg}:${qrBytesToB64(packed.bytes)}`;
+    async function liveSyncEncodeSignal(kind,description){
+      const packed=await qrPackBytes({f:LIVE_SYNC_SIGNAL_PREFIX,v:1,k:kind,d:{type:description.type,sdp:description.sdp}});
+      return `${LIVE_SYNC_SIGNAL_PREFIX}:${packed.alg}:${qrBytesToB64(packed.bytes)}`;
     }
-    async function nearbyDecodeSignal(raw){
-      const text=String(raw||"");if(!text.startsWith(NEARBY_SIGNAL_PREFIX+":"))return null;
+    async function liveSyncDecodeSignal(raw){
+      const text=String(raw||"");if(!text.startsWith(LIVE_SYNC_SIGNAL_PREFIX+":"))return null;
       const parts=text.split(":",3);if(parts.length!==3||!(parts[1]==="g"||parts[1]==="r"))return null;
-      try{const x=await qrUnpackBytes(qrB64ToBytes(parts[2]),parts[1]);return x?.f===NEARBY_SIGNAL_PREFIX&&x?.d?.sdp?x:null}catch(_){return null}
+      try{const x=await qrUnpackBytes(qrB64ToBytes(parts[2]),parts[1]);return x?.f===LIVE_SYNC_SIGNAL_PREFIX&&x?.d?.sdp?x:null}catch(_){return null}
     }
-    function nearbyConnectionStatus(pc,label,role){
+    function liveSyncConnectionStatus(pc){
       let handledFailure=false;
       const update=()=>{
         const state=pc.connectionState,ice=pc.iceConnectionState;
-        if(state==="connected"){nearbyClearConnectTimer();if(nearbyMode==="live"){$("qrTransferStatus").textContent=`${label} connected · opening live sync channel…`;return}$("qrTransferStatus").textContent=`${label} connected · transferring progress directly…`;return}
-        if(!handledFailure&&(state==="failed"||ice==="failed")){handledFailure=true;nearbyUseQrFallback(role,`Direct connection failed on this local network (${nearbyCandidateSummary(nearbyCandidateStats(pc.localDescription))}).`)}
+        if(state==="connected"){liveSyncClearConnectTimer();$("qrTransferStatus").textContent="Local peer connected · opening live sync channel…";return}
+        if(!handledFailure&&(state==="failed"||ice==="failed")){handledFailure=true;liveSyncFailPairing(`Live sync connection failed on this local network (${liveSyncCandidateSummary(liveSyncCandidateStats(pc.localDescription))}).`)}
       };
       pc.addEventListener("connectionstatechange",update);pc.addEventListener("iceconnectionstatechange",update);
     }
-    async function nearbyWaitBuffered(channel,max=256*1024){
+    async function liveSyncWaitBuffered(channel,max=256*1024){
       if(channel.bufferedAmount<=max)return;
       channel.bufferedAmountLowThreshold=64*1024;
       await new Promise((resolve,reject)=>{const timer=setTimeout(()=>{cleanup();reject(new Error("Direct transfer stalled."))},10000);const low=()=>{cleanup();resolve()};const cleanup=()=>{clearTimeout(timer);channel.removeEventListener("bufferedamountlow",low)};channel.addEventListener("bufferedamountlow",low,{once:true})});
     }
-    async function nearbySendDelta(channel,request){
-      if(nearbySendStarted)return;nearbySendStarted=true;
-      try{
-        const mine=progressDeviceId(),sinceSec=(request?.p||[]).find(x=>x?.[0]===mine)?.[1]||0;
-        const wire=await createProgressDeltaWire(+sinceSec*1000,request?.r||""),packed=await qrPackBytes(wire),hash=await qrDigest(packed.bytes);
-        channel.send(JSON.stringify({t:"meta",alg:packed.alg,hash,size:packed.bytes.length}));
-        for(let i=0;i<packed.bytes.length;i+=NEARBY_CHUNK){await nearbyWaitBuffered(channel);channel.send(packed.bytes.slice(i,i+NEARBY_CHUNK))}
-        await nearbyWaitBuffered(channel,64*1024);channel.send(JSON.stringify({t:"end"}));
-        $("qrTransferStatus").textContent=`Sent ${Math.max(1,Math.round(packed.bytes.length/1024))} KB directly. Waiting for the receiver to verify it…`;
-      }catch(err){$("qrTransferStatus").textContent=`Could not send progress directly: ${err.message||err}`;nearbySendStarted=false}
-    }
-    async function nearbyFinishReceived(){
-      const meta=nearbyReceiveMeta;if(!meta||nearbyReceiveBytes<meta.size)return;
-      const bytes=new Uint8Array(meta.size);let offset=0;for(const chunk of nearbyReceiveChunks){const part=chunk instanceof Uint8Array?chunk:new Uint8Array(chunk);const take=Math.min(part.length,bytes.length-offset);if(take<=0)break;bytes.set(part.subarray(0,take),offset);offset+=take}
-      if(offset!==meta.size)throw new Error("Direct transfer length mismatch.");
-      if(await qrDigest(bytes)!==meta.hash)throw new Error("Direct transfer checksum failed.");
-      const wire=await qrUnpackBytes(bytes,meta.alg),pack=progressPackFromDeltaWire(wire);
-      if(pack.__deltaMeta.receiverId&&pack.__deltaMeta.receiverId!==progressDeviceId())throw new Error("This progress was prepared for a different device.");
-      qrTransferReceivedPack=pack;stopQrCamera();nearbySetView("receive");$("qrTransferPreview").innerHTML=progressPackSummaryText(pack);$("qrTransferApplyBtn").disabled=false;$("qrTransferStatus").textContent="Direct transfer complete. Nothing has been changed yet.";try{navigator.vibrate?.(120)}catch(_){}
-      try{nearbyChannel?.close()}catch(_){};try{nearbyPeer?.close()}catch(_){}
-    }
-    function nearbyInstallReceiverChannel(channel){
-      nearbyChannel=channel;channel.binaryType="arraybuffer";nearbyReceiveMeta=null;nearbyReceiveChunks=[];nearbyReceiveBytes=0;
-      channel.addEventListener("message",async ev=>{try{if(typeof ev.data==="string"){const msg=JSON.parse(ev.data);if(msg.t==="meta"){nearbyReceiveMeta={alg:msg.alg,hash:msg.hash,size:+msg.size||0};nearbyReceiveChunks=[];nearbyReceiveBytes=0;$("qrTransferStatus").textContent=`Receiving ${Math.max(1,Math.round(nearbyReceiveMeta.size/1024))} KB directly…`;return}if(msg.t==="end"){await nearbyFinishReceived();return}}const buf=ev.data instanceof Blob?await ev.data.arrayBuffer():ev.data;const part=new Uint8Array(buf);nearbyReceiveChunks.push(part);nearbyReceiveBytes+=part.length;if(nearbyReceiveMeta?.size){const pct=Math.min(100,Math.round(nearbyReceiveBytes/nearbyReceiveMeta.size*100));$("qrTransferProgressFill").style.width=pct+"%"}if(nearbyReceiveMeta&&nearbyReceiveBytes>=nearbyReceiveMeta.size)await nearbyFinishReceived()}catch(err){$("qrTransferStatus").textContent=`Direct transfer failed: ${err.message||err}`}});
-    }
-    async function startNearbyReceive(){
-      stopQrTransfer();stopNearbyPeer();nearbyMode="once";nearbyFallbackActive=false;nearbyFallbackRequest=null;qrTransferReceivedPack=null;$("qrTransferModal").classList.add("active");nearbySetView("send");$("qrTransferTitle").textContent="Receive progress";$("qrTransferScanReplyBtn").classList.remove("hidden");$("qrTransferScanReplyBtn").textContent="Scan sender reply";$("qrTransferFrame").textContent="Preparing direct connection…";$("qrTransferSendNote").textContent="On the sending device choose Send progress and scan this QR. Then scan its reply here.";
-      if(!globalThis.RTCPeerConnection){$("qrTransferStatus").textContent="This browser does not support direct peer transfer. Use QR-only or a Progress Pack file.";return}
-      try{
-        // The receiver used to gather ICE before it had ever requested webcam
-        // permission. Prime the same camera stream we will need for the reply
-        // scan first, then create the offer. This remains fully local.
-        $("qrTransferStatus").textContent="Requesting webcam access before local peer discovery…";
-        await ensureQrCameraStream();
-        const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Direct link","receive");const channel=pc.createDataChannel("languagedeck-progress",{ordered:true});nearbyInstallReceiverChannel(channel);nearbyRequest=buildProgressRequest();nearbyFallbackRequest=nearbyRequest;await pc.setLocalDescription(await pc.createOffer());await nearbyWaitIce(pc);const stats=nearbyCandidateStats(pc.localDescription);const raw=await nearbyEncodeSignal("offer",pc.localDescription,nearbyRequest);drawQr(raw,500);$("qrTransferFrame").textContent="Direct connection request QR";$("qrTransferStatus").textContent=stats.count?`Direct offer ready · ${nearbyCandidateSummary(stats)}. No learning data is in this QR.`:"No usable local ICE candidate was exposed. Scan this request anyway; the sender will fall back to QR-only delta."
-      }catch(err){stopNearbyPeer();stopQrCamera();$("qrTransferStatus").textContent=`Could not prepare direct transfer: ${err.message||err}`}
-    }
-    async function scanNearbyAnswer(){
-      if(!nearbyPeer){$("qrTransferStatus").textContent="Create a receive request first.";return}
-      stopQrCamera();nearbySetView("scan");$("qrTransferTitle").textContent="Receive progress";$("qrTransferScanStatus").textContent="Starting camera…";$("qrTransferStatus").textContent="Scan the reply QR shown on the sending device.";
-      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="answer")return false;stopQrCamera();const stats=nearbyCandidateStats(signal.d);await nearbyPeer.setRemoteDescription(signal.d);$("qrTransferScanStatus").textContent="Reply accepted.";if(!stats.count){await nearbyUseQrFallback("receive","The sender exposed no usable local ICE candidate.");return true}$("qrTransferStatus").textContent=`Connecting directly… ${nearbyCandidateSummary(stats)}.`;nearbyArmConnectTimeout(nearbyPeer,"receive");return true},"Scan the sender's reply QR.")}catch(err){stopQrCamera();$("qrTransferStatus").textContent=`Camera unavailable: ${err.message||err}`}
-    }
-    async function startNearbySend(){
-      stopQrTransfer();stopNearbyPeer();nearbyMode="once";nearbyFallbackActive=false;nearbyFallbackRequest=null;qrTransferReceivedPack=null;$("qrTransferModal").classList.add("active");nearbySetView("scan");$("qrTransferTitle").textContent="Send progress";$("qrTransferProgressFill").style.width="0%";$("qrTransferStatus").textContent="Scan the receiver's direct connection QR.";
-      if(!globalThis.RTCPeerConnection){$("qrTransferStatus").textContent="This browser does not support direct peer transfer. Use QR-only or a Progress Pack file.";return}
-      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="offer")return false;stopQrCamera();nearbyRequest=signal.r||buildProgressRequest();nearbyFallbackRequest=nearbyRequest;const remoteStats=nearbyCandidateStats(signal.d);if(!remoteStats.count){await nearbyUseQrFallback("send","The receiver exposed no usable local ICE candidate.");return true}const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Direct link","send");pc.addEventListener("datachannel",ev=>{nearbyChannel=ev.channel;nearbyChannel.addEventListener("open",()=>nearbySendDelta(nearbyChannel,nearbyRequest),{once:true})});await pc.setRemoteDescription(signal.d);await pc.setLocalDescription(await pc.createAnswer());await nearbyWaitIce(pc);const localStats=nearbyCandidateStats(pc.localDescription);if(!localStats.count){await nearbyUseQrFallback("send","This device exposed no usable local ICE candidate.");return true}const reply=await nearbyEncodeSignal("answer",pc.localDescription);nearbySetView("send");$("qrTransferSendNote").textContent="Show this reply QR to the receiving device. Progress will transfer automatically after it scans the reply. If the local link is blocked, LanguageDeck will switch to QR-only delta.";drawQr(reply,500);$("qrTransferFrame").textContent="Direct connection reply QR";$("qrTransferStatus").textContent=`Waiting for the receiver to scan this reply… ${nearbyCandidateSummary(localStats)}.`;return true},"Scan the receiver's direct connection QR.")}catch(err){stopQrCamera();stopNearbyPeer();$("qrTransferStatus").textContent=`Could not start direct transfer: ${err.message||err}`}
-    }
-
     function stopQrCamera(){if(qrTransferScanTimer){clearTimeout(qrTransferScanTimer);qrTransferScanTimer=null}if(qrTransferStream){for(const t of qrTransferStream.getTracks())t.stop();qrTransferStream=null}const v=$("qrTransferVideo");if(v){try{v.pause()}catch(_){}v.srcObject=null}}
     async function startLiveSyncHost(){
-      stopQrTransfer();nearbyMode="live";liveSyncConnecting=true;nearbyFallbackActive=false;nearbyFallbackRequest=null;liveSyncStatus("Preparing local live-sync connection…","connecting");$("qrTransferModal").classList.add("active");nearbySetView("send");$("qrTransferTitle").textContent="Start live sync";$("qrTransferScanReplyBtn").classList.remove("hidden");$("qrTransferScanReplyBtn").textContent="Scan join reply";$("qrTransferFrame").textContent="Preparing live-sync request…";$("qrTransferSendNote").textContent="On the other device choose Join live sync and scan this QR. Then scan its reply here.";
-      if(!globalThis.RTCPeerConnection){stopNearbyPeer("Live sync is not supported by this browser.");return}
-      try{$("qrTransferStatus").textContent="Requesting camera access before local peer discovery…";await ensureQrCameraStream();const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Live sync", "receive");const channel=pc.createDataChannel("languagedeck-live",{ordered:true});liveSyncInstallChannel(channel,"host");nearbyRequest=buildProgressRequest();await pc.setLocalDescription(await pc.createOffer());await nearbyWaitIce(pc);const stats=nearbyCandidateStats(pc.localDescription),raw=await nearbyEncodeSignal("offer",pc.localDescription,nearbyRequest,"live");drawQr(raw,500);$("qrTransferFrame").textContent="Live sync connection QR";$("qrTransferStatus").textContent=stats.count?`Live offer ready · ${nearbyCandidateSummary(stats)}.`:"No usable local ICE candidate was exposed. This browser/network may not support serverless live sync."}
-      catch(err){stopQrCamera();stopNearbyPeer(`Could not prepare live sync: ${err.message||err}`);$("qrTransferStatus").textContent=`Could not prepare live sync: ${err.message||err}`}
+      stopQrCamera();stopLiveSyncPeer("Not connected.");liveSyncConnecting=true;liveSyncStatus("Preparing local live-sync connection…","connecting");$("qrTransferModal").classList.add("active");liveSyncSetPairingView("send");$("qrTransferTitle").textContent="Start live sync";$("qrTransferScanReplyBtn").classList.remove("hidden");$("qrTransferScanReplyBtn").textContent="Scan join reply";$("qrTransferFrame").textContent="Preparing live-sync request…";$("qrTransferSendNote").textContent="On the other device choose Join live sync and scan this QR. Then scan its reply here.";
+      if(!globalThis.RTCPeerConnection){liveSyncFailPairing("Live sync is not supported by this browser.");return}
+      try{
+        $("qrTransferStatus").textContent="Requesting camera access before local peer discovery…";
+        await ensureQrCameraStream();
+        const pc=liveSyncPeer=new RTCPeerConnection(liveSyncPeerConfig());liveSyncConnectionStatus(pc);
+        const channel=pc.createDataChannel("languagedeck-live",{ordered:true});liveSyncInstallChannel(channel,"host");
+        await pc.setLocalDescription(await pc.createOffer());await liveSyncWaitIce(pc);
+        const stats=liveSyncCandidateStats(pc.localDescription),raw=await liveSyncEncodeSignal("offer",pc.localDescription);
+        drawQr(raw,500);$("qrTransferFrame").textContent="Live sync connection QR";
+        $("qrTransferStatus").textContent=stats.count?`Live offer ready · ${liveSyncCandidateSummary(stats)}.`:"No usable local ICE candidate was exposed. This browser/network may not support serverless live sync.";
+      }catch(err){stopQrCamera();liveSyncFailPairing(`Could not prepare live sync: ${err.message||err}`)}
     }
     async function startLiveSyncJoin(){
-      stopQrTransfer();nearbyMode="live";liveSyncConnecting=true;nearbyFallbackActive=false;liveSyncStatus("Scan the other device's live-sync QR…","connecting");$("qrTransferModal").classList.add("active");nearbySetView("scan");$("qrTransferTitle").textContent="Join live sync";$("qrTransferProgressFill").style.width="0%";$("qrTransferStatus").textContent="Scan the live-sync connection QR shown on the other device.";
-      if(!globalThis.RTCPeerConnection){stopNearbyPeer("Live sync is not supported by this browser.");return}
-      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="offer"||signal.m!=="live")return false;stopQrCamera();nearbyRequest=signal.r||buildProgressRequest();const remoteStats=nearbyCandidateStats(signal.d);if(!remoteStats.count){await nearbyUseQrFallback("send","The host exposed no usable local ICE candidate.");return true}const pc=nearbyPeer=new RTCPeerConnection(nearbyPeerConfig());nearbyConnectionStatus(pc,"Live sync","send");pc.addEventListener("datachannel",ev=>liveSyncInstallChannel(ev.channel,"join"));await pc.setRemoteDescription(signal.d);await pc.setLocalDescription(await pc.createAnswer());await nearbyWaitIce(pc);const localStats=nearbyCandidateStats(pc.localDescription);if(!localStats.count){await nearbyUseQrFallback("send","This device exposed no usable local ICE candidate.");return true}const reply=await nearbyEncodeSignal("answer",pc.localDescription,null,"live");nearbySetView("send");$("qrTransferSendNote").textContent="Show this reply QR to the device that started live sync. Keep both LanguageDeck apps open after pairing.";drawQr(reply,500);$("qrTransferFrame").textContent="Live sync reply QR";$("qrTransferStatus").textContent=`Waiting for the other device to scan this reply… ${nearbyCandidateSummary(localStats)}.`;return true},"Scan the live-sync connection QR.")}
-      catch(err){stopQrCamera();stopNearbyPeer(`Could not join live sync: ${err.message||err}`);$("qrTransferStatus").textContent=`Could not join live sync: ${err.message||err}`}
+      stopQrCamera();stopLiveSyncPeer("Not connected.");liveSyncConnecting=true;liveSyncStatus("Scan the other device's live-sync QR…","connecting");$("qrTransferModal").classList.add("active");liveSyncSetPairingView("scan");$("qrTransferTitle").textContent="Join live sync";$("qrTransferScanReplyBtn").classList.add("hidden");$("qrTransferStatus").textContent="Scan the live-sync connection QR shown on the other device.";
+      if(!globalThis.RTCPeerConnection){liveSyncFailPairing("Live sync is not supported by this browser.");return}
+      try{await startQrCamera(async raw=>{
+        const signal=await liveSyncDecodeSignal(raw);if(!signal||signal.k!=="offer")return false;stopQrCamera();
+        const remoteStats=liveSyncCandidateStats(signal.d);if(!remoteStats.count){liveSyncFailPairing("The host exposed no usable local ICE candidate. Serverless live sync cannot start on this network.");return true}
+        const pc=liveSyncPeer=new RTCPeerConnection(liveSyncPeerConfig());liveSyncConnectionStatus(pc);pc.addEventListener("datachannel",ev=>liveSyncInstallChannel(ev.channel,"join"));
+        await pc.setRemoteDescription(signal.d);await pc.setLocalDescription(await pc.createAnswer());await liveSyncWaitIce(pc);
+        const localStats=liveSyncCandidateStats(pc.localDescription);if(!localStats.count){liveSyncFailPairing("This device exposed no usable local ICE candidate. Serverless live sync cannot start on this network.");return true}
+        const reply=await liveSyncEncodeSignal("answer",pc.localDescription);liveSyncSetPairingView("send");$("qrTransferSendNote").textContent="Show this reply QR to the device that started live sync. Keep both LanguageDeck apps open after pairing.";drawQr(reply,500);$("qrTransferFrame").textContent="Live sync reply QR";$("qrTransferStatus").textContent=`Waiting for the other device to scan this reply… ${liveSyncCandidateSummary(localStats)}.`;return true;
+      },"Scan the live-sync connection QR.")}catch(err){stopQrCamera();liveSyncFailPairing(`Could not join live sync: ${err.message||err}`)}
     }
     async function scanLiveSyncAnswer(){
-      if(!nearbyPeer||nearbyMode!=="live"){$("qrTransferStatus").textContent="Start live sync first.";return}stopQrCamera();nearbySetView("scan");$("qrTransferTitle").textContent="Start live sync";$("qrTransferScanStatus").textContent="Starting camera…";$("qrTransferStatus").textContent="Scan the join reply QR.";
-      try{await startQrCamera(async raw=>{const signal=await nearbyDecodeSignal(raw);if(!signal||signal.k!=="answer"||signal.m!=="live")return false;stopQrCamera();const stats=nearbyCandidateStats(signal.d);await nearbyPeer.setRemoteDescription(signal.d);$("qrTransferScanStatus").textContent="Reply accepted.";if(!stats.count){await nearbyUseQrFallback("receive","The joining device exposed no usable local ICE candidate.");return true}$("qrTransferStatus").textContent=`Connecting live sync… ${nearbyCandidateSummary(stats)}.`;nearbyArmConnectTimeout(nearbyPeer,"receive",16000);return true},"Scan the live-sync reply QR.")}
-      catch(err){stopQrCamera();stopNearbyPeer(`Live sync reply scan failed: ${err.message||err}`);$("qrTransferStatus").textContent=`Camera unavailable: ${err.message||err}`}
+      if(!liveSyncPeer||!liveSyncConnecting){$("qrTransferStatus").textContent="Start live sync first.";return}stopQrCamera();liveSyncSetPairingView("scan");$("qrTransferTitle").textContent="Start live sync";$("qrTransferScanStatus").textContent="Starting camera…";$("qrTransferStatus").textContent="Scan the join reply QR.";
+      try{await startQrCamera(async raw=>{
+        const signal=await liveSyncDecodeSignal(raw);if(!signal||signal.k!=="answer")return false;stopQrCamera();
+        const stats=liveSyncCandidateStats(signal.d);if(!stats.count){liveSyncFailPairing("The joining device exposed no usable local ICE candidate. Serverless live sync cannot start on this network.");return true}
+        await liveSyncPeer.setRemoteDescription(signal.d);$("qrTransferScanStatus").textContent="Reply accepted.";$("qrTransferStatus").textContent=`Connecting live sync… ${liveSyncCandidateSummary(stats)}.`;liveSyncArmConnectTimeout(liveSyncPeer,16000);return true;
+      },"Scan the live-sync reply QR.")}catch(err){stopQrCamera();liveSyncFailPairing(`Live sync reply scan failed: ${err.message||err}`)}
     }
-    function stopQrTransfer(){if(qrTransferTimer){clearInterval(qrTransferTimer);qrTransferTimer=null}stopQrCamera();stopNearbyPeer()}
-    function openQrTransferView(kind){stopQrTransfer();qrTransferReceivedPack=null;$("qrSendView").classList.toggle("hidden",kind!=="send");$("qrScanView").classList.toggle("hidden",kind!=="scan");$("qrReceiveView").classList.add("hidden");$("qrTransferScanReplyBtn").classList.add("hidden");$("qrTransferStatus").textContent="";$("qrTransferModal").classList.add("active")}
+    function cancelLiveSyncPairing(){
+      stopQrCamera();$("qrTransferModal").classList.remove("active");
+      if(!liveSyncActive)stopLiveSyncPeer("Not connected.");
+    }
 
     async function gitBlobSha1(text){const body=new TextEncoder().encode(text),head=new TextEncoder().encode(`blob ${body.length}\0`),all=new Uint8Array(head.length+body.length);all.set(head);all.set(body,head.length);const hash=new Uint8Array(await crypto.subtle.digest("SHA-1",all));return[...hash].map(x=>x.toString(16).padStart(2,"0")).join("")}
     function evalJsQrSource(source,label){(0,eval)(`${source}\n//# sourceURL=${label}`);if(typeof globalThis.jsQR!=="function")throw new Error("QR decoder did not initialise.")}
@@ -12508,7 +12153,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       const cached=localStorage.getItem(QR_JSQR_CACHE_KEY);if(cached){try{if(await gitBlobSha1(cached)===QR_JSQR_GIT_BLOB){evalJsQrSource(cached,"languagedeck-jsqr-cache.js");return globalThis.jsQR}}catch(_){}localStorage.removeItem(QR_JSQR_CACHE_KEY)}
       let source="";
       for(const url of [QR_JSQR_LOCAL,QR_JSQR_REMOTE]){try{const r=await fetch(url,{cache:"force-cache"});if(!r.ok)continue;source=await r.text();if(await gitBlobSha1(source)!==QR_JSQR_GIT_BLOB){source="";continue}break}catch(_){}}
-      if(!source)throw new Error("QR decoding is not available offline yet. Connect once so LanguageDeck can cache its local QR decoder, or use a Progress Pack file.");
+      if(!source)throw new Error("QR decoding is not available. Reload or update LanguageDeck so the local QR decoder can be installed.");
       try{localStorage.setItem(QR_JSQR_CACHE_KEY,source)}catch(_){}
       evalJsQrSource(source,"languagedeck-jsqr.js");return globalThis.jsQR;
     }
@@ -12552,38 +12197,6 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       visual.replaceChildren(svg);visual.style.width=`min(${Math.min(size||520,Math.max(260,innerWidth-52))}px, 90vw)`;
       return{modules:n,dark};
     }
-    async function showProgressReceiveRequest(){
-      openQrTransferView("send");$("qrTransferTitle").textContent="Receive progress";$("qrTransferSendNote").textContent="On the other device choose Send progress and scan this request. Then tap Scan incoming progress here.";$("qrTransferFrame").textContent="Preparing request…";
-      try{const req=buildProgressRequest();drawQr(encodeProgressRequest(req),460);$("qrTransferFrame").textContent="Request QR · no learning data is inside this code";$("qrTransferScanReplyBtn").classList.remove("hidden");$("qrTransferStatus").textContent="The request only contains this device's local id and previous receive watermarks."}catch(err){$("qrTransferFrame").textContent="Could not create request QR.";$("qrTransferStatus").textContent=err.message||String(err)}
-    }
-    async function scanProgressRequest(){
-      openQrTransferView("scan");$("qrTransferTitle").textContent="Send progress";$("qrTransferProgressFill").style.width="0%";$("qrTransferStatus").textContent="Camera stays local; LanguageDeck is looking only for a receive-request QR.";
-      try{await startQrCamera(async raw=>{const req=parseProgressRequest(raw);if(!req)return false;stopQrCamera();await showProgressDelta(req);return true},"Scan the receiver's request QR.")}catch(err){stopQrCamera();$("qrTransferScanStatus").textContent="Camera unavailable.";$("qrTransferStatus").textContent=err.message||String(err)}
-    }
-    async function showProgressDelta(request){
-      openQrTransferView("send");$("qrTransferTitle").textContent="Send progress";$("qrTransferSendNote").textContent="Keep this screen visible while the receiving device scans. Frames repeat automatically.";$("qrTransferFrame").textContent="Building changed progress…";
-      try{const transfer=await buildDeltaTransfer(request);let i=0;const draw=()=>{drawQr(transfer.frames[i],520);const n=transfer.wire.n||{},count=(n.w||0)+(n.s||0)+(n.i||0)+(n.g||0)+(n.u||0)+(n.l||0);$("qrTransferFrame").innerHTML=`Frame <strong>${i+1} / ${transfer.frames.length}</strong> · ${Math.max(1,Math.round(transfer.bytes/1024))} KB · ${count} changed records`;i=(i+1)%transfer.frames.length};draw();qrTransferTimer=setInterval(draw,QR_TRANSFER_MS);const firstNote=transfer.frames.length>36?`First QR transfer: ${transfer.frames.length} frames. This works, but a .ldprogress file is faster for the initial full hand-off; later QR transfers will be deltas.`:"First QR transfer to this device · full known progress is included in compact form.";$("qrTransferStatus").textContent=transfer.since?`Delta since ${new Date(transfer.since).toLocaleString()} · no server or network transfer.`:firstNote}catch(err){$("qrTransferFrame").textContent="Could not create progress delta.";$("qrTransferStatus").textContent=err.message||String(err)}
-    }
-    async function scanProgressDelta(){
-      openQrTransferView("scan");$("qrTransferTitle").textContent="Receive progress";const status=$("qrTransferScanStatus"),fill=$("qrTransferProgressFill");fill.style.width="0%";let transferId=null,total=0,alg="",hash="",frames=new Map();$("qrTransferStatus").textContent="Camera stays on this device only; QR frames are decoded locally.";
-      try{await startQrCamera(async raw=>{const f=parseDeltaFrame(raw);if(!f)return false;if(!transferId){transferId=f.id;total=f.total;alg=f.alg;hash=f.hash}else if(f.id!==transferId||f.total!==total||f.alg!==alg||f.hash!==hash)return false;frames.set(f.index,f.chunk);const pct=Math.round(frames.size/total*100);fill.style.width=pct+"%";status.innerHTML=`Received <strong>${frames.size} / ${total}</strong> frames · ${pct}%`;if(frames.size!==total)return false;stopQrCamera();const payload=Array.from({length:total},(_,i)=>frames.get(i)||"").join(""),bytes=qrB64ToBytes(payload);if(await qrDigest(bytes)!==hash)throw new Error("QR transfer checksum failed. Please scan again.");const wire=await qrUnpackBytes(bytes,alg),pack=progressPackFromDeltaWire(wire);if(pack.__deltaMeta.receiverId&&pack.__deltaMeta.receiverId!==progressDeviceId())throw new Error("This progress delta was prepared for a different device request.");qrTransferReceivedPack=pack;$("qrScanView").classList.add("hidden");$("qrReceiveView").classList.remove("hidden");$("qrTransferPreview").innerHTML=progressPackSummaryText(pack);$("qrTransferStatus").textContent="Transfer complete. Nothing has been changed yet.";try{navigator.vibrate?.(120)}catch(_){}return true},"Scan the sender's rotating progress QR frames.")}catch(err){stopQrCamera();status.textContent="Camera unavailable.";$("qrTransferStatus").textContent=err.message||String(err)}
-    }
-    function reloadAfterProgressMerge(message="Progress merged") {
-      try{sessionStorage.setItem("ld-progress-merge-toast-v1",message)}catch(_){}
-      setTimeout(()=>location.reload(),180);
-    }
-    async function applyReceivedQrProgress(){
-      if(!qrTransferReceivedPack)return;
-      const btn=$("qrTransferApplyBtn");btn.disabled=true;$("qrTransferStatus").textContent="Merging received progress…";
-      try{
-        const pack=qrTransferReceivedPack,meta=pack.__deltaMeta||{},res=await applyProgressPack(pack,{notify:false});
-        if(meta.sourceId)saveProgressPeerCursor(meta.sourceId,meta.createdAt);
-        qrTransferReceivedPack=null;stopQrTransfer();
-        $("qrTransferStatus").textContent=`Merged ${res.practiceUpdated} practice rows, ${res.sharedUpdated} shared knowledge/text rows and ${res.localUpdated} chapter states. Reloading the Study session…`;
-        reloadAfterProgressMerge("Progress merged");
-      }catch(err){$("qrTransferStatus").textContent=`Could not merge progress: ${err.message||err}`;btn.disabled=false}
-    }
-
     /* ---------- Manage installed decks (local delete) ---------- */
     /* Lists every imported set across both languages and both card types,
        with item counts and a per-deck Delete button. Deleting removes only
@@ -12771,136 +12384,19 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
     if (manageDecksBtn) manageDecksBtn.addEventListener("click", () => { manageDecksModal.classList.add("active"); renderManageDecks(); });
 
-    const syncProgressBtn = $("syncProgressBtn");
-    const syncModal = $("syncModal");
-    const syncCodeArea = $("syncCodeArea");
-    const syncStatus = $("syncStatus");
-    const progressPackExportBtn = $("progressPackExportBtn");
-    const progressPackImportBtn = $("progressPackImportBtn");
-    const progressPackFile = $("progressPackFile");
-    const progressPackApplyBtn = $("progressPackApplyBtn");
-    const progressPackPreview = $("progressPackPreview");
-    const progressPackStatus = $("progressPackStatus");
-    const progressQrShowBtn = $("progressQrShowBtn"), progressQrScanBtn = $("progressQrScanBtn");
+    const liveSyncOpenBtn = $("liveSyncOpenBtn");
+    const liveSyncModal = $("liveSyncModal");
     const liveSyncHostBtn=$("liveSyncHostBtn"),liveSyncJoinBtn=$("liveSyncJoinBtn"),liveSyncDisconnectBtn=$("liveSyncDisconnectBtn");
-    let pendingProgressPack = null;
-    if (syncProgressBtn) {
-      syncProgressBtn.addEventListener("click", () => {
-        syncStatus.textContent = "";
-        syncModal.classList.add("active");
-      });
-      $("closeSyncBtn").addEventListener("click", () => syncModal.classList.remove("active"));
-      syncModal.addEventListener("click", e => { if (e.target === syncModal) syncModal.classList.remove("active"); });
+    if (liveSyncOpenBtn) {
+      liveSyncOpenBtn.addEventListener("click", () => liveSyncModal.classList.add("active"));
+      $("closeLiveSyncBtn").addEventListener("click", () => liveSyncModal.classList.remove("active"));
+      liveSyncModal.addEventListener("click", e => { if (e.target === liveSyncModal) liveSyncModal.classList.remove("active"); });
       liveSyncHostBtn?.addEventListener("click", startLiveSyncHost);
       liveSyncJoinBtn?.addEventListener("click", startLiveSyncJoin);
-      liveSyncDisconnectBtn?.addEventListener("click",()=>{stopQrCamera();$("qrTransferModal").classList.remove("active");stopNearbyPeer("Live sync disconnected.")});
-      progressQrShowBtn.addEventListener("click", startNearbyReceive);
-      progressQrScanBtn.addEventListener("click", startNearbySend);
-      $("progressQrLegacyReceiveBtn")?.addEventListener("click", showProgressReceiveRequest);
-      $("progressQrLegacySendBtn")?.addEventListener("click", scanProgressRequest);
-      $("qrTransferScanReplyBtn").addEventListener("click", ()=> nearbyMode==="live" ? scanLiveSyncAnswer() : (nearbyPeer ? scanNearbyAnswer() : scanProgressDelta()));
-      $("qrTransferCloseBtn").addEventListener("click",()=>{$("qrTransferModal").classList.remove("active");stopQrTransfer()});
-      $("qrTransferModal").addEventListener("click",e=>{if(e.target===$("qrTransferModal")){$("qrTransferModal").classList.remove("active");stopQrTransfer()}});
-      $("qrTransferApplyBtn").addEventListener("click",applyReceivedQrProgress);
-
-      progressPackExportBtn.addEventListener("click", async () => {
-        progressPackStatus.textContent = "Building a complete Progress Pack…";
-        progressPackExportBtn.disabled = true;
-        try {
-          const res = await exportProgressPackFile();
-          const s = res.pack.summary || {};
-          progressPackStatus.textContent = `${res.method === "shared" ? "Shared" : "Saved"} · ${s.practiceWords || 0} word cards, ${s.practiceSentences || 0} sentence cards, ${s.sharedItems || 0} shared lexemes and ${s.localStates || 0} story/session states.`;
-        } catch (err) {
-          if (err?.name !== "AbortError") progressPackStatus.textContent = `Could not export progress: ${err.message || err}`;
-        } finally { progressPackExportBtn.disabled = false; }
-      });
-      progressPackImportBtn.addEventListener("click", () => progressPackFile.click());
-      progressPackFile.addEventListener("change", async () => {
-        pendingProgressPack = null; progressPackApplyBtn.disabled = true; progressPackPreview.classList.remove("ready");
-        const file = progressPackFile.files && progressPackFile.files[0]; if (!file) return;
-        progressPackStatus.textContent = "Checking Progress Pack…";
-        try {
-          const pack = validateProgressPack(JSON.parse(await file.text())); pendingProgressPack = pack;
-          progressPackPreview.innerHTML = progressPackSummaryText(pack); progressPackPreview.classList.add("ready"); progressPackApplyBtn.disabled = false; progressPackStatus.textContent = "Nothing has been changed yet.";
-        } catch (err) { progressPackPreview.textContent = "This file could not be read as a LanguageDeck Progress Pack."; progressPackStatus.textContent = err.message || String(err); }
-      });
-      progressPackApplyBtn.addEventListener("click", async () => {
-        if (!pendingProgressPack) return; progressPackApplyBtn.disabled = true; progressPackStatus.textContent = "Merging progress…";
-        try {
-          const res = await applyProgressPack(pendingProgressPack, { notify: false });
-          progressPackStatus.textContent = `Merged ${res.practiceUpdated} practice rows, ${res.sharedUpdated} shared knowledge/text rows and ${res.localUpdated} chapter states. Reloading the Study session…`;
-          pendingProgressPack = null; progressPackFile.value = ""; progressPackApplyBtn.disabled = true; reloadAfterProgressMerge("Progress merged");
-        } catch (err) { progressPackStatus.textContent = `Could not merge progress: ${err.message || err}`; progressPackApplyBtn.disabled = false; }
-      });
-
-      $("syncCreateBtn").addEventListener("click", async () => {
-        syncStatus.textContent = "Creating…";
-        try {
-          const { code, count } = await createSyncCode();
-          syncCodeArea.value = code;
-          syncCodeArea.select();
-          let copied = false;
-          try { await navigator.clipboard.writeText(code); copied = true; } catch (_) {}
-          syncStatus.textContent = `Code for ${count} practiced cards (${Math.round(code.length / 102.4) / 10} KB)${copied ? " — copied to clipboard." : " — select and copy it."}`;
-        } catch (err) {
-          syncStatus.textContent = `Could not create code: ${err.message || err}`;
-        }
-      });
-
-      $("syncLinkBtn").addEventListener("click", async () => {
-        let code = syncCodeArea.value.trim();
-        if (!code) {
-          syncStatus.textContent = "Creating…";
-          try {
-            const res = await createSyncCode();
-            code = res.code;
-            syncCodeArea.value = code;
-          } catch (err) {
-            syncStatus.textContent = `Could not create code: ${err.message || err}`;
-            return;
-          }
-        }
-        const link = `${location.origin}${location.pathname}#sync=${encodeURIComponent(code)}`;
-        try {
-          await navigator.clipboard.writeText(link);
-          syncStatus.textContent = "Link copied — open it on the other device.";
-        } catch (_) {
-          syncCodeArea.value = link;
-          syncCodeArea.select();
-          syncStatus.textContent = "Copy the link above and open it on the other device.";
-        }
-      });
-
-      // A #sync= link opened on this device prefills the modal for one-tap apply.
-      if (location.hash.startsWith("#sync=")) {
-        try {
-          syncCodeArea.value = decodeURIComponent(location.hash.slice(6));
-          syncStatus.textContent = "Legacy code received from link — tap Apply old code.";
-          syncModal.classList.add("active");
-        } catch (_) {}
-        history.replaceState(null, "", location.pathname + location.search);
-      }
-
-      $("syncApplyBtn").addEventListener("click", async () => {
-        const code = syncCodeArea.value;
-        if (!String(code || "").trim()) { syncStatus.textContent = "Paste a code first."; return; }
-        syncStatus.textContent = "Applying…";
-        try {
-          const res = await applySyncCode(code);
-          syncStatus.textContent = `Updated ${res.updated} of ${res.total} cards` +
-            `${res.skippedOlder ? `, ${res.skippedOlder} kept (local was newer)` : ""}` +
-            `${res.notFound ? `, ${res.notFound} not on this device (import those decks first)` : ""}.`;
-          if (res.updated > 0) {
-            showToast(`Synced ${res.updated} cards.`);
-            await refreshSetOptions();
-            await refreshStats();
-            await refreshGateInfo();
-            await loadCurrentGame(true);
-          }
-        } catch (err) {
-          syncStatus.textContent = `Could not apply code: ${err.message || err}`;
-        }
-      });
+      liveSyncDisconnectBtn?.addEventListener("click",()=>{stopQrCamera();$("qrTransferModal").classList.remove("active");stopLiveSyncPeer("Live sync disconnected.")});
+      $("qrTransferScanReplyBtn").addEventListener("click", scanLiveSyncAnswer);
+      $("qrTransferCloseBtn").addEventListener("click",cancelLiveSyncPairing);
+      $("qrTransferModal").addEventListener("click",e=>{if(e.target===$("qrTransferModal"))cancelLiveSyncPairing()});
     }
     if (closeManageDecksBtn) closeManageDecksBtn.addEventListener("click", () => manageDecksModal.classList.remove("active"));
     manageDecksModal.addEventListener("click", e => { if (e.target === manageDecksModal) manageDecksModal.classList.remove("active"); });
@@ -13713,7 +13209,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue instead of dead-ending on Done, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.16, completed-gate continuation no longer forces L5: L5 words still return as full typing, but a lapse demotes normally and every later card uses the word’s actual stored Adaptive level. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Since build 4.5.9, progress deltas are compact and per-peer. Since build 4.5.10, QR is used only for a one-time direct local connection by default: the changed Words/Grammar/Story delta moves over an encrypted DataChannel and the connection closes immediately after transfer. The QR-only delta remains a fallback; numeric practice dates accidentally imported by 4.5.9 are repaired automatically. Since build 4.5.11, transfer QR codes render as explicit SVG modules instead of relying on canvas visibility, and successful progress merges reload the Study runtime cleanly instead of patch-refreshing an active queue. Since build 4.5.12, the camera-transfer modal overrides the generic 380px modal cap on desktop, uses border-box sizing and blocks horizontal overflow so the entire QR and controls remain visible. Since build 4.5.13, desktop masked recall hides the redundant text box while retaining physical-keyboard focus, and Check/Continue, Reveal and Clear have consistent keyboard shortcuts. Since build 4.5.14, direct local progress transfer reports ICE candidate availability and automatically falls back to the compact QR delta instead of ending at a failed peer connection. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI. Since build 4.5.17, completed-gate review is locked to the Adaptive engine and rotates across the whole eligible gate before normal filler repeats; full-typing mistakes therefore demote to L4 and return with the real lower-level mask. Local peer transfer also primes camera permission before ICE gathering and reports direct-vs-privacy-obscured host candidates. Since build 4.5.18, completed-gate review uses whole-gate rotation as the primary queue source instead of letting the normal due/intake selector monopolise the session; targeted returns can interrupt after cooldown, and unique-load diagnostics include continuation cards. Since build 4.5.19, optional serverless Live sync keeps the QR-paired DataChannel open and automatically exchanges conflict-aware progress deltas in both directions while both apps remain connected; one-time nearby/QR/file transfer remains available.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue instead of dead-ending on Done, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.16, completed-gate continuation no longer forces L5: L5 words still return as full typing, but a lapse demotes normally and every later card uses the word’s actual stored Adaptive level. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Cross-device progress uses compact per-peer deltas with conflict-aware merge; old numeric date imports are still repaired automatically. Pairing QR codes render as explicit SVG modules and the camera dialog is responsive on desktop and mobile. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI. Since build 4.5.17, completed-gate review is locked to the Adaptive engine and rotates across the whole eligible gate before normal filler repeats; full-typing mistakes therefore demote to L4 and return with the real lower-level mask. Local peer transfer also primes camera permission before ICE gathering and reports direct-vs-privacy-obscured host candidates. Since build 4.5.18, completed-gate review uses whole-gate rotation as the primary queue source instead of letting the normal due/intake selector monopolise the session; targeted returns can interrupt after cooldown, and unique-load diagnostics include continuation cards. Since build 4.5.19, serverless Live sync keeps the QR-paired DataChannel open and automatically exchanges conflict-aware progress deltas in both directions while both apps remain connected. Since 4.5.20, Live sync is the only cross-device progress path and the retired transfer interfaces and handlers are removed.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);
@@ -13789,17 +13285,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         return { ...currentPracticeStateDetail(), progress, pendingAtOpen, deckTotal:all.length, deckMastered:deckProgress.mastered, deckDue:all.filter(r=>r.next_due!=null&&r.next_due<=now).length, deckNew:all.filter(r=>r.next_due==null).length, wrongMarked:all.filter(r=>Math.max(r.learning_pressure|0,r.article_pressure|0)>0).length, totalGates, gateIndex:currentGateIndex };
       },
       async diagnostics() { return buildPracticeDiagnostics(); },
-      async exportProgressPack() { return createProgressPack(); },
-      async importProgressPack(pack) { return applyProgressPack(pack); },
       async retryPendingProgress() { return applyPendingProgressTransfers(); },
-      transferDiagnostics: {
+      liveSyncDiagnostics: {
         deviceId: () => progressDeviceId(),
-        buildRequest: () => buildProgressRequest(),
-        encodeRequest: req => encodeProgressRequest(req),
-        parseRequest: raw => parseProgressRequest(raw),
         createDeltaWire: (since=0,receiverId="") => createProgressDeltaWire(since,receiverId),
-        packFromDeltaWire: wire => progressPackFromDeltaWire(wire),
-        parseDeltaFrame: raw => parseDeltaFrame(raw)
+        stateFromDeltaWire: wire => progressSyncStateFromDeltaWire(wire),
+        mergeState: state => applyProgressSyncState(state),
+        candidateStats: description => liveSyncCandidateStats(description),
+        isConnected: () => liveSyncActive
       }
     };
 

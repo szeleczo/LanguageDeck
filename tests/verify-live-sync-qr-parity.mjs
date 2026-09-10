@@ -1,0 +1,17 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const html=fs.readFileSync(new URL("../index.html",import.meta.url),"utf8");
+const sw=fs.readFileSync(new URL("../sw.js",import.meta.url),"utf8");
+const qr=fs.readFileSync(new URL("../vendor/qrcode.js",import.meta.url),"utf8");
+assert.match(html,/4\.5\.20-live-sync-only-cleanup-20260910/);
+assert.match(html,/const LIVE_SYNC_SIGNAL_PREFIX="LDS1"/,"only live pairing has a QR wire prefix");
+assert.match(html,/id="qrTransferVisual" class="qr-transfer-visual"/,"visible QR pairing container exists");
+assert.match(html,/createElementNS\(ns,"svg"\)/,"QR renderer uses visible SVG modules");
+assert.match(html,/if\(!dark\)throw new Error\("QR encoder returned no visible modules\."\)/,"QR renderer self-checks visible dark modules");
+assert.match(html,/if\(globalThis\.BarcodeDetector\)[\s\S]*const jsqr=await loadJsQrSource\(\)/,"native BarcodeDetector has a pinned jsQR fallback");
+assert.match(html,/QR_JSQR_LOCAL="vendor\/jsqr\.js"/);
+assert.match(html,/QR_JSQR_GIT_BLOB="99ea9df26907009e5553233ffe03c529c1521739"/);
+assert.match(html,/facingMode:coarse\?\{ideal:"environment"\}/,"phones prefer rear camera");
+assert.match(sw,/\.\/vendor\/qrcode\.js/);assert.match(sw,/\.\/vendor\/jsqr\.js/);assert.match(qr,/Kazuhiko Arase/);
+assert.doesNotMatch(html,/QR_REQUEST_PREFIX|QR_DELTA_PREFIX|QR_FRAME_MS|progressQrShowBtn|progressQrScanBtn/,"rotating progress QR transport is gone");
+console.log("Live sync QR pairing/offline parity checks passed.");

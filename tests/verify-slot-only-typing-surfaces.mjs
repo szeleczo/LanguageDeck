@@ -2,7 +2,7 @@ import fs from "node:fs";
 import assert from "node:assert/strict";
 
 const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
-assert.match(html, /4\.5\.19-live-sync-while-connected-20260909/);
+assert.match(html, /4\.5\.20-live-sync-only-cleanup-20260910/);
 
 assert.match(html, /#legacyPracticeRoot \.slot-answer-input-hidden,[\s\S]*opacity: 0 !important/, "shared hidden real-input class exists");
 assert.match(html, /function bindSlotInputSurface\(surface, input\)[\s\S]*input\.classList\.add\("slot-answer-input-hidden"\)/, "slot binding always hides the duplicate real input");
