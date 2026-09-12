@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import assert from "node:assert/strict";
 const html=fs.readFileSync(new URL("../index.html",import.meta.url),"utf8");
-assert.match(html,/4\.5\.22-adaptive-vowel-consonant-slots-20260912/);
+assert.match(html,/4\.5\.23-adaptive-slot-contrast-20260912/);
 assert.match(html,/id="liveSyncModal"/);
 assert.match(html,/data-practice-tool="sync"><b>Live sync<\/b><span>Pair two open devices with QR and sync progress while connected<\/span>/,"My library routes users to Live sync");
 assert.match(html,/function startPracticeUtility\(tool\)\{if\(tool==='sync'\)\{openLiveSyncModalGlobal\(\);return\}/,"catalog Live sync shortcut opens the shared global modal directly");

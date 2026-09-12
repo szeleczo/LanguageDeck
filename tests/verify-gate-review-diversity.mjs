@@ -2,7 +2,7 @@ import fs from "node:fs";
 import assert from "node:assert/strict";
 
 const html = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
-assert.match(html, /4\.5\.22-adaptive-vowel-consonant-slots-20260912/, "4.5.18 build marker is present");
+assert.match(html, /4\.5\.23-adaptive-slot-contrast-20260912/, "current build marker is present");
 
 const loadWordsStart = html.indexOf("async function loadWords(reset = true)");
 const loadWordsEnd = html.indexOf("function renderWordEmptyState()", loadWordsStart);

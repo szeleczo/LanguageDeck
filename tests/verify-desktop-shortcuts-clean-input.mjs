@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
-assert.match(html,/4\.5\.22-adaptive-vowel-consonant-slots-20260912/);
+assert.match(html,/4\.5\.23-adaptive-slot-contrast-20260912/);
 assert.match(html,/slot-answer-input-hidden/,'unified slot-only typing input hiding class exists');
 assert.match(html,/input\.classList\.toggle\("slot-answer-input-hidden", !!challenge\)/,'shared keypad renderer hides the real input whenever a slot challenge is visible');
 assert.match(html,/practiceShortcutModifier\(e\) && e\.key === "Enter"[\s\S]*submitTypingWordAnswer\(true\)/,'word input supports Ctrl/Cmd+Enter reveal');

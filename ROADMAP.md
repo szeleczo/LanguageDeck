@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.22. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.23. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -191,7 +191,7 @@ Normal learning writes mark the live session dirty rather than launching an imme
 
 The connection publishes the selected WebRTC candidate-pair type/protocol when available, sends a lightweight heartbeat while idle, and exposes an explicit **Disconnect live sync** control. Closing the transfer/settings modal does not intentionally close an already established live channel; closing/reloading/suspending an app or losing the network can still end the browser peer connection, after which the devices must pair again.
 
-The local WebRTC path remains best-effort: if Brave/Chromium, the OS firewall or the Wi-Fi network does not expose a usable direct host path, serverless live sync cannot be guaranteed. As of 4.5.22 there is deliberately no second user-facing transfer path; the devices must pair again when a direct session cannot be established.
+The local WebRTC path remains best-effort: if Brave/Chromium, the OS firewall or the Wi-Fi network does not expose a usable direct host path, serverless live sync cannot be guaranteed. As of 4.5.23 there is deliberately no second user-facing transfer path; the devices must pair again when a direct session cannot be established.
 
 Next main milestone: **4.6 — Prepare for this**.
 
@@ -221,7 +221,13 @@ No sync transport, merge, scheduler or learning-engine behaviour changes in this
 
 ## 4.5.22 — Adaptive vowel/consonant gap hints
 
-Adaptive L1–L4 now adds a small orthographic hint to still-hidden character slots without changing the existing slot design. A hidden vowel keeps the exact continuous underscore used before 4.5.22. A hidden consonant uses the same monospace underscore glyph, but with a small centre break. There is no colour coding and no new symbol system.
+Adaptive L1–L4 introduced an orthographic hint for still-hidden character slots while keeping L5/full typing uniform. The first visual experiment used a centre break for consonants; 4.5.23 supersedes that treatment because the interruption made the word rhythm too visually noisy in real use.
+
+## 4.5.23 — Adaptive slot contrast refinement
+
+Adaptive L1–L4 now keeps every hidden slot as the same continuous monospace underscore. Vowels retain the exact pre-hint appearance (`opacity: 0.32`); consonants use the same glyph, geometry and colour at lower opacity (`0.18`). This preserves the original word silhouette while still exposing a subtle vowel/consonant rhythm.
+
+The masked Adaptive clue surface is also slightly lightened by mixing `surface-2` toward `surface`, improving contrast for the softer consonant line without turning the input area into a new visual component. This background adjustment is scoped to masked Adaptive tasks. L5/full typing remains unchanged and provides no vowel/consonant hint.
 
 The hint is deliberately limited to masked Adaptive/Progressive tasks. L5/full typing keeps every hidden character slot visually identical, so full active recall receives no vowel/consonant assistance. German umlaut vowels are recognised through Unicode decomposition (`ä`, `ö`, `ü` behave as vowels); `y` remains on the consonant side of this simple orthographic hint. Filled characters replace the slot exactly as before.
 

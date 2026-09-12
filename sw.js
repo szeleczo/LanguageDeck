@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.22 — Adaptive vowel/consonant slot hints. */
-const CACHE_VERSION="languagedeck-4-5-22-adaptive-vowel-consonant-slots-20260912";
+/* LanguageDeck 4.5.23 — Adaptive slot contrast refinement. */
+const CACHE_VERSION="languagedeck-4-5-23-adaptive-slot-contrast-20260912";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
