@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
-assert.match(html,/4\.5\.21-live-sync-modal-portal-20260910/,'4.5.21 build marker missing');
+assert.match(html,/4\.5\.22-adaptive-vowel-consonant-slots-20260912/,'4.5.21 build marker missing');
 assert.match(html,/function ensureLiveSyncPortalMounted\(\)/,'global Live sync portal mount helper missing');
 assert.match(html,/function openLiveSyncModalGlobal\(\)/,'shared Live sync opener missing');
 assert.match(html,/document\.body\.appendChild\(modal\)/,'Live sync dialogs are not portalled outside hidden Practice host');

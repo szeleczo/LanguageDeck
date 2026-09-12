@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
-assert.match(html,/4\.5\.21-live-sync-modal-portal-20260910/);
+assert.match(html,/4\.5\.22-adaptive-vowel-consonant-slots-20260912/);
 assert.match(html,/if \(wordTypingAwaitingContinue\) \{\s*await continueAfterTypingFeedback\(\);\s*return;/,'word Enter uses the same Continue path after feedback');
 assert.match(html,/if \(currentSentenceData\.feedbackAwaitingContinue\) \{\s*await continueAfterSentenceFeedback\(\);\s*return;/,'sentence Enter uses Continue after feedback');
 assert.match(html,/function handleOrderSentenceKeyboard\(i\)/,'Order mode has a keyboard insertion path');

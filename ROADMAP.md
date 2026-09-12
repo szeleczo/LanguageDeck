@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.21. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.22. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -191,7 +191,7 @@ Normal learning writes mark the live session dirty rather than launching an imme
 
 The connection publishes the selected WebRTC candidate-pair type/protocol when available, sends a lightweight heartbeat while idle, and exposes an explicit **Disconnect live sync** control. Closing the transfer/settings modal does not intentionally close an already established live channel; closing/reloading/suspending an app or losing the network can still end the browser peer connection, after which the devices must pair again.
 
-The local WebRTC path remains best-effort: if Brave/Chromium, the OS firewall or the Wi-Fi network does not expose a usable direct host path, serverless live sync cannot be guaranteed. As of 4.5.21 there is deliberately no second user-facing transfer path; the devices must pair again when a direct session cannot be established.
+The local WebRTC path remains best-effort: if Brave/Chromium, the OS firewall or the Wi-Fi network does not expose a usable direct host path, serverless live sync cannot be guaranteed. As of 4.5.22 there is deliberately no second user-facing transfer path; the devices must pair again when a direct session cannot be established.
 
 Next main milestone: **4.6 — Prepare for this**.
 
@@ -218,3 +218,11 @@ Live sync is a global device utility and no longer depends on the visibility of 
 4.5.21 mounts both the Live sync dialog and its QR pairing dialog directly under `document.body` through one shared portal helper. Both the My library Live sync action and the in-Practice settings button call the same global opener, so one click/tap opens the dialog immediately on desktop and mobile from any app surface. The portalled dialogs carry their own token bridge, button/modal styling and responsive QR sizing, so they no longer inherit visibility or stacking constraints from Practice.
 
 No sync transport, merge, scheduler or learning-engine behaviour changes in this release. The next main milestone remains **4.6 — Prepare for this**.
+
+## 4.5.22 — Adaptive vowel/consonant gap hints
+
+Adaptive L1–L4 now adds a small orthographic hint to still-hidden character slots without changing the existing slot design. A hidden vowel keeps the exact continuous underscore used before 4.5.22. A hidden consonant uses the same monospace underscore glyph, but with a small centre break. There is no colour coding and no new symbol system.
+
+The hint is deliberately limited to masked Adaptive/Progressive tasks. L5/full typing keeps every hidden character slot visually identical, so full active recall receives no vowel/consonant assistance. German umlaut vowels are recognised through Unicode decomposition (`ä`, `ö`, `ü` behave as vowels); `y` remains on the consonant side of this simple orthographic hint. Filled characters replace the slot exactly as before.
+
+The same masked-clue renderer is shared by Adaptive Words, Book-routed Adaptive word recall and Progressive sentence tasks, so the hint stays visually consistent wherever L1–L4 masking is used. Full-typing surfaces continue to call the same renderer with shape hints disabled.

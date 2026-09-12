@@ -1310,6 +1310,29 @@ main{max-width:940px;margin:auto;padding:22px 18px calc(98px + var(--safe))}.vie
       word-break: break-word;
     }
     #legacyPracticeRoot .clue-gap{ opacity: 0.32; }
+    /* 4.5.22: Adaptive L1-L4 keeps the existing underscore exactly for
+       vowel gaps. Consonant gaps use the same monospace underscore glyph,
+       split around the centre so the hint is visible without adding colour
+       or changing the slot rhythm. */
+    #legacyPracticeRoot .clue-gap-consonant{
+      position: relative;
+      display: inline-block;
+    }
+    #legacyPracticeRoot .clue-gap-consonant .clue-gap-base{
+      visibility: hidden;
+    }
+    #legacyPracticeRoot .clue-gap-consonant .clue-gap-stroke{
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    #legacyPracticeRoot .clue-gap-consonant .clue-gap-stroke-left{
+      clip-path: inset(0 59% 0 0);
+    }
+    #legacyPracticeRoot .clue-gap-consonant .clue-gap-stroke-right{
+      clip-path: inset(0 0 0 59%);
+    }
     #legacyPracticeRoot .clue-fill{ color: var(--primary); }
     #legacyPracticeRoot .clue-fill.clue-wrong{
       color: var(--danger);
@@ -4090,7 +4113,7 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.21-live-sync-modal-portal-20260910",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.22-adaptive-vowel-consonant-slots-20260912",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4686,7 +4709,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.21-live-sync-modal-portal-20260910";
+    const APP_BUILD = "4.5.22-adaptive-vowel-consonant-slots-20260912";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -5877,22 +5900,38 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       return answerNorm(ch).replace(/\s+/g, "");
     }
 
-    function clueHtml(masked, typed, expectedMissing = "", markErrors = false) {
+    function adaptiveGapKind(ch) {
+      const source = String(ch || "");
+      if (!/\p{L}/u.test(source)) return "";
+      const base = source.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+      return /^[aeiou]/.test(base) ? "vowel" : "consonant";
+    }
+
+    function adaptiveGapHtml(expectedChar) {
+      if (adaptiveGapKind(expectedChar) !== "consonant") {
+        // Deliberately unchanged: this is the exact pre-4.5.22 gap markup.
+        return `<span class="clue-gap">_</span>`;
+      }
+      return `<span class="clue-gap clue-gap-consonant"><span class="clue-gap-base">_</span><span class="clue-gap-stroke clue-gap-stroke-left">_</span><span class="clue-gap-stroke clue-gap-stroke-right">_</span></span>`;
+    }
+
+    function clueHtml(masked, typed, expectedMissing = "", markErrors = false, adaptiveGapHints = false) {
       const m = Array.from(String(masked || ""));
       const t = Array.from(String(typed || "").replace(/\s+/g, ""));
       const e = Array.from(String(expectedMissing || ""));
-      let ti = 0, html = "";
+      let ti = 0, gapIndex = 0, html = "";
       for (let i = 0; i < m.length; i++) {
         if (m[i] === "_") {
+          const expectedChar = e[gapIndex] || "";
           if (ti < t.length) {
             const typedChar = t[ti];
-            const expectedChar = e[ti] || "";
             const wrong = !!(markErrors && expectedChar && clueCharNorm(typedChar) !== clueCharNorm(expectedChar));
             html += `<span class="clue-fill${wrong ? " clue-wrong" : ""}">${escapeHtml(typedChar)}</span>`;
             ti++;
           } else {
-            html += `<span class="clue-gap">_</span>`;
+            html += adaptiveGapHints ? adaptiveGapHtml(expectedChar) : `<span class="clue-gap">_</span>`;
           }
+          gapIndex++;
         } else {
           html += escapeHtml(m[i]);
         }
@@ -5942,7 +5981,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
           challenge.masked,
           currentSentenceData.progressiveAnswer || "",
           challenge.missing || "",
-          !!markErrors
+          !!markErrors,
+          true
         );
       }
     }
@@ -5982,6 +6022,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
               currentTypingChallenge.masked,
               typingInput.value,
               currentTypingChallenge.missing || "",
+              true,
               true
             );
           }
@@ -9474,14 +9515,14 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       typingLevelDots.classList.remove("hidden");
       typingLevelDots.innerHTML = levelDotsHtml(currentTypingWord);
       typingClue.classList.remove("hidden");
-      typingClue.innerHTML = hasMask ? clueHtml(currentTypingChallenge.masked, "") : fullTypingSlotsHtml(targetDisplay(currentTypingWord), "");
+      typingClue.innerHTML = hasMask ? clueHtml(currentTypingChallenge.masked, "", currentTypingChallenge.missing || "", false, true) : fullTypingSlotsHtml(targetDisplay(currentTypingWord), "");
       typingInput.placeholder = grammarPracticeHu() ? (hasMask ? "Csak a hiányzó betűk" : "Teljes válasz") : hasMask ? "Missing letters only" : (isTouchPrimaryDevice() ? "Use app keyboard" : "Full answer");
       typingInput.value = "";
       bindSlotInputSurface(typingClue, typingInput);
       typingResult.textContent = "";
       renderInlineMissingKeypad(typingInlineKeypad, typingInput, currentTypingChallenge, value => {
         if (currentTypingChallenge && currentTypingChallenge.masked) {
-          typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, value);
+          typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, value, currentTypingChallenge.missing || "", false, true);
           typingResult.textContent = "";
           maybeAutoSubmitProgressiveWord();
         } else {
@@ -10285,7 +10326,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (isProgressive) typingLevelDots.innerHTML = levelDotsHtml(currentTypingWord);
       typingClue.classList.remove("full-answer-preview", "empty");
       typingClue.classList.toggle("hidden", false);
-      if (hasMask) typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, "");
+      if (hasMask) typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, "", currentTypingChallenge.missing || "", false, true);
       else renderFullTypingSlots(typingClue, targetDisplay(currentTypingWord), "");
       typingInput.classList.toggle("progressive-full-input", !!(isProgressive && currentTypingChallenge && !hasMask));
       typingInput.classList.remove("full-answer-input-hidden");
@@ -10296,7 +10337,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       typingInput.value = "";
       renderInlineMissingKeypad(typingInlineKeypad, typingInput, currentTypingChallenge, value => {
         if (adaptiveWordEngineActive() && currentTypingChallenge && currentTypingChallenge.masked) {
-          typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, value);
+          typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, value, currentTypingChallenge.missing || "", false, true);
           typingResult.textContent = "";
           maybeAutoSubmitProgressiveWord();
         } else {
@@ -10380,6 +10421,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
             currentTypingChallenge.masked,
             typingInput.value,
             currentTypingChallenge.missing || "",
+            true,
             true
           );
         } else {
@@ -10973,7 +11015,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
             challenge.masked,
             currentSentenceData.progressiveAnswer || "",
             challenge.missing || "",
-            !!currentSentenceData.showProgressiveErrors
+            !!currentSentenceData.showProgressiveErrors,
+            true
           );
         } else {
           renderFullTypingSlots(clue, currentSentence.target, currentSentenceData.progressiveAnswer || "", !!currentSentenceData.showProgressiveErrors);
@@ -10999,7 +11042,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         inp.addEventListener("input", e => {
           currentSentenceData.progressiveAnswer = e.target.value;
           currentSentenceData.showProgressiveErrors = false;
-          if (hasMask) clue.innerHTML = clueHtml(challenge.masked, e.target.value, challenge.missing || "", false);
+          if (hasMask) clue.innerHTML = clueHtml(challenge.masked, e.target.value, challenge.missing || "", false, true);
           else renderFullTypingSlots(clue, currentSentence.target, e.target.value, false);
           sentenceResult.textContent = "";
           maybeAutoSubmitProgressiveSentence();
@@ -11019,7 +11062,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         renderInlineMissingKeypad(keypad, inp, challenge, value => {
           currentSentenceData.progressiveAnswer = value;
           currentSentenceData.showProgressiveErrors = false;
-          if (hasMask) clue.innerHTML = clueHtml(challenge.masked, value, challenge.missing || "", false);
+          if (hasMask) clue.innerHTML = clueHtml(challenge.masked, value, challenge.missing || "", false, true);
           else renderFullTypingSlots(clue, currentSentence.target, value, false);
           sentenceResult.textContent = "";
           maybeAutoSubmitProgressiveSentence();
@@ -12758,7 +12801,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       // One shared visual model: masked levels and full typing both keep their
       // character slots on screen while typed characters fill them live.
       if (adaptiveWordEngineActive() && currentTypingChallenge && currentTypingChallenge.masked) {
-        typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, typingInput.value);
+        typingClue.innerHTML = clueHtml(currentTypingChallenge.masked, typingInput.value, currentTypingChallenge.missing || "", false, true);
         typingResult.textContent = "";
         maybeAutoSubmitProgressiveWord();
       } else if (currentTypingWord) {
@@ -13254,7 +13297,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         "Since build 4.4.7, normal Adaptive levels hide about 30/45/60/75% before full typing. Since 4.4.9, one wrong answer only lowers the real level; a one-letter guided retry is reserved for Reveal or two consecutive wrong answers and cannot advance the stored level.",
         "Since build 4.4.10, a lexical lapse halves the SRS streak instead of erasing it. Since build 4.4.12, practice errors never become Story explicit-unknown events; a genuine Story tap causes one gradual level/streak demotion and immediate review instead of a full reset.",
         "Since build 4.4.14, the one-letter card is reserved for FIRST CONTACT: a word you have never typed before, still at level 1. Reveal and repeated wrong answers are ordinary mistakes and only lower the real level by one step.",
-        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue instead of dead-ending on Done, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.16, completed-gate continuation no longer forces L5: L5 words still return as full typing, but a lapse demotes normally and every later card uses the word’s actual stored Adaptive level. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Cross-device progress uses compact per-peer deltas with conflict-aware merge; old numeric date imports are still repaired automatically. Pairing QR codes render as explicit SVG modules and the camera dialog is responsive on desktop and mobile. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI. Since build 4.5.17, completed-gate review is locked to the Adaptive engine and rotates across the whole eligible gate before normal filler repeats; full-typing mistakes therefore demote to L4 and return with the real lower-level mask. Local peer transfer also primes camera permission before ICE gathering and reports direct-vs-privacy-obscured host candidates. Since build 4.5.18, completed-gate review uses whole-gate rotation as the primary queue source instead of letting the normal due/intake selector monopolise the session; targeted returns can interrupt after cooldown, and unique-load diagnostics include continuation cards. Since build 4.5.19, serverless Live sync keeps the QR-paired DataChannel open and automatically exchanges conflict-aware progress deltas in both directions while both apps remain connected. Since 4.5.20, Live sync is the only cross-device progress path and the retired transfer interfaces and handlers are removed. Since 4.5.21, the Live sync and pairing dialogs are mounted in a global modal portal, so opening Live sync is immediate from Course, Book, Practice and My library even when the integrated Practice host is hidden.", "",
+        "Since build 4.5.0, the read-only Library uses shared lexical knowledge. Since build 4.5.2, a clean FIRST CONTACT success advances directly from L1 to L2. Since build 4.5.3, reading recognition and Grammar/Sentence context no longer raise Adaptive recall levels; Book word recall uses the same Adaptive Words engine, while a genuine Story tap still creates one gradual Adaptive demotion. Since build 4.5.4, full typing reuses the Adaptive slot renderer with zero helper letters: character slots stay visible while typing and fill in place. Since build 4.5.5, a completed gate can continue instead of dead-ending on Done, while lexical mistakes require at least two other word answers before a targeted return can reappear. Since build 4.5.16, completed-gate continuation no longer forces L5: L5 words still return as full typing, but a lapse demotes normally and every later card uses the word’s actual stored Adaptive level. Since build 4.5.6, desktop and mobile use the same centred Study chrome and shared gate navigator. Since build 4.5.7, vocabulary typing/full recall is case- and formatting-tolerant. Since build 4.5.8, Enter advances feedback on desktop, Order mode has number-key controls, and target-language accent keys remain reachable beside the physical keyboard. Cross-device progress uses compact per-peer deltas with conflict-aware merge; old numeric date imports are still repaired automatically. Pairing QR codes render as explicit SVG modules and the camera dialog is responsive on desktop and mobile. Since build 4.5.15, every slot-rendered typing task hides the redundant real text field on desktop and touch; Words, Adaptive full recall, Sentence/Grammar typing and Text/Book typing all use the visible live slot surface as the single answer UI. Since build 4.5.17, completed-gate review is locked to the Adaptive engine and rotates across the whole eligible gate before normal filler repeats; full-typing mistakes therefore demote to L4 and return with the real lower-level mask. Local peer transfer also primes camera permission before ICE gathering and reports direct-vs-privacy-obscured host candidates. Since build 4.5.18, completed-gate review uses whole-gate rotation as the primary queue source instead of letting the normal due/intake selector monopolise the session; targeted returns can interrupt after cooldown, and unique-load diagnostics include continuation cards. Since build 4.5.19, serverless Live sync keeps the QR-paired DataChannel open and automatically exchanges conflict-aware progress deltas in both directions while both apps remain connected. Since 4.5.20, Live sync is the only cross-device progress path and the retired transfer interfaces and handlers are removed. Since 4.5.21, the Live sync and pairing dialogs are mounted in a global modal portal, so opening Live sync is immediate from Course, Book, Practice and My library even when the integrated Practice host is hidden. Since 4.5.22, Adaptive L1–L4 keeps the existing continuous underscore for hidden vowels while hidden consonants use the same underscore glyph with a small centre break; L5/full typing deliberately keeps uniform slots with no vowel/consonant hint.", "",
         "MOST MISSED ITEMS (up to 60)"
       ];
       for (const r of ranked.slice(0,60)) lines.push(`${diagnosticItemLabel(r)} | encountered ${r.times_seen|0} | right ${r.times_correct|0} | mistakes≥${diagnosticLifetimeWrong(r)} | match ${diagnosticInt(r,"diagnostic_match_wrong")}/${diagnosticInt(r,"diagnostic_match_attempts")} | article ${diagnosticInt(r,"diagnostic_article_wrong")}/${diagnosticInt(r,"diagnostic_article_attempts")} | typing ${diagnosticInt(r,"diagnostic_typing_wrong")+diagnosticInt(r,"diagnostic_progressive_wrong")}/${diagnosticInt(r,"diagnostic_typing_attempts")+diagnosticInt(r,"diagnostic_progressive_attempts")} | adaptive L${progressiveLevelIndex(r)+1}/${PROGRESSIVE_LEVELS.length}${r.progressive_level==null?" (streak fallback)":" (stored)"}${progressiveFirstContact(r)?`, first contact`:""} | streak ${r.streak|0} | pressure ${diagnosticPressureLabel(r)} | ${diagnosticDueLabel(r.next_due)}`);

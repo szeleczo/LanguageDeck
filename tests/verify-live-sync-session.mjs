@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import assert from "node:assert/strict";
 const html=fs.readFileSync(new URL("../index.html",import.meta.url),"utf8");
-assert.match(html,/4\.5\.21-live-sync-modal-portal-20260910/);
+assert.match(html,/4\.5\.22-adaptive-vowel-consonant-slots-20260912/);
 assert.match(html,/id="liveSyncHostBtn"[^>]*>Start live sync</,"live sync host control is exposed");
 assert.match(html,/id="liveSyncJoinBtn"[^>]*>Join live sync</,"live sync join control is exposed");
 assert.match(html,/id="liveSyncDisconnectBtn"/,"live sync can be explicitly disconnected");

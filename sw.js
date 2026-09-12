@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.21 — global Live sync modal portal. */
-const CACHE_VERSION="languagedeck-4-5-21-live-sync-modal-portal-20260910";
+/* LanguageDeck 4.5.22 — Adaptive vowel/consonant slot hints. */
+const CACHE_VERSION="languagedeck-4-5-22-adaptive-vowel-consonant-slots-20260912";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
