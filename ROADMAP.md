@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.23. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.24. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -191,7 +191,7 @@ Normal learning writes mark the live session dirty rather than launching an imme
 
 The connection publishes the selected WebRTC candidate-pair type/protocol when available, sends a lightweight heartbeat while idle, and exposes an explicit **Disconnect live sync** control. Closing the transfer/settings modal does not intentionally close an already established live channel; closing/reloading/suspending an app or losing the network can still end the browser peer connection, after which the devices must pair again.
 
-The local WebRTC path remains best-effort: if Brave/Chromium, the OS firewall or the Wi-Fi network does not expose a usable direct host path, serverless live sync cannot be guaranteed. As of 4.5.23 there is deliberately no second user-facing transfer path; the devices must pair again when a direct session cannot be established.
+The local WebRTC path remains best-effort: if Brave/Chromium, the OS firewall or the Wi-Fi network does not expose a usable direct host path, serverless live sync cannot be guaranteed. As of 4.5.24 there is deliberately no second user-facing transfer path; the devices must pair again when a direct session cannot be established.
 
 Next main milestone: **4.6 — Prepare for this**.
 
@@ -232,3 +232,26 @@ The masked Adaptive clue surface is also slightly lightened by mixing `surface-2
 The hint is deliberately limited to masked Adaptive/Progressive tasks. L5/full typing keeps every hidden character slot visually identical, so full active recall receives no vowel/consonant assistance. German umlaut vowels are recognised through Unicode decomposition (`ä`, `ö`, `ü` behave as vowels); `y` remains on the consonant side of this simple orthographic hint. Filled characters replace the slot exactly as before.
 
 The same masked-clue renderer is shared by Adaptive Words, Book-routed Adaptive word recall and Progressive sentence tasks, so the hint stays visually consistent wherever L1–L4 masking is used. Full-typing surfaces continue to call the same renderer with shape hints disabled.
+
+
+## 4.5.24 — Bidirectional Practice recognition
+
+Status: completed. Baseline: **4.5.23**. Build: `4.5.24-practice-recognition-20261110`.
+
+Practice now exposes **4 choices · DE → EN** and **4 choices · EN → DE** in German word packages, sentence packages and the current story's isolated Words/Sentences domain. The same variants are available in the Command Pill for Words and Sentences, including compatible imported decks. Existing Words decks can contain words or lexical phrases; Sentence decks can contain full sentences or paired phrase patterns such as “either … or …”. Focus-only grammar prompts, selection tasks, unpaired gaps, proper names and missing/context-fallback glosses are excluded. Grammar & Forms keeps its targeted production tasks rather than replacing them with whole-translation recognition.
+
+Book review found two existing recognition paths: Course preparation's `prepDistractorPool` / `answerPrep`, and Book warm-up/word choice's `meaningDistractorIds` / `answerWordChoice`. Their reusable rules are compact lexical gloss validation, preference for the same kind and article shape, and a calm choice grid. Practice reuses `ldQuizGloss` directly, extends the distractor policy for both directions and multiword translations, and keeps its session controller separate from Book progression.
+
+Each card has exactly one designated correct answer and three distinct distractors from the selected deck/domain. Recorded alternate translations, same-prompt rows, canonical lexeme duplicates, presentation-only differences and article-only contrasts cannot become wrong options. Similar kind, article shape and answer length are preferred; final answer order is shuffled. An insufficient pool produces an explanatory empty state, never padded or duplicated buttons. Prompts stay within the selected gate; distractors may use the rest of the selected deck, never an unrelated course or language. Wrong answers show the correct pair and return after two other answers when enough material exists. Next is explicit so feedback remains readable.
+
+The shared desktop/mobile grid uses at least 64px answer targets, two columns for short answers and a single column for long answers on narrow screens, wrapping text, keyboard focus, 1–4 selection and Enter/Next. Shortcuts are suspended for modals, text entry, composing input and modifier keys. The exercise area remains scrollable in small viewports.
+
+Knowledge boundary: Words recognition records only the existing shared `reading` evidence (successful recognition strength at most 2). It never changes `word_pairs`/`sentence_pairs` scheduling, streaks, Adaptive L1–L5, typed recall evidence, full-recall timestamps or Story explicit-unknown flags. Sentence recognition records only the session result; selecting a translated sentence does not prove recall of its individual words or grammar production. Legacy recall progress remains visible and unchanged, with recognition scores shown separately. Existing Live sync carries shared recognition evidence without a schema change. Library stays read-only. No new knowledge database or mode-owned mastery level is introduced.
+
+Validation: all 21 baseline Node regression suites pass before modification; all 22 release suites pass, including the new runtime recognition suite. Browser checks cover both catalog directions, real IndexedDB production-row isolation, desktop/mobile buttons, sentence translation, modal shortcut suspension, return to Adaptive, long answers at 320px, dark mode, landscape and cached offline launch. The release also checks inline JavaScript/service-worker syntax, all 122 cached shell assets and a real Git overlay applied to the reconstructed 4.5.23 baseline. Service worker/cache and both application build markers advance together. The full ZIP includes the exact pinned jsQR decoder used by the 4.5.23 installer.
+
+The offline launch check exposed an inherited cache issue: shell assets were pre-cached without query parameters while application fetches request the same files with a build-version query. The service worker now falls back to the cached static path after removing only `v`/`ld` cache-busting parameters, preserves meaningful parameters, and can serve the cached HTML shell for navigation. Successful network responses are cloned before client consumption and cache writes are kept alive through completion. These cases have runtime regressions in the recognition suite.
+
+Delivery: the GitHub overlay includes only added/changed files relative to 4.5.23. The PowerShell installer verifies package checksums and baseline hashes, supports Preview and NoPush, runs the complete regression suite plus syntax/diff checks, and refuses unrelated local changes. It does not include historic removals or reapply older release overlays.
+
+Next main milestone remains **4.6 — Prepare for this**.

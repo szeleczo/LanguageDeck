@@ -8,14 +8,71 @@
       "title": "Core 3000",
       "description": "High-frequency vocabulary with matching sentence practice.",
       "level": "A1–B2",
-      "deckIds": ["de-core-3000", "de-3000-sentences"],
+      "deckIds": [
+        "de-core-3000",
+        "de-3000-sentences"
+      ],
       "actions": [
-        {"label": "Word Match", "deckId": "de-core-3000", "mode": "words", "variant": "match"},
-        {"label": "Adaptive words", "deckId": "de-core-3000", "mode": "words", "variant": "progressive"},
-        {"label": "Type words", "deckId": "de-core-3000", "mode": "words", "variant": "typing"},
-        {"label": "Build sentences", "deckId": "de-3000-sentences", "mode": "sentences", "variant": "order"},
-        {"label": "Adaptive sentences", "deckId": "de-3000-sentences", "mode": "sentences", "variant": "progressive"},
-        {"label": "Type sentences", "deckId": "de-3000-sentences", "mode": "sentences", "variant": "typing"}
+        {
+          "label": "Word Match",
+          "deckId": "de-core-3000",
+          "mode": "words",
+          "variant": "match"
+        },
+        {
+          "label": "Adaptive words",
+          "deckId": "de-core-3000",
+          "mode": "words",
+          "variant": "progressive"
+        },
+        {
+          "label": "Type words",
+          "deckId": "de-core-3000",
+          "mode": "words",
+          "variant": "typing"
+        },
+        {
+          "label": "Build sentences",
+          "deckId": "de-3000-sentences",
+          "mode": "sentences",
+          "variant": "order"
+        },
+        {
+          "label": "Adaptive sentences",
+          "deckId": "de-3000-sentences",
+          "mode": "sentences",
+          "variant": "progressive"
+        },
+        {
+          "label": "Type sentences",
+          "deckId": "de-3000-sentences",
+          "mode": "sentences",
+          "variant": "typing"
+        },
+        {
+          "label": "Words · 4 choices · DE → EN",
+          "deckId": "de-core-3000",
+          "mode": "words",
+          "variant": "recognition"
+        },
+        {
+          "label": "Words · 4 choices · EN → DE",
+          "deckId": "de-core-3000",
+          "mode": "words",
+          "variant": "recognition-reverse"
+        },
+        {
+          "label": "Sentences / phrases · 4 choices · DE → EN",
+          "deckId": "de-3000-sentences",
+          "mode": "sentences",
+          "variant": "recognition"
+        },
+        {
+          "label": "Sentences / phrases · 4 choices · EN → DE",
+          "deckId": "de-3000-sentences",
+          "mode": "sentences",
+          "variant": "recognition-reverse"
+        }
       ]
     },
     {
@@ -24,14 +81,71 @@
       "title": "Hooks",
       "description": "Memorable vocabulary hooks with companion sentences.",
       "level": "A1–B2",
-      "deckIds": ["de-hooks", "de-hooks-sentences"],
+      "deckIds": [
+        "de-hooks",
+        "de-hooks-sentences"
+      ],
       "actions": [
-        {"label": "Word Match", "deckId": "de-hooks", "mode": "words", "variant": "match"},
-        {"label": "Adaptive words", "deckId": "de-hooks", "mode": "words", "variant": "progressive"},
-        {"label": "Type words", "deckId": "de-hooks", "mode": "words", "variant": "typing"},
-        {"label": "Build sentences", "deckId": "de-hooks-sentences", "mode": "sentences", "variant": "order"},
-        {"label": "Adaptive sentences", "deckId": "de-hooks-sentences", "mode": "sentences", "variant": "progressive"},
-        {"label": "Type sentences", "deckId": "de-hooks-sentences", "mode": "sentences", "variant": "typing"}
+        {
+          "label": "Word Match",
+          "deckId": "de-hooks",
+          "mode": "words",
+          "variant": "match"
+        },
+        {
+          "label": "Adaptive words",
+          "deckId": "de-hooks",
+          "mode": "words",
+          "variant": "progressive"
+        },
+        {
+          "label": "Type words",
+          "deckId": "de-hooks",
+          "mode": "words",
+          "variant": "typing"
+        },
+        {
+          "label": "Build sentences",
+          "deckId": "de-hooks-sentences",
+          "mode": "sentences",
+          "variant": "order"
+        },
+        {
+          "label": "Adaptive sentences",
+          "deckId": "de-hooks-sentences",
+          "mode": "sentences",
+          "variant": "progressive"
+        },
+        {
+          "label": "Type sentences",
+          "deckId": "de-hooks-sentences",
+          "mode": "sentences",
+          "variant": "typing"
+        },
+        {
+          "label": "Words · 4 choices · DE → EN",
+          "deckId": "de-hooks",
+          "mode": "words",
+          "variant": "recognition"
+        },
+        {
+          "label": "Words · 4 choices · EN → DE",
+          "deckId": "de-hooks",
+          "mode": "words",
+          "variant": "recognition-reverse"
+        },
+        {
+          "label": "Sentences / phrases · 4 choices · DE → EN",
+          "deckId": "de-hooks-sentences",
+          "mode": "sentences",
+          "variant": "recognition"
+        },
+        {
+          "label": "Sentences / phrases · 4 choices · EN → DE",
+          "deckId": "de-hooks-sentences",
+          "mode": "sentences",
+          "variant": "recognition-reverse"
+        }
       ]
     },
     {
@@ -40,11 +154,40 @@
       "title": "Combined Flashcards",
       "description": "A broad independent vocabulary collection for free recall.",
       "level": "A1–B2",
-      "deckIds": ["de-combined-flashcards"],
+      "deckIds": [
+        "de-combined-flashcards"
+      ],
       "actions": [
-        {"label": "Word Match", "deckId": "de-combined-flashcards", "mode": "words", "variant": "match"},
-        {"label": "Adaptive", "deckId": "de-combined-flashcards", "mode": "words", "variant": "progressive"},
-        {"label": "Type", "deckId": "de-combined-flashcards", "mode": "words", "variant": "typing"}
+        {
+          "label": "Word Match",
+          "deckId": "de-combined-flashcards",
+          "mode": "words",
+          "variant": "match"
+        },
+        {
+          "label": "Adaptive",
+          "deckId": "de-combined-flashcards",
+          "mode": "words",
+          "variant": "progressive"
+        },
+        {
+          "label": "Type",
+          "deckId": "de-combined-flashcards",
+          "mode": "words",
+          "variant": "typing"
+        },
+        {
+          "label": "Words · 4 choices · DE → EN",
+          "deckId": "de-combined-flashcards",
+          "mode": "words",
+          "variant": "recognition"
+        },
+        {
+          "label": "Words · 4 choices · EN → DE",
+          "deckId": "de-combined-flashcards",
+          "mode": "words",
+          "variant": "recognition-reverse"
+        }
       ]
     },
     {
@@ -53,13 +196,41 @@
       "title": "Grammar Sentence Lab",
       "description": "Independent grammar sentences and reusable sentence patterns.",
       "level": "A1–B2",
-      "deckIds": ["de-grammar-learning", "de-sentence-patterns"],
+      "deckIds": [
+        "de-grammar-learning",
+        "de-sentence-patterns"
+      ],
       "actions": [
-        {"label": "Choose", "deckId": "de-grammar-learning", "mode": "grammar", "variant": "choice"},
-        {"label": "Reorder", "deckId": "de-grammar-learning", "mode": "grammar", "variant": "order"},
-        {"label": "Adaptive", "deckId": "de-grammar-learning", "mode": "grammar", "variant": "progressive"},
-        {"label": "Type", "deckId": "de-grammar-learning", "mode": "grammar", "variant": "typing"},
-        {"label": "Patterns", "deckId": "de-sentence-patterns", "mode": "grammar", "variant": "order"}
+        {
+          "label": "Choose",
+          "deckId": "de-grammar-learning",
+          "mode": "grammar",
+          "variant": "choice"
+        },
+        {
+          "label": "Reorder",
+          "deckId": "de-grammar-learning",
+          "mode": "grammar",
+          "variant": "order"
+        },
+        {
+          "label": "Adaptive",
+          "deckId": "de-grammar-learning",
+          "mode": "grammar",
+          "variant": "progressive"
+        },
+        {
+          "label": "Type",
+          "deckId": "de-grammar-learning",
+          "mode": "grammar",
+          "variant": "typing"
+        },
+        {
+          "label": "Patterns",
+          "deckId": "de-sentence-patterns",
+          "mode": "grammar",
+          "variant": "order"
+        }
       ]
     },
     {
@@ -68,12 +239,46 @@
       "title": "Sentence Builder",
       "description": "Independent sentence construction and typed recall.",
       "level": "A1–B2",
-      "deckIds": ["de-sentence-builder"],
+      "deckIds": [
+        "de-sentence-builder"
+      ],
       "actions": [
-        {"label": "Choose", "deckId": "de-sentence-builder", "mode": "sentences", "variant": "choice"},
-        {"label": "Reorder", "deckId": "de-sentence-builder", "mode": "sentences", "variant": "order"},
-        {"label": "Adaptive", "deckId": "de-sentence-builder", "mode": "sentences", "variant": "progressive"},
-        {"label": "Type", "deckId": "de-sentence-builder", "mode": "sentences", "variant": "typing"}
+        {
+          "label": "Choose",
+          "deckId": "de-sentence-builder",
+          "mode": "sentences",
+          "variant": "choice"
+        },
+        {
+          "label": "Reorder",
+          "deckId": "de-sentence-builder",
+          "mode": "sentences",
+          "variant": "order"
+        },
+        {
+          "label": "Adaptive",
+          "deckId": "de-sentence-builder",
+          "mode": "sentences",
+          "variant": "progressive"
+        },
+        {
+          "label": "Type",
+          "deckId": "de-sentence-builder",
+          "mode": "sentences",
+          "variant": "typing"
+        },
+        {
+          "label": "Sentences / phrases · 4 choices · DE → EN",
+          "deckId": "de-sentence-builder",
+          "mode": "sentences",
+          "variant": "recognition"
+        },
+        {
+          "label": "Sentences / phrases · 4 choices · EN → DE",
+          "deckId": "de-sentence-builder",
+          "mode": "sentences",
+          "variant": "recognition-reverse"
+        }
       ]
     }
   ],
@@ -91,7 +296,9 @@
       "practiceModes": [
         "match",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1",
@@ -110,7 +317,9 @@
       "practiceModes": [
         "match",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1",
@@ -129,7 +338,9 @@
       "practiceModes": [
         "match",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1",
@@ -191,7 +402,9 @@
         "choice",
         "order",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1",
@@ -211,7 +424,9 @@
         "choice",
         "order",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1",
@@ -231,7 +446,9 @@
         "choice",
         "order",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1",
@@ -316,7 +533,9 @@
       "practiceModes": [
         "match",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1"
@@ -339,7 +558,9 @@
         "choice",
         "order",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1"
@@ -360,7 +581,9 @@
       "practiceModes": [
         "match",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1"
@@ -383,7 +606,9 @@
         "choice",
         "order",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1"
@@ -404,7 +629,9 @@
       "practiceModes": [
         "match",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1"
@@ -427,7 +654,9 @@
         "choice",
         "order",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "A1"
@@ -471,7 +700,9 @@
       "practiceModes": [
         "match",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "B2",
@@ -495,7 +726,9 @@
         "choice",
         "order",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "B2",
@@ -540,7 +773,9 @@
       "practiceModes": [
         "match",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "B2",
@@ -564,7 +799,9 @@
         "choice",
         "order",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "B2",
@@ -609,7 +846,9 @@
       "practiceModes": [
         "match",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "B2",
@@ -633,7 +872,9 @@
         "choice",
         "order",
         "typing",
-        "progressive"
+        "progressive",
+        "recognition",
+        "recognition-reverse"
       ],
       "level": [
         "B2",

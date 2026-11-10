@@ -76,8 +76,8 @@ assert.match(indexHtml, /"guided_attempts", "guided_last_answer_at", "guided_suc
 assert.match(indexHtml, /async function pruneCompletedGuidedQueue[\s\S]*guidedRowDone\(row, guidedPractice, rows\)[\s\S]*ensureWordQueue[\s\S]*pruneCompletedGuidedQueue\("word_pairs"[\s\S]*ensureSentenceQueue[\s\S]*pruneCompletedGuidedQueue\("sentence_pairs"/, "prefetched guided queues use the target-specific completion rule");
 assert.match(indexHtml, /PRACTICE_RETURN_VIEW==='grammar-course'/, "completed grammar phases return to their unit");
 assert.match(indexHtml, /button\.blank-chip\{[\s\S]*?background:\s*var\(--surface-2\)[\s\S]*?color:\s*var\(--text\)[\s\S]*?border:\s*1px dashed/s, "sentence answer slots fully override the generic primary-button skin");
-assert.match(indexHtml, /4\.5\.23-adaptive-slot-contrast-20260912/, "the application build marker is current");
-assert.equal((indexHtml.match(/4\.5\.23-adaptive-slot-contrast-20260912/g) || []).length, 2, "Course and Practice use the same current build marker");
+assert.match(indexHtml, /4\.5\.24-practice-recognition-20261110/, "the application build marker is current");
+assert.equal((indexHtml.match(/4\.5\.24-practice-recognition-20261110/g) || []).length, 2, "Course and Practice use the same current build marker");
 assert.match(indexHtml, /practiceSetupBtn'\)\.onclick=\(\)=>window\.LanguageDeckPractice\?\.openUtility\?\.\('session',LANG\)/, "the sliders restore the dedicated current-session controls");
 assert.match(indexHtml, /practiceSettingsBtn'\)\.onclick=\(\)=>openSettings\('main'\)/, "the gear keeps the application settings role");
 assert.match(indexHtml, /id="sessionActualNewRatio"[\s\S]*id="sessionRequestedNewRatio"[\s\S]*id="sessionIntakeStatus"[\s\S]*id="sessionScopeStatus"/, "Session controls show realised pacing, requested pacing, intake and scope together");
@@ -225,8 +225,8 @@ for (const [language, manifest] of [["de", germanManifest], ["it", italianManife
 }
 const wordVariants = new Set(germanManifest.catalogPackages.flatMap(pack => pack.actions).filter(action => action.mode === "words").map(action => action.variant));
 const sentenceVariants = new Set(germanManifest.catalogPackages.flatMap(pack => pack.actions).filter(action => ["grammar", "sentences"].includes(action.mode)).map(action => action.variant));
-assert.deepEqual([...wordVariants].sort(), ["match", "progressive", "typing"], "German word packages keep Match, Adaptive and Type");
-assert.deepEqual([...sentenceVariants].sort(), ["choice", "order", "progressive", "typing"], "sentence engines keep Choice, Reorder, Adaptive and Type");
+assert.deepEqual([...wordVariants].sort(), ["match", "progressive", "recognition", "recognition-reverse", "typing"], "German words keep recall modes and both recognition directions");
+assert.deepEqual([...sentenceVariants].sort(), ["choice", "order", "progressive", "recognition", "recognition-reverse", "typing"], "sentence engines keep production modes and both recognition directions");
 const standaloneIndex = JSON.parse(text(join(root, "decks", "index.json")));
 assert.equal(standaloneIndex.length, 8, "the standalone browser contains only independent practice decks");
 assert.ok(standaloneIndex.every(deck => !/[\\/]stories[\\/]|[\\/]texts[\\/]/.test(deck.file || "")), "story files never leak into the standalone browser");
@@ -531,7 +531,7 @@ for (const file of walk(deRoot).filter(file => file.endsWith(".csv") && !file.en
 }
 
 const serviceWorker = text(join(root, "sw.js"));
-assert.match(serviceWorker, /languagedeck-4-5-23-adaptive-slot-contrast-20260912/, "service worker cache version is current");
+assert.match(serviceWorker, /languagedeck-4-5-24-practice-recognition-20261110/, "service worker cache version is current");
 assert.match(serviceWorker, /variation-bank-hu-v1\.json/, "the controlled Hungarian variation bank is available offline");
 assert.match(serviceWorker, /decks\/de\/grammar\/curriculum-v4\.json/, "the unified grammar curriculum is available offline");
 assert.match(serviceWorker, /decks\/it\/words\/core-3000\.csv/, "Italian vocabulary is available offline");

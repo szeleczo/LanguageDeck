@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.23 — Adaptive slot contrast refinement. */
-const CACHE_VERSION="languagedeck-4-5-23-adaptive-slot-contrast-20260912";
+/* LanguageDeck 4.5.24 — Bidirectional Practice recognition. */
+const CACHE_VERSION="languagedeck-4-5-24-practice-recognition-20261110";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",
@@ -128,4 +128,34 @@ const OPTIONAL_SHELL=["./vendor/jsqr.js"];
 self.addEventListener("message",e=>{if(e.data&&e.data.type==="SKIP_WAITING")self.skipWaiting()});
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE_VERSION).then(async c=>{await c.addAll(APP_SHELL);for(const path of OPTIONAL_SHELL)try{await c.add(path)}catch(_){}}));self.skipWaiting()});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_VERSION).map(k=>caches.delete(k)))));self.clients.claim()});
-self.addEventListener("fetch",e=>{const r=e.request;if(r.method!=="GET")return;const u=new URL(r.url);if(u.origin!==self.location.origin)return;e.respondWith(fetch(r,{cache:"no-cache"}).then(resp=>{if(resp.ok)caches.open(CACHE_VERSION).then(c=>c.put(r,resp.clone()));return resp}).catch(()=>caches.match(r)))});
+async function cachedShellResponse(request){
+  const cache=await caches.open(CACHE_VERSION);
+  const exact=await cache.match(request);
+  if(exact)return exact;
+  // Build/cache-busting parameters do not change a static asset's content.
+  const canonical=new URL(request.url);
+  canonical.searchParams.delete("v");
+  canonical.searchParams.delete("ld");
+  const asset=await cache.match(canonical.href);
+  if(asset)return asset;
+  if(request.mode==="navigate"){
+    const shell=await cache.match(new URL("./index.html",self.registration.scope).href);
+    if(shell)return shell;
+  }
+  return new Response("This resource is not cached for offline use.",{status:503});
+}
+self.addEventListener("fetch",e=>{
+  const request=e.request;
+  if(request.method!=="GET"||new URL(request.url).origin!==self.location.origin)return;
+  let saving=Promise.resolve();
+  const response=fetch(request,{cache:"no-cache"}).then(result=>{
+    if(result.ok){
+      // Clone before the client can consume the body, and finish the cache write.
+      const copy=result.clone();
+      saving=caches.open(CACHE_VERSION).then(cache=>cache.put(request,copy)).catch(()=>{});
+    }
+    return result;
+  }).catch(()=>cachedShellResponse(request));
+  e.respondWith(response);
+  e.waitUntil(response.then(()=>saving));
+});

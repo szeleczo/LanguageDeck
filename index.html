@@ -3420,6 +3420,26 @@ html.integrated-practice-active body{overflow:hidden!important}
     @media (max-width:430px){.chapter-study-body{padding-left:12px;padding-right:12px}.guided-phase{grid-template-columns:38px minmax(0,1fr);padding:11px}.guided-phase>button{grid-column:2;width:100%;margin-top:1px}.guided-phase-no{width:35px;height:35px}.guided-study-intro{padding-left:2px;padding-right:2px}}
 
 </style>
+<style id="recognitionStyles">
+/* Four-choice recognition shares Book's calm choice layout with generous touch targets. */
+#legacyPracticeRoot .recognition-panel{width:100%;max-width:720px;margin:clamp(8px,3vh,28px) auto 0;padding:clamp(16px,4vw,28px);border:1px solid var(--border);border-radius:22px;background:var(--surface)}
+#legacyPracticeRoot .recognition-direction{font-size:12px;font-weight:800;color:var(--text-muted)}
+#legacyPracticeRoot #recognitionPrompt{font-family:var(--font-display);font-size:clamp(24px,5vw,36px);line-height:1.25;overflow-wrap:anywhere;margin:12px 0}
+#legacyPracticeRoot #recognitionHelp,#legacyPracticeRoot #recognitionBoundary{font-size:12px;color:var(--text-muted);line-height:1.5;margin:12px 0}
+#legacyPracticeRoot .recognition-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:clamp(20px,5vh,44px)}
+#legacyPracticeRoot button.recognition-option{display:flex;align-items:center;gap:10px;min-width:0;min-height:64px;padding:15px 14px;text-align:left;white-space:normal;overflow-wrap:anywhere;font-size:16px;line-height:1.4;background:var(--surface-2);color:var(--text);border:2px solid var(--border-strong);border-radius:15px;transform:none;margin:0;box-shadow:none;touch-action:manipulation}
+#legacyPracticeRoot button.recognition-option:hover:not(:disabled){background:var(--primary-soft);border-color:var(--primary)}
+#legacyPracticeRoot button.recognition-option:disabled{opacity:1;cursor:default}
+#legacyPracticeRoot button.recognition-option:focus-visible,#legacyPracticeRoot #recognitionNext:focus-visible{outline:3px solid var(--primary);outline-offset:3px}
+#legacyPracticeRoot .recognition-number{flex:none;font-size:12px;font-weight:800;color:var(--text-muted)}
+#legacyPracticeRoot button.recognition-correct{background:var(--success-soft);border-color:var(--success);color:var(--text)}
+#legacyPracticeRoot button.recognition-wrong{background:var(--danger-soft);border-color:var(--danger);color:var(--text)}
+#legacyPracticeRoot #recognitionFeedback{min-height:24px;margin:16px 0;line-height:1.5;overflow-wrap:anywhere}
+#legacyPracticeRoot #recognitionNext{width:100%;min-height:52px;touch-action:manipulation}
+#legacyPracticeRoot #recognitionNext[hidden]{display:none!important}
+@media(max-width:600px){#legacyPracticeRoot .recognition-long .recognition-options{grid-template-columns:1fr}#legacyPracticeRoot .recognition-panel{padding:16px}#legacyPracticeRoot .recognition-options{gap:10px}#legacyPracticeRoot button.recognition-option{min-height:64px}}
+@media(max-height:500px){#legacyPracticeRoot .recognition-panel{margin-top:0;padding:14px}#legacyPracticeRoot .recognition-options{margin-top:14px}#legacyPracticeRoot #recognitionPrompt{font-size:24px;margin:8px 0}}
+</style>
 </head><body>
 <div id="browseShell">
 <header class="appbar"><div class="appbar-inner"><div class="brand"><span class="mark"></span><div>LanguageDeck<small id="shellSubtitle">Course</small></div></div><div class="top-actions"><span class="network-pill hidden" id="networkPill">Offline</span><button aria-label="Settings" class="icon" id="settingsBtn" title="Settings"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 1 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.05a1.7 1.7 0 0 0-1.1-1.55 1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.05A1.7 1.7 0 0 0 4.6 8.9a1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 1 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.05a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.4 9c.12.64.68 1.1 1.33 1.1H21a2 2 0 1 1 0 4h-.27c-.65 0-1.21.46-1.33 1.1z"></path></svg></button></div></div></header>
@@ -3540,6 +3560,15 @@ html.integrated-practice-active body{overflow:hidden!important}
          The JS still appends children to leftColumn/rightColumn — they're
          both `display: contents` so the cards inside are direct grid items
          of `.game`. -->
+<section id="recognitionContainer" class="recognition-panel hidden" aria-label="Four-choice recognition">
+<div class="recognition-direction" id="recognitionDirection"></div>
+<h2 id="recognitionPrompt" tabindex="-1"></h2>
+<p id="recognitionHelp"></p>
+<div id="recognitionOptions" class="recognition-options" role="group" aria-label="Translation options"></div>
+<p id="recognitionFeedback" role="status" aria-live="polite" aria-atomic="true"></p>
+<button id="recognitionNext" type="button" hidden>Next →</button>
+<p id="recognitionBoundary"></p>
+</section>
 <div id="wordMatchContainer">
 <div class="game">
 <div class="column-flow" id="leftColumn"></div>
@@ -3800,6 +3829,8 @@ html.integrated-practice-active body{overflow:hidden!important}
 <div class="relocated">
 <label for="modeSelect">Word mode</label>
 <select id="modeSelect">
+<option value="recognition">4 choices · Target → EN</option>
+<option value="recognition-reverse">4 choices · EN → Target</option>
 <option selected="" value="match">Matching</option>
 <option value="typing">Typing</option>
 <option value="progressive">Adaptive missing letters</option>
@@ -3808,6 +3839,8 @@ html.integrated-practice-active body{overflow:hidden!important}
 <div class="relocated">
 <label for="sentenceModeSelect">Sentence mode</label>
 <select id="sentenceModeSelect">
+<option value="recognition">4 choices · Target → EN</option>
+<option value="recognition-reverse">4 choices · EN → Target</option>
 <option selected="" value="choice">Word bank</option>
 <option value="order">Reorder words</option>
 <option value="typing">Typing</option>
@@ -4098,7 +4131,78 @@ function ldLexicalGloss(value,compact=false){
 }
 function ldQuizGloss(value,compact=false){return ldLexicalGloss(value,compact)}
 function ldQuizSafeEnglish(value,compact=false){return !!ldLexicalGloss(value,compact)}
-const APP_BUILD="4.5.23-adaptive-slot-contrast-20260912",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+// Shared lexical hygiene comes from Book's ldQuizGloss; recognition never uses context fallbacks.
+function ldRecognitionMode(mode) { return mode === "recognition" || mode === "recognition-reverse"; }
+function ldRecognitionKey(value) {
+  return String(value || "").normalize("NFKC").toLocaleLowerCase().replace(/[’‘]/g, "'")
+    .replace(/[^\p{L}\p{M}\p{N}]+/gu, " ").trim();
+}
+function ldRecognitionKeys(value, alternatives = "") {
+  const values = [value, ...(Array.isArray(alternatives) ? alternatives : String(alternatives || "").split(/[|;\n]/))];
+  return new Set(values.flatMap(v => [v, ...String(v || "").split(/\s*(?:[;|/]|\bor\b)\s*/i)])
+    .map(ldRecognitionKey).filter(Boolean));
+}
+function ldRecognitionTarget(row) {
+  const target = String(row.target || "").trim(), article = String(row.article || "").trim();
+  return article && !target.toLocaleLowerCase().startsWith(article.toLocaleLowerCase() + " ") ? article + " " + target : target;
+}
+function ldRecognitionEntry(row, kind = "words") {
+  const english = ldQuizGloss(row.english, kind === "words"), target = ldRecognitionTarget(row);
+  // Focus/selection prompts and unfinished clozes are production tasks, not translation pairs.
+  if (!english || !target || ["name", "unknown"].includes(row.kind || row.type) ||
+      /^(?:context|sentence)\s*:/i.test(target) || /^meaning not supplied\.?$/i.test(target) ||
+      /[_{}<>\[\]]/.test(english + target) || (row.task_scope && row.task_scope !== "production") ||
+      Boolean(/\.{3}|…/.test(english)) !== Boolean(/\.{3}|…/.test(target))) return null;
+  const enKeys = ldRecognitionKeys(english, row.english_alternatives);
+  const targetKeys = ldRecognitionKeys(target, row.alternatives);
+  if (!enKeys.size || !targetKeys.size) return null;
+  // Treat a noun with/without its article as the same meaning for ambiguity checks.
+  for (const key of [...targetKeys]) targetKeys.add(key.replace(/^(?:der|die|das|ein|eine|il|lo|la|l|un|una) /, ""));
+  return { row, english, target, enKeys, targetKeys, lexeme: row.lexeme_id || "" };
+}
+function ldRecognitionOverlap(a, b) { return [...a].some(key => b.has(key)); }
+function ldRecognitionQuestion(entry, pool, reverse = false, random = Math.random) {
+  const sourceKeys = e => reverse ? e.enKeys : e.targetKeys;
+  const answerKeys = e => reverse ? e.targetKeys : e.enKeys;
+  const answer = e => reverse ? e.target : e.english;
+  const prompt = reverse ? entry.english : entry.target;
+  const blocked = new Set(answerKeys(entry));
+  const sameMeaning = e => (entry.lexeme && e.lexeme === entry.lexeme) || ldRecognitionOverlap(sourceKeys(e), sourceKeys(entry));
+  // All attested translations of the same prompt are valid, including duplicate CSV rows.
+  for (const other of pool) if (sameMeaning(other)) for (const key of answerKeys(other)) blocked.add(key);
+  const used = new Set(blocked), candidates = pool.filter(e => e !== entry && !sameMeaning(e)).map(e => {
+    const sameKind = (e.row.type || e.row.kind || "") === (entry.row.type || entry.row.kind || "");
+    const sameArticle = Boolean(e.row.article) === Boolean(entry.row.article);
+    const length = Math.abs(answer(e).split(/\s+/).length - answer(entry).split(/\s+/).length);
+    const sameSet = e.row.set_name === entry.row.set_name;
+    return { e, score: (sameSet ? 8 : 0) + (sameKind ? 4 : 0) + (sameArticle ? 2 : 0) - Math.min(5, length), tie: random() };
+  }).sort((a, b) => b.score - a.score || a.tie - b.tie);
+  const options = [{ text: answer(entry), correct: true }];
+  for (const { e } of candidates) {
+    if (ldRecognitionOverlap(answerKeys(e), used)) continue;
+    options.push({ text: answer(e), correct: false });
+    for (const key of answerKeys(e)) used.add(key);
+    if (options.length === 4) break;
+  }
+  if (options.length !== 4) return null;
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1)); [options[i], options[j]] = [options[j], options[i]];
+  }
+  return { entry, prompt, options };
+}
+// Recognition evidence uses existing shared channels. It never writes word/sentence SRS rows.
+async function ldRecordRecognitionEvidence(row, kind, language, reverse, correct, canonicalize = x => x) {
+  const ids = kind === "words" ? [row.lexeme_id].filter(Boolean) : [];
+  for (const raw of new Set(ids)) {
+    const id = canonicalize(raw), knowledge = await window.LanguageDeckKnowledge?.record({ language, lexemeId: id, channel: "reading",
+      seen: 1, correct: correct ? 1 : 0, wrong: correct ? 0 : 1, strength: correct ? 2 : 0,
+      sourceMode: reverse ? "practice-recognition-en-target" : "practice-recognition-target-en" });
+    if (knowledge && language === LANG) { GLOBAL_WORDS.set(id, knowledge); LIBRARY_STORY_CACHE.clear(); }
+  }
+}
+// End shared recognition helpers.
+
+const APP_BUILD="4.5.24-practice-recognition-20261110",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4471,7 +4575,7 @@ async function storyDomainRows(mode){
   if(mode==='words'){const seen=new Set(),rows=[];for(const {ch,data} of chapters)for(const w of data.words||[]){const key=canon(w.lexeme_id||w.id);if(!key||seen.has(key)||!ldQuizSafeEnglish(w.english,true)||!w.target)continue;seen.add(key);rows.push({guided_key:`story:${STORY.id}:word:${key}`,english:w.english,target:w.target,article:w.article||'',type:w.kind||'word',hint:w.hint||`From ${ch.title}`,lexeme_id:key,article_prompt:!!w.article})}return rows}
   const seen=new Set(),rows=[];for(const {ch,data} of chapters)for(const s of data.sentences||[]){if(mode==='grammar'&&!String(s.pattern||'').trim())continue;const key=`${ch.id}:${s.id}`;if(seen.has(key)||!s.english||!s.target)continue;seen.add(key);rows.push({guided_key:`story:${STORY.id}:${mode}:${key}`,english:s.english,target:s.target,hint:s.hint||'',explanation:s.explanation||'',sentence_id:key,tags:`story-domain|story:${STORY.id}|chapter:${ch.id}${s.pattern?`|pattern:${s.pattern}`:''}`})}return rows
 }
-async function startStoryDomainPractice(mode,requestedVariant=''){if(!STORY)return;const label=practiceModeLabel(mode),variant=requestedVariant||(mode==='grammar'?'order':'progressive'),target=mode==='words'?(variant==='match'?'recognition':'memorise'):mode==='grammar'?'grammar_recall':'sentence',rows=await storyDomainRows(mode);await startIntegratedPractice(mode,'practice',{deck:LANG,setName:`Internal · Story · ${STORY.id} · ${label}`,mode,variant,target,label:`${STORY.title} · ${label} · ${variant}`,rows})}
+async function startStoryDomainPractice(mode,requestedVariant=''){if(!STORY)return;const label=practiceModeLabel(mode),variant=requestedVariant||(mode==='grammar'?'order':'progressive'),target=mode==='words'?(variant==='match'||ldRecognitionMode(variant)?'recognition':'memorise'):mode==='grammar'?'grammar_recall':'sentence',rows=await storyDomainRows(mode);await startIntegratedPractice(mode,'practice',{deck:LANG,setName:`Internal · Story · ${STORY.id} · ${label}`,mode,variant,target,label:`${STORY.title} · ${label} · ${variant}`,rows})}
 let CATALOG_LAUNCH_SERIAL=0;
 function catalogVariant(action={}){const mode=["words","grammar","sentences"].includes(action.mode)?action.mode:"words";return action.variant||(mode==="words"?"progressive":"order")}
 function catalogLaunchMatches(snapshot,action,language){const mode=["words","grammar","sentences"].includes(action.mode)?action.mode:"words",variant=catalogVariant(action),activeVariant=mode==="words"?snapshot.wordMode:snapshot.sentenceMode;return snapshot.deck===language&&snapshot.mode===mode&&activeVariant===variant}
@@ -4494,7 +4598,7 @@ function localStoryPackages(){try{return JSON.parse(localStorage.getItem('ld-sto
 function startLocalStoryPackage(id){const pack=localStoryPackages().find(x=>x.id===id);if(pack)startIntegratedStory({local:id,language:pack.language||LANG,seriesTitle:pack.seriesTitle||pack.title||pack.name||''},'practice')}
 async function renderPracticeLibrary(){
   const host=$('practiceLibrary');if(!host)return;host.classList.remove('loading');let manifest;try{manifest=await loadPackageManifest()}catch(e){host.innerHTML=`<article class="error-state"><h2>Practice library unavailable</h2><p>${esc(e.message||e)}</p></article>`;return}
-  const packages=(manifest.catalogPackages||[]).filter(p=>p.kind==='standalone'),localStories=localStoryPackages(),activeLanguage=LANGUAGE_CATALOG.find(x=>x.code===LANG)||{},storySection=STORY?`<section><div class="practice-domain-head"><h2>Current story</h2><span>isolated domain</span></div><article class="practice-domain-card featured"><h3>${esc(STORY.title)}</h3><p>Only this story's vocabulary, grammar and sentences. Other courses and standalone decks never enter this domain.</p><div class="practice-domain-meta">${STORY.chapters.length} chapters · own Course / Book / Practice context</div><div class="practice-mode-group"><span class="practice-mode-label">Words</span><div class="practice-domain-actions"><button class="primary-action" data-story-practice="words" data-story-variant="match">Match</button><button data-story-practice="words" data-story-variant="progressive">Adaptive</button><button data-story-practice="words" data-story-variant="typing">Type</button></div></div><div class="practice-mode-group"><span class="practice-mode-label">In context</span><div class="practice-domain-actions"><button data-story-practice="grammar" data-story-variant="order">Grammar</button><button data-story-practice="sentences" data-story-variant="order">Sentences</button><button data-story-read>Read</button></div></div></article></section>`:`<section><div class="practice-domain-head"><h2>Story courses</h2><span>not installed for this language</span></div><div class="practice-empty-course">${esc(activeLanguage.name||LANG.toUpperCase())} currently has standalone practice only. Its deck library remains fully available below.</div></section>`,programmeSection=activeLanguage.capabilities?.grammarCurriculum?`<section><div class="practice-domain-head"><h2>Learning programmes</h2><span>guided curriculum</span></div><article class="practice-domain-card"><h3>Grammar &amp; Forms</h3><p>Nyolc tömör A1–B2 modul: áttekintő táblázatok, egyetlen célra épülő feladatok, gyors válaszadás és választható Igeműhely.</p><div class="practice-domain-actions"><button class="primary-action" data-grammar-course>Nyelvtani modulok megnyitása</button></div></article></section>`:'',localStorySection=localStories.length?`<section><div class="practice-domain-head"><h2>Imported stories</h2><span>on this device</span></div><div class="standalone-grid">${localStories.map(x=>`<article class="practice-domain-card"><h3>${esc(x.seriesTitle||x.title||x.name||x.id)}</h3><p>${esc(x.subtitle||'Imported Story Study package')}</p><div class="practice-domain-actions"><button class="primary-action" data-local-story="${esc(x.id)}">Open story</button></div></article>`).join('')}</div></section>`:'';
+  const packages=(manifest.catalogPackages||[]).filter(p=>p.kind==='standalone'),localStories=localStoryPackages(),activeLanguage=LANGUAGE_CATALOG.find(x=>x.code===LANG)||{},storySection=STORY?`<section><div class="practice-domain-head"><h2>Current story</h2><span>isolated domain</span></div><article class="practice-domain-card featured"><h3>${esc(STORY.title)}</h3><p>Only this story's vocabulary, grammar and sentences. Other courses and standalone decks never enter this domain.</p><div class="practice-domain-meta">${STORY.chapters.length} chapters · own Course / Book / Practice context</div><div class="practice-mode-group"><span class="practice-mode-label">Words</span><div class="practice-domain-actions"><button class="primary-action" data-story-practice="words" data-story-variant="match">Match</button><button data-story-practice="words" data-story-variant="progressive">Adaptive</button><button data-story-practice="words" data-story-variant="typing">Type</button><button data-story-practice="words" data-story-variant="recognition">4 choices · ${esc(LANG.toUpperCase())} → EN</button><button data-story-practice="words" data-story-variant="recognition-reverse">4 choices · EN → ${esc(LANG.toUpperCase())}</button></div></div><div class="practice-mode-group"><span class="practice-mode-label">In context</span><div class="practice-domain-actions"><button data-story-practice="grammar" data-story-variant="order">Grammar</button><button data-story-practice="sentences" data-story-variant="order">Sentences</button><button data-story-practice="sentences" data-story-variant="recognition">4 choices · ${esc(LANG.toUpperCase())} → EN</button><button data-story-practice="sentences" data-story-variant="recognition-reverse">4 choices · EN → ${esc(LANG.toUpperCase())}</button><button data-story-read>Read</button></div></div></article></section>`:`<section><div class="practice-domain-head"><h2>Story courses</h2><span>not installed for this language</span></div><div class="practice-empty-course">${esc(activeLanguage.name||LANG.toUpperCase())} currently has standalone practice only. Its deck library remains fully available below.</div></section>`,programmeSection=activeLanguage.capabilities?.grammarCurriculum?`<section><div class="practice-domain-head"><h2>Learning programmes</h2><span>guided curriculum</span></div><article class="practice-domain-card"><h3>Grammar &amp; Forms</h3><p>Nyolc tömör A1–B2 modul: áttekintő táblázatok, egyetlen célra épülő feladatok, gyors válaszadás és választható Igeműhely.</p><div class="practice-domain-actions"><button class="primary-action" data-grammar-course>Nyelvtani modulok megnyitása</button></div></article></section>`:'',localStorySection=localStories.length?`<section><div class="practice-domain-head"><h2>Imported stories</h2><span>on this device</span></div><div class="standalone-grid">${localStories.map(x=>`<article class="practice-domain-card"><h3>${esc(x.seriesTitle||x.title||x.name||x.id)}</h3><p>${esc(x.subtitle||'Imported Story Study package')}</p><div class="practice-domain-actions"><button class="primary-action" data-local-story="${esc(x.id)}">Open story</button></div></article>`).join('')}</div></section>`:'';
   host.innerHTML=`${storySection}${programmeSection}<section><div class="practice-domain-head"><h2>Standalone decks</h2><span>independent packages</span></div><div class="standalone-grid">${packages.map(p=>`<article class="practice-domain-card"><h3>${esc(p.title)}</h3><p>${esc(p.description||'Independent practice package.')}</p><div class="practice-domain-meta">${esc(p.level||'All levels')}</div><div class="practice-domain-actions">${(p.actions||[]).map((a,i)=>`<button class="${i===0?'primary-action':''}" data-catalog-package="${esc(p.id)}" data-catalog-action="${i}" data-catalog-language="${esc(LANG)}">${esc(a.label||practiceModeLabel(a.mode))}</button>`).join('')}</div></article>`).join('')}</div></section>${localStorySection}<section><div class="practice-domain-head"><h2>My library</h2><span>device tools</span></div><article class="practice-domain-card"><h3>Personal decks and progress</h3><p>Import your own material, manage installed decks, or keep two open LanguageDeck devices in live sync.</p><div class="practice-tools"><button class="practice-tool" data-practice-tool="import"><b>Import</b><span>CSV word or sentence deck, or Story Study ZIP</span></button><button class="practice-tool" data-practice-tool="manage"><b>Installed decks</b><span>Review and remove local deck copies</span></button><button class="practice-tool" data-practice-tool="sync"><b>Live sync</b><span>Pair two open devices with QR and sync progress while connected</span></button></div></article></section>`;
   host.querySelectorAll('[data-story-practice]').forEach(b=>b.onclick=()=>startStoryDomainPractice(b.dataset.storyPractice,b.dataset.storyVariant));host.querySelector('[data-story-read]')?.addEventListener('click',()=>CURRENT?startIntegratedStory(storyRequestFor(CURRENT.ch),'practice'):showView('course'));host.querySelector('[data-grammar-course]')?.addEventListener('click',()=>openGrammarCourse(null,'practice'));host.querySelectorAll('[data-catalog-package]').forEach(b=>b.onclick=()=>{const p=packages.find(x=>x.id===b.dataset.catalogPackage),a=p?.actions?.[+b.dataset.catalogAction];if(a)startCatalogIntegrated({...a,language:b.dataset.catalogLanguage})});host.querySelectorAll('[data-local-story]').forEach(b=>b.onclick=()=>startLocalStoryPackage(b.dataset.localStory));host.querySelectorAll('[data-practice-tool]').forEach(b=>b.onclick=()=>startPracticeUtility(b.dataset.practiceTool))
 }
@@ -4628,9 +4732,9 @@ function localizeGrammarPracticeControls(grammar){const hint=grammar?'Súgó':'H
 function updatePracticeShell(detail={}){
   LAST_PRACTICE_DETAIL=detail;
   const mode=detail.mode||ACTIVE_PRACTICE_MODE||'words',p=detail.progress||{total:0,mastered:0,stable:0,new:0,due:0,percent:0},grammar=PRACTICE_RETURN_VIEW==='grammar-course',guidedTitle=detail.guidedTarget==='story_practice'?'Story Practice':grammar?'Nyelvtan és alakok':'Chapter Study',languageLabel=detail.languageLabel||detail.deck?.toUpperCase()||'';
-  const canShowSession=mode==='words'&&!detail.guided&&!grammar;
+  const canShowSession=mode==='words'&&!detail.guided&&!grammar&&!ldRecognitionMode(detail.wordMode);
   if(!canShowSession)PRACTICE_PROGRESS_VIEW='deck';
-  $('practiceStudyTitle').textContent=detail.guided?guidedTitle:[practiceModeLabel(mode),detail.variant].filter(Boolean).join(' · ');
+  $('practiceStudyTitle').textContent=detail.guided&&!ldRecognitionMode(mode==='words'?detail.wordMode:detail.sentenceMode)?guidedTitle:[practiceModeLabel(mode),detail.variant].filter(Boolean).join(' · ');
   $('practiceStudySub').textContent=detail.guided?(detail.guidedLabel||[languageLabel,detail.setName].filter(Boolean).join(' · ')):[languageLabel,detail.setName].filter(Boolean).join(' · ')||(grammar?'Vezetett nyelvtani gyakorlat':'Standalone deck');
   $('integratedPracticeSettingsLabel').textContent=grammar?'Vezetett nyelvtani gyakorlat':detail.guided?`Guided ${guidedTitle}`:`${languageLabel?languageLabel+' · ':''}${practiceModeLabel(mode)}${detail.setName?' · '+detail.setName:''}`;
   const stable=Math.max(0,p.stable??p.mastered??0),recall=Math.max(0,p.recall||0),learned=Math.max(0,p.learned||0),learning=Math.max(0,p.learning??((p.total||0)-(p.new||0)-stable)),met=Math.max(0,p.met||0),total=Math.max(0,p.total||0),depthPercent=Math.max(0,Math.min(100,p.depthPercent??p.percent??0));
@@ -4668,7 +4772,7 @@ function updatePracticeShell(detail={}){
   $('practiceSetupBtn').disabled=false;$('practiceSetupBtn').title=grammar?'Gyakorlási beállítások':'Session options';$('practiceBackBtn').title=grammar?'Vissza a nyelvtani modulhoz':'Back';localizeGrammarPracticeControls(grammar);if(!$('settingsBackdrop').classList.contains('hidden'))renderCurrentPracticeSettings();syncPracticeDock()
 }
 function renderCurrentPracticeSettings(){const box=$('integratedPracticeSettings');if(!ACTIVE_PRACTICE_MODE||!window.LanguageDeckPractice){box.classList.add('hidden');PRACTICE_PENDING_OPTIONS=null;return}box.classList.remove('hidden');$('openPracticeSetupBtn').classList.add('hidden');const live=window.LanguageDeckPractice.snapshot();if(live.guided){PRACTICE_PENDING_OPTIONS=null;document.querySelectorAll('[data-practice-order],[data-practice-gate]').forEach(b=>{b.classList.remove('on');b.disabled=true;b.onclick=null});$('morePracticeOptionsBtn').disabled=true;$('restartPracticeBtn').disabled=true;$('practiceOptionsNote').textContent='This learning domain controls order and scope for the current goal.';return}document.querySelectorAll('[data-practice-order],[data-practice-gate]').forEach(b=>b.disabled=false);$('morePracticeOptionsBtn').disabled=false;$('restartPracticeBtn').disabled=false;if(!PRACTICE_PENDING_OPTIONS||PRACTICE_PENDING_OPTIONS.mode!==live.mode)PRACTICE_PENDING_OPTIONS={mode:live.mode,order:live.order||'smart',gateEnabled:live.gateEnabled!==false};document.querySelectorAll('[data-practice-order]').forEach(b=>{b.classList.toggle('on',b.dataset.practiceOrder===PRACTICE_PENDING_OPTIONS.order);b.onclick=()=>{PRACTICE_PENDING_OPTIONS.order=b.dataset.practiceOrder==='csv'?'csv':'smart';renderCurrentPracticeSettings()}});document.querySelectorAll('[data-practice-gate]').forEach(b=>{const value=b.dataset.practiceGate==='true';b.classList.toggle('on',value===PRACTICE_PENDING_OPTIONS.gateEnabled);b.onclick=()=>{PRACTICE_PENDING_OPTIONS.gateEnabled=value;renderCurrentPracticeSettings()}});const changed=PRACTICE_PENDING_OPTIONS.order!==(live.order||'smart')||PRACTICE_PENDING_OPTIONS.gateEnabled!==(live.gateEnabled!==false);$('practiceOptionsNote').textContent=changed?'Restart session to apply these changes.':'Current session uses these settings.'}
-function syncPracticeDock(){const root=$('legacyPracticeRoot'),fallback=$('practiceDockFallback');if(!root||!fallback)return;const actions=root.querySelector('#wordTypingContainer:not(.hidden) .typing-actions, #sentenceContainer:not(.hidden) .sentence-actions');fallback.classList.toggle('hidden',!!actions)}
+function syncPracticeDock(){const root=$('legacyPracticeRoot'),fallback=$('practiceDockFallback');if(!root||!fallback)return;const actions=root.querySelector('#wordTypingContainer:not(.hidden) .typing-actions, #sentenceContainer:not(.hidden) .sentence-actions');fallback.classList.toggle('hidden',!!actions);const recognition=root.querySelector('#recognitionContainer:not(.hidden)');fallback.querySelector('span').textContent=recognition?'Choose a translation, then Next.':'Tap matching cards to continue.'}
 async function startIntegratedPractice(mode,returnView='practice',guidedSpec=null){if(!window.LanguageDeckPractice)throw Error('The integrated practice engine did not initialise.');PRACTICE_RETURN_VIEW=returnView;PRACTICE_PROGRESS_VIEW='deck';ACTIVE_PRACTICE_MODE=mode;PRACTICE_PENDING_OPTIONS=null;const preserveStory=returnView==='book-adaptive'&&!!ACTIVE_STUDY_ENGINE;if(!preserveStory){ACTIVE_STUDY_ENGINE?.destroy?.();ACTIVE_STUDY_ENGINE=null;ACTIVE_STUDY_API=null;}$('browseShell').classList.add('hidden');$('studyHost').classList.add('hidden');$('chapterStudyHost').classList.add('hidden');$('grammarCourseHost').classList.add('hidden');$('practiceStudyHost').classList.remove('hidden');document.documentElement.classList.add('integrated-practice-active');if(guidedSpec)await window.LanguageDeckPractice.startGuided(guidedSpec);else await window.LanguageDeckPractice.start(mode);updatePracticeShell(window.LanguageDeckPractice.snapshot());PRACTICE_DOCK_OBSERVER?.disconnect();PRACTICE_DOCK_OBSERVER=new MutationObserver(()=>requestAnimationFrame(syncPracticeDock));PRACTICE_DOCK_OBSERVER.observe($('legacyPracticeRoot'),{subtree:true,attributes:true,attributeFilter:['class'],childList:true});syncPracticeDock()}
 window.addEventListener('languagedeck:guided-phase-complete',()=>{if(!ACTIVE_PRACTICE_MODE)return;if(PRACTICE_RETURN_VIEW==='book-adaptive')BOOK_ADAPTIVE_COMPLETED=true;if(['chapter-study','grammar-course','book-adaptive'].includes(PRACTICE_RETURN_VIEW))exitIntegratedPractice(PRACTICE_RETURN_VIEW)},{passive:true});
 async function exitIntegratedPractice(view=PRACTICE_RETURN_VIEW){const returnToChapter=view==='chapter-study'&&!!CHAPTER_STUDY_SESSION,returnToGrammar=view==='grammar-course'&&!!GRAMMAR_COURSE_SESSION,returnToBookAdaptive=view==='book-adaptive'&&!!ACTIVE_STUDY_ENGINE;await window.LanguageDeckPractice?.flush?.();window.LanguageDeckPractice?.save?.();await window.LanguageDeckPractice?.endGuided?.();PRACTICE_DOCK_OBSERVER?.disconnect();PRACTICE_DOCK_OBSERVER=null;PRACTICE_PENDING_OPTIONS=null;document.documentElement.classList.remove('integrated-practice-active','keypad-active','order-practice-active','text-practice-active','keyboard-open');$('practiceStudyHost').classList.add('hidden');ACTIVE_PRACTICE_MODE=null;closeSettings();try{await loadGlobal();if(STORY){CURRENT=await chooseCurrent();renderCourse();renderBook()}}catch(e){console.warn(e)}if(returnToChapter){$('browseShell').classList.add('hidden');$('chapterStudyHost').classList.remove('hidden');await renderChapterStudy();return}if(returnToGrammar){showGrammarCourseHost();await renderGrammarCourse();return}if(returnToBookAdaptive){$('browseShell').classList.add('hidden');$('studyHost').classList.remove('hidden');const completed=BOOK_ADAPTIVE_COMPLETED;BOOK_ADAPTIVE_COMPLETED=false;ACTIVE_STUDY_API?.resumeAfterAdaptiveWords?.(completed);return}$('browseShell').classList.remove('hidden');showView(view)}
@@ -4694,7 +4798,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.23-adaptive-slot-contrast-20260912";
+    const APP_BUILD = "4.5.24-practice-recognition-20261110";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -7421,7 +7525,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     // from bypassing Adaptive demotion. A deliberate mode change resets the session
     // and therefore clears gateContinuationMode.
     function adaptiveWordEngineActive() {
-      if (currentGame !== "words") return false;
+      if (currentGame !== "words" || ldRecognitionMode(wordMode)) return false;
       if (wordMode === "progressive" || gateContinuationMode) return true;
       // 4.5.17 recovery guard: older completed-gate/full-type flows could leave
       // the visible variant as standalone `typing`. Inside an already completed
@@ -8771,6 +8875,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function currentPracticeStateDetail() {
       const variantLabels = {
         match: "Match", typing: "Type", progressive: "Adaptive missing letters",
+        recognition: recognitionVariantLabel("recognition"), "recognition-reverse": recognitionVariantLabel("recognition-reverse"),
         choice: "Word bank", order: "Reorder",
         comprehension: "Reading", active: "Deep", memorization: "Memorise"
       };
@@ -8802,7 +8907,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         ? `${Math.min(currentGateIndex + 1, Math.max(1,totalGates))}/${Math.max(1,totalGates)} block`
         : "whole table";
 
-      if (guidedPractice) noteEl.textContent = "This guided lesson controls its own order and intake.";
+      if (recognitionActive()) noteEl.textContent = "Four-choice recognition rotates the selected scope. New-item intake and Adaptive recall settings apply to recall exercises.";
+      else if (guidedPractice) noteEl.textContent = "This guided lesson controls its own order and intake.";
       else if (currentGame !== "words") noteEl.textContent = "For sentence practice, the percentage shapes each fetched batch. Live answered-card pacing is measured in Words mode.";
       else if (gateEnabled && (lastPracticeProgress.new | 0) === 0) noteEl.textContent = `This block has no unseen items, so the ${requested}% target cannot add new words here. Open the next block or use the whole table.`;
       else if (limit && occupied >= limit) noteEl.textContent = `All ${limit} learning slots are occupied. New words pause until active words have been recalled correctly twice.`;
@@ -8826,6 +8932,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     function updateModeSummary() {
       const variantLabels = {
         match: "Match", typing: "Type", progressive: "Adaptive missing letters",
+        recognition: recognitionVariantLabel("recognition"), "recognition-reverse": recognitionVariantLabel("recognition-reverse"),
         choice: "Word bank", order: "Reorder",
         comprehension: "Reading", active: "Deep", memorization: "Memorise"
       };
@@ -8929,7 +9036,8 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
 
       if (currentGame === "words") {
         buildSeg(qsVariantSeg, [
-          { value: "match", label: "Match" }, { value: "typing", label: "Type" }, { value: "progressive", label: "Adaptive" }
+          { value: "match", label: "Match" }, { value: "typing", label: "Type" }, { value: "progressive", label: "Adaptive" },
+          { value: "recognition", label: recognitionVariantLabel("recognition") }, { value: "recognition-reverse", label: recognitionVariantLabel("recognition-reverse") }
         ], wordMode, async v => { setSelectAndFire(modeSelect, v); renderQuickSheet(); });
       } else if (currentGame === "text") {
         buildSeg(qsVariantSeg, [
@@ -8942,6 +9050,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         });
       } else {
         buildSeg(qsVariantSeg, [
+          ...(currentGame === "sentences" ? [{ value: "recognition", label: recognitionVariantLabel("recognition") }, { value: "recognition-reverse", label: recognitionVariantLabel("recognition-reverse") }] : []),
           { value: "choice", label: "Word bank" }, { value: "order", label: "Reorder" },
           { value: "typing", label: "Type" }, { value: "progressive", label: "Adaptive" }
         ], sentenceMode, async v => { setSelectAndFire(sentenceModeSelect, v); renderQuickSheet(); });
@@ -9019,14 +9128,17 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     function updateGameUI() {
+      if (currentGame === "grammar" && ldRecognitionMode(sentenceMode)) { sentenceMode = "choice"; sentenceModeSelect.value = sentenceMode; }
       const isWords = currentGame === "words";
+      const isRecognition = recognitionActive();
+      $("recognitionContainer").classList.toggle("hidden", !isRecognition);
       const isText = currentGame === "text";
       const isSentenceGame = currentGame === "sentences" || currentGame === "grammar";
       const isWordMatch = isWords && wordMode === "match";
       const isWordTyping = isWords && (wordMode === "typing" || wordMode === "progressive");
       wordMatchContainer.classList.toggle("hidden", !isWordMatch);
       wordTypingContainer.classList.toggle("hidden", !isWordTyping);
-      sentenceContainer.classList.toggle("hidden", !isSentenceGame);
+      sentenceContainer.classList.toggle("hidden", !isSentenceGame || isRecognition);
       textModeContainer.classList.toggle("hidden", !isText);
       document.documentElement.classList.toggle("text-practice-active", isText);
       document.documentElement.classList.toggle("order-practice-active", isSentenceGame && sentenceMode === "order");
@@ -9746,13 +9858,159 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     }
 
     async function loadCurrentGame(reset = true) {
+      resetRecognition();
       if (reset) { sessionLoadedIds = new Set(); sessionSelectionHistoryIds = new Set(); }
       await refreshGateInfo();
+      if (recognitionActive()) {
+        resetSessionMistakes(); resetSessionPacing(); currentTypingWord = null; currentSentence = null;
+        clearTimeout(wordProgressiveAutoSubmitTimer); clearTimeout(sentenceProgressiveAutoSubmitTimer);
+        updateGameUI(); await loadRecognition(); return;
+      }
       if (currentGame === "words") await loadWords(reset);
       else if (currentGame === "text") await loadTextMode(reset);
       else await loadSentences(reset);
       if (typeof checkEmptyState === "function") await checkEmptyState();
     }
+
+    /* ---------- Practice four-choice recognition ---------- */
+    let recognitionSession = null, recognitionSerial = 0;
+    function recognitionActive() {
+      return (currentGame === "words" || currentGame === "sentences") &&
+        ldRecognitionMode(currentGame === "words" ? wordMode : sentenceMode);
+    }
+    function recognitionDirectionLabel(reverse = false) {
+      const target = currentDeck.toUpperCase();
+      return reverse ? `EN → ${target}` : `${target} → EN`;
+    }
+    function recognitionVariantLabel(variant) {
+      return `4 choices · ${recognitionDirectionLabel(variant === "recognition-reverse")}`;
+    }
+    function resetRecognition() {
+      recognitionSerial++;
+      recognitionSession = null;
+      $("recognitionContainer").classList.add("hidden");
+    }
+    async function loadRecognition() {
+      const token = ++recognitionSerial, kind = currentGame, language = currentDeck;
+      const reverse = (kind === "words" ? wordMode : sentenceMode) === "recognition-reverse";
+      recognitionSession = null;
+      $("recognitionOptions").replaceChildren();
+      $("recognitionPrompt").textContent = "Loading…";
+      $("recognitionFeedback").textContent = "";
+      $("recognitionNext").hidden = true;
+      const table = kind === "words" ? "word_pairs" : "sentence_pairs";
+      let rows = await DB.getAll(table, language, currentSetName);
+      if (token !== recognitionSerial || !recognitionActive()) return;
+      if (currentSetName === "__all__") rows = rows.filter(r => setSupportsStudyMode(r.set_name, kind, language));
+      const index = kind === "words" ? await sharedLexiconIndex() : null;
+      if (token !== recognitionSerial || !recognitionActive()) return;
+      if (kind === "words") rows = rows.filter(r => ldQuizSafeEnglish(r.english, false));
+      const metadata = new Map((index?.lex || []).map(r => [index.canon(r.lexeme_id), r]));
+      const entries = rows.map(r => {
+        const id = index?.canon(r.lexeme_id || "") || r.lexeme_id || "", lexeme = metadata.get(id);
+        return ldRecognitionEntry({ ...r, lexeme_id: id, type: r.type || r.kind || lexeme?.pos || "" }, kind);
+      }).filter(Boolean);
+      // Gate membership uses the same original row order as the rest of Practice.
+      const gateRows = gateEnabled ? fetchGateRows(rows, currentGateIndex, kind === "words" ? gateSize : Math.min(gateSize, 50)) : rows;
+      const ids = new Set(gateRows.map(r => r.id));
+      const prompts = entries.filter(e => ids.has(e.row.id) && (practiceScope !== "wrong" || (+e.row.times_wrong || 0) > 0));
+      const session = { token, kind, language, reverse, entries, prompts, queue: [], retries: [],
+        answered: 0, recent: [], current: null, locked: false, busy: false };
+      recognitionSession = session;
+      correctCount = 0; wrongCount = 0; updateScore();
+      $("recognitionDirection").textContent = recognitionDirectionLabel(reverse);
+      $("recognitionHelp").textContent = "Choose the matching translation. 1–4 to answer; Enter for Next.";
+      $("recognitionBoundary").textContent = "Recognition practice · Adaptive level and recall progress stay unchanged.";
+      nextRecognitionQuestion(session);
+    }
+    function nextRecognitionQuestion(session = recognitionSession) {
+      if (!session || session !== recognitionSession || session.busy || !recognitionActive()) return;
+      let entry = null, question = null;
+      const retryIndex = session.retries.findIndex(r => r.after <= session.answered && !session.recent.includes(r.entry.row.id));
+      if (retryIndex >= 0) entry = session.retries.splice(retryIndex, 1)[0].entry;
+      if (entry) question = ldRecognitionQuestion(entry, session.entries, session.reverse);
+      if (!session.queue.length) {
+        session.queue = session.prompts.slice();
+        if (newItemOrder !== "csv") session.queue = shuffleArr(session.queue);
+        session.queue.sort((a, b) => Number(session.recent.includes(a.row.id)) - Number(session.recent.includes(b.row.id)));
+      }
+      while (!question && session.queue.length) {
+        entry = session.queue.shift();
+        question = ldRecognitionQuestion(entry, session.entries, session.reverse);
+      }
+      session.current = question; session.locked = false;
+      const options = $("recognitionOptions"); options.replaceChildren();
+      $("recognitionFeedback").textContent = "";
+      $("recognitionNext").hidden = true;
+      if (!question) {
+        $("recognitionPrompt").textContent = "No four-choice question available";
+        $("recognitionFeedback").textContent = "This scope needs a translation and three distinct, unambiguous alternatives. Try another gate, Whole table, or another deck.";
+        return;
+      }
+      session.recent.push(entry.row.id); session.recent = session.recent.slice(-2);
+      session.retries = session.retries.filter(r => r.entry.row.id !== entry.row.id);
+      sessionLoadedIds.add(entry.row.id);
+      $("recognitionPrompt").textContent = question.prompt;
+      $("recognitionPrompt").lang = session.reverse ? "en" : session.language;
+      $("recognitionContainer").classList.toggle("recognition-long", question.options.some(o => o.text.length > 52));
+      question.options.forEach((option, index) => {
+        const button = document.createElement("button"); button.type = "button";
+        button.className = "recognition-option"; button.lang = session.reverse ? session.language : "en";
+        const number = document.createElement("span"); number.className = "recognition-number"; number.textContent = String(index + 1); number.setAttribute("aria-hidden", "true");
+        const text = document.createElement("span"); text.textContent = option.text;
+        button.append(number, text); button.onclick = () => answerRecognition(index, session);
+        options.appendChild(button);
+      });
+      $("recognitionPrompt").focus({ preventScroll: true });
+      statusEl.textContent = "Choose one translation.";
+      dispatchPracticeState();
+    }
+    async function answerRecognition(index, session = recognitionSession) {
+      if (!session || session !== recognitionSession || session.locked || !recognitionActive() || !session.current?.options[index]) return;
+      session.locked = true; session.busy = true;
+      const question = session.current, correct = question.options[index].correct;
+      const buttons = [...$("recognitionOptions").children];
+      buttons.forEach((button, i) => {
+        button.disabled = true;
+        if (question.options[i].correct) { button.classList.add("recognition-correct"); button.lastElementChild.textContent += " ✓"; }
+        else if (i === index) { button.classList.add("recognition-wrong"); button.lastElementChild.textContent += " ✗"; }
+      });
+      session.answered++;
+      if (correct) correctCount++; else {
+        wrongCount++;
+        session.retries.push({ entry: question.entry, after: session.answered + 2 });
+      }
+      $("recognitionFeedback").textContent = `${correct ? "Correct." : "Correct translation:"} ${question.entry.target} = ${question.entry.english}`;
+      updateScore();
+      try {
+        await queuePracticeWrite(async () => {
+          try { await ldRecordRecognitionEvidence(question.entry.row, session.kind, session.language, session.reverse, correct); }
+          catch (error) {
+            if (session === recognitionSession) $("recognitionFeedback").textContent += " Progress could not be saved on this device.";
+            throw error;
+          }
+        });
+      } catch (error) {
+        if (session === recognitionSession) $("recognitionFeedback").textContent += " Progress could not be saved on this device.";
+        console.error("Recognition evidence save failed", error);
+      } finally { session.busy = false; }
+      if (session !== recognitionSession || !recognitionActive()) return;
+      $("recognitionNext").hidden = false;
+      $("recognitionNext").focus({ preventScroll: true });
+      dispatchPracticeState();
+    }
+    $("recognitionNext").onclick = () => nextRecognitionQuestion();
+    function handleRecognitionShortcut(event) {
+      if (!recognitionActive()) return false;
+      if (!document.documentElement.classList.contains("integrated-practice-active") ||
+          $("practiceStudyHost").classList.contains("hidden") || event.repeat || event.isComposing ||
+          event.ctrlKey || event.metaKey || event.altKey || event.shiftKey || activeElementIsTextInput() ||
+          document.querySelector(".modal-backdrop.active,.sheet-backdrop:not(.hidden)")) return true;
+      if (/^[1-4]$/.test(event.key)) { event.preventDefault(); answerRecognition(Number(event.key) - 1); }
+      else if (event.key === "Enter" && recognitionSession?.locked) { event.preventDefault(); nextRecognitionQuestion(); }
+      return true;
+    }
+    /* ---------- End Practice four-choice recognition ---------- */
 
     /* ---------- Word match game ---------- */
     async function loadWords(reset = true) {
@@ -11475,6 +11733,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
         if ($("qrTransferModal")?.classList.contains("active")) { cancelLiveSyncPairing(); return; }
         if ($("liveSyncModal")?.classList.contains("active")) { $("liveSyncModal").classList.remove("active"); return; }
       }
+      if (handleRecognitionShortcut(event)) return;
       const modifier = practiceShortcutModifier(event);
       if (modifier && event.key === "Enter") {
         if (currentGame === "words" && currentTypingWord) { event.preventDefault(); await submitTypingWordAnswer(true); return; }
@@ -13320,7 +13579,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       async startGuided(spec){return startGuidedPractice(spec)},
       async startCatalog(spec){return startCatalogPractice(spec)},
       async openUtility(tool,language){return openIntegratedUtility(tool,language)},
-      async endGuided(){return endGuidedPractice()},
+      async endGuided(){resetRecognition();return endGuidedPractice()},
       async start(mode = "words") {
         const requested = ["words","grammar","sentences"].includes(mode) ? mode : "words";
         if (!integratedInitialized) {

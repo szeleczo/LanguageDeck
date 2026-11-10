@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const html = fs.readFileSync(path.join(here, "..", "index.html"), "utf8");
 
-assert.match(html, /4\.5\.23-adaptive-slot-contrast-20260912/, "4.5.23 build marker is present");
+assert.match(html, /4\.5\.24-practice-recognition-20261110/, "4.5.23 build marker is present");
 assert.match(html, /#legacyPracticeRoot \.clue-gap\{ opacity: 0\.32; \}/, "the existing gap visual remains unchanged for the normal/vowel slot");
 assert.match(html, /#legacyPracticeRoot \.clue-gap-consonant\{ opacity: 0\.18; \}/, "consonants keep the same continuous underscore at lower opacity");
 assert.match(html, /#legacyPracticeRoot \.adaptive-gap-hints-surface\{[\s\S]*color-mix\(in srgb, var\(--surface-2\) 68%, var\(--surface\) 32%\)/, "masked Adaptive surfaces are subtly lightened for legibility");
