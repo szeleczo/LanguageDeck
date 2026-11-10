@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.25. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.26. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -273,3 +273,9 @@ Next main milestone remains **4.6 — Prepare for this**.
 +
 +Next main milestone remains **4.6 — Prepare for this**.
 +
+
+## 4.5.26 — Thumb-reach recognition answers
+
+Baseline: 4.5.25. Four vertically stacked answers now grow upward from the bottom safe area instead of following the prompt near the top. The recognition-only layout fills the available viewport and places spare vertical space above the answer stack. Feedback is above the choices so showing a correction does not reserve an empty strip underneath them. The redundant bottom session footer and duplicate score row are hidden in this mode; Back in the header retains the same exit action. At least 64px touch targets, original top-to-bottom answer order, automatic feedback and direction settings remain intact. Oversized questions/answers and short landscape screens retain vertical scrolling rather than clipping or shrinking targets. Other practice modes keep their existing geometry.
+
+Validation: Node regression suites, browser geometry assertions on short and tall phones and desktop, visible lowest button within 40px of the bottom on fitting content, long-answer/landscape scrolling, full overlay and Windows installer checks.

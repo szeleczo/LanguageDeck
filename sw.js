@@ -1,5 +1,5 @@
-/* LanguageDeck 4.5.25 — Faster recognition and contextual session direction. */
-const CACHE_VERSION="languagedeck-4-5-25-recognition-flow-20261110";
+/* LanguageDeck 4.5.26 — Bottom-anchored recognition answers. */
+const CACHE_VERSION="languagedeck-4-5-26-thumb-reach-20261110";
 const APP_SHELL=[
   "./",
   "./decks/de/aliases.csv",

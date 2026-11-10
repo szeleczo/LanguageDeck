@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 const here=path.dirname(fileURLToPath(import.meta.url));
 const html=fs.readFileSync(path.join(here,"..","index.html"),"utf8");
-assert.match(html,/4\.5\.25-recognition-flow-20261110/,"current Library build marker is present");
+assert.match(html,/4\.5\.26-thumb-reach-20261110/,"current Library build marker is present");
 assert.match(html,/id="libraryView"[\s\S]*Lexical readiness only/,"Library has its own read-only reading-goal surface");
 assert.match(html,/data-view="library"[\s\S]*>Library<\/button>/,"Library is available from the main navigation");
 assert.match(html,/function libraryGreedyPlan\(/,"Library has a targeted vocabulary-unlock planner");

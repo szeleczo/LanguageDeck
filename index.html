@@ -3440,6 +3440,17 @@ html.integrated-practice-active body{overflow:hidden!important}
 #legacyPracticeRoot #recognitionNext[hidden]{display:none!important}
 @media(max-width:600px){#legacyPracticeRoot #recognitionHelp{font-size:11px}#legacyPracticeRoot .recognition-panel{padding:16px}#legacyPracticeRoot .recognition-options{gap:10px}#legacyPracticeRoot button.recognition-option{min-height:64px}}
 @media(max-height:500px){#legacyPracticeRoot .recognition-panel{margin-top:0;padding:14px}#legacyPracticeRoot .recognition-options{margin-top:14px}#legacyPracticeRoot #recognitionPrompt{font-size:24px;margin:8px 0}}
+
+/* Anchor the answer stack above the viewport safe area; overflow remains scrollable. */
+html.integrated-practice-active.recognition-practice-active #legacyPracticeRoot>.main{display:flex!important;flex-direction:column!important;padding-bottom:max(12px,env(safe-area-inset-bottom))!important}
+html.recognition-practice-active #legacyPracticeRoot>.main>.play-meta{display:none!important}
+html.recognition-practice-active #legacyPracticeRoot .recognition-panel{display:flex;flex-direction:column;flex:1 0 auto;margin:0 auto;min-height:0}
+html.recognition-practice-active #legacyPracticeRoot #recognitionHelp{display:none}
+html.recognition-practice-active #legacyPracticeRoot #recognitionFeedback{min-height:0;margin:0;font-size:13px}
+html.recognition-practice-active #legacyPracticeRoot #recognitionFeedback:not(:empty){margin-top:8px}
+html.recognition-practice-active #legacyPracticeRoot .recognition-options{flex:0 0 auto;margin-top:auto;padding-top:14px}
+html.recognition-practice-active #integratedPracticeDock{display:none!important}
+@media(max-height:650px){html.recognition-practice-active #gatePanel{margin-top:3px;margin-bottom:3px}html.recognition-practice-active #gatePanel .gate-summary{min-height:44px;padding:6px 12px;gap:4px}html.recognition-practice-active #gatePanel .gate-nav{min-height:44px}html.recognition-practice-active #legacyPracticeRoot .recognition-panel{padding:12px}html.recognition-practice-active #legacyPracticeRoot #recognitionPrompt{margin:8px 0}html.recognition-practice-active #legacyPracticeRoot .recognition-options{gap:8px}}
 </style>
 </head><body>
 <div id="browseShell">
@@ -3565,8 +3576,8 @@ html.integrated-practice-active body{overflow:hidden!important}
 <div class="recognition-direction" id="recognitionDirection"></div>
 <h2 id="recognitionPrompt" tabindex="-1"></h2>
 <p id="recognitionHelp"></p>
-<div id="recognitionOptions" class="recognition-options" role="group" aria-label="Translation options"></div>
 <p id="recognitionFeedback" role="status" aria-live="polite" aria-atomic="true"></p>
+<div id="recognitionOptions" class="recognition-options" role="group" aria-label="Translation options"></div>
 <button id="recognitionNext" type="button" hidden>Next →</button>
 <p id="recognitionBoundary" class="hidden"></p>
 </section>
@@ -3765,7 +3776,7 @@ html.integrated-practice-active body{overflow:hidden!important}
 </div><div class="modal-backdrop" id="settingsModal">
 <div class="modal-card wide">
 <div class="modal-title">Settings</div>
-<div class="meta" id="appBuildLabel">Build 4.5.25</div>
+<div class="meta" id="appBuildLabel">Build 4.5.26</div>
 <details class="settings-section relocated" data-utility-section="game">
 <summary>Game</summary>
 <div class="settings-section-body">
@@ -4206,7 +4217,7 @@ async function ldRecordRecognitionEvidence(row, kind, language, reverse, correct
 }
 // End shared recognition helpers.
 
-const APP_BUILD="4.5.25-recognition-flow-20261110",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
+const APP_BUILD="4.5.26-thumb-reach-20261110",REQUESTED_LANG=(new URLSearchParams(location.search).get('lang')||localStorage.getItem('ld-active-language')||'de').toLowerCase(),LANG=/^[a-z]{2,3}$/.test(REQUESTED_LANG)?REQUESTED_LANG:'de',COURSE_INDEX=`decks/${LANG}/courses/index.json`,PREP_MAX=10;
 const $=id=>document.getElementById(id);let STORY=null,COURSES=[],ACTIVE_COURSE=null,CHAPTER_DATA=new Map(),GLOBAL_WORDS=new Map(),GLOBAL_PATTERNS=new Map(),ALIASES=new Map(),CURRENT=null,PREP=null;const LIBRARY_LEXICON_CACHE=new Map(),LIBRARY_STORY_CACHE=new Map();let LIBRARY_RENDER_TOKEN=0;
 function languageLocaleFor(code=LANG){return LANGUAGE_CATALOG.find(x=>x.code===code)?.comparison?.locale||undefined}
 function languageLower(value,code=LANG){return String(value||"").toLocaleLowerCase(languageLocaleFor(code))}
@@ -4802,7 +4813,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
     const BUILTIN_DECK_META = new Map();
     const GATE_MASTERY_STREAK = 2;
     const GATE_UNLOCK_RATIO = 0.85;
-    const APP_BUILD = "4.5.25-recognition-flow-20261110";
+    const APP_BUILD = "4.5.26-thumb-reach-20261110";
     function cacheBustedUrl(path) {
       const sep = String(path).includes("?") ? "&" : "?";
       return `${path}${sep}v=${encodeURIComponent(APP_BUILD)}`;
@@ -9191,6 +9202,7 @@ $('settingsBtn').onclick=()=>openSettings('main');$('settingsClose').onclick=clo
       if (currentGame === "grammar" && ldRecognitionMode(sentenceMode)) { sentenceMode = "choice"; sentenceModeSelect.value = sentenceMode; }
       const isWords = currentGame === "words";
       const isRecognition = recognitionActive();
+      document.documentElement.classList.toggle("recognition-practice-active", isRecognition);
       $("recognitionContainer").classList.toggle("hidden", !isRecognition);
       const isText = currentGame === "text";
       const isSentenceGame = currentGame === "sentences" || currentGame === "grammar";
