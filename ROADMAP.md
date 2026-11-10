@@ -1,6 +1,6 @@
 # LanguageDeck roadmap
 
-Current direction through 4.5.24. This file is part of the repository so product direction does not get lost between implementation rounds.
+Current direction through 4.5.25. This file is part of the repository so product direction does not get lost between implementation rounds.
 
 ## 4.4.15 — shared knowledge / Adaptive stabilisation
 
@@ -255,3 +255,21 @@ The offline launch check exposed an inherited cache issue: shell assets were pre
 Delivery: the GitHub overlay includes only added/changed files relative to 4.5.23. The PowerShell installer verifies package checksums and baseline hashes, supports Preview and NoPush, runs the complete regression suite plus syntax/diff checks, and refuses unrelated local changes. It does not include historic removals or reapply older release overlays.
 
 Next main milestone remains **4.6 — Prepare for this**.
+
++
++## 4.5.25 — Faster recognition and contextual Session controls
++
++Status: completed. Baseline: **4.5.24**. Build: `4.5.25-recognition-flow-20261110`.
++
++Four-choice recognition uses one vertical list of four full-width, at least 64px answer buttons on desktop and mobile. A correct answer is shown in green for 240ms and advances automatically. A mistake highlights the selected wrong answer and the correct translation for 1400ms before advancing. Normal practice no longer requires Next. Explicit Next remains only as a fallback if the current answer's evidence cannot be saved. Pending answers remain serialized and flushable while the interface advances independently of storage latency.
++
++Practice packages, current-story actions and the Command Pill now expose one **4 choices** action per Words/Sentences mode. Translation direction is a saved setting in **Session controls** rather than a duplicated mode. The same control changes meaning according to the active exercise: **Column order** in Word Match, **Translation direction** in four-choice recognition, hidden for unrelated typing/production exercises. Match order and recognition direction keep independent preferences. Old `recognition-reverse` saved settings/requests migrate to the single recognition mode while retaining their direction.
++
++Opening Session controls preserves the current prompt, scores and queue. Changing translation direction updates the current ungraded prompt in place without awarding evidence; after feedback, it moves to the next question in the new direction. Automatic feedback timers pause while an overlay is open or the document is hidden, resume their remaining duration afterward, and are cancelled on exit or direction change. Old/detached buttons cannot grade a newer question. Keyboard repeats remain ignored.
++
++Recognition distractor safety, exact four-option requirements, selected-deck/story boundaries, separated retries, shared reading evidence and Adaptive/production/SRS isolation remain unchanged. Service worker and both app build markers advance together. The release keeps the Windows installer fixes for accented paths and Git CRLF conversion; the overlay now targets exactly 4.5.24.
++
++Validation: all 22 Node regression suites, including deterministic timer, modal-pause, stale-handler, direction-switch and legacy-preference migration coverage. Browser verification covers the single catalog action, four vertically stacked touch targets, automatic correct/wrong feedback, unchanged production rows, session score retention, modal pausing, both direction preferences, Match column order, narrow/dark/landscape layouts and offline launch. Git overlay, full ZIP and Windows PowerShell installation are verified against the exact 4.5.24 baseline.
++
++Next main milestone remains **4.6 — Prepare for this**.
++

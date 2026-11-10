@@ -86,7 +86,7 @@ assert.equal(stored.evidence.reading.wrong,1);
 
 // Exercise the real answer handler, including its synchronous double-answer lock.
 class Element {
-  constructor(){this.children=[];this.textContent="";this.hidden=false;this.classList={add(){},contains(){return false;},toggle(){}};}
+  constructor(){this.children=[];this.textContent="";this.hidden=false;this.dataset={};this.classes=new Set();this.classList={add:(x)=>this.classes.add(x),contains:(x)=>this.classes.has(x),toggle:(x,on)=>on?this.classes.add(x):this.classes.delete(x)};}
   replaceChildren(){this.children=[];}
   append(...items){this.children.push(...items);this.lastElementChild=items.at(-1);}
   appendChild(x){this.append(x);}
@@ -95,9 +95,14 @@ class Element {
 const els = new Map(), get = id => {if(!els.has(id))els.set(id,new Element());return els.get(id);};
 const engineStart=html.indexOf("    /* ---------- Practice four-choice recognition ---------- */");
 const engineEnd=html.indexOf("    /* ---------- End Practice four-choice recognition ---------- */",engineStart);
-let saved=0;
-Object.assign(context, { $:get, document:{createElement:()=>new Element()},
+let saved=0,clock=0,timerId=0,overlay=false;const timers=new Map();
+const rootElement=new Element();rootElement.classList.add("integrated-practice-active");
+function advance(ms){const until=clock+ms;for(;;){const next=[...timers].sort((a,b)=>a[1].at-b[1].at)[0];if(!next||next[1].at>until)break;clock=next[1].at;timers.delete(next[0]);next[1].fn();}clock=until;}
+Object.assign(context, { $:get, document:{hidden:false,documentElement:rootElement,createElement:()=>new Element(),querySelector:()=>overlay?{}:null,querySelectorAll:()=>[],addEventListener(){}},
+  MutationObserver:class{observe(){}},Date:class extends Date{static now(){return clock;}},
+  setTimeout:(fn,ms)=>{const id=++timerId;timers.set(id,{fn,at:clock+ms});return id;},clearTimeout:id=>timers.delete(id),
   currentGame:"words", wordMode:"recognition", sentenceMode:"order", currentDeck:"de", newItemOrder:"csv",
+  recognitionDirection:"target_to_english",
   correctCount:0, wrongCount:0, sessionLoadedIds:new Set(), statusEl:get("status"),
   shuffleArr:xs=>xs.slice(), updateScore(){}, dispatchPracticeState(){},
   queuePracticeWrite:async task=>task(), ldRecordRecognitionEvidence:async()=>{saved++;await Promise.resolve();}
@@ -121,11 +126,60 @@ context.resetRecognition();
 await context.answerRecognition(0,session);
 assert.equal(saved,3,"stale handlers cannot record evidence after a mode switch");
 
+const fresh=()=>({kind:"words",language:"de",reverse:false,entries:pool,prompts:pool.slice(0,4),queue:[],retries:[],recent:[],answered:0,current:null,busy:false,locked:false});
+const auto=fresh();context.begin(auto);
+let original=auto.current;
+const obsoleteButton=get("recognitionOptions").children[0];
+await context.answerRecognition(original.options.findIndex(o=>o.correct),auto);
+assert.equal(get("recognitionNext").hidden,true,"successful saves never require Next");
+assert.ok(get("recognitionOptions").children.some(b=>b.classList.contains("recognition-correct")));
+advance(239);assert.equal(auto.current,original);
+advance(1);assert.notEqual(auto.current,original,"correct answer advances at 240ms");
+const savedAfterAuto=saved;await obsoleteButton.onclick();assert.equal(saved,savedAfterAuto,"detached old choice cannot answer the new question");
+original=auto.current;
+await context.answerRecognition(original.options.findIndex(o=>!o.correct),auto);
+assert.match(get("recognitionFeedback").textContent,/Correct translation:/);
+advance(1399);assert.equal(auto.current,original);
+advance(1);assert.notEqual(auto.current,original,"wrong answer shows the correction for 1400ms");
+original=auto.current;
+await context.answerRecognition(original.options.findIndex(o=>o.correct),auto);
+advance(100);overlay=true;context.syncRecognitionAdvance();
+advance(2000);assert.equal(auto.current,original,"modal pauses automatic advance");
+overlay=false;context.syncRecognitionAdvance();advance(139);assert.equal(auto.current,original);
+advance(1);assert.notEqual(auto.current,original,"remaining feedback time resumes after modal closes");
+original=auto.current;
+await context.answerRecognition(original.options.findIndex(o=>o.correct),auto);
+context.resetRecognition();advance(2000);assert.equal(auto.current,original,"closing the session cancels its callback");
+
+assert.equal(context.ldRecognitionPreferences({wordMode:"recognition-reverse"}).direction,"english_to_target");
+assert.equal(context.ldRecognitionPreferences({sentenceMode:"recognition-reverse"}).sentenceMode,"recognition");
+assert.equal(context.ldRecognitionPreferences({wordMode:"recognition-reverse",recognitionDirection:"target_to_english"}).direction,"target_to_english","explicit direction takes precedence over legacy mode");
+let directionSaves=0;
+Object.assign(context,{columnOrder:"english_first",languageName:()=>"German",guidedPractice:null,
+  saveSettings(){directionSaves++;},applyColumnOrder(){},updateModeSummary(){}});
+const directionSource=html.slice(html.indexOf("    function renderSessionDirectionControl()"),html.indexOf("    function renderSessionControlsSummary()"));
+vm.runInContext(directionSource,context);
+const directional=fresh();context.begin(directional);context.renderSessionDirectionControl();
+assert.equal(get("sessionDirectionLabel").textContent,"Translation direction");
+original=directional.current.entry;
+context.changeSessionDirection("english_first");
+assert.equal(directional.current.entry,original,"changing direction preserves the unanswered item");
+assert.equal(directional.reverse,true);
+assert.equal(directional.current.prompt,original.english);
+assert.equal(directional.answered,0);
+context.wordMode="match";context.renderSessionDirectionControl();
+assert.equal(get("sessionDirectionLabel").textContent,"Column order");
+context.changeSessionDirection("target_first");assert.equal(context.columnOrder,"target_first");
+assert.equal(context.recognitionDirection,"english_to_target","Match order and translation direction retain independent preferences");
+assert.equal(directionSaves,2);
+context.wordMode="progressive";context.renderSessionDirectionControl();
+assert.ok(get("sessionDirectionControl").classList.contains("hidden"),"unrelated production modes do not expose direction controls");
+
 assert.match(html,/if \(handleRecognitionShortcut\(event\)\) return;/);
 assert.match(html,/event\.repeat \|\| event\.isComposing/);
 assert.match(html,/role="status" aria-live="polite"/);
 assert.match(html,/recognition-option\{[^}]*min-height:64px/);
-assert.match(html,/recognition-long \.recognition-options\{grid-template-columns:1fr/);
+assert.match(html,/\.recognition-options\{display:grid;grid-template-columns:minmax\(0,1fr\)/,"all viewport sizes use one vertical answer stack");
 
 // Exercise the real service worker with a cold version-query cache and a consumed network body.
 const sw=fs.readFileSync(new URL("../sw.js",import.meta.url),"utf8"),handlers=new Map(),cacheFiles=new Map();

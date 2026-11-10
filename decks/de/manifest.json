@@ -50,28 +50,16 @@
           "variant": "typing"
         },
         {
-          "label": "Words · 4 choices · DE → EN",
+          "label": "Words · 4 choices",
           "deckId": "de-core-3000",
           "mode": "words",
           "variant": "recognition"
         },
         {
-          "label": "Words · 4 choices · EN → DE",
-          "deckId": "de-core-3000",
-          "mode": "words",
-          "variant": "recognition-reverse"
-        },
-        {
-          "label": "Sentences / phrases · 4 choices · DE → EN",
+          "label": "Sentences / phrases · 4 choices",
           "deckId": "de-3000-sentences",
           "mode": "sentences",
           "variant": "recognition"
-        },
-        {
-          "label": "Sentences / phrases · 4 choices · EN → DE",
-          "deckId": "de-3000-sentences",
-          "mode": "sentences",
-          "variant": "recognition-reverse"
         }
       ]
     },
@@ -123,28 +111,16 @@
           "variant": "typing"
         },
         {
-          "label": "Words · 4 choices · DE → EN",
+          "label": "Words · 4 choices",
           "deckId": "de-hooks",
           "mode": "words",
           "variant": "recognition"
         },
         {
-          "label": "Words · 4 choices · EN → DE",
-          "deckId": "de-hooks",
-          "mode": "words",
-          "variant": "recognition-reverse"
-        },
-        {
-          "label": "Sentences / phrases · 4 choices · DE → EN",
+          "label": "Sentences / phrases · 4 choices",
           "deckId": "de-hooks-sentences",
           "mode": "sentences",
           "variant": "recognition"
-        },
-        {
-          "label": "Sentences / phrases · 4 choices · EN → DE",
-          "deckId": "de-hooks-sentences",
-          "mode": "sentences",
-          "variant": "recognition-reverse"
         }
       ]
     },
@@ -177,16 +153,10 @@
           "variant": "typing"
         },
         {
-          "label": "Words · 4 choices · DE → EN",
+          "label": "Words · 4 choices",
           "deckId": "de-combined-flashcards",
           "mode": "words",
           "variant": "recognition"
-        },
-        {
-          "label": "Words · 4 choices · EN → DE",
-          "deckId": "de-combined-flashcards",
-          "mode": "words",
-          "variant": "recognition-reverse"
         }
       ]
     },
@@ -268,16 +238,10 @@
           "variant": "typing"
         },
         {
-          "label": "Sentences / phrases · 4 choices · DE → EN",
+          "label": "Sentences / phrases · 4 choices",
           "deckId": "de-sentence-builder",
           "mode": "sentences",
           "variant": "recognition"
-        },
-        {
-          "label": "Sentences / phrases · 4 choices · EN → DE",
-          "deckId": "de-sentence-builder",
-          "mode": "sentences",
-          "variant": "recognition-reverse"
         }
       ]
     }
@@ -297,8 +261,7 @@
         "match",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1",
@@ -318,8 +281,7 @@
         "match",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1",
@@ -339,8 +301,7 @@
         "match",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1",
@@ -403,8 +364,7 @@
         "order",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1",
@@ -425,8 +385,7 @@
         "order",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1",
@@ -447,8 +406,7 @@
         "order",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1",
@@ -534,8 +492,7 @@
         "match",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1"
@@ -559,8 +516,7 @@
         "order",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1"
@@ -582,8 +538,7 @@
         "match",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1"
@@ -607,8 +562,7 @@
         "order",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1"
@@ -630,8 +584,7 @@
         "match",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1"
@@ -655,8 +608,7 @@
         "order",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "A1"
@@ -701,8 +653,7 @@
         "match",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "B2",
@@ -727,8 +678,7 @@
         "order",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "B2",
@@ -774,8 +724,7 @@
         "match",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "B2",
@@ -800,8 +749,7 @@
         "order",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "B2",
@@ -847,8 +795,7 @@
         "match",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "B2",
@@ -873,8 +820,7 @@
         "order",
         "typing",
         "progressive",
-        "recognition",
-        "recognition-reverse"
+        "recognition"
       ],
       "level": [
         "B2",
